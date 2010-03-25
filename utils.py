@@ -145,7 +145,10 @@ class DualSelectWidget(SelectWidget):
 
 admin_bar_template = list(XMLParser("""
   <div id="admin-bar-${id}" class="admin-bar">
-    <div class="admin-bar-title">${title}</div>
+    <div class="admin-bar-title">
+      <img src="/ui/icons/16x16/cancel.png"/>
+      <span>${title}</span>
+    </div>
     <ul class="admin-bar-ul">
       <li stl:repeat="button buttons">
         <a href="${button/path}">
@@ -163,6 +166,19 @@ admin_bar_template = list(XMLParser("""
       var is_inf = original_height < menu_height;
       ]]>
       $("#admin-bar-${id}").hide();
+
+      $("#admin-bar-${id} .admin-bar-title img").click(function(){
+        if($("#admin-bar-${id} .admin-bar-ul").is(':visible') == false){
+            $("#admin-bar-${id} .admin-bar-title img").attr({src: '/ui/icons/16x16/cancel.png'});
+            $("#admin-bar-${id} .admin-bar-ul").show();
+            $("#admin-bar-${id} .admin-bar-title span").show();
+          }else{
+            $("#admin-bar-${id} .admin-bar-title img").attr({src: '/ui/icons/16x16/down.png'});
+            $("#admin-bar-${id} .admin-bar-ul").hide();
+            $("#admin-bar-${id} .admin-bar-title span").hide();
+        }
+      });
+
       $("#${id}").hover(function(){
         $("#${id}").addClass('highlight');
         $("#admin-bar-${id}").show();
