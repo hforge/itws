@@ -1,0 +1,237 @@
+/**************************************************************************
+ * Box
+ * ***********************************************************************/
+.bigb-hg, .bigb-hd, .bigb-bg, .bigb-bd,
+.box-hg, .box-hd, .box-bg, .box-bd {
+  display: none;
+}
+
+/**************************************************************************
+ * BO Link *
+ **************************************************************************/
+.broken {
+  color: red;
+}
+
+#wrapper div.manage a,
+#turning-footer div.manage a {
+  color: red;
+}
+
+/* Workflow */
+#wrapper .manage .wf-private {
+  color: #c00 !important;
+  font-weight: bold;
+}
+
+#wrapper .manage .wf-pending {
+  color: #f57900 !important;
+  font-weight: bold;
+}
+
+#wrapper .manage .wf-public {
+  color: #4e9a06 !important;
+  font-weight: bold;
+}
+
+/**************************************************************************
+ * Section
+ **************************************************************************/
+#section {
+  border: 0;
+  width: 100%;
+}
+
+#td-contentbar {
+  width: 66%;
+  vertical-align: top;
+}
+
+#td-sidebar {
+  width: 33%;
+  vertical-align: top;
+}
+
+/**************************************************************************
+ * News summary
+ **************************************************************************/
+#newsitems .newsitem {
+  padding-bottom: 10px;
+}
+
+#newsitems .newsitem.last {
+  padding-bottom: 0;
+}
+
+#newsitems .newsitem img {
+  float: left;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+
+/**************************************************************************
+ * Section Subsections menu
+ **************************************************************************/
+#content div.submenu-wrapper ul {
+  padding-left: 0;
+}
+
+#content div.submenu-wrapper ul li {
+  list-style-type: none;
+}
+
+#sub-sections-toc li.active a {
+  font-weight: bold;
+}
+
+/**************************************************************************
+ * Section Articles
+ **************************************************************************/
+#article-items .box-content {
+  padding-top: 0;
+}
+
+/**************************************************************************
+ * Tag Cloud
+ **************************************************************************/
+ul#tag-cloud {
+  padding: 2px;
+  line-height: 3em;
+  text-align: center;
+  font-size: 7px;
+  margin: 0;
+}
+ul#tag-cloud li {
+  display: inline;
+  margin-left: 10px;
+}
+
+ul#tag-cloud a {
+  padding: 0px;
+  text-decoration: none;
+}
+
+ul#tag-cloud .tag-10 a {
+  font-size: 0.7em;
+  font-weight: 100;
+}
+ul#tag-cloud .tag-9 a {
+  font-size: 0.8em;
+  font-weight: 200;
+}
+ul#tag-cloud .tag-8 a {
+  font-size: 0.9em;
+  font-weight: 300;
+}
+ul#tag-cloud .tag-7 a {
+  font-size: 1.0em;
+  font-weight: 400;
+}
+ul#tag-cloud .tag-6 a {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+ul#tag-cloud .tag-5 a {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+ul#tag-cloud .tag-4 a {
+  font-size: 1.6em;
+  font-weight: 700;
+}
+ul#tag-cloud .tag-3 a {
+  font-size: 1.8em;
+  font-weight: 800;
+}
+ul#tag-cloud .tag-2 a {
+  font-size: 2.2em;
+  font-weight: 900;
+}
+ul#tag-cloud .tag-1 a {
+  font-size: 2.5em;
+  font-weight: 900;
+}
+
+/* search */
+#tag-view .item {
+  border-bottom: 1px dashed #000;
+}
+
+.admin-icons-bar {
+  background-image: url('/ui/common/images/empty-background.png');
+}
+
+.admin-icons-bar table td {
+  text-align: center;
+  width: 150px;
+  font-weight: bold;
+}
+
+.admin-icons-bar a {
+  text-decoration: none;
+}
+
+.highlight-empty {
+  background-image: url('/ui/common/images/empty-background.png');
+  height: 30px;
+}
+
+.admin-bar-title {
+  padding: 5px;
+  color: #FFF;
+  background-color: #000;
+}
+
+.admin-bar {
+  position: absolute;
+  background-color: green;
+  opacity: 0.9;
+  color: #000;
+  -moz-border-radius: 0 0 7px 0;
+  -webkit-border-radius: 0 0 7px 0;
+  padding: 0;
+  z-index: 1000;
+}
+
+.admin-bar ul {
+  padding: 0 5px 2px 7px !important;
+  margin: 0 5px 2px 7px !important;
+}
+
+.admin-bar ul a {
+  color: #FFF !important;
+  text-decoration: none;
+}
+
+/* Batch numerotation */
+#content .batch-numerotation {
+  margin: 0;
+  padding: 0;
+}
+
+#content .batch-numerotation ul {
+  list-style-type: none;
+}
+
+#content .batch-numerotation li {
+  display: inline;
+}
+
+#content .batch-numerotation a {
+  width: 7px;
+  height: 7px;
+  color: #000;
+  text-decoration: none;
+  padding: 5px 5px 5px 7px;
+  margin: 2px;
+  border: 1px solid #D3D7CF;
+}
+
+#content .batch-numerotation a:hover {
+  background-color: #EEEEEC;
+}
+
+#content .batch-numerotation a.current {
+  background-color: #EEEEEC;
+  font-weight: bold;
+}

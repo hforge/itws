@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2009 Henry Obein <henry@itaapy.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+    SiteMap RelaxNG schema
+    © 2009 Itaapy.
+-->
+
+<!-- STATE: Warning, for the moment, this file is only a draft -->
+
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+  <start>
+    <ref name="urlset" />
+  </start>
+
+  <define name="urlset">
+    <element name="sitemap:urlset">
+      <attribute name="url"><data type="string"/></attribute>
+      <ref name="url" />
+    </element>
+  </define>
+
+  <define name="url">
+    <element name="sitemap:url">
+      <ref name="loc" />
+      <optional><ref name="lastmod" /></optional>
+      <optional><ref name="changefreq" /></optional>
+      <optional><ref name="priority" /></optional>
+    </element>
+  </define>
+
+  <define name="loc">
+    <element name="sitemap:loc">
+        <text />
+    </element>
+  </define>
+
+  <define name="lastmod">
+    <element name="sitemap:lastmod">
+        <text />
+    </element>
+  </define>
+
+  <define name="changefreq">
+    <element name="sitemap:changefreq">
+        <text />
+    </element>
+  </define>
+
+  <define name="priority">
+      <element name="sitemap:priority">
+        <text />
+    </element>
+  </define>
+
+</grammar>

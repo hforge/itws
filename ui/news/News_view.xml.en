@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml" xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <div id="${id}" class="wrapper ${news_wrapper_class}">
+    ${admin_bar}
+    <div class="box">
+      <div class="box-hd" />
+      <div class="box-hg" />
+      <div class="box-bd" />
+      <div class="box-bg" />
+      <div class="box-content">
+        <div class="actu-content">
+          <div class="actu-date">${date_of_writing}</div>
+          <div class="actu-title">
+            <h1><a stl:omit-tag="not title_link" href="${title_link}">${title}</a></h1>
+          </div>
+          ${content}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</stl:block>

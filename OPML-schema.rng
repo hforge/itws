@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2009 Henry Obein <henry@itaapy.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+    OPML RelaxNG schema
+    © 2009 Itaapy.
+-->
+
+<!-- STATE: Warning, for the moment, this file is only a draft -->
+
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:opml="http://www.hforge.org/xml-namespaces/opml"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+  <start>
+    <ref name="opml" />
+  </start>
+
+  <define name="opml">
+    <element name="opml:opml">
+      <attribute name="version"><data type="string"/></attribute>
+      <ref name="head" />
+      <ref name="body" />
+    </element>
+  </define>
+
+  <define name="head">
+    <element name="opml:head">
+      <optional><ref name="title" /></optional>
+      <optional><ref name="dateCreated" /></optional>
+      <optional><ref name="dateModified" /></optional>
+      <optional><ref name="ownerName" /></optional>
+      <optional><ref name="ownerEmail" /></optional>
+      <optional><ref name="ownerId" /></optional>
+      <optional><ref name="docs" /></optional>
+      <optional><ref name="expansionState" /></optional>
+      <optional><ref name="vertScrollState" /></optional>
+      <optional><ref name="windowTop" /></optional>
+      <optional><ref name="windowLeft" /></optional>
+      <optional><ref name="windowBottom" /></optional>
+      <optional><ref name="windowRight" /></optional>
+    </element>
+  </define>
+
+  <define name="title">
+    <element name="opml:title">
+        <text />
+    </element>
+  </define>
+
+  <define name="dateCreated">
+    <element name="opml:dateCreated">
+        <text />
+    </element>
+  </define>
+
+  <define name="dateModified">
+    <element name="opml:dateModified">
+        <text />
+    </element>
+  </define>
+
+  <define name="ownerName">
+      <element name="opml:ownerName">
+        <text />
+    </element>
+  </define>
+
+  <define name="ownerEmail">
+    <element name="opml:ownerEmail">
+        <text />
+    </element>
+  </define>
+
+  <define name="ownerId">
+    <element name="opml:ownerId">
+        <text />
+    </element>
+  </define>
+
+  <define name="docs">
+    <element name="opml:docs">
+        <text />
+    </element>
+  </define>
+
+  <define name="expansionState">
+    <element name="opml:expansionState">
+        <text />
+    </element>
+  </define>
+
+  <define name="vertScrollState">
+    <element name="opml:vertScrollState">
+        <text />
+    </element>
+  </define>
+
+  <define name="windowTop">
+    <element name="opml:windowTop">
+        <text />
+    </element>
+  </define>
+
+  <define name="windowLeft">
+    <element name="opml:windowLeft">
+        <text />
+    </element>
+  </define>
+
+  <define name="windowBottom">
+    <element name="opml:windowBottom">
+        <text />
+    </element>
+  </define>
+
+  <define name="windowRight">
+    <element name="opml:windowRight">
+        <text />
+    </element>
+  </define>
+
+  <define name="body">
+    <element name="opml:body">
+      <oneOrMore><ref name="outline" /></oneOrMore>
+    </element>
+  </define>
+
+  <define name="outline">
+    <element name="opml:outline">
+      <attribute name="text"><data type="string"/></attribute>
+      <optional><attribute name="title"><data type="string"/></attribute></optional>
+      <optional><attribute name="type"><data type="string"/></attribute></optional>
+      <attribute name="xmlUrl"><data type="string"/></attribute>
+      <zeroOrMore><ref name="outline" /></zeroOrMore>
+    </element>
+  </define>
+
+</grammar>

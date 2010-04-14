@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0"
+      xmlns="http://www.hforge.org/xml-namespaces/opml"
+      xmlns:opml="http://www.hforge.org/xml-namespaces/opml"
+      xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+    <head>
+        <title>${title}</title>
+        <dateCreated></dateCreated>
+        <dateModified>${mtime}</dateModified>
+        <ownerName>${owner/name}</ownerName>
+        <ownerEmail>${owner/email}</ownerEmail>
+    </head>
+    <body>
+        <stl:block stl:repeat="feed feeds">
+            <outline text="${feed/title}" title="${feed/title}"
+                     xmlUrl="${feed/uri}" type="${feed/type}" />
+        </stl:block>
+    </body>
+</opml>

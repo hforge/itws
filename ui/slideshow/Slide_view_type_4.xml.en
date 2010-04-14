@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+<!-- START BOX -->
+<div id="slideshow" class="box slideshow-type-4">
+  <div class="box-hd"/>
+  <div class="box-hg"/>
+  <div class="box-bd"/>
+  <div class="box-bg"/>
+  <div class="box-content">
+    <!-- ! START BOX -->
+
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <h1 id="slideshow-title">${slideshow_title}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td id="slide-nav-slot" stl:if="not content_only">
+          <!-- Slide TOC -->
+          <table id="toc">
+            <tr>
+              <td class="column ${col/css}" stl:repeat="col toc/cols">
+                <ul>
+                  <stl:block stl:repeat="item col/items">
+                    <li stl:if="repeat/item/start" class="first">
+                      <span stl:if="item/selected" class="selected">${item/title}</span>
+                      <span stl:if="not item/selected">
+                        <a href="${item/href}">${item/title}</a></span>
+                    </li>
+                    <li stl:if="not repeat/item/start">
+                      <span stl:if="item/selected" class="selected">${item/title}</span>
+                      <span stl:if="not item/selected">
+                        <a href="${item/href}">${item/title}</a>
+                      </span>
+                    </li>
+                  </stl:block>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td id="slide-content-slot">
+          <h2 id="slide-title">
+            <div id="slides-toolbar" stl:if="not content_only">
+              <a href="${previous_slide/href}" id="goto-previous-slide"
+                 title="${previous_slide/title}" stl:if="previous_slide">◄</a>
+              <a href="${next_slide/href}" id="goto-next-slide"
+                 title="${next_slide/title}" stl:if="next_slide">►</a>
+            </div>
+            ${slide_title}
+          </h2>
+          <!-- Slide toolbar -->
+          <div class="clear"></div>
+          <!-- Slide image or slideshow image -->
+          <div class="image-slot">
+            <div id="slide-image">
+              <a stl:omit-tag="not slide_href" href="${slide_href}"
+                 title="${slide_title}">
+                <img src="${slide_image}" alt="${slide_title}" />
+              </a>
+            </div>
+          </div>
+          <div id="slide-content">${slide_content}</div>
+        </td>
+      </tr>
+    </table>
+    <!-- END BOX -->
+  </div>
+</div>
+<!-- ! END BOX -->
+</stl:block>

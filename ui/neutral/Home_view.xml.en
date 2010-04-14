@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+  <div id="home">
+    <div id="banner-slot" stl:if="banner">
+      <a stl:omit-tag="not banner/link/path" href="${banner/link/path}" title="${banner/link/title}"
+         target="${banner/link/target}">
+        <img src="${banner/img/src}" alt="${banner/img/alt}" />
+      </a>
+    </div>
+    <div id="news-slot" stl:if="news">
+      <div class="news-title"><h1>${news/title}</h1></div>
+      <div id="news-item" stl:repeat="item news/items">
+        <p class="news-date">${item/date_of_writing}</p>
+        <div class="news-title">
+          <a href="${item/path}" title="${item/title}">${item/title}</a>
+        </div>
+        <div class="news-summary">${item/summary}</div>
+      </div>
+    </div>
+    <div id="content-slot">${content}</div>
+  </div>
+</stl:block>

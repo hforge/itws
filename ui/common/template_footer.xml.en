@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <stl:block stl:if="items">
+    <stl:block stl:repeat="item items">
+      <!-- HTML CONTENT -->
+      <stl:block stl:if="item/html">${item/html}</stl:block>
+      <!-- LINK -->
+      <stl:block stl:if="not item/html">
+        <a stl:if="item/path" href="${item/path}" target="${item/target}">${item/title}</a>
+        <span stl:if="not item/path">${item/title}</span>
+      </stl:block>
+      <span class="separator" stl:if="not repeat/item/end">${separator}</span>
+    </stl:block>
+  </stl:block>
+</stl:block>

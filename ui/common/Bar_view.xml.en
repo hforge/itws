@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <div id="${id}" stl:if="display">
+    ${admin_bar}
+    <div stl:repeat="item items" class="box ${items_css_class} ${item/format}"
+         id="${item/id}">
+      <div class="box-hd" />
+      <div class="box-hg" />
+      <div class="box-bd" />
+      <div class="box-bg" />
+      ${item/box_admin_bar}
+      <div class="box-content">${item/box}</div>
+    </div>
+    <div class="clear" />
+  </div>
+</stl:block>

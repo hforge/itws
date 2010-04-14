@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+<!-- START BOX -->
+<div id="slideshow" class="box slideshow-type-2">
+  <div class="box-hd"/>
+  <div class="box-hg"/>
+  <div class="box-bd"/>
+  <div class="box-bg"/>
+  <div class="box-content">
+    <!-- ! START BOX -->
+
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td id="slide-content-slot">
+          <h1 id="slideshow-title">${slideshow_title}</h1>
+          <h2 id="slide-title">${slide_title}</h2>
+          <div id="slide-content">${slide_content}</div>
+        </td>
+        <td id="slide-nav-slot">
+          <!-- Slide image or slideshow image -->
+          <div class="image-slot">
+            <table>
+              <tr stl:if="not content_only">
+                <td id="slides-toolbar">
+                  <div>
+                    <a stl:if="previous_slide" href="${previous_slide/href}"
+                      title="${previous_slide/title}" id="goto-previous-slide">◄</a>
+                    <a stl:if="next_slide" href="${next_slide/href}"
+                      title="${next_slide/title}" id="goto-next-slide">►</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td id="slide-image">
+                  <img src="${slide_image}" />
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- Slide TOC -->
+          <table id="toc" stl:if="not content_only">
+            <tr>
+              <td class="column ${col/css}" stl:repeat="col toc/cols">
+                <ul>
+                  <li stl:repeat="item col/items">
+                    <span stl:if="item/selected" class="selected">${item/title}</span>
+                    <span stl:if="not item/selected">
+                      <a href="${item/href}">${item/title}</a></span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- END BOX -->
+  </div>
+</div>
+<!-- ! END BOX -->
+</stl:block>

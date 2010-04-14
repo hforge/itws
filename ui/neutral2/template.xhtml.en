@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+<head>
+  <title>${title}</title>
+  <base href="${base_uri}" />
+  <!-- Meta -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta stl:repeat="meta meta_tags" name="${meta/name}" lang="${meta/lang}"
+    content="${meta/content}" />
+  <!-- CSS -->
+  <link type="text/css" rel="stylesheet" stl:repeat="style styles"
+    href="${style}" />
+  <!-- JavaScript -->
+  <script type="text/javascript" stl:repeat="script scripts" src="${script}" />
+  <!-- RSS -->
+  <link rel="alternate" href="/;rss" title="${rss_title}" type="application/rss+xml" />
+  <!-- Icon -->
+  <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}/;download"
+        type="${favicon_type}" />
+</head>
+<body class="${body_css}">
+  <div id="${page_css_id}">
+    <table cellspacing="0" cellpadding="0" border="0" id="main-table">
+      <tr>
+        <td>
+          <div class="lines" id="logo" stl:if="banner">
+            <h1>
+              <a href="/" id="banner">
+                <img alt="${banner/description}" src="${banner/path}/;download"/>
+              </a>
+            </h1>
+            <div id="search-form">
+              <form action="/;site_search" method="get">
+                <p>
+                  <input name="site_search_text" type="text" value="${text}"
+                    size="15"/>
+                  <button class="button-search" type="submit">Search</button>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="nav">
+            <div class="bigbox">
+              <div class="bigb-hd" /> <div class="bigb-hg" />
+              <div class="bigb-bd" /> <div class="bigb-bg" />
+              <div class="menubox">
+                <div id="nav">${nav}</div>
+                ${languages}
+              </div>
+            </div>
+          </div>
+          <div stl:if="manage_buttons" class="manage">
+            <stl:block stl:repeat="button manage_buttons">
+              <a href="${button/path}">${button/label}</a>
+              <stl:inline stl:if="not repeat/button/end">,</stl:inline>
+            </stl:block>
+          </div>
+          <div class="bigbox">
+            <div class="bigb-hd" /> <div class="bigb-hg" />
+            <div class="bigb-bd" /> <div class="bigb-bg" />
+            <div class="bigbox-in">
+              <div id="wrapper" class="${bo_class}">
+                <!-- Location & Views-->
+                ${location}
+                ${message}
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                    <td id="content">
+                      <table id="content-table">
+                        <tr>
+                          <td id="td-contentbar">${body}</td>
+                          <td id="td-sidebar" stl:if="sidebar">
+                            <stl:block stl:repeat="menu context_menus">
+                              ${menu}<br/>
+                            </stl:block>
+                            ${sidebar_view}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          ${turning_footer}
+          <div id="footer-wrapper">
+            <div id="footer">${footer}</div>
+            <div id="backoffice">
+              <a stl:if="not user/info" href="${login}"
+                id="top-menu-login">Log in</a>
+              <a stl:if="user/info" href="${logout}"
+                id="top-menu-logout">Log out</a>
+            </div>
+          </div>
+        </td>
+        <td stl:if="user/info" id="right" valign="top">
+          <stl:block stl:repeat="menu context_menus">${menu}<br/></stl:block>
+        </td>
+      </tr>
+    </table>
+  </div>
+  ${custom_data}
+</body>
+</html>

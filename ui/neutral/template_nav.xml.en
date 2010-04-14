@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <ul stl:if="items">
+    <stl:block stl:repeat="menu items">
+      <li stl:if="repeat/menu/start" class="${menu/class} first">
+        <!-- FIRST -->
+        <a href="${menu/path}" id="${menu/id}"
+           target="${menu/target}" title="${menu/title}">
+          ${menu/title}
+        </a>
+      </li>
+      <stl:block stl:if="not repeat/menu/start">
+        <stl:block stl:if="not repeat/menu/end">
+          <!-- MIDDLE -->
+          <li class="${menu/class}">
+            <a href="${menu/path}" id="${menu/id}"
+               target="${menu/target}" title="${menu/title}">
+              ${menu/title}
+            </a>
+          </li>
+        </stl:block>
+      </stl:block>
+      <stl:block stl:if="not repeat/menu/start">
+        <stl:block stl:if="repeat/menu/end">
+          <!-- LAST -->
+          <li class="${menu/class} last">
+            <a href="${menu/path}" id="${menu/id}"
+               target="${menu/target}" title="${menu/title}">
+              ${menu/title}
+            </a>
+          </li>
+        </stl:block>
+      </stl:block>
+    </stl:block>
+  </ul>
+</stl:block>

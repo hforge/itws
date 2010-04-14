@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <stl:block stl:if="items">
+    <h3 stl:if="title" class="title">${title}</h3>
+    <div class="content">
+      <div class="newsitem ${item/css}" stl:repeat="item items">
+        <a stl:if="item/thumbnail" href="${item/path}">
+          <img src="${item/thumbnail}/;download" />
+        </a>
+        <div class="summary">
+          <div class="newsitem-date">${item/date_of_writing}</div>
+          <div class="newsitem-title">
+            <a href="${item/path}">${item/long_title}</a>
+          </div>
+        </div>
+        <div class="clear" />
+      </div>
+    </div>
+  </stl:block>
+
+</stl:block>
