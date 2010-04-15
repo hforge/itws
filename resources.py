@@ -24,7 +24,7 @@ from ikaaro.file_views import File_Download
 from ikaaro.forms import SelectWidget, HTMLBody
 from ikaaro.forms import TextWidget, PathSelectorWidget
 from ikaaro.future.menu import MenuFolder, Menu, MenuFile, Target
-from ikaaro.registry import register_resource_class
+from ikaaro.registry import register_resource_class, register_field
 from ikaaro.text import Text
 from ikaaro.text_views import Text_View
 
@@ -152,6 +152,33 @@ class FooterFolder(MenuFolder):
 
 
 
+############################################################
+# Helper
+############################################################
+class MultilingualCatalogTitleAware(object):
+
+    def _get_catalog_values(self):
+        # Get the languages
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
+
+        # Titles
+        title = {}
+        for language in languages:
+            value = self._get_multilingual_catalog_title(language)
+            if value:
+                title[language] = value
+        return {'m_title': title}
+
+
+    def _get_multilingual_catalog_title(self, language):
+        return self.get_property('title', language=language)
+
+
+
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
 register_resource_class(RobotsTxt)
+
+# multilingual title with language negociation
+register_field('m_title', Unicode(is_stored=True, is_indexed=True))

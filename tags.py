@@ -21,7 +21,8 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import Unicode, Enumerate, Tokens, Boolean
+from itools.core import merge_dicts
+from itools.datatypes import Enumerate, Tokens, Boolean
 from itools.datatypes import XMLContent, String, Date
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
@@ -42,8 +43,9 @@ from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import get_base_path_query
 
 # Import from itws
-from views import EasyNewInstance, BaseRSS
+from resources import MultilingualCatalogTitleAware
 from utils import set_prefix_with_hostname, DualSelectWidget
+from views import EasyNewInstance, BaseRSS
 
 
 
@@ -338,7 +340,7 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
 ############################################################
 # Resources
 ############################################################
-class Tag(File):
+class Tag(File, MultilingualCatalogTitleAware):
 
     class_id = 'tag'
     class_title = MSG(u'Tag')
@@ -361,21 +363,8 @@ class Tag(File):
 
 
     def _get_catalog_values(self):
-        values = File._get_catalog_values(self)
-        # Get the languages
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-
-        # Titles
-        title = {}
-        name = self.name
-        for language in languages:
-            value = self.get_property('title', language=language)
-            if value:
-                title[language] = value
-        values['m_title'] = title
-
-        return values
+        return merge_dicts(File._get_catalog_values(self),
+                MultilingualCatalogTitleAware._get_catalog_values(self))
 
 
     def get_title(self, language=None, fallback=True):
@@ -526,5 +515,3 @@ register_resource_class(Tag)
 register_field('is_tagsaware', Boolean(is_indexed=True))
 register_field('tags', String(is_stored=True, is_indexed=True, multiple=True))
 register_field('date_of_writing', Date(is_stored=True, is_indexed=True))
-# multilingual title with language negociation
-register_field('m_title', Unicode(is_stored=True, is_indexed=True))
