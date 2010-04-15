@@ -68,11 +68,7 @@ class NewsItem_Preview(STLView):
         elif column == 'css':
             here_abspath = context.resource.get_abspath()
             if here_abspath == resource.get_abspath():
-                ac = resource.get_access_control()
-                if ac.is_allowed_to_edit(context.user, resource):
-                    return 'active highlight'
-                else:
-                    return 'active'
+                return active
             return None
         elif column == 'date_of_writing':
             return resource.get_date_of_writing_formatted()
