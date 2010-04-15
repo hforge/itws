@@ -69,6 +69,8 @@ class SiteMapView(BaseView):
                      str(abspath.resolve2('./404')),
                      str(abspath.resolve2('./menu')),
                      str(abspath.resolve2('./footer')),
+                     str(abspath.resolve2('./ws-data')),
+                     str(abspath.resolve2('./repository')),
                      ]
 
         return excluded
