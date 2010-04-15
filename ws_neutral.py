@@ -38,16 +38,18 @@ from itools.xml import XMLParser
 from ikaaro.database import ReadOnlyDatabase
 from ikaaro.file import File
 from ikaaro.folder import Folder
+from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.future.menu import MenuFolder, Menu
 from ikaaro.future.order import ResourcesOrderedContainer, ResourcesOrderedTable
 from ikaaro.registry import register_resource_class, register_document_type
+from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.skins import register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
 from ikaaro.website import WebSite as BaseWebSite
-from ikaaro.workflow import WorkflowAware
 from ikaaro.wiki import WikiFolder, WikiPage
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from addresses import AddressesFolder
@@ -250,6 +252,10 @@ class WSDataFolder(Folder):
 
     order_contentbar = ContentBarAware.order_contentbar
     order_sidebar = SideBarAware.order_sidebar
+
+    browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
+    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
+    backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
 
     def get_document_types(self):
         return [self.parent.get_article_class(), File]
