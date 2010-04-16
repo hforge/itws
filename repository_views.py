@@ -108,8 +108,19 @@ class BarItem_Edit(DBResource_Edit):
     title = MSG(u'Edit')
     access = 'is_allowed_to_edit'
 
-    schema = {'title': Unicode, 'timestamp': DateTime(readonly=True)}
-    widgets = [ timestamp_widget, title_widget ]
+    base_schema = {'title': Unicode,
+                   'timestamp': DateTime(readonly=True)}
+
+    base_widgets = [ timestamp_widget, title_widget ]
+
+
+    def get_schema(self, resource, context):
+        return merge_dicts(self.base_schema, resource.item_schema)
+
+
+    def get_widgets(self, resource, context):
+        return self.base_widgets + resource.item_widgets
+
 
     def action(self, resource, context, form):
         # Check edit conflict
@@ -121,6 +132,12 @@ class BarItem_Edit(DBResource_Edit):
         title = form['title']
         language = resource.get_content_language(context)
         resource.set_property('title', title, language=language)
+        for key, datatype in resource.item_schema.items():
+            if getattr(datatype, 'multilingual', False) is True:
+                resource.set_property(key, form[key], language)
+            else:
+                resource.set_property(key, form[key])
+
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 

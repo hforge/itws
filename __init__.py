@@ -27,6 +27,7 @@ from itools.xml import XMLNamespace, register_namespace
 # Import from itws
 from root import Root
 import common
+import sidebar
 import sitemap
 import tracker
 import turning_footer

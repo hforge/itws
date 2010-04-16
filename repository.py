@@ -91,9 +91,13 @@ class BarItem(File):
     externaledit = None
     new_instance = EasyNewInstance()
 
+    item_widgets = []
+    item_schema = {}
+
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(File.get_metadata_schema(),
+                           cls.item_schema,
                            state=String(default='public'))
 
 
