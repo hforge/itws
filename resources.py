@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from datetime import datetime, timedelta
+
 # Import from itools
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
@@ -25,6 +28,7 @@ from ikaaro.forms import SelectWidget, HTMLBody
 from ikaaro.forms import TextWidget, PathSelectorWidget
 from ikaaro.future.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class, register_field
+from ikaaro.resource_ import DBResource
 from ikaaro.text import Text
 from ikaaro.text_views import Text_View
 
@@ -173,6 +177,37 @@ class MultilingualCatalogTitleAware(object):
 
     def _get_multilingual_catalog_title(self, language):
         return self.get_property('title', language=language)
+
+
+
+class ResourceWithCache(DBResource):
+    """Resource with cache inside the metadata handler"""
+
+    def __init__(self, metadata):
+        DBResource.__init__(self, metadata)
+        # Add cache API
+        if getattr(metadata, 'cache_mtime', None) is None:
+            metadata.cache_mtime = None
+            metadata.cache_data = None
+            metadata.cache_errors = None
+
+
+    def _update_data(self):
+        raise NotImplementedError
+
+
+    def get_cached_data(self):
+        # Download or send the cache ??
+        metadata = self.metadata
+        now = datetime.now()
+        cache_mtime = metadata.cache_mtime
+        update_delta = timedelta(minutes=5) # 5 minutes
+        if (cache_mtime is None or
+            now - cache_mtime > update_delta):
+            print u'UPDATE CACHE'
+            self._update_data()
+
+        return metadata.cache_data, metadata.cache_errors
 
 
 

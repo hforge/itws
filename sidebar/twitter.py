@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard library
-from datetime import datetime, timedelta
+from datetime import datetime
 from traceback import format_exc
 import re
 import socket
@@ -24,20 +24,21 @@ import urllib2
 # Import from itools
 from itools import __version__ as itools_version
 from itools.core import merge_dicts
-from itools.datatypes import Integer, String, XMLContent
+from itools.datatypes import Integer, String, XMLContent, Boolean
 from itools.gettext import MSG
 from itools.log import log_error
 from itools.rss import RSSFile
+from itools.web import FormError
 from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
-from ikaaro.resource_ import DBResource
-from ikaaro.forms import TextWidget
+from ikaaro.forms import TextWidget, CheckBoxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
 from itws.repository import BarItem, register_bar_item
-from itws.repository_views import BarItem_View
+from itws.repository_views import BarItem_View, BarItem_Edit
+from itws.resources import ResourceWithCache
 
 
 
@@ -56,6 +57,39 @@ def transform_links(tweet):
     return XMLParser(tweet.encode('utf-8'))
 
 
+
+
+class TwitterSideBar_Edit(BarItem_Edit):
+
+    def _get_form(self, resource, context):
+        form = BarItem_Edit._get_form(self, resource, context)
+        # Check if the user_id exists
+        user_id = form['user_id']
+        uri = twitter_url % user_id
+
+        # FIXME To improve
+        # NOTE urllib2 only proposes GET/POST but not HEAD
+        try:
+            req = urllib2.Request(uri)
+            req.add_header('User-Agent', 'itools/%s' % itools_version)
+            response = urllib2.urlopen(req)
+            data = response.read()
+        except (socket.error, socket.gaierror, Exception,
+                urllib2.HTTPError), e:
+            raise FormError(invalid=['user_id'])
+
+        return form
+
+
+    def action(self, resource, context, form):
+        BarItem_Edit.action(self, resource, context, form)
+        if context.edit_conflict:
+            return
+        if form['force_update']:
+            resource._update_data()
+
+
+
 class TwitterSideBar_View(BarItem_View):
 
     template = '/ui/bar_items/twitter.xml'
@@ -64,24 +98,12 @@ class TwitterSideBar_View(BarItem_View):
         namespace = {'title': resource.get_title(),
                      'user_name': resource.get_property('user_name'),
                      'twitts': []}
-        twitts, errors = resource.get_data()
+        twitts, errors = resource.get_cached_data()
         ac = resource.get_access_control()
         is_allowed_to_edit = ac.is_allowed_to_edit(context.user, resource)
         namespace['twitts'] = twitts
         namespace['errors'] = is_allowed_to_edit and errors
         return namespace
-
-
-
-class ResourceWithCache(DBResource):
-
-    def __init__(self, metadata):
-        DBResource.__init__(self, metadata)
-        # Add cache API
-        if getattr(metadata, 'cache_mtime', None) is None:
-            metadata.cache_mtime = None
-            metadata.cache_data = None
-            metadata.cache_errors = None
 
 
 
@@ -98,15 +120,20 @@ class TwitterSideBar(BarItem, ResourceWithCache):
     # Item configuration
     item_schema = {'user_id': Integer(mandatory=True),
                    'user_name': String(mandatory=True),
-                   'limit': Integer(mandatory=True, default=5)}
+                   'limit': Integer(mandatory=True, default=5, size=3),
+                   'force_update': Boolean}
 
 
     item_widgets = [TextWidget('user_name', title=MSG(u"Twitter account name")),
                     TextWidget('user_id', title=MSG(u"User Id")),
-                    TextWidget('limit', title=MSG(u'Number of tweet'))]
+                    TextWidget('limit', title=MSG(u'Number of tweet')),
+                    CheckBoxWidget('force_update',
+                                   title=MSG(u'Force cache update')),
+                   ]
 
     # Views
     view = TwitterSideBar_View()
+    edit = TwitterSideBar_Edit()
 
 
     @classmethod
@@ -192,20 +219,6 @@ class TwitterSideBar(BarItem, ResourceWithCache):
         metadata.cache_mtime = datetime.now()
         metadata.cache_data = data
         metadata.cache_errors = list_errors
-
-
-    def get_data(self):
-        # Download or send the cache ??
-        metadata = self.metadata
-        now = datetime.now()
-        cache_mtime = metadata.cache_mtime
-        update_delta = timedelta(minutes=5) # 5 minutes
-        if (cache_mtime is None or
-            now - cache_mtime > update_delta):
-            print u'UPDATE CACHE'
-            self._update_data()
-
-        return metadata.cache_data, metadata.cache_errors
 
 
 
