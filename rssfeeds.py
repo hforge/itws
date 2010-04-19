@@ -314,6 +314,7 @@ class RssFeeds(CSV):
         # backup the default timeout
         default_timeout = socket.getdefaulttimeout()
         socket.setdefaulttimeout(self.get_property('timeout'))
+
         # Download the feeds
         for uri, keywords, active in handler.get_rows():
             if active is False:
@@ -444,7 +445,7 @@ class RssFeeds(CSV):
         handler = self.handler
         now = datetime.now()
         last_download_time = handler.last_download_time
-        update_feeds_delta = timedelta(self.get_property('TTL'))
+        update_feeds_delta = timedelta(minutes=self.get_property('TTL'))
         if (last_download_time is None or
             now - last_download_time > update_feeds_delta):
             self.update_rss()
@@ -456,7 +457,7 @@ class RssFeeds(CSV):
         handler = self.handler
         now = datetime.now()
         last_download_time = handler.last_download_time
-        update_feeds_delta = timedelta(self.get_property('TTL'))
+        update_feeds_delta = timedelta(minutes=self.get_property('TTL'))
         if (last_download_time is None or
             now - last_download_time > update_feeds_delta):
             self.update_rss()

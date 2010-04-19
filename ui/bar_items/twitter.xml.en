@@ -8,6 +8,9 @@
     <a href="http://www.twitter.com/${user_name}">${title}</a>
   </h3>
 
+  <ul stl:if="errors" class="errors">
+    <li stl:repeat="error errors">${error}</li>
+  </ul>
   <ul stl:if="twitts">
     <li stl:repeat="t twitts">${t}</li>
   </ul>

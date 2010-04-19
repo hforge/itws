@@ -15,17 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard library
+from datetime import datetime, timedelta
+from traceback import format_exc
 import re
+import socket
+import urllib2
 
 # Import from itools
+from itools import __version__ as itools_version
 from itools.core import merge_dicts
-from itools.datatypes import Integer, String
-from itools.fs import vfs
+from itools.datatypes import Integer, String, XMLContent
 from itools.gettext import MSG
+from itools.log import log_error
 from itools.rss import RSSFile
 from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
+from ikaaro.resource_ import DBResource
 from ikaaro.forms import TextWidget
 from ikaaro.registry import register_resource_class
 
@@ -58,26 +64,28 @@ class TwitterSideBar_View(BarItem_View):
         namespace = {'title': resource.get_title(),
                      'user_name': resource.get_property('user_name'),
                      'twitts': []}
-        user_id = resource.get_property('user_id')
-        limit = resource.get_property('limit')
-        try:
-            f = vfs.open(twitter_url % user_id)
-        except Exception:
-            return namespace
-        try:
-            feed = RSSFile(string=f.read())
-        except XMLError:
-            return namespace
-        for i, item in enumerate(feed.items):
-            if i == limit:
-                break
-            data = transform_links(item['description'])
-            namespace['twitts'].append(data)
+        twitts, errors = resource.get_data()
+        ac = resource.get_access_control()
+        is_allowed_to_edit = ac.is_allowed_to_edit(context.user, resource)
+        namespace['twitts'] = twitts
+        namespace['errors'] = is_allowed_to_edit and errors
         return namespace
 
 
 
-class TwitterSideBar(BarItem):
+class ResourceWithCache(DBResource):
+
+    def __init__(self, metadata):
+        DBResource.__init__(self, metadata)
+        # Add cache API
+        if getattr(metadata, 'cache_mtime', None) is None:
+            metadata.cache_mtime = None
+            metadata.cache_data = None
+            metadata.cache_errors = None
+
+
+
+class TwitterSideBar(BarItem, ResourceWithCache):
 
     class_id = 'sidebar-item-twitter'
     class_title = MSG(u'Twitter SideBar')
@@ -105,6 +113,99 @@ class TwitterSideBar(BarItem):
     def get_metadata_schema(cls):
         return merge_dicts(BarItem.get_metadata_schema(),
                            cls.item_schema)
+
+
+    def _update_data(self):
+        user_id = self.get_property('user_id')
+        limit = self.get_property('limit')
+        uri = twitter_url % user_id
+        data = None
+        # errors
+        errors = []
+        errors_str = []
+
+        # backup the default timeout
+        default_timeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(3) # timeout in seconds
+
+        # TODO Use itools.vfs instead of urllib2
+        try:
+            req = urllib2.Request(uri)
+            req.add_header('User-Agent', 'itools/%s' % itools_version)
+            response = urllib2.urlopen(req)
+            data = response.read()
+        except (socket.error, socket.gaierror, Exception,
+                urllib2.HTTPError), e:
+            msg = '%s -- Network error: "%s"'
+            msg = msg % (XMLContent.encode(str(uri)), e)
+            msg = msg.encode('utf-8')
+            errors.append(XMLParser(msg))
+            errors_str.append(msg)
+
+            summary = 'Error downloading feed\n'
+            details = format_exc()
+            log_error(summary + details)
+
+        if data:
+            # Parse
+            feed = None
+            try:
+                feed = RSSFile(string=data)
+            except Exception, e:
+                msg = '%s <br />-- Error parsing: "%s"'
+                msg = msg % (XMLContent.encode(str(uri)), e)
+                msg = msg.encode('utf-8')
+                errors.append(XMLParser(msg))
+                errors_str.append(msg)
+                summary = 'Error parsing feed\n'
+                details = format_exc()
+                log_error(summary + details)
+
+            if feed:
+                data = []
+                for i, item in enumerate(feed.items):
+                    if i == limit:
+                        break
+                    data.append(list(transform_links(item['description'])))
+
+        # restore the default timeout
+        socket.setdefaulttimeout(default_timeout)
+
+        # errors to display
+        list_errors = []
+        for index, x in enumerate(errors):
+            # FIXME if we simply append x (a generator)
+            # this cause a segfault in the xml parser
+            # Currently I don't know why
+            # To avoid this critical error we transform the generator
+            # into a list
+            try:
+                list_errors.append(list(x))
+            except XMLError:
+                # Default We show the string error
+                list_errors.append(errors_str[index])
+                continue
+            #list_errors.append(x)
+
+        # Save informations
+        metadata = self.metadata
+        metadata.cache_mtime = datetime.now()
+        metadata.cache_data = data
+        metadata.cache_errors = list_errors
+
+
+    def get_data(self):
+        # Download or send the cache ??
+        metadata = self.metadata
+        now = datetime.now()
+        cache_mtime = metadata.cache_mtime
+        update_delta = timedelta(minutes=5) # 5 minutes
+        if (cache_mtime is None or
+            now - cache_mtime > update_delta):
+            print u'UPDATE CACHE'
+            self._update_data()
+
+        return metadata.cache_data, metadata.cache_errors
 
 
 
