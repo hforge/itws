@@ -32,7 +32,8 @@ from itools.xapian import AndQuery, PhraseQuery
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import SelectWidget
+from ikaaro.forms import SelectWidget, BooleanCheckBox, TextWidget
+from ikaaro.forms import SelectRadio
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -47,19 +48,16 @@ from datatypes import PositiveInteger, TagsAwareClassEnumerate
 from repository_views import BarItem_Edit
 from repository_views import BarItem_Preview
 from repository_views import ContentBarItem_Articles_View
-from repository_views import ContentBarItem_SectionChildrenToc_Edit
+#from repository_views import ContentBarItem_SectionChildrenToc_Edit
 from repository_views import ContentBarItem_SectionChildrenToc_View
 from repository_views import Repository_BrowseContent, Repository_NewResource
-from repository_views import SidebarItem_NewsSiblingsToc_Edit
 from repository_views import SidebarItem_NewsSiblingsToc_View
 from repository_views import SidebarItem_Preview, SidebarItem_View
 from repository_views import SidebarItem_SectionChildrenToc_View
-from repository_views import SidebarItem_SectionSiblingsToc_Edit
 from repository_views import SidebarItem_SectionSiblingsToc_View
 from repository_views import SidebarItem_Section_News_Edit
 from repository_views import SidebarItem_Section_News_Preview
 from repository_views import SidebarItem_Section_News_View
-from repository_views import SidebarItem_Tags_Edit
 from repository_views import SidebarItem_Tags_View
 from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
 from repository_views import WSNeutral_ContentBarItem_Articles_View
@@ -198,15 +196,16 @@ class SidebarItem_Section_News(BarItem):
     class_title = MSG(u'Sidebar item section news')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
+    # item comfiguration
+    item_schema = {
+        'tags': String(multiple=True),
+        'count': PositiveInteger(default=0)
+        }
+
+    # Views
     preview = order_preview = SidebarItem_Section_News_Preview()
     view = SidebarItem_Section_News_View()
     edit = SidebarItem_Section_News_Edit()
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
-                           tags=String(multiple=True),
-                           count=PositiveInteger(default=0))
 
 
 
@@ -216,8 +215,24 @@ class SidebarItem_Tags(BarItem):
     class_version = '20100226'
     class_title = MSG(u'Sidebar item tag')
 
+    # Item configuration
+    item_schema = {'format': TagsAwareClassEnumerate(multiple=True),
+                   'count':PositiveInteger,
+                   'show_number': Boolean,
+                   'random': Boolean}
+
+    item_widgets = [
+        TextWidget('count', size=4,
+                   title=MSG(u'Tags to show (0 for all tags)')),
+        BooleanCheckBox('show_number',
+                        title=MSG(u'Show numbers items for each tag')),
+        BooleanCheckBox('random', title=MSG(u'Randomize tags')),
+        SelectRadio('format', title=MSG(u'Resource types',
+                    has_empty_option=False))
+        ]
+
+    # Views
     view = SidebarItem_Tags_View()
-    edit = SidebarItem_Tags_Edit()
 
     @classmethod
     def get_metadata_schema(cls):
@@ -233,7 +248,15 @@ class SidebarItem_SectionSiblingsToc(BarItem):
     class_id = 'sidebar-item-section-siblings-toc'
     class_title = MSG(u'Sidebar item section siblings toc')
 
-    edit = SidebarItem_SectionSiblingsToc_Edit()
+    # Item comfiguration
+    item_schema = {'hide_if_only_one_item': Boolean}
+
+    item_widgets = [
+        BooleanCheckBox('hide_if_only_one_item',
+                        title=MSG(u'Hide if there is only one item'))
+        ]
+
+    # Views
     view = SidebarItem_SectionSiblingsToc_View()
 
     @classmethod
@@ -257,8 +280,20 @@ class SidebarItem_NewsSiblingsToc(BarItem):
     class_id = 'sidebar-item-news-siblings-toc'
     class_title = MSG(u'Sidebar item news siblings toc')
 
-    edit = SidebarItem_NewsSiblingsToc_Edit()
+    # Item configuration
+    item_schema = {'hide_if_only_one_item': Boolean,
+                   'count':PositiveInteger}
+
+    item_widgets = [
+        BooleanCheckBox('hide_if_only_one_item',
+                        title=MSG(u'Hide if there is only one item')),
+        TextWidget('count', size=3,
+                   title=MSG(u'Number maximum of news to display'))
+        ]
+
+    # Views
     view = SidebarItem_NewsSiblingsToc_View()
+
 
     @classmethod
     def get_metadata_schema(cls):
@@ -294,7 +329,15 @@ class ContentBarItem_SectionChildrenToc(BarItem):
     class_id = 'contentbar-item-children-toc'
     class_title = MSG(u'Contentbar item children toc')
 
-    edit = ContentBarItem_SectionChildrenToc_Edit()
+    # Item configuration
+    item_schema = {'hide_if_only_one_item': Boolean}
+
+    item_widgets = [
+        BooleanCheckBox('hide_if_only_one_item',
+                        title=MSG(u'Hide if there is only one item'))
+        ]
+
+    # Views
     view = ContentBarItem_SectionChildrenToc_View()
 
     @classmethod

@@ -31,7 +31,7 @@ from itools.xml import XMLParser
 from ikaaro import messages
 from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.forms import PathSelectorWidget, SelectWidget, BooleanCheckBox
-from ikaaro.forms import TextWidget, SelectRadio
+from ikaaro.forms import TextWidget, SelectRadio, rte_widget
 from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
 from ikaaro.future.menu import Target
 from ikaaro.resource_views import DBResource_Edit
@@ -40,9 +40,9 @@ from ikaaro.webpage import WebPage_View, HTMLEditView
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
-from datatypes import PositiveInteger, TagsAwareClassEnumerate
+from datatypes import PositiveInteger
 from tags import TagsList, Tag
-from utils import to_box, get_admin_bar
+from utils import to_box, get_admin_bar, DualSelectWidget
 
 
 
@@ -150,17 +150,14 @@ class SidebarItem_Edit(HTMLEditView):
 
     schema = merge_dicts(HTMLEditView.schema, title_link=String,
                          title_link_target=Target, display_title=Boolean)
-
-    def get_widgets(self, resource, context):
-        widgets = HTMLEditView.get_widgets(self, resource, context)[:]
-        widgets.insert(2, BooleanCheckBox('display_title',
-                          title=MSG(u'Display on article view')))
-        widgets.insert(3, PathSelectorWidget('title_link',
-                                             title=MSG(u'Title link')))
-        widgets.insert(4, SelectWidget('title_link_target',
-                                       title=MSG(u'Title link target')))
-        return widgets
-
+    widgets = [
+        timestamp_widget, title_widget,
+        BooleanCheckBox('display_title',
+                        title=MSG(u'Display on article view')),
+        PathSelectorWidget('title_link', title=MSG(u'Title link')),
+        SelectWidget('title_link_target', title=MSG(u'Title link target')),
+        rte_widget
+        ]
 
     def action(self, resource, context, form):
         HTMLEditView.action(self, resource, context, form)
@@ -168,9 +165,8 @@ class SidebarItem_Edit(HTMLEditView):
         if context.edit_conflict:
             return
 
-        resource.set_property('display_title', form['display_title'])
-        resource.set_property('title_link', form['title_link'])
-        resource.set_property('title_link_target', form['title_link_target'])
+        for key in ('display_title', 'title_link', 'title_link_target'):
+            resource.set_property(key, form[key])
 
 
 
@@ -191,17 +187,17 @@ class SidebarItem_Section_News_Edit(BarItem_Edit):
 
     def get_widgets(self, resource, context):
         # base widgets
-        widgets = BarItem_Edit.get_widgets(self, resource,
-                                                        context)[:]
+        widgets = BarItem_Edit.get_widgets(self, resource, context)[:]
 
         # News folder
         site_root = resource.get_site_root()
         newsfolder = site_root.get_news_folder(context)
         if newsfolder:
-            widgets.extend([TextWidget('count',
-                                       title=MSG(u'News to show'), size=3),
-                            SelectRadio('tags', title=MSG(u'News TAGS'),
-                                        is_inline=True)])
+            widgets.extend([
+                TextWidget('count', title=MSG(u'News to show'), size=3),
+                DualSelectWidget('tags', title=MSG(u'News TAGS'),
+                                 is_inline=True, has_empty_option=False)
+                ])
 
         return widgets
 
@@ -209,112 +205,11 @@ class SidebarItem_Section_News_Edit(BarItem_Edit):
     def action(self, resource, context, form):
         BarItem_Edit.action(self, resource, context, form)
         # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
         if context.edit_conflict:
             return
 
         # Save changes
-        resource.set_property('count', form['count'])
-        resource.set_property('tags', form['tags'])
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-
-
-
-class SidebarItem_SectionSiblingsToc_Edit(BarItem_Edit):
-
-    schema = merge_dicts(BarItem_Edit.schema,
-            hide_if_only_one_item=Boolean())
-    widgets = [ timestamp_widget, title_widget,
-                BooleanCheckBox('hide_if_only_one_item',
-                                title=MSG(u'Hide if there is only one item'))]
-
-    def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        resource.set_property('hide_if_only_one_item',
-                              form['hide_if_only_one_item'])
-
-
-
-class SidebarItem_NewsSiblingsToc_Edit(BarItem_Edit):
-
-    schema = merge_dicts(BarItem_Edit.schema,
-            hide_if_only_one_item=Boolean(),
-            count=PositiveInteger())
-    widgets = [ timestamp_widget, title_widget,
-                BooleanCheckBox('hide_if_only_one_item',
-                                title=MSG(u'Hide if there is only one item')),
-                TextWidget('count', size=3,
-                           title=MSG(u'Number maximum of news to display'))]
-
-    def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        for key in ('hide_if_only_one_item', 'count'):
-            resource.set_property(key, form[key])
-
-
-
-class SidebarItem_Tags_Edit(BarItem_Edit):
-
-    schema = merge_dicts(BarItem_Edit.schema,
-            format=TagsAwareClassEnumerate(multiple=True),
-            count=PositiveInteger(),
-            show_number=Boolean(), random=Boolean())
-
-    widgets = [ timestamp_widget, title_widget,
-                TextWidget('count', size=4,
-                           title=MSG(u'Tags to show (0 for all tags)')),
-                BooleanCheckBox('show_number',
-                                title=MSG(u'Show numbers items for each tag')),
-                BooleanCheckBox('random',
-                                title=MSG(u'Randomize tags')),
-                SelectRadio('format', title=MSG(u'Resource types',
-                             has_empty_option=False))
-              ]
-
-    def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        for key in ('show_number', 'format', 'random', 'count'):
-            resource.set_property(key, form[key])
-
-
-
-################################################################################
-# Contentbar edit views
-################################################################################
-class ContentBarItem_SectionChildrenToc_Edit(BarItem_Edit):
-
-    schema = merge_dicts(BarItem_Edit.schema,
-            hide_if_only_one_item=Boolean())
-
-    widgets = [ timestamp_widget, title_widget,
-                BooleanCheckBox('hide_if_only_one_item',
-                                title=MSG(u'Hide if there is only one item'))
-              ]
-
-    def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        for key in ('hide_if_only_one_item',):
+        for key in ('count', 'tags'):
             resource.set_property(key, form[key])
 
 
