@@ -21,7 +21,7 @@
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
-from itools.xapian import AndQuery, PhraseQuery
+from itools.xapian import AndQuery, OrQuery, PhraseQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder
@@ -37,11 +37,14 @@ class SiteMapView(BaseView):
 
 
     def get_items_query(self, resource, context):
+        site_root = resource.parent
         query = AndQuery(PhraseQuery('workflow_state', 'public'),
                          PhraseQuery('is_image', False))
+        # Allow news folder
+        newsfolder_format = site_root.newsfolder_class.class_id
+        query = OrQuery(query, PhraseQuery('format', newsfolder_format))
 
-        website = resource.parent
-        abspath = website.get_canonical_path()
+        abspath = site_root.get_canonical_path()
         query1 = get_base_path_query(str(abspath))
         query = AndQuery(query, query1)
         return query
@@ -52,31 +55,26 @@ class SiteMapView(BaseView):
         query = self.get_items_query(resource, context)
         root = context.root
         results = root.search(query)
-
-        items = []
-        for item in results.get_documents(sort_by='mtime', reverse=True):
-            items.append(item)
-
-        return items
+        return results.get_documents(sort_by='abspath')
 
 
     def get_excluded_names(self, resource, context):
-        website = resource.parent
-        abspath = website.get_canonical_path()
+        site_root = resource.parent
+        abspath = site_root.get_canonical_path()
         # FIXME We should exluded all files defined in the robots.txt file
-        excluded = [ str(abspath.resolve2('./style')),
-                     str(abspath.resolve2('./robots.txt')),
-                     str(abspath.resolve2('./404')),
-                     str(abspath.resolve2('./menu')),
+        excluded = [ str(abspath.resolve2('./404')),
                      str(abspath.resolve2('./footer')),
-                     str(abspath.resolve2('./ws-data')),
+                     str(abspath.resolve2('./menu')),
                      str(abspath.resolve2('./repository')),
+                     str(abspath.resolve2('./robots.txt')),
+                     str(abspath.resolve2('./style')),
+                     str(abspath.resolve2('./ws-data')),
                      ]
 
         return excluded
 
 
-    def get_item_value(self, resource, context, item, column):
+    def get_item_value(self, resource, context, item, column, site_root):
         # items are brains
         brain = item
 
@@ -86,13 +84,22 @@ class SiteMapView(BaseView):
             path_to_brain_resource = r_abspath.get_pathto(path_reference)
             return context.uri.resolve('/%s' % path_to_brain_resource)
         elif column == 'lastmod':
+            # FIXME To improve
+            newsfolder_format = site_root.newsfolder_class.class_id
+            if brain.format == newsfolder_format:
+                # Return last news mtime
+                news_folder = resource.get_resource(brain.abspath)
+                news_brains = news_folder.get_news(context, brain_only=True)
+                if news_brains:
+                    return news_brains[0].mtime.strftime('%Y-%m-%d')
+
             return brain.mtime.strftime('%Y-%m-%d')
 
 
     def get_namespace(self, resource, context):
         urls = []
         excluded = tuple(self.get_excluded_names(resource, context))
-        root = context.root
+        site_root = resource.parent
 
         for brain in self.get_items(resource, context):
             if brain.abspath.startswith(excluded):
@@ -100,9 +107,8 @@ class SiteMapView(BaseView):
             row = {}
             for column in ('loc', 'lastmod'):
                 row[column] = self.get_item_value(resource, context, brain,
-                                                  column)
+                                                  column, site_root)
             urls.append(row)
-
 
         return {'urls': urls}
 
