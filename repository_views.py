@@ -1049,7 +1049,7 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
 
 
 
-class WSNeutral_ContentBarItem_Articles_View(ContentBarItem_Articles_View):
+class ContentBarItem_WebsiteArticles_View(ContentBarItem_Articles_View):
 
     def GET(self, resource, context):
         return BarItem_View.GET(self, resource, context)

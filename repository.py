@@ -60,7 +60,7 @@ from repository_views import SidebarItem_Section_News_Preview
 from repository_views import SidebarItem_Section_News_View
 from repository_views import SidebarItem_Tags_View
 from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
-from repository_views import WSNeutral_ContentBarItem_Articles_View
+from repository_views import ContentBarItem_WebsiteArticles_View
 from webpage import WebPage
 from utils import get_path_and_view
 from views import EasyNewInstance
@@ -315,12 +315,12 @@ class ContentBarItem_Articles(BarItem):
 
 
 
-class WSNeutral_ContentBarItem_Articles(ContentBarItem_Articles):
+class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 
     class_id = 'ws-neutral-item-articles'
     class_title = MSG(u'Website contentbar item articles view')
 
-    view = WSNeutral_ContentBarItem_Articles_View()
+    view = ContentBarItem_WebsiteArticles_View()
 
 
 
@@ -512,7 +512,7 @@ class Repository(Folder):
     section_articles_view_name = 'articles-view'
     section_children_toc_view_cls = ContentBarItem_SectionChildrenToc
     section_children_toc_view_name = 'children-toc'
-    website_articles_view_cls = WSNeutral_ContentBarItem_Articles
+    website_articles_view_cls = ContentBarItem_WebsiteArticles
     website_articles_view_name = 'website-articles-view'
 
     new_resource = None
@@ -589,7 +589,7 @@ register_resource_class(SidebarItem_NewsSiblingsToc)
 register_resource_class(SidebarItemsOrderedTable)
 register_resource_class(ContentbarItemsOrderedTable)
 register_resource_class(ContentBarItem_Articles)
-register_resource_class(WSNeutral_ContentBarItem_Articles)
+register_resource_class(ContentBarItem_WebsiteArticles)
 register_resource_class(ContentBarItem_SectionChildrenToc)
 
 register_bar_item(SidebarItem, allow_instanciation=True)
@@ -602,7 +602,7 @@ register_bar_item(SidebarItem_SectionChildrenToc,
 register_bar_item(SidebarItem_NewsSiblingsToc, allow_instanciation=False)
 register_bar_item(ContentBarItem_Articles, allow_instanciation=False,
                   is_content=True)
-register_bar_item(WSNeutral_ContentBarItem_Articles, allow_instanciation=False,
+register_bar_item(ContentBarItem_WebsiteArticles, allow_instanciation=False,
                   is_content=True)
 register_bar_item(ContentBarItem_SectionChildrenToc, allow_instanciation=False,
                   is_content=True)
