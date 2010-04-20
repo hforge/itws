@@ -181,8 +181,7 @@ class SideBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_sidebar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label':
-                        MSG(u'Add a new sidebar item in the repository'),
+                        'label': MSG(u'Create a new sidebar item'),
                         'target': '_blank'})
 
         return buttons
@@ -211,8 +210,7 @@ class ContentBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_contentbar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label':
-                        MSG(u'Create a new contentbar item in the repository'),
+                        'label': MSG(u'Create a new contentbar item'),
                         'target': '_blank'})
 
         return buttons

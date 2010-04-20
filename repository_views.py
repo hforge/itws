@@ -374,7 +374,7 @@ class SidebarItem_Section_News_View(BarItem_View):
             if news:
                 news_path = context.get_link(news)
                 manage_buttons.append({'path': '%s/;edit' % news_path,
-                                       'label': MSG(u'Edit news TOC title'),
+                                       'label': MSG(u'Edit news main view title'),
                                        'class': None})
 
         return manage_buttons
@@ -665,7 +665,7 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
             section_path = context.get_link(section)
             # Order subsections
             manage_buttons.append({'path': '%s/;order_items' % section_path,
-                                   'label': MSG(u'Order article')})
+                                   'label': MSG(u'Order articles')})
             # Add article
             article_class_id = section.get_article_class().class_id
             path = '%s/;new_resource?type=%s' % (section_path, article_class_id)
@@ -847,7 +847,7 @@ class ContentBarItem_Articles_View(BarItem_View):
         buttons.append({'path': '%s/;order_items' % section_path,
                         'target': None,
                         'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order article')})
+                        'label': MSG(u'Order articles')})
         return buttons
 
 
@@ -1079,7 +1079,7 @@ class ContentBarItem_WebsiteArticles_View(ContentBarItem_Articles_View):
         buttons.append({'path': '%s/;order_items' % site_root_path,
                         'target': None,
                         'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order article')})
+                        'label': MSG(u'Order articles')})
         return buttons
 
 

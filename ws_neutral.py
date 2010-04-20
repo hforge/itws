@@ -232,7 +232,7 @@ class NeutralSkin2(NeutralSkin):
 ############################################################
 class WSArticle(Article):
     class_id = 'ws-neutral-article'
-    class_title = MSG(u'Website Article')
+    class_title = MSG(u'WS Article')
 
     view = WebPage_View()
 
