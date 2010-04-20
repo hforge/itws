@@ -256,7 +256,8 @@ class WSDataFolder(Folder):
 
     # Views
     order_articles = GoToSpecificDocument(specific_document='order-resources',
-                                          title=MSG(u'Order the articles'))
+                                          title=MSG(u'Order the articles'),
+                                          access='is_allowed_to_edit')
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
@@ -290,8 +291,9 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     class_views = (WebSite.class_views[:-2]
                    + ContentBarAware.class_views
                    + SideBarAware.class_views
-                   + ['edit_ws_data', 'edit_menu', 'edit_footer', 'edit_rss',
-                      'edit_tags', 'control_panel', 'commit_log'])
+                   + ['edit_ws_data', 'edit_menu', 'edit_turning_footer',
+                      'edit_footer', 'edit_rss', 'edit_tags', 'control_panel',
+                      'commit_log'])
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
@@ -573,16 +575,18 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
 
 
     # User Interface
-    edit_banner = GoToSpecificDocument(specific_document='banner',
-                                       title=MSG(u'Banner'))
-    edit_ws_data = GoToSpecificDocument(specific_document='ws-data',
-                                        title=MSG(u'Edit home page'))
-    edit_menu = GoToSpecificDocument(specific_document='menu/menu',
-                                     title=MSG(u'Menu'),
-                                     access='is_allowed_to_edit')
-    edit_footer = GoToSpecificDocument(specific_document='footer/menu',
-                                       title=MSG(u'Footer'),
-                                     access='is_allowed_to_edit')
+    edit_ws_data = GoToSpecificDocument(
+            specific_document='ws-data', title=MSG(u'Edit home page'),
+            access='is_allowed_to_edit')
+    edit_menu = GoToSpecificDocument(
+            specific_document='menu/menu',
+            title=MSG(u'Menu'), access='is_allowed_to_edit')
+    edit_turning_footer = GoToSpecificDocument(
+            specific_document='turning-footer',
+            title=MSG(u'Turning Footer'), access='is_allowed_to_edit')
+    edit_footer = GoToSpecificDocument(
+            specific_document='footer/menu',
+            title=MSG(u'Footer'), access='is_allowed_to_edit')
     view = NeutralWS_View()
     # Order
     order_items = GoToSpecificDocument(

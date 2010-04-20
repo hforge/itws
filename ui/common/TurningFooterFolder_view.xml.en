@@ -4,16 +4,13 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div id="turning-footer" class="${highlight}" stl:if="display">
-    ${admin_bar}
-    <stl:block stl:if="is_active">
-      <img stl:if="title_image_path" class="title-image"
-           src="${title_image_path}" alt="${title}" />
-      <stl:block stl:if="not title_image_path">
-        <h3 stl:if="title" class="title">${title}</h3>
-      </stl:block>
-      <div class="content" stl:if="content">${content}</div>
+  <div id="turning-footer" stl:if="display">
+    <img stl:if="title_image_path" class="title-image"
+         src="${title_image_path}" alt="${title}" />
+    <stl:block stl:if="not title_image_path">
+      <h3 stl:if="title" class="title">${title}</h3>
     </stl:block>
+    <div class="content" stl:if="content">${content}</div>
   </div>
 
 </stl:block>

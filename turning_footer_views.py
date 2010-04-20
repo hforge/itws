@@ -25,14 +25,11 @@ from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import BooleanCheckBox
-from ikaaro.forms import XHTMLBody, HTMLBody
-from ikaaro.table import OrderedTable_View
-from ikaaro.table import Table_EditRecord
+from ikaaro.forms import BooleanCheckBox, XHTMLBody, HTMLBody
+from ikaaro.table import OrderedTable_View, Table_EditRecord
 
 # Import from itws
 from diaporama_views import Diaporama_Edit
-from utils import get_admin_bar
 
 
 
@@ -113,27 +110,8 @@ class TurningFooterFolder_View(STLView):
     title = MSG(u'View')
     template = '/ui/common/TurningFooterFolder_view.xml'
 
-
-    def get_manage_buttons(self, resource, context):
-        resource_path = context.get_link(resource)
-        table_path = '%s/%s' % (resource_path, resource.order_path)
-        return [{'label': MSG(u'Edit the items'), 'path': table_path},
-                {'label': MSG(u'Configure the footer'),
-                 'path': '%s/;edit' % resource_path}]
-
-
     def get_namespace(self, resource, context):
         namespace = {}
-        # Manage buttons and highlight
-        highlight = None
-        manage_buttons = []
-        ac = resource.get_access_control()
-        if ac.is_allowed_to_edit(context.user, resource):
-            manage_buttons = self.get_manage_buttons(resource, context)
-            highlight = 'highlight'
-        admin_bar = get_admin_bar(manage_buttons, 'turning-footer',
-                        title=MSG(u'Turning footer'))
-
         # title and title_image
         title = resource.get_title(fallback=False)
         title_image_path = resource.get_property('title_image')
@@ -145,20 +123,16 @@ class TurningFooterFolder_View(STLView):
                 title_image_path = context.get_link(title_image)
                 title_image_path = '%s/;download' % title_image_path
 
-        is_active = resource.get_property('active')
         menu = resource.get_resource(resource.order_path)
         handler = menu.handler
 
+        is_active = resource.get_property('active')
         ids = list(handler.get_record_ids_in_order())
-        if not ids or is_active is False:
-            display = True if highlight else False
+        if not ids or not is_active:
             return {'content': None,
-                    'highlight': 'highlight-empty',
-                    'admin_bar': admin_bar,
                     'title': title,
                     'title_image_path': title_image_path,
-                    'display': display,
-                    'is_active': is_active}
+                    'display': False}
 
         if resource.get_property('random'):
             id = choice(ids)
@@ -172,9 +146,6 @@ class TurningFooterFolder_View(STLView):
         here = context.resource
         content = set_prefix(data, prefix='%s/' % here.get_pathto(menu))
         return {'content': content,
-                'highlight': highlight,
-                'admin_bar': admin_bar,
                 'title': title,
                 'title_image_path': title_image_path,
-                'display': True,
-                'is_active': is_active}
+                'display': True}
