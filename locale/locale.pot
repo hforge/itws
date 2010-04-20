@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-04-20 14:04+CET\n"
+"POT-Creation-Date: 2010-04-20 15:04+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,6 +124,10 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
+#: ../sidebar/menu.py:51
+msgid "Box to create a sidebar menu"
+msgstr ""
+
 #: ../ws_neutral_views.py:140
 msgid "Breadcrumb title"
 msgstr ""
@@ -219,6 +223,10 @@ msgstr ""
 msgid "Edit languages"
 msgstr ""
 
+#: ../sidebar/menu.py:59
+msgid "Edit menu"
+msgstr ""
+
 #: ../news_views.py:116
 msgid "Edit news"
 msgstr ""
@@ -266,6 +274,10 @@ msgstr ""
 
 #: ../resources.py:129
 msgid "Footer Menu"
+msgstr ""
+
+#: ../sidebar/twitter.py:131
+msgid "Force cache update"
 msgstr ""
 
 #: ../ws_neutral_views.py:230
@@ -400,6 +412,10 @@ msgstr ""
 msgid "Number maximum of news to display"
 msgstr ""
 
+#: ../sidebar/twitter.py:129
+msgid "Number of tweet"
+msgstr ""
+
 #: ../rssfeeds.py:159
 msgid "OPML version"
 msgstr ""
@@ -525,6 +541,10 @@ msgstr ""
 
 #: ../repository.py:228
 msgid "Show numbers items for each tag"
+msgstr ""
+
+#: ../sidebar/menu.py:50
+msgid "Side Menu"
 msgstr ""
 
 #: ../repository.py:85
@@ -667,6 +687,18 @@ msgstr ""
 msgid "Turning footer"
 msgstr ""
 
+#: ../sidebar/twitter.py:113
+msgid "Twitter SideBar"
+msgstr ""
+
+#: ../sidebar/twitter.py:127
+msgid "Twitter account name"
+msgstr ""
+
+#: ../sidebar/twitter.py:114
+msgid "Twitter sidebar feed"
+msgstr ""
+
 #: ../news_views.py:252
 #: ../repository.py:409
 msgid "Type"
@@ -688,7 +720,7 @@ msgstr ""
 msgid "Type 4"
 msgstr ""
 
-#: ../resources.py:207
+#: ../resources.py:211
 msgid "UPDATE CACHE"
 msgstr ""
 
@@ -706,6 +738,10 @@ msgstr ""
 
 #: ../rssfeeds.py:236
 msgid "Update RSS now"
+msgstr ""
+
+#: ../sidebar/twitter.py:128
+msgid "User Id"
 msgstr ""
 
 #: ../turning_footer_views.py:110
@@ -1019,6 +1055,7 @@ msgstr ""
 
 #: ../ui/bar_items/Section_tocview.xml.en:6
 #: ../ui/bar_items/News_siblings_tocview.xml.en:6
+#: ../ui/bar_items/menu.xml.en:8
 #: ../ui/common/WebPage_view.xml.en:9
 #: ../ui/news/NewsFolder_view.xml.en:15
 #: ../ui/bar_items/SectionChildrenToc_view.xml.en:8
@@ -1099,8 +1136,14 @@ msgid "Filter by type"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:18
+#: ../ui/bar_items/twitter.xml.en:12
 msgctxt "li"
 msgid "${error}"
+msgstr ""
+
+#: ../ui/bar_items/twitter.xml.en:15
+msgctxt "li"
+msgid "${t}"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:46
@@ -1113,8 +1156,9 @@ msgctxt "link"
 msgid "${item/long_title}"
 msgstr ""
 
-#: ../ui/bar_items/SectionChildrenToc_view.xml.en:12
 #: ../ui/neutral/Home_view.xml.en:18
+#: ../ui/bar_items/SectionChildrenToc_view.xml.en:12
+#: ../ui/bar_items/menu.xml.en:15
 msgctxt "link"
 msgid "${item/title}"
 msgstr ""
@@ -1167,6 +1211,7 @@ msgid "${tag/xml_title}"
 msgstr ""
 
 #: ../ui/news/News_view.xml.en:16
+#: ../ui/bar_items/twitter.xml.en:8
 #: ../ui/bar_items/SidebarItem_view.xml.en:10
 #: ../ui/common/Tag_item_view.xml.en:7
 msgctxt "link"
@@ -1453,8 +1498,9 @@ msgstr ""
 #: ../ui/neutral/addimage.xml.en:89
 #: ../ui/neutral/addlink.xml.en:74
 #: ../ui/neutral/addlink.xml.en:90
-#: ../ui/bar_items/SectionChildrenToc_view.xml.en:11
 #: ../ui/neutral/Home_view.xml.en:18
+#: ../ui/bar_items/SectionChildrenToc_view.xml.en:11
+#: ../ui/bar_items/menu.xml.en:13
 msgctxt "title attribute"
 msgid "${item/title}"
 msgstr ""

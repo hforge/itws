@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-04-20 14:04+CET\n"
+"POT-Creation-Date: 2010-04-20 15:04+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,7 +116,7 @@ msgctxt "div"
 msgid "${date_of_writing}"
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:18
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:18 ../ui/bar_items/twitter.xml.en:12
 msgctxt "li"
 msgid "${error}"
 msgstr ""
@@ -185,16 +185,18 @@ msgctxt "div"
 msgid "${item/summary}"
 msgstr ""
 
-#: ../ui/bar_items/SectionChildrenToc_view.xml.en:12
 #: ../ui/neutral/Home_view.xml.en:18
+#: ../ui/bar_items/SectionChildrenToc_view.xml.en:12
+#: ../ui/bar_items/menu.xml.en:15
 msgctxt "link"
 msgid "${item/title}"
 msgstr ""
 
 #: ../ui/neutral/addimage.xml.en:73 ../ui/neutral/addimage.xml.en:89
 #: ../ui/neutral/addlink.xml.en:74 ../ui/neutral/addlink.xml.en:90
-#: ../ui/bar_items/SectionChildrenToc_view.xml.en:11
 #: ../ui/neutral/Home_view.xml.en:18
+#: ../ui/bar_items/SectionChildrenToc_view.xml.en:11
+#: ../ui/bar_items/menu.xml.en:13
 msgctxt "title attribute"
 msgid "${item/title}"
 msgstr ""
@@ -432,7 +434,8 @@ msgstr ""
 
 #: ../ui/bar_items/Section_tocview.xml.en:6
 #: ../ui/bar_items/News_siblings_tocview.xml.en:6
-#: ../ui/common/WebPage_view.xml.en:9 ../ui/news/NewsFolder_view.xml.en:15
+#: ../ui/bar_items/menu.xml.en:8 ../ui/common/WebPage_view.xml.en:9
+#: ../ui/news/NewsFolder_view.xml.en:15
 #: ../ui/bar_items/SectionChildrenToc_view.xml.en:8
 #: ../ui/bar_items/Section_newsview.xml.en:8
 #: ../ui/common/TurningFooterFolder_view.xml.en:11
@@ -447,7 +450,8 @@ msgctxt "img[alt]"
 msgid "${title}"
 msgstr ""
 
-#: ../ui/news/News_view.xml.en:16 ../ui/bar_items/SidebarItem_view.xml.en:10
+#: ../ui/news/News_view.xml.en:16 ../ui/bar_items/twitter.xml.en:8
+#: ../ui/bar_items/SidebarItem_view.xml.en:10
 #: ../ui/common/Tag_item_view.xml.en:7
 msgctxt "link"
 msgid "${title}"
@@ -461,6 +465,11 @@ msgstr ""
 #: ../ui/neutral/template.xhtml.en:74 ../ui/neutral2/template.xhtml.en:89
 msgctxt "table cell"
 msgid "${turning_footer}"
+msgstr ""
+
+#: ../ui/bar_items/twitter.xml.en:15
+msgctxt "li"
+msgid "${t}"
 msgstr ""
 
 #: ../ui/neutral/addimage.xml.en:55 ../ui/neutral/addlink.xml.en:58
@@ -701,6 +710,10 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
+#: ../sidebar/menu.py:51
+msgid "Box to create a sidebar menu"
+msgstr ""
+
 #: ../ws_neutral_views.py:140
 msgid "Breadcrumb title"
 msgstr ""
@@ -819,6 +832,10 @@ msgstr ""
 msgid "Edit languages"
 msgstr ""
 
+#: ../sidebar/menu.py:59
+msgid "Edit menu"
+msgstr ""
+
 #: ../news_views.py:116
 msgid "Edit news"
 msgstr ""
@@ -885,6 +902,10 @@ msgstr ""
 
 #: ../resources.py:129
 msgid "Footer Menu"
+msgstr ""
+
+#: ../sidebar/twitter.py:131
+msgid "Force cache update"
 msgstr ""
 
 #: ../ws_neutral_views.py:230
@@ -1041,6 +1062,10 @@ msgstr ""
 msgid "Number maximum of news to display"
 msgstr ""
 
+#: ../sidebar/twitter.py:129
+msgid "Number of tweet"
+msgstr ""
+
 #: ../ui/neutral/addlink.xml.en:122
 msgctxt "button"
 msgid "OK"
@@ -1175,6 +1200,10 @@ msgstr ""
 
 #: ../repository.py:228
 msgid "Show numbers items for each tag"
+msgstr ""
+
+#: ../sidebar/menu.py:50
+msgid "Side Menu"
 msgstr ""
 
 #: ../repository.py:85 ../repository.py:110 ../repository.py:111
@@ -1319,6 +1348,18 @@ msgstr ""
 msgid "Turning footer"
 msgstr ""
 
+#: ../sidebar/twitter.py:113
+msgid "Twitter SideBar"
+msgstr ""
+
+#: ../sidebar/twitter.py:127
+msgid "Twitter account name"
+msgstr ""
+
+#: ../sidebar/twitter.py:114
+msgid "Twitter sidebar feed"
+msgstr ""
+
 #: ../news_views.py:252 ../repository.py:409
 msgid "Type"
 msgstr ""
@@ -1344,7 +1385,7 @@ msgctxt "heading"
 msgid "Type the URL of an external resource"
 msgstr ""
 
-#: ../resources.py:207
+#: ../resources.py:211
 msgid "UPDATE CACHE"
 msgstr ""
 
@@ -1382,6 +1423,10 @@ msgstr ""
 #: ../ui/neutral/addlink.xml.en:135
 msgctxt "button"
 msgid "Upload and Link"
+msgstr ""
+
+#: ../sidebar/twitter.py:128
+msgid "User Id"
 msgstr ""
 
 #: ../turning_footer_views.py:110 ../rssfeeds.py:80 ../addresses_views.py:41
