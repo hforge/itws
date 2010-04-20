@@ -31,7 +31,7 @@ from itools.xml import XMLParser
 from ikaaro import messages
 from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.forms import PathSelectorWidget, SelectWidget, BooleanCheckBox
-from ikaaro.forms import TextWidget, SelectRadio, rte_widget
+from ikaaro.forms import TextWidget, rte_widget
 from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
 from ikaaro.future.menu import Target
 from ikaaro.resource_views import DBResource_Edit

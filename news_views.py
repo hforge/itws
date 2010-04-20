@@ -68,7 +68,7 @@ class NewsItem_Preview(STLView):
         elif column == 'css':
             here_abspath = context.resource.get_abspath()
             if here_abspath == resource.get_abspath():
-                return active
+                return 'active'
             return None
         elif column == 'date_of_writing':
             return resource.get_date_of_writing_formatted()
