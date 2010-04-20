@@ -246,13 +246,17 @@ class WSDataFolder(Folder):
                           ContentBarAware.contentbar_name,
                           'order-resources' # FIXME
                          ]
-    class_views = (['browse_content', 'backlinks', 'last_changes']
+    class_views = (['browse_content', 'backlinks', 'last_changes',
+                    'order_articles']
                    + ContentBarAware.class_views + SideBarAware.class_views
                   )
 
     order_contentbar = ContentBarAware.order_contentbar
     order_sidebar = SideBarAware.order_sidebar
 
+    # Views
+    order_articles = GoToSpecificDocument(specific_document='order-resources',
+                                          title=MSG(u'Order the articles'))
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
@@ -286,8 +290,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     class_views = (WebSite.class_views[:-2]
                    + ContentBarAware.class_views
                    + SideBarAware.class_views
-                   + ['edit_menu', 'edit_footer', 'edit_rss', 'edit_tags',
-                      'control_panel', 'commit_log'])
+                   + ['edit_ws_data', 'edit_menu', 'edit_footer', 'edit_rss',
+                      'edit_tags', 'control_panel', 'commit_log'])
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
@@ -571,6 +575,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     # User Interface
     edit_banner = GoToSpecificDocument(specific_document='banner',
                                        title=MSG(u'Banner'))
+    edit_ws_data = GoToSpecificDocument(specific_document='ws-data',
+                                        title=MSG(u'Edit home page'))
     edit_menu = GoToSpecificDocument(specific_document='menu/menu',
                                      title=MSG(u'Menu'),
                                      access='is_allowed_to_edit')
