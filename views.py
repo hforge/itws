@@ -396,8 +396,13 @@ class STLBoxView(STLView):
         return self.render_box(resource, context, stream)
 
 
+    def _get_box_css(self, resource, context):
+        return None
+
+
     def render_box(self, resource, context, stream):
         if isinstance(stream, Reference):
             return stream
-        return to_box(resource, stream, self.box_template)
+        css = self._get_box_css(resource, context)
+        return to_box(resource, stream, self.box_template, css)
 

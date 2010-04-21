@@ -18,8 +18,6 @@
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
-from itools.stl import stl
-from itools.uri import Reference
 from itools.web import get_context, STLView
 from itools.xapian import PhraseQuery, AndQuery
 
@@ -38,23 +36,20 @@ from webpage_views import WebPage_Edit
 
 
 
-class NewsItem_Preview(STLView):
+class NewsItem_Preview(STLBoxView):
 
     template = '/ui/news/NewsItem_preview.xml'
 
-    def GET(self, resource, context):
-        # Get the namespace
-        namespace = self.get_namespace(resource, context)
-        if isinstance(namespace, Reference):
-            return namespace
-
-        # STL
-        template = self.get_template(resource, context)
-        return stl(template, namespace)
+    def _get_box_css(self, resource, context):
+        """STLBoxView API"""
+        here_abspath = context.resource.get_abspath()
+        if here_abspath == resource.get_abspath():
+            return 'active'
+        return None
 
 
     def get_columns(self):
-        return ('title', 'long_title', 'path', 'css', 'date_of_writing',
+        return ('title', 'long_title', 'path', 'date_of_writing',
                 'thumbnail')
 
 
@@ -65,11 +60,6 @@ class NewsItem_Preview(STLView):
             return resource.get_long_title(language=language)
         elif column == 'path':
             return context.get_link(resource)
-        elif column == 'css':
-            here_abspath = context.resource.get_abspath()
-            if here_abspath == resource.get_abspath():
-                return 'active'
-            return None
         elif column == 'date_of_writing':
             return resource.get_date_of_writing_formatted()
         elif column == 'thumbnail':
