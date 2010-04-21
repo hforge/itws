@@ -32,12 +32,12 @@ from ikaaro.forms import stl_namespaces, RTEWidget, SelectWidget
 
 
 # Only use one time in ITWS
-def to_box(resource, stream, template=None):
+def to_box(resource, stream, template=None, css=None):
     """ Decorate stream with a box. """
     if template is None:
         template = '/ui/common/box.xml'
     template = resource.get_resource(template)
-    namespace = {'content': stream, 'class': None}
+    namespace = {'content': stream, 'class': css}
     return stl(template, namespace)
 
 

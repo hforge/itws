@@ -33,7 +33,7 @@ from ikaaro.utils import get_base_path_query
 # Import from itws
 from datatypes import PositiveIntegerNotNull
 from utils import get_admin_bar, xml_to_text, XMLTitleWidget
-from views import BrowseFormBatchNumeric, BaseRSS
+from views import BrowseFormBatchNumeric, BaseRSS, STLBoxView
 from webpage_views import WebPage_Edit
 
 
@@ -259,7 +259,7 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
 
 
 
-class NewsFolder_View(BrowseFormBatchNumeric):
+class NewsFolder_View(STLBoxView, BrowseFormBatchNumeric):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'

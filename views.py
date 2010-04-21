@@ -20,8 +20,8 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.uri import get_reference
-from itools.web import get_context, BaseView
+from itools.uri import get_reference, Reference
+from itools.web import get_context, BaseView, STLView
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
@@ -33,7 +33,7 @@ from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage
 
 # Import from itws
-from utils import set_prefix_with_hostname
+from utils import set_prefix_with_hostname, to_box
 
 
 
@@ -107,6 +107,7 @@ class FooterMenu_View(Menu_View):
 ############################################################
 # Numeric batch
 ############################################################
+
 class BrowseFormBatchNumeric(Folder_BrowseContent):
 
     batch_template = '/ui/common/browse_batch.xml'
@@ -195,6 +196,7 @@ class BrowseFormBatchNumeric(Folder_BrowseContent):
 ############################################################
 # RSS
 ############################################################
+
 class BaseRSS(BaseView):
 
     access = True
@@ -377,3 +379,25 @@ class BaseRSS(BaseView):
         context.set_content_disposition('inline', "last_news.rss")
         context.set_content_type('application/rss+xml')
         return feed.to_str()
+
+
+
+############################################################
+# Rounded Box
+############################################################
+
+class STLBoxView(STLView):
+
+    box_template = '/ui/common/box.xml'
+
+    def GET(self, resource, context):
+        stream = STLView.GET(self, resource, context)
+
+        return self.render_box(resource, context, stream)
+
+
+    def render_box(self, resource, context, stream):
+        if isinstance(stream, Reference):
+            return stream
+        return to_box(resource, stream, self.box_template)
+
