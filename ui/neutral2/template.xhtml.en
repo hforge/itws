@@ -27,11 +27,9 @@
       <tr>
         <td>
           <div class="lines" id="logo" stl:if="banner">
-            <h1>
-              <a href="/" id="banner">
-                <img alt="${banner/description}" src="${banner/path}/;download"/>
-              </a>
-            </h1>
+            <a href="/" id="banner">
+              <img alt="${banner/description}" src="${banner/path}/;download"/>
+            </a>
             <div id="search-form">
               <form action="/;site_search" method="get">
                 <p>
@@ -41,6 +39,7 @@
                 </p>
               </form>
             </div>
+            <div class="clear" />
           </div>
           <div class="nav">
             <div class="bigbox">

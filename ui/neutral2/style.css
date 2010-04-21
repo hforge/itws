@@ -193,13 +193,7 @@ ul {
 
 #logo {
   margin-top: 8px;
-  height: 85px;
-  background-color: #ffffff;
-}
-
-#logo h1 {
-  margin: 0;
-  padding: 0;
+  background-color: transparent;
 }
 
 #logo a, #logo a:hover, #logo a:visited, #logo a:active, #logo a:focus {
@@ -414,23 +408,6 @@ strong {
 
 .footer a:hover {
   color: #202080;
-}
-
-#section{
-  margin:0px;
-  padding:0px;
-}
-
-/* hauteur minimale */
-/* Firefox & IE7 */
-#content > #section {
-  min-height: 500px;
-  height: auto;
-}
-
-/* IE 6 & <*/
-* html #section {
-  height: 500px;
 }
 
 #td-contentbar {
