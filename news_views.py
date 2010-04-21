@@ -82,7 +82,7 @@ class NewsItem_Preview(STLBoxView):
 
 
 
-class NewsItem_View(STLView):
+class NewsItem_View(STLBoxView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
