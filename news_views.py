@@ -128,10 +128,8 @@ class NewsItem_View(STLView):
         # content
         content = resource.get_html_data()
         # Allowed to edit and highlight
-        highlight = None
         ac = resource.get_access_control()
         if ac.is_allowed_to_edit(context.user, resource):
-            highlight = 'highlight'
             edit = True
         else:
             edit = False
@@ -140,10 +138,10 @@ class NewsItem_View(STLView):
         namespace['title'] = title #XMLParser(XHTMLBody.encode(title) or '')
         namespace['content'] = content
         namespace['is_allowed_to_edit'] = edit
-        namespace['news_wrapper_class'] = highlight
-        buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(buttons, 'content-column',
-                                    MSG(u'A news'))
+        # FIXME Does not work
+        #buttons = self.get_manage_buttons(resource, context)
+        #namespace['admin_bar'] = get_admin_bar(buttons, 'content-column',
+        #                            MSG(u'A news'))
         title_link = None
         if self.title_link:
             title_link = context.get_link(resource)
