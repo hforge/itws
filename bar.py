@@ -83,9 +83,6 @@ class Bar_View(STLView):
         order = orderfile.get_records_in_order()
         items = []
 
-        # FIXME Add the section to the context for section TOC views
-        context._section = resource
-
         for record in order:
             name = orderfile.get_record_value(record, 'name')
             item = repository.get_resource(name, soft=True)
