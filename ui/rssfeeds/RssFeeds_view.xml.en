@@ -2,75 +2,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <stl:block xmlns="http://www.w3.org/1999/xhtml" xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-<!-- START BOX -->
-<div id="rssfeeds" class="box">
-  <div class="box-hd"/>
-  <div class="box-hg"/>
-  <div class="box-bd"/>
-  <div class="box-bg"/>
-  <div class="box-content">
-    <!-- ! START BOX -->
-
-    <div stl:if="see_errors" id="rss-error">
-      There are errors in this RSS:
-      <ul>
-        <li stl:repeat="error errors">
-          ${error}
-        </li>
-      </ul>
-    </div>
-
-    <div id="export-opml">
-      <a href="./;export_to_opml" title="Export the Feeds as an OPML file.">
-        <img src="/ui/common/images/opml_logo.png"/>
-        Export the Feeds as an OPML file
-      </a>
-    </div>
-    <div id="rss-filter">
-      <form action="">
-        <select name="feed">
-          <option value="${feed/uri}" stl:repeat="feed feeds"
-            selected="${feed/selected}">
-            [${feed/nb_articles}] ${feed/title}</option>
-        </select>
-        <button type="submit">Filter by Feed</button>
-      </form>
-    </div>
-    <div style="clear: both;"></div>
-
-    <table cellpadding="0" cellspacing="0">
-      <tr>
-        <td id="rss-body" valign="top">
-          <div class="rss-article" stl:repeat="article articles">
-            <a name="${article/anchor}"/>
-            <h1><a href="#${article/reverse_anchor}">${article/title}</a></h1>
-            <p>${article/description}</p>
-            <span>
-              <stl:inline stl:if="article/pubDate_valid">${article/formated_pubDate}, </stl:inline>
-              source:
-              <a href="${article/link}">
-                ${article/channel/title}
-              </a>
-            </span>
-          </div>
-        </td>
-        <td id="rss-menu" valign="top">
-          <!-- useful for IE6 -->
-          <div id="force-min-width">&nbsp;</div>
-          <div class="rss-item" stl:repeat="article articles">
-            <h1>
-              <img src="/ui/common/images/puce_${repeat/article/even}.png"
-                   stl:if="repeat/article/even" />
-              <a name="${article/reverse_anchor}"/>
-              <a href="#${article/anchor}">${article/title}</a>
-              <span class="rss-date">${article/formated_pubDate}</span>
-            </h1>
-          </div>
-        </td>
-      </tr>
-    </table>
+  <div stl:if="see_errors" id="rss-error">
+    There are errors in this RSS:
+    <ul>
+      <li stl:repeat="error errors">
+        ${error}
+      </li>
+    </ul>
   </div>
-  <!-- END BOX -->
-</div>
-<!-- ! END BOX -->
+
+  <div id="export-opml">
+    <a href="./;export_to_opml" title="Export the Feeds as an OPML file.">
+      <img src="/ui/common/images/opml_logo.png"/>
+      Export the Feeds as an OPML file
+    </a>
+  </div>
+  <div id="rss-filter">
+    <form action="">
+      <select name="feed">
+        <option value="${feed/uri}" stl:repeat="feed feeds"
+          selected="${feed/selected}">
+          [${feed/nb_articles}] ${feed/title}</option>
+      </select>
+      <button type="submit">Filter by Feed</button>
+    </form>
+  </div>
+  <div style="clear: both;"></div>
+
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td id="rss-body" valign="top">
+        <div class="rss-article" stl:repeat="article articles">
+          <a name="${article/anchor}"/>
+          <h1><a href="#${article/reverse_anchor}">${article/title}</a></h1>
+          <p>${article/description}</p>
+          <span>
+            <stl:inline stl:if="article/pubDate_valid">${article/formated_pubDate}, </stl:inline>
+            source:
+            <a href="${article/link}">
+              ${article/channel/title}
+            </a>
+          </span>
+        </div>
+      </td>
+      <td id="rss-menu" valign="top">
+        <!-- useful for IE6 -->
+        <div id="force-min-width">&nbsp;</div>
+        <div class="rss-item" stl:repeat="article articles">
+          <h1>
+            <img src="/ui/common/images/puce_${repeat/article/even}.png"
+                 stl:if="repeat/article/even" />
+            <a name="${article/reverse_anchor}"/>
+            <a href="#${article/anchor}">${article/title}</a>
+            <span class="rss-date">${article/formated_pubDate}</span>
+          </h1>
+        </div>
+      </td>
+    </tr>
+  </table>
 </stl:block>

@@ -2,7 +2,7 @@
  * RSS
  * ***********************************************************************/
 
-#rssfeeds #rss-menu {
+body > .rssfeeds-view #td-contentbar #rss-menu {
   font-size: 0.8em;
   border-left: 2px black solid;
   padding: 9px 10px 10px 10px;
@@ -11,39 +11,39 @@
 }
 
 /* useful for IE6 */
-#rssfeeds #rss-menu #force-min-width {
+body > .rssfeeds-view #td-contentbar #rss-menu #force-min-width {
   height: 1px;
   width: 300px;
 }
 
-#rssfeeds #rss-menu h1 a {
+body > .rssfeeds-view #td-contentbar #rss-menu h1 a {
   font-size: 0.8em;
   color: #333;
 }
 
-#rssfeeds #rss-menu h1 {
+body > .rssfeeds-view #td-contentbar #rss-menu h1 {
   margin: 0;
 }
 
-#rssfeeds #rss-menu h1 span {
+body > .rssfeeds-view #td-contentbar #rss-menu h1 span {
   font-size: 0.8em;
   font-weight: normal;
   color: #333;
 }
 
-#rssfeeds #rss-body {
+body > .rssfeeds-view #td-contentbar #rss-body {
   padding: 5px;
   width: 550px; /* IEx */
 }
 
-#rssfeeds #rss-error{
+body > .rssfeeds-view #td-contentbar #rss-error{
   background-color:#FFE7E7;
   padding: 20px;
   margin: 20px;
   border: 1px solid red;
 }
 
-#rssfeeds #rss-body .rss-article {
+body > .rssfeeds-view #td-contentbar #rss-body .rss-article {
   border-bottom: 2px solid #444;
   padding-bottom: 5px;
   margin-bottom: 10px;
@@ -51,24 +51,24 @@
   overflow-x: auto;
 }
 
-#rssfeeds #rss-body img {
+body > .rssfeeds-view #td-contentbar #rss-body img {
   max-width: 450px;
 }
 
-#rssfeeds #rss-body h1 {
+body > .rssfeeds-view #td-contentbar #rss-body h1 {
   margin-top: 0;
 }
 
-#rssfeeds #rss-filter {
+body > .rssfeeds-view #td-contentbar #rss-filter {
   float: right;
   margin-bottom: 5px;
 }
 
-#rssfeeds #rss-filter select {
+body > .rssfeeds-view #td-contentbar #rss-filter select {
   font: normal 1.3em monospace;
 }
 
-#rssfeeds #export-opml {
+body > .rssfeeds-view #td-contentbar #export-opml {
   float: left;
 }
 
