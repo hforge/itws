@@ -133,11 +133,11 @@ class NeutralSkin(FoBoFooterAwareSkin):
         class_id = getattr(here, 'class_id', None)
         if class_id:
             view_name = context.view_name or here.get_default_view_name()
-            page_css_id = 'page-%s-%s' % (class_id, view_name)
-            page_css_id = page_css_id.replace('_', '-')
-            namespace['page_css_id'] = page_css_id.lower()
+            page_css_class = '%s-%s' % (class_id, view_name)
+            page_css_class = page_css_class.replace('_', '-')
+            namespace['page_css_class'] = page_css_class.lower()
         else:
-            namespace['page_css_id'] = None
+            namespace['page_css_class'] = None
 
         # Add custom data inside the template
         custom_data = site_root.get_property('custom_data') or ''

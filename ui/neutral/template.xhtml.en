@@ -22,7 +22,7 @@
         type="${favicon_type}" />
 </head>
 <body class="${body_css}">
-  <div id="${page_css_id}">
+  <div class="${page_css_class}">
     <table id="main-table">
       <tr id="tr-banner">
         <td colspan="2">
