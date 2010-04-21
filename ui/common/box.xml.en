@@ -3,12 +3,12 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
-  <div class="box">
+  <div class="box ${class}">
     <div class="box-hd" />
     <div class="box-hg" />
     <div class="box-bd" />
     <div class="box-bg" />
-    <div class="box-content ${class}">
+    <div class="box-content">
       ${content}
     </div>
   </div>
