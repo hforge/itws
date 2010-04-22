@@ -26,15 +26,27 @@ from itools.web import STLView
 from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
-from utils import get_admin_bar
-from repository import SidebarItemsOrderedTable
 from repository import ContentbarItemsOrderedTable
+from repository import SidebarItemsOrderedTable
+from utils import get_admin_bar
+from views import STLBoxView
 
 
 
 ################################################################################
 # Views
 ################################################################################
+class Bar_Item_View(STLBoxView):
+
+    template = '/ui/common/Bar_Item_view.xml'
+    # Namespace should be set at the view instanciation
+    namespace = {}
+
+    def get_namespace(self, resource, context):
+        return self.namespace
+
+
+
 class Bar_View(STLView):
 
     template = '/ui/common/Bar_view.xml'
@@ -44,6 +56,7 @@ class Bar_View(STLView):
     order_label = None
     admin_bar_prefix_name = None
     items_css_class = None
+    item_view = Bar_Item_View
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -115,15 +128,20 @@ class Bar_View(STLView):
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
             buttons = item.view.get_manage_buttons(item, context)
+
             # FIXME if the item name contains '.', the item id is
             # interpreted as #id.class by jquery
             item_id = '%s-%s-%s' % (self.admin_bar_prefix_name,
                                     item.class_id, item.name)
             admin_bar = get_admin_bar(buttons, item_id, item.class_title)
-            items.append({'id': item_id,
-                          'format': item.class_id,
-                          'box_admin_bar': admin_bar,
-                          'box': stream})
+            namespace = {}
+            namespace['id'] = item_id
+            namespace['format'] = item.class_id
+            namespace['admin_bar'] = admin_bar
+            namespace['content'] = stream
+            namespace['css_class'] = self.items_css_class
+            render_view = self.item_view(namespace=namespace)
+            items.append(render_view.GET(resource, context))
 
         # FIXME Remove the section from the context for section TOC views
         del context._section
@@ -138,8 +156,8 @@ class Bar_View(STLView):
         manage_buttons = self.get_manage_buttons(resource, context)
         allowed_to_edit = len(manage_buttons) > 0
         # XXX 'article-items'
-        namespace['admin_bar'] = get_admin_bar(manage_buttons, 'article-items',
-                                               icon=True)
+        namespace['admin_bar'] = get_admin_bar(manage_buttons,
+                self.admin_bar_prefix_name, icon=True)
 
         # Bar items
         items = self.get_items(resource, context)

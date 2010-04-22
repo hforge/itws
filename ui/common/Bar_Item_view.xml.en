@@ -4,11 +4,8 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div id="${id}" stl:if="display">
+  <div class="${css_class} ${format}" id="${id}">
     ${admin_bar}
-    <stl:block stl:repeat="item items">
-      ${item}
-    </stl:block>
-    <div class="clear" />
+    ${content}
   </div>
 </stl:block>
