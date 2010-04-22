@@ -48,8 +48,9 @@ from ikaaro.webpage import WebPage, HTMLEditView
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
-from utils import get_path_and_view
 from tags import TagsAware, TagsAware_Edit, Tag_ItemView
+from utils import get_path_and_view
+from views import STLBoxView
 
 
 
@@ -101,7 +102,7 @@ class SlideTemplateType(Enumerate):
 
 
 
-class Slide_View(STLView):
+class Slide_View(STLBoxView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
@@ -122,6 +123,15 @@ class Slide_View(STLView):
             raise NotImplementedError, msg % repr(self.__class__)
         # XXX A handler actually
         return resource.get_resource(self.base_template % template_type)
+
+
+    def _get_box_css(self, resource, context):
+        """STLBoxView API"""
+        template_type = resource.get_property('template_type')
+        if not template_type:
+            # Get the template from the slideshow
+            template_type = resource.parent.get_property('template_type')
+        return 'slideshow-type-%s' % template_type
 
 
     def get_namespace(self, resource, context):
