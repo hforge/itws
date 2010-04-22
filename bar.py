@@ -51,10 +51,10 @@ class Bar_View(STLView):
         if not allowed:
             return []
 
-        site_root = resource.get_site_root()
         buttons = []
-        section_path = context.get_link(resource)
+        site_root = resource.get_site_root()
         repository = site_root.get_repository()
+        section_path = context.get_link(resource)
         path = context.get_link(repository)
         buttons.append({'path': '%s/;%s' % (section_path, self.order_method),
                         'icon': '/ui/common/icons/48x48/sort.png',
@@ -120,7 +120,7 @@ class Bar_View(STLView):
             item_id = '%s-%s-%s' % (self.admin_bar_prefix_name,
                                     item.class_id, item.name)
             admin_bar = get_admin_bar(buttons, item_id, item.class_title)
-            items.append({'name': item.name, 'id': item_id,
+            items.append({'id': item_id,
                           'format': item.class_id,
                           'box_admin_bar': admin_bar,
                           'box': stream})
