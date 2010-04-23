@@ -2,7 +2,7 @@
  * RSS
  * ***********************************************************************/
 
-body > .rssfeeds-view #td-contentbar #rss-menu {
+.rssfeeds-view #td-contentbar #rss-menu {
   font-size: 0.8em;
   border-left: 2px black solid;
   padding: 9px 10px 10px 10px;
@@ -11,39 +11,39 @@ body > .rssfeeds-view #td-contentbar #rss-menu {
 }
 
 /* useful for IE6 */
-body > .rssfeeds-view #td-contentbar #rss-menu #force-min-width {
+.rssfeeds-view #td-contentbar #rss-menu #force-min-width {
   height: 1px;
   width: 300px;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-menu h1 a {
+.rssfeeds-view #td-contentbar #rss-menu h1 a {
   font-size: 0.8em;
   color: #333;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-menu h1 {
+.rssfeeds-view #td-contentbar #rss-menu h1 {
   margin: 0;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-menu h1 span {
+.rssfeeds-view #td-contentbar #rss-menu h1 span {
   font-size: 0.8em;
   font-weight: normal;
   color: #333;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-body {
+.rssfeeds-view #td-contentbar #rss-body {
   padding: 5px;
   width: 550px; /* IEx */
 }
 
-body > .rssfeeds-view #td-contentbar #rss-error{
+.rssfeeds-view #td-contentbar #rss-error{
   background-color:#FFE7E7;
   padding: 20px;
   margin: 20px;
   border: 1px solid red;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-body .rss-article {
+.rssfeeds-view #td-contentbar #rss-body .rss-article {
   border-bottom: 2px solid #444;
   padding-bottom: 5px;
   margin-bottom: 10px;
@@ -51,24 +51,24 @@ body > .rssfeeds-view #td-contentbar #rss-body .rss-article {
   overflow-x: auto;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-body img {
+.rssfeeds-view #td-contentbar #rss-body img {
   max-width: 450px;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-body h1 {
+.rssfeeds-view #td-contentbar #rss-body h1 {
   margin-top: 0;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-filter {
+.rssfeeds-view #td-contentbar #rss-filter {
   float: right;
   margin-bottom: 5px;
 }
 
-body > .rssfeeds-view #td-contentbar #rss-filter select {
+.rssfeeds-view #td-contentbar #rss-filter select {
   font: normal 1.3em monospace;
 }
 
-body > .rssfeeds-view #td-contentbar #export-opml {
+.rssfeeds-view #td-contentbar #export-opml {
   float: left;
 }
 

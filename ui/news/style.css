@@ -13,7 +13,7 @@
   padding-bottom: 5px;
 }
 
-body > .news-view #td-contentbar {
+.news-view #td-contentbar {
   margin: 0px;
   padding: 0px;
   height: 500px;
@@ -29,28 +29,28 @@ body > .news-view #td-contentbar {
 }
 
 /* News folder view */
-body > .news-folder-view #td-contentbar .item {
+.news-folder-view #td-contentbar .item {
   border-bottom: 1px solid #000;
   padding-bottom:5px;
   padding-top:5px;
 }
 
-body > .news-folder-view #td-contentbar .more {
+.news-folder-view #td-contentbar .more {
   float: right;
   margin-top: 10px;
 }
 
-body > .news-folder-view #td-contentbar .actu-content .title {
+.news-folder-view #td-contentbar .actu-content .title {
   clear: both;
 }
 
-body > .news-folder-view #td-contentbar .actu-content .actu-date,
-body > .news-folder-view #td-contentbar .actu-content .actu-tag {
+.news-folder-view #td-contentbar .actu-content .actu-date,
+.news-folder-view #td-contentbar .actu-content .actu-tag {
   float:  left;
   font-size:  0.8em;
   padding-bottom:  5px;
 }
 
-body > .news-folder-view #td-contentbar .actu-content .actu-date {
+.news-folder-view #td-contentbar .actu-content .actu-date {
   padding-right: 10px;
 }
