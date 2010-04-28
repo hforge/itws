@@ -403,3 +403,31 @@ body #zh {
 #turning-footer p {
   margin: 0;
 }
+
+/*
+ * Bar items
+ */
+/* section news */
+.sidebar-item-section-news .newsitem {
+  border-bottom: 1px dotted;
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.sidebar-item-section-news .newsitem.first {
+  padding-top: 0;
+}
+
+.sidebar-item-section-news .newsitem.last {
+  border-bottom: none;
+}
+
+.sidebar-item-section-news .newsitem .image-link {
+  float: left;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.sidebar-item-section-news .newsitem .newsitem-date {
+  /* padding-bottom: 5px; */
+}

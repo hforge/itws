@@ -8,7 +8,7 @@
     <h3 stl:if="title" class="title">${title}</h3>
     <div class="content">
       <div class="newsitem ${item/css}" stl:repeat="item items">
-        <a stl:if="item/thumbnail" href="${item/path}">
+        <a stl:if="item/thumbnail" href="${item/path}" class="image-link">
           <img src="${item/thumbnail}/;download" />
         </a>
         <div class="summary">

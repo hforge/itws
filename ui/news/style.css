@@ -1,14 +1,3 @@
-/**************************************************************************
- * News *
- **************************************************************************/
-.newsitem {
-  /* padding-top: 5px; */
-}
-
-.newsitem .newsitem-date {
-  /* padding-bottom: 5px; */
-}
-
 .actu-content .actu-date {
   padding-bottom: 5px;
 }
