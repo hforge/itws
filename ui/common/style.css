@@ -5,6 +5,10 @@
 .box-hg, .box-hd, .box-bg, .box-bd {
   display: none;
 }
+.box, .box .box-content {
+  padding: 0;
+  margin: 0;
+}
 
 /**************************************************************************
  * BO Link *
