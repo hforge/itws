@@ -510,7 +510,6 @@ class SidebarItem_Tags_View(BarItem_View):
 class SidebarItem_SectionSiblingsToc_View(BarItem_View):
 
     template = '/ui/bar_items/Section_tocview.xml'
-    toc_id = 'sub-sections-toc'
 
     def GET(self, resource, context):
         from section import Section
@@ -607,9 +606,6 @@ class SidebarItem_SectionSiblingsToc_View(BarItem_View):
         if allowed_to_edit is False and len(siblings) <= min_limit:
             self.set_view_is_empty(True)
 
-        # Toc CSS id
-        namespace['toc_id'] = self.toc_id
-
         # Box highlight
         if allowed_to_edit is False:
             namespace['class'] = None
@@ -623,8 +619,6 @@ class SidebarItem_SectionSiblingsToc_View(BarItem_View):
 
 
 class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
-
-    toc_id = 'articles-toc'
 
     def GET(self, resource, context):
         from section import Section
