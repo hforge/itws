@@ -223,7 +223,7 @@ div.edit-button a {
 }
 
 /**************************************************************************
- * Menu *
+ * MENU
  **************************************************************************/
 .menubox {
   position:relative;
@@ -490,7 +490,7 @@ strong {
 
 
 /**************************************************************************
- * Box *
+ * BOX
  **************************************************************************/
 .box {
   background-color:#ffffff;
@@ -541,8 +541,8 @@ strong {
   position:absolute;
 }
 
-.box-content {
-  padding:12px 24px 12px 24px;
+.box .box-content {
+  padding:12px 24px;
   text-align:left;
   color: #202020;
 }
@@ -562,7 +562,7 @@ strong {
 }
 
 /**************************************************************************
- * Big Box *
+ * BIG BOX
  **************************************************************************/
 .bigbox {
   position:relative;
@@ -628,7 +628,7 @@ strong {
 }
 
 /*
- * Hauteur minimale Big Box
+ * Minimal height
  */
 /* Firefox & IE7 */
 .bigbox > .bigbox-in {
@@ -642,7 +642,7 @@ strong {
 }
 
 /**************************************************************************
- * Breadcrumb *
+ * BREADCRUMB
  **************************************************************************/
 #breadcrumbs {
   font-size: 1em;
@@ -653,15 +653,7 @@ strong {
 }
 
 /**************************************************************************
- * Section Subsections menu
- **************************************************************************/
-#sub-sections-toc li.active a {
-  color: #0000a0;
-  background-color: #e4e4ff;
-}
-
-/**************************************************************************
- * Box
+ * BOX
  * ***********************************************************************/
 .bigb-hg, .bigb-hd, .bigb-bg, .bigb-bd,
 .box-hg, .box-hd, .box-bg, .box-bd {
@@ -669,9 +661,8 @@ strong {
 }
 
 /**************************************************************************
- * Banner with search box
+ * BANNER WITH SEARCH BOX
  * ***********************************************************************/
-
 #banner {
   float: left;
 }
@@ -684,4 +675,53 @@ strong {
 .button-search {
   margin-right:6px;
   padding-right:0;
+}
+
+/**************************************************************************
+ * SIDEBAR
+ **************************************************************************/
+.sidebar-item-news-siblings-toc .box .box-hg,
+.sidebar-item-news-siblings-toc .box .box-hd,
+.sidebar-item-news-siblings-toc .box .box-bg,
+.sidebar-item-news-siblings-toc .box .box-bd {
+  display: none;
+}
+
+.sidebar-item-news-siblings-toc .box .box-content {
+  padding: 0;
+}
+
+.sidebar-item-news-siblings-toc .newsitem p {
+  margin: 0;
+}
+
+.sidebar-item-news-siblings-toc .newsitem {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted;
+}
+
+/* section news */
+.sidebar-item-section-news .newsitem {
+  border-bottom: 1px dotted;
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.sidebar-item-section-news .newsitem.first {
+  padding-top: 0;
+}
+
+.sidebar-item-section-news .newsitem.last {
+  border-bottom: none;
+}
+
+.sidebar-item-section-news .newsitem .image-link {
+  float: left;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.sidebar-item-section-news .newsitem .newsitem-date {
+  /* padding-bottom: 5px; */
 }

@@ -4,9 +4,9 @@
   padding-left: 18px !important;
 }
 
-/*
- * Breadcrumbs
- */
+/**************************************************************************
+ * BREADCRUMBS
+ * ***********************************************************************/
 /* Hide breadcrumbs by default */
 #breadcrumbs {
   display: none;
@@ -15,10 +15,9 @@
   background-color: transparent;
 }
 
-/*
- * commun
- */
-
+/**************************************************************************
+ * BODY
+ * ***********************************************************************/
 body {
   color: #000;
   background: #fff;
@@ -43,10 +42,6 @@ body {
   padding: 0;
 }
 
-body #zh {
-  font-family: "AR PL ZenKai Uni", "SimSun", "Arial";
-}
-
 #content-table {
   width: 100%;
 }
@@ -61,14 +56,9 @@ body #zh {
   vertical-align: top;
 }
 
-#contentbar-items .admin-icons-bar {
-  padding: 12px 24px;
-}
-
-/*
- * Integration back office
- */
-
+/**************************************************************************
+ * BACK OFFICE
+ * ***********************************************************************/
 #tabs {
   padding: 5px 0;
 }
@@ -84,10 +74,18 @@ body #zh {
   padding: 0 !important;
 }
 
-/*
- * en-tête
- */
+#backoffice {
+  text-align: right;
+}
 
+#backoffice a, #backoffice a:hover, #backoffice a:visited {
+  text-decoration: none;
+  color: #ddd;
+}
+
+/**************************************************************************
+ * HEADER
+ * ***********************************************************************/
 #banner-wrapper {
   width: 100%;
   display: block;
@@ -178,23 +176,10 @@ body #zh {
  display:  inline;
 }
 
-/*
- * Back office
- */
-#backoffice {
-  text-align: right;
-}
-
-#backoffice a, #backoffice a:hover, #backoffice a:visited {
-  text-decoration: none;
-  color: #ddd;
-}
-
-/*
- * wrapper and turning-footer (commun)
- */
-
-/* hauteur minimale */
+/**************************************************************************
+ * WRAPPER & TURNING FOOTER
+ * ***********************************************************************/
+/* Minimal height */
 /* Firefox & IE7 */
 #wrapper > #content {
   min-height: 400px;
@@ -253,7 +238,6 @@ body #zh {
 }
 
 #wrapper a,
-#right li a,
 #turning-footer a {
   padding-left: 0px;
 }
@@ -297,16 +281,23 @@ body #zh {
 #turning-footer a img {
   border: 0;
 }
+/**************************************************************************
+ * TURNING FOOTER
+ **************************************************************************/
+#turning-footer {
+  margin: 5px 0;
+}
 
-/*
- * RIGHT
- */
-#right {
-  font-size: 1.1em;
+#turning-footer .content {
+  text-align: right;
+}
+
+#turning-footer p {
+  margin: 0;
 }
 
 /**************************************************************************
- * Sidebar *
+ * SIDEBAR
  **************************************************************************/
 #td-sidebar ul {
   margin-left: 0;
@@ -323,25 +314,6 @@ body #zh {
   border-bottom: 1px dotted;
 }
 
-
-/*
- * Turning footer
- */
-#turning-footer {
-  margin: 5px 0;
-}
-
-#turning-footer .content {
-  text-align: right;
-}
-
-#turning-footer p {
-  margin: 0;
-}
-
-/*
- * Bar items
- */
 /* section news */
 .sidebar-item-section-news .newsitem {
   border-bottom: 1px dotted;

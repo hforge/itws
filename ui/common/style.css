@@ -17,23 +17,18 @@
   color: red;
 }
 
-#wrapper div.manage a,
-#turning-footer div.manage a {
-  color: red;
-}
-
 /* Workflow */
-#wrapper .manage .wf-private {
+.wf-private {
   color: #c00 !important;
   font-weight: bold;
 }
 
-#wrapper .manage .wf-pending {
+.wf-pending {
   color: #f57900 !important;
   font-weight: bold;
 }
 
-#wrapper .manage .wf-public {
+.wf-public {
   color: #4e9a06 !important;
   font-weight: bold;
 }
@@ -69,28 +64,6 @@
 }
 
 /**************************************************************************
- * Section Subsections menu
- **************************************************************************/
-#content div.submenu-wrapper ul {
-  padding-left: 0;
-}
-
-#content div.submenu-wrapper ul li {
-  list-style-type: none;
-}
-
-#sub-sections-toc li.active a {
-  font-weight: bold;
-}
-
-/**************************************************************************
- * Section Articles
- **************************************************************************/
-#article-items .box-content {
-  padding-top: 0;
-}
-
-/**************************************************************************
  * Tag Cloud
  **************************************************************************/
 ul#tag-cloud {
@@ -100,6 +73,7 @@ ul#tag-cloud {
   font-size: 7px;
   margin: 0;
 }
+
 ul#tag-cloud li {
   display: inline;
   margin-left: 10px;
@@ -114,38 +88,47 @@ ul#tag-cloud .tag-10 a {
   font-size: 0.7em;
   font-weight: 100;
 }
+
 ul#tag-cloud .tag-9 a {
   font-size: 0.8em;
   font-weight: 200;
 }
+
 ul#tag-cloud .tag-8 a {
   font-size: 0.9em;
   font-weight: 300;
 }
+
 ul#tag-cloud .tag-7 a {
   font-size: 1.0em;
   font-weight: 400;
 }
+
 ul#tag-cloud .tag-6 a {
   font-size: 1.2em;
   font-weight: 500;
 }
+
 ul#tag-cloud .tag-5 a {
   font-size: 1.4em;
   font-weight: 600;
 }
+
 ul#tag-cloud .tag-4 a {
   font-size: 1.6em;
   font-weight: 700;
 }
+
 ul#tag-cloud .tag-3 a {
   font-size: 1.8em;
   font-weight: 800;
 }
+
 ul#tag-cloud .tag-2 a {
   font-size: 2.2em;
   font-weight: 900;
 }
+
 ul#tag-cloud .tag-1 a {
   font-size: 2.5em;
   font-weight: 900;
@@ -156,8 +139,12 @@ ul#tag-cloud .tag-1 a {
   border-bottom: 1px dashed #000;
 }
 
+/**************************************************************************
+ * ADMIN BAR
+ **************************************************************************/
 .admin-icons-bar {
   background-image: url('/ui/common/images/empty-background.png');
+  padding: 6px 12px;
 }
 
 .admin-icons-bar table td {
@@ -202,7 +189,9 @@ ul#tag-cloud .tag-1 a {
   text-decoration: none;
 }
 
-/* Batch numerotation */
+/**************************************************************************
+ * NUMERIC BATCH
+ **************************************************************************/
 #content .batch-numerotation {
   margin: 0;
   padding: 0;
