@@ -65,3 +65,19 @@ rng_file.auto_register()
 # Register the itws domain
 path = get_abspath('locale')
 register_domain('itws', path)
+
+
+# ws_neutral.NeutralWS.update_20100429
+# Remove Obsolete article class
+from ikaaro.registry import register_resource_class
+from webpage import WebPage
+
+class Article(WebPage):
+    class_id = 'article'
+    class_version = '20100107'
+
+class WSArticle(Article):
+    class_id = 'ws-neutral-article'
+
+register_resource_class(Article)
+register_resource_class(WSArticle)

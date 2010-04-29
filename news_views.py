@@ -18,7 +18,7 @@
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
-from itools.web import get_context, STLView
+from itools.web import get_context
 from itools.xapian import PhraseQuery, AndQuery
 
 # Import from ikaaro

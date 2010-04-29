@@ -53,7 +53,6 @@ from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from addresses import AddressesFolder
-from article import Article
 from bar import ContentBarAware, SideBarAware, SideBar_View
 from common import FoBoFooterAwareSkin
 from datatypes import MultilingualString, NeutralClassSkin
@@ -69,7 +68,7 @@ from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view
 from website import WebSite
-from webpage_views import WebPage_View
+from webpage import WebPage
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS, NeutralWS_EditRSS
 
@@ -230,14 +229,6 @@ class NeutralSkin2(NeutralSkin):
 ############################################################
 # Web Site
 ############################################################
-class WSArticle(Article):
-    class_id = 'ws-neutral-article'
-    class_title = MSG(u'WS Article')
-
-    view = WebPage_View()
-
-
-
 class WSDataFolder(Folder):
 
     class_id = 'neutral-ws-data'
@@ -286,7 +277,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                 WebSite):
 
     class_id = 'neutral'
-    class_version = '20100402'
+    class_version = '20100429'
     class_title = MSG(u'neutral website')
     class_views = (WebSite.class_views[:-2]
                    + ContentBarAware.class_views
@@ -465,7 +456,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
 
     def get_article_class(self):
         # ContentBarItem_Articles_View API
-        return WSArticle
+        return WebPage
 
 
     def get_links(self):
@@ -574,6 +565,18 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         return role is not None
 
 
+    def update_20100429(self):
+        webpage_cls = self.get_article_class()
+        print
+        for resource in self.traverse_resources():
+            metadata = resource.metadata
+            if metadata.format in ('article', 'ws-neutral-article'):
+                print u'Fix %s' % resource.get_abspath()
+                metadata.set_changed()
+                metadata.format = webpage_cls.class_id
+                metadata.version = webpage_cls.class_version
+
+
     # User Interface
     edit_ws_data = GoToSpecificDocument(
             specific_document='ws-data', title=MSG(u'Edit home page'),
@@ -619,7 +622,6 @@ register_resource_class(Image)
 register_resource_class(NeutralWS)
 register_resource_class(WSDataFolder)
 register_resource_class(WSOrderedTable)
-register_resource_class(WSArticle)
 register_document_type(NeutralWS, BaseWebSite.class_id)
 
 # Skin

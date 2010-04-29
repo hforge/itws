@@ -902,7 +902,7 @@ class ContentBarItem_Articles_View(BarItem_View):
         article_cls = self.get_article_class(resource, context)
         articles = list(self.get_items(resource, context))
         articles_view = []
-        article_view = article_cls.article_view
+        article_view = article_cls.view
         if len(articles):
             # All articles are in the same folder
             # Compute the prefix with the first one

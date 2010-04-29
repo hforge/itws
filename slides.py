@@ -27,7 +27,7 @@ from itools.core import get_abspath, merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
-from itools.web import STLView, get_context
+from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro

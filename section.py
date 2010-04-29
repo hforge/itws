@@ -38,11 +38,11 @@ from ikaaro.table import OrderedTableFile
 from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
-from article import Article
 from bar import SideBarAware, ContentBarAware
 from repository import Repository
 from section_views import SectionOrderedTable_View
 from section_views import Section_Edit, Section_View
+from webpage import WebPage
 
 
 
@@ -69,7 +69,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
         # Orderable classes should be
         # 1 - my parent
         # 2 - my_parent.get_article_class
-        return (Article, Section)
+        return (WebPage, Section)
 
     orderable_classes = property(get_orderable_classes, None, None, '')
 
@@ -112,8 +112,16 @@ class Section(SideBarAware, ContentBarAware, Folder):
 
 
     def get_document_types(self):
-        return [self.get_article_class(), self.get_subsection_class()] \
-                + Folder.get_document_types(self)
+        types = Folder.get_document_types(self)[:]
+        # Do not add format twice
+        cls_id_types = [ cls.class_id for cls in types ]
+        subsection_cls = self.get_subsection_class()
+        article_cls = self.get_article_class()
+        if subsection_cls.class_id not in cls_id_types:
+            types.append(subsection_cls)
+        if article_cls.class_id not in cls_id_types:
+            types.append(article_cls)
+        return types
 
 
     def get_links(self):
@@ -200,7 +208,7 @@ class Section(SideBarAware, ContentBarAware, Folder):
 
 
     def get_article_class(self):
-        return Article
+        return WebPage
 
 
     def get_ordered_names(self, order_path='order-section'):
