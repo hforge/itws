@@ -51,7 +51,7 @@ def transform_links(tweet):
     tweet = re.sub(r'(\A|\s)#(\w+)',
                r'\1#<a href="http://search.twitter.com/search?q=%23\2">\2</a>',
                tweet)
-    tweet = re.sub(r'(\A|\s)(http://(\w|\.|/|\?|=|%|&|-)+)',
+    tweet = re.sub(r'(\A|\s)(http://(\w|\.|/|;|\?|=|%|&|-)+)',
                    r'\1<a href="\2"> \2</a>', tweet)
     tweet = re.sub('&', '&amp;', tweet)
     return XMLParser(tweet.encode('utf-8'))
