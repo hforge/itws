@@ -162,7 +162,7 @@ class TwitterSideBar(BarItem, ResourceWithCache):
             response = urllib2.urlopen(req)
             data = response.read()
         except (socket.error, socket.gaierror, Exception,
-                urllib2.HTTPError), e:
+                urllib2.HTTPError, urllib2.URLError), e:
             msg = '%s -- Network error: "%s"'
             msg = msg % (XMLContent.encode(str(uri)), e)
             msg = msg.encode('utf-8')
