@@ -22,23 +22,18 @@ from copy import deepcopy
 
 # Import from itools
 from itools.core import get_abspath, merge_dicts
-from itools.datatypes import String, Boolean, Integer, Enumerate
+from itools.datatypes import String, Boolean
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
 from itools.web import get_context
-from itools.xapian import AndQuery, PhraseQuery
 
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import SelectRadio
-from ikaaro.forms import SelectWidget, BooleanCheckBox, TextWidget
+from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
-from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.future.order import ResourcesOrderedTable_Unordered
-from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.skins import register_skin
@@ -50,6 +45,8 @@ from repository_views import BarItem_Preview
 from repository_views import BarItem_Section_News_Edit
 from repository_views import BarItem_Section_News_Preview
 from repository_views import BarItem_Section_News_View
+from repository_views import BarItemsOrderedTable_NewResource
+from repository_views import BarItemsOrderedTable_View
 from repository_views import ContentBarItem_Articles_View
 from repository_views import ContentBarItem_SectionChildrenToc_View
 from repository_views import ContentBarItem_WebsiteArticles_View
@@ -355,99 +352,6 @@ class ContentBarItem_SectionChildrenToc(BarItem):
 ###########################################################################
 # Repository
 ###########################################################################
-class BarItemsOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
-
-    query_schema = {}
-
-    def sort_and_batch(self, resource, context, items):
-        # Sort by order regardless query
-        reverse = False
-        ordered_ids = list(resource.handler.get_record_ids_in_order())
-        f = lambda x: ordered_ids.index(x.id)
-        items.sort(cmp=lambda x,y: cmp(f(x), f(y)), reverse=reverse)
-
-        # Always display all items
-        return items
-
-
-    def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Ordered.get_table_columns(self,
-                resource, context)
-
-        # Column to remove
-        indexes = [ x for x, column in enumerate(columns)
-                    if column[0] in ('name', 'order') ]
-        indexes.sort(reverse=True)
-        for index in indexes:
-            columns.pop(index)
-
-        return columns
-
-
-
-class BarItemsOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
-
-    query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
-                               batch_size=Integer(default=0),
-                               format=String)
-    search_template = '/ui/bar_items/browse_search.xml'
-
-    def get_query_schema(self):
-        return self.query_schema
-
-
-    def get_query(self, resource, context):
-        query = ResourcesOrderedTable_Unordered.get_query(self, resource,
-                                                          context)
-        # Add format filter
-        format = context.query['format']
-        if format:
-            query = AndQuery(query, PhraseQuery('format', format))
-
-        return query
-
-
-    def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Unordered.get_table_columns(self,
-                resource, context)
-
-        column = ('format', MSG(u'Type'), False)
-        columns.insert(3, column)
-
-        # Column to remove
-        indexes = [ x for x, column in enumerate(columns)
-                    if column[0] == 'path' ]
-        indexes.sort(reverse=True)
-        for index in indexes:
-            columns.pop(index)
-
-        return columns
-
-
-    def get_search_namespace(self, resource, context):
-        orderable_classes = resource.orderable_classes
-        enum = Enumerate()
-        options = []
-        for cls in orderable_classes:
-            options.append({'name': cls.class_id, 'value': cls.class_title})
-        enum.options = options
-
-        format = context.query['format']
-        widget = SelectWidget('format')
-        namespace = {}
-        namespace['format_widget'] = widget.to_html(enum, format)
-
-        return namespace
-
-
-
-class BarItemsOrderedTable_View(ResourcesOrderedTable_View):
-
-    subviews = [BarItemsOrderedTable_Ordered(),
-                BarItemsOrderedTable_Unordered()]
-
-
-
 class BarItemsOrderedTable(ResourcesOrderedTable):
 
     view = BarItemsOrderedTable_View()
