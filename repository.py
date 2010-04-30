@@ -45,7 +45,6 @@ from repository_views import BarItem_Preview
 from repository_views import BarItem_Section_News_Edit
 from repository_views import BarItem_Section_News_Preview
 from repository_views import BarItem_Section_News_View
-from repository_views import BarItemsOrderedTable_NewResource
 from repository_views import BarItemsOrderedTable_View
 from repository_views import ContentBarItem_Articles_View
 from repository_views import ContentBarItem_SectionChildrenToc_View
@@ -136,6 +135,7 @@ class SidebarItem(WebPage):
     preview = order_preview = SidebarItem_Preview()
     edit = SidebarItem_Edit()
     view = SidebarItem_View()
+    new_instance = EasyNewInstance()
 
 
     @classmethod

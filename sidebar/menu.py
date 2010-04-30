@@ -25,6 +25,7 @@ from ikaaro.registry import register_resource_class
 # Import from itws
 from itws.repository import register_bar_item
 from itws.repository_views import BarItem_View, BarItem_Edit
+from itws.views import EasyNewInstance
 
 
 
@@ -54,6 +55,7 @@ class MenuSideBar(MenuFolder):
     item_schema = {}
     item_widgets = []
 
+    new_instance = EasyNewInstance()
     view = MenuSideBar_View()
     menu = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit menu'))
