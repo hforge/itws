@@ -67,11 +67,11 @@ from tags import TagsFolder
 from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view
-from website import WebSite
 from webpage import WebPage
+from website import WebSite
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS, NeutralWS_EditRSS
-from ws_neutral_views import WSDataFolder_NewArticleResource
+from ws_neutral_views import NeutralWS_ArticleNewInstance
 
 
 
@@ -250,7 +250,6 @@ class WSDataFolder(Folder):
     order_articles = GoToSpecificDocument(specific_document='order-resources',
                                           title=MSG(u'Order the articles'),
                                           access='is_allowed_to_edit')
-    new_article_resource = WSDataFolder_NewArticleResource()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
@@ -284,9 +283,9 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     class_views = (WebSite.class_views[:-2]
                    + ContentBarAware.class_views
                    + SideBarAware.class_views
-                   + ['edit_ws_data', 'edit_menu', 'edit_turning_footer',
-                      'edit_footer', 'edit_rss', 'edit_tags', 'control_panel',
-                      'commit_log'])
+                   + ['edit_ws_data', 'add_new_article', 'edit_menu',
+                      'edit_turning_footer', 'edit_footer', 'edit_rss',
+                      'edit_tags', 'control_panel', 'commit_log'])
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
@@ -593,6 +592,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
             specific_document='footer/menu',
             title=MSG(u'Footer'), access='is_allowed_to_edit')
     view = NeutralWS_View()
+    # Helper
+    add_new_article = NeutralWS_ArticleNewInstance()
     # Order
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',

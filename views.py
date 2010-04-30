@@ -18,15 +18,17 @@
 from itools.core import freeze
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
+from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
 from itools.uri import Reference
-from itools.web import get_context, BaseView, STLView
+from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
+from ikaaro import messages
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import TextWidget, HTMLBody
+from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.future.menu import Menu_View
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
@@ -52,6 +54,74 @@ class EasyNewInstance(NewInstance):
         # As we have no name, always return the title
         title = form['title'].strip()
         return title
+
+
+
+class ProxyContainerNewInstance(EasyNewInstance):
+
+    query_schema = freeze({'title': Unicode})
+
+    def _get_resource_cls(self, context):
+        raise NotImplementedError
+
+
+    def _get_container(self, resource, context):
+        raise NotImplementedError
+
+
+    def _get_form(self, resource, context):
+        form = AutoForm._get_form(self, resource, context)
+        name = self.get_new_resource_name(form)
+
+        # Check the name
+        if not name:
+            raise FormError, messages.MSG_NAME_MISSING
+
+        try:
+            name = checkid(name)
+        except UnicodeEncodeError:
+            name = None
+
+        if name is None:
+            raise FormError, messages.MSG_BAD_NAME
+
+        # Check the name is free
+        container = self._get_container(resource, context)
+        if container.get_resource(name, soft=True) is not None:
+            raise FormError, messages.MSG_NAME_CLASH
+
+        # Ok
+        form['name'] = name
+        return form
+
+
+    def get_title(self, context):
+        cls = self._get_resource_cls(context)
+        class_title = cls.class_title.gettext()
+        title = MSG(u'Add {class_title}')
+        return title.gettext(class_title=class_title)
+
+
+    def icon(self, resource, **kw):
+        cls = self._get_resource_cls(get_context())
+        return cls.get_class_icon()
+
+
+    def action(self, resource, context, form):
+        name = form['name']
+        title = form['title']
+
+        # Create the resource
+        cls = self._get_resource_cls(context)
+        container = self._get_container(resource, context)
+        child = cls.make_resource(cls, container, name)
+        # The metadata
+        metadata = child.metadata
+        language = resource.get_content_language(context)
+        metadata.set_property('title', title, language=language)
+
+        goto = '%s/%s' % (context.get_link(container), name)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 
 

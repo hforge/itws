@@ -22,15 +22,16 @@ from itools.core import merge_dicts
 from itools.datatypes import Unicode, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import get_reference, Reference
-from itools.web import BaseView, FormError, STLView
+from itools.uri import Reference
+from itools.web import FormError, STLView
+from itools.web import get_context
 from itools.xapian import PhraseQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.forms import stl_namespaces, AutoForm, TextWidget, SelectRadio
 from ikaaro.forms import ImageSelectorWidget, XHTMLBody
+from ikaaro.forms import stl_namespaces, AutoForm, TextWidget, SelectRadio
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
@@ -38,7 +39,7 @@ from bar import ContentBar_View, SideBar_View
 from datatypes import FormatEnumerate, NeutralClassSkin, RSSFeedsFormats
 from section import Section
 from tags import TagsAware
-from views import BaseRSS
+from views import BaseRSS, ProxyContainerNewInstance
 from website import WebSite_Edit
 
 
@@ -329,18 +330,6 @@ class NeutralWS_RSS(BaseRSS):
 
 
 
-class WSDataFolder_NewArticleResource(BaseView):
-
-    access = 'is_allowed_to_edit'
-
-    def GET(self, resource, context):
-        article_cls = resource.parent.get_article_class()
-        goto = '%s/;new_resource?type=%s' % (context.get_link(resource),
-                                             article_cls.class_id)
-        return get_reference(goto)
-
-
-
 class NeutralWSContentBar_View(ContentBar_View):
 
     def get_manage_buttons(self, resource, context):
@@ -351,15 +340,35 @@ class NeutralWSContentBar_View(ContentBar_View):
         buttons = ContentBar_View.get_manage_buttons(self, resource, context)
 
         # webpage creation helper
-        article_cls = resource.get_article_class()
         path = context.get_link(resource)
+        article_cls = resource.get_article_class()
         msg = MSG(u'Create a new %s' % article_cls.class_title.gettext())
-        buttons.append({'path': '%s/ws-data/;new_article_resource' % path,
+        buttons.append({'path': '%s/;add_new_article' % path,
                         'icon': '/ui/icons/48x48/html.png',
                         'label': msg,
                         'target': '_blank'})
 
         return buttons
+
+
+
+class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
+
+    def _get_view_title(self):
+        cls = self._get_resource_cls(get_context())
+        return MSG(u'Add new {cls}').gettext(cls.class_title.gettext())
+
+
+    def _get_resource_cls(self, context):
+        here = context.resource
+        return here.get_article_class()
+
+
+    def _get_container(self, resource, context):
+        return resource.get_resource('ws-data')
+
+
+    title = property(_get_view_title)
 
 
 
