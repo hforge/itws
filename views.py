@@ -20,12 +20,12 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.uri import get_reference, Reference
+from itools.uri import Reference
 from itools.web import get_context, BaseView, STLView
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
-from ikaaro.folder_views import GoToSpecificDocument, Folder_BrowseContent
+from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import TextWidget, HTMLBody
 from ikaaro.future.menu import Menu_View
 from ikaaro.utils import get_base_path_query
@@ -34,39 +34,6 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import set_prefix_with_hostname, to_box
-
-
-
-############################################################
-# GoToSpecificItem
-############################################################
-class GoToSpecificItem(GoToSpecificDocument):
-
-    title = MSG(u'View')
-    keep_query = False
-
-    def GET(self, resource, context):
-        specific_document = resource._get_goto_item()
-        if specific_document is None:
-            return ''
-
-        goto = '%s/%s' % (context.get_link(resource), specific_document)
-        goto = get_reference(goto)
-
-        # Keep the query
-        if self.keep_query and context.uri.query:
-            goto.query = context.uri.query.copy()
-
-        # Keep the message
-        message = context.get_form_value('message')
-        if message:
-            goto = goto.replace(message=message)
-
-        return goto
-
-
-    def get_specific_document(self, resource, context):
-        return resource._get_goto_item()
 
 
 
