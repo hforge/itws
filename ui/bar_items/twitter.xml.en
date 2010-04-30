@@ -8,9 +8,16 @@
     <a href="http://www.twitter.com/${user_name}">${title}</a>
   </h3>
 
-  <ul stl:if="errors" class="errors">
-    <li stl:repeat="error errors">${error}</li>
-  </ul>
+  <stl:block stl:if="errors">
+    <div class="errors">
+      <p>An error occured, the tweets have not been updated.
+         <a onclick="$(this).parents('div.errors').children('ul').show();">See errors</a>
+       </p>
+      <ul style="display: none;">
+        <li stl:repeat="error errors">${error}</li>
+      </ul>
+    </div>
+  </stl:block>
   <ul stl:if="twitts">
     <li stl:repeat="t twitts">${t}</li>
   </ul>

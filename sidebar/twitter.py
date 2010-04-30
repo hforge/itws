@@ -214,11 +214,14 @@ class TwitterSideBar(BarItem, ResourceWithCache):
                 continue
             #list_errors.append(x)
 
-        # Save informations
+        # Save informations only if there is no errors
         metadata = self.metadata
+        first_update = metadata.cache_mtime is None
         metadata.cache_mtime = datetime.now()
-        metadata.cache_data = data
-        metadata.cache_errors = list_errors
+        if first_update or (metadata.cache_errors is not None \
+                            and not list_errors):
+            metadata.cache_data = data
+            metadata.cache_errors = list_errors
 
 
 
