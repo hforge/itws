@@ -71,6 +71,7 @@ from website import WebSite
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS, NeutralWS_EditRSS
+from ws_neutral_views import WSDataFolder_NewArticleResource
 
 
 
@@ -249,6 +250,7 @@ class WSDataFolder(Folder):
     order_articles = GoToSpecificDocument(specific_document='order-resources',
                                           title=MSG(u'Order the articles'),
                                           access='is_allowed_to_edit')
+    new_article_resource = WSDataFolder_NewArticleResource()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')

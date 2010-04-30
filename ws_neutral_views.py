@@ -22,8 +22,8 @@ from itools.core import merge_dicts
 from itools.datatypes import Unicode, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import Reference
-from itools.web import FormError, STLView
+from itools.uri import get_reference, Reference
+from itools.web import BaseView, FormError, STLView
 from itools.xapian import PhraseQuery
 from itools.xml import XMLParser
 
@@ -329,6 +329,40 @@ class NeutralWS_RSS(BaseRSS):
 
 
 
+class WSDataFolder_NewArticleResource(BaseView):
+
+    access = 'is_allowed_to_edit'
+
+    def GET(self, resource, context):
+        article_cls = resource.parent.get_article_class()
+        goto = '%s/;new_resource?type=%s' % (context.get_link(resource),
+                                             article_cls.class_id)
+        return get_reference(goto)
+
+
+
+class NeutralWSContentBar_View(ContentBar_View):
+
+    def get_manage_buttons(self, resource, context):
+        ac = resource.get_access_control()
+        allowed = ac.is_allowed_to_edit(context.user, resource)
+        if not allowed:
+            return []
+        buttons = ContentBar_View.get_manage_buttons(self, resource, context)
+
+        # webpage creation helper
+        article_cls = resource.get_article_class()
+        path = context.get_link(resource)
+        msg = MSG(u'Create a new %s' % article_cls.class_title.gettext())
+        buttons.append({'path': '%s/ws-data/;new_article_resource' % path,
+                        'icon': '/ui/icons/48x48/html.png',
+                        'label': msg,
+                        'target': '_blank'})
+
+        return buttons
+
+
+
 class NeutralWS_View(STLView):
 
     access = 'is_allowed_to_view'
@@ -336,7 +370,7 @@ class NeutralWS_View(STLView):
     template = '/ui/common/Neutral_view.xml'
 
     subviews = {'contentbar_view':
-            ContentBar_View(order_name='ws-data/order-contentbar'),
+            NeutralWSContentBar_View(order_name='ws-data/order-contentbar'),
                 'sidebar_view':
             SideBar_View(order_name='ws-data/order-sidebar')}
 

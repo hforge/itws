@@ -203,6 +203,27 @@ class SectionOrderedTable_View(ResourcesOrderedTable_View):
 ###########################################################################
 # Section view
 ###########################################################################
+class SectionContentBar_View(ContentBar_View):
+
+    def get_manage_buttons(self, resource, context):
+        ac = resource.get_access_control()
+        allowed = ac.is_allowed_to_edit(context.user, resource)
+        if not allowed:
+            return []
+        buttons = ContentBar_View.get_manage_buttons(self, resource, context)
+
+        # webpage creation helper
+        article_cls = resource.get_article_class()
+        path = context.get_link(resource)
+        msg = MSG(u'Create a new %s' % article_cls.class_title.gettext())
+        buttons.append({'path': '%s/;new_resource?type=%s' % (path, article_cls.class_id),
+                        'icon': '/ui/icons/48x48/html.png',
+                        'label': msg,
+                        'target': '_blank'})
+
+        return buttons
+
+
 
 class Section_View(STLView):
 
@@ -213,7 +234,7 @@ class Section_View(STLView):
     # subviews = {view_name: view} OR {view_name: None}
     # The view can be dynamically generated and rendered inside
     # the method get_subviews_value.
-    subviews = {'contentbar_view': ContentBar_View()}
+    subviews = {'contentbar_view': SectionContentBar_View()}
 
     def _get_real_section(self, resource, context):
         return resource
