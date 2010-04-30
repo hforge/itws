@@ -32,8 +32,8 @@ from itools.xapian import AndQuery, PhraseQuery
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import SelectWidget, BooleanCheckBox, TextWidget
 from ikaaro.forms import SelectRadio
+from ikaaro.forms import SelectWidget, BooleanCheckBox, TextWidget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -47,23 +47,22 @@ from ikaaro.skins import register_skin
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
 from repository_views import BarItem_Edit
 from repository_views import BarItem_Preview
+from repository_views import BarItem_Section_News_Edit
+from repository_views import BarItem_Section_News_Preview
+from repository_views import BarItem_Section_News_View
 from repository_views import ContentBarItem_Articles_View
-#from repository_views import ContentBarItem_SectionChildrenToc_Edit
 from repository_views import ContentBarItem_SectionChildrenToc_View
+from repository_views import ContentBarItem_WebsiteArticles_View
 from repository_views import Repository_BrowseContent, Repository_NewResource
 from repository_views import SidebarItem_NewsSiblingsToc_View
 from repository_views import SidebarItem_Preview, SidebarItem_View
 from repository_views import SidebarItem_SectionChildrenToc_View
 from repository_views import SidebarItem_SectionSiblingsToc_View
-from repository_views import SidebarItem_Section_News_Edit
-from repository_views import SidebarItem_Section_News_Preview
-from repository_views import SidebarItem_Section_News_View
 from repository_views import SidebarItem_Tags_View
 from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
-from repository_views import ContentBarItem_WebsiteArticles_View
-from webpage import WebPage
 from utils import get_path_and_view
 from views import EasyNewInstance
+from webpage import WebPage
 
 
 
@@ -72,9 +71,15 @@ from views import EasyNewInstance
 ###########################################################################
 bar_item_registry = {}
 def register_bar_item(resource_class, allow_instanciation=True,
-                           allow_order=True, is_content=False):
-    bar_item_registry[resource_class] = [allow_instanciation,
-                                         allow_order, is_content]
+                      is_content=False, is_side=True):
+    if is_content is False and is_side is False:
+        msg = u'Bar item should be at least content item or side item'
+        raise ValueError, msg
+
+    bar_item_registry[resource_class] = {'instanciation': allow_instanciation,
+                                         'content': is_content,
+                                         'side': is_side}
+
 
 def get_bar_item_registry():
     return bar_item_registry
@@ -97,6 +102,25 @@ class BarItem(File):
         return merge_dicts(File.get_metadata_schema(),
                            cls.item_schema,
                            state=String(default='public'))
+
+
+
+class BarItem_Section_News(BarItem):
+
+    class_id = 'sidebar-item-section-news'
+    class_title = MSG(u'Bar item section news')
+    class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
+
+    # item comfiguration
+    item_schema = {
+        'tags': String(multiple=True),
+        'count': PositiveInteger(default=0)
+        }
+
+    # Views
+    preview = order_preview = BarItem_Section_News_Preview()
+    view = BarItem_Section_News_View()
+    edit = BarItem_Section_News_Edit()
 
 
 
@@ -187,25 +211,6 @@ class SidebarItem(WebPage):
                 new_ref.path = str(target.get_pathto(new_abs_path)) + view
                 # Update the title link
                 self.set_property('title_link', str(new_ref))
-
-
-
-class SidebarItem_Section_News(BarItem):
-
-    class_id = 'sidebar-item-section-news'
-    class_title = MSG(u'Sidebar item section news')
-    class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
-
-    # item comfiguration
-    item_schema = {
-        'tags': String(multiple=True),
-        'count': PositiveInteger(default=0)
-        }
-
-    # Views
-    preview = order_preview = SidebarItem_Section_News_Preview()
-    view = SidebarItem_Section_News_View()
-    edit = SidebarItem_Section_News_Edit()
 
 
 
@@ -469,7 +474,7 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
     def _orderable_classes(self):
         registry = get_bar_item_registry()
         types = [ cls for cls, allow in registry.iteritems()
-                  if not allow[2] ] # is content
+                  if allow['side'] ] # is side
         return types
 
     orderable_classes = property(_orderable_classes)
@@ -484,7 +489,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
     def _orderable_classes(self):
         registry = get_bar_item_registry()
         types = [ cls for cls, allow in registry.iteritems()
-                  if allow[2] ] # is content
+                  if allow['content'] ] # is content
         return types
 
     orderable_classes = property(_orderable_classes)
@@ -547,23 +552,24 @@ class Repository(Folder):
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
-                            allow_order=None):
+                            is_side=None):
         registry = get_bar_item_registry()
         types = []
         for cls, allow in registry.iteritems():
             if allow_instanciation is not None and \
-                    allow_instanciation <> allow[0]:
+                    allow_instanciation <> allow['instanciation']:
                 continue
-            if is_content is not None and is_content <> allow[2]:
+            if is_content is not None and is_content <> allow['content']:
                 continue
-            if allow_order is not None and allow_order <> allow[1]:
+            if is_side is not None and is_side <> allow['side']:
                 continue
             types.append(cls)
         return types
 
 
     def get_document_types(self):
-        return self._get_document_types(allow_instanciation=True)
+        return self._get_document_types(allow_instanciation=True,
+                                        is_content=True, is_side=True)
 
 
     def can_paste(self, source):
@@ -581,7 +587,7 @@ class Repository(Folder):
 ###########################################################################
 register_resource_class(Repository)
 register_resource_class(SidebarItem)
-register_resource_class(SidebarItem_Section_News)
+register_resource_class(BarItem_Section_News)
 register_resource_class(SidebarItem_Tags)
 register_resource_class(SidebarItem_SectionSiblingsToc)
 register_resource_class(SidebarItem_SectionChildrenToc)
@@ -593,7 +599,8 @@ register_resource_class(ContentBarItem_WebsiteArticles)
 register_resource_class(ContentBarItem_SectionChildrenToc)
 
 register_bar_item(SidebarItem, allow_instanciation=True)
-register_bar_item(SidebarItem_Section_News, allow_instanciation=True)
+register_bar_item(BarItem_Section_News, allow_instanciation=True,
+                  is_side=True, is_content=True)
 register_bar_item(SidebarItem_Tags, allow_instanciation=True)
 register_bar_item(SidebarItem_SectionSiblingsToc,
                   allow_instanciation=False)

@@ -51,7 +51,8 @@ from utils import to_box, get_admin_bar, DualSelectWidget
 ################################################################################
 class Repository_AddResourceMenu(AddResourceMenu):
 
-    is_content = False
+    is_content = None
+    is_side = None
 
     def __init__(self, **kw):
         for key in kw:
@@ -62,7 +63,8 @@ class Repository_AddResourceMenu(AddResourceMenu):
         base = '%s/;new_resource' % context.get_link(resource)
         document_types = resource._get_document_types(
                 allow_instanciation=True,
-                is_content=self.is_content)
+                is_content=self.is_content,
+                is_side=self.is_side)
         return [
             {'src': '/ui/' + cls.class_icon16,
              'title': cls.class_title.gettext(),
@@ -73,7 +75,8 @@ class Repository_AddResourceMenu(AddResourceMenu):
 
 class Repository_NewResource(Folder_NewResource):
 
-    is_content = False
+    is_content = None
+    is_side = None
 
     def get_namespace(self, resource, context):
         items = [
@@ -84,7 +87,8 @@ class Repository_NewResource(Folder_NewResource):
             }
             for cls in resource._get_document_types(
                 allow_instanciation=True,
-                is_content=self.is_content) ]
+                is_content=self.is_content,
+                is_side=self.is_side) ]
 
         return {
             'batch': None,
@@ -94,7 +98,7 @@ class Repository_NewResource(Folder_NewResource):
 
 class Repository_BrowseContent(Folder_BrowseContent):
 
-    context_menus = [ Repository_AddResourceMenu(
+    context_menus = [ Repository_AddResourceMenu(is_side=True,
                           title=MSG(u'Add Sidebar Resource')),
                       Repository_AddResourceMenu(is_content=True,
                           title=MSG(u'Add Contentbar Resource'))]
@@ -144,33 +148,9 @@ class BarItem_Edit(DBResource_Edit):
 
 
 ################################################################################
-# Sidebar edit views
+# Bar edit views
 ################################################################################
-class SidebarItem_Edit(HTMLEditView):
-
-    schema = merge_dicts(HTMLEditView.schema, title_link=String,
-                         title_link_target=Target, display_title=Boolean)
-    widgets = [
-        timestamp_widget, title_widget,
-        BooleanCheckBox('display_title',
-                        title=MSG(u'Display on article view')),
-        PathSelectorWidget('title_link', title=MSG(u'Title link')),
-        SelectWidget('title_link_target', title=MSG(u'Title link target')),
-        rte_widget
-        ]
-
-    def action(self, resource, context, form):
-        HTMLEditView.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        for key in ('display_title', 'title_link', 'title_link_target'):
-            resource.set_property(key, form[key])
-
-
-
-class SidebarItem_Section_News_Edit(BarItem_Edit):
+class BarItem_Section_News_Edit(BarItem_Edit):
 
     def get_schema(self, resource, context):
         # Base schema
@@ -215,6 +195,33 @@ class SidebarItem_Section_News_Edit(BarItem_Edit):
 
 
 ################################################################################
+# Sidebar edit views
+################################################################################
+class SidebarItem_Edit(HTMLEditView):
+
+    schema = merge_dicts(HTMLEditView.schema, title_link=String,
+                         title_link_target=Target, display_title=Boolean)
+    widgets = [
+        timestamp_widget, title_widget,
+        BooleanCheckBox('display_title',
+                        title=MSG(u'Display on article view')),
+        PathSelectorWidget('title_link', title=MSG(u'Title link')),
+        SelectWidget('title_link_target', title=MSG(u'Title link target')),
+        rte_widget
+        ]
+
+    def action(self, resource, context, form):
+        HTMLEditView.action(self, resource, context, form)
+        # Check edit conflict
+        if context.edit_conflict:
+            return
+
+        for key in ('display_title', 'title_link', 'title_link_target'):
+            resource.set_property(key, form[key])
+
+
+
+################################################################################
 # Base classes preview views
 ################################################################################
 class BarItem_Preview(STLView):
@@ -247,6 +254,22 @@ class BarItem_Preview(STLView):
 
 
 ################################################################################
+# Bar preview views
+################################################################################
+class BarItem_Section_News_Preview(BarItem_Preview):
+
+    def get_details(self, resource, context):
+        count = resource.get_property('count')
+        tags = resource.get_property('tags')
+        details = []
+        for key in ('count', 'tags'):
+            value = resource.get_property(key)
+            details.append(u'%s: %s' % (key, value))
+        return details
+
+
+
+################################################################################
 # Sidebar preview views
 ################################################################################
 class SidebarItem_ViewBoth():
@@ -268,19 +291,6 @@ class SidebarItem_Preview(BaseView):
 
     def GET(self, resource, context):
         return to_box(resource, WebPage_View().GET(resource, context))
-
-
-
-class SidebarItem_Section_News_Preview(BarItem_Preview):
-
-    def get_details(self, resource, context):
-        count = resource.get_property('count')
-        tags = resource.get_property('tags')
-        details = []
-        for key in ('count', 'tags'):
-            value = resource.get_property(key)
-            details.append(u'%s: %s' % (key, value))
-        return details
 
 
 
@@ -323,30 +333,9 @@ class BarItem_View(STLView):
 
 
 ################################################################################
-# Sidebar views
+# Bar views
 ################################################################################
-class SidebarItem_View(BarItem_View, WebPage_View):
-
-    template = '/ui/bar_items/SidebarItem_view.xml'
-
-    def GET(self, resource, context):
-        return BarItem_View.GET(self, resource, context)
-
-
-    def get_namespace(self, resource, context):
-        title = resource.get_property('display_title')
-        if title:
-            title = resource.get_title()
-        return {
-            'name': resource.name,
-            'title':title,
-            'title_link': resource.get_property('title_link'),
-            'title_link_target': resource.get_property('title_link_target'),
-            'content': WebPage_View.GET(self, resource, context)}
-
-
-
-class SidebarItem_Section_News_View(BarItem_View):
+class BarItem_Section_News_View(BarItem_View):
 
     access = 'is_allowed_to_edit'
     template = '/ui/bar_items/Section_newsview.xml'
@@ -438,6 +427,30 @@ class SidebarItem_Section_News_View(BarItem_View):
         namespace['display'] = items_number != 0
 
         return namespace
+
+
+
+################################################################################
+# Sidebar views
+################################################################################
+class SidebarItem_View(BarItem_View, WebPage_View):
+
+    template = '/ui/bar_items/SidebarItem_view.xml'
+
+    def GET(self, resource, context):
+        return BarItem_View.GET(self, resource, context)
+
+
+    def get_namespace(self, resource, context):
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+        return {
+            'name': resource.name,
+            'title':title,
+            'title_link': resource.get_property('title_link'),
+            'title_link_target': resource.get_property('title_link_target'),
+            'content': WebPage_View.GET(self, resource, context)}
 
 
 
@@ -702,7 +715,7 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
 
 
 
-class SidebarItem_NewsSiblingsToc_View(SidebarItem_Section_News_View):
+class SidebarItem_NewsSiblingsToc_View(BarItem_Section_News_View):
 
     template = '/ui/bar_items/News_siblings_tocview.xml'
     more_title = MSG(u'Show all')

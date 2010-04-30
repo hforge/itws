@@ -286,4 +286,4 @@ class Diaporama(Folder, OrderTableAware):
 register_resource_class(Diaporama)
 register_resource_class(DiaporamaTable)
 register_bar_item(Diaporama, allow_instanciation=True,
-                  allow_order=False, is_content=True)
+                  is_content=True)
