@@ -206,7 +206,8 @@ class NeutralSkin(FoBoFooterAwareSkin):
             sidebar_resource = site_root
             if isinstance(here, SideBarAware):
                 sidebar_resource = here
-            elif isinstance(here, NewsItem):
+            elif isinstance(here, NewsItem) or\
+                    isinstance(here.parent, site_root.section_class):
                 sidebar_resource = here.parent
 
             # When request path is /ui/xxx -> 404
