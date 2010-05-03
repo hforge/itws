@@ -611,6 +611,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     rss = last_news_rss = NeutralWS_RSS()
     edit_rss = NeutralWS_EditRSS()
     edit_tags = GoToSpecificDocument(specific_document='tags',
+                                     specific_view='browse_content',
                                      access='is_allowed_to_edit',
                                      title=MSG(u'Edit tags'))
     edit = NeutralWS_Edit()
