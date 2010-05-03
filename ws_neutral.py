@@ -108,6 +108,26 @@ class NeutralSkin(FoBoFooterAwareSkin):
         return bo_class
 
 
+    def get_rss_feeds(self, context, site_root):
+        rss = []
+        site_root_abspath = site_root.get_abspath()
+        # Global RSS
+        ws_title = site_root.get_title()
+        rss_title = MSG(u'{title} -- RSS Feeds').gettext(title=ws_title)
+        rss.append({'path': '/;rss', 'title': rss_title})
+
+        # News RSS
+        news_folder = site_root.get_news_folder(context)
+        if news_folder:
+            title = news_folder.get_title()
+            rss_title = MSG(u'{ws_title} {title} -- RSS Feeds')
+            rss_title = rss_title.gettext(title=title, ws_title=ws_title)
+            rss.append({'path': '%s/;rss' % context.get_link(news_folder),
+                        'title': rss_title})
+
+        return rss
+
+
     def build_namespace(self, context):
         namespace = FoBoFooterAwareSkin.build_namespace(self, context)
 
@@ -144,9 +164,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         namespace['custom_data'] = XMLParser(custom_data)
 
         # RSS Feeds title
-        title = site_root.get_title()
-        rss_title = MSG(u'{title} -- RSS Feeds').gettext(title=title)
-        namespace['rss_title'] = rss_title
+        namespace['rss_feeds'] = self.get_rss_feeds(context, site_root)
 
         # favicon
         favicon = site_root.get_property('favicon')
