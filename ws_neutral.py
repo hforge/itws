@@ -25,7 +25,7 @@ from decimal import Decimal
 
 # Import from itools
 from itools.core import get_abspath
-from itools.datatypes import Unicode, Integer, Tokens, String
+from itools.datatypes import Unicode, String
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.uri import get_reference, resolve_uri, Path
@@ -70,7 +70,7 @@ from utils import get_path_and_view
 from webpage import WebPage
 from website import WebSite
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
-from ws_neutral_views import NotFoundPage, NeutralWS_RSS, NeutralWS_EditRSS
+from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import NeutralWS_ArticleNewInstance
 
 
@@ -297,13 +297,13 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                 WebSite):
 
     class_id = 'neutral'
-    class_version = '20100429'
+    class_version = '20100503'
     class_title = MSG(u'neutral website')
     class_views = (WebSite.class_views[:-2]
                    + ContentBarAware.class_views
                    + SideBarAware.class_views
                    + ['edit_ws_data', 'add_new_article', 'edit_menu',
-                      'edit_turning_footer', 'edit_footer', 'edit_rss',
+                      'edit_turning_footer', 'edit_footer',
                       'edit_tags', 'control_panel', 'commit_log'])
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
@@ -386,8 +386,6 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     def get_metadata_schema(cls):
         schema = WebSite.get_metadata_schema()
         schema['breadcrumb_title'] = Unicode
-        schema['rss_feeds_max_items_number'] = Integer(default=20)
-        schema['rss_feeds_items_format'] = Tokens(default=('section',))
         schema['banner_path'] = MultilingualString(default='')
         schema['class_skin'] = NeutralClassSkin(default='ui/neutral')
         schema['date_of_writing_format'] = String(default='')
@@ -597,6 +595,11 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                 metadata.version = webpage_cls.class_version
 
 
+    def update_20100503(self):
+        self.del_property('rss_feeds_items_format')
+        self.del_property('rss_feeds_max_items_number')
+
+
     # User Interface
     edit_ws_data = GoToSpecificDocument(
             specific_document='ws-data', title=MSG(u'Edit home page'),
@@ -628,7 +631,6 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         title=MSG(u'Order the sidebar items'))
     # Compatibility
     rss = last_news_rss = NeutralWS_RSS()
-    edit_rss = NeutralWS_EditRSS()
     edit_tags = GoToSpecificDocument(specific_document='tags',
                                      specific_view='browse_content',
                                      access='is_allowed_to_edit',

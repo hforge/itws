@@ -19,7 +19,7 @@ from types import GeneratorType
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Unicode, Integer, String
+from itools.datatypes import Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
 from itools.uri import Reference
@@ -31,12 +31,12 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.forms import ImageSelectorWidget, XHTMLBody
-from ikaaro.forms import stl_namespaces, AutoForm, TextWidget, SelectRadio
+from ikaaro.forms import stl_namespaces, TextWidget, SelectRadio
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
 from bar import ContentBar_View, SideBar_View
-from datatypes import FormatEnumerate, NeutralClassSkin, RSSFeedsFormats
+from datatypes import FormatEnumerate, NeutralClassSkin
 from section import Section
 from tags import TagsAware
 from views import BaseRSS, ProxyContainerNewInstance
@@ -216,35 +216,6 @@ Preview
 
 
 
-class NeutralWS_EditRSS(AutoForm):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Configure RSS')
-    icon = 'metadata.png'
-
-    schema = {
-        'rss_feeds_max_items_number': Integer(mandatory=True),
-        'rss_feeds_items_format': RSSFeedsFormats(mandatory=True,
-                                                  multiple=True)}
-    widgets = [TextWidget('rss_feeds_max_items_number',
-                          title=MSG(u'Max items number'), size=3),
-               SelectRadio('rss_feeds_items_format', title=MSG(u'Format'))]
-
-
-    def get_value(self, resource, context, name, datatype):
-        return resource.get_property(name)
-
-
-    def action(self, resource, context, form):
-        items_number = form['rss_feeds_max_items_number']
-        format = form['rss_feeds_items_format']
-        resource.set_property('rss_feeds_max_items_number', items_number)
-        resource.set_property('rss_feeds_items_format', format)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-
-
-
 class NeutralWS_RSS(BaseRSS):
 
     def get_base_query(self, resource, context):
@@ -274,38 +245,6 @@ class NeutralWS_RSS(BaseRSS):
         for name in ('./menu/', './repository/'):
             excluded.append(site_root_abspath.resolve2(name))
         return excluded
-
-
-    def get_max_items_number(self, resource, context):
-        return resource.get_property('rss_feeds_max_items_number')
-
-
-    def get_section_and_article_format(self, resource):
-        site_root = resource.get_site_root()
-        section_cls = site_root.section_class
-        classes = []
-
-        for section in site_root.search_resources(cls=section_cls):
-            # section class_id
-            classes.append(section_cls.class_id)
-            # article class_id
-            article_cls = section.get_article_class()
-            for article in section.search_resources(cls=article_cls):
-                classes.append(article_cls.class_id)
-
-        return list(set(classes))
-
-
-    def get_allowed_formats(self, resource, context):
-        # Filter by format
-        formats = resource.get_property('rss_feeds_items_format')
-        formats = list(formats)
-        if not formats:
-            return []
-        if formats.count('section'):
-            formats.remove('section')
-            formats.extend(self.get_section_and_article_format(resource))
-        return formats
 
 
     def get_item_value(self, resource, context, item, column):

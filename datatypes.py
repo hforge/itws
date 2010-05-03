@@ -17,7 +17,6 @@
 
 # Import from itools
 from itools.datatypes import Integer, Unicode, Enumerate, String
-from itools.gettext import MSG
 from itools.web import get_context
 from itools.xapian import AndQuery, PhraseQuery
 
@@ -119,12 +118,4 @@ class NeutralClassSkin(Enumerate):
 
     options = [{'name': '/ui/neutral', 'value': u'Neutral 1'},
                {'name': '/ui/neutral2', 'value': u"Neutral 2"}]
-
-
-
-class RSSFeedsFormats(Enumerate):
-
-    options = [{'name': 'news', 'value': MSG('News')},
-               {'name': 'slide', 'value': MSG(u'Slide')},
-               {'name': 'section', 'value': MSG(u'Section')}]
 
