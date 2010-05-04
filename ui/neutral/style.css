@@ -46,12 +46,12 @@ body {
   width: 100%;
 }
 
-#content-table #td-contentbar {
+#td-contentbar {
   width: 66%;
   vertical-align: top;
 }
 
-#content-table #td-sidebar {
+#td-sidebar {
   width: 34%;
   vertical-align: top;
 }
@@ -281,6 +281,7 @@ body {
 #turning-footer a img {
   border: 0;
 }
+
 /**************************************************************************
  * TURNING FOOTER
  **************************************************************************/
@@ -337,4 +338,11 @@ body {
 
 .sidebar-item-section-news .newsitem .newsitem-date {
   /* padding-bottom: 5px; */
+}
+
+/**************************************************************************
+ * TAGS
+ * ***********************************************************************/
+#tag-view .item {
+  border-bottom: 1px dashed #000;
 }

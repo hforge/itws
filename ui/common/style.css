@@ -34,39 +34,9 @@
 }
 
 /**************************************************************************
- * Section
- **************************************************************************/
-#td-contentbar {
-  width: 66%;
-  vertical-align: top;
-}
-
-#td-sidebar {
-  width: 33%;
-  vertical-align: top;
-}
-
-/**************************************************************************
- * News summary
- **************************************************************************/
-#newsitems .newsitem {
-  padding-bottom: 10px;
-}
-
-#newsitems .newsitem.last {
-  padding-bottom: 0;
-}
-
-#newsitems .newsitem img {
-  float: left;
-  padding-bottom: 5px;
-  padding-right: 5px;
-}
-
-/**************************************************************************
  * Tag Cloud
  **************************************************************************/
-ul#tag-cloud {
+#tag-cloud {
   padding: 2px;
   line-height: 3em;
   text-align: center;
@@ -74,69 +44,64 @@ ul#tag-cloud {
   margin: 0;
 }
 
-ul#tag-cloud li {
+#tag-cloud li {
   display: inline;
   margin-left: 10px;
 }
 
-ul#tag-cloud a {
+#tag-cloud a {
   padding: 0px;
   text-decoration: none;
 }
 
-ul#tag-cloud .tag-10 a {
+#tag-cloud .tag-10 a {
   font-size: 0.7em;
   font-weight: 100;
 }
 
-ul#tag-cloud .tag-9 a {
+#tag-cloud .tag-9 a {
   font-size: 0.8em;
   font-weight: 200;
 }
 
-ul#tag-cloud .tag-8 a {
+#tag-cloud .tag-8 a {
   font-size: 0.9em;
   font-weight: 300;
 }
 
-ul#tag-cloud .tag-7 a {
+#tag-cloud .tag-7 a {
   font-size: 1.0em;
   font-weight: 400;
 }
 
-ul#tag-cloud .tag-6 a {
+#tag-cloud .tag-6 a {
   font-size: 1.2em;
   font-weight: 500;
 }
 
-ul#tag-cloud .tag-5 a {
+#tag-cloud .tag-5 a {
   font-size: 1.4em;
   font-weight: 600;
 }
 
-ul#tag-cloud .tag-4 a {
+#tag-cloud .tag-4 a {
   font-size: 1.6em;
   font-weight: 700;
 }
 
-ul#tag-cloud .tag-3 a {
+#tag-cloud .tag-3 a {
   font-size: 1.8em;
   font-weight: 800;
 }
 
-ul#tag-cloud .tag-2 a {
+#tag-cloud .tag-2 a {
   font-size: 2.2em;
   font-weight: 900;
 }
 
-ul#tag-cloud .tag-1 a {
+#tag-cloud .tag-1 a {
   font-size: 2.5em;
   font-weight: 900;
-}
-
-/* search */
-#tag-view .item {
-  border-bottom: 1px dashed #000;
 }
 
 /**************************************************************************
