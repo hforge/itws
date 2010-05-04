@@ -13,7 +13,7 @@
           <input type="hidden" name="timestamp" value="${timestamp}" />
           ${rte}
           <p>
-            <button type="submit" class="button-ok">Change</button>
+            <button type="submit" class="button-ok"><span>Change</span></button>
           </p>
         </form>
       </td>

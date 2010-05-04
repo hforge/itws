@@ -10,7 +10,7 @@
     ${format_widget}
     <!-- OK -->
     &nbsp; &nbsp;
-    <button type="submit" class="button-search">OK</button>
+    <button type="submit" class="button-search"><span>OK</span></button>
   </fieldset>
 </form>
 

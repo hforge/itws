@@ -24,7 +24,7 @@
           selected="${feed/selected}">
           [${feed/nb_articles}] ${feed/title}</option>
       </select>
-      <button type="submit">Filter by Feed</button>
+      <button type="submit"><span>Filter by Feed</span></button>
     </form>
   </div>
   <div style="clear: both;"></div>
