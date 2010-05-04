@@ -209,7 +209,7 @@ class NewsItem(WebPage):
 
     edit = NewsItem_Edit()
     view = NewsItem_View()
-    tag_view = NewsItem_View(sidebar=False, id=None, title_link=True)
+    tag_view = NewsItem_View(id=None, title_link=True)
     add_image = NewsItem_AddImage()
 
 

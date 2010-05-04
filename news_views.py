@@ -92,7 +92,6 @@ class NewsItem_View(STLBoxView):
 
     # customization
     id = 'news'
-    sidebar = True
     title_link = None
 
     def get_manage_buttons(self, resource, context):
@@ -108,8 +107,6 @@ class NewsItem_View(STLBoxView):
 
 
     def get_namespace(self, resource, context):
-        from bar import SideBar_View
-
         news_folder = resource.parent
         language = resource.get_content_language(context)
         dow = resource.get_date_of_writing_formatted()
@@ -136,10 +133,6 @@ class NewsItem_View(STLBoxView):
         if self.title_link:
             title_link = context.get_link(resource)
         namespace['title_link'] = title_link
-        namespace['sidebar_view'] = None
-        if self.sidebar:
-            view = SideBar_View()
-            namespace['sidebar_view'] = view.GET(news_folder, context)
 
         return namespace
 
