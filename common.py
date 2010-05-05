@@ -174,11 +174,16 @@ class CommonLanguagesTemplate(LanguagesTemplate):
                 available_langs = get_available_languages(ws_languages)
 
         languages = []
+        nb_available_langs = len(available_langs)
         gettext = get_domain('itools').gettext
-        for language in available_langs:
+        for index, language in enumerate(available_langs):
             href = context.uri.replace(language=language)
             selected = (language == current_language)
-            css_class = 'selected' if selected else None
+            css_class = 'selected' if selected else ''
+            if index == 0:
+                css_class = '%s first' % css_class
+            if index == (nb_available_langs - 1):
+                css_class = '%s last' % css_class
             value = get_language_name(language)
             languages.append({
                 'name': language,
