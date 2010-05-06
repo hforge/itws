@@ -51,7 +51,6 @@ class LocationTemplateWithoutTab(LocationTemplate):
     # breadcrumbs configuration
     excluded = []
     skip_breadcrumb_in_homepage = False
-    homepage_name = None
     # tabs comfiguration
     tabs_hidden_roles = None
     tabs_hide_if_only_one_item = True
@@ -60,19 +59,8 @@ class LocationTemplateWithoutTab(LocationTemplate):
         here = context.resource
         site_root = here.get_site_root()
         if self.skip_breadcrumb_in_homepage:
-            # Hide the breadcrumb in the Home Page
-            # FIXME homepage name should dynamic (first section in the menu)
-            home_path = site_root.get_abspath().resolve2(self.homepage_name)
-            # Case 1: /index
-            if here.get_abspath() == home_path:
+            if type(here) == type(site_root):
                 return []
-            # Case 2: /
-            if type(here) is type(site_root) and \
-                    context.view_name in ('view', None):
-                ac = here.get_access_control()
-                allowed = ac.is_allowed_to_edit(context.user, here)
-                if not allowed:
-                    return []
 
         excluded = self.excluded
 
@@ -80,6 +68,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
         path = '/'
         title = site_root.get_title()
         breadcrumb = [{
+            'class': 'first',
             'url': path,
             'name': title,
             'short_name': get_breadcrumb_short_name(site_root),
@@ -97,10 +86,13 @@ class LocationTemplateWithoutTab(LocationTemplate):
             # Append
             title = resource.get_title()
             breadcrumb.append({
+                'class': '',
                 'url': path,
                 'name': title,
                 'short_name': get_breadcrumb_short_name(resource),
             })
+
+        breadcrumb[-1]['class'] += ' last'
 
         # Hide breadcrumb if there is only one item
         if len(breadcrumb) == 1:
