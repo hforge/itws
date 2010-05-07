@@ -54,7 +54,12 @@
 				"<div class='ms2side__div'>" +
 						((o.selectedPosition != 'right' && o.moveOptions) ? divUpDown : "") +
 					"<div class='ms2side__select'>" +
-						"<select name='" + nameSx + "' id='" + nameSx + "' size='" + size + "' multiple='multiple' ></select>" +
+						"<table><tr><td>" +
+							"<label for='" + nameSx + "'>Not selected</label>" +
+						"</td></tr>" +
+						"<tr><td>" +
+							"<select name='" + nameSx + "' id='" + nameSx + "' size='" + size + "' multiple='multiple' ></select>" +
+						"</td></tr></table>" +
 					"</div>" +
 					"<div class='ms2side__options'>" +
 						((o.selectedPosition == 'right')
@@ -71,7 +76,12 @@
 						) +
 					"</div>" +
 					"<div class='ms2side__select'>" +
-						"<select name='" + nameDx + "' id='" + nameDx + "' size='" + size + "' multiple='multiple' ></select>" +
+						"<table><tr><td>" +
+							"<label for='" + nameDx + "'>Selected</label>" +
+						"</td></tr>" +
+						"<tr><td>" +
+							"<select name='" + nameDx + "' id='" + nameDx + "' size='" + size + "' multiple='multiple' ></select>" +
+						"</td></tr></table>" +
 					"</div>" +
 					((o.selectedPosition == 'right' && o.moveOptions) ? divUpDown : "") +
 				"</div>";
