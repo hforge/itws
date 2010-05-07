@@ -25,7 +25,7 @@ from decimal import Decimal
 
 # Import from itools
 from itools.core import get_abspath
-from itools.datatypes import Unicode, String
+from itools.datatypes import Unicode, String, Boolean
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.uri import get_reference, resolve_uri, Path
@@ -72,6 +72,7 @@ from website import WebSite
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import NeutralWS_ArticleNewInstance
+from ws_neutral_views import NeutralWS_FOSwitchMode
 
 
 
@@ -222,6 +223,13 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
         namespace['sidebar_view'] = sidebar
         namespace['sidebar'] = sidebar or namespace['context_menus']
+
+        # FO edit/no edit
+        ac = here.get_access_control()
+        display = ac.is_allowed_to_edit(context.user, here)
+        edit_mode = context.get_cookie('itws_fo_edit', Boolean(default=True))
+        namespace['fo_edit'] = {'display': display,
+                                'edit_mode': edit_mode}
 
         return namespace
 
@@ -616,6 +624,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     view = NeutralWS_View()
     # Helper
     add_new_article = NeutralWS_ArticleNewInstance()
+    fo_switch_mode = NeutralWS_FOSwitchMode()
     # Order
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',

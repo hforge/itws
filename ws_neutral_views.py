@@ -19,10 +19,11 @@ from types import GeneratorType
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Unicode, String
+from itools.datatypes import Boolean, Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import Reference
+from itools.uri import get_reference, Reference
+from itools.web import BaseView
 from itools.web import FormError, STLView
 from itools.web import get_context
 from itools.xapian import PhraseQuery
@@ -338,3 +339,27 @@ class NeutralWS_View(STLView):
                                                            context, view_name)
 
         return namespace
+
+
+
+class NeutralWS_FOSwitchMode(BaseView):
+
+    access = 'is_allowed_to_edit'
+    query_schema = {'mode': Boolean(default=False)}
+
+    def GET(self, resource, context):
+        edit = context.query['mode']
+        if edit:
+            context.set_cookie('itws_fo_edit', '1')
+            message = MSG(u'Edition mode actif')
+        else:
+            context.set_cookie('itws_fo_edit', '0')
+            message = MSG(u'Back to navigation mode')
+
+        referer = context.get_referrer()
+        if referer:
+            goto = referer
+        else:
+            goto = '/'
+
+        return context.come_back(message, goto=goto)

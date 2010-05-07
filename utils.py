@@ -20,6 +20,7 @@
 from functools import partial
 
 # Import from itools
+from itools.datatypes import Boolean
 from itools.html import xhtml_uri
 from itools.stl import stl, rewrite_uris
 from itools.uri import get_reference, Path, Reference
@@ -215,6 +216,9 @@ admin_bar_icon_template = list(XMLParser("""
 
 def get_admin_bar(buttons, id, title='', icon=False):
     context = get_context()
+    cookie = context.get_cookie('itws_fo_edit', Boolean(default=True))
+    if not int(cookie):
+        return
     resource = context.resource
     ac = resource.get_access_control()
     if not ac.is_allowed_to_edit(context.user, resource):
