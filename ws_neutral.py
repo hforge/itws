@@ -25,6 +25,7 @@ from decimal import Decimal
 
 # Import from itools
 from itools.core import get_abspath
+from itools.csv import Property
 from itools.datatypes import Unicode, String, Boolean
 from itools.fs import FileName
 from itools.gettext import MSG
@@ -384,6 +385,16 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         # Tags
         cls = TagsFolder
         metadata = cls._make_resource(cls, folder, '%s/tags' % name)
+        # Init website menu with 2 items
+        # XXX How to choose language
+        # TODO allow to choose language at website creation
+        language = 'en'
+        for menu_name in website_class.menus:
+            menu = root.get_resource('%s/%s/menu' % (name, menu_name))
+            title = Property(MSG(u'Homepage').gettext(), language=language)
+            menu.add_new_record({'title': title, 'path': '/'})
+            title = Property(MSG(u'Contact').gettext(), language=language)
+            menu.add_new_record({'title': title, 'path': '/;contact'})
 
 
     @classmethod
