@@ -385,7 +385,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         # Tags
         cls = TagsFolder
         metadata = cls._make_resource(cls, folder, '%s/tags' % name)
-        # Init website menu with 2 items
+        # Init Website menu with 2 items
         # XXX How to choose language
         # TODO allow to choose language at website creation
         language = 'en'
@@ -394,6 +394,13 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
             title = Property(MSG(u'Homepage').gettext(), language=language)
             menu.add_new_record({'title': title, 'path': '/'})
             title = Property(MSG(u'Contact').gettext(), language=language)
+            menu.add_new_record({'title': title, 'path': '/;contact'})
+        # Init Website footer with 2 items
+        for footer_name in website_class.footers:
+            menu = root.get_resource('%s/%s/menu' % (name, footer_name))
+            title = Property(MSG(u'About').gettext(), language=language)
+            menu.add_new_record({'title': title, 'path': '/;about'})
+            title = Property(MSG(u'Contact us').gettext(), language=language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
 
 
