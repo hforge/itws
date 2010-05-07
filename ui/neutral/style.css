@@ -309,6 +309,19 @@ body {
   margin: 0;
 }
 
+/*
+ * CONTENTBAR
+ */
+.contentbar-item.ws-neutral-item-articles,
+.contentbar-item.contentbar-item-children-toc {
+  position: relative;
+}
+
+.contentbar-item.ws-neutral-item-articles > .admin-bar,
+.contentbar-item.contentbar-item-children-toc > .admin-bar {
+  right: 0;
+}
+
 /**************************************************************************
  * SIDEBAR
  **************************************************************************/
