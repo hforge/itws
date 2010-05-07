@@ -371,3 +371,41 @@ body {
 #tag-view .item {
   border-bottom: 1px dashed #000;
 }
+
+/**************************************************************************
+ * MANAGE VIEW
+ * ***********************************************************************/
+body .neutral-manage-view #content .manage-ul {
+  padding: 0;
+  margin: 0;
+}
+
+body .neutral-manage-view #content .manage-ul li {
+  list-style: none;
+  padding: 2px 0 2px 24px;
+}
+
+body .neutral-manage-view .manage-ul .manage-banner,
+body .neutral-manage-view .manage-ul .manage-tags,
+body .neutral-manage-view .manage-ul .manage-robotstxt {
+  background: url('/ui/icons/16x16/text.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-menu,
+body .neutral-manage-view .manage-ul .manage-footer,
+body .neutral-manage-view .manage-ul .manage-turning-footer {
+  background: url('/ui/icons/16x16/select_all.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-404 {
+  background: url('/ui/icons/16x16/error.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-style {
+  background: url('/ui/icons/16x16/css.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-contentbar,
+body .neutral-manage-view .manage-ul .manage-sidebar {
+  background: url('/ui/icons/16x16/folder.png') top left no-repeat;
+}

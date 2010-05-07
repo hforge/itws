@@ -73,6 +73,7 @@ from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import NeutralWS_ArticleNewInstance
 from ws_neutral_views import NeutralWS_FOSwitchMode
+from ws_neutral_views import NeutralWS_ManageView
 
 
 
@@ -622,6 +623,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
             specific_document='footer/menu',
             title=MSG(u'Footer'), access='is_allowed_to_edit')
     view = NeutralWS_View()
+    manage_view = NeutralWS_ManageView()
     # Helper
     add_new_article = NeutralWS_ArticleNewInstance()
     fo_switch_mode = NeutralWS_FOSwitchMode()
