@@ -20,7 +20,7 @@
 
 # Import from itools
 from itools.core import get_abspath
-from itools.datatypes import Unicode
+from itools.datatypes import Boolean, Unicode
 from itools.gettext import get_domain
 from itools.i18n import get_language_name
 from itools.stl import stl, set_prefix
@@ -236,7 +236,32 @@ class FoBoFooterAwareSkin(Skin):
 
 
     def build_nav_namespace(self, context):
-        return self._build_nav_namespace(context, self.nav_data)
+        data = self.nav_data
+        ns = self._build_nav_namespace(context, data)
+
+        # HACK menu if needed
+        # Add edit entry
+        cookie = context.get_cookie('itws_fo_edit', Boolean(default=True))
+        if int(cookie):
+            src = data.get('src', 'menu') # FIXME
+            site_root = context.resource.get_site_root()
+            menu = site_root.get_resource(src, soft=True)
+            if menu:
+                ac = menu.get_access_control()
+                if ac.is_allowed_to_edit(context.user, menu):
+                    fake_ns = {'active': False,
+                               'class': None,
+                               'description': None,
+                               'id': 'menu_edit_menu', # FIXME
+                               'in_path': False,
+                               'items': [],
+                               'path': context.get_link(menu),
+                               'real_path': menu.get_abspath(),
+                               'target': '_top',
+                               'title': u'+'}
+                    ns['items'].append(fake_ns)
+
+        return ns
 
 
     def build_footer_namespace(self, context):
