@@ -108,6 +108,44 @@ class Repository_BrowseContent(Folder_BrowseContent):
                       Repository_AddResourceMenu(is_content=True,
                           title=MSG(u'Add Contentbar Resource'))]
 
+    links_template = list(XMLParser("""
+        <stl:block stl:repeat="item items">
+            <a href="${item/path}" title="${item/title}">${item/name}</a>
+            <span stl:if="not repeat/item/end">,</span>
+        </stl:block>
+        """, stl_namespaces))
+
+    def get_table_columns(self, resource, context):
+        columns = Folder_BrowseContent.get_table_columns(self, resource,
+                                                         context)
+        columns = list(columns) # create a new list
+        columns.append(('links', MSG(u'Referenced by'), False))
+        return columns
+
+
+    def get_item_value(self, resource, context, item, column):
+        if column == 'links':
+            brain, item_resource = item
+            root = context.root
+            path = str(item_resource.get_canonical_path())
+            results = root.search(links=path)
+            if len(results) == 0:
+                return 0
+            links = []
+            for index, doc in enumerate(results.get_documents()):
+                links_resource = root.get_resource(doc.abspath)
+                parent_resource = links_resource.parent
+                # links_resource should be an ordered table
+                links.append({'name': (index + 1),
+                              'title': parent_resource.get_title(),
+                              'path': context.get_link(links_resource)})
+
+            events = self.links_template
+            return stl(events=events, namespace={'items': links})
+
+        return Folder_BrowseContent.get_item_value(self, resource, context,
+                                                   item, column)
+
 
 
 class BarItemsOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
