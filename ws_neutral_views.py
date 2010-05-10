@@ -378,6 +378,10 @@ class NeutralWS_ManageLink(STLView):
 
         items.append({'path': '/;edit',
                       'class': 'manage-banner',
+                      'title': MSG(u'Manage globals parameters')})
+
+        items.append({'path': '/;edit',
+                      'class': 'manage-banner',
                       'title': MSG(u'Change banner')})
 
         items.append({'path': '/tags',
@@ -450,15 +454,13 @@ class NeutralWS_ManageContent(Folder_BrowseContent):
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
-        section_format = resource.section_class.class_id
-        newsfolder_format = resource.newsfolder_class.class_id
+        editorial_cls = resource.get_editorial_documents_types()
         query = [
             PhraseQuery('parent_path', path),
             NotQuery(PhraseQuery('name', '404')),
-            OrQuery(PhraseQuery('format', section_format),
-                    PhraseQuery('format', 'products-feed'),
-                    PhraseQuery('format', 'webpage'),
-                    PhraseQuery('format', newsfolder_format))]
+            OrQuery(*[ PhraseQuery('format', cls.class_id)
+                       for cls in editorial_cls ])
+                    ]
         return context.root.search(AndQuery(*query))
 
 

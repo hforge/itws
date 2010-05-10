@@ -426,6 +426,16 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     class_skin = property(get_class_skin, None, None, '')
 
 
+    def get_editorial_documents_types(self):
+        # FIXME Should be merge with get_document_types
+        types = [SlideShow, AddressesFolder, WebPage]
+        if self.section_class:
+            types.append(self.section_class)
+        if self.newsfolder_class:
+            types.append(self.newsfolder_class)
+        return types
+
+
     def get_document_types(self):
         types = []
         for _type in WebSite.get_document_types(self):
