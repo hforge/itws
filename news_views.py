@@ -376,7 +376,8 @@ class NewsFolder_RSS(BaseRSS):
     def get_base_query(self, resource, context):
         # Filter by news folder
         abspath = resource.get_canonical_path()
-        return [ get_base_path_query(str(abspath)) ]
+        return [ get_base_path_query(str(abspath)),
+                 PhraseQuery('workflow_state', 'public') ]
 
 
     def get_allowed_formats(self, resource, context):
@@ -388,11 +389,11 @@ class NewsFolder_RSS(BaseRSS):
         return items
 
 
-    def get_item_value(self, resource, context, item, column):
+    def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column == 'pubDate':
             return brain.date_of_writing
 
         return BaseRSS.get_item_value(self, resource, context, item,
-                                      column)
+                                      column, site_root)
 

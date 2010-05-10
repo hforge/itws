@@ -362,7 +362,7 @@ class BaseRSS(BaseView):
         return last_brain.mtime
 
 
-    def get_item_value(self, resource, context, item, column):
+    def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column in ('link', 'guid'):
             value = context.uri.resolve(context.get_link(item_resource))
@@ -375,7 +375,7 @@ class BaseRSS(BaseView):
             if isinstance(item_resource, WebPage):
                 data = item_resource.get_html_data()
                 # Set the prefix
-                prefix = context.resource.get_pathto(item_resource)
+                prefix = site_root.get_pathto(item_resource)
                 data = set_prefix_with_hostname(data, '%s/' % prefix,
                                                 uri=context.uri)
                 data = stream_to_str_as_xhtml(data)
@@ -395,7 +395,7 @@ class BaseRSS(BaseView):
         # Construction of the RSS flux
         feed = RSSFile()
 
-        site_root = context.site_root
+        site_root = resource.get_site_root()
         host = context.uri.authority
         # The channel
         channel = feed.channel
@@ -409,7 +409,8 @@ class BaseRSS(BaseView):
         for item in items:
             ns = {}
             for key in ('link', 'guid', 'title', 'pubDate', 'description'):
-                ns[key] = self.get_item_value(resource, context, item, key)
+                ns[key] = self.get_item_value(resource, context, item, key,
+                                              site_root)
             feed_items.append(ns)
 
         # Filename and Content-Type

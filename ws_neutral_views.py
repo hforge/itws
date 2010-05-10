@@ -251,7 +251,7 @@ class NeutralWS_RSS(BaseRSS):
         return excluded
 
 
-    def get_item_value(self, resource, context, item, column):
+    def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column == 'pubDate':
             if isinstance(item_resource, TagsAware):
@@ -269,7 +269,7 @@ class NeutralWS_RSS(BaseRSS):
             return title
 
         return BaseRSS.get_item_value(self, resource, context, item,
-                                      column)
+                                      column, site_root)
 
 
 

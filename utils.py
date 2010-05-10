@@ -83,14 +83,14 @@ def set_prefix_with_hostname(stream, prefix, uri, ns_uri=xhtml_uri):
         prefix = Path(prefix)
 
     ref = Reference(scheme=uri.scheme, authority=uri.authority,
-                    path=prefix, query={})
+                    path='/', query={})
 
-    rewrite = partial(resolve_pointer_with_hostname, ref)
+    rewrite = partial(resolve_pointer_with_hostname, prefix, ref)
 
     return rewrite_uris(stream, rewrite, ns_uri)
 
 
-def resolve_pointer_with_hostname(offset, value):
+def resolve_pointer_with_hostname(offset, ref, value):
     # FIXME Exception for STL
     if value[:2] == '${':
         return value
@@ -101,9 +101,9 @@ def resolve_pointer_with_hostname(offset, value):
         return value
 
     # Resolve Path
-    path = offset.path.resolve(uri.path)
-    value = Reference(offset.scheme, offset.authority, path,
-                      uri.query.copy(), uri.fragment)
+    path = offset.resolve(uri.path)
+    value = Reference(ref.scheme, ref.authority, path,
+                      ref.query.copy(), ref.fragment)
     return str(value)
 
 

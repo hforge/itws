@@ -107,7 +107,7 @@ class Tag_RSS(BaseRSS):
         return items
 
 
-    def get_item_value(self, resource, context, item, column):
+    def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column == 'pubDate':
             return brain.date_of_writing
@@ -117,7 +117,7 @@ class Tag_RSS(BaseRSS):
             if view:
                 content = view.GET(item_resource, context)
                 # set prefix
-                prefix = context.resource.get_pathto(item_resource)
+                prefix = site_root.get_pathto(item_resource)
                 content = set_prefix_with_hostname(content, '%s/' % prefix,
                                                    uri=context.uri)
                 content = stream_to_str_as_xhtml(content)
@@ -126,7 +126,7 @@ class Tag_RSS(BaseRSS):
                 return item_resource.get_property('description')
 
         return BaseRSS.get_item_value(self, resource, context, item,
-                                      column)
+                                      column, site_root)
 
 
 
