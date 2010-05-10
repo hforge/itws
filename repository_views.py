@@ -204,6 +204,7 @@ class BarItemsOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         columns = ResourcesOrderedTable_Unordered.get_table_columns(self,
                 resource, context)
 
+        columns = list(columns) # create a new list
         column = ('format', MSG(u'Type'), False)
         columns.insert(3, column)
 
