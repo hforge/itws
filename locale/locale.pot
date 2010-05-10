@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-05-06 11:05+CET\n"
+"POT-Creation-Date: 2010-05-10 14:05+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,10 @@ msgstr ""
 
 #: ../webpage_views.py:130
 msgid "A WebPage"
+msgstr ""
+
+#: ../ws_neutral.py:397
+msgid "About"
 msgstr ""
 
 #: ../rssfeeds.py:70
@@ -61,7 +65,7 @@ msgstr ""
 msgid "Add a news"
 msgstr ""
 
-#: ../ws_neutral.py:244
+#: ../ws_neutral.py:254
 msgid "Add a section"
 msgstr ""
 
@@ -75,7 +79,7 @@ msgstr ""
 msgid "Add an article"
 msgstr ""
 
-#: ../ws_neutral_views.py:298
+#: ../ws_neutral_views.py:302
 msgid "Add new {cls}"
 msgstr ""
 
@@ -103,7 +107,11 @@ msgstr ""
 msgid "All feeds"
 msgstr ""
 
-#: ../ws_neutral_views.py:144
+#: ../ws_neutral_views.py:360
+msgid "Back to navigation mode"
+msgstr ""
+
+#: ../ws_neutral_views.py:148
 msgid "Banner path"
 msgstr ""
 
@@ -128,13 +136,25 @@ msgstr ""
 msgid "Box to create a sidebar menu"
 msgstr ""
 
-#: ../ws_neutral_views.py:141
+#: ../ws_neutral_views.py:145
 msgid "Breadcrumb title"
+msgstr ""
+
+#: ../ws_neutral_views.py:385
+msgid "Change banner"
 msgstr ""
 
 #: ../rssfeeds.py:291
 #: ../tracker.py:140
 msgid "Configure"
+msgstr ""
+
+#: ../ws_neutral.py:392
+msgid "Contact"
+msgstr ""
+
+#: ../ws_neutral.py:399
+msgid "Contact us"
 msgstr ""
 
 #: ../repository.py:314
@@ -145,7 +165,7 @@ msgstr ""
 msgid "Contentbar item children toc"
 msgstr ""
 
-#: ../ws_neutral_views.py:284
+#: ../ws_neutral_views.py:288
 #: ../section_views.py:218
 msgid "Create a new %s"
 msgstr ""
@@ -171,7 +191,7 @@ msgstr ""
 msgid "Date of writing"
 msgstr ""
 
-#: ../ws_neutral_views.py:171
+#: ../ws_neutral_views.py:175
 msgid "Date of writing format date"
 msgstr ""
 
@@ -199,6 +219,14 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
+#: ../ws_neutral_views.py:417
+msgid "Edit 404"
+msgstr ""
+
+#: ../ws_neutral_views.py:413
+msgid "Edit CSS"
+msgstr ""
+
 #: ../repository_views.py:456
 msgid "Edit Nb News"
 msgstr ""
@@ -216,11 +244,15 @@ msgstr ""
 msgid "Edit content"
 msgstr ""
 
-#: ../ws_neutral.py:612
+#: ../ws_neutral_views.py:397
+msgid "Edit footer"
+msgstr ""
+
+#: ../ws_neutral.py:638
 msgid "Edit home page"
 msgstr ""
 
-#: ../ws_neutral.py:245
+#: ../ws_neutral.py:255
 msgid "Edit languages"
 msgstr ""
 
@@ -236,8 +268,12 @@ msgstr ""
 msgid "Edit news main view title"
 msgstr ""
 
+#: ../ws_neutral_views.py:421
+msgid "Edit robots.txt"
+msgstr ""
+
 #: ../repository_views.py:575
-#: ../ws_neutral.py:644
+#: ../ws_neutral.py:672
 msgid "Edit tags"
 msgstr ""
 
@@ -245,8 +281,16 @@ msgstr ""
 msgid "Edit the banners"
 msgstr ""
 
+#: ../ws_neutral_views.py:405
+msgid "Edit the content bar"
+msgstr ""
+
 #: ../repository_views.py:1083
 msgid "Edit the item"
+msgstr ""
+
+#: ../ws_neutral_views.py:409
+msgid "Edit the side bar"
 msgstr ""
 
 #: ../diaporama_views.py:145
@@ -257,6 +301,14 @@ msgstr ""
 msgid "Edit title"
 msgstr ""
 
+#: ../ws_neutral_views.py:401
+msgid "Edit turning footer"
+msgstr ""
+
+#: ../ws_neutral_views.py:357
+msgid "Edition mode actif"
+msgstr ""
+
 #: ../rssfeeds.py:211
 msgid "Feeds activated."
 msgstr ""
@@ -265,11 +317,11 @@ msgstr ""
 msgid "Feeds deactivated."
 msgstr ""
 
-#: ../ws_neutral.py:599
+#: ../ws_neutral.py:625
 msgid "Fix %s"
 msgstr ""
 
-#: ../ws_neutral.py:622
+#: ../ws_neutral.py:648
 msgid "Footer"
 msgstr ""
 
@@ -285,6 +337,10 @@ msgstr ""
 msgid "Force cache update"
 msgstr ""
 
+#: ../ws_neutral_views.py:446
+msgid "Format"
+msgstr ""
+
 #: ../addresses_views.py:96
 msgid "GPS"
 msgstr ""
@@ -297,6 +353,10 @@ msgstr ""
 #: ../repository.py:291
 #: ../repository.py:339
 msgid "Hide if there is only one item"
+msgstr ""
+
+#: ../ws_neutral.py:390
+msgid "Homepage"
 msgstr ""
 
 #: ../slides.py:220
@@ -360,6 +420,26 @@ msgstr ""
 msgid "Long title"
 msgstr ""
 
+#: ../ws_neutral_views.py:478
+msgid "Manage Website"
+msgstr ""
+
+#: ../ws_neutral_views.py:381
+msgid "Manage globals parameters"
+msgstr ""
+
+#: ../ws_neutral_views.py:393
+msgid "Manage menu"
+msgstr ""
+
+#: ../ws_neutral_views.py:389
+msgid "Manage tags"
+msgstr ""
+
+#: ../ws_neutral_views.py:436
+msgid "Manage website"
+msgstr ""
+
 #: ../addresses_views.py:95
 msgid "Map height"
 msgstr ""
@@ -368,11 +448,12 @@ msgstr ""
 msgid "Map width"
 msgstr ""
 
-#: ../ws_neutral.py:616
+#: ../ws_neutral.py:642
 msgid "Menu"
 msgstr ""
 
 #: ../tags.py:309
+#: ../ws_neutral_views.py:444
 #: ../news_views.py:228
 msgid "Name"
 msgstr ""
@@ -424,11 +505,11 @@ msgstr ""
 #: ../repository_views.py:774
 #: ../repository_views.py:956
 #: ../repository_views.py:1188
-#: ../ws_neutral.py:630
+#: ../ws_neutral.py:658
 msgid "Order articles"
 msgstr ""
 
-#: ../ws_neutral.py:242
+#: ../ws_neutral.py:252
 msgid "Order menu"
 msgstr ""
 
@@ -449,7 +530,7 @@ msgstr ""
 msgid "Order submenu"
 msgstr ""
 
-#: ../ws_neutral.py:276
+#: ../ws_neutral.py:280
 msgid "Order the articles"
 msgstr ""
 
@@ -462,12 +543,12 @@ msgid "Order the banners"
 msgstr ""
 
 #: ../bar.py:266
-#: ../ws_neutral.py:634
+#: ../ws_neutral.py:662
 msgid "Order the contentbar items"
 msgstr ""
 
 #: ../bar.py:247
-#: ../ws_neutral.py:638
+#: ../ws_neutral.py:666
 msgid "Order the sidebar items"
 msgstr ""
 
@@ -574,7 +655,7 @@ msgstr ""
 msgid "Sitemap"
 msgstr ""
 
-#: ../ws_neutral_views.py:175
+#: ../ws_neutral_views.py:179
 msgid "Skin"
 msgstr ""
 
@@ -590,6 +671,7 @@ msgstr ""
 msgid "Slides Ordered Table"
 msgstr ""
 
+#: ../ws_neutral_views.py:447
 #: ../news_views.py:234
 msgid "State"
 msgstr ""
@@ -644,6 +726,7 @@ msgid "Timeout in seconds"
 msgstr ""
 
 #: ../tags.py:310
+#: ../ws_neutral_views.py:445
 #: ../news_views.py:229
 #: ../resources.py:132
 #: ../views.py:51
@@ -666,7 +749,7 @@ msgstr ""
 msgid "Title link target"
 msgstr ""
 
-#: ../ws_neutral.py:619
+#: ../ws_neutral.py:645
 msgid "Turning Footer"
 msgstr ""
 
@@ -762,11 +845,11 @@ msgstr ""
 msgid "Website contentbar item articles view"
 msgstr ""
 
-#: ../ws_neutral.py:261
+#: ../ws_neutral.py:265
 msgid "Website data folder"
 msgstr ""
 
-#: ../ws_neutral_views.py:317
+#: ../ws_neutral_views.py:321
 msgid "Website view"
 msgstr ""
 
@@ -782,7 +865,7 @@ msgstr ""
 msgid "id"
 msgstr ""
 
-#: ../ws_neutral.py:307
+#: ../ws_neutral.py:311
 msgid "neutral website"
 msgstr ""
 
@@ -795,11 +878,11 @@ msgstr ""
 msgid "the parameters \"format\", \"container\" and \"query_container\" must be defined"
 msgstr ""
 
-#: ../ws_neutral.py:116
+#: ../ws_neutral.py:119
 msgid "{title} -- RSS Feeds"
 msgstr ""
 
-#: ../ws_neutral.py:123
+#: ../ws_neutral.py:126
 msgid "{ws_title} {title} -- RSS Feeds"
 msgstr ""
 
@@ -823,7 +906,6 @@ msgid "${admin_bar} ${content}"
 msgstr ""
 
 #: ../ui/neutral2/template.xhtml.en:69
-#: ../ui/k2/template.xhtml.en:50
 msgctxt "div"
 msgid "${location} ${message}"
 msgstr ""
@@ -883,6 +965,11 @@ msgctxt "heading"
 msgid "Edit"
 msgstr ""
 
+#: ../ui/neutral/Neutral_manage_link.xml.en:7
+msgctxt "heading"
+msgid "Manage your website"
+msgstr ""
+
 #: ../ui/neutral/addlink.xml.en:105
 msgctxt "heading"
 msgid "Type the URL of an external resource"
@@ -924,11 +1011,6 @@ msgstr ""
 #: ../ui/slideshow/Slide_view_type_1.xml.en:16
 msgctxt "link"
 msgid "<g id='1'>◄</g>  <g id='2'>►</g>"
-msgstr ""
-
-#: ../ui/k2/template.xhtml.en:33
-msgctxt "link"
-msgid "<g id='10'>${user/info/title}</g>  <g id='11'>|</g>  <g id='12'>Log out</g>"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:56
@@ -1011,11 +1093,6 @@ msgctxt "link"
 msgid "Export the Feeds as an OPML file"
 msgstr ""
 
-#: ../ui/k2/template.xhtml.en:30
-msgctxt "link"
-msgid "Log in"
-msgstr ""
-
 #: ../ui/common/browse_batch.xml.en:27
 msgctxt "link"
 msgid "Next »"
@@ -1091,7 +1168,6 @@ msgstr ""
 
 #: ../ui/neutral/template.xhtml.en:44
 #: ../ui/neutral2/template.xhtml.en:40
-#: ../ui/k2/template.xhtml.en:42
 msgctxt "span"
 msgid "Search"
 msgstr ""
@@ -1141,16 +1217,6 @@ msgstr ""
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:15
 msgctxt "title attribute"
 msgid "Export the Feeds as an OPML file."
-msgstr ""
-
-#: ../ui/k2/template.xhtml.en:30
-msgctxt "title attribute"
-msgid "Log in"
-msgstr ""
-
-#: ../ui/k2/template.xhtml.en:35
-msgctxt "title attribute"
-msgid "Log out"
 msgstr ""
 
 #: ../ui/common/browse_batch.xml.en:27
