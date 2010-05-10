@@ -217,34 +217,32 @@ class FoBoFooterAwareSkin(Skin):
         return scripts
 
 
-    def build_nav_namespace(self, context, data=None):
-        if data is None:
-            data = self.nav_data
-        if data:
-            depth = data['depth']
-            sfc = data['show_first_child']
-            src = data.get('src', None)
-            flat = data.get('flat', None)
+    def _build_nav_namespace(self, context, data):
+        depth = data['depth']
+        sfc = data['show_first_child']
+        src = data.get('src', None)
+        flat = data.get('flat', None)
 
-            nav = get_menu_namespace(context, depth, sfc, flat=flat, src=src)
-            # HOOK the namespace
-            for item in nav.get('items', []):
-                if item['class'] == 'in_path':
-                    item['in_path'] = True
-                else:
-                    item['in_path'] = False
+        # Get the menu namespace
+        ns = get_menu_namespace(context, depth, sfc, flat=flat, src=src)
+        # HOOK the namespace
+        for item in ns.get('items', []):
+            if item['class'] == 'in-path':
+                item['in-path'] = True
+            else:
+                item['in-path'] = False
 
-            return nav
-
-        return None
+        return ns
 
 
-    def build_footer_namespace(self, context, data=None):
-        if data is None:
-            data = self.footer_data
-        ns = self.build_nav_namespace(context, data)
-        if ns is None:
-            return ns
+    def build_nav_namespace(self, context):
+        return self._build_nav_namespace(context, self.nav_data)
+
+
+    def build_footer_namespace(self, context):
+        data = self.footer_data
+        ns = self._build_nav_namespace(context, data)
+
         here = context.resource
         site_root = here.get_site_root()
         footer = site_root.get_resource('%s/menu' % data['src'])
@@ -295,6 +293,7 @@ class FoBoFooterAwareSkin(Skin):
         namespace['display_menu'] = (namespace['nav_length'] > 1)
 
         return namespace
+
 
 
 # Register common skin
