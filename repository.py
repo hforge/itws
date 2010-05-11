@@ -104,7 +104,8 @@ class BarItem(File):
 class BarItem_Section_News(BarItem):
 
     class_id = 'sidebar-item-section-news'
-    class_title = MSG(u'Bar item section news')
+    class_title = MSG(u'Last news item')
+    class_description = MSG(u'Display the last N news filter by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     # item comfiguration
@@ -127,8 +128,8 @@ class SidebarItem(WebPage):
 
     class_id = 'sidebar-item'
     class_version = '20091127'
-    class_title = MSG(u'Sidebar item')
-    class_description = MSG(u'Sidebar item')
+    class_title = MSG(u'HTML content')
+    class_description = MSG(u'HTML content')
 
     # Views
     view_both = SidebarItem_ViewBoth()
@@ -215,7 +216,8 @@ class SidebarItem_Tags(BarItem):
 
     class_id = 'sidebar-item-tags'
     class_version = '20100226'
-    class_title = MSG(u'Sidebar item tag')
+    class_title = MSG(u'Tag cloud')
+    class_description = MSG(u'Display a tag cloud')
 
     # Item configuration
     item_schema = {'format': TagsAwareClassEnumerate(multiple=True),
@@ -248,7 +250,10 @@ class SidebarItem_Tags(BarItem):
 class SidebarItem_SectionSiblingsToc(BarItem):
 
     class_id = 'sidebar-item-section-siblings-toc'
-    class_title = MSG(u'Sidebar item section siblings toc')
+    class_title = MSG(u'Section content siblings toc')
+    class_description = MSG(u'Display the siblings of the current '
+                            u'webpage/section. This allow to navigate from '
+                            u'current page to siblings')
 
     # Item comfiguration
     item_schema = {'hide_if_only_one_item': Boolean}
@@ -271,7 +276,9 @@ class SidebarItem_SectionSiblingsToc(BarItem):
 class SidebarItem_SectionChildrenToc(SidebarItem_SectionSiblingsToc):
 
     class_id = 'sidebar-item-section-children-toc'
-    class_title = MSG(u'Sidebar item section children toc')
+    class_title = MSG(u'Section children webpages/section TOC')
+    class_description = MSG(u'Display the children webpage/section '
+                            u'of the current section.')
 
     view = SidebarItem_SectionChildrenToc_View()
 
@@ -280,7 +287,9 @@ class SidebarItem_SectionChildrenToc(SidebarItem_SectionSiblingsToc):
 class SidebarItem_NewsSiblingsToc(BarItem):
 
     class_id = 'sidebar-item-news-siblings-toc'
-    class_title = MSG(u'Sidebar item news siblings toc')
+    class_title = MSG(u'News siblings news')
+    class_description = MSG(u'Display the siblings news of the current news. '
+                            u'Allow to easily switch to an other news.')
 
     # Item configuration
     item_schema = {'hide_if_only_one_item': Boolean,
@@ -311,7 +320,8 @@ class SidebarItem_NewsSiblingsToc(BarItem):
 class ContentBarItem_Articles(BarItem):
 
     class_id = 'contentbar-item-articles'
-    class_title = MSG(u'Contentbar item articles view')
+    class_title = MSG(u'Section articles')
+    class_description = MSG(u'Display the ordered webpages of the section')
 
     view = ContentBarItem_Articles_View()
 
@@ -320,7 +330,9 @@ class ContentBarItem_Articles(BarItem):
 class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 
     class_id = 'ws-neutral-item-articles'
-    class_title = MSG(u'Website contentbar item articles view')
+    class_title = MSG(u'Website articles')
+    class_description = MSG(u'Display the ordered webpages of the website '
+                            u'(homepage)')
 
     view = ContentBarItem_WebsiteArticles_View()
 
@@ -329,7 +341,8 @@ class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 class ContentBarItem_SectionChildrenToc(BarItem):
 
     class_id = 'contentbar-item-children-toc'
-    class_title = MSG(u'Contentbar item children toc')
+    class_title = MSG(u'Section children webpages/section TOC')
+    class_description = MSG(u'Display children webpages/section of a section')
 
     # Item configuration
     item_schema = {'hide_if_only_one_item': Boolean}
