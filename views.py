@@ -374,6 +374,9 @@ class BaseRSS(BaseView):
         elif column == 'description':
             if isinstance(item_resource, WebPage):
                 data = item_resource.get_html_data()
+                if data is None:
+                    # Skip empty content
+                    return ''
                 # Set the prefix
                 prefix = site_root.get_pathto(item_resource)
                 data = set_prefix_with_hostname(data, '%s/' % prefix,
