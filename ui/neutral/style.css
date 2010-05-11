@@ -411,3 +411,7 @@ body .neutral-manage-view .manage-ul .manage-contentbar,
 body .neutral-manage-view .manage-ul .manage-sidebar {
   background: url('/ui/icons/16x16/folder.png') top left no-repeat;
 }
+
+body .neutral-manage-view .manage-ul .manage-repository {
+  background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
+}

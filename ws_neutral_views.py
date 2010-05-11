@@ -400,6 +400,10 @@ class NeutralWS_ManageLink(STLView):
                       'class': 'manage-turning-footer',
                       'title': MSG(u'Edit turning footer')})
 
+        items.append({'path': '/repository',
+                      'class': 'manage-repository',
+                      'title': MSG(u'Manage repository')})
+
         items.append({'path': '/;order_contentbar',
                       'class': 'manage-contentbar',
                       'title': MSG(u'Edit the content bar')})
