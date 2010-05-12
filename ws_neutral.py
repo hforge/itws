@@ -135,17 +135,20 @@ class NeutralSkin(FoBoFooterAwareSkin):
         namespace = FoBoFooterAwareSkin.build_namespace(self, context)
 
         here = context.resource
-        # banner
-        banner_ns = None
         site_root = here.get_site_root()
+
+        # banner namespace
+        banner_ns = {}
+        banner_ns['title'] = site_root.get_property('banner_title')
+        banner_ns['description'] = site_root.get_property('description')
         banner_path = site_root.get_property('banner_path')
         if banner_path:
             banner = site_root.get_resource(banner_path, soft=True)
             if banner:
-                # banner_description to be displayed on logo title attribute
-                banner_description = site_root.get_property('description')
-                banner_ns = {'path': context.get_link(banner),
-                             'description': banner_description}
+                banner_path = context.get_link(banner)
+            else:
+                banner_path = None
+        banner_ns['path'] = banner_path
         namespace['banner'] = banner_ns
 
         # site search

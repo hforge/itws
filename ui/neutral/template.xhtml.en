@@ -28,11 +28,10 @@
       <tr id="tr-banner">
         <td colspan="2">
           <div id="banner-wrapper">
-            <h1>
-              <a href="/" id="banner" stl:if="banner" title="${banner/description}">
-                <img alt="${banner/description}" src="${banner/path}/;download"/>
-              </a>
-            </h1>
+            <a href="/" id="banner" title="${banner/description}">
+              <img stl:if="banner/path" alt="${banner/description}" src="${banner/path}/;download"/>
+              <stl:inline stl:if="not banner/path">${banner/title}</stl:inline>
+            </a>
             <div id="right-wrapper">
               ${languages}
               <div id="search-form">

@@ -103,12 +103,12 @@ body {
   display: block;
 }
 
-#banner-wrapper h1 {
-  margin: 0;
-}
-
 #banner-wrapper #banner {
   float: left;
+  color: #444;
+  font-size: 1.6em;
+  text-decoration: none;
+  margin: 15px 0 10px 15px;
 }
 
 #banner-wrapper #right-wrapper {

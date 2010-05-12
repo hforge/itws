@@ -27,9 +27,10 @@
     <table cellspacing="0" cellpadding="0" border="0" id="main-table">
       <tr>
         <td>
-          <div class="lines" id="logo" stl:if="banner">
-            <a href="/" id="banner">
-              <img alt="${banner/description}" src="${banner/path}/;download"/>
+          <div class="lines" id="logo">
+            <a href="/" id="banner" title="${banner/description}">
+              <img stl:if="banner/path" alt="${banner/description}" src="${banner/path}/;download"/>
+              <stl:inline stl:if="not banner/path">${banner/title}</stl:inline>
             </a>
             <div id="search-form">
               <form action="/;site_search" method="get">

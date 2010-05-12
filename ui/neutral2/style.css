@@ -665,6 +665,10 @@ strong {
  * ***********************************************************************/
 #banner {
   float: left;
+  color: #000;
+  font-size: 1.6em;
+  text-decoration: none;
+  margin: 15px 0 10px 15px;
 }
 
 #search-form {
