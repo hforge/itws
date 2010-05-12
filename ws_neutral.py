@@ -409,6 +409,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     def get_metadata_schema(cls):
         schema = WebSite.get_metadata_schema()
         schema['breadcrumb_title'] = Unicode
+        schema['banner_title'] = Unicode(default='')
         schema['banner_path'] = MultilingualString(default='')
         schema['class_skin'] = NeutralClassSkin(default='ui/neutral')
         schema['date_of_writing_format'] = String(default='')

@@ -132,6 +132,7 @@ class NeutralWS_Edit(WebSite_Edit):
                                               container=site_root)
         return merge_dicts(WebSite_Edit.get_schema(self, resource, context),
                            breadcrumb_title=Unicode,
+                           banner_title=Unicode,
                            banner_path=String,
                            date_of_writing_format=String,
                            class_skin=NeutralClassSkin(mandatory=True))
@@ -143,6 +144,10 @@ class NeutralWS_Edit(WebSite_Edit):
         # Breadcrumb title
         widgets.append(
             TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')))
+        # banner_title
+        widgets.append(
+            TextWidget('banner_title', title=MSG(u'Banner title'),
+                       tip=MSG(u'(Use as banner if there is no image banner)')))
         # banner_path
         path = resource.get_property('banner_path', language=language)
         title = MSG(u'Banner path')
@@ -209,7 +214,7 @@ Preview
 
         # Other (Multilingual)
         language = resource.get_content_language(context)
-        for key in ['breadcrumb_title', 'banner_path',
+        for key in ['breadcrumb_title', 'banner_title',  'banner_path',
                     'date_of_writing_format']:
             resource.set_property(key, form[key], language=language)
         # Skin
