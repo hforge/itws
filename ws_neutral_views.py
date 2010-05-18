@@ -23,16 +23,12 @@ from itools.datatypes import Boolean, Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
 from itools.uri import Reference
-from itools.web import BaseView
-from itools.web import FormError, STLView
-from itools.web import get_context
+from itools.web import get_context, BaseView, FormError, STLView
 from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.buttons import RemoveButton, RenameButton
-from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, XHTMLBody
 from ikaaro.forms import stl_namespaces, TextWidget, SelectRadio
 from ikaaro.views import CompositeForm
@@ -44,6 +40,7 @@ from datatypes import FormatEnumerate, NeutralClassSkin
 from section import Section
 from tags import TagsAware
 from views import BaseRSS, ProxyContainerNewInstance
+from views import BaseManageLink, BaseManageContent
 from website import WebSite_Edit
 
 
@@ -384,111 +381,80 @@ class NeutralWS_FOSwitchMode(BaseView):
 
 
 
-class NeutralWS_ManageLink(STLView):
+class NeutralWS_ManageLink(BaseManageLink):
 
-    template = '/ui/neutral/Neutral_manage_link.xml'
+    title = MSG(u'Manage your website')
 
     def get_items(self, resource, context):
         items = []
 
-        items.append({'path': '/;edit',
+        items.append({'path': './;edit',
                       'class': 'manage-banner',
                       'title': MSG(u'Manage globals parameters')})
 
-        items.append({'path': '/;edit',
+        items.append({'path': './;edit',
                       'class': 'manage-banner',
                       'title': MSG(u'Change banner')})
 
-        items.append({'path': '/tags',
+        items.append({'path': './tags',
                       'class': 'manage-tags',
                       'title': MSG(u'Manage tags')})
 
-        items.append({'path': '/menu',
+        items.append({'path': './menu',
                       'class': 'manage-menu',
                       'title': MSG(u'Manage menu')})
 
-        items.append({'path': '/footer',
+        items.append({'path': './footer',
                       'class': 'manage-footer',
                       'title': MSG(u'Edit footer')})
 
-        items.append({'path': '/turning-footer',
+        items.append({'path': './turning-footer',
                       'class': 'manage-turning-footer',
                       'title': MSG(u'Edit turning footer')})
 
-        items.append({'path': '/repository',
+        items.append({'path': './repository',
                       'class': 'manage-repository',
                       'title': MSG(u'Manage repository')})
 
-        items.append({'path': '/;order_contentbar',
+        items.append({'path': './;order_contentbar',
                       'class': 'manage-contentbar',
                       'title': MSG(u'Edit the content bar')})
 
-        items.append({'path': '/;order_sidebar',
+        items.append({'path': './;order_sidebar',
                       'class': 'manage-sidebar',
                       'title': MSG(u'Edit the side bar')})
 
-        items.append({'path': '/style/;edit',
+        items.append({'path': './style/;edit',
                       'class': 'manage-style',
                       'title': MSG(u'Edit CSS')})
 
-        items.append({'path': '/404/;edit',
+        items.append({'path': './404/;edit',
                       'class': 'manage-404',
                       'title': MSG(u'Edit 404')})
 
-        items.append({'path': '/robots.txt/;edit',
+        items.append({'path': './robots.txt/;edit',
                       'class': 'manage-robotstxt',
                       'title': MSG(u'Edit robots.txt')})
 
         return items
 
 
-    def get_namespace(self, resource, context):
-        items = self.get_items(resource, context)
 
-        return {'items': items}
-
-
-
-class NeutralWS_ManageContent(Folder_BrowseContent):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Manage website')
-
-    search_template = None
-
-    table_actions = [RemoveButton, RenameButton]
-    table_columns = [
-        ('checkbox', None),
-        ('icon', None),
-        ('name', MSG(u'Name')),
-        ('title', MSG(u'Title')),
-        ('format', MSG(u'Format')),
-        ('workflow_state', MSG(u'State')),
-        ]
-
-    def get_query_schema(self):
-        return merge_dicts(Folder_BrowseContent.get_query_schema(self),
-                           sort_by=String(default='format'))
-
+class NeutralWS_ManageContent(BaseManageContent):
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
         editorial_cls = resource.get_editorial_documents_types()
+        editorial_query = [ PhraseQuery('format', cls.class_id)
+                            for cls in editorial_cls ]
+        # allow images
+        editorial_query.append(PhraseQuery('is_image', True))
         query = [
             PhraseQuery('parent_path', path),
             NotQuery(PhraseQuery('name', '404')),
-            OrQuery(*[ PhraseQuery('format', cls.class_id)
-                       for cls in editorial_cls ])
-                    ]
+            OrQuery(*editorial_query)
+                ]
         return context.root.search(AndQuery(*query))
-
-
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'name':
-            return brain.name, context.get_link(item_resource)
-        return Folder_BrowseContent.get_item_value(self, resource,
-                  context, item, column)
 
 
 

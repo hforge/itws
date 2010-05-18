@@ -15,18 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze
-from itools.datatypes import String, Unicode
+from itools.core import freeze, merge_dicts
+from itools.datatypes import String, Unicode, Boolean
 from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.uri import Reference
+from itools.uri import Path, Reference
 from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro import messages
+from ikaaro.buttons import RemoveButton, RenameButton
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.future.menu import Menu_View
@@ -138,6 +139,71 @@ class FooterMenu_View(Menu_View):
             value = resource.handler.get_record_value(item, column)
             return HTMLBody.decode(Unicode.encode(value))
         return Menu_View.get_item_value(self, resource, context, item, column)
+
+
+
+############################################################
+# Manage link view
+############################################################
+class BaseManageLink(STLView):
+
+    template = '/ui/neutral/manage_link.xml'
+    title = MSG(u'Manage view')
+
+    def get_items(self, resource, context):
+        items = []
+
+        return items
+
+
+    def get_namespace(self, resource, context):
+        items = self.get_items(resource, context)
+
+        # Post process link
+        # FIXME Does not work for absolute links
+        here_link = Path(context.get_link(resource))
+        for item in items:
+            new_path = here_link.resolve2(item['path'])
+            item['path'] = new_path
+
+        return {'items': items, 'title': self.title}
+
+
+
+class BaseManageContent(Folder_BrowseContent):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage')
+
+    search_template = None
+
+    table_actions = [RemoveButton, RenameButton]
+    table_columns = [
+        ('checkbox', None),
+        ('icon', None),
+        ('name', MSG(u'Name')),
+        ('title', MSG(u'Title')),
+        ('format', MSG(u'Format')),
+        ('mtime', MSG(u'Last Modified')),
+        ('workflow_state', MSG(u'State')),
+        ]
+
+    def get_query_schema(self):
+        return merge_dicts(Folder_BrowseContent.get_query_schema(self),
+                           sort_by=String(default='mtime'),
+                           reverse=Boolean(default=True))
+
+
+    def get_items(self, resource, context, *args):
+        return Folder_BrowseContent.get_items(self, resource, context, *args)
+
+
+    def get_item_value(self, resource, context, item, column):
+        brain, item_resource = item
+        if column == 'name':
+            return brain.name, context.get_link(item_resource)
+        return Folder_BrowseContent.get_item_value(self, resource,
+                  context, item, column)
 
 
 

@@ -38,9 +38,11 @@ from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
+from ikaaro.views import CompositeForm
 
 # Import from itws
 from bar import ContentBar_View
+from views import BaseManageLink, BaseManageContent
 
 
 
@@ -269,3 +271,75 @@ class Section_View(STLView):
             namespace[view_name] = self.get_subviews_value(resource, context,
                     section, view_name)
         return namespace
+
+
+
+class Section_ManageLink(BaseManageLink):
+
+    title = MSG(u'Manage the section')
+
+    def get_items(self, resource, context):
+        items = []
+
+        items.append({'path': './;edit',
+                      'class': 'manage-edit',
+                      'title': MSG(u'Edit the section')})
+
+        items.append({'path': './;new_resource',
+                      'class': 'manage-add',
+                      'title': MSG(u'Add Resource')})
+
+        items.append({'path': './order-section',
+                      'class': 'manage-order',
+                      'title': MSG(u'Order the webpages/articles')})
+
+        items.append({'path': '/repository/;new_contentbar_resource',
+                      'class': 'manage-repository',
+                      'title': MSG(u'Create a new contentbar item')})
+
+        items.append({'path': './;order_contentbar',
+                      'class': 'manage-contentbar',
+                      'title': MSG(u'Add/Order contentbar items')})
+
+        items.append({'path': '/repository/;new_sidebar_resource',
+                      'class': 'manage-repository',
+                      'title': MSG(u'Create a new sidebar item')})
+
+        items.append({'path': './;order_sidebar',
+                      'class': 'manage-sidebar',
+                      'title': MSG(u'Add/Order sidebar items')})
+
+        return items
+
+
+
+class Section_ManageContent(BaseManageContent):
+
+    title = MSG(u'Manage section')
+
+    def get_items(self, resource, context, *args):
+        path = str(resource.get_canonical_path())
+        editorial_cls = resource.get_editorial_documents_types()
+        editorial_query = [ PhraseQuery('format', cls.class_id)
+                            for cls in editorial_cls ]
+        # allow images
+        editorial_query.append(PhraseQuery('is_image', True))
+        query = [
+            PhraseQuery('parent_path', path),
+            NotQuery(PhraseQuery('name', 'order-sidebar')),
+            NotQuery(PhraseQuery('name', 'order-contentbar')),
+            NotQuery(PhraseQuery('name', 'order-section')),
+            OrQuery(*editorial_query)
+                ]
+        return context.root.search(AndQuery(*query))
+
+
+
+class Section_ManageView(CompositeForm):
+
+    title = MSG(u'Manage Section')
+    access = 'is_allowed_to_edit'
+
+    subviews = [Section_ManageLink(),
+                Section_ManageContent()]
+

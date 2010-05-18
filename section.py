@@ -41,7 +41,7 @@ from ikaaro.webpage import _get_links, _change_link
 from bar import SideBarAware, ContentBarAware
 from repository import Repository
 from section_views import SectionOrderedTable_View
-from section_views import Section_Edit, Section_View
+from section_views import Section_Edit, Section_View, Section_ManageView
 from webpage import WebPage
 
 
@@ -82,7 +82,7 @@ class Section(SideBarAware, ContentBarAware, Folder):
     class_version = '20100403'
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
-    class_views = Folder.class_views
+    class_views = ['view', 'manage_view', 'backlinks', 'commit_log']
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
@@ -109,6 +109,13 @@ class Section(SideBarAware, ContentBarAware, Folder):
     def get_metadata_schema(cls):
         return merge_dicts(Folder.get_metadata_schema(),
                            show_one_article=Boolean)
+
+
+    def get_editorial_documents_types(self):
+        # FIXME Should be merge with get_document_types
+        types = [ self.get_subsection_class(),
+                  self.get_article_class() ]
+        return types
 
 
     def get_document_types(self):
@@ -283,6 +290,7 @@ class Section(SideBarAware, ContentBarAware, Folder):
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+    manage_view = Section_ManageView()
 
 
 
