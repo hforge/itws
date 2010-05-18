@@ -201,6 +201,18 @@ body {
 /**************************************************************************
  * CONTENT
  * ***********************************************************************/
+/* Minimal height */
+/* Firefox & IE7 */
+#page > #content {
+  min-height: 400px;
+  height: auto;
+}
+
+/* IE 6 & <*/
+* html #content{
+  height: 400px;
+}
+
 #content {
   padding: 10px 15px 30px;
 }
