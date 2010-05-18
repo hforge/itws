@@ -259,6 +259,12 @@ class NeutralSkin2(NeutralSkin):
 
 
 
+class K2Skin(NeutralSkin2):
+
+    pass
+
+
+
 ############################################################
 # Web Site
 ############################################################
@@ -697,3 +703,7 @@ register_skin('neutral', skin)
 path = get_abspath('ui/neutral2')
 skin = NeutralSkin2(path)
 register_skin('neutral2', skin)
+# k2
+path = get_abspath('ui/k2')
+skin = K2Skin(path)
+register_skin('k2', skin)

@@ -117,5 +117,6 @@ class FormatEnumerate(Enumerate):
 class NeutralClassSkin(Enumerate):
 
     options = [{'name': '/ui/neutral', 'value': u'Neutral 1'},
-               {'name': '/ui/neutral2', 'value': u"Neutral 2"}]
+               {'name': '/ui/neutral2', 'value': u"Neutral 2"},
+               {'name': '/ui/k2', 'value': u"K2"}]
 
