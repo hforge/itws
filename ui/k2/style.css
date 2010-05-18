@@ -1,0 +1,442 @@
+/**************************************************************************
+ * BOX
+ * ***********************************************************************/
+.bigb-hg, .bigb-hd, .bigb-bg, .bigb-bd,
+.box-hg, .box-hd, .box-bg, .box-bd {
+  display: none;
+}
+.box, .box .box-content {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #eee;
+  font-size: 62.5%;
+  font-family: "Verdana", "Bitstream Vera Sans", "DejaVu Sans", sans-serif;
+}
+
+/**************************************************************************
+ * MESSAGE
+ * ***********************************************************************/
+#message .info {
+  border-color: #333;
+  background-color: #ccc;
+  color: #000;
+}
+
+#page {
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+
+  border-color: currentColor #ddd #ddd;
+  border-right: 1px solid #ddd;
+  border-style: none solid solid;
+  border-width: medium 1px 1px;
+  clear: both;
+  margin: 20px auto;
+  position: relative;
+  text-align: left;
+  width: 960px;
+  background: #fff;
+}
+
+/**************************************************************************
+ * HEADER
+ * ***********************************************************************/
+#header {
+  position: relative;
+  height: 200px;
+  background: #444;
+}
+
+#header .login {
+  padding: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#header .login a,
+#header .login span {
+  color: #fff;
+}
+
+#header .title {
+  text-align: center;
+  padding-top: 75px;
+}
+
+#header .title a {
+  color: #fff;
+  font-size: 2.6em;
+  text-decoration: none;
+}
+
+/* header toolbar */
+#header .header-toolbar {
+  -moz-border-radius: 0 0 0 5px;
+  -webkit-border-radius: 0 0 0 5px;
+
+  background: #333;
+  color: #000;
+  font-size: 1.1em;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#header .header-toolbar td {
+  padding: 8px 4px;
+}
+
+/* toolbar link */
+#header .header-toolbar a,
+#header .header-toolbar a:link {
+  color: #fff;
+  text-decoration: none;
+}
+#header .header-toolbar a:hover,
+#header .header-toolbar a:visited {
+  color: #ddd;
+}
+
+#header .header-toolbar form {
+}
+
+#header .header-toolbar input,
+#header .header-toolbar button {
+  border: 1px solid #bbb;
+  float: left;
+  height: 16px;
+}
+
+#header .header-toolbar .button-search {
+  background-position: 50% 50%;
+  width: 30px; /* IEx left-padding:24px + right-padding: 6px */
+  height: 22px;
+  margin-left: 5px;
+  padding: 1px 6px 1px 16px;
+}
+
+#header .header-toolbar button span {
+  visibility: hidden;
+}
+
+#languages {
+}
+
+#languages a,
+#languages a:link {
+  text-transform: uppercase;
+  margin-right: 5px;
+  padding: 0 3px;
+  border-right: 1px solid #bbb;
+}
+
+#languages a.first {
+  padding-left: 0;
+}
+
+#languages a.last {
+  margin-right: 0;
+  border-right: 0;
+  padding-right: 0;
+}
+
+#header #languages a.selected {
+  text-decoration: underline;
+}
+
+#header .header-toolbar .fo-edit {
+  margin-right: 5px;
+}
+
+
+/**************************************************************************
+ * MENU
+ * ***********************************************************************/
+#nav ul, #nav ul li {
+  float: left;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+}
+
+#nav ul {
+  bottom: 0;
+  padding-left: 0;
+  margin: 0 20px;
+  position: absolute;
+  white-space: nowrap;
+}
+
+#nav ul li {
+  margin-right: 4px;
+}
+
+#nav ul li a {
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+
+  display: block;
+  font-size: 1em;
+  padding: 5px 15px;
+  text-decoration: none;
+  /* normal style */
+  background: #333;
+  color: #fff;
+}
+
+#nav ul li a:hover {
+  background: #ccc;
+  color: #000;
+}
+
+#nav ul li.in-path a {
+  background: #fff;
+  color: #333;
+}
+
+/**************************************************************************
+ * CONTENT
+ * ***********************************************************************/
+#content {
+  padding: 10px 15px 30px;
+}
+
+#content a,
+#content a:link {
+  color: #444;
+}
+
+#content a:hover,
+#content a:visited {
+  color: #555;
+}
+
+/**************************************************************************
+ * LOCATIONS
+ * ***********************************************************************/
+#location {
+  width: auto; /* Fix IE6 */
+}
+
+#breadcrumbs a:hover,
+#tabs .menu a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+/**************************************************************************
+ * Input, buttons, fieldset
+ * ***********************************************************************/
+input, textarea, select{
+  border: 1px solid gray;
+  padding: 2px;
+}
+
+button, .button{
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  -moz-box-shadow:0 0 3px #CCCCCC;
+  -webkit-box-shadow:0 0 3px #CCCCCC;
+
+  background-color: #FFF;
+  border:1px solid #CCCCCC;
+  cursor: pointer;
+  padding: 5px;
+  background-position: 5px 5px;
+  background-repeat: no-repeat;
+  padding-left: 24px !important;
+  text-decoration: none;
+}
+
+button:hover, button:focus {
+  -moz-box-shadow:0 0 3px #999999;
+  -webkit-box-shadow:0 0 3px #999999;
+}
+
+fieldset{
+  background-color: #F9F9F9;
+  border: 1px solid #DDDDDD;
+}
+
+fieldset legend{
+  padding: 3px 0px;
+  color: #333333;
+}
+
+
+/**************************************************************************
+ * CONTENTBAR
+ * ***********************************************************************/
+#contentbar {
+  width: 650px;
+  float: left;
+  overflow-x: hidden;
+  /* Fix bug under FF3.x
+   * batch-numerotation broke the news folder view
+   */
+  padding-bottom: 10px;
+}
+
+.contentbar-item.ws-neutral-item-articles,
+.contentbar-item.contentbar-item-articles,
+.contentbar-item.contentbar-item-children-toc {
+  position: relative;
+}
+
+.contentbar-item.ws-neutral-item-articles > .admin-bar,
+.contentbar-item.contentbar-item-articles > .admin-bar,
+.contentbar-item.contentbar-item-children-toc > .admin-bar {
+  right: 0;
+}
+
+/**************************************************************************
+ * SIDEBAR
+ * ***********************************************************************/
+#sidebar {
+  width: 270px;
+  float: right;
+  padding-top: 10px;
+  overflow-x: hidden;
+}
+
+.sidebar-item {
+  -moz-border-radius: 8px 8px 0 0;
+  -webkit-border-radius: 8px 8px 0 0;
+
+  border: 1px solid #999;
+  margin-bottom: 10px;
+  padding: 5px 10px 0 10px;
+}
+
+.sidebar-item h3.title {
+  border-bottom: 1px solid #bbb;
+  color: #000;
+  font-family: georgia;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin: 0;
+  padding: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.sidebar-item h3.title a {
+  text-decoration: none;
+}
+
+/* section news */
+.sidebar-item-section-news .newsitem {
+  border-bottom: 1px dotted #999;
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.sidebar-item-section-news .newsitem.first {
+  padding-top: 0;
+}
+
+.sidebar-item-section-news .newsitem.last {
+  border-bottom: none;
+}
+
+.sidebar-item-section-news .newsitem .image-link {
+  float: left;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.sidebar-item-section-news .newsitem .newsitem-date {
+  /* padding-bottom: 5px; */
+}
+
+/**************************************************************************
+ * NEWS FOLDER
+ * ***********************************************************************/
+#page.news-folder-view {
+ 
+}
+
+#page.news-folder-view .item .actu-date {
+  float: left;
+  padding-right: 8px;
+}
+
+#page.news-folder-view .item .actu-tag {
+  float: left;
+}
+
+#page.news-folder-view .item h3.title {
+  clear: both;
+  border-bottom: 1px solid #999;
+}
+
+#page.news-folder-view .item h3.title a {
+  text-decoration: none;
+}
+
+#page.news-folder-view .item .more {
+  float: right;
+  margin-top: 10px;
+}
+
+/**************************************************************************
+ * FOOTER
+ * ***********************************************************************/
+#footer {
+  background: #444;
+  padding: 10px 5px;
+}
+
+#footer p {
+  margin: 0;
+}
+
+#footer p, #footer a {
+  color: #fff;
+}
+
+/**************************************************************************
+ * MANAGE VIEW
+ * ***********************************************************************/
+body .neutral-manage-view #content .manage-ul {
+  padding: 0;
+  margin: 0;
+}
+
+body .neutral-manage-view #content .manage-ul li {
+  list-style: none;
+  padding: 2px 0 2px 24px;
+}
+
+body .neutral-manage-view .manage-ul .manage-banner,
+body .neutral-manage-view .manage-ul .manage-tags,
+body .neutral-manage-view .manage-ul .manage-robotstxt {
+  background: url('/ui/icons/16x16/text.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-menu,
+body .neutral-manage-view .manage-ul .manage-footer,
+body .neutral-manage-view .manage-ul .manage-turning-footer {
+  background: url('/ui/icons/16x16/select_all.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-404 {
+  background: url('/ui/icons/16x16/error.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-style {
+  background: url('/ui/icons/16x16/css.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-contentbar,
+body .neutral-manage-view .manage-ul .manage-sidebar {
+  background: url('/ui/icons/16x16/folder.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-repository {
+  background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
+}
