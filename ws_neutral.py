@@ -74,7 +74,7 @@ from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import NeutralWS_ArticleNewInstance
 from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_ManageView
+from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 
 
 
@@ -276,15 +276,13 @@ class WSDataFolder(Folder):
                           ContentBarAware.contentbar_name,
                           'order-resources' # FIXME
                          ]
-    class_views = (['browse_content', 'backlinks', 'last_changes',
-                    'order_articles']
-                   + ContentBarAware.class_views + SideBarAware.class_views
-                  )
+    class_views = ['manage_view', 'backlinks', 'commit_log']
 
     order_contentbar = ContentBarAware.order_contentbar
     order_sidebar = SideBarAware.order_sidebar
 
     # Views
+    manage_view = WSDataFolder_ManageView()
     order_articles = GoToSpecificDocument(specific_document='order-resources',
                                           title=MSG(u'Order the articles'),
                                           access='is_allowed_to_edit')
@@ -292,8 +290,12 @@ class WSDataFolder(Folder):
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
 
+    def get_editorial_documents_types(self):
+        return [ self.parent.get_article_class() ]
+
+
     def get_document_types(self):
-        return [self.parent.get_article_class(), File]
+        return [ self.parent.get_article_class(), File ]
 
 
     def get_ordered_names(self, context=None):

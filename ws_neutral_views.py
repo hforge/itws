@@ -466,3 +466,70 @@ class NeutralWS_ManageView(CompositeForm):
     subviews = [NeutralWS_ManageLink(),
                 NeutralWS_ManageContent()]
 
+
+
+class WSDataFolder_ManageLink(BaseManageLink):
+
+    title = MSG(u'Manage your home page')
+
+    def get_items(self, resource, context):
+        items = []
+
+        items.append({'path': './;new_resource',
+                      'class': 'manage-add',
+                      'title': MSG(u'Add Resource')})
+
+        items.append({'path': './order-resources',
+                      'class': 'manage-order',
+                      'title': MSG(u'Order the webpages')})
+
+        items.append({'path': '/repository/;new_contentbar_resource',
+                      'class': 'manage-repository',
+                      'title': MSG(u'Create a new contentbar item')})
+
+        items.append({'path': './;order_contentbar',
+                      'class': 'manage-contentbar',
+                      'title': MSG(u'Add/Order contentbar items')})
+
+        items.append({'path': '/repository/;new_sidebar_resource',
+                      'class': 'manage-repository',
+                      'title': MSG(u'Create a new sidebar item')})
+
+        items.append({'path': './;order_sidebar',
+                      'class': 'manage-sidebar',
+                      'title': MSG(u'Add/Order sidebar items')})
+
+        return items
+
+
+
+class WSDataFolder_ManageContent(BaseManageContent):
+
+    title = MSG(u'Manage home page')
+
+    def get_items(self, resource, context, *args):
+        path = str(resource.get_canonical_path())
+        editorial_cls = resource.get_editorial_documents_types()
+        editorial_query = [ PhraseQuery('format', cls.class_id)
+                            for cls in editorial_cls ]
+        # allow images
+        editorial_query.append(PhraseQuery('is_image', True))
+        query = [
+            PhraseQuery('parent_path', path),
+            NotQuery(PhraseQuery('name', 'order-sidebar')),
+            NotQuery(PhraseQuery('name', 'order-contentbar')),
+            NotQuery(PhraseQuery('name', 'order-resources')),
+            OrQuery(*editorial_query)
+                ]
+        return context.root.search(AndQuery(*query))
+
+
+
+class WSDataFolder_ManageView(CompositeForm):
+
+    title = MSG(u'Manage Home page')
+    access = 'is_allowed_to_edit'
+
+    subviews = [WSDataFolder_ManageLink(),
+                WSDataFolder_ManageContent()]
+
