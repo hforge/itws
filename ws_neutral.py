@@ -345,10 +345,12 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         website_class = cls
         context = get_context()
         root = context.root
+        # XXX How to choose language
+        # TODO allow to choose language at website creation
+        default_language = 'en'
         # Parent
-        # FIXME Remove 'en'
-        banner_path = {'en': 'images/banner'}
-        WebSite._make_resource(cls, folder, name, banner_path=banner_path, **kw)
+        WebSite._make_resource(cls, folder, name, **kw)
+        website = root.get_resource(name)
         # Add repository
         Repository._make_resource(Repository, folder,
                                   '%s/%s' % (name, 'repository'))
@@ -386,6 +388,14 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         kw = {'format': 'image/png', 'filename': filename, 'extension': type,
               'state': 'public', 'body': banner_data}
         cls._make_resource(cls, folder, '%s/images/%s' % (name, name2), **kw)
+        # Set the website banner title
+        vhosts = website.get_property('vhosts')
+        if vhosts:
+            banner_title = vhosts[0]
+        else:
+            banner_title = website.get_title()
+        website.set_property('banner_title', banner_title,
+                             language=default_language)
         # Turning footer
         cls = TurningFooterFolder
         cls._make_resource(cls, folder, '%s/turning-footer' % name)
@@ -393,21 +403,22 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         cls = TagsFolder
         metadata = cls._make_resource(cls, folder, '%s/tags' % name)
         # Init Website menu with 2 items
-        # XXX How to choose language
-        # TODO allow to choose language at website creation
-        language = 'en'
         for menu_name in website_class.menus:
             menu = root.get_resource('%s/%s/menu' % (name, menu_name))
-            title = Property(MSG(u'Homepage').gettext(), language=language)
+            title = Property(MSG(u'Homepage').gettext(),
+                             language=default_language)
             menu.add_new_record({'title': title, 'path': '/'})
-            title = Property(MSG(u'Contact').gettext(), language=language)
+            title = Property(MSG(u'Contact').gettext(),
+                             language=default_language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
         # Init Website footer with 2 items
         for footer_name in website_class.footers:
             menu = root.get_resource('%s/%s/menu' % (name, footer_name))
-            title = Property(MSG(u'About').gettext(), language=language)
+            title = Property(MSG(u'About').gettext(),
+                             language=default_language)
             menu.add_new_record({'title': title, 'path': '/;about'})
-            title = Property(MSG(u'Contact us').gettext(), language=language)
+            title = Property(MSG(u'Contact us').gettext(),
+                             language=default_language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
 
 
@@ -422,7 +433,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         schema['breadcrumb_title'] = Unicode
         schema['banner_title'] = Unicode(default='')
         schema['banner_path'] = MultilingualString(default='')
-        schema['class_skin'] = NeutralClassSkin(default='ui/neutral')
+        schema['class_skin'] = NeutralClassSkin(default='ui/k2')
         schema['date_of_writing_format'] = String(default='')
 
         return schema
