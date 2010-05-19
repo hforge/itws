@@ -280,8 +280,7 @@ class Section_ManageLink(BaseManageLink):
 
     def get_items(self, resource, context):
         items = []
-        # FIXME Hardcoded
-        order_table = resource.get_resource('order-section')
+        order_table = resource.get_resource(resource.order_path)
         ordered_classes = order_table.get_orderable_classes()
 
         items.append({'path': './;edit',

@@ -30,7 +30,7 @@ from itools.web import get_context
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
-from ikaaro.future.order import ResourcesOrderedTable
+from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
 from ikaaro.multilingual import Multilingual
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
@@ -75,7 +75,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
 
 
-class Section(SideBarAware, ContentBarAware, Folder):
+class Section(SideBarAware, ContentBarAware, ResourcesOrderedContainer):
 
     class_id = 'section'
     class_title = MSG(u'Section')
@@ -87,12 +87,14 @@ class Section(SideBarAware, ContentBarAware, Folder):
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
                           + ['order-section'])
-    section_ordered_table_class = SectionOrderedTable
+    # Order Articles
+    order_path = 'order-section'
+    order_class = SectionOrderedTable
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         root = get_context().root
-        Folder._make_resource(cls, folder, name, **kw)
+        ResourcesOrderedContainer._make_resource(cls, folder, name, **kw)
         SideBarAware._make_resource(cls, folder, name, **kw)
         ContentBarAware._make_resource(cls, folder, name, **kw)
         # Add articles_view
@@ -100,9 +102,6 @@ class Section(SideBarAware, ContentBarAware, Folder):
         table_name = cls.contentbar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
         table.add_new_record({'name': articles_item_name})
-        # Add order
-        cls = cls.section_ordered_table_class
-        cls._make_resource(cls, folder, '%s/order-section' % name)
 
 
     @classmethod
@@ -216,17 +215,6 @@ class Section(SideBarAware, ContentBarAware, Folder):
 
     def get_article_class(self):
         return WebPage
-
-
-    def get_ordered_names(self, order_path='order-section'):
-        order = self.get_resource(order_path, soft=True)
-        if order:
-            return order.get_ordered_names()
-        return []
-
-
-    def get_banner_resource(self):
-        return self.get_resource('order-banners')
 
 
     def is_empty(self):
