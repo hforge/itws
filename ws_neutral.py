@@ -271,6 +271,7 @@ class K2Skin(NeutralSkin2):
 class WSDataFolder(Folder):
 
     class_id = 'neutral-ws-data'
+    class_version = '20100519'
     class_title = MSG(u'Website data folder')
     __fixed_handlers__ = [SideBarAware.sidebar_name,
                           ContentBarAware.contentbar_name,
@@ -303,6 +304,20 @@ class WSDataFolder(Folder):
         return self.parent.get_ordered_names(context)
 
 
+    def update_20100519(self):
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
+        titles = []
+        for language in languages:
+            title = self.get_property('title', language)
+            if title:
+                titles.append(title)
+
+        if not titles:
+            self.set_property('title', MSG(u'Configure Homepage').gettext(),
+                              languages[0])
+
+
 
 class WSOrderedTable(ResourcesOrderedTable):
 
@@ -320,7 +335,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     class_id = 'neutral'
     class_version = '20100503'
     class_title = MSG(u'neutral website')
-    class_views = ['view', 'manage_view', 'browse_content', 'commit_log']
+    class_views = ['view', 'manage_view', 'edit_ws_data', 'browse_content',
+                   'commit_log']
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
@@ -354,7 +370,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         Repository._make_resource(Repository, folder,
                                   '%s/%s' % (name, 'repository'))
         # WSDataFolder
-        WSDataFolder._make_resource(WSDataFolder, folder, '%s/ws-data' % name)
+        WSDataFolder._make_resource(WSDataFolder, folder, '%s/ws-data' % name,
+                title={default_language: MSG(u'Configure Homepage').gettext()})
         # Make the table for ResourcesOrderedContainer
         order_class = cls.order_class
         order_class._make_resource(order_class, folder,
@@ -657,7 +674,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
 
     # User Interface
     edit_ws_data = GoToSpecificDocument(
-            specific_document='ws-data', title=MSG(u'Edit home page'),
+            specific_document='ws-data', title=MSG(u'Manage home page content'),
             access='is_allowed_to_edit')
     edit_menu = GoToSpecificDocument(
             specific_document='menu/menu',

@@ -416,6 +416,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
+    class_version = '20100519'
     class_title = MSG(u'Sidebar items repository')
     class_description = MSG(u'Sidebar items repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -453,19 +454,23 @@ class Repository(Folder):
         # Website view item
         _cls = cls.website_articles_view_cls
         _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.website_articles_view_name))
+                            '%s/%s' % (name, cls.website_articles_view_name),
+                            title={'en': _cls.class_title.gettext()})
         # section view item
         _cls = cls.section_articles_view_cls
         _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.section_articles_view_name))
+                            '%s/%s' % (name, cls.section_articles_view_name),
+                            title={'en': _cls.class_title.gettext()})
         # section children toc
         _cls = cls.section_children_toc_view_cls
         _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_children_toc_view_name))
+                '%s/%s' % (name, cls.section_children_toc_view_name),
+                           title={'en': _cls.class_title.gettext()})
         # news siblings item
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.news_siblings_view_name))
+                            '%s/%s' % (name, cls.news_siblings_view_name),
+                            title={'en': _cls.class_title.gettext()})
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
@@ -496,6 +501,39 @@ class Repository(Folder):
         """
         allowed_types = self.get_document_types() + [BarItem]
         return isinstance(source, tuple(allowed_types))
+
+
+    def update_20100519(self):
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
+
+        name = self.website_articles_view_name
+        cls = self.website_articles_view_cls
+        resource = self.get_resource(name, soft=True)
+        if resource:
+            resource.set_property('title', cls.class_title.gettext(),
+                                  language=languages[0])
+
+        name = self.section_articles_view_name
+        cls = self.section_articles_view_cls
+        resource = self.get_resource(name, soft=True)
+        if resource:
+            resource.set_property('title', cls.class_title.gettext(),
+                                  language=languages[0])
+
+        name = self.section_children_toc_view_name
+        cls = self.section_children_toc_view_cls
+        resource = self.get_resource(name, soft=True)
+        if resource:
+            resource.set_property('title', cls.class_title.gettext(),
+                                  language=languages[0])
+
+        name = self.news_siblings_view_name
+        cls = self.news_siblings_view_cls
+        resource = self.get_resource(name, soft=True)
+        if resource:
+            resource.set_property('title', cls.class_title.gettext(),
+                                  language=languages[0])
 
 
 

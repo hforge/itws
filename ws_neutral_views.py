@@ -474,7 +474,7 @@ class NeutralWS_ManageView(CompositeForm):
 
 class WSDataFolder_ManageLink(BaseManageLink):
 
-    title = MSG(u'Manage your home page')
+    title = MSG(u'Manage home page content')
 
     def get_items(self, resource, context):
         items = []
@@ -531,7 +531,7 @@ class WSDataFolder_ManageContent(BaseManageContent):
 
 class WSDataFolder_ManageView(CompositeForm):
 
-    title = MSG(u'Manage Home page')
+    title = MSG(u'Manage home page content')
     access = 'is_allowed_to_edit'
 
     subviews = [WSDataFolder_ManageLink(),
