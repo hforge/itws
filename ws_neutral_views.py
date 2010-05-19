@@ -389,12 +389,12 @@ class NeutralWS_ManageLink(BaseManageLink):
         items = []
 
         items.append({'path': './;edit',
-                      'class': 'manage-banner',
-                      'title': MSG(u'Manage globals parameters')})
+                      'class': 'manage-website',
+                      'title': MSG(u'Edit banner, favico, skin, ...')})
 
-        items.append({'path': './;edit',
-                      'class': 'manage-banner',
-                      'title': MSG(u'Change banner')})
+        items.append({'path': './;new_resource',
+                      'class': 'manage-add',
+                      'title': MSG(u'Add Resource')})
 
         items.append({'path': './tags',
                       'class': 'manage-tags',
@@ -435,6 +435,10 @@ class NeutralWS_ManageLink(BaseManageLink):
         items.append({'path': './robots.txt/;edit',
                       'class': 'manage-robotstxt',
                       'title': MSG(u'Edit robots.txt')})
+
+        items.append({'path': './;control_panel',
+                      'class': 'manage-controlpanel',
+                      'title': MSG(u'Control Panel')})
 
         return items
 

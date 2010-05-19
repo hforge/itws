@@ -414,25 +414,31 @@ fieldset legend{
 /**************************************************************************
  * MANAGE VIEW
  * ***********************************************************************/
-body .neutral-manage-view #content .manage-ul {
+body .neutral-manage-view #content .manage-ul,
+body .neutral-ws-data-manage-view #content .manage-ul,
+body .section-manage-view #content .manage-ul {
   padding: 0;
   margin: 0;
 }
 
-body .neutral-manage-view #content .manage-ul li {
+body .neutral-manage-view #content .manage-ul li,
+body .neutral-ws-data-manage-view #content .manage-ul li,
+body .section-manage-view #content .manage-ul li {
   list-style: none;
   padding: 2px 0 2px 24px;
 }
 
-body .neutral-manage-view .manage-ul .manage-banner,
+body .neutral-manage-view .manage-ul .manage-website,
 body .neutral-manage-view .manage-ul .manage-tags,
-body .neutral-manage-view .manage-ul .manage-robotstxt {
+body .neutral-manage-view .manage-ul .manage-robotstxt,
+body .section-manage-view .manage-ul .manage-edit {
   background: url('/ui/icons/16x16/text.png') top left no-repeat;
 }
 
 body .neutral-manage-view .manage-ul .manage-menu,
 body .neutral-manage-view .manage-ul .manage-footer,
-body .neutral-manage-view .manage-ul .manage-turning-footer {
+body .neutral-manage-view .manage-ul .manage-turning-footer,
+body .neutral-manage-view .manage-ul .manage-controlpanel {
   background: url('/ui/icons/16x16/select_all.png') top left no-repeat;
 }
 
@@ -444,11 +450,26 @@ body .neutral-manage-view .manage-ul .manage-style {
   background: url('/ui/icons/16x16/css.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-contentbar,
-body .neutral-manage-view .manage-ul .manage-sidebar {
-  background: url('/ui/icons/16x16/folder.png') top left no-repeat;
-}
-
 body .neutral-manage-view .manage-ul .manage-repository {
   background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-add,
+body .neutral-ws-data-manage-view .manage-ul .manage-add,
+body .neutral-ws-data-manage-view .manage-ul .manage-repository,
+body .section-manage-view .manage-ul .manage-repository,
+body .section-manage-view .manage-ul .manage-add,
+body .section-manage-view .manage-ul .manage-repository {
+  background: url('/ui/icons/16x16/add.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .manage-contentbar,
+body .neutral-manage-view .manage-ul .manage-sidebar,
+body .neutral-ws-data-manage-view .manage-ul .manage-order,
+body .neutral-ws-data-manage-view .manage-ul .manage-contentbar,
+body .neutral-ws-data-manage-view .manage-ul .manage-sidebar,
+body .section-manage-view .manage-ul .manage-contentbar,
+body .section-manage-view .manage-ul .manage-sidebar,
+body .section-manage-view .manage-ul .manage-order {
+  background: url('/ui/common/icons/16x16/sort.png') top left no-repeat;
 }
