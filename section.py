@@ -63,7 +63,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_title = MSG(u'Order section')
     class_views = ['view']
     class_handler = SectionOrderedTableFile
-    view = SectionOrderedTable_View(title=MSG(u'Order Articles/Sections'))
+    view = SectionOrderedTable_View(title=MSG(u'Order Webpages/Sections'))
 
     def get_orderable_classes(self):
         # Orderable classes should be
@@ -283,7 +283,7 @@ class Section(SideBarAware, ContentBarAware, Folder):
 
     edit = Section_Edit()
     order_items = GoToSpecificDocument(specific_document='order-section',
-            title=MSG(u'Order the articles/sections'))
+            title=MSG(u'Order the webpages/sections'))
     order_banners = GoToSpecificDocument(specific_document='order-banners',
         title=MSG(u'Order the banners'))
     view = Section_View()

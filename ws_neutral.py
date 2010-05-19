@@ -284,7 +284,7 @@ class WSDataFolder(Folder):
     # Views
     manage_view = WSDataFolder_ManageView()
     order_articles = GoToSpecificDocument(specific_document='order-resources',
-                                          title=MSG(u'Order the articles'),
+                                          title=MSG(u'Order the webpages'),
                                           access='is_allowed_to_edit')
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
@@ -677,7 +677,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document='ws-data/order-resources',
-        title=MSG(u'Order articles'))
+        title=MSG(u'Order webpages'))
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,

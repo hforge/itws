@@ -42,7 +42,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
     def get_widgets(self, resource, context):
         widgets = HTMLEditView.get_widgets(self, resource, context)[:]
         display_title_widget = BooleanCheckBox('display_title',
-                title=MSG(u'Display on article view'))
+                title=MSG(u'Display on webpage view'))
         widgets.insert(2, display_title_widget)
         widgets.extend(TagsAware_Edit.widgets)
         new_widgets = []

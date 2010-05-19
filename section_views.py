@@ -66,7 +66,7 @@ class Section_Edit(DBResource_Edit):
         widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
         widgets = [title_widget,
                    BooleanCheckBox('show_one_article',
-                                   title=MSG(u'Show articles one by one')),
+                                   title=MSG(u'Show webpage one by one')),
                    description_widget, subject_widget,
                    timestamp_widget]
 
@@ -109,7 +109,7 @@ def sectionorderedtable_get_item_value(resource, context, item, column):
                 word = 'publish'
                 if (pending + private) == 0:
                     word = 'add'
-                msg = MSG(u'Not visible, please %s at least one article'
+                msg = MSG(u'Not visible, please %s at least one webpage'
                           % word)
                 msg = msg.gettext().encode('utf-8')
             msg = MSG(msg)
@@ -291,7 +291,7 @@ class Section_ManageLink(BaseManageLink):
 
         items.append({'path': './order-section',
                       'class': 'manage-order',
-                      'title': MSG(u'Order the webpages/articles')})
+                      'title': MSG(u'Order the webpages/sections')})
 
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',

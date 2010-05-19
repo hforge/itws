@@ -342,7 +342,7 @@ class SidebarItem_Edit(HTMLEditView):
     widgets = [
         timestamp_widget, title_widget,
         BooleanCheckBox('display_title',
-                        title=MSG(u'Display on article view')),
+                        title=MSG(u'Display on webpage view')),
         PathSelectorWidget('title_link', title=MSG(u'Title link')),
         SelectWidget('title_link_target', title=MSG(u'Title link target')),
         rte_widget
@@ -810,12 +810,12 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
             section_path = context.get_link(section)
             # Order subsections
             manage_buttons.append({'path': '%s/;order_items' % section_path,
-                                   'label': MSG(u'Order articles')})
+                                   'label': MSG(u'Order webpages')})
             # Add article
             article_class_id = section.get_article_class().class_id
             path = '%s/;new_resource?type=%s' % (section_path, article_class_id)
             manage_buttons.append({'path':  path,
-                                   'label': MSG(u'Add an article')})
+                                   'label': MSG(u'Add a webpage')})
 
         return manage_buttons
 
@@ -986,13 +986,13 @@ class ContentBarItem_Articles_View(BarItem_View):
         path = '%s/;new_resource?type=%s' % (section_path, article_class_id)
         buttons.append({'path':  path, 'target': None,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Add an article')})
+                        'label': MSG(u'Add a webpage')})
 
         # Order articles
         buttons.append({'path': '%s/;order_items' % section_path,
                         'target': None,
                         'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order articles')})
+                        'label': MSG(u'Order webpages')})
         return buttons
 
 
@@ -1218,13 +1218,13 @@ class ContentBarItem_WebsiteArticles_View(ContentBarItem_Articles_View):
                                                      article_class_id)
         buttons.append({'path':  path, 'target': None,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Add an article')})
+                        'label': MSG(u'Add a webpage')})
 
         # Order articles
         buttons.append({'path': '%s/;order_items' % site_root_path,
                         'target': None,
                         'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order articles')})
+                        'label': MSG(u'Order webpages')})
         return buttons
 
 
