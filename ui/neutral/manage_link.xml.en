@@ -8,7 +8,8 @@
 
   <ul class="manage-ul">
     <li stl:repeat="item items" class="${item/class}">
-      <a href="${item/path}" title="${item/title}">${item/title}</a>
+      <a stl:if="not item/disable" href="${item/path}" title="${item/title}">${item/title}</a>
+      <span stl:if="item/disable">${item/title}</span>
     </li>
   </ul>
 

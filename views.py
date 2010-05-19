@@ -165,6 +165,10 @@ class BaseManageLink(STLView):
         for item in items:
             new_path = here_link.resolve2(item['path'])
             item['path'] = new_path
+            disable = item.get('disable', False)
+            item['disable'] = disable
+            if disable:
+                item['class'] = '%s disable' % item['class']
 
         return {'items': items, 'title': self.title}
 

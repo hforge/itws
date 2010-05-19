@@ -280,6 +280,9 @@ class Section_ManageLink(BaseManageLink):
 
     def get_items(self, resource, context):
         items = []
+        # FIXME Hardcoded
+        order_table = resource.get_resource('order-section')
+        ordered_classes = order_table.get_orderable_classes()
 
         items.append({'path': './;edit',
                       'class': 'manage-edit',
@@ -289,9 +292,21 @@ class Section_ManageLink(BaseManageLink):
                       'class': 'manage-add',
                       'title': MSG(u'Add Resource')})
 
+        # Do not show the link if there is nothing to order
+        available_resources = []
+        for cls in ordered_classes:
+            l = [ x.name for x in resource.search_resources(cls=cls) ]
+            available_resources.extend(l)
+        # Remove duplicated entries
+        available_resources = list(set(available_resources))
+
+        ordered_resources = order_table.get_ordered_names()
+        unordered = set(available_resources).difference(set(ordered_resources))
+
         items.append({'path': './order-section',
                       'class': 'manage-order',
-                      'title': MSG(u'Order the webpages/sections')})
+                      'title': MSG(u'Order the webpages/sections'),
+                      'disable': len(list(unordered)) == 0})
 
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',
