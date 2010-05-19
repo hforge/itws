@@ -400,24 +400,27 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         banner_data = banner_resource.to_str()
         cls = Image
         filename = name2 = 'banner.png'
-        name2, type, language = FileName.decode(name2)
-        kw = {'format': 'image/png', 'filename': filename, 'extension': type,
-              'state': 'public', 'body': banner_data}
-        cls._make_resource(cls, folder, '%s/images/%s' % (name, name2), **kw)
-        # Set the website banner title
-        vhosts = website.get_property('vhosts')
-        if vhosts:
-            banner_title = vhosts[0]
-        else:
-            banner_title = website.get_title()
-        website.set_property('banner_title', banner_title,
-                             language=default_language)
+        name2, extension, language = FileName.decode(name2)
+        metadata = {'format': 'image/png', 'filename': filename,
+                'extension': extension, 'state': 'public',
+                'body': banner_data}
+        cls._make_resource(cls, folder, '%s/images/%s' % (name, name2),
+                **metadata)
+        # Set a default banner
+        if 'banner_title' not in kw:
+            vhosts = website.get_property('vhosts')
+            if vhosts:
+                banner_title = vhosts[0]
+            else:
+                banner_title = website.get_title()
+            website.set_property('banner_title', banner_title,
+                                 language=default_language)
         # Turning footer
         cls = TurningFooterFolder
         cls._make_resource(cls, folder, '%s/turning-footer' % name)
         # Tags
         cls = TagsFolder
-        metadata = cls._make_resource(cls, folder, '%s/tags' % name)
+        cls._make_resource(cls, folder, '%s/tags' % name)
         # Init Website menu with 2 items
         for menu_name in website_class.menus:
             menu = root.get_resource('%s/%s/menu' % (name, menu_name))
