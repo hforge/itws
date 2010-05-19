@@ -333,7 +333,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                 WebSite):
 
     class_id = 'neutral'
-    class_version = '20100503'
+    class_version = '20100518'
     class_title = MSG(u'neutral website')
     class_views = ['view', 'manage_view', 'edit_ws_data', 'browse_content',
                    'commit_log']
@@ -670,6 +670,15 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     def update_20100503(self):
         self.del_property('rss_feeds_items_format')
         self.del_property('rss_feeds_max_items_number')
+
+
+    def update_20100518(self):
+        # XXX
+        metadata = self.metadata
+        properties = metadata.properties
+        if 'class_skin' in properties is False:
+            # Set old default value
+            self.set_property('class_skin', '/ui/neutral')
 
 
     # User Interface
