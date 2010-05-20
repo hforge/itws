@@ -38,7 +38,6 @@ from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
-from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View, HTMLEditView
@@ -48,6 +47,8 @@ from ikaaro.workflow import WorkflowAware
 from datatypes import PositiveInteger
 from tags import TagsList, Tag
 from utils import to_box, get_admin_bar, DualSelectWidget
+from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
+from views import SmartOrderedTable_View
 
 
 
@@ -148,7 +149,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
 
 
 
-class BarItemsOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
+class BarItemsOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
     query_schema = {}
 
@@ -178,7 +179,7 @@ class BarItemsOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
 
 
-class BarItemsOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
+class BarItemsOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
     query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
                                batch_size=Integer(default=0),
@@ -235,7 +236,7 @@ class BarItemsOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
 
 
-class BarItemsOrderedTable_View(ResourcesOrderedTable_View):
+class BarItemsOrderedTable_View(SmartOrderedTable_View):
 
     subviews = [BarItemsOrderedTable_Ordered(),
                 BarItemsOrderedTable_Unordered()]

@@ -68,13 +68,14 @@ from tags import TagsFolder
 from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view
+from views import SmartOrderedTable_View
 from webpage import WebPage
 from website import WebSite
-from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
-from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import NeutralWS_ArticleNewInstance
 from ws_neutral_views import NeutralWS_FOSwitchMode
 from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
+from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
+from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 
 
 
@@ -323,6 +324,16 @@ class WSOrderedTable(ResourcesOrderedTable):
 
     class_id = 'neutral-ws-ordered-table'
     order_root_path = '..' # Parent ws-data folder
+
+    view = SmartOrderedTable_View()
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Webpages')
+    ordered_view_title_description = None
+    unordered_view_title = MSG(u'Available Webpages')
+    unordered_view_title_description = MSG(
+            u'This Webpages are available, '
+            u'you can make them visible in the home page '
+            u'by adding them to the ordered list')
 
     def get_orderable_classes(self):
         return [ self.parent.parent.get_article_class() ]

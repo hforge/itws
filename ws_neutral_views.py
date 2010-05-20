@@ -552,4 +552,3 @@ class WSDataFolder_ManageView(CompositeForm):
 
     subviews = [WSDataFolder_ManageLink(),
                 WSDataFolder_ManageContent()]
-

@@ -65,6 +65,15 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_handler = SectionOrderedTableFile
     view = SectionOrderedTable_View(title=MSG(u'Order Webpages/Sections'))
 
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Sections and Webpages')
+    ordered_view_title_description = None
+    unordered_view_title = MSG(u'Available Sections and Webpages')
+    unordered_view_title_description = MSG(
+            u'This Sections/Webpages are available, '
+            u'you can make them visible in this section '
+            u'by adding them to the ordered list')
+
     def get_orderable_classes(self):
         # Orderable classes should be
         # 1 - my parent

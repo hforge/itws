@@ -33,9 +33,6 @@ from itools.xml import XMLParser
 from ikaaro.forms import BooleanCheckBox, timestamp_widget
 from ikaaro.forms import stl_namespaces
 from ikaaro.forms import title_widget, description_widget, subject_widget
-from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.future.order import ResourcesOrderedTable_Unordered
-from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views import CompositeForm
@@ -43,6 +40,8 @@ from ikaaro.views import CompositeForm
 # Import from itws
 from bar import ContentBar_View
 from views import BaseManageLink, BaseManageContent
+from views import SmartOrderedTable_View
+from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 
 
 
@@ -117,10 +116,10 @@ def sectionorderedtable_get_item_value(resource, context, item, column):
         return stl(events=VisibilityTemplate, namespace=visibility)
 
 
-class SectionOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
+class SectionOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
     def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Ordered.get_table_columns(self,
+        columns = SmartOrderedTable_Ordered.get_table_columns(self,
                 resource, context)
         columns.insert(1, ('icon', None, False))
         columns.insert(-1, ('visibility', MSG(u'Visibility'), False))
@@ -139,12 +138,12 @@ class SectionOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
                 base_path = Path('%s/' % item_resource.name)
                 path_to_icon = base_path.resolve(path_to_icon)
             return path_to_icon
-        return ResourcesOrderedTable_Ordered.get_item_value(self, resource,
+        return SmartOrderedTable_Ordered.get_item_value(self, resource,
                                                         context, item, column)
 
 
 
-class SectionOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
+class SectionOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
     def get_query(self, resource, context):
         order_root = resource.get_order_root()
@@ -172,7 +171,7 @@ class SectionOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Unordered.get_table_columns(self,
+        columns = SmartOrderedTable_Unordered.get_table_columns(self,
                 resource, context)
         columns.insert(1, ('icon', None, False))
         columns.insert(-1, ('visibility', MSG(u'Visibility'), False))
@@ -190,12 +189,12 @@ class SectionOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
             if path_to_icon.startswith(';'):
                 path_to_icon = Path('%s/' % brain.name).resolve(path_to_icon)
             return path_to_icon
-        return ResourcesOrderedTable_Unordered.get_item_value(self, resource,
+        return SmartOrderedTable_Unordered.get_item_value(self, resource,
                 context, item, column)
 
 
 
-class SectionOrderedTable_View(ResourcesOrderedTable_View):
+class SectionOrderedTable_View(SmartOrderedTable_View):
 
     subviews = [SectionOrderedTable_Ordered(),
                 SectionOrderedTable_Unordered()]

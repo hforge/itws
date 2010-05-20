@@ -31,6 +31,9 @@ from ikaaro.buttons import RemoveButton, RenameButton
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.future.menu import Menu_View
+from ikaaro.future.order import ResourcesOrderedTable_View
+from ikaaro.future.order import ResourcesOrderedTable_Ordered
+from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage
@@ -123,6 +126,60 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
         goto = '%s/%s' % (context.get_link(container), name)
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
+
+
+
+class SmartOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
+
+    def get_title(self):
+        context = get_context()
+        resource = context.resource
+        return getattr(resource, 'ordered_view_title', None)
+
+    title = property(get_title)
+
+    def get_title_description(self):
+        context = get_context()
+        resource = context.resource
+        return getattr(resource, 'ordered_view_title_description', None)
+
+    title = property(get_title)
+    title_description = property(get_title_description)
+
+
+
+class SmartOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
+
+    def get_title(self):
+        context = get_context()
+        resource = context.resource
+        return getattr(resource, 'unordered_view_title', None)
+
+
+    def get_title_description(self):
+        context = get_context()
+        resource = context.resource
+        return getattr(resource, 'unordered_view_title_description', None)
+
+    title = property(get_title)
+    title_description = property(get_title_description)
+
+
+
+class SmartOrderedTable_View(ResourcesOrderedTable_View):
+
+    template = '/ui/common/order_view.xml'
+
+    subviews = [ SmartOrderedTable_Ordered(),
+                 SmartOrderedTable_Unordered() ]
+
+    def get_namespace(self, resource, context):
+        views = []
+        for view in self.subviews:
+            views.append({'title': view.title,
+                          'description': view.title_description,
+                          'view': view.GET(resource, context)})
+        return {'views': views}
 
 
 

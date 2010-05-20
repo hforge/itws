@@ -388,6 +388,15 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
     class_id = 'sidebar-items-ordered-table'
     class_title = MSG(u'Order sidebar items')
 
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Content items')
+    ordered_view_title_description = None
+    unordered_view_title = MSG(u'Available Content items')
+    unordered_view_title_description = MSG(
+            u'This Toc, Tag cloud, HTMLContent, ... are available, '
+            u'you can make them visible in the sidebar '
+            u'by adding them to the ordered list')
+
     def _orderable_classes(self):
         registry = get_bar_item_registry()
         types = [ cls for cls, allow in registry.iteritems()
@@ -402,6 +411,15 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 
     class_id = 'contentbar-items-ordered-table'
     class_title = MSG(u'Order sidebar items')
+
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Sidebar items')
+    ordered_view_title_description = None
+    unordered_view_title = MSG(u'Available Sidebar items')
+    unordered_view_title_description = MSG(
+            u'This webpage views, diaporama, ... are available, '
+            u'you can make them visible in the main xxx '
+            u'by adding them to the ordered list')
 
     def _orderable_classes(self):
         registry = get_bar_item_registry()
