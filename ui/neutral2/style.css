@@ -10,6 +10,12 @@ label.missing {
   color: red;
 }
 
+#message a {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
 #main-table {
   margin: auto;
   width: 800px;

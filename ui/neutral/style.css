@@ -38,6 +38,12 @@ body {
   font-family: "Verdana", "Bitstream Vera Sans", "DejaVu Sans", sans-serif;
 }
 
+#message a {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
 #main-table {
   width: 950px;
   margin: auto;

@@ -16,12 +16,12 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Boolean
+from itools.datatypes import Boolean, XMLContent
 from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import RTEWidget, BooleanCheckBox
+from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody
 from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 from ikaaro.workflow import WorkflowAware
 
@@ -78,6 +78,35 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
             return
         display_title = form['display_title']
         resource.set_property('display_title', display_title)
+
+        # Customize message for webpage which can be ordered
+        site_root = resource.get_site_root()
+        section_class = site_root.section_class
+        wsdatafolder_class = site_root.wsdatafolder_class
+        parent = resource.parent
+        if isinstance(parent, (section_class, wsdatafolder_class)) is False:
+            return
+
+        # Customize message
+        order_names = parent.get_ordered_names()
+        if resource.name in order_names:
+            return
+
+        message2 = MSG(u'To make this webpage visible on "{parent_view}" '
+                       u'please go to <a href="{path}">order interface</a>')
+        if isinstance(parent, wsdatafolder_class):
+            parent_view = MSG(u'home page').gettext()
+            order_resource = site_root.get_resource(site_root.order_path)
+        else:
+            parent_view = parent.__class__.class_title.gettext()
+            order_resource = parent.get_resource(parent.order_path)
+        path = context.get_link(order_resource)
+        parent_view = XMLContent.encode(parent_view)
+        message2 = message2.gettext(parent_view=parent_view,
+                                    path=path).encode('utf8')
+        message2 = XHTMLBody.decode(message2)
+        # Add custom message
+        context.message = [ context.message, message2 ]
 
 
 
