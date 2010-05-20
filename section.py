@@ -281,8 +281,6 @@ class Section(SideBarAware, ContentBarAware, ResourcesOrderedContainer):
     edit = Section_Edit()
     order_items = GoToSpecificDocument(specific_document='order-section',
             title=MSG(u'Order the webpages/sections'))
-    order_banners = GoToSpecificDocument(specific_document='order-banners',
-        title=MSG(u'Order the banners'))
     view = Section_View()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
