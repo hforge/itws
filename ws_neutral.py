@@ -354,6 +354,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     sitemap_class = SiteMap
     section_class = Section
     newsfolder_class = NewsFolder
+    wsdatafolder_class = WSDataFolder
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
@@ -370,7 +371,8 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         Repository._make_resource(Repository, folder,
                                   '%s/%s' % (name, 'repository'))
         # WSDataFolder
-        WSDataFolder._make_resource(WSDataFolder, folder, '%s/ws-data' % name,
+        cls2 = website_class.wsdatafolder_class
+        cls2._make_resource(cls2, folder, '%s/ws-data' % name,
                 title={default_language: MSG(u'Configure Homepage').gettext()})
         # Make the table for ResourcesOrderedContainer
         order_class = cls.order_class
