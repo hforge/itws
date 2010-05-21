@@ -180,8 +180,14 @@ class NeutralSkin(FoBoFooterAwareSkin):
             favicon_resource = site_root.get_resource(favicon, soft=True)
             if favicon_resource:
                 mimetype = favicon_resource.handler.get_mimetype()
-                namespace['favicon_href'] = resolve_uri('/', favicon)
+                favicon_href = '%s/;download' % resolve_uri('/', favicon)
+                namespace['favicon_href'] = favicon_href
                 namespace['favicon_type'] = mimetype
+                namespace['favicon'] = True
+
+        if namespace['favicon'] is False:
+            # ikaaro add a default favicon
+            if 'image' in namespace['favicon_type']:
                 namespace['favicon'] = True
 
         # Turning footer
