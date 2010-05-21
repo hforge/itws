@@ -616,7 +616,7 @@ class SidebarItem_Tags_View(BarItem_View):
                                    'class': None})
             new_resource_path = '/tags/;new_resource?type=%s' % tag_format
             manage_buttons.append({'path': new_resource_path,
-                                   'label': MSG(u'Create a tag'),
+                                   'label': MSG(u'Create tag'),
                                    'class': None})
 
         return manage_buttons

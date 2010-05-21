@@ -179,7 +179,7 @@ class SideBar_View(Bar_View):
     id = 'sidebar-items'
     order_name = 'order-sidebar'
     order_method = 'order_sidebar'
-    order_label = MSG(u'Add/Order sidebar items')
+    order_label = MSG(u'Order sidebar items')
     admin_bar_prefix_name = 'sidebar-item'
     items_css_class = 'sidebar-item'
 
@@ -196,7 +196,7 @@ class SideBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_sidebar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create a new sidebar item'),
+                        'label': MSG(u'Create new sidebar item'),
                         'target': '_blank'})
 
         return buttons
@@ -208,7 +208,7 @@ class ContentBar_View(Bar_View):
     id = 'contentbar-items'
     order_name = 'order-contentbar'
     order_method = 'order_contentbar'
-    order_label = MSG(u'Add/Order contentbar items')
+    order_label = MSG(u'Order contentbar items')
     admin_bar_prefix_name = 'contentbar-item'
     items_css_class = 'contentbar-item'
 
@@ -225,7 +225,7 @@ class ContentBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_contentbar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create a new contentbar item'),
+                        'label': MSG(u'Create new contentbar item'),
                         'target': '_blank'})
 
         return buttons

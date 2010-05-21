@@ -216,7 +216,7 @@ class SectionContentBar_View(ContentBar_View):
         # webpage creation helper
         article_cls = resource.get_article_class()
         path = context.get_link(resource)
-        msg = MSG(u'Create a new %s' % article_cls.class_title.gettext())
+        msg = MSG(u'Create new %s' % article_cls.class_title.gettext())
         buttons.append({'path': '%s/;new_resource?type=%s' % (path, article_cls.class_id),
                         'icon': '/ui/icons/48x48/html.png',
                         'label': msg,
@@ -288,7 +288,7 @@ class Section_ManageLink(BaseManageLink):
 
         items.append({'path': './;new_resource',
                       'class': 'manage-add',
-                      'title': MSG(u'Add Resource')})
+                      'title': MSG(u'Add Resource: Webpage, Subsection, PDF, ODT')})
 
         # Do not show the link if there is nothing to order
         available_resources = []
@@ -303,24 +303,29 @@ class Section_ManageLink(BaseManageLink):
 
         items.append({'path': './order-section',
                       'class': 'manage-order',
-                      'title': MSG(u'Order the webpages/sections'),
+                      'title': MSG(u'Order webpages in the Section "WebPages Slot"'),
+                      'disable': len(list(unordered)) == 0})
+
+        items.append({'path': './order-section',
+                      'class': 'manage-order',
+                      'title': MSG(u'Order subsections in the TOC'),
                       'disable': len(list(unordered)) == 0})
 
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',
-                      'title': MSG(u'Create a new contentbar item')})
+                      'title': MSG(u'Create new contentbar item')})
 
         items.append({'path': './;order_contentbar',
                       'class': 'manage-contentbar',
-                      'title': MSG(u'Add/Order contentbar items')})
+                      'title': MSG(u'Order contentbar items')})
 
         items.append({'path': '/repository/;new_sidebar_resource',
                       'class': 'manage-repository',
-                      'title': MSG(u'Create a new sidebar item')})
+                      'title': MSG(u'Create new sidebar item')})
 
         items.append({'path': './;order_sidebar',
                       'class': 'manage-sidebar',
-                      'title': MSG(u'Add/Order sidebar items')})
+                      'title': MSG(u'Order sidebar items')})
 
         return items
 

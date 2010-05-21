@@ -486,7 +486,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         items.append({'path': './;new_resource',
                       'class': 'manage-add',
-                      'title': MSG(u'Add Resource')})
+                      'title': MSG(u'Add Resource: Webpage, PDF, ODT, ...')})
 
         # Order resources
         # Do not show the link if there is nothing to order
@@ -502,24 +502,29 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         items.append({'path': './order-resources',
                       'class': 'manage-order',
-                      'title': MSG(u'Order the webpages'),
+                      'title': MSG(u'Order webpages in the "WebPages Slot"'),
+                      'disable': len(list(unordered)) == 0})
+
+        items.append({'path': './order-resources',
+                      'class': 'manage-order',
+                      'title': MSG(u'Order sections'),
                       'disable': len(list(unordered)) == 0})
 
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',
-                      'title': MSG(u'Create a new contentbar item')})
+                      'title': MSG(u'Create new contentbar item')})
 
         items.append({'path': './;order_contentbar',
                       'class': 'manage-contentbar',
-                      'title': MSG(u'Add/Order contentbar items')})
+                      'title': MSG(u'Order contentbar items')})
 
         items.append({'path': '/repository/;new_sidebar_resource',
                       'class': 'manage-repository',
-                      'title': MSG(u'Create a new sidebar item')})
+                      'title': MSG(u'Create new sidebar item')})
 
         items.append({'path': './;order_sidebar',
                       'class': 'manage-sidebar',
-                      'title': MSG(u'Add/Order sidebar items')})
+                      'title': MSG(u'Order sidebar items')})
 
         return items
 
