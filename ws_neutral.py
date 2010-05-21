@@ -26,7 +26,7 @@ from decimal import Decimal
 # Import from itools
 from itools.core import get_abspath
 from itools.csv import Property
-from itools.datatypes import Unicode, String, Boolean
+from itools.datatypes import Unicode, String
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.uri import get_reference, resolve_uri, Path
@@ -67,7 +67,7 @@ from slides import SlideShow, Slide
 from tags import TagsFolder
 from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
-from utils import get_path_and_view
+from utils import get_path_and_view, is_navigation_mode
 from views import SmartOrderedTable_View
 from webpage import WebPage
 from website import WebSite
@@ -239,7 +239,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         # FO edit/no edit
         ac = here.get_access_control()
         display = ac.is_allowed_to_edit(context.user, here)
-        edit_mode = context.get_cookie('itws_fo_edit', Boolean(default=True))
+        edit_mode = is_navigation_mode(context) is False
         namespace['fo_edit'] = {'display': display,
                                 'edit_mode': edit_mode}
 

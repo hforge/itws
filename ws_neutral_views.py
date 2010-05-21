@@ -39,8 +39,10 @@ from bar import ContentBar_View, SideBar_View
 from datatypes import FormatEnumerate, NeutralClassSkin
 from section import Section
 from tags import TagsAware
-from views import BaseRSS, ProxyContainerNewInstance
+from utils import set_navigation_mode_as_edition
+from utils import set_navigation_mode_as_navigation
 from views import BaseManageLink, BaseManageContent
+from views import BaseRSS, ProxyContainerNewInstance
 from website import WebSite_Edit
 
 
@@ -365,10 +367,10 @@ class NeutralWS_FOSwitchMode(BaseView):
     def GET(self, resource, context):
         edit = context.query['mode']
         if edit:
-            context.set_cookie('itws_fo_edit', '1')
+            set_navigation_mode_as_edition(context)
             message = MSG(u'Edition mode actif')
         else:
-            context.set_cookie('itws_fo_edit', '0')
+            set_navigation_mode_as_navigation(context)
             message = MSG(u'Back to navigation mode')
 
         referer = context.get_referrer()

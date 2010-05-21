@@ -228,3 +228,19 @@ def get_admin_bar(buttons, id, title='', icon=False):
     events = admin_bar_template if icon is False else admin_bar_icon_template
     return stl(events=events,
                namespace={'buttons': buttons, 'id': id, 'title': title})
+
+
+############################################################
+# Navigation modes
+############################################################
+
+def is_navigation_mode(context):
+    return context.get_cookie('itws_fo_edit', Boolean(default=False)) is False
+
+
+def set_navigation_mode_as_navigation(context):
+    context.set_cookie('itws_fo_edit', '0')
+
+
+def set_navigation_mode_as_edition(context):
+    context.set_cookie('itws_fo_edit', '1')

@@ -20,7 +20,7 @@
 
 # Import from itools
 from itools.core import get_abspath
-from itools.datatypes import Boolean, Unicode
+from itools.datatypes import Unicode
 from itools.gettext import get_domain
 from itools.i18n import get_language_name
 from itools.stl import stl, set_prefix
@@ -32,6 +32,10 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin, register_skin
 from ikaaro.skins_views import LocationTemplate, LanguagesTemplate
 from ikaaro.utils import reduce_string
+
+# Import from itws
+from utils import is_navigation_mode
+
 
 
 def get_breadcrumb_short_name(resource):
@@ -241,8 +245,7 @@ class FoBoFooterAwareSkin(Skin):
 
         # HACK menu if needed
         # Add edit entry
-        cookie = context.get_cookie('itws_fo_edit', Boolean(default=True))
-        if int(cookie):
+        if is_navigation_mode(context) is False:
             src = data.get('src', 'menu') # FIXME
             site_root = context.resource.get_site_root()
             menu = site_root.get_resource(src, soft=True)
