@@ -389,9 +389,9 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
     class_title = MSG(u'Order sidebar items')
 
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Content items')
+    ordered_view_title = MSG(u'Order Sidebar items')
     ordered_view_title_description = None
-    unordered_view_title = MSG(u'Available Content items')
+    unordered_view_title = MSG(u'Available Sidebar items')
     unordered_view_title_description = MSG(
             u'This Toc, Tag cloud, HTMLContent, ... are available, '
             u'you can make them visible in the sidebar '
@@ -410,15 +410,15 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
 class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 
     class_id = 'contentbar-items-ordered-table'
-    class_title = MSG(u'Order sidebar items')
+    class_title = MSG(u'Order contentbar items')
 
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Sidebar items')
+    ordered_view_title = MSG(u'Order Contentbar items')
     ordered_view_title_description = None
-    unordered_view_title = MSG(u'Available Sidebar items')
+    unordered_view_title = MSG(u'Available Contentbar items')
     unordered_view_title_description = MSG(
             u'This webpage views, diaporama, ... are available, '
-            u'you can make them visible in the main xxx '
+            u'you can make them visible in the main column '
             u'by adding them to the ordered list')
 
     def _orderable_classes(self):
