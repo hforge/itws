@@ -333,13 +333,15 @@ class WSOrderedTable(ResourcesOrderedTable):
 
     view = SmartOrderedTable_View()
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Webpages')
-    ordered_view_title_description = None
+    ordered_view_title = MSG(u'Order Home "WebPages slot"')
+    ordered_view_title_description = MSG(
+            u'The HomePage has a "WebPages Slot", you can add several '
+            u'WebPages to it and order them.')
     unordered_view_title = MSG(u'Available Webpages')
     unordered_view_title_description = MSG(
-            u'This Webpages are available, '
-            u'you can make them visible in the home page '
-            u'by adding them to the ordered list')
+            u'These Webpages are available, '
+            u'you can make them visible in the Home "WebPages slot" '
+            u'by adding them to the ordered list.')
 
     def get_orderable_classes(self):
         return [ self.parent.parent.get_article_class() ]
