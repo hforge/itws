@@ -54,7 +54,7 @@ from repository_views import SidebarItem_NewsSiblingsToc_View
 from repository_views import SidebarItem_Preview, SidebarItem_View
 from repository_views import SidebarItem_SectionChildrenToc_View
 from repository_views import SidebarItem_SectionSiblingsToc_View
-from repository_views import SidebarItem_Tags_View
+from repository_views import SidebarItem_Tags_View, SidebarItem_Tags_Preview
 from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
 from utils import get_path_and_view
 from views import EasyNewInstance
@@ -218,6 +218,7 @@ class SidebarItem_Tags(BarItem):
     class_version = '20100226'
     class_title = MSG(u'Tag cloud')
     class_description = MSG(u'Display a tag cloud')
+    class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Item configuration
     item_schema = {'format': TagsAwareClassEnumerate(multiple=True),
@@ -231,12 +232,14 @@ class SidebarItem_Tags(BarItem):
         BooleanCheckBox('show_number',
                         title=MSG(u'Show numbers items for each tag')),
         BooleanCheckBox('random', title=MSG(u'Randomize tags')),
-        SelectRadio('format', title=MSG(u'Resource types',
-                    has_empty_option=False))
+        SelectRadio('format', has_empty_option=False,
+                    title=MSG(u'This tag cloud will display only '
+                              u'the tags from selected types of content'))
         ]
 
     # Views
     view = SidebarItem_Tags_View()
+    preview = order_preview = SidebarItem_Tags_Preview()
 
     @classmethod
     def get_metadata_schema(cls):
@@ -290,6 +293,7 @@ class SidebarItem_NewsSiblingsToc(BarItem):
     class_title = MSG(u'News siblings news')
     class_description = MSG(u'Display the siblings news of the current news. '
                             u'Allow to easily switch to an other news.')
+    class_views = ['backlinks', 'edit_state', 'edit_state']
 
     # Item configuration
     item_schema = {'hide_if_only_one_item': Boolean,
@@ -304,6 +308,7 @@ class SidebarItem_NewsSiblingsToc(BarItem):
 
     # Views
     view = SidebarItem_NewsSiblingsToc_View()
+    edit = None
 
 
     @classmethod
@@ -322,8 +327,10 @@ class ContentBarItem_Articles(BarItem):
     class_id = 'contentbar-item-articles'
     class_title = MSG(u'Section webpages')
     class_description = MSG(u'Display the ordered webpages of the section')
+    class_views = ['backlinks', 'edit_state', 'edit_state']
 
     view = ContentBarItem_Articles_View()
+    edit = None
 
 
 
@@ -333,8 +340,10 @@ class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
     class_title = MSG(u'Website webpages')
     class_description = MSG(u'Display the ordered webpages of the website '
                             u'(homepage)')
+    class_views = ['backlinks', 'edit_state', 'edit_state']
 
     view = ContentBarItem_WebsiteArticles_View()
+    edit = None
 
 
 
@@ -343,6 +352,7 @@ class ContentBarItem_SectionChildrenToc(BarItem):
     class_id = 'contentbar-item-children-toc'
     class_title = MSG(u'Section children webpages/section TOC')
     class_description = MSG(u'Display children webpages/section of a section')
+    class_views = ['backlinks', 'edit_state', 'edit_state']
 
     # Item configuration
     item_schema = {'hide_if_only_one_item': Boolean}
@@ -354,6 +364,7 @@ class ContentBarItem_SectionChildrenToc(BarItem):
 
     # Views
     view = ContentBarItem_SectionChildrenToc_View()
+    edit = None
 
     @classmethod
     def get_metadata_schema(cls):

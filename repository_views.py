@@ -104,6 +104,9 @@ class Repository_NewResource(Folder_NewResource):
 
 class Repository_BrowseContent(Folder_BrowseContent):
 
+    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
+                               sort_by=String(default='format'))
+
     context_menus = [ Repository_AddResourceMenu(is_side=True,
                           title=MSG(u'Add Sidebar Resource')),
                       Repository_AddResourceMenu(is_content=True,
@@ -398,12 +401,27 @@ class BarItem_Preview(STLView):
 class BarItem_Section_News_Preview(BarItem_Preview):
 
     def get_details(self, resource, context):
-        count = resource.get_property('count')
-        tags = resource.get_property('tags')
         details = []
         for key in ('count', 'tags'):
             value = resource.get_property(key)
             details.append(u'%s: %s' % (key, value))
+        return details
+
+
+
+class SidebarItem_Tags_Preview(BarItem_Preview):
+
+    def get_details(self, resource, context):
+        count = resource.get_property('count')
+        show_number = resource.get_property('show_number')
+        random = resource.get_property('random')
+        format = resource.get_property('format')
+        details = []
+        details.append(u'Tags to show (0 for all tags): %s' % count)
+        details.append(u'Show numbers items for each tag: %s' % show_number)
+        details.append(u'This tag cloud will display only the tags '
+                       u'from: %s' % ', '.join(format))
+
         return details
 
 
