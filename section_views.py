@@ -288,28 +288,26 @@ class Section_ManageLink(BaseManageLink):
 
         items.append({'path': './;new_resource',
                       'class': 'manage-add',
-                      'title': MSG(u'Add Resource: Webpage, Subsection, PDF, ODT')})
+                      'title': MSG(u'Add Resource: Webpage, Subsection, '
+                                   u'PDF, ODT')})
 
         # Do not show the link if there is nothing to order
-        available_resources = []
-        for cls in ordered_classes:
-            l = [ x.name for x in resource.search_resources(cls=cls) ]
-            available_resources.extend(l)
-        # Remove duplicated entries
-        available_resources = list(set(available_resources))
-
-        ordered_resources = order_table.get_ordered_names()
-        unordered = set(available_resources).difference(set(ordered_resources))
+        section_cls = resource.get_subsection_class()
+        article_cls = resource.get_article_class()
+        available_sections = list(resource.search_resources(cls=section_cls))
+        available_articles = list(resource.search_resources(cls=article_cls))
+        # FIXME Remove duplicated entries
 
         items.append({'path': './order-section',
                       'class': 'manage-order',
-                      'title': MSG(u'Order webpages in the Section "WebPages Slot"'),
-                      'disable': len(list(unordered)) == 0})
+                      'title': MSG(u'Order webpages in the Section '
+                                   u'"WebPages Slot"'),
+                      'disable': len(available_articles) == 0})
 
         items.append({'path': './order-section',
                       'class': 'manage-order',
                       'title': MSG(u'Order subsections in the TOC'),
-                      'disable': len(list(unordered)) == 0})
+                      'disable': len(available_sections) == 0})
 
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',

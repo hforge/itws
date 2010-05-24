@@ -505,11 +505,6 @@ class WSDataFolder_ManageLink(BaseManageLink):
                       'title': MSG(u'Order webpages in the "WebPages Slot"'),
                       'disable': len(list(unordered)) == 0})
 
-        items.append({'path': './order-resources',
-                      'class': 'manage-order',
-                      'title': MSG(u'Order sections'),
-                      'disable': len(list(unordered)) == 0})
-
         items.append({'path': '/repository/;new_contentbar_resource',
                       'class': 'manage-repository',
                       'title': MSG(u'Create new contentbar item')})
