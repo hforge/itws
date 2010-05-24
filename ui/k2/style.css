@@ -220,6 +220,7 @@ body {
 }
 
 #content {
+  font-size: 1.15em;
   padding: 10px 15px 30px;
 }
 
@@ -231,6 +232,36 @@ body {
 #content a:hover,
 #content a:visited {
   color: #555;
+}
+
+#content h1 {
+  font-size: 1.4em;
+  margin: 1em 1em .5em 0em;
+}
+
+#content h2 {
+  font-size: 1.3em;
+  margin: 0.95em 0.95em 0.5em 0em;
+}
+
+#content h3 {
+  font-size: 1.2em;
+  margin: 0.90em 0.90em 0.5em 0em;
+}
+
+#content h4 {
+  font-size: 1.1em;
+  margin: 0.85em 0.85em 0.5em 0em;
+}
+
+#content h5 {
+  font-size: 1.1em;
+  margin: 0.80em 0.80em 0.5em 0em;
+}
+
+#content h6 {
+  font-size: 1em;
+  margin: 0.75em 0.75em 0.5em 0em;
 }
 
 /**************************************************************************
