@@ -71,6 +71,8 @@ class NewsItem(WebPage):
     class_id = 'news'
     class_version = '20100129'
     class_title = MSG(u'News')
+    class_description = MSG(u'News is a webpage with a small description '
+                            u'used by the News Folder, News can be tagged')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
     class_views = ['view', 'edit', 'edit_state']
@@ -219,6 +221,8 @@ class NewsFolder(SideBarAware, Folder):
     class_id = 'news-folder'
     class_version = '20100403'
     class_title = MSG(u'News Folder')
+    class_description = MSG(u'News Folder can contains News ordered  '
+                            u'by date of publication (writing)')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
     class_views = (['view', 'browse_content', 'edit']

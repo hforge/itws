@@ -321,6 +321,7 @@ class Slide(WebPage, TagsAware):
 
     class_id = 'slide'
     class_title = MSG(u'Slide')
+    class_description = MSG(u'Slide')
     class_views = ['view', 'edit', 'edit_state']
 
 
@@ -446,6 +447,7 @@ class SlideShow(ResourcesOrderedContainer):
 
     class_id = 'slides'
     class_title = MSG(u'SlideShow')
+    class_description = MSG(u'SlideShow allows to create and organize Slides')
     class_icon16 = 'slideshow/icons/16x16/slideshow.png'
     class_icon48 = 'slideshow/icons/48x48/slideshow.png'
     class_views = ['browse_content', 'view', 'edit', 'order']

@@ -65,6 +65,7 @@ class AddressesFolder(Folder):
 
     class_id = 'addresses-folder'
     class_title = MSG(u'Addresses Folder')
+    class_description = MSG(u'Create Google Maps from adresses')
     class_icon16 = 'addresses/icons/16x16/addresses.png'
     class_icon48 = 'addresses/icons/48x48/addresses.png'
     class_views = ['view', 'configure']

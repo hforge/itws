@@ -198,6 +198,7 @@ class ITWSTracker(Tracker):
 
     class_id = 'itws-tracker'
     class_title = MSG(u'ITWS Tracker')
+    class_description = MSG(u'A customizable tracker to manage issues')
     class_views = Tracker.class_views + ['configure']
 
     issue_class = ITWSIssue

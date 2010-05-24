@@ -395,9 +395,10 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;new_resource',
                       'class': 'add',
-                      'title': MSG(u'Add Resource')})
+                      'title': MSG(u'Add Resource: Section, Wiki, Tracker, '
+                                   u'Rss agregator, ...')})
 
-        items.append({'path': './tags',
+        items.append({'path': './tags/;browse_content',
                       'class': 'tags',
                       'title': MSG(u'Manage tags')})
 
@@ -409,7 +410,7 @@ class NeutralWS_ManageLink(BaseManageLink):
                       'class': 'footer',
                       'title': MSG(u'Edit footer')})
 
-        items.append({'path': './turning-footer',
+        items.append({'path': './turning-footer/menu',
                       'class': 'turning-footer',
                       'title': MSG(u'Edit turning footer')})
 
@@ -419,7 +420,7 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;order_contentbar',
                       'class': 'order child',
-                      'title': MSG(u'Edit the content bar')})
+                      'title': MSG(u'Edit the "central part"')})
 
         items.append({'path': './;order_sidebar',
                       'class': 'order child',
@@ -439,7 +440,8 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;control_panel',
                       'class': 'controlpanel',
-                      'title': MSG(u'Control Panel')})
+                      'title': MSG(u'Control Panel: Manage users, Email '
+                                   u'options, Vhosts, SEO ...')})
 
         middle = int(floor(len(items) / 2.0))
         left_items = items[:middle]

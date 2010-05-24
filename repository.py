@@ -391,7 +391,7 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Sidebar items')
     ordered_view_title_description = MSG(
-            u'This website has a sidebar and a "central part".'
+            u'This website has a sidebar and a "central part". '
             u'The sidebar, can be composed by several kinds of items (boxes) : '
             u'Tag Cloud, "last news view", HTML Content, Twitter feeds, '
             u'Custom menu ... Here you can order these items.'
@@ -422,7 +422,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order "central part" items')
     ordered_view_title_description = MSG(
-            u'This website has a sidebar and a "central part".'
+            u'This website has a sidebar and a "central part". '
             u'The central part, can be composed by several kinds of '
             u'items (boxes) : "WebPages slot", "last news view", slideshow, '
             u'... Here you can order these items.')
