@@ -409,10 +409,18 @@ body .section-manage-view #content .manage-ul li {
   padding: 2px 0 2px 24px;
 }
 
+/* disable */
 body .neutral-manage-view #content .manage-ul li.disable span,
 body .neutral-ws-data-manage-view #content .manage-ul li.disable span,
 body .section-manage-view #content .manage-ul li.disable span {
   color: #888A85;
+}
+
+/* children */
+body .neutral-manage-view #content .manage-ul li.child,
+body .neutral-ws-data-manage-view #content .manage-ul li.child,
+body .section-manage-view #content .manage-ul li.child {
+  margin-left: 24px;
 }
 
 body .neutral-manage-view .manage-ul .edit,

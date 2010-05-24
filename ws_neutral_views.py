@@ -419,11 +419,11 @@ class NeutralWS_ManageLink(BaseManageLink):
                       'title': MSG(u'Manage repository')})
 
         items.append({'path': './;order_contentbar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Edit the content bar')})
 
         items.append({'path': './;order_sidebar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Edit the side bar')})
 
         items.append({'path': './style/;edit',
@@ -496,7 +496,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
             available_resources.extend(l)
 
         items.append({'path': './order-resources',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order webpages in the "WebPages Slot"'),
                       'disable': len(available_resources) == 0})
 
@@ -505,7 +505,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
                       'title': MSG(u'Create new contentbar item')})
 
         items.append({'path': './;order_contentbar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order contentbar items')})
 
         items.append({'path': '/repository/;new_sidebar_resource',
@@ -513,7 +513,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
                       'title': MSG(u'Create new sidebar item')})
 
         items.append({'path': './;order_sidebar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order sidebar items')})
 
         return items

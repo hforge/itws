@@ -298,13 +298,13 @@ class Section_ManageLink(BaseManageLink):
         available_articles = list(resource.search_resources(cls=article_cls))
 
         items.append({'path': './order-section',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order webpages in the Section '
                                    u'"WebPages Slot"'),
                       'disable': len(available_articles) == 0})
 
         items.append({'path': './order-section',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order subsections in the TOC'),
                       'disable': len(available_sections) == 0})
 
@@ -313,7 +313,7 @@ class Section_ManageLink(BaseManageLink):
                       'title': MSG(u'Create new contentbar item')})
 
         items.append({'path': './;order_contentbar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order contentbar items')})
 
         items.append({'path': '/repository/;new_sidebar_resource',
@@ -321,7 +321,7 @@ class Section_ManageLink(BaseManageLink):
                       'title': MSG(u'Create new sidebar item')})
 
         items.append({'path': './;order_sidebar',
-                      'class': 'order',
+                      'class': 'order child',
                       'title': MSG(u'Order sidebar items')})
 
         return items
