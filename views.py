@@ -208,26 +208,27 @@ class BaseManageLink(STLView):
     title = MSG(u'Manage view')
 
     def get_items(self, resource, context):
-        items = []
+        items_list = [[]]
 
-        return items
+        return items_list
 
 
     def get_namespace(self, resource, context):
-        items = self.get_items(resource, context)
+        items_list = self.get_items(resource, context)
 
         # Post process link
         # FIXME Does not work for absolute links
         here_link = Path(context.get_link(resource))
-        for item in items:
-            new_path = here_link.resolve2(item['path'])
-            item['path'] = new_path
-            disable = item.get('disable', False)
-            item['disable'] = disable
-            if disable:
-                item['class'] = '%s disable' % item['class']
+        for list in items_list:
+            for item in list['items']:
+                new_path = here_link.resolve2(item['path'])
+                item['path'] = new_path
+                disable = item.get('disable', False)
+                item['disable'] = disable
+                if disable:
+                    item['class'] = '%s disable' % item['class']
 
-        return {'items': items, 'title': self.title}
+        return {'lists': items_list, 'title': self.title}
 
 
 

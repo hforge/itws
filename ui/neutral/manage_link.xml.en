@@ -6,11 +6,12 @@
 
   <h1>${title}</h1>
 
-  <ul class="manage-ul">
-    <li stl:repeat="item items" class="${item/class}">
+  <ul stl:repeat="list lists" class="manage-ul ${list/class}">
+    <li stl:repeat="item list/items" class="${item/class}">
       <a stl:if="not item/disable" href="${item/path}" title="${item/title}">${item/title}</a>
       <span stl:if="item/disable">${item/title}</span>
     </li>
   </ul>
+  <div class="clear" />
 
 </stl:block>

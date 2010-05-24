@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
+from math import floor
 from types import GeneratorType
 
 # Import from itools
@@ -442,7 +443,12 @@ class NeutralWS_ManageLink(BaseManageLink):
                       'class': 'controlpanel',
                       'title': MSG(u'Control Panel')})
 
-        return items
+        middle = int(floor(len(items) / 2.0))
+        left_items = items[:middle]
+        right_items = items[middle:]
+
+        return [{'items': left_items, 'class': 'left'},
+                {'items': right_items, 'class': 'right'}]
 
 
 
@@ -479,14 +485,16 @@ class WSDataFolder_ManageLink(BaseManageLink):
     title = MSG(u'Manage home page content')
 
     def get_items(self, resource, context):
-        items = []
+        left_items = []
+        right_items = []
+
         site_root = resource.parent
         order_table = site_root.get_resource(site_root.order_path)
         ordered_classes = order_table.get_orderable_classes()
 
-        items.append({'path': './;new_resource',
-                      'class': 'add',
-                      'title': MSG(u'Add Resource: Webpage, PDF, ODT, ...')})
+        left_items.append({'path': './;new_resource',
+                           'class': 'add',
+                           'title': MSG(u'Add Resource: Webpage, PDF, ODT, ...')})
 
         # Order resources
         # Do not show the link if there is nothing to order
@@ -495,28 +503,29 @@ class WSDataFolder_ManageLink(BaseManageLink):
             l = [ x for x in resource.search_resources(cls=cls) ]
             available_resources.extend(l)
 
-        items.append({'path': './order-resources',
-                      'class': 'order child',
-                      'title': MSG(u'Order webpages in the "WebPages Slot"'),
-                      'disable': len(available_resources) == 0})
+        left_items.append({'path': './order-resources',
+                           'class': 'order child',
+                           'title': MSG(u'Order webpages in the "WebPages Slot"'),
+                           'disable': len(available_resources) == 0})
 
-        items.append({'path': '/repository/;new_contentbar_resource',
-                      'class': 'add',
-                      'title': MSG(u'Create new contentbar item')})
+        left_items.append({'path': '/repository/;new_contentbar_resource',
+                           'class': 'add',
+                           'title': MSG(u'Create new contentbar item')})
 
-        items.append({'path': './;order_contentbar',
-                      'class': 'order child',
-                      'title': MSG(u'Order contentbar items')})
+        left_items.append({'path': './;order_contentbar',
+                           'class': 'order child',
+                           'title': MSG(u'Order contentbar items')})
 
-        items.append({'path': '/repository/;new_sidebar_resource',
-                      'class': 'add',
-                      'title': MSG(u'Create new sidebar item')})
+        right_items.append({'path': '/repository/;new_sidebar_resource',
+                            'class': 'add',
+                            'title': MSG(u'Create new sidebar item')})
 
-        items.append({'path': './;order_sidebar',
-                      'class': 'order child',
-                      'title': MSG(u'Order sidebar items')})
+        right_items.append({'path': './;order_sidebar',
+                            'class': 'order child',
+                            'title': MSG(u'Order sidebar items')})
 
-        return items
+        return [{'items': left_items, 'class': 'left'},
+                {'items': right_items, 'class': 'right'}]
 
 
 

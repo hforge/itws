@@ -760,6 +760,20 @@ body .neutral-ws-data-manage-view #content .manage-ul,
 body .section-manage-view #content .manage-ul {
   padding: 0;
   margin: 0;
+  width: 40%;
+}
+
+body .neutral-manage-view #content .manage-ul.left,
+body .neutral-ws-data-manage-view #content .manage-ul.left,
+body .section-manage-view #content .manage-ul.left {
+  float: left;
+}
+
+body .neutral-manage-view #content .manage-ul.right,
+body .neutral-ws-data-manage-view #content .manage-ul.right,
+body .section-manage-view #content .manage-ul.right {
+  float: right;
+  margin-left: 5%;
 }
 
 body .neutral-manage-view #content .manage-ul li,

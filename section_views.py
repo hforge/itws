@@ -278,18 +278,20 @@ class Section_ManageLink(BaseManageLink):
     title = MSG(u'Manage the section')
 
     def get_items(self, resource, context):
-        items = []
+        left_items = []
+        right_items = []
+
         order_table = resource.get_resource(resource.order_path)
         ordered_classes = order_table.get_orderable_classes()
 
-        items.append({'path': './;edit',
-                      'class': 'edit',
-                      'title': MSG(u'Edit the section')})
+        left_items.append({'path': './;edit',
+                           'class': 'edit',
+                           'title': MSG(u'Edit the section')})
 
-        items.append({'path': './;new_resource',
-                      'class': 'add',
-                      'title': MSG(u'Add Resource: Webpage, Subsection, '
-                                   u'PDF, ODT')})
+        left_items.append({'path': './;new_resource',
+                           'class': 'add',
+                           'title': MSG(u'Add Resource: Webpage, Subsection, '
+                                        u'PDF, ODT')})
 
         # Do not show the link if there is nothing to order
         section_cls = resource.get_subsection_class()
@@ -297,34 +299,35 @@ class Section_ManageLink(BaseManageLink):
         available_sections = list(resource.search_resources(cls=section_cls))
         available_articles = list(resource.search_resources(cls=article_cls))
 
-        items.append({'path': './order-section',
-                      'class': 'order child',
-                      'title': MSG(u'Order webpages in the Section '
-                                   u'"WebPages Slot"'),
-                      'disable': len(available_articles) == 0})
+        left_items.append({'path': './order-section',
+                           'class': 'order child',
+                           'title': MSG(u'Order webpages in the Section '
+                                        u'"WebPages Slot"'),
+                           'disable': len(available_articles) == 0})
 
-        items.append({'path': './order-section',
-                      'class': 'order child',
-                      'title': MSG(u'Order subsections in the TOC'),
-                      'disable': len(available_sections) == 0})
+        left_items.append({'path': './order-section',
+                           'class': 'order child',
+                           'title': MSG(u'Order subsections in the TOC'),
+                           'disable': len(available_sections) == 0})
 
-        items.append({'path': '/repository/;new_contentbar_resource',
-                      'class': 'add',
-                      'title': MSG(u'Create new contentbar item')})
+        left_items.append({'path': '/repository/;new_contentbar_resource',
+                           'class': 'add',
+                           'title': MSG(u'Create new contentbar item')})
 
-        items.append({'path': './;order_contentbar',
-                      'class': 'order child',
-                      'title': MSG(u'Order contentbar items')})
+        left_items.append({'path': './;order_contentbar',
+                           'class': 'order child',
+                           'title': MSG(u'Order contentbar items')})
 
-        items.append({'path': '/repository/;new_sidebar_resource',
-                      'class': 'add',
-                      'title': MSG(u'Create new sidebar item')})
+        right_items.append({'path': '/repository/;new_sidebar_resource',
+                            'class': 'add',
+                            'title': MSG(u'Create new sidebar item')})
 
-        items.append({'path': './;order_sidebar',
-                      'class': 'order child',
-                      'title': MSG(u'Order sidebar items')})
+        right_items.append({'path': './;order_sidebar',
+                            'class': 'order child',
+                            'title': MSG(u'Order sidebar items')})
 
-        return items
+        return [{'items': left_items, 'class': 'left'},
+                {'items': right_items, 'class': 'right'}]
 
 
 
