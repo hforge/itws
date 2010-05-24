@@ -391,43 +391,43 @@ class NeutralWS_ManageLink(BaseManageLink):
         items = []
 
         items.append({'path': './;edit',
-                      'class': 'manage-website',
+                      'class': 'edit',
                       'title': MSG(u'Edit banner, favico, skin, ...')})
 
         items.append({'path': './;new_resource',
-                      'class': 'manage-add',
+                      'class': 'add',
                       'title': MSG(u'Add Resource')})
 
         items.append({'path': './tags',
-                      'class': 'manage-tags',
+                      'class': 'tags',
                       'title': MSG(u'Manage tags')})
 
         items.append({'path': './menu',
-                      'class': 'manage-menu',
+                      'class': 'menu',
                       'title': MSG(u'Manage menu')})
 
         items.append({'path': './footer',
-                      'class': 'manage-footer',
+                      'class': 'footer',
                       'title': MSG(u'Edit footer')})
 
         items.append({'path': './turning-footer',
-                      'class': 'manage-turning-footer',
+                      'class': 'turning-footer',
                       'title': MSG(u'Edit turning footer')})
 
         items.append({'path': './repository',
-                      'class': 'manage-repository',
+                      'class': 'repository',
                       'title': MSG(u'Manage repository')})
 
         items.append({'path': './;order_contentbar',
-                      'class': 'manage-contentbar',
+                      'class': 'order',
                       'title': MSG(u'Edit the content bar')})
 
         items.append({'path': './;order_sidebar',
-                      'class': 'manage-sidebar',
+                      'class': 'order',
                       'title': MSG(u'Edit the side bar')})
 
         items.append({'path': './style/;edit',
-                      'class': 'manage-style',
+                      'class': 'css',
                       'title': MSG(u'Edit CSS')})
 
         items.append({'path': './404/;edit',
@@ -435,11 +435,11 @@ class NeutralWS_ManageLink(BaseManageLink):
                       'title': MSG(u'Edit 404')})
 
         items.append({'path': './robots.txt/;edit',
-                      'class': 'manage-robotstxt',
+                      'class': 'robotstxt',
                       'title': MSG(u'Edit robots.txt')})
 
         items.append({'path': './;control_panel',
-                      'class': 'manage-controlpanel',
+                      'class': 'controlpanel',
                       'title': MSG(u'Control Panel')})
 
         return items
@@ -485,40 +485,35 @@ class WSDataFolder_ManageLink(BaseManageLink):
         ordered_classes = order_table.get_orderable_classes()
 
         items.append({'path': './;new_resource',
-                      'class': 'manage-add',
+                      'class': 'add',
                       'title': MSG(u'Add Resource: Webpage, PDF, ODT, ...')})
 
         # Order resources
         # Do not show the link if there is nothing to order
         available_resources = []
         for cls in ordered_classes:
-            l = [ x.name for x in resource.search_resources(cls=cls) ]
+            l = [ x for x in resource.search_resources(cls=cls) ]
             available_resources.extend(l)
-        # Remove duplicated entries
-        available_resources = list(set(available_resources))
-
-        ordered_resources = order_table.get_ordered_names()
-        unordered = set(available_resources).difference(set(ordered_resources))
 
         items.append({'path': './order-resources',
-                      'class': 'manage-order',
+                      'class': 'order',
                       'title': MSG(u'Order webpages in the "WebPages Slot"'),
-                      'disable': len(list(unordered)) == 0})
+                      'disable': len(available_resources) == 0})
 
         items.append({'path': '/repository/;new_contentbar_resource',
-                      'class': 'manage-repository',
+                      'class': 'add',
                       'title': MSG(u'Create new contentbar item')})
 
         items.append({'path': './;order_contentbar',
-                      'class': 'manage-contentbar',
+                      'class': 'order',
                       'title': MSG(u'Order contentbar items')})
 
         items.append({'path': '/repository/;new_sidebar_resource',
-                      'class': 'manage-repository',
+                      'class': 'add',
                       'title': MSG(u'Create new sidebar item')})
 
         items.append({'path': './;order_sidebar',
-                      'class': 'manage-sidebar',
+                      'class': 'order',
                       'title': MSG(u'Order sidebar items')})
 
         return items

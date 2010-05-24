@@ -415,17 +415,17 @@ body .section-manage-view #content .manage-ul li.disable span {
   color: #888A85;
 }
 
-body .neutral-manage-view .manage-ul .manage-website,
-body .neutral-manage-view .manage-ul .manage-tags,
-body .neutral-manage-view .manage-ul .manage-robotstxt,
-body .section-manage-view .manage-ul .manage-edit {
+body .neutral-manage-view .manage-ul .edit,
+body .neutral-manage-view .manage-ul .tags,
+body .neutral-manage-view .manage-ul .robotstxt,
+body .section-manage-view .manage-ul .edit {
   background: url('/ui/icons/16x16/text.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-menu,
-body .neutral-manage-view .manage-ul .manage-footer,
-body .neutral-manage-view .manage-ul .manage-turning-footer,
-body .neutral-manage-view .manage-ul .manage-controlpanel {
+body .neutral-manage-view .manage-ul .menu,
+body .neutral-manage-view .manage-ul .footer,
+body .neutral-manage-view .manage-ul .turning-footer,
+body .neutral-manage-view .manage-ul .controlpanel {
   background: url('/ui/icons/16x16/select_all.png') top left no-repeat;
 }
 
@@ -433,30 +433,28 @@ body .neutral-manage-view .manage-ul .manage-404 {
   background: url('/ui/icons/16x16/error.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-style {
+body .neutral-manage-view .manage-ul .css {
   background: url('/ui/icons/16x16/css.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-repository {
+body .neutral-manage-view .manage-ul .repository {
   background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-add,
-body .neutral-ws-data-manage-view .manage-ul .manage-add,
-body .neutral-ws-data-manage-view .manage-ul .manage-repository,
-body .section-manage-view .manage-ul .manage-repository,
-body .section-manage-view .manage-ul .manage-add,
-body .section-manage-view .manage-ul .manage-repository {
+body .neutral-manage-view .manage-ul .add,
+body .neutral-ws-data-manage-view .manage-ul .add,
+body .section-manage-view .manage-ul .add {
   background: url('/ui/icons/16x16/add.png') top left no-repeat;
 }
 
-body .neutral-manage-view .manage-ul .manage-contentbar,
-body .neutral-manage-view .manage-ul .manage-sidebar,
-body .neutral-ws-data-manage-view .manage-ul .manage-order,
-body .neutral-ws-data-manage-view .manage-ul .manage-contentbar,
-body .neutral-ws-data-manage-view .manage-ul .manage-sidebar,
-body .section-manage-view .manage-ul .manage-contentbar,
-body .section-manage-view .manage-ul .manage-sidebar,
-body .section-manage-view .manage-ul .manage-order {
+body .neutral-manage-view .manage-ul .order,
+body .neutral-ws-data-manage-view .manage-ul .order,
+body .section-manage-view .manage-ul .order {
   background: url('/ui/common/icons/16x16/sort.png') top left no-repeat;
+}
+
+body .neutral-manage-view .manage-ul .order.disable,
+body .neutral-ws-data-manage-view .manage-ul .order.disable,
+body .section-manage-view .manage-ul .order.disable {
+  background: url('/ui/common/icons/16x16/sort_disable.png') top left no-repeat;
 }
