@@ -23,7 +23,7 @@ from itools.core import merge_dicts
 from itools.datatypes import Boolean, Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import Reference
+from itools.uri import get_reference, Reference
 from itools.web import get_context, BaseView, FormError, STLView
 from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery
 from itools.xml import XMLParser
@@ -369,10 +369,8 @@ class NeutralWS_FOSwitchMode(BaseView):
         edit = context.query['mode']
         if edit:
             set_navigation_mode_as_edition(context)
-            message = MSG(u'Edition mode actif')
         else:
             set_navigation_mode_as_navigation(context)
-            message = MSG(u'Back to navigation mode')
 
         referer = context.get_referrer()
         if referer:
@@ -380,7 +378,7 @@ class NeutralWS_FOSwitchMode(BaseView):
         else:
             goto = '/'
 
-        return context.come_back(message, goto=goto)
+        return get_reference(goto)
 
 
 
