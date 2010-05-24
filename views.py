@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import String, Unicode, Boolean
+from itools.datatypes import String, Unicode, Boolean, DateTime
 from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
@@ -30,13 +30,14 @@ from ikaaro import messages
 from ikaaro.buttons import RemoveButton, RenameButton
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
+from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
-from ikaaro.webpage import WebPage
+from ikaaro.webpage import WebPage, HTMLEditView
 
 # Import from itws
 from utils import set_prefix_with_hostname, to_box
@@ -202,6 +203,7 @@ class FooterMenu_View(Menu_View):
 ############################################################
 # Manage link view
 ############################################################
+
 class BaseManageLink(STLView):
 
     template = '/ui/neutral/manage_link.xml'
@@ -574,4 +576,37 @@ class STLBoxView(STLView):
             return stream
         css = self._get_box_css(resource, context)
         return to_box(resource, stream, self.box_template, css)
+
+
+
+############################################################
+# 404
+############################################################
+
+class NotFoundPage_Edit(HTMLEditView):
+
+    schema = {
+        'data': HTMLBody,
+        'title': Unicode,
+        'timestamp': DateTime(readonly=True)}
+
+    widgets = [ timestamp_widget,
+                title_widget,
+                rte_widget ]
+
+    def action(self, resource, context, form):
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        # Save changes
+        title = form['title']
+        language = resource.get_content_language(context)
+        resource.set_property('title', title, language=language)
+        new_body = form['data']
+        handler = resource.get_handler(language=language)
+        handler.set_body(new_body)
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
 

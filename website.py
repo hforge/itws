@@ -45,7 +45,7 @@ from ikaaro.website import WebSite as BaseWebSite
 from ikaaro.wiki import WikiFolder
 
 # Import from itws
-from resources import FooterFolder
+from resources import FooterFolder, NotFoundPage
 from utils import get_path_and_view
 
 
@@ -148,7 +148,7 @@ class WebSite_Edit(DBResource_Edit):
 
 class WebSite(BaseWebSite):
 
-    class_version = '20090317'
+    class_version = '20100524'
     class_views = ['view', 'browse_content', 'preview_content', 'edit',
                    'control_panel', 'commit_log']
     # Remove 'index' but keep 'skin'
@@ -174,8 +174,8 @@ class WebSite(BaseWebSite):
         CSS._make_resource(CSS, folder, '%s/style' % name, extension='css',
                            body='/* CSS */', title={'en': u'Style'},
                            state='public')
-        # Add 404 WebPage
-        WebPage._make_resource(WebPage, folder, '%s/404' % name)
+        # Add 404 page
+        NotFoundPage._make_resource(NotFoundPage, folder, '%s/404' % name)
 
 
     @classmethod
@@ -268,6 +268,15 @@ class WebSite(BaseWebSite):
                 new_ref.path = str(target.get_pathto(new_abs_path)) + view
                 # Update the title link
                 self.set_property('favicon', str(new_ref))
+
+
+    def update_20100524(self):
+        # 404 webpage -> 404 not found page
+        resource = self.get_resource('404')
+        metadata = resource.metadata
+        metadata.set_changed()
+        metadata.format = NotFoundPage.class_id
+        metadata.version = NotFoundPage.class_version
 
 
     #######################################################################

@@ -31,10 +31,11 @@ from ikaaro.registry import register_resource_class, register_field
 from ikaaro.resource_ import DBResource
 from ikaaro.text import Text
 from ikaaro.text_views import Text_View
+from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
-from views import FooterMenu_View
+from views import FooterMenu_View, NotFoundPage_Edit
 
 
 
@@ -99,6 +100,18 @@ class RobotsTxt(Text):
         schema = Text.get_metadata_schema()
         schema['state'] = String(default='public')
         return schema
+
+
+
+############################################################
+# 404
+############################################################
+class NotFoundPage(WebPage):
+
+    class_id = '404'
+    class_title = MSG(u'404 page')
+
+    edit = NotFoundPage_Edit()
 
 
 
@@ -218,6 +231,7 @@ class ResourceWithCache(DBResource):
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
 register_resource_class(RobotsTxt)
+register_resource_class(NotFoundPage, format='application/xhtml+xml')
 
 # multilingual title with language negociation
 register_field('m_title', Unicode(is_stored=True, is_indexed=True))

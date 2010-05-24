@@ -352,7 +352,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                 WebSite):
 
     class_id = 'neutral'
-    class_version = '20100518'
+    class_version = '20100524'
     class_title = MSG(u'neutral website')
     class_views = ['view', 'manage_view', 'edit_ws_data', 'browse_content',
                    'commit_log']
