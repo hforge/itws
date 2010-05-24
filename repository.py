@@ -462,15 +462,20 @@ class Repository(Folder):
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
-                             'children-toc'])
+                             'content-children-toc', 'sidebar-children-toc',
+                             'sidebar-siblings-toc'])
 
     # configuration
     news_siblings_view_cls = SidebarItem_NewsSiblingsToc
     news_siblings_view_name = 'news-siblings'
     section_articles_view_cls = ContentBarItem_Articles
     section_articles_view_name = 'articles-view'
-    section_children_toc_view_cls = ContentBarItem_SectionChildrenToc
-    section_children_toc_view_name = 'children-toc'
+    section_content_children_toc_view_cls = ContentBarItem_SectionChildrenToc
+    section_content_children_toc_view_name = 'content-children-toc'
+    section_sidebar_children_toc_view_cls = SidebarItem_SectionChildrenToc
+    section_sidebar_children_toc_view_name = 'sidebar-children-toc'
+    section_sidebar_siblings_toc_view_cls = SidebarItem_SectionSiblingsToc
+    section_sidebar_siblings_toc_view_name = 'sidebar-siblings-toc'
     website_articles_view_cls = ContentBarItem_WebsiteArticles
     website_articles_view_name = 'website-articles-view'
 
@@ -497,10 +502,20 @@ class Repository(Folder):
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.section_articles_view_name),
                             title={'en': _cls.class_title.gettext()})
-        # section children toc
-        _cls = cls.section_children_toc_view_cls
+        # section content children toc
+        _cls = cls.section_content_children_toc_view_cls
         _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_children_toc_view_name),
+                '%s/%s' % (name, cls.section_content_children_toc_view_name),
+                           title={'en': _cls.class_title.gettext()})
+        # section sidebar children toc
+        _cls = cls.section_sidebar_children_toc_view_cls
+        _cls._make_resource(_cls, folder,
+                '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
+                           title={'en': _cls.class_title.gettext()})
+        # section sidebar siblings toc
+        _cls = cls.section_sidebar_siblings_toc_view_cls
+        _cls._make_resource(_cls, folder,
+                '%s/%s' % (name, cls.section_sidebar_siblings_toc_view_name),
                            title={'en': _cls.class_title.gettext()})
         # news siblings item
         _cls = cls.news_siblings_view_cls
@@ -557,8 +572,8 @@ class Repository(Folder):
             resource.set_property('title', cls.class_title.gettext(),
                                   language=languages[0])
 
-        name = self.section_children_toc_view_name
-        cls = self.section_children_toc_view_cls
+        name = self.section_content_children_toc_view_name
+        cls = self.section_content_children_toc_view_cls
         resource = self.get_resource(name, soft=True)
         if resource:
             resource.set_property('title', cls.class_title.gettext(),

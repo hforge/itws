@@ -108,11 +108,19 @@ class Section(SideBarAware, ContentBarAware, ResourcesOrderedContainer):
         ResourcesOrderedContainer._make_resource(cls, folder, name, **kw)
         SideBarAware._make_resource(cls, folder, name, **kw)
         ContentBarAware._make_resource(cls, folder, name, **kw)
-        # Add articles_view
-        articles_item_name = Repository.section_articles_view_name
+        # Preorder specific contentbar items
         table_name = cls.contentbar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        table.add_new_record({'name': articles_item_name})
+        for name2 in (Repository.section_content_children_toc_view_name,
+                      Repository.section_articles_view_name):
+            table.add_new_record({'name': name2})
+
+        # Preorder specific sidebar items
+        table_name = cls.sidebar_name
+        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        for name2 in (Repository.section_sidebar_children_toc_view_name,
+                      Repository.section_sidebar_siblings_toc_view_name):
+            table.add_new_record({'name': name2})
 
 
     @classmethod
