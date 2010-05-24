@@ -398,7 +398,7 @@ class NeutralWS_ManageLink(BaseManageLink):
                       'title': MSG(u'Add Resource: Section, Wiki, Tracker, '
                                    u'Rss agregator, ...')})
 
-        items.append({'path': './tags/;browse_content',
+        items.append({'path': './tags',
                       'class': 'tags',
                       'title': MSG(u'Manage tags')})
 
@@ -510,11 +510,11 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': '/repository/;new_contentbar_resource',
                            'class': 'add',
-                           'title': MSG(u'Create new contentbar item')})
+                           'title': MSG(u'Create new "central part" item')})
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
-                           'title': MSG(u'Order contentbar items')})
+                           'title': MSG(u'Order "central part" items')})
 
         right_items.append({'path': '/repository/;new_sidebar_resource',
                             'class': 'add',

@@ -208,7 +208,7 @@ class ContentBar_View(Bar_View):
     id = 'contentbar-items'
     order_name = 'order-contentbar'
     order_method = 'order_contentbar'
-    order_label = MSG(u'Order contentbar items')
+    order_label = MSG(u'Order "central part" items')
     admin_bar_prefix_name = 'contentbar-item'
     items_css_class = 'contentbar-item'
 
@@ -225,7 +225,7 @@ class ContentBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_contentbar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create new contentbar item'),
+                        'label': MSG(u'Create new "central part" item'),
                         'target': '_blank'})
 
         return buttons
@@ -263,7 +263,7 @@ class ContentBarAware(object):
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the contentbar items'))
+        title=MSG(u'Order the "central part" items'))
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):

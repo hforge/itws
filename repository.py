@@ -414,7 +414,7 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
 class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 
     class_id = 'contentbar-items-ordered-table'
-    class_title = MSG(u'Order contentbar items')
+    class_title = MSG(u'Order "central part" items')
 
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order "central part" items')
@@ -467,7 +467,7 @@ class Repository(Folder):
     new_sidebar_resource = Repository_NewResource(
             title=MSG(u'Add Sidebar Resource'))
     new_contentbar_resource = Repository_NewResource(
-            title=MSG(u'Add Contentbar Resource'), is_content=True)
+            title=MSG(u'Add "central part" Resource'), is_content=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')

@@ -107,7 +107,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
     context_menus = [ Repository_AddResourceMenu(is_side=True,
                           title=MSG(u'Add Sidebar Resource')),
                       Repository_AddResourceMenu(is_content=True,
-                          title=MSG(u'Add Contentbar Resource'))]
+                          title=MSG(u'Add "central part" Resource'))]
 
     links_template = list(XMLParser("""
         <stl:block stl:repeat="item items">
@@ -642,7 +642,8 @@ class SidebarItem_Tags_View(BarItem_View):
             # FIXME
             cls = tags_folder.tag_cloud.__class__
             view = cls(format=format, show_number=show_number,
-                       random_tags=random, tags_to_show=tags_to_show)
+                       random_tags=random, tags_to_show=tags_to_show,
+                       show_description=False)
             box = view.GET(tags_folder, context)
         elif self.is_admin(resource, context) is False:
             # Hide the box if there is no tags and

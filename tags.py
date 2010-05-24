@@ -45,6 +45,7 @@ from ikaaro.utils import get_base_path_query
 # Import from itws
 from resources import MultilingualCatalogTitleAware
 from utils import set_prefix_with_hostname, DualSelectWidget
+from utils import is_navigation_mode
 from views import EasyNewInstance, BaseRSS
 
 
@@ -192,6 +193,7 @@ class TagsFolder_TagCloud(STLView):
     show_number = False
     random_tags = False
     tags_to_show = 0
+    show_description = True
     # Css class from tag-1 to tag-css_index_max
     css_index_max = 5
 
@@ -264,7 +266,14 @@ class TagsFolder_TagCloud(STLView):
         if self.random_tags:
             shuffle(tags)
 
-        return {'tags': tags}
+        # description
+        bo_description = False
+        if is_navigation_mode(context) is False and \
+                self.show_description and \
+                type(context.resource) is type(tags_folder):
+            bo_description = True
+
+        return {'tags': tags, 'bo_description': bo_description}
 
 
 

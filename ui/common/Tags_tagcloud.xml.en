@@ -4,6 +4,19 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
+  <div id="tag-cloud-bo-description" stl:if="bo_description">
+    Tags are global to the website. Here you can create and translate them.
+    You can tag WebPages, News and Slides directly from their edit interfaces.
+    <ul>
+      <li>
+        You can <a href="./;new_resource?type=tag" title="Add a tag">add a new Tag</a>.
+      </li>
+      <li>
+        You can <a href="./;browse_content">manage and translate</a> Tags.
+      </li>
+    </ul>
+  </div>
+
   <ul id="tag-cloud" stl:if="tags">
     <li stl:repeat="tag tags" class="${tag/css}">
       <a href="${tag/link}" title="${tag/title}">

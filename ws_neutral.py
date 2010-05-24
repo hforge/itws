@@ -731,7 +731,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the contentbar items'))
+        title=MSG(u'Order the "central part" items'))
     order_sidebar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
