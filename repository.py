@@ -393,11 +393,8 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
     ordered_view_title_description = MSG(
             u'This website has a sidebar and a "central part". '
             u'The sidebar, can be composed by several kinds of items (boxes) : '
-            u'Tag Cloud, "last news view", HTML Content, Twitter feeds, '
-            u'Custom menu ... Here you can order these items.'
-            u'This Toc, Tag cloud, HTMLContent, ... are available, '
-            u'you can make them visible in the sidebar '
-            u'by adding them to the ordered list')
+            u'Tag Cloud, "last News view", HTML Content, Twitter feeds, '
+            u'Custom menu ... Here you can order these items.')
     unordered_view_title = MSG(u'Available Sidebar items')
     unordered_view_title_description = MSG(
             u'This items (boxes) are available, you can make them visible '
