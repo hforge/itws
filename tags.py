@@ -204,8 +204,17 @@ class TagsFolder_TagCloud(STLView):
 
     def get_namespace(self, resource, context):
         namespace = {}
-
         tags_folder = self._get_tags_folder(resource, context)
+
+        # description (help text)
+        bo_description = False
+        ac = tags_folder.get_access_control()
+        if ac.is_allowed_to_edit(context.user, tags_folder):
+            if is_navigation_mode(context) is False and \
+                    self.show_description and \
+                    type(context.resource) is type(tags_folder):
+                bo_description = True
+
         tag_brains = tags_folder.get_tag_brains(context)
         tag_base_link = '%s/%%s' % context.get_link(tags_folder)
         if self.format:
@@ -242,7 +251,7 @@ class TagsFolder_TagCloud(STLView):
                 tags.append(d)
 
         if not tags:
-            return {'tags': []}
+            return {'tags': [], 'bo_description': bo_description}
 
         max_items_nb = max(items_nb) if items_nb else 0
         min_items_nb = min(items_nb) if items_nb else 0
@@ -266,15 +275,6 @@ class TagsFolder_TagCloud(STLView):
         # Random
         if self.random_tags:
             shuffle(tags)
-
-        # description
-        bo_description = False
-        ac = tags_folder.get_access_control()
-        if ac.is_allowed_to_edit(context.user, tags_folder):
-            if is_navigation_mode(context) is False and \
-                    self.show_description and \
-                    type(context.resource) is type(tags_folder):
-                bo_description = True
 
         return {'tags': tags, 'bo_description': bo_description}
 
