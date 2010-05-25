@@ -201,6 +201,7 @@ class TagsFolder_TagCloud(STLView):
     def _get_tags_folder(self, resource, context):
         return resource
 
+
     def get_namespace(self, resource, context):
         namespace = {}
 
@@ -268,10 +269,12 @@ class TagsFolder_TagCloud(STLView):
 
         # description
         bo_description = False
-        if is_navigation_mode(context) is False and \
-                self.show_description and \
-                type(context.resource) is type(tags_folder):
-            bo_description = True
+        ac = tags_folder.get_access_control()
+        if ac.is_allowed_to_edit(context.user, tags_folder):
+            if is_navigation_mode(context) is False and \
+                    self.show_description and \
+                    type(context.resource) is type(tags_folder):
+                bo_description = True
 
         return {'tags': tags, 'bo_description': bo_description}
 
