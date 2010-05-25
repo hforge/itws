@@ -32,7 +32,6 @@ from itools.gettext import MSG
 from itools.uri import get_reference, resolve_uri, Path
 from itools.web import get_context
 from itools.xapian import AndQuery, PhraseQuery
-from itools.xapian import StartQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -540,9 +539,9 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
 
 
     def get_news_folder(self, context):
+        # News folder MUST be in root '/xxx'
         abspath = self.get_canonical_path()
-        abspath = '%s/' % abspath
-        query = [StartQuery('abspath', abspath),
+        query = [PhraseQuery('parent_path', str(abspath)),
                  PhraseQuery('format', self.newsfolder_class.class_id)]
         query = AndQuery(*query)
         # Search

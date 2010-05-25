@@ -134,12 +134,10 @@ class Bar_View(STLView):
             item_id = '%s-%s-%s' % (self.admin_bar_prefix_name,
                                     item.class_id, item.name)
             admin_bar = get_admin_bar(buttons, item_id, item.class_title)
-            namespace = {}
-            namespace['id'] = item_id
-            namespace['format'] = item.class_id
-            namespace['admin_bar'] = admin_bar
-            namespace['content'] = stream
-            namespace['css_class'] = self.items_css_class
+            namespace = {
+                'id': item_id, 'format': item.class_id,
+                'admin_bar': admin_bar, 'content': stream,
+                'css_class': self.items_css_class}
             render_view = self.item_view(namespace=namespace)
             items.append(render_view.GET(resource, context))
 

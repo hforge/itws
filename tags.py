@@ -409,8 +409,7 @@ class TagsFolder(Folder):
 
     def get_tags_query_terms(self, state=None, tags=[], format=[]):
         site_root = self.get_site_root()
-        abspath = site_root.get_canonical_path()
-        abspath = '%s/' % abspath
+        abspath = '%s/' % site_root.get_canonical_path()
         query = [ StartQuery('abspath', abspath),
                   PhraseQuery('is_tagsaware', True) ]
 
@@ -449,12 +448,10 @@ class TagsFolder(Folder):
 
     def get_tag_brains(self, context, sort_by='name', size=0):
         # tags
-        root = context.root
         abspath = self.get_canonical_path()
-        abspath = '%s/' % abspath
-        tags_query = AndQuery(StartQuery('abspath', abspath),
+        tags_query = AndQuery(PhraseQuery('parent_path', str(abspath)),
                               PhraseQuery('format', Tag.class_id))
-        tags_results = root.search(tags_query)
+        tags_results = context.root.search(tags_query)
         documents = tags_results.get_documents(sort_by=sort_by, size=size)
         return [ x for x in documents ]
 

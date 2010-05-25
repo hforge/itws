@@ -646,7 +646,6 @@ class SidebarItem_Tags_View(BarItem_View):
         # Box highlight
         namespace['class'] = None#'highlight'
 
-        site_root = resource.get_site_root()
         tags_folder = self._get_tags_folder(resource, context)
         has_tags = tags_folder.is_empty(context) is False
 

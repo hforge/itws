@@ -40,7 +40,6 @@ from ikaaro.resource_views import DBResource_Edit, DBResource_AddImage
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
-from ikaaro.webpage import WebPage
 from ikaaro.website import WebSite as BaseWebSite
 from ikaaro.wiki import WikiFolder
 

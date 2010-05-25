@@ -26,7 +26,7 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import get_context
-from itools.xapian import PhraseQuery, AndQuery, OrQuery, StartQuery
+from itools.xapian import PhraseQuery, AndQuery, OrQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -257,8 +257,7 @@ class NewsFolder(SideBarAware, Folder):
 
     def get_news_query_terms(self, state=None, tags=[]):
         abspath = self.get_canonical_path()
-        abspath = '%s/' % abspath
-        query = [ StartQuery('abspath', abspath),
+        query = [ PhraseQuery('parent_path', str(abspath)),
                   PhraseQuery('format', self.news_class.class_id) ]
         if state:
             query.append(PhraseQuery('workflow_state', state))
