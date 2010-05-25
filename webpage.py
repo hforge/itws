@@ -19,6 +19,7 @@ from itools.core import merge_dicts
 from itools.datatypes import String, Boolean
 
 # Import from ikaaro
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.webpage import WebPage as BaseWebPage
 
@@ -46,6 +47,39 @@ class WebPage(BaseWebPage, TagsAware):
     def _get_catalog_values(self):
         return merge_dicts(BaseWebPage._get_catalog_values(self),
                            TagsAware._get_catalog_values(self))
+
+
+    def get_class_views(self):
+        # Add helper for manage view
+        views = BaseWebPage.class_views
+        parent = self.parent
+        site_root = self.get_site_root()
+        section_cls = site_root.section_class
+        wsdata_cls = site_root.wsdatafolder_class
+        if isinstance(parent, (section_cls, wsdata_cls)):
+            new_views = list(views)
+            new_views.insert(2, 'manage_view')
+            return new_views
+        return views
+
+    class_views = property(get_class_views, None, None, '')
+
+
+    def get_view(self, name, query=None):
+        # Add helper for manage view
+        view = BaseWebPage.get_view(self, name, query)
+        if view:
+            return view
+        if name == 'manage_view':
+            parent = self.parent
+            site_root = self.get_site_root()
+            section_cls = site_root.section_class
+            wsdata_cls = site_root.wsdatafolder_class
+            if isinstance(parent, (section_cls, wsdata_cls)):
+                return GoToSpecificDocument(specific_document='..',
+                                            specific_view='manage_view',
+                                            title=parent.manage_view.title)
+        return None
 
 
     def get_available_languages(self, languages):
