@@ -294,13 +294,19 @@ class BarItem_Edit(DBResource_Edit):
 ################################################################################
 class BarItem_Section_News_Edit(BarItem_Edit):
 
+    def _get_news_folder(self, resource, context):
+        site_root = resource.get_site_root()
+        news_folder = site_root.get_news_folder(context)
+        return news_folder
+
+
     def get_schema(self, resource, context):
         # Base schema
         schema = BarItem_Edit.get_schema(self, resource, context)
         # News folder
-        site_root = resource.get_site_root()
-        newsfolder = site_root.get_news_folder(context)
+        newsfolder = self._get_news_folder(context)
         if newsfolder:
+            site_root = resource.get_site_root()
             tags = TagsList(news_folder=newsfolder, multiple=True,
                             site_root=site_root)
             return merge_dicts(schema, tags=tags, count=PositiveInteger())
@@ -312,8 +318,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
         widgets = BarItem_Edit.get_widgets(self, resource, context)[:]
 
         # News folder
-        site_root = resource.get_site_root()
-        newsfolder = site_root.get_news_folder(context)
+        newsfolder = self._get_news_folder(context)
         if newsfolder:
             widgets.extend([
                 TextWidget('count', title=MSG(u'News to show'), size=3),
@@ -516,7 +521,7 @@ class BarItem_Section_News_View(BarItem_View):
 
             # news
             site_root = resource.get_site_root()
-            news = site_root.get_news_folder(context)
+            news = self._get_news_folder(context)
             if news:
                 news_path = context.get_link(news)
                 manage_buttons.append({'path': '%s/;edit' % news_path,
