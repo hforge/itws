@@ -304,7 +304,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
         # Base schema
         schema = BarItem_Edit.get_schema(self, resource, context)
         # News folder
-        newsfolder = self._get_news_folder(context)
+        newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
             site_root = resource.get_site_root()
             tags = TagsList(news_folder=newsfolder, multiple=True,
@@ -318,7 +318,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
         widgets = BarItem_Edit.get_widgets(self, resource, context)[:]
 
         # News folder
-        newsfolder = self._get_news_folder(context)
+        newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
             widgets.extend([
                 TextWidget('count', title=MSG(u'News to show'), size=3),
@@ -521,7 +521,7 @@ class BarItem_Section_News_View(BarItem_View):
 
             # news
             site_root = resource.get_site_root()
-            news = self._get_news_folder(context)
+            news = self._get_news_folder(resource, context)
             if news:
                 news_path = context.get_link(news)
                 manage_buttons.append({'path': '%s/;edit' % news_path,
