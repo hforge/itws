@@ -418,7 +418,7 @@ class BaseRSS(BaseView):
         # Excluded formats
         excluded_formats = self.get_excluded_formats(resource, context)
         if excluded_formats:
-            if len(excluded_formats) > 2:
+            if len(excluded_formats) > 1:
                 query2 = OrQuery(*[ PhraseQuery('format', format)
                                     for format in excluded_formats ])
             else:
