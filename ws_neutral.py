@@ -214,7 +214,9 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
         # Sidebar
         sidebar = None
-        if not isinstance(here, tuple(self.not_allowed_cls_for_sidebar_view)):
+        not_allowed = isinstance(here,
+                                 tuple(self.not_allowed_cls_for_sidebar_view))
+        if context.view_name != 'not_found' and not not_allowed:
             sidebar_resource = site_root
             if isinstance(here, SideBarAware):
                 sidebar_resource = here
