@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+<form id="autoform" name="autoform" action="" method="post"
+  enctype="multipart/form-data" stl:omit-tag="not submit_value">
+  <fieldset>
+    <legend>${title}</legend>
+    <p stl:if="has_required_widget" class="field-required">${required_msg}</p>
+    <table>
+      <tr stl:repeat="widget widgets">
+        <td>
+          <label for="${widget/name}" class="${widget/class}">${widget/title}
+          </label>
+          <span stl:if="widget/mandatory" class="field-mandatory">(mandatory)
+          </span>
+          <span stl:if="widget/multiple" class="field-multiple">(multiple)
+          </span>
+          <span stl:if="widget/tip" class="field-format">${widget/tip}</span>
+          <br/>
+          ${widget/widget}
+          ${widget/suffix}
+        </td>
+      </tr>
+    </table>
+    <p stl:if="actions">
+      <stl:block stl:repeat="action actions">
+        <button type="submit" name="action" value="${action/value}"
+          class="${action/class}" onclick="${action/onclick}"
+          >${action/title}</button>
+      </stl:block>
+    </p>
+  </fieldset>
+  <script language="javascript">
+    $("#${first_widget}").focus();
+  </script>
+</form>
+
+</stl:block>

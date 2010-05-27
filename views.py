@@ -28,7 +28,7 @@ from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
-from ikaaro.buttons import RetireButton
+from ikaaro.buttons import RetireButton, Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
@@ -52,6 +52,10 @@ from utils import set_prefix_with_hostname, to_box
 class EasyNewInstance(NewInstance):
     """ ikaaro.views_new.NewInstance without field name.
     """
+    template = '/ui/common/improve_auto_form.xml'
+    actions = [Button(access='is_allowed_to_edit',
+                      name='default', title=MSG(u'Add'))]
+
     query_schema = freeze({'type': String, 'title': Unicode})
     widgets = freeze([
         TextWidget('title', title=MSG(u'Title', mandatory=True))])
@@ -60,6 +64,60 @@ class EasyNewInstance(NewInstance):
         # As we have no name, always return the title
         title = form['title'].strip()
         return title
+
+
+    def get_actions(self, resource, context):
+        return self.actions
+
+
+    def get_namespace(self, resource, context):
+        namespace = NewInstance.get_namespace(self, resource, context)
+
+        # (1) Actions (submit buttons)
+        actions = []
+        for button in self.get_actions(resource, context):
+            #if button.show(resource, context, []) is False:
+            #    continue
+            if button.confirm:
+                confirm = button.confirm.gettext().encode('utf_8')
+                onclick = 'return confirm("%s");' % confirm
+            else:
+                onclick = None
+            actions.append(
+                {'value': button.name,
+                 'title': button.title,
+                 'class': button.css,
+                 'onclick': onclick})
+
+        namespace['actions'] = actions
+
+        return namespace
+
+
+    def action_default(self, resource, context, form):
+        return NewInstance.action(self, resource, context, form)
+
+
+    def _get_goto(self, resource, context, form):
+        name = form['name']
+        return './%s/' % name
+
+
+    def action(self, resource, context, form):
+        name = form['name']
+        title = form['title']
+
+        # Create the resource
+        class_id = context.query['type']
+        cls = get_resource_class(class_id)
+        child = cls.make_resource(cls, resource, name)
+        # The metadata
+        metadata = child.metadata
+        language = resource.get_content_language(context)
+        metadata.set_property('title', title, language=language)
+
+        goto = self._get_goto(resource, context, form)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 
 
@@ -126,7 +184,7 @@ class ProxyContainerNewInstance(EasyNewInstance):
         language = resource.get_content_language(context)
         metadata.set_property('title', title, language=language)
 
-        goto = '%s/%s' % (context.get_link(container), name)
+        goto = self._get_goto(resource, context, form)
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 
