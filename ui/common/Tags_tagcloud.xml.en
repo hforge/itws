@@ -12,7 +12,7 @@
         You can <a href="./;new_resource?type=tag" title="Add a tag">add a new Tag</a>.
       </li>
       <li>
-        You can <a href="./;browse_content">manage and translate</a> Tags.
+        You can <a href="./;manage_view">manage and translate</a> Tags.
       </li>
     </ul>
   </div>
