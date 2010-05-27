@@ -293,6 +293,11 @@ class Section_ManageLink(BaseManageLink):
                            'title': MSG(u'Add Resource: Webpage, Subsection, '
                                         u'PDF, ODT')})
 
+        left_items.append({'path': './;browse_content',
+                           'class': 'edit',
+                           'title': MSG(u'Manage section content '
+                                        u'(cut, copy, rename, remove)')})
+
         # Do not show the link if there is nothing to order
         section_cls = resource.get_subsection_class()
         article_cls = resource.get_article_class()
