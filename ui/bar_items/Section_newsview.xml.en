@@ -5,7 +5,7 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <stl:block stl:if="items">
-    <h3 stl:if="title" class="title">${title}</h3>
+    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
     <div class="content">
       <div class="newsitem ${item/css}" stl:repeat="item items">
         <a stl:if="item/thumbnail" href="${item/path}" class="image-link">

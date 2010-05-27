@@ -6,7 +6,7 @@
   <a name="${name}" />
   <h3 stl:if="title" class="title">
     <a stl:omit-tag="not title_link" href="${title_link}"
-       target="${title_link_target}">
+       target="${title_link_target}" title="${title}">
       ${title}
     </a>
   </h3>
