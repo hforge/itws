@@ -222,7 +222,7 @@ class SidebarItem_Tags(BarItem):
 
     # Item configuration
     item_schema = {'format': TagsAwareClassEnumerate(multiple=True),
-                   'count':PositiveInteger,
+                   'count':PositiveInteger(default=0),
                    'show_number': Boolean,
                    'random': Boolean}
 
@@ -240,13 +240,6 @@ class SidebarItem_Tags(BarItem):
     # Views
     view = SidebarItem_Tags_View()
     preview = order_preview = SidebarItem_Tags_Preview()
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
-                           format=TagsAwareClassEnumerate(multiple=True),
-                           count=PositiveInteger(default=0),
-                           show_number=Boolean(), random=Boolean())
 
 
 
