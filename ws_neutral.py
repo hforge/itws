@@ -86,6 +86,8 @@ class NeutralSkin(FoBoFooterAwareSkin):
     nav_data = {'template': '/ui/neutral/template_nav.xml',
                 'depth': 1, 'show_first_child': False}
 
+    not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
+                                              'credits', 'license']
     not_allowed_cls_for_sidebar_view = [ITWSTracker, ITWSTracker.issue_class,
                                         WikiFolder, WikiPage, SlideShow, Slide,
                                         RssFeeds, AddressesFolder]
@@ -216,7 +218,8 @@ class NeutralSkin(FoBoFooterAwareSkin):
         sidebar = None
         not_allowed = isinstance(here,
                                  tuple(self.not_allowed_cls_for_sidebar_view))
-        if context.view_name != 'not_found' and not not_allowed:
+        navnfsv = self.not_allowed_view_name_for_sidebar_view
+        if context.view_name not in navnfsv and not not_allowed:
             sidebar_resource = site_root
             if isinstance(here, SideBarAware):
                 sidebar_resource = here
