@@ -420,12 +420,12 @@ class SidebarItem_Tags_Preview(BarItem_Preview):
         count = resource.get_property('count')
         show_number = resource.get_property('show_number')
         random = resource.get_property('random')
-        format = resource.get_property('format')
+        formats = resource.get_property('formats')
         details = []
         details.append(u'Tags to show (0 for all tags): %s' % count)
         details.append(u'Show numbers items for each tag: %s' % show_number)
         details.append(u'This tag cloud will display only the tags '
-                       u'from: %s' % ', '.join(format))
+                       u'from: %s' % ', '.join(formats))
 
         return details
 
@@ -660,10 +660,10 @@ class SidebarItem_Tags_View(BarItem_View):
             tags_to_show = resource.get_property('count')
             random = resource.get_property('random')
             show_number = resource.get_property('show_number')
-            format = resource.get_property('format') or []
+            formats = resource.get_property('formats') or []
             # FIXME
             cls = tags_folder.tag_cloud.__class__
-            view = cls(format=format, show_number=show_number,
+            view = cls(formats=formats, show_number=show_number,
                        random_tags=random, tags_to_show=tags_to_show,
                        show_description=False)
             box = view.GET(tags_folder, context)

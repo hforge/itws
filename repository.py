@@ -215,13 +215,13 @@ class SidebarItem(WebPage):
 class SidebarItem_Tags(BarItem):
 
     class_id = 'sidebar-item-tags'
-    class_version = '20100226'
+    class_version = '20100527'
     class_title = MSG(u'Tag cloud')
     class_description = MSG(u'Display a tag cloud')
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Item configuration
-    item_schema = {'format': TagsAwareClassEnumerate(multiple=True),
+    item_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
                    'count':PositiveInteger(default=0),
                    'show_number': Boolean,
                    'random': Boolean}
@@ -232,10 +232,18 @@ class SidebarItem_Tags(BarItem):
         BooleanCheckBox('show_number',
                         title=MSG(u'Show numbers items for each tag')),
         BooleanCheckBox('random', title=MSG(u'Randomize tags')),
-        SelectRadio('format', has_empty_option=False,
+        SelectRadio('formats', has_empty_option=False,
                     title=MSG(u'This tag cloud will display only '
                               u'the tags from selected types of content'))
         ]
+
+    def update_20100527(self):
+        # format -> formats
+        formats = self.get_property('format')
+        if formats:
+            self.set_property('formats', formats.split())
+        self.del_property('format')
+
 
     # Views
     view = SidebarItem_Tags_View()

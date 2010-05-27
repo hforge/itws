@@ -154,16 +154,16 @@ class Tag_View(STLView):
     title = MSG(u'View')
     access = 'is_allowed_to_view'
     template = '/ui/common/Tag_view.xml'
-    query_schema = {'format': String(default=[], multiple=True)}
+    query_schema = {'formats': String(default=[], multiple=True)}
 
     def get_namespace(self, resource, context):
         root = context.root
         here = context.resource # equal to resource
         tag = resource.name
         query = self.get_query(context)
-        format = query['format']
+        formats = query['formats']
         query = resource.parent.get_tags_query_terms(state='public', tags=[tag],
-                                                     format=format)
+                                                     formats=formats)
         results = root.search(AndQuery(*query))
 
         items = []
@@ -189,7 +189,7 @@ class TagsFolder_TagCloud(STLView):
     access = 'is_allowed_to_view'
     template = '/ui/common/Tags_tagcloud.xml'
 
-    format = []
+    formats = []
     show_number = False
     random_tags = False
     tags_to_show = 0
@@ -217,14 +217,14 @@ class TagsFolder_TagCloud(STLView):
 
         tag_brains = tags_folder.get_tag_brains(context)
         tag_base_link = '%s/%%s' % context.get_link(tags_folder)
-        if self.format:
-            query = {'format': self.format}
+        if self.formats:
+            query = {'formats': self.formats}
             tag_base_link = '%s?%s' % (tag_base_link, encode_query(query))
 
         # query
         root = context.root
         tags_query = tags_folder.get_tags_query_terms(state='public',
-                                                      format=self.format)
+                                                      formats=self.formats)
         tags_results = root.search(AndQuery(*tags_query))
 
         items_nb = []
@@ -409,7 +409,7 @@ class TagsFolder(Folder):
         return [ Tag ]
 
 
-    def get_tags_query_terms(self, state=None, tags=[], format=[]):
+    def get_tags_query_terms(self, state=None, tags=[], formats=[]):
         site_root = self.get_site_root()
         abspath = '%s/' % site_root.get_canonical_path()
         query = [ StartQuery('abspath', abspath),
@@ -424,8 +424,8 @@ class TagsFolder(Folder):
             else:
                 tags_query = tags_query[0]
             query.append(tags_query)
-        if format:
-            tags_format = [ PhraseQuery('format', f) for f in format ]
+        if formats:
+            tags_format = [ PhraseQuery('format', f) for f in formats ]
             if len(tags_format):
                 tags_format = OrQuery(*tags_format)
             query.append(tags_format)
