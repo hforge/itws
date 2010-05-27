@@ -108,7 +108,7 @@ class Slide_View(STLBoxView):
     title = MSG(u'View')
     styles = ['/ui/slideshow/style.css']
     base_template = '/ui/slideshow/Slide_view_type_%s.xml'
-    content_only = False
+    only_content = False
 
 
     def get_template(self, resource, context):
@@ -206,7 +206,7 @@ class Slide_View(STLBoxView):
         namespace['slide_image'] = image
         namespace['previous_slide'] = previous_slide
         namespace['next_slide'] = next_slide
-        namespace['content_only'] = self.content_only
+        namespace['only_content'] = self.only_content
 
         return namespace
 
@@ -312,8 +312,7 @@ class SlideShow_Edit(DBResource_Edit):
 class Tag_SlideView(Tag_ItemView):
 
     def get_content(self, resource, context):
-        # FIXME
-        view = resource.view.__class__(content_only=True)
+        view = resource.view_only_content
         return view.GET(resource, context)
 
 
@@ -431,6 +430,8 @@ class Slide(WebPage, TagsAware):
 
     edit = Slide_Edit()
     view = Slide_View()
+    # use by tag_view
+    view_only_content = Slide_View(only_content=True)
     tag_view = Tag_SlideView()
 
 

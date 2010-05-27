@@ -10,7 +10,7 @@
        <!-- Slide image or slideshow image -->
        <div class="image-slot">
          <table>
-           <tr stl:if="not content_only">
+           <tr stl:if="not only_content">
              <td id="slides-toolbar">
                <div>
                  <a stl:if="previous_slide" href="${previous_slide/href}"
@@ -28,7 +28,7 @@
          </table>
        </div>
        <!-- Slide TOC -->
-       <table id="toc" stl:if="not content_only">
+       <table id="toc" stl:if="not only_content">
          <tr>
            <td class="column ${col/css}" stl:repeat="col toc/cols">
              <ul>

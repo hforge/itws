@@ -12,7 +12,7 @@
       </td>
     </tr>
     <tr>
-      <td id="slide-nav-slot" stl:if="not content_only">
+      <td id="slide-nav-slot" stl:if="not only_content">
         <!-- Slide TOC -->
         <table id="toc">
           <tr>
@@ -38,7 +38,7 @@
       </td>
       <td id="slide-content-slot">
         <h2 id="slide-title">
-          <div id="slides-toolbar" stl:if="not content_only">
+          <div id="slides-toolbar" stl:if="not only_content">
             <a href="${previous_slide/href}" id="goto-previous-slide"
                title="${previous_slide/title}" stl:if="previous_slide">◄</a>
             <a href="${next_slide/href}" id="goto-next-slide"
