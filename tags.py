@@ -33,6 +33,7 @@ from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
 from itools.xapian import RangeQuery, NotQuery
 
 # Import from ikaaro
+from ikaaro.buttons import Button
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
@@ -41,12 +42,13 @@ from ikaaro.registry import register_field, register_resource_class
 from ikaaro.resource_views import DBResource_Edit, DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import get_base_path_query
+from ikaaro.views import CompositeForm
 
 # Import from itws
 from resources import MultilingualCatalogTitleAware
 from utils import set_prefix_with_hostname, DualSelectWidget
 from utils import is_navigation_mode
-from views import EasyNewInstance, BaseRSS
+from views import EasyNewInstance, BaseRSS, ProxyContainerNewInstance
 
 
 
@@ -351,6 +353,50 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
 
 
 
+class TagsFolder_TagNewInstance(ProxyContainerNewInstance):
+
+    actions = [Button(access='is_allowed_to_edit',
+                      name='new_tag', title=MSG(u'Add'))]
+
+    def _get_resource_cls(self, context):
+        # FIXME hardcoded
+        return Tag
+
+
+    def _get_container(self, resource, context):
+        return resource
+
+
+    def _get_goto(self, resource, context, form):
+        referrer = context.get_referrer()
+        if referrer:
+            return referrer
+        return '.'
+
+
+    def action_new_tag(self, resource, context, form):
+        return ProxyContainerNewInstance.action(self, resource, context, form)
+
+
+
+class Tags_ManageView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage view')
+
+    subviews = [ TagsFolder_TagNewInstance(),
+                 TagsFolder_BrowseContent() ]
+
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
+
+
 ############################################################
 # Resources
 ############################################################
@@ -399,11 +445,12 @@ class TagsFolder(Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
-    class_views = ['tag_cloud', 'browse_content']
+    class_views = ['tag_cloud', 'manage_view']
     class_version = '20100118'
 
     tag_cloud = TagsFolder_TagCloud()
     browse_content = TagsFolder_BrowseContent()
+    manage_view = Tags_ManageView()
 
     def get_document_types(self):
         return [ Tag ]
