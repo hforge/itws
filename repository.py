@@ -643,7 +643,7 @@ register_resource_class(ContentBarItem_Articles)
 register_resource_class(ContentBarItem_WebsiteArticles)
 register_resource_class(ContentBarItem_SectionChildrenToc)
 
-register_bar_item(SidebarItem, allow_instanciation=True)
+register_bar_item(SidebarItem, allow_instanciation=True, is_content=True)
 register_bar_item(BarItem_Section_News, allow_instanciation=True,
                   is_side=True, is_content=True)
 register_bar_item(SidebarItem_Tags, allow_instanciation=True)
