@@ -98,7 +98,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
             parent_view = MSG(u'home page').gettext()
             order_resource = site_root.get_resource(site_root.order_path)
         else:
-            parent_view = parent.__class__.class_title.gettext()
+            parent_view = parent.class_title.gettext()
             order_resource = parent.get_resource(parent.order_path)
         path = context.get_link(order_resource)
         parent_view = XMLContent.encode(parent_view)
