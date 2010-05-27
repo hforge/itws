@@ -162,6 +162,10 @@ body {
 /**************************************************************************
  * MENU
  * ***********************************************************************/
+#nav {
+  font-size: 1.1em;
+}
+
 #nav ul, #nav ul li {
   float: left;
   list-style-image: none;
@@ -321,7 +325,7 @@ fieldset legend{
  * CONTENTBAR
  * ***********************************************************************/
 #contentbar {
-  width: 650px;
+  width: 640px;
   float: left;
   overflow-x: hidden;
   /* Fix bug under FF3.x
@@ -359,15 +363,18 @@ fieldset legend{
   border: 1px solid #999;
   margin-bottom: 10px;
   padding: 5px 10px 0 10px;
+  /* Fix IEx */
+  width: 248px; /* 270 - 1 (border-left) - 10 (padding-left) - 1 (border-right) - 10 (padding-right) */
 }
 
 .sidebar-item h3.title {
   border-bottom: 1px solid #bbb;
   color: #000;
-  font-family: georgia;
+  font-family: Tahoma;
   font-weight: normal;
   line-height: 1.2em;
-  margin: 0;
+  font-size: 1.4em;
+  margin: 0 0 0.5em 0;
   padding: 5px;
   text-align: center;
   text-transform: uppercase;
@@ -375,6 +382,16 @@ fieldset legend{
 
 .sidebar-item h3.title a {
   text-decoration: none;
+}
+
+.sidebar-item ul {
+  padding-left: 0;
+  margin-left: 16px;
+}
+
+.sidebar-item ul li.active a {
+  text-decoration: none;
+  font-weight: bold;
 }
 
 /* section news */
@@ -406,7 +423,6 @@ fieldset legend{
  * NEWS FOLDER
  * ***********************************************************************/
 #page.news-folder-view {
- 
 }
 
 #page.news-folder-view .item .actu-date {
@@ -421,6 +437,7 @@ fieldset legend{
 #page.news-folder-view .item h3.title {
   clear: both;
   border-bottom: 1px solid #999;
+  margin-right: 0;
 }
 
 #page.news-folder-view .item h3.title a {
