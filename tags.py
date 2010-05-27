@@ -282,14 +282,16 @@ class TagsFolder_TagCloud(STLView):
 
 class TagsAware_Edit(DBResource_Edit):
 
-    widgets = [ DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
-                has_empty_option=False),
-                DateWidget('date_of_writing', title=MSG(u'Date of writing')) ]
-
     def get_schema(self, resource, context):
         site_root = resource.get_site_root()
         return {'tags': TagsList(site_root=site_root, multiple=True),
                 'date_of_writing': Date}
+
+
+    def get_widgets(self, resource, context):
+        return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
+            has_empty_option=False),
+            DateWidget('date_of_writing', title=MSG(u'Date of writing'))]
 
 
     def get_value(self, resource, context, name, datatype):

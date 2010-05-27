@@ -214,23 +214,24 @@ class Slide_View(STLBoxView):
 
 class Slide_Edit(HTMLEditView, TagsAware_Edit):
 
-    widgets = ([title_widget, TextWidget('long_title', title=MSG(u'Long title'),
-                                         size=70),
-                ImageSelectorWidget('image', title=MSG(u'Image')),
-                PathSelectorWidget('href', title=MSG(u'Hyperlink')),
-                subject_widget, timestamp_widget, rte_widget,
-                SlideTemplateTypeWidget('template_type',
-                                        title=MSG('Slide layout'),
-                                        has_empty_option=True, is_inline=True)]
-               +
-               TagsAware_Edit.widgets
-              )
-
     def get_schema(self, resource, context):
         return merge_dicts(HTMLEditView.get_schema(self, resource, context),
                            TagsAware_Edit.get_schema(self, resource, context),
                            long_title=Unicode, href=String,
                            image=String, template_type=SlideTemplateType)
+
+
+    def get_widgets(self, resource, context):
+        return ([title_widget,
+                 TextWidget('long_title', title=MSG(u'Long title'), size=70),
+                 ImageSelectorWidget('image', title=MSG(u'Image')),
+                 PathSelectorWidget('href', title=MSG(u'Hyperlink')),
+                 subject_widget, timestamp_widget, rte_widget,
+                 SlideTemplateTypeWidget('template_type',
+                                         title=MSG('Slide layout'),
+                                         has_empty_option=True,
+                                         is_inline=True)]
+                + TagsAware_Edit.get_widgets(self, resource, context))
 
 
     def get_value(self, resource, context, name, datatype):

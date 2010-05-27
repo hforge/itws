@@ -44,7 +44,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
         display_title_widget = BooleanCheckBox('display_title',
                 title=MSG(u'Display on webpage view'))
         widgets.insert(2, display_title_widget)
-        widgets.extend(TagsAware_Edit.widgets)
+        widgets.extend(TagsAware_Edit.get_widgets(self, resource, context))
         new_widgets = []
         eve = "iframe[src|name|id|class|style|frameborder|width|height]"
         for widget in widgets:
