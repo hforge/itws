@@ -30,7 +30,7 @@ from itools.stl import set_prefix
 from itools.uri import Path, encode_query
 from itools.web import STLView, get_context
 from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
-from itools.xapian import RangeQuery, NotQuery
+from itools.xapian import RangeQuery, NotQuery, split_unicode
 
 # Import from ikaaro
 from ikaaro.buttons import Button
@@ -41,7 +41,6 @@ from ikaaro.forms import XHTMLBody, DateWidget
 from ikaaro.registry import register_field, register_resource_class
 from ikaaro.resource_views import DBResource_Edit, DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
-from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -326,12 +325,24 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
         ('title', MSG(u'Title')),
         ('items_nb', MSG(u'Items number')),
         ('mtime', MSG(u'Last Modified')),
-        ('last_author', MSG(u'Last Author'))]
+        ('last_author', MSG(u'Last Author')),
+        ('workflow_state', MSG(u'State'))]
 
     def get_items(self, resource, context, *args):
+        # Get the parameters from the query
+        query = context.query
+        search_term = query['search_term'].strip()
+        field = query['search_field']
+
         abspath = resource.get_abspath()
-        query = AndQuery(get_base_path_query(str(abspath)),
-                         PhraseQuery('format', Tag.class_id))
+        query = [PhraseQuery('parent_path', str(abspath)),
+                 PhraseQuery('format', Tag.class_id)]
+        if search_term:
+            language = resource.get_content_language(context)
+            terms_query = [ PhraseQuery(field, term)
+                            for term in split_unicode(search_term, language) ]
+            query.append(AndQuery(*terms_query))
+        query = AndQuery(*query)
 
         return context.root.search(query)
 
