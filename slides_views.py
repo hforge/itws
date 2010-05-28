@@ -344,7 +344,7 @@ class SlideShow_BrowseContent(Folder_BrowseContent):
 
 
 
-class SlideShow_TagNewInstance(ProxyContainerNewInstance):
+class SlideShow_SlideNewInstance(ProxyContainerNewInstance):
 
     actions = [Button(access='is_allowed_to_edit',
                       name='new_slide', title=MSG(u'Add'))]
@@ -368,7 +368,7 @@ class SlideShow_ManageView(CompositeForm):
     access = 'is_allowed_to_edit'
     title = MSG(u'Manage view')
 
-    subviews = [ SlideShow_TagNewInstance(),
+    subviews = [ SlideShow_SlideNewInstance(),
                  SlideShow_BrowseContent() ]
 
 
