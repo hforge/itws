@@ -22,16 +22,19 @@ from itools.web import get_context
 from itools.xapian import PhraseQuery, AndQuery
 
 # Import from ikaaro
+from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget
 from ikaaro.forms import XHTMLBody, TextWidget
 from ikaaro.resource_views import DBResource_AddImage, DBResource_Edit
 from ikaaro.utils import get_base_path_query
+from ikaaro.views import CompositeForm
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
 from utils import get_admin_bar, xml_to_text, XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS, STLBoxView
+from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
 
@@ -214,34 +217,6 @@ class NewsFolder_Edit(DBResource_Edit):
 
 
 
-class NewsFolder_BrowseContent(Folder_BrowseContent):
-
-    access = 'is_allowed_to_edit'
-
-    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
-                               sort_by=String(default='date_of_writing'),
-                               reverse=Boolean(default=True))
-
-    table_columns = [
-        ('checkbox', None),
-        ('icon', None),
-        ('name', MSG(u'Name')),
-        ('title', MSG(u'Title')),
-        ('date_of_writing', MSG(u'Date of writing')),
-        ('mtime', MSG(u'Last Modified')),
-        ('last_author', MSG(u'Last Author')),
-        ('format', MSG(u'Type')),
-        ('workflow_state', MSG(u'State'))]
-
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'date_of_writing':
-            return brain.date_of_writing
-        return Folder_BrowseContent.get_item_value(self, resource, context,
-                                                   item, column)
-
-
-
 class NewsFolder_View(STLBoxView, BrowseFormBatchNumeric):
 
     title = MSG(u'View')
@@ -396,4 +371,74 @@ class NewsFolder_RSS(BaseRSS):
 
         return BaseRSS.get_item_value(self, resource, context, item,
                                       column, site_root)
+
+
+
+############################################################
+# Manage view
+############################################################
+
+class NewsFolder_BrowseContent(Folder_BrowseContent):
+
+    access = 'is_allowed_to_edit'
+
+    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
+                               sort_by=String(default='date_of_writing'),
+                               reverse=Boolean(default=True))
+
+    table_columns = [
+        ('checkbox', None),
+        ('icon', None),
+        ('name', MSG(u'Name')),
+        ('title', MSG(u'Title')),
+        ('date_of_writing', MSG(u'Date of writing')),
+        ('mtime', MSG(u'Last Modified')),
+        ('last_author', MSG(u'Last Author')),
+        ('format', MSG(u'Type')),
+        ('workflow_state', MSG(u'State'))]
+
+    def get_item_value(self, resource, context, item, column):
+        brain, item_resource = item
+        if column == 'date_of_writing':
+            return brain.date_of_writing
+        return Folder_BrowseContent.get_item_value(self, resource, context,
+                                                   item, column)
+
+
+
+class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
+
+    actions = [Button(access='is_allowed_to_edit',
+                      name='new_news', title=MSG(u'Add'))]
+
+    def _get_resource_cls(self, context):
+        here = context.resource
+        return here.news_class
+
+
+    def _get_container(self, resource, context):
+        return resource
+
+
+    def action_new_news(self, resource, context, form):
+        return ProxyContainerNewInstance.action(self, resource, context, form)
+
+
+
+class NewsFolder_ManageView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage view')
+
+    subviews = [ NewsFolder_NewsNewInstance(),
+                 NewsFolder_BrowseContent() ]
+
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
 
