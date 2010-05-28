@@ -75,7 +75,7 @@ class NewsItem(WebPage):
                             u'used by the News Folder, News can be tagged')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = ['view', 'edit', 'edit_state']
+    class_views = ['view', 'edit', 'edit_state', 'commit_log']
 
 
     @classmethod
@@ -225,7 +225,7 @@ class NewsFolder(SideBarAware, Folder):
                             u'by date of publication (writing)')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = (['view', 'browse_content', 'edit']
+    class_views = (['view', 'browse_content', 'edit', 'commit_log']
                    + SideBarAware.class_views)
     __fixed_handlers__ = (SideBarAware.__fixed_handlers__ +
                           Folder.__fixed_handlers__ + ['images'])
