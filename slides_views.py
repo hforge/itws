@@ -23,21 +23,25 @@
 from itools.core import  merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
+from itools.xapian import split_unicode, PhraseQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro.buttons import Button
+from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
 from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
-from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.forms import stl_namespaces
+from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
+from ikaaro.views import CompositeForm
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
 from tags import TagsAware_Edit, Tag_ItemView
-from views import STLBoxView
+from views import STLBoxView, ProxyContainerNewInstance
 
 
 
@@ -301,4 +305,78 @@ class Tag_SlideView(Tag_ItemView):
     def get_content(self, resource, context):
         view = resource.view_only_content
         return view.GET(resource, context)
+
+
+
+############################################################
+# Manage view
+############################################################
+
+class SlideShow_BrowseContent(Folder_BrowseContent):
+
+    # Table
+    table_columns = [
+        ('checkbox', None),
+        ('name', MSG(u'Name')),
+        ('title', MSG(u'Title')),
+        ('mtime', MSG(u'Last Modified')),
+        ('last_author', MSG(u'Last Author')),
+        ('workflow_state', MSG(u'State'))]
+
+    def get_items(self, resource, context, *args):
+        # Get the parameters from the query
+        query = context.query
+        search_term = query['search_term'].strip()
+        field = query['search_field']
+
+        abspath = resource.get_abspath()
+        slide_cls = resource.slide_class
+        query = [PhraseQuery('parent_path', str(abspath)),
+                 PhraseQuery('format', slide_cls.class_id)]
+        if search_term:
+            language = resource.get_content_language(context)
+            terms_query = [ PhraseQuery(field, term)
+                            for term in split_unicode(search_term, language) ]
+            query.append(AndQuery(*terms_query))
+        query = AndQuery(*query)
+
+        return context.root.search(query)
+
+
+
+class SlideShow_TagNewInstance(ProxyContainerNewInstance):
+
+    actions = [Button(access='is_allowed_to_edit',
+                      name='new_slide', title=MSG(u'Add'))]
+
+    def _get_resource_cls(self, context):
+        here = context.resource
+        return here.slide_class
+
+
+    def _get_container(self, resource, context):
+        return resource
+
+
+    def action_new_slide(self, resource, context, form):
+        return ProxyContainerNewInstance.action(self, resource, context, form)
+
+
+
+class SlideShow_ManageView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage view')
+
+    subviews = [ SlideShow_TagNewInstance(),
+                 SlideShow_BrowseContent() ]
+
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
 

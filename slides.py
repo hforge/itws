@@ -44,7 +44,7 @@ from datatypes import PositiveIntegerNotNull
 from tags import TagsAware
 from utils import get_path_and_view
 from slides_views import SlideShow_Edit, Slide_Edit, Tag_SlideView, Slide_View
-from slides_views import SlideTemplateType
+from slides_views import SlideShow_ManageView, SlideTemplateType
 
 
 
@@ -183,14 +183,16 @@ class SlideShow(ResourcesOrderedContainer):
     class_description = MSG(u'SlideShow allows to create and organize Slides')
     class_icon16 = 'slideshow/icons/16x16/slideshow.png'
     class_icon48 = 'slideshow/icons/48x48/slideshow.png'
-    class_views = ['browse_content', 'view', 'edit', 'order']
+    class_views = ['manage_view', 'view', 'edit', 'order']
 
     __fixed_handlers__ = ['order-slides']
 
     order_path = 'order-slides'
     order_class = Slides_OrderedTable
+    slide_class = Slide
 
     # Views
+    manage_view = SlideShow_ManageView()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     view = GoToFirstOrderedResource()
