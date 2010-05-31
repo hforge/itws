@@ -216,8 +216,7 @@ admin_bar_icon_template = list(XMLParser("""
 
 def get_admin_bar(buttons, id, title='', icon=False):
     context = get_context()
-    cookie = context.get_cookie('itws_fo_edit', Boolean(default=True))
-    if not int(cookie):
+    if is_navigation_mode(context):
         return
     resource = context.resource
     ac = resource.get_access_control()

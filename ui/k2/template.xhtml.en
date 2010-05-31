@@ -38,9 +38,9 @@
       <table cellpadding="0" cellspacing="0" class="header-toolbar">
         <tr>
           <td class="fo-edit" stl:if="fo_edit/display">
-            <a stl:if="not fo_edit/edit_mode" class="on" href="/;fo_switch_mode?mode=1"
+            <a stl:if="not fo_edit/edit_mode" href="/;fo_switch_mode?mode=1"
                title="Go to edition mode">Go to edition mode</a>
-            <a stl:if="fo_edit/edit_mode" class="off" href="/;fo_switch_mode?mode=0"
+            <a stl:if="fo_edit/edit_mode" href="/;fo_switch_mode?mode=0"
                title="Back to navigation">Back to navigation</a>
           </td>
           <td class="recherche">
