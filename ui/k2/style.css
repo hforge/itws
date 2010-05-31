@@ -135,8 +135,8 @@ body {
 #languages a,
 #languages a:link {
   text-transform: uppercase;
-  margin-right: 5px;
-  padding: 0 3px;
+  margin: 0;
+  padding: 0 5px 0 2px; /* There is something strange should be {0 5px} */
   border-right: 1px solid #bbb;
 }
 
@@ -362,9 +362,17 @@ fieldset legend{
 
   border: 1px solid #999;
   margin-bottom: 10px;
-  padding: 5px 10px 0 10px;
+  padding: 5px 10px;
   /* Fix IEx */
   width: 248px; /* 270 - 1 (border-left) - 10 (padding-left) - 1 (border-right) - 10 (padding-right) */
+}
+
+#contentbar .sidebar-item {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+
+  border: 0;
+  width: auto;
 }
 
 .sidebar-item h3.title {
@@ -407,6 +415,7 @@ fieldset legend{
 
 .sidebar-item-section-news .newsitem.last {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .sidebar-item-section-news .newsitem .image-link {
@@ -423,6 +432,10 @@ fieldset legend{
  * NEWS FOLDER
  * ***********************************************************************/
 #page.news-folder-view {
+}
+
+#page.news-folder-view .item {
+  border-bottom: 1px solid #999;
 }
 
 #page.news-folder-view .item .actu-date {
