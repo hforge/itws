@@ -159,10 +159,9 @@ class NeutralWS_Edit(WebSite_Edit):
             TextWidget('banner_title', title=MSG(u'Banner title'),
                        tip=MSG(u'(Use as banner if there is no image banner)')))
         # banner_path
-        path = resource.get_property('banner_path', language=language)
-        title = MSG(u'Banner path')
         widgets.append(
-            ImageSelectorWidget('banner_path', title=title, width=640))
+            ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
+                                width=640))
         # Format date
 
         suffix_js = XHTMLBody(sanitize_html=False).decode("""
