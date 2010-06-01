@@ -133,6 +133,20 @@ class NeutralSkin(FoBoFooterAwareSkin):
         return rss
 
 
+    def get_sidebar_resource(self, context):
+        here = context.resource
+        site_root = here.get_site_root()
+        sidebar_resource = site_root
+        if isinstance(here, SideBarAware):
+            sidebar_resource = here
+        elif isinstance(here, SidebarItemsOrderedTable):
+            sidebar_resource = here.parent
+        elif isinstance(here, NewsItem) or\
+                isinstance(here.parent, site_root.section_class):
+            sidebar_resource = here.parent
+        return sidebar_resource
+
+
     def build_namespace(self, context):
         namespace = FoBoFooterAwareSkin.build_namespace(self, context)
 
@@ -220,18 +234,11 @@ class NeutralSkin(FoBoFooterAwareSkin):
                                  tuple(self.not_allowed_cls_for_sidebar_view))
         navnfsv = self.not_allowed_view_name_for_sidebar_view
         if context.view_name not in navnfsv and not not_allowed:
-            sidebar_resource = site_root
-            if isinstance(here, SideBarAware):
-                sidebar_resource = here
-            elif isinstance(here, SidebarItemsOrderedTable):
-                sidebar_resource = here.parent
-            elif isinstance(here, NewsItem) or\
-                    isinstance(here.parent, site_root.section_class):
-                sidebar_resource = here.parent
+            sidebar_resource = self.get_sidebar_resource(context)
 
             # When request path is /ui/xxx -> 404
             # site_root is the root resource, and it is not SidebarAware
-            if isinstance(sidebar_resource, SideBarAware):
+            if sidebar_resource and isinstance(sidebar_resource, SideBarAware):
                 order_name = sidebar_resource.sidebar_name
                 sidebar_view = SideBar_View(order_name=order_name)
                 if not sidebar_view.is_empty(sidebar_resource, context):
