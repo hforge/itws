@@ -19,7 +19,7 @@ from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
 from itools.web import get_context
-from itools.xapian import PhraseQuery, AndQuery
+from itools.xapian import PhraseQuery, AndQuery, NotQuery
 
 # Import from ikaaro
 from ikaaro.buttons import Button
@@ -396,6 +396,14 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
         ('last_author', MSG(u'Last Author')),
         ('format', MSG(u'Type')),
         ('workflow_state', MSG(u'State'))]
+
+    def get_items(self, resource, context, *args):
+        path = str(resource.get_canonical_path())
+        # Only remove 'order-sidebar'
+        query = [ PhraseQuery('parent_path', path),
+                  NotQuery(PhraseQuery('name', 'order-sidebar')) ]
+        return context.root.search(AndQuery(*query))
+
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
