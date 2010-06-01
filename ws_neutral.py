@@ -90,10 +90,10 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
     fo_edit_template = list(XMLParser(
     """
-    <div class="fo-edit" stl:if="fo_edit/display">
-      <a stl:if="not fo_edit/edit_mode" href="/;fo_switch_mode?mode=1"
+    <div class="fo-edit" stl:if="display">
+      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
          title="Go to edition mode">Go to edition mode</a>
-      <a stl:if="fo_edit/edit_mode" href="/;fo_switch_mode?mode=0"
+      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
          title="Back to navigation">Back to navigation</a>
     </div>
     """, stl_namespaces))
@@ -265,8 +265,8 @@ class NeutralSkin(FoBoFooterAwareSkin):
         ac = here.get_access_control()
         display = ac.is_allowed_to_edit(context.user, here)
         edit_mode = is_navigation_mode(context) is False
-        events = stl(self.fo_edit_template, {'display': display,
-                                             'edit_mode': edit_mode})
+        events = stl(events=self.fo_edit_template,
+                     namespace={'display': display, 'edit_mode': edit_mode})
         namespace['fo_edit_toolbar'] = events
 
         return namespace
@@ -297,10 +297,10 @@ class K2Skin(NeutralSkin2):
     # FIXME
     fo_edit_template = list(XMLParser(
     """
-    <td class="fo-edit" stl:if="fo_edit/display">
-      <a stl:if="not fo_edit/edit_mode" href="/;fo_switch_mode?mode=1"
+    <td class="fo-edit" stl:if="display">
+      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
          title="Go to edition mode">Go to edition mode</a>
-      <a stl:if="fo_edit/edit_mode" href="/;fo_switch_mode?mode=0"
+      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
          title="Back to navigation">Back to navigation</a>
     </td>
     """, stl_namespaces))
