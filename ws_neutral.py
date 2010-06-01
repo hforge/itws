@@ -29,6 +29,7 @@ from itools.csv import Property
 from itools.datatypes import Unicode, String
 from itools.fs import FileName
 from itools.gettext import MSG
+from itools.stl import stl
 from itools.uri import get_reference, resolve_uri, Path
 from itools.web import get_context
 from itools.xapian import AndQuery, PhraseQuery
@@ -40,6 +41,7 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.forms import stl_namespaces
 from ikaaro.future.menu import MenuFolder, Menu
 from ikaaro.future.order import ResourcesOrderedContainer, ResourcesOrderedTable
 from ikaaro.registry import register_resource_class, register_document_type
@@ -85,6 +87,16 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
     nav_data = {'template': '/ui/neutral/template_nav.xml',
                 'depth': 1, 'show_first_child': False}
+
+    fo_edit_template = list(XMLParser(
+    """
+    <div class="fo-edit" stl:if="fo_edit/display">
+      <a stl:if="not fo_edit/edit_mode" href="/;fo_switch_mode?mode=1"
+         title="Go to edition mode">Go to edition mode</a>
+      <a stl:if="fo_edit/edit_mode" href="/;fo_switch_mode?mode=0"
+         title="Back to navigation">Back to navigation</a>
+    </div>
+    """, stl_namespaces))
 
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
@@ -253,8 +265,9 @@ class NeutralSkin(FoBoFooterAwareSkin):
         ac = here.get_access_control()
         display = ac.is_allowed_to_edit(context.user, here)
         edit_mode = is_navigation_mode(context) is False
-        namespace['fo_edit'] = {'display': display,
-                                'edit_mode': edit_mode}
+        events = stl(self.fo_edit_template, {'display': display,
+                                             'edit_mode': edit_mode})
+        namespace['fo_edit_toolbar'] = events
 
         return namespace
 
@@ -281,7 +294,16 @@ class NeutralSkin2(NeutralSkin):
 
 class K2Skin(NeutralSkin2):
 
-    pass
+    # FIXME
+    fo_edit_template = list(XMLParser(
+    """
+    <td class="fo-edit" stl:if="fo_edit/display">
+      <a stl:if="not fo_edit/edit_mode" href="/;fo_switch_mode?mode=1"
+         title="Go to edition mode">Go to edition mode</a>
+      <a stl:if="fo_edit/edit_mode" href="/;fo_switch_mode?mode=0"
+         title="Back to navigation">Back to navigation</a>
+    </td>
+    """, stl_namespaces))
 
 
 

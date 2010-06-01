@@ -34,12 +34,7 @@
             </a>
             <div id="right-wrapper">
               ${languages}
-              <div class="fo-edit" stl:if="fo_edit/display">
-                <a stl:if="not fo_edit/edit_mode" class="on" href="/;fo_switch_mode?mode=1"
-                   title="Go to edition mode">Go to edition mode</a>
-                <a stl:if="fo_edit/edit_mode" class="off" href="/;fo_switch_mode?mode=0"
-                   title="Back to navigation">Back to navigation</a>
-              </div>
+              ${fo_edit_toolbar}
               <div class="clear" />
               <div id="search-form">
                 <form action="/;site_search" method="get">
