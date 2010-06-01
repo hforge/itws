@@ -21,6 +21,7 @@ from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
+from itools.stl import stl
 from itools.uri import Path, Reference
 from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
@@ -38,7 +39,7 @@ from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
-from ikaaro.webpage import WebPage, HTMLEditView
+from ikaaro.webpage import WebPage, HTMLEditView, WebPage_View
 
 # Import from itws
 from utils import set_prefix_with_hostname, to_box
@@ -668,4 +669,15 @@ class NotFoundPage_Edit(HTMLEditView):
         handler.set_body(new_body)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
+
+
+
+class NotFoundPage_View(WebPage_View):
+
+    def GET(self, resource, context):
+        stream = WebPage_View.GET(self, resource, context)
+        print u'here', context.resource.get_abspath()
+        print u'resource', resource.get_abspath()
+        prefix = context.resource.get_pathto(resource)
+        return set_prefix(stream, '%s/' % prefix)
 
