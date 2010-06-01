@@ -30,6 +30,7 @@ from itools.xapian import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro.buttons import Button
 from ikaaro.forms import BooleanCheckBox, timestamp_widget
 from ikaaro.forms import stl_namespaces
 from ikaaro.forms import title_widget, description_widget, subject_widget
@@ -42,6 +43,7 @@ from bar import ContentBar_View
 from views import BaseManageLink, BaseManageContent
 from views import SmartOrderedTable_View
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
+from views import ProxyContainerNewInstance
 
 
 
@@ -194,10 +196,44 @@ class SectionOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
 
+class Section_ArticleNewInstance(ProxyContainerNewInstance):
+
+    actions = [Button(access='is_allowed_to_edit',
+                      name='new_article', title=MSG(u'Add'))]
+
+    # SmartOrderedTable_View API
+    title = title_description = None
+
+    def _get_resource_cls(self, context):
+        here = context.resource
+        # Return parent section article class
+        return here.parent.get_article_class()
+
+
+    def _get_container(self, resource, context):
+        # Parent section
+        return resource.parent
+
+
+    def action_new_article(self, resource, context, form):
+        return ProxyContainerNewInstance.action(self, resource, context, form)
+
+
+
 class SectionOrderedTable_View(SmartOrderedTable_View):
 
-    subviews = [SectionOrderedTable_Ordered(),
+    subviews = [Section_ArticleNewInstance(),
+                SectionOrderedTable_Ordered(),
                 SectionOrderedTable_Unordered()]
+
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
 
 
 
