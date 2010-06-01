@@ -30,6 +30,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
+from ikaaro.buttons import Button
 from ikaaro.forms import ImageSelectorWidget, XHTMLBody
 from ikaaro.forms import stl_namespaces, TextWidget, SelectRadio
 from ikaaro.views import CompositeForm
@@ -44,6 +45,8 @@ from utils import set_navigation_mode_as_edition
 from utils import set_navigation_mode_as_navigation
 from views import BaseManageLink, BaseManageContent
 from views import BaseRSS, ProxyContainerNewInstance
+from views import SmartOrderedTable_View, SmartOrderedTable_Ordered
+from views import SmartOrderedTable_Unordered
 from website import WebSite_Edit
 
 
@@ -561,3 +564,45 @@ class WSDataFolder_ManageView(CompositeForm):
 
     subviews = [WSDataFolder_ManageLink(),
                 WSDataFolder_ManageContent()]
+
+
+
+class WSDataFolder_ArticleNewInstance(ProxyContainerNewInstance):
+
+    actions = [Button(access='is_allowed_to_edit',
+                      name='new_article', title=MSG(u'Add'))]
+
+    # SmartOrderedTable_View API
+    title = title_description = None
+
+    def _get_resource_cls(self, context):
+        here = context.resource
+        # FIXME Get the first orderable classes
+        # orderable classes SHOULD always contains ONE class
+        return here.get_orderable_classes()[0]
+
+
+    def _get_container(self, resource, context):
+        # Parent ws-data folder
+        return resource.parent
+
+
+    def action_new_article(self, resource, context, form):
+        return ProxyContainerNewInstance.action(self, resource, context, form)
+
+
+
+class WSDataFolder_OrderedTable_View(SmartOrderedTable_View):
+
+    subviews = [ WSDataFolder_ArticleNewInstance(),
+                 SmartOrderedTable_Ordered(),
+                 SmartOrderedTable_Unordered() ]
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
+

@@ -69,7 +69,6 @@ from tags import TagsFolder
 from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view, is_navigation_mode
-from views import SmartOrderedTable_View
 from webpage import WebPage
 from website import WebSite
 from ws_neutral_views import NeutralWS_ArticleNewInstance
@@ -77,6 +76,7 @@ from ws_neutral_views import NeutralWS_FOSwitchMode
 from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
+from ws_neutral_views import WSDataFolder_OrderedTable_View
 
 
 
@@ -367,7 +367,7 @@ class WSOrderedTable(ResourcesOrderedTable):
     class_id = 'neutral-ws-ordered-table'
     order_root_path = '..' # Parent ws-data folder
 
-    view = SmartOrderedTable_View()
+    view = WSDataFolder_OrderedTable_View()
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Home "WebPages slot"')
     ordered_view_title_description = MSG(
