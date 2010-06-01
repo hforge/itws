@@ -107,8 +107,12 @@ class NotFoundPage(BaseNotFoundView):
         site_root = resource.get_site_root()
         template = site_root.get_resource(self.not_found_template, soft=True)
         if template and not template.handler.is_empty():
-            prefix = context.resource.get_pathto(template)
-            return set_prefix(template.handler.events, prefix)
+            # When 404 occurs context.resource is the last valid resource
+            # in the context.path. We need to compute prefix from context.path
+            # instead of context.resource
+            path = site_root.get_abspath().resolve2('.%s' % context.path)
+            prefix = path.get_pathto(template.get_abspath())
+            return set_prefix(template.handler.events, '%s/' % prefix)
         # default
         return BaseNotFoundView.get_template(self, resource, context)
 
