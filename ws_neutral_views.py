@@ -267,7 +267,8 @@ class NeutralWS_RSS(BaseRSS):
         site_root = resource.get_site_root()
         site_root_abspath = site_root.get_abspath()
         excluded = []
-        for name in ('./menu/', './repository/'):
+        for name in ('./menu/', './repository/', './ws-data/',
+                     './footer/', './turning-footer/', './tags/'):
             excluded.append(site_root_abspath.resolve2(name))
         return excluded
 
