@@ -196,6 +196,7 @@ body {
 #nav ul li a {
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
 
   display: block;
   font-size: 1em;
@@ -300,8 +301,10 @@ input, textarea, select{
 button, .button{
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
+  border-radius:3px;
   -moz-box-shadow:0 0 3px #CCCCCC;
   -webkit-box-shadow:0 0 3px #CCCCCC;
+  box-shadow:0 0 3px #CCCCCC;
 
   background-color: #FFF;
   border:1px solid #CCCCCC;
@@ -367,6 +370,7 @@ fieldset legend{
 .sidebar-item {
   -moz-border-radius: 8px 8px 0 0;
   -webkit-border-radius: 8px 8px 0 0;
+  border-radius: 8px 8px 0 0;
 
   border: 1px solid #999;
   margin-bottom: 10px;
@@ -378,6 +382,7 @@ fieldset legend{
 #contentbar .sidebar-item {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
+  border-radius: 0;
 
   border: 0;
   width: auto;
