@@ -61,6 +61,8 @@ class EasyNewInstance(NewInstance):
     widgets = freeze([
         TextWidget('title', title=MSG(u'Title', mandatory=True))])
 
+    goto_method = None
+
     def get_new_resource_name(self, form):
         # As we have no name, always return the title
         title = form['title'].strip()
@@ -99,8 +101,15 @@ class EasyNewInstance(NewInstance):
         return NewInstance.action(self, resource, context, form)
 
 
+    def _get_goto_method(self, resource, context, form):
+        return self.goto_method
+
+
     def _get_goto(self, resource, context, form):
         name = form['name']
+        goto_method = self._get_goto_method(resource, context, form)
+        if goto_method:
+            return './%s/;%s' % (name, goto_method)
         return './%s/' % name
 
 

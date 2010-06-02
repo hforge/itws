@@ -428,6 +428,14 @@ class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
         return resource
 
 
+    def _get_goto(self, resource, context, form):
+        name = form['name']
+        # Assume that the resource already exists
+        container = self._get_container(resource, context)
+        child = container.get_resource(name)
+        return '%s/;edit' % context.get_link(child)
+
+
     def action_new_news(self, resource, context, form):
         return ProxyContainerNewInstance.action(self, resource, context, form)
 
