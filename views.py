@@ -21,7 +21,6 @@ from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.stl import stl
 from itools.uri import Path, Reference
 from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
@@ -477,7 +476,7 @@ class BaseRSS(BaseView):
         # Allowed formats
         formats = self.get_allowed_formats(resource, context)
         if formats:
-            if len(formats) > 2:
+            if len(formats) > 1:
                 query2 = OrQuery(*[ PhraseQuery('format', format)
                                     for format in formats ])
             else:
@@ -492,6 +491,26 @@ class BaseRSS(BaseView):
                                     for format in excluded_formats ])
             else:
                 query2 = PhraseQuery('format', excluded_formats[0])
+            query.append(NotQuery(query2))
+
+        # Excluded paths
+        excluded_paths = self.get_excluded_paths(resource, context)
+        if excluded_paths:
+            if len(excluded_paths) > 1:
+                query2 = OrQuery(*[ PhraseQuery('abspath', str(path))
+                                    for path in excluded_paths ])
+            else:
+                query2 = PhraseQuery('abspath', str(excluded_paths[0]))
+            query.append(NotQuery(query2))
+
+        # Excluded container paths
+        excluded_cpaths = self.get_excluded_container_paths(resource, context)
+        if excluded_cpaths:
+            if len(excluded_cpaths) > 1:
+                query2 = OrQuery(*[ get_base_path_query(str(path))
+                                    for path in excluded_cpaths ])
+            else:
+                query2 = get_base_path_query(str(excluded_cpaths[0]))
             query.append(NotQuery(query2))
 
         # An If-Modified-Since ?
@@ -512,13 +531,6 @@ class BaseRSS(BaseView):
 
     def sort_and_batch(self, resource, context, results):
         items = self._sort_and_batch(resource, context, results)
-        # Excluded path
-        excluded_paths = self.get_excluded_paths(resource, context)
-        excluded_paths = [ str(x)
-                          for x in excluded_paths ]
-        excluded_container_paths = self.get_excluded_container_paths(resource,
-                                                                     context)
-        excluded_container_paths = [ str(x) for x in excluded_container_paths ]
 
         # Access Control (FIXME this should be done before batch)
         user = context.user
@@ -526,22 +538,6 @@ class BaseRSS(BaseView):
         allowed_items = []
         for item in items:
             abspath = item.abspath
-            # TODO To improve
-            # excluded path
-            if excluded_paths:
-                if abspath in excluded_paths:
-                    print u'SKIP path', abspath
-                    continue
-            # excluded container
-            if excluded_container_paths:
-                skip = False
-                for path in excluded_container_paths:
-                    if abspath.startswith(path):
-                        skip = True
-                        break
-                if skip:
-                    print u'SKIP Container', abspath
-                    continue
             resource = root.get_resource(abspath)
             ac = resource.get_access_control()
             if ac.is_allowed_to_view(user, resource):
