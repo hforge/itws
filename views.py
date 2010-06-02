@@ -33,12 +33,13 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
-from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
+from ikaaro.future.order import ResourcesOrderedTable_View
+from ikaaro.registry import get_resource_class
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
-from ikaaro.webpage import WebPage, HTMLEditView, WebPage_View
+from ikaaro.webpage import WebPage, HTMLEditView
 
 # Import from itws
 from utils import set_prefix_with_hostname, to_box
@@ -674,15 +675,4 @@ class NotFoundPage_Edit(HTMLEditView):
         handler.set_body(new_body)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
-
-
-
-class NotFoundPage_View(WebPage_View):
-
-    def GET(self, resource, context):
-        stream = WebPage_View.GET(self, resource, context)
-        print u'here', context.resource.get_abspath()
-        print u'resource', resource.get_abspath()
-        prefix = context.resource.get_pathto(resource)
-        return set_prefix(stream, '%s/' % prefix)
 

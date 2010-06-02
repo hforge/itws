@@ -35,7 +35,7 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
-from views import FooterMenu_View, NotFoundPage_Edit, NotFoundPage_View
+from views import FooterMenu_View, NotFoundPage_Edit
 
 
 
@@ -112,7 +112,6 @@ class NotFoundPage(WebPage):
     class_title = MSG(u'404 page')
 
     edit = NotFoundPage_Edit()
-    view = NotFoundPage_View()
 
 
 
