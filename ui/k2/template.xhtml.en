@@ -25,6 +25,7 @@
 <body class="${body_css}">
   <div id="page" class="${page_css_class}">
     <div id="header">
+      <div id="nav" stl:if="display_menu">${nav}</div>
       <div class="login">
         <stl:block stl:if="not user/info">
           <a href="${login}" id="top-menu-login" title="Log in">Log in</a>
@@ -55,7 +56,6 @@
           <stl:inline stl:if="not banner/path">${banner/title}</stl:inline>
         </a>
       </div>
-      <div id="nav" stl:if="display_menu">${nav}</div>
     </div>
     <div id="content">
       ${location}
