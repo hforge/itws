@@ -4,7 +4,7 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div class="newsitem">
+  <div class="newsitem ${css}">
     <div class="newsitem-date">${date_of_writing}</div>
     <div class="newsitem-title">
       <a href="${path}">${long_title}</a>

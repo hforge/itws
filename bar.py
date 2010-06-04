@@ -29,14 +29,13 @@ from ikaaro.folder_views import GoToSpecificDocument
 from repository import ContentbarItemsOrderedTable
 from repository import SidebarItemsOrderedTable
 from utils import get_admin_bar
-from views import STLBoxView
 
 
 
 ################################################################################
 # Views
 ################################################################################
-class Bar_Item_View(STLBoxView):
+class Bar_Item_View(STLView):
 
     template = '/ui/common/Bar_Item_view.xml'
     # Namespace should be set at the view instanciation

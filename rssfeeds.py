@@ -40,7 +40,7 @@ from itools.i18n.locale_ import format_date
 from itools.log import log_error
 from itools.rss import RSSFile
 from itools.stl import stl
-from itools.web import get_context, BaseView, INFO, ERROR
+from itools.web import get_context, BaseView, INFO, ERROR, STLView
 from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
@@ -52,9 +52,6 @@ from ikaaro.skins import register_skin
 from ikaaro.text import CSV
 from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
-
-# Import from itws
-from views import STLBoxView
 
 
 
@@ -79,7 +76,7 @@ class DeactivateButton(Button):
 
 
 
-class RssFeeds_View(STLBoxView):
+class RssFeeds_View(STLView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')

@@ -441,6 +441,12 @@ fieldset legend{
   /* padding-bottom: 5px; */
 }
 
+/* section siblings */
+.sidebar-item-news-siblings-toc .newsitem.active {
+  border-left: 5px solid #bbb;
+  padding-left: 5px;
+}
+
 /**************************************************************************
  * NEWS FOLDER
  * ***********************************************************************/

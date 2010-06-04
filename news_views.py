@@ -18,7 +18,7 @@
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
-from itools.web import get_context
+from itools.web import get_context, STLView
 from itools.xapian import PhraseQuery, AndQuery, NotQuery
 
 # Import from ikaaro
@@ -33,30 +33,22 @@ from ikaaro.views import CompositeForm
 # Import from itws
 from datatypes import PositiveIntegerNotNull
 from utils import get_admin_bar, xml_to_text, XMLTitleWidget
-from views import BrowseFormBatchNumeric, BaseRSS, STLBoxView
+from views import BrowseFormBatchNumeric, BaseRSS
 from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
 
 
-class NewsItem_Preview(STLBoxView):
+class NewsItem_Preview(STLView):
 
     template = '/ui/news/NewsItem_preview.xml'
 
-    def _get_box_css(self, resource, context):
-        """STLBoxView API"""
-        here_abspath = context.resource.get_abspath()
-        if here_abspath == resource.get_abspath():
-            return 'active'
-        return None
-
-
     def get_columns(self):
         return ('title', 'long_title', 'path', 'date_of_writing',
-                'thumbnail')
+                'thumbnail', 'css')
 
 
-    def get_value(self, resource, context, column, language):
+    def get_value(self, resource, context, column, language, current_path):
         if column == 'title':
             return resource.get_title()
         elif column == 'long_title':
@@ -72,20 +64,26 @@ class NewsItem_Preview(STLBoxView):
                 if image:
                     return context.get_link(image)
             return None
+        elif column == 'css':
+            if resource.get_abspath() == current_path:
+                return 'active'
+            return None
 
 
     def get_namespace(self, resource, context):
         language = resource.get_content_language(context)
         namespace = {}
 
+        here_abspath = context.resource.get_abspath()
         for col in self.get_columns():
-            namespace[col] = self.get_value(resource, context, col, language)
+            namespace[col] = self.get_value(resource, context, col, language,
+                                            here_abspath)
 
         return namespace
 
 
 
-class NewsItem_View(STLBoxView):
+class NewsItem_View(STLView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
@@ -217,7 +215,7 @@ class NewsFolder_Edit(DBResource_Edit):
 
 
 
-class NewsFolder_View(STLBoxView, BrowseFormBatchNumeric):
+class NewsFolder_View(BrowseFormBatchNumeric, STLView):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'

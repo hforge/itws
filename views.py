@@ -21,7 +21,7 @@ from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.uri import Path, Reference
+from itools.uri import Path
 from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
@@ -42,7 +42,7 @@ from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage, HTMLEditView
 
 # Import from itws
-from utils import set_prefix_with_hostname, to_box
+from utils import set_prefix_with_hostname
 
 
 
@@ -616,32 +616,6 @@ class BaseRSS(BaseView):
         context.set_content_disposition('inline', "last_news.rss")
         context.set_content_type('application/rss+xml')
         return feed.to_str()
-
-
-
-############################################################
-# Rounded Box
-############################################################
-
-class STLBoxView(STLView):
-
-    box_template = '/ui/common/box.xml'
-
-    def GET(self, resource, context):
-        stream = STLView.GET(self, resource, context)
-
-        return self.render_box(resource, context, stream)
-
-
-    def _get_box_css(self, resource, context):
-        return None
-
-
-    def render_box(self, resource, context, stream):
-        if isinstance(stream, Reference):
-            return stream
-        css = self._get_box_css(resource, context)
-        return to_box(resource, stream, self.box_template, css)
 
 
 

@@ -4,6 +4,7 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
+<div class="${css}">
   <div class="image-slot">
     <table>
       <tr stl:if="not only_content">
@@ -39,4 +40,5 @@
       </td>
     </tr>
   </table>
+</div>
 </stl:block>

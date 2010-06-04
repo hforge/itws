@@ -23,6 +23,7 @@
 from itools.core import  merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
+from itools.web import STLView
 from itools.xapian import split_unicode, PhraseQuery, AndQuery
 from itools.xml import XMLParser
 
@@ -41,7 +42,7 @@ from ikaaro.webpage import HTMLEditView
 # Import from itws
 from datatypes import PositiveIntegerNotNull
 from tags import TagsAware_Edit, Tag_ItemView
-from views import STLBoxView, ProxyContainerNewInstance
+from views import ProxyContainerNewInstance
 
 
 
@@ -190,7 +191,7 @@ class SlideShow_Edit(DBResource_Edit):
 
 
 
-class Slide_View(STLBoxView):
+class Slide_View(STLView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
@@ -211,15 +212,6 @@ class Slide_View(STLBoxView):
             raise NotImplementedError, msg % repr(self.__class__)
         # XXX A handler actually
         return resource.get_resource(self.base_template % template_type)
-
-
-    def _get_box_css(self, resource, context):
-        """STLBoxView API"""
-        template_type = resource.get_property('template_type')
-        if not template_type:
-            # Get the template from the slideshow
-            template_type = resource.parent.get_property('template_type')
-        return 'slideshow-type-%s' % template_type
 
 
     def get_namespace(self, resource, context):
@@ -285,6 +277,14 @@ class Slide_View(STLBoxView):
         href = None
         if image:
             href = resource.get_property('href')
+
+        # css
+        template_type = resource.get_property('template_type')
+        if not template_type:
+            # Get the template from the slideshow
+            template_type = resource.parent.get_property('template_type')
+        css = 'slideshow-type-%s' % template_type
+
         namespace = {}
         namespace['slideshow_title'] = slides_long_title
         namespace['slide_title'] = slide_long_title
@@ -295,6 +295,7 @@ class Slide_View(STLBoxView):
         namespace['previous_slide'] = previous_slide
         namespace['next_slide'] = next_slide
         namespace['only_content'] = self.only_content
+        namespace['css'] = css
 
         return namespace
 
