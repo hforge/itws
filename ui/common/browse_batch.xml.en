@@ -4,30 +4,29 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <p class="batchcontrol">
-    <stl:block stl:if="not control">
-      ${msg}
-    </stl:block>
-    <stl:block stl:if="control">
-      ${msg} (View from ${start} to ${end})
-
-      <ul class="batch-numerotation" stl:if="control">
-
-        <li stl:if="previous">
-          <a class="previous" href="${previous}" title="« Previous">« Previous</a>
-        </li>
-
-        <li stl:repeat="page pages">
-          <a href="${page/uri}" class="${page/css}">
-            ${page/number}
-          </a>
-        </li>
-
-        <li stl:if="next">
-          <a class="next" href="${next}" title="Next »">Next »</a>
-        </li>
-      </ul>
-    </stl:block>
+  <p class="batchcontrol" stl:if="not control">
+    ${msg}
   </p>
+  <stl:block stl:if="control">
+    <p class="batchcontrol">
+      ${msg} (View from ${start} to ${end})
+    </p>
+    <ul class="batch-numerotation">
+
+      <li stl:if="previous">
+        <a class="previous" href="${previous}" title="« Previous">« Previous</a>
+      </li>
+
+      <li stl:repeat="page pages">
+        <a href="${page/uri}" class="${page/css}">
+          ${page/number}
+        </a>
+      </li>
+
+      <li stl:if="next">
+        <a class="next" href="${next}" title="Next »">Next »</a>
+      </li>
+    </ul>
+  </stl:block>
 
 </stl:block>
