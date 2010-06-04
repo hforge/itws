@@ -1,15 +1,3 @@
-/**************************************************************************
- * BOX
- * ***********************************************************************/
-.bigb-hg, .bigb-hd, .bigb-bg, .bigb-bd,
-.box-hg, .box-hd, .box-bg, .box-bd {
-  display: none;
-}
-.box, .box .box-content {
-  padding: 0;
-  margin: 0;
-}
-
 body {
   background: #eee;
   font-size: 62.5%;
@@ -31,6 +19,9 @@ body {
   color: #000;
 }
 
+/**************************************************************************
+ * PAGE
+ * ***********************************************************************/
 #page {
   -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
   -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
@@ -55,12 +46,13 @@ body {
  * HEADER
  * ***********************************************************************/
 #header {
-  position: relative;
-  height: 200px;
-  background: #444;
   -moz-border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
   border-radius: 0 5px 0 0;
+
+  position: relative;
+  height: 200px;
+  background: #444;
 }
 
 #header .login {
@@ -115,9 +107,6 @@ body {
   color: #ddd;
 }
 
-#header .header-toolbar form {
-}
-
 #header .header-toolbar input,
 #header .header-toolbar button {
   border: 1px solid #bbb;
@@ -135,9 +124,6 @@ body {
 
 #header .header-toolbar button span {
   visibility: hidden;
-}
-
-#languages {
 }
 
 #languages a,
@@ -174,13 +160,6 @@ body {
   font-size: 1.1em;
 }
 
-#nav ul, #nav ul li {
-  float: left;
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none;
-}
-
 #nav ul {
   bottom: 0;
   padding-left: 0;
@@ -190,6 +169,10 @@ body {
 }
 
 #nav ul li {
+  float: left;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
   margin-right: 4px;
 }
 
@@ -342,7 +325,7 @@ fieldset legend{
   /* Fix bug under FF3.x
    * batch-numerotation broke the news folder view
    */
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
 }
 
 .contentbar-item.ws-neutral-item-articles,
@@ -501,11 +484,12 @@ fieldset legend{
  * FOOTER
  * ***********************************************************************/
 #footer {
-  background: #444;
-  padding: 10px 5px;
   -moz-border-radius: 0 0 5px 5px;
   -webkit-border-radius: 0 0 5px 5px;
+
   border-radius: 0 0 5px 5px;
+  background: #444;
+  padding: 10px 5px;
 }
 
 #footer p {
