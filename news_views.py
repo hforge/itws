@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from datetime import date
+
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
@@ -173,6 +176,12 @@ class NewsItem_Edit(WebPage_Edit):
         if name == 'long_title':
             long_title = resource.get_property('long_title', language)
             return long_title
+        elif name == 'date_of_writing':
+            # FIXME Should not be defined here
+            value = resource.get_property(name)
+            if value:
+                return value
+            return date.today()
         return WebPage_Edit.get_value(self, resource, context, name, datatype)
 
 
