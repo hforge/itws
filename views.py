@@ -201,6 +201,22 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
 class SmartOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
+    def get_table_columns(self, resource, context):
+        func = ResourcesOrderedTable_Ordered.get_table_columns
+        columns = func(self, resource, context)
+        # Fix order_preview title
+        new_columns = []
+        for column in columns:
+            if column[0] != 'order_preview':
+                new_columns.append(column)
+                continue
+            if len(column) == 3:
+                new_columns.append((column[0], MSG(u"Info"), column[2]))
+            else:
+                new_columns.append((column[0], MSG(u"Info")))
+        return new_columns
+
+
     def get_title(self):
         context = get_context()
         resource = context.resource
@@ -219,6 +235,22 @@ class SmartOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
 
 class SmartOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
+
+    def get_table_columns(self, resource, context):
+        func = ResourcesOrderedTable_Unordered.get_table_columns
+        columns = func(self, resource, context)
+        # Fix order_preview title
+        new_columns = []
+        for column in columns:
+            if column[0] != 'order_preview':
+                new_columns.append(column)
+                continue
+            if len(column) == 3:
+                new_columns.append((column[0], MSG(u"Info"), column[2]))
+            else:
+                new_columns.append((column[0], MSG(u"Info")))
+        return new_columns
+
 
     def get_title(self):
         context = get_context()
