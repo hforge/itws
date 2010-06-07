@@ -455,7 +455,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100527'
+    class_version = '20100607'
     class_title = MSG(u'Sidebar items repository')
     class_description = MSG(u'Sidebar items repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -466,9 +466,11 @@ class Repository(Folder):
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
                              'content-children-toc', 'sidebar-children-toc',
-                             'sidebar-siblings-toc'])
+                             'sidebar-siblings-toc', 'news'])
 
     # configuration
+    news_items_cls = BarItem_Section_News
+    news_items_name = 'news'
     news_siblings_view_cls = SidebarItem_NewsSiblingsToc
     news_siblings_view_name = 'news-siblings'
     section_articles_view_cls = ContentBarItem_Articles
@@ -524,6 +526,12 @@ class Repository(Folder):
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.news_siblings_view_name),
+                            title={'en': _cls.class_title.gettext()})
+
+        # news
+        _cls = cls.news_items_cls
+        _cls._make_resource(_cls, folder,
+                            '%s/%s' % (name, cls.news_items_name),
                             title={'en': _cls.class_title.gettext()})
 
 
@@ -626,6 +634,32 @@ class Repository(Folder):
             if create:
                 cls.make_resource(cls, self, name,
                                   title={'en': cls.class_title.gettext()})
+
+
+    def update_20100607(self):
+        from ikaaro.utils import generate_name
+
+        name = self.news_items_name
+        cls = self.news_items_cls
+
+        item = self.get_resource(name, soft=True)
+        create = False
+
+        if item:
+            if isinstance(item, cls):
+                # ok
+                return
+            else:
+                # Move
+                name2 = generate_name(name, self.get_names(), '_bad_cls_')
+                self.move_resource(name, name2)
+                create = True
+        else:
+            create = True
+
+        if create:
+            item = cls.make_resource(cls, self, name)
+            item.set_property('title', cls.class_title.gettext(), 'en')
 
 
 
