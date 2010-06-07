@@ -472,6 +472,23 @@ class TagsFolder(Folder):
     browse_content = TagsFolder_BrowseContent()
     manage_view = Tags_ManageView()
 
+    # Tags to create when creating the tags folder
+    default_tags = [('odf', u'ODF'), ('python', u'Python'),
+                    ('cms', u'CMS'), ('git', u'GIT')]
+
+
+    @staticmethod
+    def _make_resource(cls, folder, name, **kw):
+        Folder._make_resource(cls, folder, name, **kw)
+        site_root = get_context().resource.get_site_root()
+        lang = site_root.get_property('website_languages')[0]
+        # Create default tags
+        for tag in cls.default_tags:
+            tag_name, title = tag
+            Tag._make_resource(Tag, folder, '%s/%s' % (name, tag_name),
+                               title={lang:title})
+
+
     def get_document_types(self):
         return [ Tag ]
 
