@@ -28,7 +28,8 @@ from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
-from ikaaro.buttons import RetireButton, Button
+from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
+from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
@@ -342,7 +343,10 @@ class BaseManageContent(Folder_BrowseContent):
 
     search_template = None
 
-    table_actions = [RemoveButton, RenameButton, PublishButton, RetireButton]
+    table_actions = [
+        RemoveButton, RenameButton, CopyButton, CutButton, PasteButton,
+        PublishButton, RetireButton]
+
     table_columns = [
         ('checkbox', None),
         ('icon', None),
