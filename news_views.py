@@ -21,7 +21,7 @@ from datetime import date
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
-from itools.web import get_context, STLView
+from itools.web import get_context, STLView, INFO
 from itools.xapian import PhraseQuery, AndQuery, NotQuery
 
 # Import from ikaaro
@@ -198,6 +198,15 @@ class NewsItem_Edit(WebPage_Edit):
         # thumbnail
         thumbnail = form['thumbnail']
         resource.set_property('thumbnail', thumbnail, language=language)
+        # Check date_of_writing
+        if not form['date_of_writing']:
+            messages = context.message
+            if type(messages) is not list:
+                messages = [ messages ]
+            messages.append(INFO(u'Date of writing must be set to make '
+                                 u'the news visible'))
+
+            context.message = messages
 
 
 
