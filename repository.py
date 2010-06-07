@@ -124,9 +124,9 @@ class BarItem_Section_News(BarItem):
 ###########################################################################
 # Sidebar resources
 ###########################################################################
-class SidebarItem(WebPage):
+class HTMLContent(WebPage):
 
-    class_id = 'sidebar-item'
+    class_id = 'html-content'
     class_version = '20091127'
     class_title = MSG(u'HTML content')
     class_description = MSG(u'HTML content')
@@ -455,7 +455,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100607'
+    class_version = '20100608'
     class_title = MSG(u'Sidebar items repository')
     class_description = MSG(u'Sidebar items repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -662,12 +662,19 @@ class Repository(Folder):
             item.set_property('title', cls.class_title.gettext(), 'en')
 
 
+    def update_20100608(self):
+        for item in self.search_resources(format='sidebar-item'):
+            metadata = item.metadata
+            metadata.set_changed()
+            metadata.format = HTMLContent.class_id
+
+
 
 ###########################################################################
 # Register
 ###########################################################################
 register_resource_class(Repository)
-register_resource_class(SidebarItem)
+register_resource_class(HTMLContent)
 register_resource_class(BarItem_Section_News)
 register_resource_class(SidebarItem_Tags)
 register_resource_class(SidebarItem_SectionSiblingsToc)
@@ -679,7 +686,7 @@ register_resource_class(ContentBarItem_Articles)
 register_resource_class(ContentBarItem_WebsiteArticles)
 register_resource_class(ContentBarItem_SectionChildrenToc)
 
-register_bar_item(SidebarItem, allow_instanciation=True, is_content=True)
+register_bar_item(HTMLContent, allow_instanciation=True, is_content=True)
 register_bar_item(BarItem_Section_News, allow_instanciation=True,
                   is_side=True, is_content=True)
 register_bar_item(SidebarItem_Tags, allow_instanciation=True)

@@ -79,8 +79,13 @@ class Article(WebPage):
 class WSArticle(Article):
     class_id = 'ws-neutral-article'
 
+class SidebarItem(WebPage):
+    class_id = 'sidebar-item'
+    class_version = '20091127'
+
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
 
 register_resource_class(Article)
+register_resource_class(SidebarItem)
 register_resource_class(WSArticle)
