@@ -280,9 +280,9 @@ class SidebarItem_SectionSiblingsToc(BarItem):
 class SidebarItem_SectionChildrenToc(SidebarItem_SectionSiblingsToc):
 
     class_id = 'sidebar-item-section-children-toc'
-    class_title = MSG(u'Section children webpages/section TOC (for sidebar)')
-    class_description = MSG(u'Display the children webpage/section '
-                            u'of the current section.')
+    class_title = MSG(u'Subsections and webpages TOC (for sidebar)')
+    class_description = MSG(u'Table Of Content (TOC) to display choosen '
+                            u'subsections and webpages in the sidebar')
 
     view = SidebarItem_SectionChildrenToc_View()
 
@@ -351,9 +351,10 @@ class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 class ContentBarItem_SectionChildrenToc(BarItem):
 
     class_id = 'contentbar-item-children-toc'
-    class_title = MSG(u'Section children webpages/section TOC '
+    class_title = MSG(u'Subsections and webpages TOC '
                       u'(for central part)')
-    class_description = MSG(u'Display children webpages/section of a section')
+    class_description = MSG(u'Table Of Content (TOC) to display choosen '
+                            u'subsections and webpages in the central part')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
     # Item configuration
