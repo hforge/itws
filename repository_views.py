@@ -168,7 +168,7 @@ class BarItemsOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Ordered.get_table_columns(self,
+        columns = SmartOrderedTable_Ordered.get_table_columns(self,
                 resource, context)
 
         # Column to remove
@@ -194,8 +194,7 @@ class BarItemsOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
     def get_query(self, resource, context):
-        query = ResourcesOrderedTable_Unordered.get_query(self, resource,
-                                                          context)
+        query = SmartOrderedTable_Unordered.get_query(self, resource, context)
         # Add format filter
         format = context.query['format']
         if format:
@@ -205,8 +204,8 @@ class BarItemsOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Unordered.get_table_columns(self,
-                resource, context)
+        columns = SmartOrderedTable_Unordered.get_table_columns(self, resource,
+                                                                context)
 
         columns = list(columns) # create a new list
         column = ('format', MSG(u'Type'), False)
