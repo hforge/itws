@@ -9,9 +9,11 @@
   <div class="item" stl:repeat="row rows">
     <div class="actu-content">
       <div class="actu-date">${row/date_of_writing}</div>
-      <div class="actu-tag" stl:if="row/tag">
-        <a href="${tags_path}/${row/tag/name}?format=${news_format}"
-           title="${row/tag/title}">${row/tag/title}</a>
+      <div class="actu-tag" stl:if="row/tags">
+        <stl:block stl:repeat="tag row/tags">
+          <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
+          <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+        </stl:block>
       </div>
       <h3 class="title">
         <a href="${row/link}" title="${row/title}">${row/title}</a>

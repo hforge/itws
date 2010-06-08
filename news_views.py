@@ -310,18 +310,18 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
             return context.get_link(item_resource)
         elif column == 'preview':
             return brain.preview_content
-        elif column == 'tag':
+        elif column == 'tags':
             tags = brain.tags
             if tags:
-                return tags[0]
-            return None
+                return item_resource.get_tags_namespace(context)
+            return []
 
 
     def get_rows_namespace(self, resource, context, items):
         rows = []
         for item in items:
             d = {}
-            for key in ('date_of_writing', 'title', 'link', 'preview', 'tag'):
+            for key in ('date_of_writing', 'title', 'link', 'preview', 'tags'):
                 d[key] = self.get_item_value(resource, context, item, key)
             rows.append(d)
         return rows
@@ -334,21 +334,9 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         # Get items
         items = self.get_items(resource, context)
         items = self.sort_and_batch(resource, context, items)
-        site_root = resource.get_site_root()
-        tags = site_root.get_resource('tags')
         rows = self.get_rows_namespace(resource, context, items)
 
-        # Post process tag values
-        tags_map = {}
-        for tag_brain in tags.get_tag_brains(context):
-            tags_map[tag_brain.name] = tag_brain.m_title
-        for row in rows:
-            row_tag = row['tag']
-            if row_tag:
-                row['tag'] = {'name': row_tag, 'title': tags_map[row_tag]}
-
         namespace['title'] = resource.get_property('title')
-        namespace['tags_path'] = context.get_link(tags)
         namespace['news_format'] = resource.news_class.class_id
         namespace['rows'] = rows
         namespace['more_title'] = self.more_title
