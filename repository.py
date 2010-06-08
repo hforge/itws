@@ -313,7 +313,7 @@ class SidebarItem_NewsSiblingsToc(BarItem):
 class ContentBarItem_Articles(BarItem):
 
     class_id = 'contentbar-item-articles'
-    class_title = MSG(u'Section webpages')
+    class_title = MSG(u'Section "WebPages slot"')
     class_description = MSG(u'Display the ordered webpages of the section')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
@@ -325,7 +325,7 @@ class ContentBarItem_Articles(BarItem):
 class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 
     class_id = 'ws-neutral-item-articles'
-    class_title = MSG(u'Website webpages')
+    class_title = MSG(u'Website "WebPages slot"')
     class_description = MSG(u'Display the ordered webpages of the website '
                             u'(homepage)')
     class_views = ['backlinks', 'edit_state', 'edit_state']
