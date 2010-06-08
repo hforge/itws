@@ -425,6 +425,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         # Add repository
         Repository._make_resource(Repository, folder,
                                   '%s/%s' % (name, 'repository'))
+        repository = root.get_resource('%s/repository' % name)
         # WSDataFolder
         cls2 = website_class.wsdatafolder_class
         cls2._make_resource(cls2, folder, '%s/ws-data' % name,
@@ -435,10 +436,17 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
                                    '%s/%s' % (name, cls.order_path))
         # SideBarAware
         SideBarAware._make_resource(cls, folder, name, **kw)
+        sidebar_table = root.get_resource('%s/%s' % (name, cls.sidebar_name))
+        # Preorder specific sidebar items
+        sidebar_table.add_new_record({'name': Repository.news_items_name})
+        news_item = repository.get_resource(Repository.news_items_name)
+        # Hook default property
+        news_item.set_property('count', 4)
         # ContentBarAware
         ContentBarAware._make_resource(cls, folder, name, **kw)
         contentbar_table = root.get_resource(
                 '%s/%s' % (name, cls.contentbar_name))
+        # Preorder specific contentbar items
         item_name = Repository.website_articles_view_name
         contentbar_table.add_new_record({'name': item_name})
         # index
@@ -508,6 +516,10 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         cls._make_resource(cls, folder, '%s/images/%s' % (name, name2),
                 **metadata)
         website.set_property('favicon', 'images/favicon')
+        # Add default news folder
+        cls = website.newsfolder_class
+        if cls:
+            cls._make_resource(cls, folder, '%s/news' % name)
 
 
     @classmethod

@@ -114,11 +114,12 @@ class Section(SideBarAware, ContentBarAware, ResourcesOrderedContainer):
         for name2 in (Repository.section_content_children_toc_view_name,
                       Repository.section_articles_view_name):
             table.add_new_record({'name': name2})
-
         # Preorder specific sidebar items
         table_name = cls.sidebar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
         name2 = Repository.section_sidebar_children_toc_view_name
+        table.add_new_record({'name': name2})
+        name2 = Repository.news_items_name
         table.add_new_record({'name': name2})
 
 

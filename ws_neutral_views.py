@@ -38,7 +38,7 @@ from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
 from bar import ContentBar_View, SideBar_View
-from datatypes import FormatEnumerate, NeutralClassSkin
+from datatypes import NeutralClassSkin
 from section import Section
 from tags import TagsAware
 from utils import set_navigation_mode_as_edition
