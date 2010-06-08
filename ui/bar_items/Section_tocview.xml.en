@@ -6,9 +6,13 @@
   <h3 stl:if="title" class="title">${title}</h3>
   <div class="content" stl:if="items">
     <ul>
-      <li stl:repeat="item items" class="${repeat/item/even}
-        ${item/class}">
+      <li stl:repeat="item items" class="${repeat/item/even} ${item/class}">
         <a href="${item/path}" title="${item/title}">${item/title}</a>
+        <ul stl:if="item/sub_items">
+          <li stl:repeat="subitem item/sub_items" class="${repeat/subitem/even} ${subitem/class}">
+            <a href="${subitem/path}" title="${subitem/title}">${subitem/title}</a>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>

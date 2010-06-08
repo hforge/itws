@@ -393,7 +393,8 @@ fieldset legend{
   margin-left: 16px;
 }
 
-.sidebar-item ul li.active a {
+.sidebar-item ul li.active > a,
+.sidebar-item ul li.in-path > a {
   text-decoration: none;
   font-weight: bold;
 }

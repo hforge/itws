@@ -37,7 +37,6 @@ from ikaaro.forms import TextWidget, rte_widget
 from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View, HTMLEditView
@@ -760,7 +759,7 @@ class SidebarItem_SectionSiblingsToc_View(BarItem_View):
             else:
                 path = context.get_link(item)
             items.append({'path': path, 'title': item.get_title(),
-                          'class': css})
+                          'class': css, 'sub_items': []})
 
         return items
 
@@ -797,82 +796,73 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
     def GET(self, resource, context):
         from section import Section
 
-        here = context.resource
-        parent = here.parent
         section = context._section
         if isinstance(section, Section) is False:
             self.set_view_is_empty(True)
             return None
-        section_cls = section.get_subsection_class()
-        article_cls = section.get_article_class()
-        # Case 1: /../Section (display articles and sections)
-        # show_one_article is False
-        # Children of resource
-        here_type = type(here)
-        if here_type == section_cls:
-            return STLView.GET(self, resource, context)
-        # Case 2: /../article (display articles and sections)
-        # show_one_article is True
-        # No children
-        if here_type == article_cls:
+
+        section_class = section.get_subsection_class()
+        base_section = self.get_base_section(section, section_class)
+        if isinstance(base_section, section_class) is False:
+            # Strange
             self.set_view_is_empty(True)
             return None
 
-        # XXX Why ??
-        self.set_view_is_empty(True)
-        return None
+        return STLView.GET(self, base_section, context)
 
 
-    def get_manage_buttons(self, resource, context):
-        manage_buttons = BarItem_View.get_manage_buttons(self,
-                resource, context)
+    def _get_items(self, section, context, here_abspath):
+        section_link = context.get_link(section)
+        show_one_article = section.get_property('show_one_article')
+        section_class = section.get_subsection_class()
+        items = []
 
-        if self.is_admin(resource, context):
-            # Section buttons
-            section = context._section
-            section_path = context.get_link(section)
-            # Order subsections
-            manage_buttons.append({'path': '%s/;order_items' % section_path,
-                                   'label': MSG(u'Order webpages')})
-            # Add article
-            article_class_id = section.get_article_class().class_id
-            path = '%s/;new_resource?type=%s' % (section_path, article_class_id)
-            manage_buttons.append({'path':  path,
-                                   'label': MSG(u'Add a webpage')})
+        for name in section.get_ordered_names():
+            item = section.get_resource(name, soft=True)
+            sub_items = []
+            if item is None:
+                warn(u'resource "%s" not found' % name)
+                continue
+            item_abspath = item.get_abspath()
+            # css
+            css = None
+            if item_abspath == here_abspath:
+                css = 'active'
+            elif here_abspath.get_prefix(item_abspath) ==  item_abspath:
+                css = 'in-path'
+            # link
+            is_section = type(item) == section_class
+            if show_one_article or is_section:
+                path = context.get_link(item)
+            else:
+                path = '%s#%s' % (section_link, item.name)
+            # subsections
+            if is_section:
+                if item_abspath.get_prefix(here_abspath) == item_abspath:
+                    # deploy sub sections
+                    sub_items = self._get_items(item, context, here_abspath)
 
-        return manage_buttons
+            items.append({'path': path, 'title': item.get_title(),
+                'class': css, 'sub_items': sub_items})
+
+        return items
 
 
     def get_items(self, resource, context):
         here = context.resource
-        #parent = here.parent
-        # In this particular case, the parent is the current section
-        # -> here
-        parent = here
-
-        section_class = parent.get_subsection_class()
-        show_one_article = parent.get_property('show_one_article')
-
-        here_abspath = here.get_abspath()
-        here_link = context.get_link(here)
-        items = []
-        for name in parent.get_ordered_names():
-            item = parent.get_resource(name, soft=True)
-            if item is None:
-                warn(u'resource "%s" not found' % name)
-                continue
-            css = None
-            if item.get_abspath() == here_abspath:
-                # FIXME -> in_path
-                css = 'active'
-            if show_one_article or type(item) == section_class:
-                path = context.get_link(item)
-            else:
-                path = '%s#%s' % (here_link, item.name)
-            items.append({'path': path, 'title': item.get_title(),
-                          'class': css})
+        # resource is the base section
+        section_class = resource.get_subsection_class()
+        items = self._get_items(resource, context, here.get_abspath())
 
         return items
+
+
+    def get_base_section(self, section, section_cls):
+        # FIXME section_cls may change
+        resource = section
+        while isinstance(resource.parent, section_cls):
+            resource = resource.parent
+        return resource
 
 
 
