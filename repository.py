@@ -53,7 +53,6 @@ from repository_views import Repository_BrowseContent, Repository_NewResource
 from repository_views import SidebarItem_NewsSiblingsToc_View
 from repository_views import SidebarItem_Preview, SidebarItem_View
 from repository_views import SidebarItem_SectionChildrenToc_View
-from repository_views import SidebarItem_SectionSiblingsToc_View
 from repository_views import SidebarItem_Tags_View, SidebarItem_Tags_Preview
 from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
 from utils import get_path_and_view
@@ -251,13 +250,12 @@ class SidebarItem_Tags(BarItem):
 
 
 
-class SidebarItem_SectionSiblingsToc(BarItem):
+class SidebarItem_SectionChildrenToc(BarItem):
 
-    class_id = 'sidebar-item-section-siblings-toc'
-    class_title = MSG(u'Section content siblings toc')
-    class_description = MSG(u'Display the siblings of the current '
-                            u'webpage/section. This allow to navigate from '
-                            u'current page to siblings')
+    class_id = 'sidebar-item-section-children-toc'
+    class_title = MSG(u'Subsections and webpages TOC (for sidebar)')
+    class_description = MSG(u'Table Of Content (TOC) to display choosen '
+                            u'subsections and webpages in the sidebar')
 
     # Item comfiguration
     item_schema = {'hide_if_only_one_item': Boolean}
@@ -268,23 +266,12 @@ class SidebarItem_SectionSiblingsToc(BarItem):
         ]
 
     # Views
-    view = SidebarItem_SectionSiblingsToc_View()
+    view = SidebarItem_SectionChildrenToc_View()
 
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(BarItem.get_metadata_schema(),
                            hide_if_only_one_item=Boolean())
-
-
-
-class SidebarItem_SectionChildrenToc(SidebarItem_SectionSiblingsToc):
-
-    class_id = 'sidebar-item-section-children-toc'
-    class_title = MSG(u'Subsections and webpages TOC (for sidebar)')
-    class_description = MSG(u'Table Of Content (TOC) to display choosen '
-                            u'subsections and webpages in the sidebar')
-
-    view = SidebarItem_SectionChildrenToc_View()
 
 
 
@@ -455,7 +442,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100608'
+    class_version = '20100610'
     class_title = MSG(u'Sidebar items repository')
     class_description = MSG(u'Sidebar items repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -466,7 +453,7 @@ class Repository(Folder):
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
                              'content-children-toc', 'sidebar-children-toc',
-                             'sidebar-siblings-toc', 'news'])
+                             'news'])
 
     # configuration
     news_items_cls = BarItem_Section_News
@@ -479,8 +466,6 @@ class Repository(Folder):
     section_content_children_toc_view_name = 'content-children-toc'
     section_sidebar_children_toc_view_cls = SidebarItem_SectionChildrenToc
     section_sidebar_children_toc_view_name = 'sidebar-children-toc'
-    section_sidebar_siblings_toc_view_cls = SidebarItem_SectionSiblingsToc
-    section_sidebar_siblings_toc_view_name = 'sidebar-siblings-toc'
     website_articles_view_cls = ContentBarItem_WebsiteArticles
     website_articles_view_name = 'website-articles-view'
 
@@ -517,17 +502,11 @@ class Repository(Folder):
         _cls._make_resource(_cls, folder,
                 '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
                            title={'en': _cls.class_title.gettext()})
-        # section sidebar siblings toc
-        _cls = cls.section_sidebar_siblings_toc_view_cls
-        _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_sidebar_siblings_toc_view_name),
-                           title={'en': _cls.class_title.gettext()})
         # news siblings item
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.news_siblings_view_name),
                             title={'en': _cls.class_title.gettext()})
-
         # news
         _cls = cls.news_items_cls
         _cls._make_resource(_cls, folder,
@@ -616,9 +595,7 @@ class Repository(Folder):
                      (self.section_content_children_toc_view_name,
                       self.section_content_children_toc_view_cls),
                      (self.section_sidebar_children_toc_view_name,
-                      self.section_sidebar_children_toc_view_cls),
-                     (self.section_sidebar_siblings_toc_view_name,
-                      self.section_sidebar_siblings_toc_view_cls)):
+                      self.section_sidebar_children_toc_view_cls)):
             name, cls = data
             item = self.get_resource(name, soft=True)
             create = False
@@ -669,6 +646,62 @@ class Repository(Folder):
             metadata.format = HTMLContent.class_id
 
 
+    def update_20100609(self):
+        # Remove obsolete SidebarItem_SectionSiblingsToc
+        from itools.xapian import PhraseQuery
+
+        old_name = 'sidebar-siblings-toc'
+        item = self.get_resource(old_name, soft=True)
+        if item is None:
+            return
+
+        children_toc_cls = ContentBarItem_SectionChildrenToc
+        # Check referencial-integrity
+        root = get_context().root
+        results = root.search(PhraseQuery('links', str(item.get_abspath())))
+        if len(results):
+            print u'item %s is referenced by' % item.get_abspath()
+            for doc in results.get_documents():
+                resource = root.get_resource(doc.abspath)
+                print u'-->', doc.abspath, doc.format
+                if isinstance(resource, BarItemsOrderedTable):
+                    # Case 1: ordered table
+                    handler = resource.handler
+                    id_to_remove = None
+                    children_toc_item = None
+                    for record in handler.get_records():
+                        name = handler.get_record_value(record, 'name')
+                        if name == old_name:
+                            id_to_remove = record.id
+                            continue
+                        item = self.get_resource(name, soft=True)
+                        if item and isinstance(item, children_toc_cls):
+                            children_toc_item = item
+                            continue
+
+                    if children_toc_item:
+                        # Simply delete record
+                        resource.del_record(id_to_remove)
+                    else:
+                        # Add at the same place a children toc
+                        # -> update record
+                        resource.update_record(id_to_remove,
+                                               **{'name': 'content-children-toc'})
+                else:
+                    # Other type of resource
+                    # Call update_link
+                    source = item.get_abspath()
+                    target = self.get_abspath().resolve2('content-children-toc')
+                    resource.update_link(source, target)
+
+
+    def update_20100610(self):
+        # update_20100609 continuation
+        # Delete SidebarItem_SectionSiblingsToc
+        if self.get_resource('sidebar-siblings-toc', soft=True):
+            self.del_resource('sidebar-siblings-toc')
+
+
 
 ###########################################################################
 # Register
@@ -677,7 +710,6 @@ register_resource_class(Repository)
 register_resource_class(HTMLContent)
 register_resource_class(BarItem_Section_News)
 register_resource_class(SidebarItem_Tags)
-register_resource_class(SidebarItem_SectionSiblingsToc)
 register_resource_class(SidebarItem_SectionChildrenToc)
 register_resource_class(SidebarItem_NewsSiblingsToc)
 register_resource_class(SidebarItemsOrderedTable)
@@ -690,8 +722,6 @@ register_bar_item(HTMLContent, allow_instanciation=True, is_content=True)
 register_bar_item(BarItem_Section_News, allow_instanciation=True,
                   is_side=True, is_content=True)
 register_bar_item(SidebarItem_Tags, allow_instanciation=True)
-register_bar_item(SidebarItem_SectionSiblingsToc,
-                  allow_instanciation=False)
 register_bar_item(SidebarItem_SectionChildrenToc,
                   allow_instanciation=False)
 register_bar_item(SidebarItem_NewsSiblingsToc, allow_instanciation=False)

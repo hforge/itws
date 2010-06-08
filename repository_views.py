@@ -680,118 +680,9 @@ class SidebarItem_Tags_View(BarItem_View):
 
 
 
-class SidebarItem_SectionSiblingsToc_View(BarItem_View):
+class SidebarItem_SectionChildrenToc_View(BarItem_View):
 
     template = '/ui/bar_items/Section_tocview.xml'
-
-    def GET(self, resource, context):
-        from section import Section
-
-        here = context.resource
-        parent = here.parent
-        section = context._section
-        if isinstance(section, Section) is False:
-            self.set_view_is_empty(True)
-            return None
-
-        section_cls = section.get_subsection_class()
-        article_cls = section.get_article_class()
-        # Case 1: /Section (display articles and sections)
-        # show_one_article is False
-        # No siblings
-        here_type = type(here)
-        parent_type = type(parent)
-        if here_type == section_cls and parent_type != section_cls:
-            self.set_view_is_empty(True)
-            return None
-
-        return BarItem_View.GET(self, resource, context)
-
-
-    def get_toc_title(self, resource, context):
-        return resource.get_property('title')
-
-
-    def get_manage_buttons(self, resource, context):
-        manage_buttons = BarItem_View.get_manage_buttons(self,
-                resource, context)
-
-        if self.is_admin(resource, context):
-            section = context._section
-            section_path = context.get_link(section)
-            # Order subsections
-            manage_buttons.append({'path': '%s/;order_items' % section_path,
-                                   'label': MSG(u'Order submenu')})
-            # Add subsections
-            subsection_class_id = section.get_subsection_class().class_id
-            path = '%s/;new_resource?type=%s' % (section_path,
-                                                 subsection_class_id)
-            manage_buttons.append({'path':  path,
-                                   'label': MSG(u'Add a subsection')})
-
-            # sidebar item buttons
-            resource_path = context.get_link(resource)
-            manage_buttons.append({'path': '%s/;edit' % resource_path,
-                                   'label': MSG(u'Edit title')})
-
-        return manage_buttons
-
-
-    def get_items(self, resource, context):
-        here = context.resource
-        parent = here.parent
-        show_one_article = parent.get_property('show_one_article')
-        article_class = parent.get_article_class()
-
-        here_abspath = context.resource.get_abspath()
-        items = []
-        for name in parent.get_ordered_names():
-            item = parent.get_resource(name, soft=True)
-            if item is None:
-                warn(u'resource "%s" not found' % name)
-                continue
-            css = None
-            if item.get_abspath() == here_abspath:
-                # FIXME -> in_path
-                css = 'active'
-            if type(item) == article_class and show_one_article is False:
-                path = '%s#%s' % (context.get_link(item.parent), item.name)
-            else:
-                path = context.get_link(item)
-            items.append({'path': path, 'title': item.get_title(),
-                          'class': css, 'sub_items': []})
-
-        return items
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-        allowed_to_edit = self.is_admin(resource, context)
-
-        # Subsections (siblings)
-        items = self.get_items(resource, context)
-        namespace['items'] = items
-        namespace['title'] = self.get_toc_title(resource, context)
-
-        # Hide siblings box if the user is not authenticated and
-        # submenu is empty
-        min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
-        if allowed_to_edit is False and len(items) <= min_limit:
-            self.set_view_is_empty(True)
-
-        # Box highlight
-        if allowed_to_edit is False:
-            namespace['class'] = None
-        elif len(items) == 0:
-            namespace['class'] = 'highlight-empty'
-        else:
-            namespace['class'] = 'highlight'
-
-        return namespace
-
-
-
-class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
 
     def GET(self, resource, context):
         from section import Section
@@ -802,13 +693,21 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
             return None
 
         section_class = section.get_subsection_class()
-        base_section = self.get_base_section(section, section_class)
+        base_section = self._get_base_section(section, section_class)
         if isinstance(base_section, section_class) is False:
             # Strange
             self.set_view_is_empty(True)
             return None
 
         return STLView.GET(self, base_section, context)
+
+
+    def _get_base_section(self, section, section_cls):
+        # FIXME section_cls may change
+        resource = section
+        while isinstance(resource.parent, section_cls):
+            resource = resource.parent
+        return resource
 
 
     def _get_items(self, section, context, here_abspath):
@@ -848,6 +747,10 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
         return items
 
 
+    def get_toc_title(self, resource, context):
+        return resource.get_property('title')
+
+
     def get_items(self, resource, context):
         here = context.resource
         # resource is the base section
@@ -857,12 +760,30 @@ class SidebarItem_SectionChildrenToc_View(SidebarItem_SectionSiblingsToc_View):
         return items
 
 
-    def get_base_section(self, section, section_cls):
-        # FIXME section_cls may change
-        resource = section
-        while isinstance(resource.parent, section_cls):
-            resource = resource.parent
-        return resource
+    def get_namespace(self, resource, context):
+        namespace = {}
+        allowed_to_edit = self.is_admin(resource, context)
+
+        # Subsections (siblings)
+        items = self.get_items(resource, context)
+        namespace['items'] = items
+        namespace['title'] = self.get_toc_title(resource, context)
+
+        # Hide siblings box if the user is not authenticated and
+        # submenu is empty
+        min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
+        if allowed_to_edit is False and len(items) <= min_limit:
+            self.set_view_is_empty(True)
+
+        # Box highlight
+        if allowed_to_edit is False:
+            namespace['class'] = None
+        elif len(items) == 0:
+            namespace['class'] = 'highlight-empty'
+        else:
+            namespace['class'] = 'highlight'
+
+        return namespace
 
 
 
