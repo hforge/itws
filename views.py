@@ -476,7 +476,7 @@ class BaseRSS(BaseView):
     excluded_formats = freeze([])
     excluded_paths = freeze([])
     excluded_container_paths = freeze([])
-    max_items_number = 0
+    max_items_number = 20
 
 
     def get_base_query(self, resource, context):
