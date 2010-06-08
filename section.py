@@ -40,6 +40,7 @@ from ikaaro.webpage import _get_links, _change_link
 # Import from itws
 from bar import SideBarAware, ContentBarAware
 from repository import Repository
+from resources import ManageViewAware
 from section_views import SectionOrderedTable_View
 from section_views import Section_Edit, Section_View, Section_ManageView
 from webpage import WebPage
@@ -84,7 +85,8 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
 
 
-class Section(SideBarAware, ContentBarAware, ResourcesOrderedContainer):
+class Section(ManageViewAware, SideBarAware, ContentBarAware,
+              ResourcesOrderedContainer):
 
     class_id = 'section'
     class_title = MSG(u'Section')

@@ -35,7 +35,7 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
-from views import FooterMenu_View, NotFoundPage_Edit
+from views import FooterMenu_View, NotFoundPage_Edit, BaseManage_Rename
 
 
 
@@ -225,6 +225,12 @@ class ResourceWithCache(DBResource):
             self._update_data()
 
         return metadata.cache_data, metadata.cache_errors
+
+
+
+class ManageViewAware(object):
+
+    rename = BaseManage_Rename()
 
 
 

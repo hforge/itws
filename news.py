@@ -46,6 +46,7 @@ from news_views import NewsFolder_View, NewsFolder_Edit, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
 from news_views import NewsItem_Edit, NewsItem_View, NewsFolder_ManageView
 from repository import Repository
+from resources import ManageViewAware
 from tags import TagsAware
 from utils import is_empty, get_path_and_view
 from webpage import WebPage
@@ -216,7 +217,7 @@ class NewsItem(WebPage):
 
 
 
-class NewsFolder(SideBarAware, Folder):
+class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
     class_id = 'news-folder'
     class_version = '20100403'

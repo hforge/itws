@@ -41,10 +41,11 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
-from tags import TagsAware
-from utils import get_path_and_view
+from resources import ManageViewAware
 from slides_views import SlideShow_Edit, Slide_Edit, Tag_SlideView, Slide_View
 from slides_views import SlideShow_ManageView, SlideTemplateType
+from tags import TagsAware
+from utils import get_path_and_view
 
 
 
@@ -176,7 +177,7 @@ class Slides_OrderedTable(ResourcesOrderedTable):
 
 
 
-class SlideShow(ResourcesOrderedContainer):
+class SlideShow(ManageViewAware, ResourcesOrderedContainer):
 
     class_id = 'slides'
     class_title = MSG(u'SlideShow')

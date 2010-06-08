@@ -30,7 +30,7 @@ from ikaaro import messages
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
 from ikaaro.buttons import Button
-from ikaaro.folder_views import Folder_BrowseContent
+from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
@@ -373,6 +373,16 @@ class BaseManageContent(Folder_BrowseContent):
             return brain.name, context.get_link(item_resource)
         return Folder_BrowseContent.get_item_value(self, resource,
                   context, item, column)
+
+
+
+class BaseManage_Rename(Folder_Rename):
+
+    def action(self, resource, context, form):
+        ret = Folder_Rename.action(self, resource, context, form)
+        # Tweak goto
+        ret.path = Path(';manage_view')
+        return ret
 
 
 

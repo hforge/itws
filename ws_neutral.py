@@ -24,7 +24,7 @@ from copy import deepcopy
 from decimal import Decimal
 
 # Import from itools
-from itools.core import get_abspath
+from itools.core import get_abspath, merge_dicts
 from itools.csv import Property
 from itools.datatypes import Unicode, String
 from itools.fs import FileName
@@ -60,7 +60,7 @@ from common import FoBoFooterAwareSkin
 from datatypes import MultilingualString, NeutralClassSkin
 from news import NewsFolder, NewsItem
 from repository import Repository, SidebarItemsOrderedTable
-from resources import Image, RobotsTxt
+from resources import Image, RobotsTxt, ManageViewAware
 from rssfeeds import RssFeeds
 from section import Section
 from sitemap import SiteMap
@@ -311,7 +311,7 @@ class K2Skin(NeutralSkin2):
 ############################################################
 # Web Site
 ############################################################
-class WSDataFolder(Folder):
+class WSDataFolder(ManageViewAware, Folder):
 
     class_id = 'neutral-ws-data'
     class_version = '20100519'
@@ -384,8 +384,8 @@ class WSOrderedTable(ResourcesOrderedTable):
 
 
 
-class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
-                WebSite):
+class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
+                ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
     class_version = '20100531'
@@ -529,14 +529,12 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
 
     @classmethod
     def get_metadata_schema(cls):
-        schema = WebSite.get_metadata_schema()
-        schema['breadcrumb_title'] = Unicode
-        schema['banner_title'] = Unicode(default='')
-        schema['banner_path'] = MultilingualString(default='')
-        schema['class_skin'] = NeutralClassSkin(default='/ui/k2')
-        schema['date_of_writing_format'] = String(default='')
-
-        return schema
+        return merge_dicts(WebSite.get_metadata_schema(),
+                           breadcrumb_title=Unicode,
+                           banner_title=Unicode(default=''),
+                           banner_path=MultilingualString(default=''),
+                           class_skin=NeutralClassSkin(default='/ui/k2'),
+                           date_of_writing_format=String(default=''))
 
 
     def get_class_skin(self):

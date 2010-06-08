@@ -44,7 +44,7 @@ from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from resources import MultilingualCatalogTitleAware
+from resources import MultilingualCatalogTitleAware, ManageViewAware
 from utils import set_prefix_with_hostname, DualSelectWidget
 from utils import is_navigation_mode
 from views import EasyNewInstance, BaseRSS, ProxyContainerNewInstance
@@ -461,7 +461,7 @@ class Tag(File, MultilingualCatalogTitleAware):
 
 
 
-class TagsFolder(Folder):
+class TagsFolder(ManageViewAware, Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
