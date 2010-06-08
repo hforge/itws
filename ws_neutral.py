@@ -496,6 +496,18 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
             title = Property(MSG(u'Contact us').gettext(),
                              language=default_language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
+        # Default favicon
+        favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
+        favicon_data = favicon_resource.to_str()
+        cls = Image
+        filename = name2 = 'favicon.ico'
+        name2, extension, language = FileName.decode(name2)
+        metadata = {'format': 'image/x-icon', 'filename': filename,
+                    'extension': extension, 'state': 'public',
+                    'body': favicon_data}
+        cls._make_resource(cls, folder, '%s/images/%s' % (name, name2),
+                **metadata)
+        website.set_property('favicon', 'images/favicon')
 
 
     @classmethod
