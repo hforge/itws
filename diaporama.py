@@ -172,7 +172,7 @@ class DiaporamaTable(Table):
 
 
 
-class Diaporama(Folder, OrderTableAware):
+class Diaporama(OrderTableAware, Folder):
 
     class_id = 'diaporama'
     class_title = MSG(u'Diaporama')

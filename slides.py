@@ -49,7 +49,7 @@ from utils import get_path_and_view
 
 
 
-class Slide(WebPage, TagsAware):
+class Slide(TagsAware, WebPage):
 
     class_id = 'slide'
     class_title = MSG(u'Slide')
@@ -59,17 +59,16 @@ class Slide(WebPage, TagsAware):
 
     @classmethod
     def get_metadata_schema(cls):
-        schema = merge_dicts(WebPage.get_metadata_schema(),
-                             TagsAware.get_metadata_schema())
-        schema['state'] = String(default='public')
-        schema['long_title'] = Unicode
-        # Image of the slide
-        schema['image'] = String
-        # Slide template type
-        schema['template_type'] = SlideTemplateType(default='')
-        # Slide title href
-        schema['href'] = String
-        return schema
+        return merge_dicts(WebPage.get_metadata_schema(),
+                           TagsAware.get_metadata_schema(),
+                           state=String(default='public'),
+                           long_title=Unicode,
+                           # Image of the slide
+                           image=String,
+                           # Slide template type
+                           template_type=SlideTemplateType(default=''),
+                           # Slide title href
+                           href=String)
 
 
     def _get_catalog_values(self):
