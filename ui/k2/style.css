@@ -384,6 +384,10 @@ fieldset legend{
   text-transform: uppercase;
 }
 
+#content .sidebar-item h3.title {
+  margin-top: 0;
+}
+
 .sidebar-item h3.title a {
   text-decoration: none;
 }
