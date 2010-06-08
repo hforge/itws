@@ -4,11 +4,11 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
   <h3 stl:if="title" class="title">${title}</h3>
-  <div class="content" stl:if="siblings">
+  <div class="content" stl:if="items">
     <ul>
-      <li stl:repeat="sibling siblings" class="${repeat/sibling/even}
-        ${sibling/class}">
-        <a href="${sibling/path}" title="${sibling/title}">${sibling/title}</a>
+      <li stl:repeat="item items" class="${repeat/item/even}
+        ${item/class}">
+        <a href="${item/path}" title="${item/title}">${item/title}</a>
       </li>
     </ul>
   </div>

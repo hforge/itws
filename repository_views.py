@@ -770,20 +770,20 @@ class SidebarItem_SectionSiblingsToc_View(BarItem_View):
         allowed_to_edit = self.is_admin(resource, context)
 
         # Subsections (siblings)
-        siblings = self.get_items(resource, context)
-        namespace['siblings'] = siblings
+        items = self.get_items(resource, context)
+        namespace['items'] = items
         namespace['title'] = self.get_toc_title(resource, context)
 
         # Hide siblings box if the user is not authenticated and
         # submenu is empty
         min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
-        if allowed_to_edit is False and len(siblings) <= min_limit:
+        if allowed_to_edit is False and len(items) <= min_limit:
             self.set_view_is_empty(True)
 
         # Box highlight
         if allowed_to_edit is False:
             namespace['class'] = None
-        elif len(siblings) == 0:
+        elif len(items) == 0:
             namespace['class'] = 'highlight-empty'
         else:
             namespace['class'] = 'highlight'
