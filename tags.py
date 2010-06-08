@@ -563,6 +563,17 @@ class TagsAware(object):
         return indexes
 
 
+    def get_tags_namespace(self, context):
+        tags_folder = self.get_site_root().get_resource('tags')
+        query = encode_query({'format': self.class_id})
+        tags = []
+        for tag_name in self.get_property('tags'):
+            tag = tags_folder.get_resource(tag_name)
+            tags.append({'title': tag.get_title(),
+                'href': '%s?%s' % (context.get_link(tag), query)})
+        return tags
+
+
     def get_date_of_writing(self):
         return self.get_property('date_of_writing')
 
