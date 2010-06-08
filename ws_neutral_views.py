@@ -459,6 +459,8 @@ class NeutralWS_ManageContent(BaseManageContent):
                             for cls in editorial_cls ]
         # allow images
         editorial_query.append(PhraseQuery('is_image', True))
+        # allow "images" folder
+        editorial_query.append(PhraseQuery('name', 'images'))
         query = [
             PhraseQuery('parent_path', path),
             NotQuery(PhraseQuery('name', '404')),
