@@ -472,6 +472,12 @@ class BrowseFormBatchNumeric(Folder_BrowseContent):
 class BaseRSS(BaseView):
 
     access = True
+    allowed_formats = freeze([])
+    excluded_formats = freeze([])
+    excluded_paths = freeze([])
+    excluded_container_paths = freeze([])
+    max_items_number = 0
+
 
     def get_base_query(self, resource, context):
         # Filter by website
@@ -480,26 +486,27 @@ class BaseRSS(BaseView):
 
 
     def get_allowed_formats(self, resource, context):
-        return []
+        return self.allowed_formats
 
 
     def get_excluded_formats(self, resource, context):
-        return []
+        return self.excluded_formats
 
 
     def get_excluded_paths(self, resource, context):
-        return []
+        return self.excluded_paths
 
 
     def get_excluded_container_paths(self, resource, context):
-        return []
+        return self.excluded_container_paths
 
 
     def get_max_items_number(self, resource, context):
-        return 0
+        return self.max_items_number
 
 
-    def get_if_modified_since_query(self, resource, context, if_modified_since):
+    def get_if_modified_since_query(self, resource, context,
+                                    if_modified_since):
         if not if_modified_since:
             return []
         return AndQuery(RangeQuery('mtime', if_modified_since, None),
@@ -562,7 +569,8 @@ class BaseRSS(BaseView):
 
     def _sort_and_batch(self, resource, context, results):
         size = self.get_max_items_number(resource, context)
-        items = results.get_documents(sort_by='mtime', reverse=True, size=size)
+        items = results.get_documents(sort_by='mtime', reverse=True,
+                                      size=size)
         return items
 
 

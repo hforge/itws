@@ -19,7 +19,7 @@ from math import floor
 from types import GeneratorType
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
@@ -243,15 +243,14 @@ Preview
 
 class NeutralWS_RSS(BaseRSS):
 
+    excluded_formats = freeze(['rssfeeds', 'text/css'])
+
+
     def get_base_query(self, resource, context):
         query = BaseRSS.get_base_query(self, resource, context)
         query.append(PhraseQuery('workflow_state', 'public'))
         query.append(PhraseQuery('is_image', False))
         return query
-
-
-    def get_excluded_formats(self, resource, context):
-        return ['rssfeeds', 'text/css']
 
 
     def get_excluded_paths(self, resource, context):
