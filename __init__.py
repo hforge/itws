@@ -71,6 +71,7 @@ register_domain('itws', path)
 # Remove Obsolete article class
 from ikaaro.registry import register_resource_class
 from webpage import WebPage
+from repository import register_bar_item
 
 class Article(WebPage):
     class_id = 'article'
@@ -89,3 +90,5 @@ Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
 register_resource_class(Article)
 register_resource_class(SidebarItem)
 register_resource_class(WSArticle)
+
+register_bar_item(SidebarItem, allow_instanciation=True, is_content=True)
