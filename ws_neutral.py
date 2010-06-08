@@ -169,13 +169,14 @@ class NeutralSkin(FoBoFooterAwareSkin):
         banner_ns = {}
         banner_ns['title'] = site_root.get_property('banner_title')
         banner_ns['description'] = site_root.get_property('description')
-        banner_path = site_root.get_property('banner_path')
-        if banner_path:
-            banner = site_root.get_resource(banner_path, soft=True)
+        banner_path = None
+        path = site_root.get_property('banner_path')
+        if path:
+            banner = site_root.get_resource(path, soft=True)
             if banner:
-                banner_path = context.get_link(banner)
-            else:
-                banner_path = None
+                ac = banner.get_access_control()
+                if ac.is_allowed_to_view(context.user, banner):
+                    banner_path = context.get_link(banner)
         banner_ns['path'] = banner_path
         namespace['banner'] = banner_ns
 
@@ -206,11 +207,13 @@ class NeutralSkin(FoBoFooterAwareSkin):
         if favicon:
             favicon_resource = site_root.get_resource(favicon, soft=True)
             if favicon_resource:
-                mimetype = favicon_resource.handler.get_mimetype()
-                favicon_href = '%s/;download' % resolve_uri('/', favicon)
-                namespace['favicon_href'] = favicon_href
-                namespace['favicon_type'] = mimetype
-                namespace['favicon'] = True
+                ac = favicon_resource.get_access_control()
+                if ac.is_allowed_to_view(context.user, favicon_resource):
+                    mimetype = favicon_resource.handler.get_mimetype()
+                    favicon_href = '%s/;download' % resolve_uri('/', favicon)
+                    namespace['favicon_href'] = favicon_href
+                    namespace['favicon_type'] = mimetype
+                    namespace['favicon'] = True
 
         if namespace['favicon'] is False:
             # ikaaro add a default favicon
