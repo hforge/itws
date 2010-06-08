@@ -634,7 +634,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     def get_links(self):
         links = WebSite.get_links(self)
 
-        base = self.get_abspath()
+        base = self.get_canonical_path()
         available_languages = self.get_property('website_languages')
 
         for lang in available_languages:
