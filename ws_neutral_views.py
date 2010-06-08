@@ -139,14 +139,6 @@ class NeutralWS_Edit(WebSite_Edit):
     scripts = ['/ui/common/js/strftime-min-1.3.js']
 
     def get_schema(self, resource, context):
-        site_root = resource.get_site_root()
-        repository = site_root.get_repository()
-        article_enumerate = FormatEnumerate(format='article',
-                                            query_container=site_root,
-                                            container=site_root)
-        diaporama_enumerate = FormatEnumerate(format='bannersfolder',
-                                              query_container=repository,
-                                              container=site_root)
         return merge_dicts(WebSite_Edit.get_schema(self, resource, context),
                            breadcrumb_title=Unicode,
                            banner_title=Unicode,

@@ -509,7 +509,7 @@ class NeutralWS(SideBarAware, ContentBarAware, ResourcesOrderedContainer,
         schema['breadcrumb_title'] = Unicode
         schema['banner_title'] = Unicode(default='')
         schema['banner_path'] = MultilingualString(default='')
-        schema['class_skin'] = NeutralClassSkin(default='ui/k2')
+        schema['class_skin'] = NeutralClassSkin(default='/ui/k2')
         schema['date_of_writing_format'] = String(default='')
 
         return schema
