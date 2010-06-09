@@ -339,7 +339,6 @@ class BaseManageLink(STLView):
 class BaseManageContent(Folder_BrowseContent):
 
     access = 'is_allowed_to_edit'
-    title = MSG(u'Manage')
 
     search_template = None
 
