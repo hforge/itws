@@ -85,35 +85,6 @@ class TagsAwareClassEnumerate(Enumerate):
 
 
 
-class FormatEnumerate(Enumerate):
-
-    format = None
-    container = None
-    query_container = None
-
-    @classmethod
-    def get_options(cls):
-        if cls.format is None or cls.query_container is None \
-                or cls.container is None:
-            msg = (u'the parameters "format", "container" and '
-                   u'"query_container" must be defined')
-            raise ValueError, msg
-
-        options = []
-        abspath = cls.container.get_abspath()
-        query_container_abspath = cls.query_container.get_abspath()
-        query = AndQuery(get_base_path_query(str(query_container_abspath)),
-                         PhraseQuery('format', cls.format))
-        context = get_context()
-        root = context.root
-        results = root.search(query)
-        for doc in results.get_documents(sort_by='title'):
-            options.append({'name': abspath.get_pathto(doc.abspath),
-                            'value': doc.title})
-        return options
-
-
-
 class NeutralClassSkin(Enumerate):
 
     options = [{'name': '/ui/neutral', 'value': u'Neutral 1'},
