@@ -41,8 +41,10 @@ class SiteMapView(BaseView):
         query = AndQuery(PhraseQuery('workflow_state', 'public'),
                          PhraseQuery('is_image', False))
         # Allow news folder
-        newsfolder_format = site_root.newsfolder_class.class_id
-        query = OrQuery(query, PhraseQuery('format', newsfolder_format))
+        newsfolder_cls = site_root.newsfolder_class
+        if newsfolder_cls:
+            query = OrQuery(query,
+                            PhraseQuery('format', newsfolder_cls.class_id))
 
         abspath = site_root.get_canonical_path()
         query1 = get_base_path_query(str(abspath))
