@@ -32,7 +32,7 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.forms import BooleanCheckBox, timestamp_widget
-from ikaaro.forms import stl_namespaces
+from ikaaro.forms import stl_namespaces, XHTMLBody
 from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
@@ -84,7 +84,25 @@ class Section_Edit(DBResource_Edit):
         resource.set_property('show_one_article', form['show_one_article'])
 
         # Ok
-        context.message = MSG_CHANGES_SAVED
+        messages = [ MSG_CHANGES_SAVED ]
+
+        # Customize message for section which can be ordered
+        site_root = resource.get_site_root()
+        parent = resource.parent
+        if type(parent) != type(site_root):
+            # FIXME Assume that parent is a section
+            order_names = parent.get_ordered_names()
+            if resource.name not in order_names:
+                order_resource = parent.get_resource(parent.order_path)
+                path = context.get_link(order_resource)
+                message = MSG(u'To make visible this section in the children '
+                              u'TOC, please go to '
+                              u'<a href="{path}">order interface</a>')
+                message = message.gettext(path=path).encode('utf8')
+                message = XHTMLBody.decode(message)
+                messages.append(message)
+
+        context.message = messages
 
 
 
