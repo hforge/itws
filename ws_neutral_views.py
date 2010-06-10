@@ -505,8 +505,8 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-resources',
                            'class': 'order child',
-                           'title': MSG(u'Order webpages in the '
-                                        u'webpages slot'),
+                           'title': MSG(u'Order webpages in the homepage '
+                                        u'view'),
                            'disable': len(available_resources) == 0})
 
         left_items.append({'path': '/repository/;new_contentbar_resource',

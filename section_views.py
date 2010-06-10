@@ -353,8 +353,8 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u"Order webpages in the section's "
-                                        u'webpages slot'),
+                           'title': MSG(u'Order webpages in the section '
+                                        u'view'),
                            'disable': len(available_articles) == 0})
 
         left_items.append({'path': './order-section',
