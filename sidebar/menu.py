@@ -52,8 +52,8 @@ class MenuSideBar(MenuFolder):
     class_description = MSG(u'Box to create a sidebar menu')
     class_views = ['view', 'menu', 'edit']
 
-    item_schema = {}
-    item_widgets = []
+    box_schema = {}
+    box_widgets = []
 
     new_instance = EasyNewInstance()
     view = MenuSideBar_View()

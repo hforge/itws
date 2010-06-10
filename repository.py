@@ -22,7 +22,7 @@ from copy import deepcopy
 from warnings import warn
 
 # Import from itools
-from itools.core import get_abspath, merge_dicts
+from itools.core import get_abspath, merge_dicts, freeze
 from itools.datatypes import String, Boolean
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
@@ -61,6 +61,7 @@ from views import EasyNewInstance
 from webpage import WebPage
 
 
+hide_single_schema = freeze({'hide_if_only_one_item': Boolean})
 hide_single_widget = BooleanCheckBox('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
 
@@ -108,13 +109,13 @@ class BarItem(File):
     externaledit = None
     new_instance = EasyNewInstance()
 
-    item_widgets = []
-    item_schema = {}
+    box_schema = {}
+    box_widgets = []
 
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(File.get_metadata_schema(),
-                           cls.item_schema,
+                           cls.box_schema,
                            state=String(default='public'))
 
 
@@ -127,7 +128,7 @@ class BarItem_Section_News(BarItem):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
-    item_schema = {
+    box_schema = {
         'tags': String(multiple=True),
         'count': PositiveInteger(default=0)
         }
@@ -239,12 +240,12 @@ class SidebarItem_Tags(BarItem):
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
-    item_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
-                   'count':PositiveInteger(default=0),
-                   'show_number': Boolean,
-                   'random': Boolean}
+    box_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
+                  'count':PositiveInteger(default=0),
+                  'show_number': Boolean,
+                  'random': Boolean}
 
-    item_widgets = [
+    box_widgets = [
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         BooleanCheckBox('show_number',
@@ -277,9 +278,8 @@ class SidebarItem_SectionChildrenToc(BarItem):
                             u'subsections and webpages')
 
     # Box comfiguration
-    item_schema = {'hide_if_only_one_item': Boolean}
-
-    item_widgets = [hide_single_widget]
+    box_schema = hide_single_schema
+    box_widgets = [hide_single_widget]
 
     # Views
     view = SidebarItem_SectionChildrenToc_View()
@@ -299,10 +299,10 @@ class SidebarItem_NewsSiblingsToc(BarItem):
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
     # Box configuration
-    item_schema = {'hide_if_only_one_item': Boolean,
-                   'count':PositiveInteger}
+    box_schema = merge_dicts(hide_single_schema,
+                             count=PositiveInteger)
 
-    item_widgets = [
+    box_widgets = [
         hide_single_widget,
         TextWidget('count', size=3,
                    title=MSG(u'Maximum number of news to display'))
@@ -357,9 +357,8 @@ class ContentBarItem_SectionChildrenToc(BarItem):
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
     # Box configuration
-    item_schema = {'hide_if_only_one_item': Boolean}
-
-    item_widgets = [hide_single_widget]
+    box_schema = hide_single_schema
+    box_widgets = [hide_single_widget]
 
     # Views
     view = ContentBarItem_SectionChildrenToc_View()

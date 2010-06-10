@@ -118,18 +118,19 @@ class TwitterSideBar(BarItem, ResourceWithCache):
     #http://www.webdesignerdepot.com/2009/07/50-free-and-exclusive-twitter-icons/
 
     # Item configuration
-    item_schema = {'user_id': Integer(mandatory=True),
-                   'user_name': String(mandatory=True),
-                   'limit': Integer(mandatory=True, default=5, size=3),
-                   'force_update': Boolean}
+    box_schema = {'user_id': Integer(mandatory=True),
+                  'user_name': String(mandatory=True),
+                  'limit': Integer(mandatory=True, default=5, size=3),
+                  'force_update': Boolean}
 
 
-    item_widgets = [TextWidget('user_name', title=MSG(u"Twitter account name")),
-                    TextWidget('user_id', title=MSG(u"User Id")),
-                    TextWidget('limit', title=MSG(u'Number of tweet')),
-                    CheckBoxWidget('force_update',
-                                   title=MSG(u'Force cache update')),
-                   ]
+    box_widgets = [TextWidget('user_name',
+                              title=MSG(u"Twitter account name")),
+                   TextWidget('user_id', title=MSG(u"User Id")),
+                   TextWidget('limit', title=MSG(u'Number of tweet')),
+                   CheckBoxWidget('force_update',
+                                  title=MSG(u'Force cache update')),
+                  ]
 
     # Views
     view = TwitterSideBar_View()
@@ -139,7 +140,7 @@ class TwitterSideBar(BarItem, ResourceWithCache):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(BarItem.get_metadata_schema(),
-                           cls.item_schema)
+                           cls.box_schema)
 
 
     def _update_data(self):

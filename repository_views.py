@@ -259,11 +259,11 @@ class BarItem_Edit(DBResource_Edit):
 
 
     def get_schema(self, resource, context):
-        return merge_dicts(self.base_schema, resource.item_schema)
+        return merge_dicts(self.base_schema, resource.box_schema)
 
 
     def get_widgets(self, resource, context):
-        return self.base_widgets + resource.item_widgets
+        return self.base_widgets + resource.box_widgets
 
 
     def action(self, resource, context, form):
@@ -276,7 +276,7 @@ class BarItem_Edit(DBResource_Edit):
         title = form['title']
         language = resource.get_content_language(context)
         resource.set_property('title', title, language=language)
-        for key, datatype in resource.item_schema.items():
+        for key, datatype in resource.box_schema.items():
             if getattr(datatype, 'multilingual', False) is True:
                 resource.set_property(key, form[key], language)
             else:
