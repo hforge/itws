@@ -100,7 +100,7 @@ class Bar_View(STLView):
             item = repository.get_resource(name, soft=True)
             if item is None:
                 path = resource.get_abspath()
-                warn(u'%s > bar item not found: %s' % (path, name))
+                warn('%s > bar item not found: %s' % (path, name))
                 continue
             if check_acl:
                 ac = item.get_access_control()
