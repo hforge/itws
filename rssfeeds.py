@@ -275,8 +275,8 @@ class RssFeedsFile(CSVFile):
 class RssFeeds(CSV):
 
     class_id = 'rssfeeds'
-    class_title = MSG(u'Rss Feeds')
-    class_description = MSG(u'Rss Feeds allows to aggregate externals feeds, '
+    class_title = MSG(u'RSS Feeds')
+    class_description = MSG(u'RSS feeds allows to aggregate external feeds, '
                             u'filtering content by keywords')
     class_views = ['view', 'edit', 'add_row', 'configure']
     class_handler = RssFeedsFile
