@@ -6,7 +6,7 @@
 
   <div id="tag-cloud-bo-description" stl:if="bo_description">
     Tags are global to the website. Here you can create and translate them.
-    You can tag WebPages, News and Slides directly from their edit interfaces.
+    You can tag Webpages, News and Slides directly from their edit interfaces.
     <ul>
       <li>
         You can <a href="./;new_resource?type=tag" title="Add a tag">add a new Tag</a>.
