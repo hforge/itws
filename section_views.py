@@ -353,8 +353,8 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order webpages in the Section '
-                                        u'"WebPages Slot"'),
+                           'title': MSG(u"Order webpages in the section's "
+                                        u'webpages slot'),
                            'disable': len(available_articles) == 0})
 
         left_items.append({'path': './order-section',
@@ -364,19 +364,19 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': '/repository/;new_contentbar_resource',
                            'class': 'add',
-                           'title': MSG(u'Create new "central part" item')})
+                           'title': MSG(u'Create new central part box')})
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
-                           'title': MSG(u'Order "central part" items')})
+                           'title': MSG(u'Order central part boxes')})
 
         right_items.append({'path': '/repository/;new_sidebar_resource',
                             'class': 'add',
-                            'title': MSG(u'Create new sidebar item')})
+                            'title': MSG(u'Create new sidebar box')})
 
         right_items.append({'path': './;order_sidebar',
                             'class': 'order child',
-                            'title': MSG(u'Order sidebar items')})
+                            'title': MSG(u'Order sidebar boxes')})
 
         return [{'items': left_items, 'class': 'left'},
                 {'items': right_items, 'class': 'right'}]

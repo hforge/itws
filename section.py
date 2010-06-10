@@ -90,7 +90,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
     class_id = 'section'
     class_title = MSG(u'Section')
-    class_description = MSG(u'Section allows to customize the "central part" '
+    class_description = MSG(u'Section allows to customize the central part '
                             u'and the sidebar. Section can contain subsections')
     class_version = '20100403'
     class_icon16 = 'common/icons/16x16/section.png'
