@@ -176,7 +176,7 @@ class SideBar_View(Bar_View):
     id = 'sidebar-items'
     order_name = 'order-sidebar'
     order_method = 'order_sidebar'
-    order_label = MSG(u'Order sidebar items')
+    order_label = MSG(u'Order Sidebar Boxes')
     admin_bar_prefix_name = 'sidebar-item'
     items_css_class = 'sidebar-item'
 
@@ -193,7 +193,7 @@ class SideBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_sidebar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create new sidebar item'),
+                        'label': MSG(u'Create new sidebar box'),
                         'target': '_blank'})
 
         return buttons
@@ -205,7 +205,7 @@ class ContentBar_View(Bar_View):
     id = 'contentbar-items'
     order_name = 'order-contentbar'
     order_method = 'order_contentbar'
-    order_label = MSG(u'Order "central part" items')
+    order_label = MSG(u'Order Central Part Boxes')
     admin_bar_prefix_name = 'contentbar-item'
     items_css_class = 'contentbar-item'
 
@@ -222,7 +222,7 @@ class ContentBar_View(Bar_View):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;new_contentbar_resource' % path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create new "central part" item'),
+                        'label': MSG(u'Create new central part box'),
                         'target': '_blank'})
 
         return buttons
@@ -241,7 +241,7 @@ class SideBarAware(object):
     order_sidebar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
-        title=MSG(u'Order the sidebar items'))
+        title=MSG(u'Order the sidebar boxes'))
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
@@ -260,7 +260,7 @@ class ContentBarAware(object):
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the "central part" items'))
+        title=MSG(u'Order the central part boxes'))
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
