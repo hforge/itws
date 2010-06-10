@@ -372,14 +372,14 @@ class WSOrderedTable(ResourcesOrderedTable):
 
     view = WSDataFolder_OrderedTable_View()
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Home "WebPages slot"')
+    ordered_view_title = MSG(u'Order Homepage "Webpages Slot"')
     ordered_view_title_description = MSG(
-            u'The HomePage has a "WebPages Slot", you can add several '
-            u'WebPages to it and order them.')
+            u'The homepage has a webpages slot, you can add several '
+            u'webpages to it and order them.')
     unordered_view_title = MSG(u'Available Webpages')
     unordered_view_title_description = MSG(
-            u'These Webpages are available, '
-            u'you can make them visible in the Home "WebPages slot" '
+            u'These webpages are available, '
+            u'you can make them visible in the homepage webpages slot '
             u'by adding them to the ordered list.')
 
     def get_orderable_classes(self):
@@ -440,7 +440,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # SideBarAware
         SideBarAware._make_resource(cls, folder, name, **kw)
         sidebar_table = root.get_resource('%s/%s' % (name, cls.sidebar_name))
-        # Preorder specific sidebar items
+        # Preorder specific sidebar boxes
         sidebar_table.add_new_record({'name': Repository.news_items_name})
         news_item = repository.get_resource(Repository.news_items_name)
         # Hook default property
@@ -449,7 +449,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         ContentBarAware._make_resource(cls, folder, name, **kw)
         contentbar_table = root.get_resource(
                 '%s/%s' % (name, cls.contentbar_name))
-        # Preorder specific contentbar items
+        # Preorder specific contentbar boxes
         item_name = Repository.website_articles_view_name
         contentbar_table.add_new_record({'name': item_name})
         # index
@@ -772,7 +772,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     # User Interface
     edit_ws_data = GoToSpecificDocument(
-            specific_document='ws-data', title=MSG(u'Manage home page content'),
+            specific_document='ws-data',
+            title=MSG(u'Manage Homepage Content'),
             access='is_allowed_to_edit')
     edit_menu = GoToSpecificDocument(
             specific_document='menu/menu',
@@ -796,11 +797,11 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the "central part" items'))
+        title=MSG(u'Order the central part boxes'))
     order_sidebar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
-        title=MSG(u'Order the sidebar items'))
+        title=MSG(u'Order the sidebar boxes'))
     # Compatibility
     rss = last_news_rss = NeutralWS_RSS()
     edit_tags = GoToSpecificDocument(specific_document='tags',

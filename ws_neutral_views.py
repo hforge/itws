@@ -185,7 +185,7 @@ Preview
 </script>""" % language)
         widgets.append(
             TextWidget('date_of_writing_format', size=16,
-                   title=MSG(u'Date of writing format date'),
+                   title=MSG(u'Date of writing format (e.g. %Y/%m/%d)'),
                    suffix=suffix_js))
         # class_skin
         widgets.append(
@@ -331,7 +331,7 @@ class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
 class NeutralWS_View(STLView):
 
     access = 'is_allowed_to_view'
-    title = MSG(u'Website view')
+    title = MSG(u'Website View')
     template = '/ui/common/Neutral_view.xml'
 
     subviews = {'contentbar_view':
@@ -389,12 +389,12 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;edit',
                       'class': 'edit',
-                      'title': MSG(u'Edit banner, favico, skin, ...')})
+                      'title': MSG(u'Edit banner, favicon, skin...')})
 
         items.append({'path': './;new_resource',
                       'class': 'add',
                       'title': MSG(u'Add Resource: Section, Wiki, Tracker, '
-                                   u'Rss agregator, ...')})
+                                   u'RSS agregator...')})
 
         items.append({'path': './tags',
                       'class': 'tags',
@@ -418,11 +418,11 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;order_contentbar',
                       'class': 'order child',
-                      'title': MSG(u'Edit the "central part"')})
+                      'title': MSG(u'Edit the central part')})
 
         items.append({'path': './;order_sidebar',
                       'class': 'order child',
-                      'title': MSG(u'Edit the side bar')})
+                      'title': MSG(u'Edit the sidebar')})
 
         items.append({'path': './style/;edit',
                       'class': 'css',
@@ -482,7 +482,7 @@ class NeutralWS_ManageView(CompositeForm):
 
 class WSDataFolder_ManageLink(BaseManageLink):
 
-    title = MSG(u'Manage home page content')
+    title = MSG(u'Manage Homepage Content')
 
     def get_items(self, resource, context):
         left_items = []
@@ -494,7 +494,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': './;new_resource',
                            'class': 'add',
-                           'title': MSG(u'Add Resource: Webpage, PDF, ODT, ...')})
+                           'title': MSG(u'Add Resource: Webpage, PDF, ODT...')})
 
         # Order resources
         # Do not show the link if there is nothing to order
@@ -505,24 +505,25 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-resources',
                            'class': 'order child',
-                           'title': MSG(u'Order webpages in the "WebPages Slot"'),
+                           'title': MSG(u'Order webpages in the '
+                                        u'webpages slot'),
                            'disable': len(available_resources) == 0})
 
         left_items.append({'path': '/repository/;new_contentbar_resource',
                            'class': 'add',
-                           'title': MSG(u'Create new "central part" item')})
+                           'title': MSG(u'Create new central part box')})
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
-                           'title': MSG(u'Order "central part" items')})
+                           'title': MSG(u'Order central part boxes')})
 
         right_items.append({'path': '/repository/;new_sidebar_resource',
                             'class': 'add',
-                            'title': MSG(u'Create new sidebar item')})
+                            'title': MSG(u'Create new sidebar box')})
 
         right_items.append({'path': './;order_sidebar',
                             'class': 'order child',
-                            'title': MSG(u'Order sidebar items')})
+                            'title': MSG(u'Order sidebar boxes')})
 
         return [{'items': left_items, 'class': 'left'},
                 {'items': right_items, 'class': 'right'}]
@@ -531,7 +532,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
 class WSDataFolder_ManageContent(BaseManageContent):
 
-    title = MSG(u'Manage home page')
+    title = MSG(u'Manage Homepage')
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
@@ -553,7 +554,7 @@ class WSDataFolder_ManageContent(BaseManageContent):
 
 class WSDataFolder_ManageView(CompositeForm):
 
-    title = MSG(u'Manage home page content')
+    title = MSG(u'Manage Homepage Content')
     access = 'is_allowed_to_edit'
 
     subviews = [WSDataFolder_ManageLink(),
