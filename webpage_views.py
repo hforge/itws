@@ -156,7 +156,7 @@ class WebPage_View(BaseWebPage_View, STLView):
         namespace['title'] = title
         namespace['content'] = BaseWebPage_View.GET(self, resource, context)
         namespace['admin_bar'] = get_admin_bar(manage_buttons,
-                                      resource.name, MSG(u'A WebPage'))
+                                      resource.name, MSG(u'A Webpage'))
 
         return namespace
 
