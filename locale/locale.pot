@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-06-10 14:06+CET\n"
+"POT-Creation-Date: 2010-06-10 16:06+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,6 @@ msgstr ""
 
 #: ../tags.py:251
 msgid "%s (%s)"
-msgstr ""
-
-#: ../bar.py:103
-msgid "%s > bar item not found: %s"
 msgstr ""
 
 #: ../repository_views.py:410
@@ -715,12 +711,12 @@ msgstr ""
 msgid "Order webpages"
 msgstr ""
 
-#: ../section_views.py:356
-msgid "Order webpages in the section's webpages slot"
+#: ../ws_neutral_views.py:508
+msgid "Order webpages in the homepage view"
 msgstr ""
 
-#: ../ws_neutral_views.py:508
-msgid "Order webpages in the webpages slot"
+#: ../section_views.py:356
+msgid "Order webpages in the section view"
 msgstr ""
 
 #: ../resources.py:147
@@ -1189,7 +1185,7 @@ msgstr ""
 
 #: ../ui/common/Tags_tagcloud.xml.en:9
 msgctxt "div"
-msgid "You can tag WebPages, News and Slides directly from their edit interfaces."
+msgid "You can tag Webpages, News and Slides directly from their edit interfaces."
 msgstr ""
 
 #: ../ui/common/location.xml.en:22
