@@ -1,25 +1,25 @@
 /**************************************************************************
  * Google Maps
  * ***********************************************************************/
-#adress-wrapper {
+#address-wrapper {
   width: 100%;
 }
 
-#adress-wrapper tr.odd td,
-#adress-wrapper tr.even td {
+#address-wrapper tr.odd td,
+#address-wrapper tr.even td {
   background-color: #fff;
 }
 
-#adress-wrapper td {
+#address-wrapper td {
   padding-bottom: 10px;
 }
 
-#adress-wrapper .adress {
+#address-wrapper .address {
   /* width: 150px; */
   float: left;
 }
 
-#adress-wrapper .map {
+#address-wrapper .map {
   float: left;
 }
 

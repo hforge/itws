@@ -8,10 +8,10 @@
     Add a new address
   </a><br/><br/>
 
-  <table id="adress-wrapper">
-    <tr stl:repeat="address addresses" class="adress-wrapper ${repeat/address/even}">
+  <table id="address-wrapper">
+    <tr stl:repeat="address addresses" class="address-wrapper ${repeat/address/even}">
       <td>
-        <div class="adress">
+        <div class="address">
           <a href="./${address/name}/;edit" stl:if="address/is_allowed_to_edit">
             [Edit this address] ${address/workflow}
           </a>
