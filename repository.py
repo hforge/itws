@@ -19,6 +19,7 @@
 
 # Import from the Standard Library
 from copy import deepcopy
+from warnings import warn
 
 # Import from itools
 from itools.core import get_abspath, merge_dicts
@@ -60,29 +61,47 @@ from views import EasyNewInstance
 from webpage import WebPage
 
 
+hide_single_widget = BooleanCheckBox('hide_if_only_one_item',
+        title=MSG(u'Hide if there is only one item'))
+
+
 
 ###########################################################################
 # Register & Base classes
 ###########################################################################
-bar_item_registry = {}
-def register_bar_item(resource_class, allow_instanciation=True,
-                      is_content=False, is_side=True):
+boxes_registry = {}
+def register_box(resource_class, allow_instanciation=True,
+                 is_content=False, is_side=True):
     if is_content is False and is_side is False:
-        msg = u'Bar item should be at least content item or side item'
+        msg = u'Box should be at least content box or side box'
         raise ValueError, msg
 
-    bar_item_registry[resource_class] = {'instanciation': allow_instanciation,
-                                         'content': is_content,
-                                         'side': is_side}
+    boxes_registry[resource_class] = {'instanciation': allow_instanciation,
+                                      'content': is_content, 'side': is_side}
+
+
+def get_boxes_registry():
+    return boxes_registry
+
+
+# TODO Remove in itws 0.61.2
+def register_bar_item(resource_class, allow_instanciation=True,
+                      is_content=False, is_side=True):
+    warn("register_bar_item function is deprecated, "
+         "use register_box instead", DeprecationWarning)
+    register_box(resource_class, allow_instanciation,
+                 is_content, is_side)
 
 
 def get_bar_item_registry():
-    return bar_item_registry
+    warn("get_bar_item_registry function is deprecated, "
+         "use get_boxes_registry instead", DeprecationWarning)
+    return get_boxes_registry()
 
 
 class BarItem(File):
 
-    class_description = MSG(u'Sidebar item')
+    class_description = MSG(u'Sidebar box')
     preview = order_preview = BarItem_Preview()
     edit = BarItem_Edit()
     download = None
@@ -103,11 +122,11 @@ class BarItem(File):
 class BarItem_Section_News(BarItem):
 
     class_id = 'sidebar-item-section-news'
-    class_title = MSG(u'Last news item')
-    class_description = MSG(u'Display the last N news filter by tags')
+    class_title = MSG(u'Last News Box')
+    class_description = MSG(u'Display the last N news filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
-    # item comfiguration
+    # Box configuration
     item_schema = {
         'tags': String(multiple=True),
         'count': PositiveInteger(default=0)
@@ -127,7 +146,7 @@ class HTMLContent(WebPage):
 
     class_id = 'html-content'
     class_version = '20091127'
-    class_title = MSG(u'HTML content')
+    class_title = MSG(u'HTML Content')
     class_description = MSG(u'HTML content')
 
     # Views
@@ -215,11 +234,11 @@ class SidebarItem_Tags(BarItem):
 
     class_id = 'sidebar-item-tags'
     class_version = '20100527'
-    class_title = MSG(u'Tag cloud')
+    class_title = MSG(u'Tag Cloud')
     class_description = MSG(u'Display a tag cloud')
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
-    # Item configuration
+    # Box configuration
     item_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
                    'count':PositiveInteger(default=0),
                    'show_number': Boolean,
@@ -229,7 +248,7 @@ class SidebarItem_Tags(BarItem):
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         BooleanCheckBox('show_number',
-                        title=MSG(u'Show numbers items for each tag')),
+                        title=MSG(u'Show number of items for each tag')),
         BooleanCheckBox('random', title=MSG(u'Randomize tags')),
         SelectRadio('formats', has_empty_option=False,
                     title=MSG(u'This tag cloud will display only '
@@ -253,17 +272,14 @@ class SidebarItem_Tags(BarItem):
 class SidebarItem_SectionChildrenToc(BarItem):
 
     class_id = 'sidebar-item-section-children-toc'
-    class_title = MSG(u'Subsections and webpages TOC (for sidebar)')
+    class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
-                            u'subsections and webpages in the sidebar')
+                            u'subsections and webpages')
 
-    # Item comfiguration
+    # Box comfiguration
     item_schema = {'hide_if_only_one_item': Boolean}
 
-    item_widgets = [
-        BooleanCheckBox('hide_if_only_one_item',
-                        title=MSG(u'Hide if there is only one item'))
-        ]
+    item_widgets = [hide_single_widget]
 
     # Views
     view = SidebarItem_SectionChildrenToc_View()
@@ -278,20 +294,18 @@ class SidebarItem_SectionChildrenToc(BarItem):
 class SidebarItem_NewsSiblingsToc(BarItem):
 
     class_id = 'sidebar-item-news-siblings-toc'
-    class_title = MSG(u'News siblings news')
-    class_description = MSG(u'Display the siblings news of the current news. '
-                            u'Allow to easily switch to an other news.')
+    class_title = MSG(u'News TOC')
+    class_description = MSG(u'Display the list of news.')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
-    # Item configuration
+    # Box configuration
     item_schema = {'hide_if_only_one_item': Boolean,
                    'count':PositiveInteger}
 
     item_widgets = [
-        BooleanCheckBox('hide_if_only_one_item',
-                        title=MSG(u'Hide if there is only one item')),
+        hide_single_widget,
         TextWidget('count', size=3,
-                   title=MSG(u'Number maximum of news to display'))
+                   title=MSG(u'Maximum number of news to display'))
         ]
 
     # Views
@@ -313,7 +327,7 @@ class SidebarItem_NewsSiblingsToc(BarItem):
 class ContentBarItem_Articles(BarItem):
 
     class_id = 'contentbar-item-articles'
-    class_title = MSG(u'Section "WebPages slot"')
+    class_title = MSG(u"Section's Webpages")
     class_description = MSG(u'Display the ordered webpages of the section')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
@@ -325,9 +339,8 @@ class ContentBarItem_Articles(BarItem):
 class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 
     class_id = 'ws-neutral-item-articles'
-    class_title = MSG(u'Website "WebPages slot"')
-    class_description = MSG(u'Display the ordered webpages of the website '
-                            u'(homepage)')
+    class_title = MSG(u"Website's Webpages")
+    class_description = MSG(u'Display the ordered webpages of the homepage')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
     view = ContentBarItem_WebsiteArticles_View()
@@ -338,19 +351,15 @@ class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
 class ContentBarItem_SectionChildrenToc(BarItem):
 
     class_id = 'contentbar-item-children-toc'
-    class_title = MSG(u'Subsections and webpages TOC '
-                      u'(for central part)')
+    class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages in the central part')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
-    # Item configuration
+    # Box configuration
     item_schema = {'hide_if_only_one_item': Boolean}
 
-    item_widgets = [
-        BooleanCheckBox('hide_if_only_one_item',
-                        title=MSG(u'Hide if there is only one item'))
-        ]
+    item_widgets = [hide_single_widget]
 
     # Views
     view = ContentBarItem_SectionChildrenToc_View()
@@ -387,19 +396,19 @@ class BarItemsOrderedTable(ResourcesOrderedTable):
 class SidebarItemsOrderedTable(BarItemsOrderedTable):
 
     class_id = 'sidebar-items-ordered-table'
-    class_title = MSG(u'Order sidebar items')
+    class_title = MSG(u'Order Sidebar Boxes')
 
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Sidebar items')
+    ordered_view_title = MSG(u'Order Sidebar Boxes')
     ordered_view_title_description = MSG(
-            u'This website has a sidebar and a "central part". '
-            u'The sidebar, can be composed by several kinds of items (boxes) : '
-            u'Tag Cloud, "last News view", HTML Content, Twitter feeds, '
-            u'Custom menu ... Here you can order these items.')
-    unordered_view_title = MSG(u'Available Sidebar items')
+            u'This website has a sidebar and a central part. '
+            u'The sidebar can be composed of several kinds of boxes: '
+            u'Tag Cloud, "last News View", HTML Content, Twitter Feeds, '
+            u'Custom Menu... Here you can order these boxes.')
+    unordered_view_title = MSG(u'Available Sidebar Boxes')
     unordered_view_title_description = MSG(
-            u'This items (boxes) are available, you can make them visible '
-            u'in the "sidebar" by adding them to the above ordered list.')
+            u'These boxes are available, you can make them visible '
+            u'in the sidebar by adding them to the above ordered list.')
 
 
     def _orderable_classes(self):
@@ -415,19 +424,19 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
 class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 
     class_id = 'contentbar-items-ordered-table'
-    class_title = MSG(u'Order "central part" items')
+    class_title = MSG(u'Order Central Part Boxes')
 
     # Order view title & description configuration
-    ordered_view_title = MSG(u'Order "central part" items')
+    ordered_view_title = MSG(u'Order Central Part Boxes')
     ordered_view_title_description = MSG(
-            u'This website has a sidebar and a "central part". '
-            u'The central part, can be composed by several kinds of '
-            u'items (boxes) : "WebPages slot", "last news view", slideshow, '
-            u'... Here you can order these items.')
-    unordered_view_title = MSG(u'Available "central part" items')
+            u'This website has a sidebar and a central part. '
+            u'The central part can be composed of several kinds of '
+            u'boxes: "Webpages Slot", "Last News View", Slideshow... '
+            u'Here you can order these boxes.')
+    unordered_view_title = MSG(u'Available Central Part Boxes')
     unordered_view_title_description = MSG(
-            u'These items (boxes) are available, you can make them visible '
-            u'in the "central part" by adding them to the above ordered list.')
+            u'These boxes are available, you can make them visible '
+            u'in the central part by adding them to the above ordered list.')
 
     def _orderable_classes(self):
         registry = get_bar_item_registry()
@@ -443,8 +452,8 @@ class Repository(Folder):
 
     class_id = 'repository'
     class_version = '20100610'
-    class_title = MSG(u'Sidebar items repository')
-    class_description = MSG(u'Sidebar items repository')
+    class_title = MSG(u'Sidebar Boxes Repository')
+    class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
     class_icon48 = 'bar_items/icons/48x48/repository.png'
     class_views = ['browse_content', 'new_resource_form',
@@ -473,7 +482,7 @@ class Repository(Folder):
     new_sidebar_resource = Repository_NewResource(
             title=MSG(u'Add Sidebar Resource'))
     new_contentbar_resource = Repository_NewResource(
-            title=MSG(u'Add "central part" Resource'), is_content=True)
+            title=MSG(u'Add Central Part Resource'), is_content=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
@@ -482,12 +491,12 @@ class Repository(Folder):
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         Folder._make_resource(cls, folder, name, **kw)
-        # Website view item
+        # Website view box
         _cls = cls.website_articles_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.website_articles_view_name),
                             title={'en': _cls.class_title.gettext()})
-        # section view item
+        # section view box
         _cls = cls.section_articles_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.section_articles_view_name),
@@ -502,7 +511,7 @@ class Repository(Folder):
         _cls._make_resource(_cls, folder,
                 '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
                            title={'en': _cls.class_title.gettext()})
-        # news siblings item
+        # news siblings box
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.news_siblings_view_name),
@@ -588,20 +597,19 @@ class Repository(Folder):
             # Rename children-toc -> content-children-toc
             self.move_resource('children-toc', children_toc_name)
 
-        for data in ((self.news_siblings_view_name,
-                      self.news_siblings_view_cls),
-                     (self.section_articles_view_name,
-                      self.section_articles_view_cls),
-                     (self.section_content_children_toc_view_name,
-                      self.section_content_children_toc_view_cls),
-                     (self.section_sidebar_children_toc_view_name,
-                      self.section_sidebar_children_toc_view_cls)):
-            name, cls = data
-            item = self.get_resource(name, soft=True)
+        for name, cls in ((self.news_siblings_view_name,
+                           self.news_siblings_view_cls),
+                          (self.section_articles_view_name,
+                           self.section_articles_view_cls),
+                          (self.section_content_children_toc_view_name,
+                           self.section_content_children_toc_view_cls),
+                          (self.section_sidebar_children_toc_view_name,
+                           self.section_sidebar_children_toc_view_cls)):
+            box = self.get_resource(name, soft=True)
             create = False
-            if item:
+            if box:
                 # check format
-                if isinstance(item, cls) is False:
+                if isinstance(box, cls) is False:
                     name2 = generate_name(name, self.get_names(), '_bad_cls_')
                     self.move_resource(name, name2)
                     create = True
@@ -619,11 +627,11 @@ class Repository(Folder):
         name = self.news_items_name
         cls = self.news_items_cls
 
-        item = self.get_resource(name, soft=True)
+        box = self.get_resource(name, soft=True)
         create = False
 
-        if item:
-            if isinstance(item, cls):
+        if box:
+            if isinstance(box, cls):
                 # ok
                 return
             else:
@@ -635,13 +643,13 @@ class Repository(Folder):
             create = True
 
         if create:
-            item = cls.make_resource(cls, self, name)
-            item.set_property('title', cls.class_title.gettext(), 'en')
+            box = cls.make_resource(cls, self, name)
+            box.set_property('title', cls.class_title.gettext(), 'en')
 
 
     def update_20100608(self):
-        for item in self.search_resources(format='sidebar-item'):
-            metadata = item.metadata
+        for box in self.search_resources(format='sidebar-item'):
+            metadata = box.metadata
             metadata.set_changed()
             metadata.format = HTMLContent.class_id
 
@@ -651,16 +659,16 @@ class Repository(Folder):
         from itools.xapian import PhraseQuery
 
         old_name = 'sidebar-siblings-toc'
-        item = self.get_resource(old_name, soft=True)
-        if item is None:
+        box = self.get_resource(old_name, soft=True)
+        if box is None:
             return
 
         children_toc_cls = ContentBarItem_SectionChildrenToc
         # Check referencial-integrity
         root = get_context().root
-        results = root.search(PhraseQuery('links', str(item.get_abspath())))
+        results = root.search(PhraseQuery('links', str(box.get_abspath())))
         if len(results):
-            print u'item %s is referenced by' % item.get_abspath()
+            print u'box %s is referenced by' % box.get_abspath()
             for doc in results.get_documents():
                 resource = root.get_resource(doc.abspath)
                 print u'-->', doc.abspath, doc.format
@@ -674,9 +682,9 @@ class Repository(Folder):
                         if name == old_name:
                             id_to_remove = record.id
                             continue
-                        item = self.get_resource(name, soft=True)
-                        if item and isinstance(item, children_toc_cls):
-                            children_toc_item = item
+                        box = self.get_resource(name, soft=True)
+                        if box and isinstance(box, children_toc_cls):
+                            children_toc_item = box
                             continue
 
                     if children_toc_item:
@@ -690,7 +698,7 @@ class Repository(Folder):
                 else:
                     # Other type of resource
                     # Call update_link
-                    source = item.get_abspath()
+                    source = box.get_abspath()
                     target = self.get_abspath().resolve2('content-children-toc')
                     resource.update_link(source, target)
 

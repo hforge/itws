@@ -109,7 +109,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
     context_menus = [ Repository_AddResourceMenu(is_side=True,
                           title=MSG(u'Add Sidebar Resource')),
                       Repository_AddResourceMenu(is_content=True,
-                          title=MSG(u'Add "central part" Resource'))]
+                          title=MSG(u'Add Central Part Resource'))]
 
     links_template = list(XMLParser("""
         <stl:block stl:repeat="item items">
@@ -421,7 +421,7 @@ class SidebarItem_Tags_Preview(BarItem_Preview):
         formats = resource.get_property('formats')
         details = []
         details.append(u'Tags to show (0 for all tags): %s' % count)
-        details.append(u'Show numbers items for each tag: %s' % show_number)
+        details.append(u'Show number of items for each tag: %s' % show_number)
         details.append(u'This tag cloud will display only the tags '
                        u'from: %s' % ', '.join(formats))
 
@@ -512,7 +512,7 @@ class BarItem_Section_News_View(BarItem_View):
 
         if self.is_admin(resource, context):
             resource_path = context.get_link(resource)
-            # sidebar item
+            # sidebar box
             manage_buttons.append({'path': '%s/;edit' % resource_path,
                                    'label': MSG(u'Edit Nb News'),
                                    'class': None})
@@ -904,7 +904,7 @@ class ContentBarItem_Articles_View(BarItem_View):
 
 
     def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar items button requiring context.
+        """ Add a sidebar boxes button requiring context.
         """
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
@@ -1038,7 +1038,7 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
 
 
     def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar items button requiring context.
+        """ Add a sidebar boxes button requiring context.
         """
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
@@ -1053,7 +1053,7 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
         # Order articles
         buttons.append({'path': '%s/;edit' % context.get_link(resource),
                         'target': None,
-                        'label': MSG(u'Edit the item')})
+                        'label': MSG(u'Edit the box')})
         return buttons
 
 
@@ -1135,7 +1135,7 @@ class ContentBarItem_WebsiteArticles_View(ContentBarItem_Articles_View):
 
 
     def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar items button requiring context.
+        """ Add a sidebar boxes button requiring context.
         """
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
