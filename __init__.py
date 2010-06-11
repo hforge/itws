@@ -41,9 +41,9 @@ __version__ = get_version()
 rng_file = ro_database.get_handler(get_abspath('OPML-schema.rng'), RelaxNGFile)
 rng_file.auto_register()
 
-###############################################################################
+#############################################################################
 # SITEMAP
-###############################################################################
+#############################################################################
 # Required by the SiteMap
 xsins_uri = 'http://www.w3.org/2001/XMLSchema-instance'
 xsi_namespace = XMLNamespace(
@@ -58,13 +58,17 @@ for namespace in rng_file.namespaces.itervalues():
     namespace.prefix = None
 rng_file.auto_register()
 
-###############################################################################
+#############################################################################
 # DOMAIN
-###############################################################################
+#############################################################################
 
 # Register the itws domain
 path = get_abspath('locale')
 register_domain('itws', path)
+
+
+# Silent pyflakes
+Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
 
 
 # ws_neutral.NeutralWS.update_20100429
@@ -100,9 +104,6 @@ class SidebarItem_SectionSiblingsToc(BarItem):
     class_id = 'sidebar-item-section-siblings-toc'
     view = SidebarItem_SectionSiblingsToc()
 
-
-# Silent pyflakes
-Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
 
 register_resource_class(Article)
 register_resource_class(SidebarItem)
