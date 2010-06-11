@@ -247,7 +247,7 @@ msgstr "<g id='9'> ${article/channel/title} </g>  </g>"
 
 #: ../webpage_views.py:159
 msgid "A Webpage"
-msgstr "Une page web"
+msgstr "Page web"
 
 #: ../tracker.py:201
 msgid "A customizable tracker to manage issues"
