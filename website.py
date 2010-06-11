@@ -196,15 +196,19 @@ class WebSite(BaseWebSite):
         return schema
 
 
-    def is_allowed_to_view(self, user, object):
+    def is_allowed_to_view(self, user, resource):
         if user is None:
             context = get_context()
             if self.get_skin(context).name == 'aruni':
                 return False
-            # Tracker, Issue and Wiki are private
-            if isinstance(object, (Tracker, Issue, WikiFolder)):
+            # Tracker is private
+            if isinstance(resource, (Tracker, Issue)):
                 return False
-        return BaseWebSite.is_allowed_to_view(self, user, object)
+            # Wiki only if FrontPage published
+            if isinstance(resource, WikiFolder):
+                frontpage = resource.get_resource('FrontPage')
+                return frontpage.get_workflow_state() == 'public'
+        return BaseWebSite.is_allowed_to_view(self, user, resource)
 
 
     def get_repository(self):
