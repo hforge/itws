@@ -17,11 +17,8 @@
 
 # Import from itools
 from itools.datatypes import Integer, Unicode, Enumerate, String
-from itools.web import get_context
-from itools.xapian import AndQuery, PhraseQuery
 
 # Import from ikaaro
-from ikaaro.utils import get_base_path_query
 from ikaaro.registry import get_document_types
 
 
