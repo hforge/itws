@@ -50,7 +50,7 @@ from ikaaro.skins import register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
 from ikaaro.website import WebSite as BaseWebSite
-from ikaaro.wiki import WikiFolder, WikiPage
+from ikaaro.wiki import WikiFolder
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
@@ -101,7 +101,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
     not_allowed_cls_for_sidebar_view = [ITWSTracker, ITWSTracker.issue_class,
-                                        WikiFolder, WikiPage, SlideShow, Slide,
+                                        WikiFolder, SlideShow, Slide,
                                         RssFeeds, AddressesFolder]
     manage_buttons = []
 
