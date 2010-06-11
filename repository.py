@@ -725,19 +725,19 @@ register_resource_class(ContentBarItem_Articles)
 register_resource_class(ContentBarItem_WebsiteArticles)
 register_resource_class(ContentBarItem_SectionChildrenToc)
 
-register_bar_item(HTMLContent, allow_instanciation=True, is_content=True)
-register_bar_item(BarItem_Section_News, allow_instanciation=True,
-                  is_side=True, is_content=True)
-register_bar_item(SidebarItem_Tags, allow_instanciation=True)
-register_bar_item(SidebarItem_SectionChildrenToc,
-                  allow_instanciation=False)
-register_bar_item(SidebarItem_NewsSiblingsToc, allow_instanciation=False)
-register_bar_item(ContentBarItem_Articles, allow_instanciation=False,
-                  is_content=True)
-register_bar_item(ContentBarItem_WebsiteArticles, allow_instanciation=False,
-                  is_content=True)
-register_bar_item(ContentBarItem_SectionChildrenToc, allow_instanciation=False,
-                  is_content=True)
+register_box(HTMLContent, allow_instanciation=True, is_content=True)
+register_box(BarItem_Section_News, allow_instanciation=True,
+             is_side=True, is_content=True)
+register_box(SidebarItem_Tags, allow_instanciation=True)
+register_box(SidebarItem_SectionChildrenToc,
+             allow_instanciation=False)
+register_box(SidebarItem_NewsSiblingsToc, allow_instanciation=False)
+register_box(ContentBarItem_Articles, allow_instanciation=False,
+             is_content=True)
+register_box(ContentBarItem_WebsiteArticles, allow_instanciation=False,
+             is_content=True)
+register_box(ContentBarItem_SectionChildrenToc, allow_instanciation=False,
+             is_content=True)
 # Register skin
 path = get_abspath('ui/bar_items')
 register_skin('bar_items', path)

@@ -37,7 +37,7 @@ from ikaaro.table import Table
 # Import from itws
 from diaporama_views import DiaporamaTable_View, Diaporama_View
 from diaporama_views import Diaporama_Edit
-from repository import register_bar_item
+from repository import register_box
 from resources import OrderTableAware
 from utils import get_path_and_view
 from views import EasyNewInstance
@@ -287,5 +287,4 @@ class Diaporama(OrderTableAware, Folder):
 
 register_resource_class(Diaporama)
 register_resource_class(DiaporamaTable)
-register_bar_item(Diaporama, allow_instanciation=True,
-                  is_content=True)
+register_box(Diaporama, allow_instanciation=True, is_content=True)

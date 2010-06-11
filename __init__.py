@@ -72,7 +72,7 @@ register_domain('itws', path)
 from itools.web import STLView
 from ikaaro.registry import register_resource_class
 from webpage import WebPage
-from repository import register_bar_item, BarItem
+from repository import register_box, BarItem
 
 class Article(WebPage):
     class_id = 'article'
@@ -109,5 +109,5 @@ register_resource_class(SidebarItem)
 register_resource_class(SidebarItem_SectionSiblingsToc)
 register_resource_class(WSArticle)
 
-register_bar_item(SidebarItem, allow_instanciation=True, is_content=True)
-register_bar_item(SidebarItem_SectionSiblingsToc, allow_instanciation=False)
+register_box(SidebarItem, allow_instanciation=True, is_content=True)
+register_box(SidebarItem_SectionSiblingsToc, allow_instanciation=False)

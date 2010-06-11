@@ -36,7 +36,7 @@ from ikaaro.forms import TextWidget, CheckBoxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
-from itws.repository import BarItem, register_bar_item
+from itws.repository import BarItem, register_box
 from itws.repository_views import BarItem_View, BarItem_Edit
 from itws.resources import ResourceWithCache
 
@@ -227,4 +227,4 @@ class TwitterSideBar(BarItem, ResourceWithCache):
 
 
 register_resource_class(TwitterSideBar)
-register_bar_item(TwitterSideBar, allow_instanciation=True)
+register_box(TwitterSideBar, allow_instanciation=True)
