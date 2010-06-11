@@ -478,15 +478,16 @@ class TagsFolder(ManageViewAware, Folder):
 
 
     @staticmethod
-    def _make_resource(cls, folder, name, **kw):
+    def _make_resource(cls, folder, name, language=None, **kw):
         Folder._make_resource(cls, folder, name, **kw)
-        site_root = get_context().resource.get_site_root()
-        lang = site_root.get_property('website_languages')[0]
+        if language is None:
+            site_root = get_context().resource.get_site_root()
+            language = site_root.get_property('website_languages')[0]
         # Create default tags
         for tag in cls.default_tags:
             tag_name, title = tag
             Tag._make_resource(Tag, folder, '%s/%s' % (name, tag_name),
-                               title={lang:title})
+                               title={language: title})
 
 
     def get_document_types(self):

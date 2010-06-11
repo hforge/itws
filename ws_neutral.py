@@ -488,7 +488,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         cls._make_resource(cls, folder, '%s/turning-footer' % name)
         # Tags
         cls = TagsFolder
-        cls._make_resource(cls, folder, '%s/tags' % name)
+        cls._make_resource(cls, folder, '%s/tags' % name,
+                language=default_language)
         # Init Website menu with 2 items
         for menu_name in website_class.menus:
             menu = root.get_resource('%s/%s/menu' % (name, menu_name))
