@@ -38,7 +38,7 @@
           <p>${article/description}</p>
           <span>
             <stl:inline stl:if="article/pubDate_valid">${article/formated_pubDate}, </stl:inline>
-            source:
+            <span>source:</span>
             <a href="${article/link}">
               ${article/channel/title}
             </a>
