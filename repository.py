@@ -82,7 +82,8 @@ def register_box(resource_class, allow_instanciation=True,
 
 
 def get_boxes_registry():
-    return boxes_registry
+    # TODO Expose the dictionary through an user friendly API
+    return freeze(boxes_registry)
 
 
 # TODO Remove in itws 0.61.2
@@ -411,7 +412,7 @@ class SidebarBoxesOrderedTable(BoxesOrderedTable):
 
 
     def _orderable_classes(self):
-        registry = get_bar_item_registry()
+        registry = get_boxes_registry()
         types = [ cls for cls, allow in registry.iteritems()
                   if allow['side'] ] # is side
         return types
@@ -438,7 +439,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
             u'in the central part by adding them to the above ordered list.')
 
     def _orderable_classes(self):
-        registry = get_bar_item_registry()
+        registry = get_boxes_registry()
         types = [ cls for cls, allow in registry.iteritems()
                   if allow['content'] ] # is content
         return types
@@ -524,7 +525,7 @@ class Repository(Folder):
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
                             is_side=None):
-        registry = get_bar_item_registry()
+        registry = get_boxes_registry()
         types = []
         for cls, allow in registry.iteritems():
             if allow_instanciation is not None and \
