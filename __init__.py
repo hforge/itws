@@ -33,6 +33,8 @@ import tracker
 import turning_footer
 import ws_neutral
 import webpage
+# obsolete
+import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()
@@ -69,46 +71,3 @@ register_domain('itws', path)
 
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
-
-
-# ws_neutral.NeutralWS.update_20100429
-# Remove Obsolete article class
-from itools.web import STLView
-from ikaaro.registry import register_resource_class
-from webpage import WebPage
-from repository import register_box, BarItem
-
-class Article(WebPage):
-    class_id = 'article'
-    class_version = '20100107'
-
-class WSArticle(Article):
-    class_id = 'ws-neutral-article'
-
-class SidebarItem(WebPage):
-    class_id = 'sidebar-item'
-    class_version = '20091127'
-
-class SidebarItem_SectionSiblingsToc(STLView):
-
-    def GET(self, resource, context):
-        return None
-
-    def set_view_is_empty(self, bool):
-        return
-
-    def get_view_is_empty(self):
-        return True
-
-class SidebarItem_SectionSiblingsToc(BarItem):
-    class_id = 'sidebar-item-section-siblings-toc'
-    view = SidebarItem_SectionSiblingsToc()
-
-
-register_resource_class(Article)
-register_resource_class(SidebarItem)
-register_resource_class(SidebarItem_SectionSiblingsToc)
-register_resource_class(WSArticle)
-
-register_box(SidebarItem, allow_instanciation=True, is_content=True)
-register_box(SidebarItem_SectionSiblingsToc, allow_instanciation=False)

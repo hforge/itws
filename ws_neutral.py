@@ -59,7 +59,7 @@ from bar import ContentBarAware, SideBarAware, SideBar_View
 from common import FoBoFooterAwareSkin
 from datatypes import MultilingualString, NeutralClassSkin
 from news import NewsFolder, NewsItem
-from repository import Repository, SidebarItemsOrderedTable
+from repository import Repository, SidebarBoxesOrderedTable
 from resources import Image, RobotsTxt, ManageViewAware
 from rssfeeds import RssFeeds
 from section import Section
@@ -151,7 +151,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         sidebar_resource = site_root
         if isinstance(here, SideBarAware):
             sidebar_resource = here
-        elif isinstance(here, SidebarItemsOrderedTable):
+        elif isinstance(here, SidebarBoxesOrderedTable):
             sidebar_resource = here.parent
         elif isinstance(here, NewsItem) or\
                 isinstance(here.parent, site_root.section_class):

@@ -36,8 +36,8 @@ from ikaaro.forms import TextWidget, CheckBoxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
-from itws.repository import BarItem, register_box
-from itws.repository_views import BarItem_View, BarItem_Edit
+from itws.repository import Box, register_box
+from itws.repository_views import Box_View, Box_Edit
 from itws.resources import ResourceWithCache
 
 
@@ -59,10 +59,10 @@ def transform_links(tweet):
 
 
 
-class TwitterSideBar_Edit(BarItem_Edit):
+class TwitterSideBar_Edit(Box_Edit):
 
     def _get_form(self, resource, context):
-        form = BarItem_Edit._get_form(self, resource, context)
+        form = Box_Edit._get_form(self, resource, context)
         # Check if the user_id exists
         user_id = form['user_id']
         uri = twitter_url % user_id
@@ -82,7 +82,7 @@ class TwitterSideBar_Edit(BarItem_Edit):
 
 
     def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
+        Box_Edit.action(self, resource, context, form)
         if context.edit_conflict:
             return
         if form['force_update']:
@@ -90,7 +90,7 @@ class TwitterSideBar_Edit(BarItem_Edit):
 
 
 
-class TwitterSideBar_View(BarItem_View):
+class TwitterSideBar_View(Box_View):
 
     template = '/ui/bar_items/twitter.xml'
 
@@ -107,9 +107,9 @@ class TwitterSideBar_View(BarItem_View):
 
 
 
-class TwitterSideBar(BarItem, ResourceWithCache):
+class TwitterSideBar(Box, ResourceWithCache):
 
-    class_id = 'sidebar-item-twitter'
+    class_id = 'box-twitter'
     class_title = MSG(u'Twitter SideBar')
     class_description = MSG(u'Twitter sidebar feed')
     class_icon16 = 'bar_items/icons/16x16/twitter.png'
@@ -139,7 +139,7 @@ class TwitterSideBar(BarItem, ResourceWithCache):
 
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
+        return merge_dicts(Box.get_metadata_schema(),
                            cls.box_schema)
 
 

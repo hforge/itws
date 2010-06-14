@@ -35,7 +35,7 @@ from ikaaro.table_views import Table_View
 
 # Import from itws
 from datatypes import UnicodeString
-from repository_views import BarItem_View
+from repository_views import Box_View
 from utils import get_admin_bar
 
 
@@ -127,7 +127,7 @@ class DiaporamaTable_View(Table_View):
 
 
 
-class Diaporama_View(BarItem_View):
+class Diaporama_View(Box_View):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'View')

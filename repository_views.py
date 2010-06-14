@@ -151,7 +151,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
 
 
 
-class BarItemsOrderedTable_Ordered(SmartOrderedTable_Ordered):
+class BoxesOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
     query_schema = {}
 
@@ -181,7 +181,7 @@ class BarItemsOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
 
 
-class BarItemsOrderedTable_Unordered(SmartOrderedTable_Unordered):
+class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
     query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
                                batch_size=Integer(default=0),
@@ -237,17 +237,17 @@ class BarItemsOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
 
-class BarItemsOrderedTable_View(SmartOrderedTable_View):
+class BoxesOrderedTable_View(SmartOrderedTable_View):
 
-    subviews = [BarItemsOrderedTable_Ordered(),
-                BarItemsOrderedTable_Unordered()]
+    subviews = [BoxesOrderedTable_Ordered(),
+                BoxesOrderedTable_Unordered()]
 
 
 
 ################################################################################
 # Base classes edit views
 ################################################################################
-class BarItem_Edit(DBResource_Edit):
+class Box_Edit(DBResource_Edit):
 
     title = MSG(u'Edit')
     access = 'is_allowed_to_edit'
@@ -290,7 +290,7 @@ class BarItem_Edit(DBResource_Edit):
 ################################################################################
 # Bar edit views
 ################################################################################
-class BarItem_Section_News_Edit(BarItem_Edit):
+class BoxSectionNews_Edit(Box_Edit):
 
     def _get_news_folder(self, resource, context):
         site_root = resource.get_site_root()
@@ -300,7 +300,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
 
     def get_schema(self, resource, context):
         # Base schema
-        schema = BarItem_Edit.get_schema(self, resource, context)
+        schema = Box_Edit.get_schema(self, resource, context)
         # News folder
         newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
@@ -313,7 +313,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
 
     def get_widgets(self, resource, context):
         # base widgets
-        widgets = BarItem_Edit.get_widgets(self, resource, context)[:]
+        widgets = Box_Edit.get_widgets(self, resource, context)[:]
 
         # News folder
         newsfolder = self._get_news_folder(resource, context)
@@ -328,7 +328,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
 
 
     def action(self, resource, context, form):
-        BarItem_Edit.action(self, resource, context, form)
+        Box_Edit.action(self, resource, context, form)
         # Check edit conflict
         if context.edit_conflict:
             return
@@ -342,7 +342,7 @@ class BarItem_Section_News_Edit(BarItem_Edit):
 ################################################################################
 # Sidebar edit views
 ################################################################################
-class SidebarItem_Edit(HTMLEditView):
+class HTMLContent_Edit(HTMLEditView):
 
     schema = merge_dicts(HTMLEditView.schema, title_link=String,
                          title_link_target=Target, display_title=Boolean)
@@ -369,7 +369,7 @@ class SidebarItem_Edit(HTMLEditView):
 ################################################################################
 # Base classes preview views
 ################################################################################
-class BarItem_Preview(STLView):
+class Box_Preview(STLView):
 
     template = list(XMLParser(
         """
@@ -401,7 +401,7 @@ class BarItem_Preview(STLView):
 ################################################################################
 # Bar preview views
 ################################################################################
-class BarItem_Section_News_Preview(BarItem_Preview):
+class BoxSectionNews_Preview(Box_Preview):
 
     def get_details(self, resource, context):
         details = []
@@ -412,7 +412,7 @@ class BarItem_Section_News_Preview(BarItem_Preview):
 
 
 
-class SidebarItem_Tags_Preview(BarItem_Preview):
+class BoxTags_Preview(Box_Preview):
 
     def get_details(self, resource, context):
         count = resource.get_property('count')
@@ -432,7 +432,7 @@ class SidebarItem_Tags_Preview(BarItem_Preview):
 ################################################################################
 # Sidebar preview views
 ################################################################################
-class SidebarItem_ViewBoth():
+class HTMLContent_ViewBoth():
 
     title = MSG(u'View with preview')
     template = '/ui/bar_items/SidebarItem_viewboth.xml'
@@ -446,7 +446,7 @@ class SidebarItem_ViewBoth():
 
 
 
-class SidebarItem_Preview(BaseView):
+class SidebarBox_Preview(BaseView):
     title = MSG(u'Preview')
 
     def GET(self, resource, context):
@@ -457,7 +457,7 @@ class SidebarItem_Preview(BaseView):
 ################################################################################
 # Base classes views
 ################################################################################
-class BarItem_View(STLView):
+class Box_View(STLView):
 
     def get_view_is_empty(self):
         return getattr(self, '_view_is_empty', False)
@@ -495,7 +495,7 @@ class BarItem_View(STLView):
 ################################################################################
 # Bar views
 ################################################################################
-class BarItem_Section_News_View(BarItem_View):
+class BoxSectionNews_View(Box_View):
 
     access = 'is_allowed_to_edit'
     template = '/ui/bar_items/Section_newsview.xml'
@@ -507,7 +507,7 @@ class BarItem_Section_News_View(BarItem_View):
 
 
     def get_manage_buttons(self, resource, context):
-        manage_buttons = BarItem_View.get_manage_buttons(self,
+        manage_buttons = Box_View.get_manage_buttons(self,
                 resource, context)
 
         if self.is_admin(resource, context):
@@ -593,12 +593,12 @@ class BarItem_Section_News_View(BarItem_View):
 ################################################################################
 # Sidebar views
 ################################################################################
-class SidebarItem_View(BarItem_View, WebPage_View):
+class HTMLContent_View(Box_View, WebPage_View):
 
     template = '/ui/bar_items/SidebarItem_view.xml'
 
     def GET(self, resource, context):
-        return BarItem_View.GET(self, resource, context)
+        return Box_View.GET(self, resource, context)
 
 
     def get_namespace(self, resource, context):
@@ -614,7 +614,7 @@ class SidebarItem_View(BarItem_View, WebPage_View):
 
 
 
-class SidebarItem_Tags_View(BarItem_View):
+class BoxTags_View(Box_View):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
@@ -626,7 +626,7 @@ class SidebarItem_Tags_View(BarItem_View):
 
 
     def get_manage_buttons(self, resource, context):
-        manage_buttons = BarItem_View.get_manage_buttons(self,
+        manage_buttons = Box_View.get_manage_buttons(self,
                 resource, context)
 
         if self.is_admin(resource, context):
@@ -680,7 +680,7 @@ class SidebarItem_Tags_View(BarItem_View):
 
 
 
-class SidebarItem_SectionChildrenToc_View(BarItem_View):
+class BoxSectionChildrenToc_View(Box_View):
 
     template = '/ui/bar_items/Section_tocview.xml'
 
@@ -787,7 +787,7 @@ class SidebarItem_SectionChildrenToc_View(BarItem_View):
 
 
 
-class SidebarItem_NewsSiblingsToc_View(BarItem_Section_News_View):
+class BoxNewsSiblingsToc_View(BoxSectionNews_View):
 
     template = '/ui/bar_items/News_siblings_tocview.xml'
     more_title = MSG(u'Show all')
@@ -864,7 +864,7 @@ class SidebarItem_NewsSiblingsToc_View(BarItem_Section_News_View):
 ################################################################################
 # Contentbar views
 ################################################################################
-class ContentBarItem_Articles_View(BarItem_View):
+class BoxSectionWebpages_View(Box_View):
 
     template = '/ui/bar_items/Articles_view.xml'
 
@@ -887,11 +887,11 @@ class ContentBarItem_Articles_View(BarItem_View):
                 return None
 
             # Case (2)
-            return BarItem_View.GET(self, resource, context)
+            return Box_View.GET(self, resource, context)
 
         if isinstance(here, article_cls):
             if one_by_one is True:
-                return BarItem_View.GET(self, resource, context)
+                return Box_View.GET(self, resource, context)
 
             # This case should not append
             # Article view with all articles displayed in the section view
@@ -1008,7 +1008,7 @@ class ContentBarItem_Articles_View(BarItem_View):
 
 
 
-class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
+class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
     template = '/ui/bar_items/SectionChildrenToc_view.xml'
 
@@ -1022,11 +1022,11 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
         one_by_one = self.is_article_one_by_one(resource, context)
 
         if isinstance(here, section_cls):
-            return BarItem_View.GET(self, resource, context)
+            return Box_View.GET(self, resource, context)
 
         if isinstance(here, article_cls):
             if one_by_one is False:
-                return BarItem_View.GET(self, resource, context)
+                return Box_View.GET(self, resource, context)
 
             # This case should not append
             self.set_view_is_empty(True)
@@ -1045,7 +1045,7 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
         if not allowed:
             return []
 
-        parent_method = ContentBarItem_Articles_View.get_manage_buttons
+        parent_method = BoxSectionWebpages_View.get_manage_buttons
         buttons = parent_method(self, resource, context, name=None)
         section = context._section
         section_path = context.get_link(section)
@@ -1128,10 +1128,10 @@ class ContentBarItem_SectionChildrenToc_View(ContentBarItem_Articles_View):
 
 
 
-class ContentBarItem_WebsiteArticles_View(ContentBarItem_Articles_View):
+class BoxWebsiteWebpages_View(BoxSectionWebpages_View):
 
     def GET(self, resource, context):
-        return BarItem_View.GET(self, resource, context)
+        return Box_View.GET(self, resource, context)
 
 
     def get_manage_buttons(self, resource, context, name=None):

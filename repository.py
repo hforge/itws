@@ -41,21 +41,21 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
-from repository_views import BarItem_Edit
-from repository_views import BarItem_Preview
-from repository_views import BarItem_Section_News_Edit
-from repository_views import BarItem_Section_News_Preview
-from repository_views import BarItem_Section_News_View
-from repository_views import BarItemsOrderedTable_View
-from repository_views import ContentBarItem_Articles_View
-from repository_views import ContentBarItem_SectionChildrenToc_View
-from repository_views import ContentBarItem_WebsiteArticles_View
+from repository_views import Box_Edit
+from repository_views import Box_Preview
+from repository_views import BoxSectionNews_Edit
+from repository_views import BoxSectionNews_Preview
+from repository_views import BoxSectionNews_View
+from repository_views import BoxesOrderedTable_View
+from repository_views import BoxSectionWebpages_View
+from repository_views import ContentBoxSectionChildrenToc_View
+from repository_views import BoxWebsiteWebpages_View
 from repository_views import Repository_BrowseContent, Repository_NewResource
-from repository_views import SidebarItem_NewsSiblingsToc_View
-from repository_views import SidebarItem_Preview, SidebarItem_View
-from repository_views import SidebarItem_SectionChildrenToc_View
-from repository_views import SidebarItem_Tags_View, SidebarItem_Tags_Preview
-from repository_views import SidebarItem_ViewBoth, SidebarItem_Edit
+from repository_views import BoxNewsSiblingsToc_View
+from repository_views import SidebarBox_Preview, HTMLContent_View
+from repository_views import BoxSectionChildrenToc_View
+from repository_views import BoxTags_View, BoxTags_Preview
+from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from utils import get_path_and_view
 from views import EasyNewInstance
 from webpage import WebPage
@@ -100,11 +100,11 @@ def get_bar_item_registry():
     return get_boxes_registry()
 
 
-class BarItem(File):
+class Box(File):
 
     class_description = MSG(u'Sidebar box')
-    preview = order_preview = BarItem_Preview()
-    edit = BarItem_Edit()
+    preview = order_preview = Box_Preview()
+    edit = Box_Edit()
     download = None
     externaledit = None
     new_instance = EasyNewInstance()
@@ -120,9 +120,9 @@ class BarItem(File):
 
 
 
-class BarItem_Section_News(BarItem):
+class BoxSectionNews(Box):
 
-    class_id = 'sidebar-item-section-news'
+    class_id = 'box-section-news'
     class_title = MSG(u'Last News Box')
     class_description = MSG(u'Display the last N news filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
@@ -134,9 +134,9 @@ class BarItem_Section_News(BarItem):
         }
 
     # Views
-    preview = order_preview = BarItem_Section_News_Preview()
-    view = BarItem_Section_News_View()
-    edit = BarItem_Section_News_Edit()
+    preview = order_preview = BoxSectionNews_Preview()
+    view = BoxSectionNews_View()
+    edit = BoxSectionNews_Edit()
 
 
 
@@ -151,10 +151,10 @@ class HTMLContent(WebPage):
     class_description = MSG(u'HTML content')
 
     # Views
-    view_both = SidebarItem_ViewBoth()
-    preview = order_preview = SidebarItem_Preview()
-    edit = SidebarItem_Edit()
-    view = SidebarItem_View()
+    view_both = HTMLContent_ViewBoth()
+    preview = order_preview = SidebarBox_Preview()
+    edit = HTMLContent_Edit()
+    view = HTMLContent_View()
     new_instance = EasyNewInstance()
 
 
@@ -231,9 +231,9 @@ class HTMLContent(WebPage):
 
 
 
-class SidebarItem_Tags(BarItem):
+class BoxTags(Box):
 
-    class_id = 'sidebar-item-tags'
+    class_id = 'box-tags'
     class_version = '20100527'
     class_title = MSG(u'Tag Cloud')
     class_description = MSG(u'Display a tag cloud')
@@ -265,14 +265,14 @@ class SidebarItem_Tags(BarItem):
 
 
     # Views
-    view = SidebarItem_Tags_View()
-    preview = order_preview = SidebarItem_Tags_Preview()
+    view = BoxTags_View()
+    preview = order_preview = BoxTags_Preview()
 
 
 
-class SidebarItem_SectionChildrenToc(BarItem):
+class BoxSectionChildrenToc(Box):
 
-    class_id = 'sidebar-item-section-children-toc'
+    class_id = 'box-section-children-toc'
     class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages')
@@ -282,18 +282,18 @@ class SidebarItem_SectionChildrenToc(BarItem):
     box_widgets = [hide_single_widget]
 
     # Views
-    view = SidebarItem_SectionChildrenToc_View()
+    view = BoxSectionChildrenToc_View()
 
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
+        return merge_dicts(Box.get_metadata_schema(),
                            hide_if_only_one_item=Boolean())
 
 
 
-class SidebarItem_NewsSiblingsToc(BarItem):
+class BoxNewsSiblingsToc(Box):
 
-    class_id = 'sidebar-item-news-siblings-toc'
+    class_id = 'box-news-siblings-toc'
     class_title = MSG(u'News TOC')
     class_description = MSG(u'Display the list of news.')
     class_views = ['backlinks', 'edit_state', 'edit_state']
@@ -309,13 +309,13 @@ class SidebarItem_NewsSiblingsToc(BarItem):
         ]
 
     # Views
-    view = SidebarItem_NewsSiblingsToc_View()
+    view = BoxNewsSiblingsToc_View()
     edit = None
 
 
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
+        return merge_dicts(Box.get_metadata_schema(),
                            hide_if_only_one_item=Boolean(),
                            count=PositiveInteger(default=30))
 
@@ -324,33 +324,33 @@ class SidebarItem_NewsSiblingsToc(BarItem):
 ###########################################################################
 # Contentbar resources
 ###########################################################################
-class ContentBarItem_Articles(BarItem):
+class BoxSectionWebpages(Box):
 
-    class_id = 'contentbar-item-articles'
+    class_id = 'contentbar-box-articles'
     class_title = MSG(u"Section's Webpages")
     class_description = MSG(u'Display the ordered webpages of the section')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
-    view = ContentBarItem_Articles_View()
+    view = BoxSectionWebpages_View()
     edit = None
 
 
 
-class ContentBarItem_WebsiteArticles(ContentBarItem_Articles):
+class BoxWebsiteWebpages(BoxSectionWebpages):
 
-    class_id = 'ws-neutral-item-articles'
+    class_id = 'ws-neutral-box-articles'
     class_title = MSG(u"Website's Webpages")
     class_description = MSG(u'Display the ordered webpages of the homepage')
     class_views = ['backlinks', 'edit_state', 'edit_state']
 
-    view = ContentBarItem_WebsiteArticles_View()
+    view = BoxWebsiteWebpages_View()
     edit = None
 
 
 
-class ContentBarItem_SectionChildrenToc(BarItem):
+class ContentBoxSectionChildrenToc(Box):
 
-    class_id = 'contentbar-item-children-toc'
+    class_id = 'contentbar-box-children-toc'
     class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages in the central part')
@@ -361,12 +361,12 @@ class ContentBarItem_SectionChildrenToc(BarItem):
     box_widgets = [hide_single_widget]
 
     # Views
-    view = ContentBarItem_SectionChildrenToc_View()
+    view = ContentBoxSectionChildrenToc_View()
     edit = None
 
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(BarItem.get_metadata_schema(),
+        return merge_dicts(Box.get_metadata_schema(),
                            hide_if_only_one_item=Boolean())
 
 
@@ -374,9 +374,9 @@ class ContentBarItem_SectionChildrenToc(BarItem):
 ###########################################################################
 # Repository
 ###########################################################################
-class BarItemsOrderedTable(ResourcesOrderedTable):
+class BoxesOrderedTable(ResourcesOrderedTable):
 
-    view = BarItemsOrderedTable_View()
+    view = BoxesOrderedTable_View()
 
     def get_order_root(self):
         return self.get_site_root().get_repository()
@@ -392,9 +392,9 @@ class BarItemsOrderedTable(ResourcesOrderedTable):
 
 
 
-class SidebarItemsOrderedTable(BarItemsOrderedTable):
+class SidebarBoxesOrderedTable(BoxesOrderedTable):
 
-    class_id = 'sidebar-items-ordered-table'
+    class_id = 'sidebar-boxes-ordered-table'
     class_title = MSG(u'Order Sidebar Boxes')
 
     # Order view title & description configuration
@@ -420,9 +420,9 @@ class SidebarItemsOrderedTable(BarItemsOrderedTable):
 
 
 
-class ContentbarItemsOrderedTable(BarItemsOrderedTable):
+class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
-    class_id = 'contentbar-items-ordered-table'
+    class_id = 'contentbar-boxes-ordered-table'
     class_title = MSG(u'Order Central Part Boxes')
 
     # Order view title & description configuration
@@ -450,7 +450,7 @@ class ContentbarItemsOrderedTable(BarItemsOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100610'
+    class_version = '20100611'
     class_title = MSG(u'Sidebar Boxes Repository')
     class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -464,17 +464,17 @@ class Repository(Folder):
                              'news'])
 
     # configuration
-    news_items_cls = BarItem_Section_News
+    news_items_cls = BoxSectionNews
     news_items_name = 'news'
-    news_siblings_view_cls = SidebarItem_NewsSiblingsToc
+    news_siblings_view_cls = BoxNewsSiblingsToc
     news_siblings_view_name = 'news-siblings'
-    section_articles_view_cls = ContentBarItem_Articles
+    section_articles_view_cls = BoxSectionWebpages
     section_articles_view_name = 'articles-view'
-    section_content_children_toc_view_cls = ContentBarItem_SectionChildrenToc
+    section_content_children_toc_view_cls = ContentBoxSectionChildrenToc
     section_content_children_toc_view_name = 'content-children-toc'
-    section_sidebar_children_toc_view_cls = SidebarItem_SectionChildrenToc
+    section_sidebar_children_toc_view_cls = BoxSectionChildrenToc
     section_sidebar_children_toc_view_name = 'sidebar-children-toc'
-    website_articles_view_cls = ContentBarItem_WebsiteArticles
+    website_articles_view_cls = BoxWebsiteWebpages
     website_articles_view_name = 'website-articles-view'
 
     new_resource = None
@@ -545,10 +545,10 @@ class Repository(Folder):
 
     def can_paste(self, source):
         """Is the source resource can be pasted into myself.
-        Allow RightItem and BarItem
-        but BarItem cannot be directly instanciated
+        Allow RightItem and Box
+        but Box cannot be directly instanciated
         """
-        allowed_types = self.get_document_types() + [BarItem]
+        allowed_types = self.get_document_types() + [Box]
         return isinstance(source, tuple(allowed_types))
 
 
@@ -654,7 +654,7 @@ class Repository(Folder):
 
 
     def update_20100609(self):
-        # Remove obsolete SidebarItem_SectionSiblingsToc
+        # Remove obsolete SidebarBox_SectionSiblingsToc
         from itools.xapian import PhraseQuery
 
         old_name = 'sidebar-siblings-toc'
@@ -662,7 +662,7 @@ class Repository(Folder):
         if box is None:
             return
 
-        children_toc_cls = ContentBarItem_SectionChildrenToc
+        children_toc_cls = ContentBoxSectionChildrenToc
         # Check referencial-integrity
         root = get_context().root
         results = root.search(PhraseQuery('links', str(box.get_abspath())))
@@ -671,7 +671,8 @@ class Repository(Folder):
             for doc in results.get_documents():
                 resource = root.get_resource(doc.abspath)
                 print u'-->', doc.abspath, doc.format
-                if isinstance(resource, BarItemsOrderedTable):
+                #if isinstance(resource, BoxesOrderedTable):
+                if isinstance(resource, ResourcesOrderedTable):
                     # Case 1: ordered table
                     handler = resource.handler
                     id_to_remove = None
@@ -704,10 +705,31 @@ class Repository(Folder):
 
     def update_20100610(self):
         # update_20100609 continuation
-        # Delete SidebarItem_SectionSiblingsToc
+        # Delete SidebarBox_SectionSiblingsToc
         if self.get_resource('sidebar-siblings-toc', soft=True):
             self.del_resource('sidebar-siblings-toc')
 
+
+    def update_20100611(self):
+        # Update class_id
+        for old_cls_id, new_cls_id in (
+                ('sidebar-item-section-news','box-section-news'),
+                ('sidebar-item-tags', 'box-tags'),
+                ('sidebar-item-section-children-toc', 'box-section-children-toc'),
+                ('sidebar-item-news-siblings-toc', 'box-news-siblings-toc'),
+                ('contentbar-item-articles', 'contentbar-box-articles'),
+                ('ws-neutral-item-articles', 'ws-neutral-box-articles'),
+                ('contentbar-item-children-toc', 'contentbar-box-children-toc'),
+                ('sidebar-items-ordered-table', 'sidebar-boxes-ordered-table'),
+                ('contentbar-items-ordered-table', 'contentbar-boxes-ordered-table'),
+                # sidebar/xxx
+                ('sidebar-item-twitter', 'box-twitter'),
+                ('sidebar-item-menu', 'box-menu')):
+            for resource in self.search_resources(format=old_cls_id):
+                metadata = resource.metadata
+                metadata.set_changed()
+                metadata.format = new_cls_id
+                print old_cls_id, new_cls_id
 
 
 ###########################################################################
@@ -715,28 +737,28 @@ class Repository(Folder):
 ###########################################################################
 register_resource_class(Repository)
 register_resource_class(HTMLContent)
-register_resource_class(BarItem_Section_News)
-register_resource_class(SidebarItem_Tags)
-register_resource_class(SidebarItem_SectionChildrenToc)
-register_resource_class(SidebarItem_NewsSiblingsToc)
-register_resource_class(SidebarItemsOrderedTable)
-register_resource_class(ContentbarItemsOrderedTable)
-register_resource_class(ContentBarItem_Articles)
-register_resource_class(ContentBarItem_WebsiteArticles)
-register_resource_class(ContentBarItem_SectionChildrenToc)
+register_resource_class(BoxSectionNews)
+register_resource_class(BoxTags)
+register_resource_class(BoxSectionChildrenToc)
+register_resource_class(BoxNewsSiblingsToc)
+register_resource_class(SidebarBoxesOrderedTable)
+register_resource_class(ContentbarBoxesOrderedTable)
+register_resource_class(BoxSectionWebpages)
+register_resource_class(BoxWebsiteWebpages)
+register_resource_class(ContentBoxSectionChildrenToc)
 
 register_box(HTMLContent, allow_instanciation=True, is_content=True)
-register_box(BarItem_Section_News, allow_instanciation=True,
+register_box(BoxSectionNews, allow_instanciation=True,
              is_side=True, is_content=True)
-register_box(SidebarItem_Tags, allow_instanciation=True)
-register_box(SidebarItem_SectionChildrenToc,
+register_box(BoxTags, allow_instanciation=True)
+register_box(BoxSectionChildrenToc,
              allow_instanciation=False)
-register_box(SidebarItem_NewsSiblingsToc, allow_instanciation=False)
-register_box(ContentBarItem_Articles, allow_instanciation=False,
+register_box(BoxNewsSiblingsToc, allow_instanciation=False)
+register_box(BoxSectionWebpages, allow_instanciation=False,
              is_content=True)
-register_box(ContentBarItem_WebsiteArticles, allow_instanciation=False,
+register_box(BoxWebsiteWebpages, allow_instanciation=False,
              is_content=True)
-register_box(ContentBarItem_SectionChildrenToc, allow_instanciation=False,
+register_box(ContentBoxSectionChildrenToc, allow_instanciation=False,
              is_content=True)
 # Register skin
 path = get_abspath('ui/bar_items')

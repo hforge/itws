@@ -26,8 +26,8 @@ from itools.web import STLView
 from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
-from repository import ContentbarItemsOrderedTable
-from repository import SidebarItemsOrderedTable
+from repository import ContentbarBoxesOrderedTable
+from repository import SidebarBoxesOrderedTable
 from utils import get_admin_bar
 
 
@@ -177,8 +177,8 @@ class SideBar_View(Bar_View):
     order_name = 'order-sidebar'
     order_method = 'order_sidebar'
     order_label = MSG(u'Order Sidebar Boxes')
-    admin_bar_prefix_name = 'sidebar-item'
-    items_css_class = 'sidebar-item'
+    admin_bar_prefix_name = 'sidebar-box'
+    items_css_class = 'sidebar-box'
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -206,8 +206,8 @@ class ContentBar_View(Bar_View):
     order_name = 'order-contentbar'
     order_method = 'order_contentbar'
     order_label = MSG(u'Order Central Part Boxes')
-    admin_bar_prefix_name = 'contentbar-item'
-    items_css_class = 'contentbar-item'
+    admin_bar_prefix_name = 'contentbar-box'
+    items_css_class = 'contentbar-box'
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -245,7 +245,7 @@ class SideBarAware(object):
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
-        cls2 = SidebarItemsOrderedTable
+        cls2 = SidebarBoxesOrderedTable
         cls2._make_resource(cls2, folder,
                             '%s/%s' % (name, cls.sidebar_name))
 
@@ -264,6 +264,6 @@ class ContentBarAware(object):
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
-        cls2 = ContentbarItemsOrderedTable
+        cls2 = ContentbarBoxesOrderedTable
         cls2._make_resource(cls2, folder,
                             '%s/%s' % (name, cls.contentbar_name))

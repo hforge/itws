@@ -24,12 +24,12 @@ from ikaaro.registry import register_resource_class
 
 # Import from itws
 from itws.repository import register_box
-from itws.repository_views import BarItem_View, BarItem_Edit
+from itws.repository_views import Box_View, Box_Edit
 from itws.views import EasyNewInstance
 
 
 
-class MenuSideBar_View(BarItem_View):
+class MenuSideBar_View(Box_View):
 
     template = '/ui/bar_items/menu.xml'
 
@@ -47,7 +47,7 @@ class MenuSideBar_View(BarItem_View):
 
 class MenuSideBar(MenuFolder):
 
-    class_id = 'sidebar-item-menu'
+    class_id = 'box-menu'
     class_title = MSG(u'Side Menu')
     class_description = MSG(u'Box to create a sidebar menu')
     class_views = ['view', 'menu', 'edit']
@@ -59,7 +59,7 @@ class MenuSideBar(MenuFolder):
     view = MenuSideBar_View()
     menu = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit menu'))
-    edit = BarItem_Edit()
+    edit = Box_Edit()
 
 
 
