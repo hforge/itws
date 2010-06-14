@@ -311,7 +311,6 @@ class BoxNewsSiblingsToc(Box):
 
     # Views
     view = BoxNewsSiblingsToc_View()
-    edit = None
 
 
     @classmethod
