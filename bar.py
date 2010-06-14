@@ -35,9 +35,9 @@ from utils import get_admin_bar
 ################################################################################
 # Views
 ################################################################################
-class Bar_Item_View(STLView):
+class BarBox_View(STLView):
 
-    template = '/ui/common/Bar_Item_view.xml'
+    template = '/ui/common/BarBox_view.xml'
     # Namespace should be set at the view instanciation
     namespace = {}
 
@@ -55,7 +55,7 @@ class Bar_View(STLView):
     order_label = None
     admin_bar_prefix_name = None
     boxes_css_class = None
-    item_view = Bar_Item_View
+    box_view = BarBox_View
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -137,7 +137,7 @@ class Bar_View(STLView):
                 'id': item_id, 'format': item.class_id,
                 'admin_bar': admin_bar, 'content': stream,
                 'css_class': self.boxes_css_class}
-            render_view = self.item_view(namespace=namespace)
+            render_view = self.box_view(namespace=namespace)
             items.append(render_view.GET(resource, context))
 
         # FIXME Remove the section from the context for section TOC views
