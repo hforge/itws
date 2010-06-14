@@ -297,7 +297,7 @@ class BoxNewsSiblingsToc(Box):
     class_id = 'box-news-siblings-toc'
     class_title = MSG(u'News TOC')
     class_description = MSG(u'Display the list of news.')
-    class_views = ['backlinks', 'edit_state', 'edit_state']
+    class_views = ['backlinks', 'edit_state']
 
     # Box configuration
     box_schema = merge_dicts(hide_single_schema,
@@ -329,7 +329,7 @@ class BoxSectionWebpages(Box):
     class_id = 'contentbar-box-articles'
     class_title = MSG(u"Section's Webpages")
     class_description = MSG(u'Display the ordered webpages of the section')
-    class_views = ['backlinks', 'edit_state', 'edit_state']
+    class_views = ['backlinks', 'edit_state']
 
     view = BoxSectionWebpages_View()
     edit = None
@@ -341,7 +341,7 @@ class BoxWebsiteWebpages(BoxSectionWebpages):
     class_id = 'ws-neutral-box-articles'
     class_title = MSG(u"Website's Webpages")
     class_description = MSG(u'Display the ordered webpages of the homepage')
-    class_views = ['backlinks', 'edit_state', 'edit_state']
+    class_views = ['backlinks', 'edit_state']
 
     view = BoxWebsiteWebpages_View()
     edit = None
@@ -354,7 +354,7 @@ class ContentBoxSectionChildrenToc(Box):
     class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages in the central part')
-    class_views = ['backlinks', 'edit_state', 'edit_state']
+    class_views = ['backlinks', 'edit_state']
 
     # Box configuration
     box_schema = hide_single_schema
