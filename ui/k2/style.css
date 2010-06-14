@@ -322,10 +322,6 @@ fieldset legend{
   width: 640px;
   float: left;
   overflow-x: hidden;
-  /* Fix bug under FF3.x
-   * batch-numerotation broke the news folder view
-   */
-  /* padding-bottom: 10px; */
 }
 
 .contentbar-box.ws-neutral-box-articles,
@@ -338,6 +334,11 @@ fieldset legend{
 .contentbar-box.contentbar-box-articles > .admin-bar,
 .contentbar-box.contentbar-box-children-toc > .admin-bar {
   right: 0;
+}
+
+#content .batch-numerotation {
+  padding-left: 0;
+  margin: 10px 0;
 }
 
 /**************************************************************************
