@@ -435,7 +435,7 @@ class BoxTags_Preview(Box_Preview):
 class HTMLContent_ViewBoth():
 
     title = MSG(u'View with preview')
-    template = '/ui/bar_items/SidebarItem_viewboth.xml'
+    template = '/ui/bar_items/HTMLContent_viewboth.xml'
 
 
     def get_namespace(self, resource, context):
@@ -498,7 +498,7 @@ class Box_View(STLView):
 class BoxSectionNews_View(Box_View):
 
     access = 'is_allowed_to_edit'
-    template = '/ui/bar_items/Section_newsview.xml'
+    template = '/ui/bar_items/SectionNews_view.xml'
     title = MSG(u'View')
 
     def _get_news_item_view(self):
@@ -595,7 +595,7 @@ class BoxSectionNews_View(Box_View):
 ################################################################################
 class HTMLContent_View(Box_View, WebPage_View):
 
-    template = '/ui/bar_items/SidebarItem_view.xml'
+    template = '/ui/bar_items/HTMLContent_view.xml'
 
     def GET(self, resource, context):
         return Box_View.GET(self, resource, context)
@@ -618,7 +618,7 @@ class BoxTags_View(Box_View):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
-    template = '/ui/bar_items/Section_tagcloud.xml'
+    template = '/ui/bar_items/Tags_view.xml'
 
     def _get_tags_folder(self, resource, context):
         site_root = resource.get_site_root()
@@ -680,9 +680,9 @@ class BoxTags_View(Box_View):
 
 
 
-class BoxSectionChildrenToc_View(Box_View):
+class BoxSectionChildrenTree_View(Box_View):
 
-    template = '/ui/bar_items/Section_tocview.xml'
+    template = '/ui/bar_items/SectionChildrenTree_view.xml'
 
     def GET(self, resource, context):
         from section import Section
@@ -789,7 +789,7 @@ class BoxSectionChildrenToc_View(Box_View):
 
 class BoxNewsSiblingsToc_View(BoxSectionNews_View):
 
-    template = '/ui/bar_items/News_siblings_tocview.xml'
+    template = '/ui/bar_items/NewsSiblingsToc_view.xml'
     more_title = MSG(u'Show all')
 
     def _get_items(self, resource, context, news_folder, brain_only=False):
@@ -866,7 +866,7 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
 ################################################################################
 class BoxSectionWebpages_View(Box_View):
 
-    template = '/ui/bar_items/Articles_view.xml'
+    template = '/ui/bar_items/SectionWebpages_view.xml'
 
     def GET(self, resource, context):
         site_root = resource.get_site_root()
@@ -1010,7 +1010,7 @@ class BoxSectionWebpages_View(Box_View):
 
 class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
-    template = '/ui/bar_items/SectionChildrenToc_view.xml'
+    template = '/ui/bar_items/ContentBoxSectionChildrenToc_view.xml'
 
     def GET(self, resource, context):
         site_root = resource.get_site_root()

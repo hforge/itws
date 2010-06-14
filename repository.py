@@ -48,12 +48,12 @@ from repository_views import BoxSectionNews_Preview
 from repository_views import BoxSectionNews_View
 from repository_views import BoxesOrderedTable_View
 from repository_views import BoxSectionWebpages_View
-from repository_views import ContentBoxSectionChildrenToc_View
+from repository_views import BoxSectionChildrenTree_View
 from repository_views import BoxWebsiteWebpages_View
 from repository_views import Repository_BrowseContent, Repository_NewResource
 from repository_views import BoxNewsSiblingsToc_View
 from repository_views import SidebarBox_Preview, HTMLContent_View
-from repository_views import BoxSectionChildrenToc_View
+from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import BoxTags_View, BoxTags_Preview
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from utils import get_path_and_view
@@ -282,7 +282,7 @@ class BoxSectionChildrenToc(Box):
     box_widgets = [hide_single_widget]
 
     # Views
-    view = BoxSectionChildrenToc_View()
+    view = BoxSectionChildrenTree_View()
 
     @classmethod
     def get_metadata_schema(cls):

@@ -91,7 +91,7 @@ class NewsItem_View(STLView):
     access = 'is_allowed_to_view'
     title = MSG(u'View')
     icon = 'view.png'
-    template = '/ui/news/News_view.xml'
+    template = '/ui/news/NewsItem_view.xml'
     styles = ['/ui/news/style.css']
 
     # customization
