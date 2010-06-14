@@ -72,19 +72,10 @@ class NeutralClassSkinWidget(SelectRadio):
                 value="${option_1/name}" stl:if="not option_1/selected"/>
               <label for="${name}-${option_1/name}">${option_1/value}</label>
             </td>
-            <td style="text-align:center">
-              <input type="radio" id="${name}-${option_2/name}" name="${name}"
-              value="${option_2/name}" checked="checked"
-              stl:if="option_2/selected"/>
-              <input type="radio" id="${name}-${option_2/name}" name="${name}"
-                value="${option_2/name}" stl:if="not option_2/selected"/>
-              <label for="${name}-${option_2/name}">${option_2/value}</label>
-            </td>
           </tr>
           <tr>
             <td style="text-align:center"><img src="${option_0/name}/preview.png" /></td>
             <td style="text-align:center"><img src="${option_1/name}/preview.png" /></td>
-            <td style="text-align:center"><img src="${option_2/name}/preview.png" /></td>
           </tr>
         </table>
         """, stl_namespaces))
@@ -94,7 +85,6 @@ class NeutralClassSkinWidget(SelectRadio):
         namespace = SelectRadio.get_namespace(self, datatype, value)
         namespace['option_0'] = namespace['options'][0]
         namespace['option_1'] = namespace['options'][1]
-        namespace['option_2'] = namespace['options'][2]
         return namespace
 
 
