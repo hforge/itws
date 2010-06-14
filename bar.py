@@ -54,7 +54,7 @@ class Bar_View(STLView):
     order_method = None
     order_label = None
     admin_bar_prefix_name = None
-    items_css_class = None
+    boxes_css_class = None
     item_view = Bar_Item_View
 
     def get_manage_buttons(self, resource, context):
@@ -136,7 +136,7 @@ class Bar_View(STLView):
             namespace = {
                 'id': item_id, 'format': item.class_id,
                 'admin_bar': admin_bar, 'content': stream,
-                'css_class': self.items_css_class}
+                'css_class': self.boxes_css_class}
             render_view = self.item_view(namespace=namespace)
             items.append(render_view.GET(resource, context))
 
@@ -159,7 +159,6 @@ class Bar_View(STLView):
         # Bar items
         items = self.get_items(resource, context)
         namespace['items'] = items
-        namespace['items_css_class'] = self.items_css_class
 
         # Do not display the box if there is no items
         display = True
@@ -178,7 +177,7 @@ class SideBar_View(Bar_View):
     order_method = 'order_sidebar'
     order_label = MSG(u'Order Sidebar Boxes')
     admin_bar_prefix_name = 'sidebar-box'
-    items_css_class = 'sidebar-box'
+    boxes_css_class = 'sidebar-box'
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -207,7 +206,7 @@ class ContentBar_View(Bar_View):
     order_method = 'order_contentbar'
     order_label = MSG(u'Order Central Part Boxes')
     admin_bar_prefix_name = 'contentbar-box'
-    items_css_class = 'contentbar-box'
+    boxes_css_class = 'contentbar-box'
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
