@@ -10,10 +10,10 @@
   width: 100%;
 }
 
-.sidebar-item-news-siblings-toc .newsitems-more {
+.box-news-siblings-toc .newsitems-more {
   text-align: right;
 }
-.sidebar-item-news-siblings-toc .newsitems-more a {
+.box-news-siblings-toc .newsitems-more a {
   text-decoration: none;
 }
 

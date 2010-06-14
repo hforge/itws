@@ -699,49 +699,49 @@ strong {
 /**************************************************************************
  * SIDEBAR
  **************************************************************************/
-.sidebar-item-news-siblings-toc .box .box-hg,
-.sidebar-item-news-siblings-toc .box .box-hd,
-.sidebar-item-news-siblings-toc .box .box-bg,
-.sidebar-item-news-siblings-toc .box .box-bd {
+.box-news-siblings-toc .box .box-hg,
+.box-news-siblings-toc .box .box-hd,
+.box-news-siblings-toc .box .box-bg,
+.box-news-siblings-toc .box .box-bd {
   display: none;
 }
 
-.sidebar-item-news-siblings-toc .box .box-content {
+.box-news-siblings-toc .box .box-content {
   padding: 0;
 }
 
-.sidebar-item-news-siblings-toc .newsitem p {
+.box-news-siblings-toc .newsitem p {
   margin: 0;
 }
 
-.sidebar-item-news-siblings-toc .newsitem {
+.box-news-siblings-toc .newsitem {
   margin-bottom: 10px;
   padding-bottom: 5px;
   border-bottom: 1px dotted;
 }
 
 /* section news */
-.sidebar-item-section-news .newsitem {
+.box-section-news .newsitem {
   border-bottom: 1px dotted;
   padding-bottom: 10px;
   padding-top: 5px;
 }
 
-.sidebar-item-section-news .newsitem.first {
+.box-section-news .newsitem.first {
   padding-top: 0;
 }
 
-.sidebar-item-section-news .newsitem.last {
+.box-section-news .newsitem.last {
   border-bottom: none;
 }
 
-.sidebar-item-section-news .newsitem .image-link {
+.box-section-news .newsitem .image-link {
   float: left;
   padding-right: 10px;
   padding-bottom: 5px;
 }
 
-.sidebar-item-section-news .newsitem .newsitem-date {
+.box-section-news .newsitem .newsitem-date {
   /* padding-bottom: 5px; */
 }
 
