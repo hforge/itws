@@ -145,13 +145,11 @@ class Diaporama_View(Box_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        # Manage buttons and highlight
-        highlight = None
+        # Manage buttons
         manage_buttons = []
         ac = resource.get_access_control()
         if ac.is_allowed_to_edit(context.user, resource):
             manage_buttons = self.get_manage_buttons(resource, context)
-            highlight = 'highlight'
 
         # Display admin bar on the disporama view
         admin_bar = None
@@ -175,9 +173,7 @@ class Diaporama_View(Box_View):
 
         ids = list(handler.get_record_ids())
         if not ids:
-            highlight = 'highlight-empty' if highlight else ''
             return {'banner': {},
-                    'highlight': highlight,
                     'admin_bar': admin_bar,
                     'title': title,
                     'title_image_path': title_image_path}
@@ -214,7 +210,6 @@ class Diaporama_View(Box_View):
         banner_ns['img_link'] = img_link
 
         return {'banner': banner_ns,
-                'highlight': highlight,
                 'admin_bar': admin_bar,
                 'title': title,
                 'title_image_path': title_image_path}

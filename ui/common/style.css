@@ -110,11 +110,6 @@
   text-decoration: none;
 }
 
-.highlight-empty {
-  background-image: url('/ui/common/images/empty-background.png');
-  height: 30px;
-}
-
 .admin-bar-title {
   padding: 5px;
   color: #FFF;

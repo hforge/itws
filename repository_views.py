@@ -577,7 +577,7 @@ class BoxSectionNews_View(Box_View):
                     items[0]['css'] += ' first'
                     items[-1]['css'] += ' last'
 
-        if len(items) == 0 and self.is_admin(resource, context) is False:
+        if items_number == 0 and self.is_admin(resource, context) is False:
             # Hide the box if there is no news and
             # if the user cannot edit the box
             self.set_view_is_empty(True)
@@ -644,11 +644,6 @@ class BoxTags_View(Box_View):
 
 
     def get_namespace(self, resource, context):
-        namespace = {}
-
-        # Box highlight
-        namespace['class'] = None#'highlight'
-
         tags_folder = self._get_tags_folder(resource, context)
         has_tags = tags_folder.is_empty(context) is False
 
@@ -669,14 +664,8 @@ class BoxTags_View(Box_View):
             # Hide the box if there is no tags and
             # if the user cannot edit the box
             self.set_view_is_empty(True)
-        namespace['box'] = box
 
-        ac = resource.get_access_control()
-        allowed_to_edit = ac.is_allowed_to_edit(context.user, resource)
-        display = allowed_to_edit or has_tags
-        namespace['display'] = display
-
-        return namespace
+        return {'box': box}
 
 
 
@@ -775,14 +764,6 @@ class BoxSectionChildrenTree_View(Box_View):
         if allowed_to_edit is False and len(items) <= min_limit:
             self.set_view_is_empty(True)
 
-        # Box highlight
-        if allowed_to_edit is False:
-            namespace['class'] = None
-        elif len(items) == 0:
-            namespace['class'] = 'highlight-empty'
-        else:
-            namespace['class'] = 'highlight'
-
         return namespace
 
 
@@ -848,14 +829,6 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
         min_limit = 1 if news_count else 0
         if allowed_to_edit is False and len(displayed_items) <= min_limit:
             self.set_view_is_empty(True)
-
-        # Box highlight
-        if allowed_to_edit is False:
-            namespace['class'] = None
-        elif len(displayed_items) == 0:
-            namespace['class'] = 'highlight-empty'
-        else:
-            namespace['class'] = 'highlight'
 
         return namespace
 
@@ -1105,9 +1078,6 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
                 items_ns.append(ns)
 
         allowed_to_edit = self.is_admin(resource, context)
-        highlight = ''
-        if allowed_to_edit:
-            highlight = 'highlight'
         min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
         if allowed_to_edit is False:
             if len(items) <= min_limit:
@@ -1117,10 +1087,8 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
         elif len(items) <= min_limit:
             # If the user can edit the item and there is there is
             # not enough items reset items entry
-            highlight = 'highlight-empty' if highlight else ''
             items_ns = []
 
-        namespace['highlight'] = highlight
         namespace['items'] = items_ns
         namespace['title'] = section.get_title()
 

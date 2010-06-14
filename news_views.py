@@ -118,7 +118,7 @@ class NewsItem_View(STLView):
         title = resource.get_long_title(language=language)
         # content
         content = resource.get_html_data()
-        # Allowed to edit and highlight
+        # Allowed to edit
         ac = resource.get_access_control()
         if ac.is_allowed_to_edit(context.user, resource):
             edit = True

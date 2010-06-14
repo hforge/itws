@@ -305,8 +305,6 @@ class Section_View(STLView):
         # Get the real section resource
         section = self._get_real_section(resource, context)
         user = context.user
-
-        # Manage buttons and highlight
         namespace = {}
 
         # Add section id
