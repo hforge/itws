@@ -17,6 +17,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean
+from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.folder_views import GoToSpecificDocument
@@ -77,8 +78,8 @@ class WebPage(BaseWebPage, TagsAware):
             wsdata_cls = site_root.wsdatafolder_class
             if isinstance(parent, (section_cls, wsdata_cls)):
                 return GoToSpecificDocument(specific_document='..',
-                                            specific_view='manage_view',
-                                            title=parent.manage_view.title)
+                        specific_view='manage_view',
+                        title=MSG(u'Manage parent section'))
         return None
 
 
