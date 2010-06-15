@@ -715,14 +715,18 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
 
 
     def get_namespace(self, resource, context):
-        from news import NewsFolder
-
         namespace = {'items': {'displayed': [], 'hidden': []},
                      'title': resource.get_property('title'),
                      'class': None}
+        site_root = resource.get_site_root()
+        newsfolder_cls = site_root.newsfolder_class
+        if newsfolder_cls is None:
+            self.set_view_is_empty(True)
+            return namespace
+
         allowed_to_edit = self.is_admin(resource, context)
         here = context.resource
-        here_is_newsfolder = isinstance(here, NewsFolder)
+        here_is_newsfolder = isinstance(here, newsfolder_cls)
         if here_is_newsfolder:
             news_folder = here
             news = None
@@ -730,7 +734,7 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
             news_folder = here.parent
             news = here
 
-        if isinstance(news_folder, NewsFolder) is False:
+        if isinstance(news_folder, newsfolder_cls) is False:
             self.set_view_is_empty(True)
             return namespace
 
