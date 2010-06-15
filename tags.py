@@ -279,7 +279,9 @@ class TagsFolder_TagCloud(STLView):
             else:
                 nb_items = tag['nb_items']
                 css_index = int(ceil(nb_items) * percentage_per_item) or 1
-                css_index = abs(css_index_max - css_index + 1)
+                # FIXME sometimes css_index = 0, this should never append
+                # set css_index to 1
+                css_index = abs(css_index_max - css_index + 1) or 1
                 tag['css'] = 'tag-%s' % css_index
 
         # Random
