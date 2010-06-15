@@ -521,6 +521,7 @@ class Repository(Folder):
             if is_side is not None and is_side <> allow['side']:
                 continue
             types.append(cls)
+        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
         return types
 
 
