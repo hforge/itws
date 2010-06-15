@@ -46,6 +46,7 @@ class WSArticle(Article):
 
 class SidebarItem(WebPage):
     class_id = 'sidebar-item'
+    class_title = MSG(u'HTML Content (obsolete)')
     class_version = '20091127'
 
 class SidebarItem_SectionSiblingsToc(STLView):
