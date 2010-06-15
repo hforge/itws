@@ -121,7 +121,7 @@ class WebPage_View(BaseWebPage_View, STLView):
             title = resource.get_title()
 
         namespace = {}
-        namespace['name'] = resource.name
+        namespace['name'] = resource.name.replace('.', '-dot-')
         namespace['title'] = title
         namespace['content'] = BaseWebPage_View.GET(self, resource, context)
         return namespace

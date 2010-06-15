@@ -126,9 +126,7 @@ class Bar_View(STLView):
                 continue
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
-            # FIXME if the item name contains '.', the item id is
-            # interpreted as #id.class by jquery
-            item_id = '%s-%s' % (item.class_id, item.name)
+            item_id = '%s-%s' % (item.class_id, item.name.replace('.', '-dot-'))
             namespace = {
                 'id': item_id,
                 'format': item.class_id,
