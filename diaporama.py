@@ -287,4 +287,5 @@ class Diaporama(OrderTableAware, Folder):
 
 register_resource_class(Diaporama)
 register_resource_class(DiaporamaTable)
-register_box(Diaporama, allow_instanciation=True, is_content=True)
+register_box(Diaporama, allow_instanciation=True, is_content=True,
+             is_side=False)

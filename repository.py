@@ -414,6 +414,7 @@ class SidebarBoxesOrderedTable(BoxesOrderedTable):
         registry = get_boxes_registry()
         types = [ cls for cls, allow in registry.iteritems()
                   if allow['side'] ] # is side
+        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
         return types
 
     orderable_classes = property(_orderable_classes)
@@ -441,6 +442,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
         registry = get_boxes_registry()
         types = [ cls for cls, allow in registry.iteritems()
                   if allow['content'] ] # is content
+        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
         return types
 
     orderable_classes = property(_orderable_classes)
@@ -755,11 +757,11 @@ register_box(BoxSectionChildrenToc,
              allow_instanciation=False)
 register_box(BoxNewsSiblingsToc, allow_instanciation=False)
 register_box(BoxSectionWebpages, allow_instanciation=False,
-             is_content=True)
+             is_content=True, is_side=False)
 register_box(BoxWebsiteWebpages, allow_instanciation=False,
-             is_content=True)
+             is_content=True, is_side=False)
 register_box(ContentBoxSectionChildrenToc, allow_instanciation=False,
-             is_content=True)
+             is_content=True, is_side=False)
 # Register skin
 path = get_abspath('ui/bar_items')
 register_skin('bar_items', path)
