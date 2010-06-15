@@ -41,21 +41,21 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
-from repository_views import Box_Edit
-from repository_views import Box_Preview
+from repository_views import BoxNewsSiblingsToc_Preview
+from repository_views import BoxNewsSiblingsToc_View
+from repository_views import BoxSectionChildrenTree_View
 from repository_views import BoxSectionNews_Edit
 from repository_views import BoxSectionNews_Preview
 from repository_views import BoxSectionNews_View
-from repository_views import BoxesOrderedTable_View
 from repository_views import BoxSectionWebpages_View
-from repository_views import BoxSectionChildrenTree_View
-from repository_views import BoxWebsiteWebpages_View
-from repository_views import Repository_BrowseContent, Repository_NewResource
-from repository_views import BoxNewsSiblingsToc_View
-from repository_views import SidebarBox_Preview, HTMLContent_View
-from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import BoxTags_View, BoxTags_Preview
+from repository_views import BoxWebsiteWebpages_View
+from repository_views import Box_Edit, Box_Preview
+from repository_views import BoxesOrderedTable_View
+from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
+from repository_views import Repository_BrowseContent, Repository_NewResource
+from repository_views import SidebarBox_Preview, HTMLContent_View
 from utils import get_path_and_view
 from views import EasyNewInstance
 from webpage import WebPage
@@ -306,6 +306,7 @@ class BoxNewsSiblingsToc(Box):
 
     # Views
     view = BoxNewsSiblingsToc_View()
+    preview = order_preview = BoxNewsSiblingsToc_Preview()
 
 
 
