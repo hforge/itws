@@ -368,7 +368,8 @@ class SlideShow_SlideNewInstance(ProxyContainerNewInstance):
 
 
     def action_new_slide(self, resource, context, form):
-        return ProxyContainerNewInstance.action(self, resource, context, form)
+        return ProxyContainerNewInstance.action_default(self, resource,
+                context, form)
 
 
 

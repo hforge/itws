@@ -441,7 +441,8 @@ class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
 
 
     def action_new_news(self, resource, context, form):
-        return ProxyContainerNewInstance.action(self, resource, context, form)
+        return ProxyContainerNewInstance.action_default(self, resource,
+                context, form)
 
 
 

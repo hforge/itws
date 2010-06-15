@@ -581,7 +581,8 @@ class WSDataFolder_ArticleNewInstance(ProxyContainerNewInstance):
 
 
     def action_new_article(self, resource, context, form):
-        return ProxyContainerNewInstance.action(self, resource, context, form)
+        return ProxyContainerNewInstance.action_default(self, resource,
+                context, form)
 
 
 

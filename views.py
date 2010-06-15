@@ -98,10 +98,6 @@ class EasyNewInstance(NewInstance):
         return namespace
 
 
-    def action_default(self, resource, context, form):
-        return NewInstance.action(self, resource, context, form)
-
-
     def _get_goto_method(self, resource, context, form):
         return self.goto_method
 
@@ -114,7 +110,7 @@ class EasyNewInstance(NewInstance):
         return './%s/' % name
 
 
-    def action(self, resource, context, form):
+    def action_default(self, resource, context, form):
         name = form['name']
         title = form['title']
 
@@ -142,6 +138,16 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
     def _get_container(self, resource, context):
         raise NotImplementedError
+
+
+    def _get_goto(self, resource, context, form):
+        name = form['name']
+        container = self._get_container(resource, context)
+        goto_method = self._get_goto_method(resource, context, form)
+        container_path = context.get_link(container)
+        if goto_method:
+            return '%s/%s/;%s' % (container_path, name, goto_method)
+        return '%s/%s/' % (container_path, name)
 
 
     def _get_form(self, resource, context):
@@ -182,7 +188,7 @@ class ProxyContainerNewInstance(EasyNewInstance):
         return cls.get_class_icon()
 
 
-    def action(self, resource, context, form):
+    def action_default(self, resource, context, form):
         name = form['name']
         title = form['title']
 

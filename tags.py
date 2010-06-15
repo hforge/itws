@@ -395,7 +395,8 @@ class TagsFolder_TagNewInstance(ProxyContainerNewInstance):
 
 
     def action_new_tag(self, resource, context, form):
-        return ProxyContainerNewInstance.action(self, resource, context, form)
+        return ProxyContainerNewInstance.action_default(self, resource,
+                context, form)
 
 
 
