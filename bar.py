@@ -181,15 +181,22 @@ class SideBar_View(Bar_View):
             return []
 
         site_root = resource.get_site_root()
-        buttons = Bar_View.get_manage_buttons(self, resource, context)
-        section_path = context.get_link(resource)
-        repository = site_root.get_repository()
-        path = context.get_link(repository)
-        buttons.append({'path': '%s/;new_sidebar_resource' % path,
-                        'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create new sidebar box'),
-                        'target': '_blank'})
-
+        if isinstance(context.resource, SideBarAware):
+            buttons = Bar_View.get_manage_buttons(self, resource, context)
+            section_path = context.get_link(resource)
+            repository = site_root.get_repository()
+            path = context.get_link(repository)
+            buttons.append({'path': '%s/;new_sidebar_resource' % path,
+                            'icon': '/ui/common/icons/48x48/new.png',
+                            'label': MSG(u'Create new sidebar box'),
+                            'target': '_blank'})
+        else:
+            # XXX What text and what icon ?
+            section_path = context.get_link(resource)
+            buttons = [{'path': section_path,
+                        'icon': '/ui/icons/48x48/search.png',
+                        'label': MSG(u'Go there to edit sidebar'),
+                        'target': None}]
         return buttons
 
 
