@@ -338,9 +338,13 @@ class AdminPopupSkin(Skin):
 
     def build_namespace(self, context):
         namespace = Skin.build_namespace(self, context)
-        # Content language
+        # Get some values
         resource = context.resource
         site_root = resource.get_site_root()
+        # Title & description of popup
+        namespace['title'] = resource.class_title
+        namespace['description'] = resource.class_description
+        # Content language
         content_language = resource.get_content_language(context)
         languages = site_root.get_property('website_languages')
         namespace['content_languages'] = [

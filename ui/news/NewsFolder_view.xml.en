@@ -4,7 +4,6 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  ${admin_bar}
   <h2>${title}</h2>
   <div class="item" stl:repeat="row rows">
     <div class="actu-content">

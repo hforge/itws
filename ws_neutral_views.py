@@ -276,28 +276,6 @@ class NeutralWS_RSS(BaseRSS):
 
 
 
-class NeutralWSContentBar_View(ContentBar_View):
-
-    def get_manage_buttons(self, resource, context):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-        buttons = ContentBar_View.get_manage_buttons(self, resource, context)
-
-        # webpage creation helper
-        path = context.get_link(resource)
-        article_cls = resource.get_article_class()
-        msg = MSG(u'Create a new %s' % article_cls.class_title.gettext())
-        buttons.append({'path': '%s/;add_new_article' % path,
-                        'icon': '/ui/icons/48x48/html.png',
-                        'label': msg,
-                        'target': '_blank'})
-
-        return buttons
-
-
-
 class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
 
     def _get_view_title(self):
@@ -325,7 +303,7 @@ class NeutralWS_View(STLView):
     template = '/ui/common/Neutral_view.xml'
 
     subviews = {'contentbar_view':
-            NeutralWSContentBar_View(order_name='ws-data/order-contentbar'),
+            ContentBar_View(order_name='ws-data/order-contentbar'),
                 'sidebar_view':
             SideBar_View(order_name='ws-data/order-sidebar')}
 

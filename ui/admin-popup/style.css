@@ -2,6 +2,33 @@
   clear: both;
 }
 
+p{
+  font-size: 11px;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+h1{
+  float: left;
+  text-decoration: none;
+  padding: 5px;
+  border-radius-topleft: 5px;
+  border-radius-topright: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-radius-topleft: 5px;
+  -webkit-border-radius-topright: 5px;
+  margin: 0px;
+  color: #FFF;
+  background-color: #8BAFD5;
+  border:1px solid #CCCCCC;
+  box-shadow:0 0 3px #CCCCCC;
+  -moz-box-shadow:0 0 3px #CCCCCC;
+  -webkit-box-shadow:0 0 3px #CCCCCC;
+}
+
 /* Content language menu */
 #content-languages{
   padding: 0;

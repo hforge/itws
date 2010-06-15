@@ -5,7 +5,6 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
   <a name="${name}" />
   <div id="${name}">
-    ${admin_bar}
     <h3 stl:if="title" class="title">${title}</h3>
     <div class="content">${content}</div>
   </div>

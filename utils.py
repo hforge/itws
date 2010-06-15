@@ -145,7 +145,7 @@ class DualSelectWidget(SelectWidget):
 ############################################################
 
 admin_bar_template = list(XMLParser("""
-  <a href="${link}/;edit" class="admin-bar" title="${title}">
+  <a href="${link}" class="admin-bar" title="${title}" rel="${rel}">
     <img src="/ui/icons/16x16/edit.png"/>
   </a>
   """, stl_namespaces))
@@ -174,7 +174,13 @@ def get_admin_bar(resource, buttons=[]):
     if not ac.is_allowed_to_edit(context.user, resource):
         return
     events = admin_bar_template if not buttons else admin_bar_icon_template
-    namespace = {'link': context.get_link(resource),
+    if hasattr(resource, 'get_admin_edit_link'):
+        link = resource.get_admin_edit_link(context)
+    else:
+        link = '%s/;edit' % context.get_link(resource)
+    use_fancybox = getattr(resource, 'use_fancybox', True)
+    namespace = {'link': link,
+                 'rel': 'fancybox' if use_fancybox else None,
                  'buttons': buttons,
                  'title': u"Edit box '%s'" % resource.get_title()}
     return stl(events=events, namespace=namespace)

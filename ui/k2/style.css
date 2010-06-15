@@ -324,18 +324,6 @@ fieldset legend{
   overflow-x: hidden;
 }
 
-.contentbar-box.ws-neutral-box-articles,
-.contentbar-box.contentbar-box-articles,
-.contentbar-box.contentbar-box-children-toc {
-  position: relative;
-}
-
-.contentbar-box.ws-neutral-box-articles > .admin-bar,
-.contentbar-box.contentbar-box-articles > .admin-bar,
-.contentbar-box.contentbar-box-children-toc > .admin-bar {
-  right: 0;
-}
-
 #content .batch-numerotation {
   padding-left: 0;
   margin: 10px 0;

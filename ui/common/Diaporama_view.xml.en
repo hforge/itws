@@ -5,7 +5,6 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div id="diaporama">
-    ${admin_bar}
     <img stl:if="title_image_path" class="title-image"
          src="${title_image_path}" alt="${title}" />
     <stl:block stl:if="not title_image_path">

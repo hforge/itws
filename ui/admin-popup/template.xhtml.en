@@ -17,11 +17,17 @@
   <script type="text/javascript" stl:repeat="script scripts" src="${script}" />
 </head>
 <body>
+  <h1>${title}</h1>
   <ul id="content-languages">
     <li stl:repeat="language content_languages">
       <a href="${language/href}" class="${language/class}">${language/title}</a>
     </li>
   </ul>
+  <div class="clear"/>
+  <fieldset stl:if="description">
+    <legend>Description of this box</legend>
+    ${description}
+  </fieldset>
   <div class="clear"/>
   ${message}
   ${body}

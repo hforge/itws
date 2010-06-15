@@ -126,13 +126,14 @@ class Bar_View(STLView):
                 continue
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
-            admin_bar = get_admin_bar(item)
             # FIXME if the item name contains '.', the item id is
             # interpreted as #id.class by jquery
             item_id = '%s-%s' % (item.class_id, item.name)
             namespace = {
-                'id': item_id, 'format': item.class_id,
-                'admin_bar': admin_bar, 'content': stream,
+                'id': item_id,
+                'format': item.class_id,
+                'admin_bar': get_admin_bar(item),
+                'content': stream,
                 'css_class': self.boxes_css_class}
             render_view = self.box_view(namespace=namespace)
             items.append(render_view.GET(resource, context))

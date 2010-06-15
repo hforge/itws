@@ -26,8 +26,6 @@ from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 
 # Import from itws
 from tags import TagsAware_Edit
-from utils import get_admin_bar
-
 
 
 class WebPage_Edit(HTMLEditView, TagsAware_Edit):
@@ -126,6 +124,5 @@ class WebPage_View(BaseWebPage_View, STLView):
         namespace['name'] = resource.name
         namespace['title'] = title
         namespace['content'] = BaseWebPage_View.GET(self, resource, context)
-        namespace['admin_bar'] = get_admin_bar(resource)
         return namespace
 

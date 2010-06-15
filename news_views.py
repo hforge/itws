@@ -35,7 +35,7 @@ from ikaaro.views import CompositeForm
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
-from utils import get_admin_bar, xml_to_text, XMLTitleWidget
+from utils import xml_to_text, XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS
 from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
@@ -240,25 +240,6 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
                            batch_size=Integer(default=batch_size))
 
 
-    def get_manage_buttons(self, resource, context, name=None):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = []
-        path = context.get_link(resource)
-
-        # Add news
-        class_id = resource.news_class.class_id
-        path = '%s/;new_resource?type=%s' % (path, class_id)
-        buttons.append({'path':  path, 'target': None,
-                        'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Add a news')})
-
-        return buttons
-
-
     def get_items(self, resource, context, *args):
         # Build the query
         language = resource.get_content_language(context)
@@ -324,8 +305,6 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         namespace['news_format'] = resource.news_class.class_id
         namespace['rows'] = rows
         namespace['more_title'] = self.more_title
-        manage_buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
         view = SideBar_View()
         namespace['sidebar_view'] = view.GET(resource, context)
 

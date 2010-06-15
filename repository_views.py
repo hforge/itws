@@ -40,11 +40,12 @@ from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View, HTMLEditView
+from ikaaro.website import WebSite
 
 # Import from itws
 from datatypes import PositiveInteger
 from tags import TagsList
-from utils import to_box, get_admin_bar, DualSelectWidget
+from utils import to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View
 
@@ -798,8 +799,8 @@ class BoxSectionWebpages_View(Box_View):
         section = context._section
         article_cls = section.get_article_class()
         one_by_one = self.is_article_one_by_one(resource, context)
-
-        if isinstance(here, section_cls):
+        if (isinstance(here, section_cls) or
+            issubclass(here.__class__, WebSite)):
             # Section
             # Case (1)
             if one_by_one is True:
@@ -823,33 +824,6 @@ class BoxSectionWebpages_View(Box_View):
         # Default case, Bad resource not a section or an article
         self.set_view_is_empty(True)
         return None
-
-
-    def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar boxes button requiring context.
-        """
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = []
-        section = context._section
-        section_path = context.get_link(section)
-
-        # Add articles
-        article_class_id = section.get_article_class().class_id
-        path = '%s/;new_resource?type=%s' % (section_path, article_class_id)
-        buttons.append({'path':  path, 'target': None,
-                        'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Add a webpage')})
-
-        # Order articles
-        buttons.append({'path': '%s/;order_items' % section_path,
-                        'target': None,
-                        'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order webpages')})
-        return buttons
 
 
     def get_articles_container(self, resource, context):
@@ -900,8 +874,6 @@ class BoxSectionWebpages_View(Box_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        manage_buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
         # Articles
         user = context.user
         article_container = self.get_articles_container(resource, context)
@@ -979,7 +951,6 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        namespace['admin_bar'] = get_admin_bar(resource)
         # Items
         here = context.resource
         user = context.user
@@ -1023,37 +994,6 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
 
 class BoxWebsiteWebpages_View(BoxSectionWebpages_View):
-
-    def GET(self, resource, context):
-        return Box_View.GET(self, resource, context)
-
-
-    def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar boxes button requiring context.
-        """
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = []
-        site_root = resource.get_site_root()
-        site_root_path = context.get_link(site_root)
-
-        # Add articles
-        article_class_id = site_root.get_article_class().class_id
-        path = '%s/ws-data/;new_resource?type=%s' % (site_root_path,
-                                                     article_class_id)
-        buttons.append({'path':  path, 'target': None,
-                        'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Add a webpage')})
-
-        # Order articles
-        buttons.append({'path': '%s/;order_items' % site_root_path,
-                        'target': None,
-                        'icon': '/ui/common/icons/48x48/sort.png',
-                        'label': MSG(u'Order webpages')})
-        return buttons
 
 
     def get_articles_container(self, resource, context):

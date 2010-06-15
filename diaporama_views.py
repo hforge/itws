@@ -36,7 +36,6 @@ from ikaaro.table_views import Table_View
 # Import from itws
 from datatypes import UnicodeString
 from repository_views import Box_View
-from utils import get_admin_bar
 
 
 
@@ -135,11 +134,6 @@ class Diaporama_View(Box_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        # Display admin bar on the disporama view
-        admin_bar = None
-        if type(context.resource) is type(resource):
-            admin_bar = get_admin_bar(resource)
-
         table = resource.get_resource(resource.order_path)
         handler = table.handler
 
@@ -157,7 +151,6 @@ class Diaporama_View(Box_View):
         ids = list(handler.get_record_ids())
         if not ids:
             return {'banner': {},
-                    'admin_bar': admin_bar,
                     'title': title,
                     'title_image_path': title_image_path}
 
@@ -193,6 +186,5 @@ class Diaporama_View(Box_View):
         banner_ns['img_link'] = img_link
 
         return {'banner': banner_ns,
-                'admin_bar': admin_bar,
                 'title': title,
                 'title_image_path': title_image_path}

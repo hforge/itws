@@ -110,6 +110,7 @@ class Box(File):
     externaledit = None
     new_instance = EasyNewInstance()
 
+
     box_schema = {}
     box_widgets = []
 
@@ -321,9 +322,12 @@ class BoxSectionWebpages(Box):
     class_description = MSG(u'Display the ordered webpages of the section')
     class_views = ['edit_state', 'backlinks']
 
-    view = BoxSectionWebpages_View()
-    edit = None
+    use_fancybox = False
 
+    view = BoxSectionWebpages_View()
+
+    def get_admin_edit_link(self, context):
+        return './order-section'
 
 
 class BoxWebsiteWebpages(BoxSectionWebpages):
@@ -334,8 +338,9 @@ class BoxWebsiteWebpages(BoxSectionWebpages):
     class_views = ['edit_state', 'backlinks']
 
     view = BoxWebsiteWebpages_View()
-    edit = None
 
+    def get_admin_edit_link(self, context):
+        return '/ws-data/order-resources'
 
 
 class ContentBoxSectionChildrenToc(Box):
