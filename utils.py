@@ -176,7 +176,7 @@ def get_admin_bar(resource, buttons=[]):
     events = admin_bar_template if not buttons else admin_bar_icon_template
     namespace = {'link': context.get_link(resource),
                  'buttons': buttons,
-                 'title': 'title'}
+                 'title': u"Edit box '%s'" % resource.get_title()}
     return stl(events=events, namespace=namespace)
 
 
