@@ -267,13 +267,6 @@ class SectionOrderedTable_View(SmartOrderedTable_View):
 ###########################################################################
 # Section view
 ###########################################################################
-class SectionContentBar_View(ContentBar_View):
-
-    def get_manage_buttons(self, resource, context):
-        return []
-
-
-
 class Section_View(STLView):
 
     title = MSG(u'View')
@@ -283,7 +276,7 @@ class Section_View(STLView):
     # subviews = {view_name: view} OR {view_name: None}
     # The view can be dynamically generated and rendered inside
     # the method get_subviews_value.
-    subviews = {'contentbar_view': SectionContentBar_View()}
+    subviews = {'contentbar_view': ContentBar_View()}
 
     def _get_real_section(self, resource, context):
         return resource
