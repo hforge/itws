@@ -49,7 +49,7 @@ class MenuSideBar(MenuFolder):
 
     class_id = 'box-menu'
     class_title = MSG(u'Side Menu')
-    class_description = MSG(u'Box to create a sidebar menu')
+    class_description = MSG(u'Box to create a sidebar menu (1 level only)')
     class_views = ['view', 'menu', 'edit']
 
     box_schema = {}
