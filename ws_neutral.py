@@ -490,24 +490,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         cls = TagsFolder
         cls._make_resource(cls, folder, '%s/tags' % name,
                 language=default_language)
-        # Init Website menu with 2 items
-        for menu_name in website_class.menus:
-            menu = root.get_resource('%s/%s/menu' % (name, menu_name))
-            title = Property(MSG(u'Homepage').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/'})
-            title = Property(MSG(u'Contact').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;contact'})
-        # Init Website footer with 2 items
-        for footer_name in website_class.footers:
-            menu = root.get_resource('%s/%s/menu' % (name, footer_name))
-            title = Property(MSG(u'About').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;about'})
-            title = Property(MSG(u'Contact us').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;contact'})
         # Default favicon
         favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
         favicon_data = favicon_resource.to_str()
@@ -524,6 +506,29 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         cls = website.newsfolder_class
         if cls:
             cls._make_resource(cls, folder, '%s/news' % name)
+        # Init Website menu with 2 items + news folder
+        for menu_name in website_class.menus:
+            menu = root.get_resource('%s/%s/menu' % (name, menu_name))
+            title = Property(MSG(u'Homepage').gettext(),
+                             language=default_language)
+            menu.add_new_record({'title': title, 'path': '/'})
+            title = Property(MSG(u'Contact').gettext(),
+                             language=default_language)
+            menu.add_new_record({'title': title, 'path': '/;contact'})
+            if cls:
+                # Add news if newsfolder_class is defined
+                title = Property(MSG(u'News').gettext(),
+                                 language=default_language)
+                menu.add_new_record({'title': title, 'path': '/news'})
+        # Init Website footer with 2 items
+        for footer_name in website_class.footers:
+            menu = root.get_resource('%s/%s/menu' % (name, footer_name))
+            title = Property(MSG(u'About').gettext(),
+                             language=default_language)
+            menu.add_new_record({'title': title, 'path': '/;about'})
+            title = Property(MSG(u'Contact us').gettext(),
+                             language=default_language)
+            menu.add_new_record({'title': title, 'path': '/;contact'})
 
 
     @classmethod
