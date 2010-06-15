@@ -127,16 +127,6 @@
   z-index: 1000;
 }
 
-.admin-bar ul {
-  padding: 0 5px 2px 7px !important;
-  margin: 0 5px 2px 7px !important;
-}
-
-.admin-bar ul a {
-  color: #FFF !important;
-  text-decoration: none;
-}
-
 /**************************************************************************
  * NUMERIC BATCH
  **************************************************************************/

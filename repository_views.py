@@ -40,11 +40,10 @@ from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View, HTMLEditView
-from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from datatypes import PositiveInteger
-from tags import TagsList, Tag
+from tags import TagsList
 from utils import to_box, get_admin_bar, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View
@@ -256,7 +255,6 @@ class Box_Edit(DBResource_Edit):
                    'timestamp': DateTime(readonly=True)}
 
     base_widgets = [ timestamp_widget, title_widget ]
-
 
     def get_schema(self, resource, context):
         return merge_dicts(self.base_schema, resource.box_schema)
@@ -472,26 +470,6 @@ class Box_View(STLView):
         return ac.is_allowed_to_edit(context.user, resource)
 
 
-    def get_manage_buttons(self, resource, context, name=None):
-        manage_buttons = []
-        if self.is_admin(resource, context):
-            resource_path = context.get_link(resource)
-            if isinstance(resource, WorkflowAware):
-                state = resource.get_state()
-                new_button = {
-                    'path': '%s/;edit_state' % resource_path,
-                    'label': state['title'].gettext().encode('utf-8'),
-                    'class': 'wf-%s' % resource.get_statename()}
-                manage_buttons.append(new_button)
-            new_button = {
-                'path': '%s/;edit' % resource_path,
-                'label': MSG(u'Edit'),
-                'class': None}
-            manage_buttons.append(new_button)
-        return manage_buttons
-
-
-
 ################################################################################
 # Bar views
 ################################################################################
@@ -504,29 +482,6 @@ class BoxSectionNews_View(Box_View):
     def _get_news_item_view(self):
         from news_views import NewsItem_Preview
         return NewsItem_Preview()
-
-
-    def get_manage_buttons(self, resource, context):
-        manage_buttons = Box_View.get_manage_buttons(self,
-                resource, context)
-
-        if self.is_admin(resource, context):
-            resource_path = context.get_link(resource)
-            # sidebar box
-            manage_buttons.append({'path': '%s/;edit' % resource_path,
-                                   'label': MSG(u'Edit Nb News'),
-                                   'class': None})
-
-            # news
-            site_root = resource.get_site_root()
-            news = self._get_news_folder(resource, context)
-            if news:
-                news_path = context.get_link(news)
-                manage_buttons.append({'path': '%s/;edit' % news_path,
-                                       'label': MSG(u'Edit news main view title'),
-                                       'class': None})
-
-        return manage_buttons
 
 
     def _get_news_folder(self, resource, context):
@@ -623,24 +578,6 @@ class BoxTags_View(Box_View):
     def _get_tags_folder(self, resource, context):
         site_root = resource.get_site_root()
         return site_root.get_resource('tags')
-
-
-    def get_manage_buttons(self, resource, context):
-        manage_buttons = Box_View.get_manage_buttons(self,
-                resource, context)
-
-        if self.is_admin(resource, context):
-            # FIXME hardcoded
-            tag_format = Tag.class_id
-            manage_buttons.append({'path': '/tags/;browse_content',
-                                   'label': MSG(u'Edit tags'),
-                                   'class': None})
-            new_resource_path = '/tags/;new_resource?type=%s' % tag_format
-            manage_buttons.append({'path': new_resource_path,
-                                   'label': MSG(u'Create tag'),
-                                   'class': None})
-
-        return manage_buttons
 
 
     def get_namespace(self, resource, context):
@@ -952,8 +889,7 @@ class BoxSectionWebpages_View(Box_View):
     def get_namespace(self, resource, context):
         namespace = {}
         manage_buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(manage_buttons, 'article-items',
-                                               icon=True)
+        namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
         # Articles
         user = context.user
         article_container = self.get_articles_container(resource, context)
@@ -1010,26 +946,6 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
         return None
 
 
-    def get_manage_buttons(self, resource, context, name=None):
-        """ Add a sidebar boxes button requiring context.
-        """
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        parent_method = BoxSectionWebpages_View.get_manage_buttons
-        buttons = parent_method(self, resource, context, name=None)
-        section = context._section
-        section_path = context.get_link(section)
-
-        # Order articles
-        buttons.append({'path': '%s/;edit' % context.get_link(resource),
-                        'target': None,
-                        'label': MSG(u'Edit the box')})
-        return buttons
-
-
     def get_items(self, resource, context):
         user = context.user
         here = context.resource
@@ -1051,9 +967,7 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        manage_buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(manage_buttons, 'children-items',
-                                               icon=True)
+        namespace['admin_bar'] = get_admin_bar(resource)
         # Items
         here = context.resource
         user = context.user

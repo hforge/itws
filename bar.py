@@ -126,13 +126,10 @@ class Bar_View(STLView):
                 continue
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
-            buttons = item.view.get_manage_buttons(item, context)
-
+            admin_bar = get_admin_bar(item)
             # FIXME if the item name contains '.', the item id is
             # interpreted as #id.class by jquery
-            item_id = '%s-%s-%s' % (self.admin_bar_prefix_name,
-                                    item.class_id, item.name)
-            admin_bar = get_admin_bar(buttons, item_id, item.class_title)
+            item_id = '%s-%s' % (item.class_id, item.name)
             namespace = {
                 'id': item_id, 'format': item.class_id,
                 'admin_bar': admin_bar, 'content': stream,
@@ -153,8 +150,7 @@ class Bar_View(STLView):
         manage_buttons = self.get_manage_buttons(resource, context)
         allowed_to_edit = len(manage_buttons) > 0
         # XXX 'article-items'
-        namespace['admin_bar'] = get_admin_bar(manage_buttons,
-                self.admin_bar_prefix_name, icon=True)
+        namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
 
         # Bar items
         items = self.get_items(resource, context)

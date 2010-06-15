@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+<head>
+  <title>${title}</title>
+  <base href="${base_uri}" />
+  <!-- Meta -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta stl:repeat="meta meta_tags" name="${meta/name}" lang="${meta/lang}"
+      content="${meta/content}" />
+  <!-- CSS -->
+  <link type="text/css" rel="stylesheet" stl:repeat="style styles"
+    href="${style}" />
+  <!-- JavaScript -->
+  <script type="text/javascript" stl:repeat="script scripts" src="${script}" />
+</head>
+<body>
+  <ul id="content-languages">
+    <li stl:repeat="language content_languages">
+      <a href="${language/href}" class="${language/class}">${language/title}</a>
+    </li>
+  </ul>
+  <div class="clear"/>
+  ${message}
+  ${body}
+  <script>
+    $(document).ready(function() {
+      // Close if form success
+      if($('.info').length > 0){
+        parent.window.location.reload();
+        parent.$.fancybox.close();
+      }
+    });
+  </script>
+</body>
+</html>

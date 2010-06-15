@@ -145,61 +145,13 @@ class DualSelectWidget(SelectWidget):
 ############################################################
 
 admin_bar_template = list(XMLParser("""
-  <div id="admin-bar-${id}" class="admin-bar">
-    <div class="admin-bar-title">
-      <img src="/ui/icons/16x16/cancel.png"/>
-      <span>${title}</span>
-    </div>
-    <ul class="admin-bar-ul">
-      <li stl:repeat="button buttons">
-        <a href="${button/path}">
-          ${button/label}
-        </a>
-      </li>
-    </ul>
-    <div class="clear" />
-  </div>
-  <script>
-    $(document).ready(function(){
-      var original_height = $("#${id}").height();
-      var menu_height = $("#admin-bar-${id}").height();
-      <![CDATA[
-      var is_inf = original_height < menu_height;
-      ]]>
-      $("#admin-bar-${id}").hide();
-
-      $("#admin-bar-${id} .admin-bar-title img").click(function(){
-        if($("#admin-bar-${id} .admin-bar-ul").is(':visible') == false){
-            $("#admin-bar-${id} .admin-bar-title img").attr({src: '/ui/icons/16x16/cancel.png'});
-            $("#admin-bar-${id} .admin-bar-ul").show();
-            $("#admin-bar-${id} .admin-bar-title span").show();
-          }else{
-            $("#admin-bar-${id} .admin-bar-title img").attr({src: '/ui/icons/16x16/down.png'});
-            $("#admin-bar-${id} .admin-bar-ul").hide();
-            $("#admin-bar-${id} .admin-bar-title span").hide();
-        }
-      });
-
-      $("#${id}").hover(function(){
-        $("#${id}").addClass('highlight');
-        $("#admin-bar-${id}").show();
-        if(is_inf){
-          $("#${id}").height(menu_height);
-        }
-      },
-      function(){
-        $("#admin-bar-${id}").hide();
-        $("#${id}").removeClass('highlight');
-        if(is_inf){
-          $("#${id}").height(original_height);
-        }
-      });
-    });
-  </script>""", stl_namespaces))
+  <a href="${link}/;edit" class="admin-bar" title="${title}">
+    <img src="/ui/icons/16x16/edit.png"/>
+  </a>
+  """, stl_namespaces))
 
 admin_bar_icon_template = list(XMLParser("""
-  <div id="admin-bar-icon-${id}" class="admin-icons-bar"
-    stl:if="buttons">
+  <div class="admin-icons-bar" stl:if="buttons">
     <div class="box-content">
       <table>
         <tr>
@@ -214,19 +166,19 @@ admin_bar_icon_template = list(XMLParser("""
     </div>
   </div>""", stl_namespaces))
 
-def get_admin_bar(buttons, id, title='', icon=False):
+def get_admin_bar(resource, buttons=[]):
     context = get_context()
     if is_navigation_mode(context):
         return
-    resource = context.resource
     ac = resource.get_access_control()
     if not ac.is_allowed_to_edit(context.user, resource):
-        return None
-    if not buttons:
-        return None
-    events = admin_bar_template if icon is False else admin_bar_icon_template
-    return stl(events=events,
-               namespace={'buttons': buttons, 'id': id, 'title': title})
+        return
+    events = admin_bar_template if not buttons else admin_bar_icon_template
+    namespace = {'link': context.get_link(resource),
+                 'buttons': buttons,
+                 'title': 'title'}
+    return stl(events=events, namespace=namespace)
+
 
 
 ############################################################

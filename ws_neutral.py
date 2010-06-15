@@ -26,9 +26,10 @@ from decimal import Decimal
 # Import from itools
 from itools.core import get_abspath, merge_dicts
 from itools.csv import Property
-from itools.datatypes import Unicode, String
+from itools.datatypes import Boolean, Unicode, String
 from itools.fs import FileName
 from itools.gettext import MSG
+from itools.i18n import get_language_name
 from itools.stl import stl
 from itools.uri import get_reference, resolve_uri, Path
 from itools.web import get_context
@@ -46,7 +47,7 @@ from ikaaro.future.menu import MenuFolder, Menu
 from ikaaro.future.order import ResourcesOrderedContainer, ResourcesOrderedTable
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.resource_views import DBResource_Backlinks
-from ikaaro.skins import register_skin
+from ikaaro.skins import register_skin, Skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
 from ikaaro.website import WebSite as BaseWebSite
@@ -280,8 +281,20 @@ class NeutralSkin(FoBoFooterAwareSkin):
         styles = FoBoFooterAwareSkin.get_styles(self, context)
         if styles.count('/ui/aruni/aruni.css'):
             styles.remove('/ui/aruni/aruni.css')
-
+        # In edition mode we add fancybox css
+        edit_mode = is_navigation_mode(context) is False
+        if edit_mode is True:
+            styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
         return styles
+
+
+    def get_scripts(self, context):
+        scripts = FoBoFooterAwareSkin.get_scripts(self, context)
+        # In edition mode we add fancybox script
+        edit_mode = is_navigation_mode(context) is False
+        if edit_mode is True:
+            scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
+        return scripts
 
 
 
@@ -309,6 +322,34 @@ class K2Skin(NeutralSkin2):
     </td>
     """, stl_namespaces))
 
+
+class AdminPopupSkin(Skin):
+
+    def get_styles(self, context):
+        styles = Skin.get_styles(self, context)
+        styles.append('/ui/common/js/jquery.multiselect2side/css/jquery.multiselect2side.css')
+        return styles
+
+
+    def get_scripts(self, context):
+        scripts = Skin.get_scripts(self, context)
+        scripts.append('/ui/common/js/jquery.multiselect2side/js/jquery.multiselect2side.js')
+        return scripts
+
+    def build_namespace(self, context):
+        namespace = Skin.build_namespace(self, context)
+        # Content language
+        resource = context.resource
+        site_root = resource.get_site_root()
+        content_language = resource.get_content_language(context)
+        languages = site_root.get_property('website_languages')
+        namespace['content_languages'] = [
+            {'title': get_language_name(x),
+             'href': context.uri.replace(content_language=x),
+             'class': 'nav-active' if (x == content_language) else None}
+            for x in languages ]
+        # Return languages
+        return namespace
 
 
 ############################################################
@@ -550,6 +591,12 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         return self.get_property('class_skin')
 
     class_skin = property(get_class_skin, None, None, '')
+
+
+    def get_skin(self, context):
+        if context.get_query_value('is_admin_popup', type=Boolean) is True:
+            return self.get_resource('/ui/admin-popup/')
+        return WebSite.get_skin(self, context)
 
 
     def get_editorial_documents_types(self):
@@ -829,7 +876,10 @@ register_resource_class(WSDataFolder)
 register_resource_class(WSOrderedTable)
 register_document_type(NeutralWS, BaseWebSite.class_id)
 
-# Skin
+###################
+# Register skins
+###################
+
 # neutral
 path = get_abspath('ui/neutral')
 skin = NeutralSkin(path)
@@ -842,3 +892,7 @@ register_skin('neutral2', skin)
 path = get_abspath('ui/k2')
 skin = K2Skin(path)
 register_skin('k2', skin)
+# Admin popup
+path = get_abspath('ui/admin-popup')
+skin = AdminPopupSkin(path)
+register_skin('admin-popup', skin)

@@ -23,7 +23,6 @@ from itools.web import STLView
 # Import from ikaaro
 from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody
 from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
-from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from tags import TagsAware_Edit
@@ -118,45 +117,15 @@ class WebPage_View(BaseWebPage_View, STLView):
         return STLView.GET(self, resource, context)
 
 
-    def get_manage_buttons(self, resource, context, name=None):
-        manage_buttons = []
-        ac = resource.get_access_control()
-        if ac.is_allowed_to_edit(context.user, resource):
-            resource_path = context.get_link(resource)
-            if isinstance(resource, WorkflowAware):
-                state = resource.get_state()
-                new_button = {
-                    'path': '%s/;edit_state' % resource_path,
-                    'label': state['title'].gettext().encode('utf-8'),
-                    'class': 'wf-%s' % resource.get_statename()}
-                manage_buttons.append(new_button)
-            new_button = {
-                'path': '%s/;edit' % resource_path,
-                'label': MSG(u'Edit content'),
-                'class': None}
-            manage_buttons.append(new_button)
-        return manage_buttons
-
-
     def get_namespace(self, resource, context):
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
 
-        manage_buttons = []
-        if context.user is not None:
-            site_root = resource.get_site_root()
-            repository = site_root.get_repository()
-            # Show buttons only when outside of repository
-            if context.resource != repository:
-                manage_buttons = self.get_manage_buttons(resource, context)
-
         namespace = {}
         namespace['name'] = resource.name
         namespace['title'] = title
         namespace['content'] = BaseWebPage_View.GET(self, resource, context)
-        namespace['admin_bar'] = get_admin_bar(manage_buttons,
-                                      resource.name, MSG(u'A Webpage'))
-
+        namespace['admin_bar'] = get_admin_bar(resource)
         return namespace
 

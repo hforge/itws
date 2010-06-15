@@ -21,3 +21,19 @@ function show_more_news(link) {
     $(link).parent().hide();
     return false;
 }
+
+/* Admin bar */
+$(document).ready(function() {
+  $(".admin-bar").click(function(e){
+    $.fancybox(
+      {'type': 'iframe',
+       'transitionIn': 'none',
+       'transitionOut': 'none',
+       'href': this.href + '?is_admin_popup=1',
+       'overlayColor': '#729FCF',
+       'overlayOpacity': 0.8,
+       'height': 550,
+       'centerOnScroll': true});
+    return false;
+  });
+});

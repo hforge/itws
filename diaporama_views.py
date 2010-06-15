@@ -132,30 +132,13 @@ class Diaporama_View(Box_View):
     access = 'is_allowed_to_edit'
     title = MSG(u'View')
     template = '/ui/common/Diaporama_view.xml'
-    manage_buttons = True
-
-
-    def get_manage_buttons(self, resource, context):
-        resource_path = context.get_link(resource)
-        table_path = '%s/%s' % (resource_path, resource.order_path)
-        return [{'label': MSG(u'Edit the banners'), 'path': table_path},
-                {'label': MSG(u'Edit the title'),
-                 'path': '%s/;edit' % resource_path}]
-
 
     def get_namespace(self, resource, context):
         namespace = {}
-        # Manage buttons
-        manage_buttons = []
-        ac = resource.get_access_control()
-        if ac.is_allowed_to_edit(context.user, resource):
-            manage_buttons = self.get_manage_buttons(resource, context)
-
         # Display admin bar on the disporama view
         admin_bar = None
         if type(context.resource) is type(resource):
-            admin_bar = get_admin_bar(manage_buttons, 'diaporama',
-                                      MSG(u'Diaporama'))
+            admin_bar = get_admin_bar(resource)
 
         table = resource.get_resource(resource.order_path)
         handler = table.handler

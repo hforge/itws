@@ -98,18 +98,6 @@ class NewsItem_View(STLView):
     id = 'news'
     title_link = None
 
-    def get_manage_buttons(self, resource, context):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = []
-        buttons.append({'path': './;edit',
-                        'label': MSG(u'Edit news')})
-        return buttons
-
-
     def get_namespace(self, resource, context):
         news_folder = resource.parent
         language = resource.get_content_language(context)
@@ -129,10 +117,6 @@ class NewsItem_View(STLView):
         namespace['title'] = title #XMLParser(XHTMLBody.encode(title) or '')
         namespace['content'] = content
         namespace['is_allowed_to_edit'] = edit
-        # FIXME Does not work
-        #buttons = self.get_manage_buttons(resource, context)
-        #namespace['admin_bar'] = get_admin_bar(buttons, 'content-column',
-        #                            MSG(u'A news'))
         title_link = None
         if self.title_link:
             title_link = context.get_link(resource)
@@ -341,8 +325,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         namespace['rows'] = rows
         namespace['more_title'] = self.more_title
         manage_buttons = self.get_manage_buttons(resource, context)
-        namespace['admin_bar'] = get_admin_bar(manage_buttons,
-                                               'foldernews-items', icon=True)
+        namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
         view = SideBar_View()
         namespace['sidebar_view'] = view.GET(resource, context)
 
