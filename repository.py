@@ -447,7 +447,8 @@ class Repository(Folder):
     class_icon16 = 'bar_items/icons/16x16/repository.png'
     class_icon48 = 'bar_items/icons/48x48/repository.png'
     class_views = ['browse_content', 'new_resource_form',
-                   'new_sidebar_resource', 'new_contentbar_resource']
+                   'new_sidebar_resource', 'new_contentbar_resource',
+                   'backlinks', 'commit_log']
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
