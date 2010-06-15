@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Integer, Unicode, Enumerate, String
+from itools.datatypes import Integer, Enumerate, String
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.registry import get_document_types
@@ -36,22 +37,6 @@ class PositiveIntegerNotNull(Integer):
     @staticmethod
     def is_valid(value):
         return value > 0
-
-
-
-class UnicodeString(Unicode):
-    """Usefull to implement multlingual String"""
-
-    @staticmethod
-    def is_valid(value):
-        if type(value) is str:
-            return True
-        # Check if the string representation of value is a string
-        try:
-            str(value)
-        except UnicodeEncodeError:
-            return False
-        return True
 
 
 
@@ -88,3 +73,33 @@ class NeutralClassSkin(Enumerate):
                #{'name': '/ui/neutral2', 'value': u"Neutral 2"},
                {'name': '/ui/k2', 'value': u"K2"}]
 
+
+class StateEnumerate(Enumerate):
+
+    default = ''
+
+    @classmethod
+    def get_options(cls):
+        context = get_context()
+        resource = context.resource
+        states = resource.workflow.states
+        state = resource.get_state()
+
+        ac = resource.get_access_control()
+        user = context.user
+
+        # Possible states
+        options = [
+            trans.state_to
+            for name, trans in state.transitions.items()
+            if ac.is_allowed_to_trans(user, resource, name) ]
+        options = set(options)
+        options.add(resource.get_statename())
+
+        # Options
+        options = [
+           {'name': x, 'value': states[x].metadata['title'].gettext()}
+           for x in options ]
+
+        options.sort(key=lambda x: x['value'])
+        return options

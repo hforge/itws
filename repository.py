@@ -33,6 +33,8 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
+from ikaaro.forms import XHTMLBody, PathSelectorWidget, rte_widget
+from ikaaro.forms import SelectWidget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
@@ -122,6 +124,7 @@ class Box(File):
 
 
 
+
 class BoxSectionNews(Box):
 
     class_id = 'box-section-news'
@@ -152,6 +155,22 @@ class HTMLContent(WebPage):
     class_title = MSG(u'HTML Content')
     class_description = MSG('HTML snippet which can be displayed in the '
                             'central and/or the sidebar')
+
+
+    # Configuration of box for EditView
+    box_schema = {'title_link': String,
+                  'title_link_target': Target,
+                  'data': XHTMLBody,
+                  'display_title': Boolean}
+
+    box_widgets = [
+        BooleanCheckBox('display_title',
+                        title=MSG(u'Display on webpage view')),
+        PathSelectorWidget('title_link', title=MSG(u'Title link')),
+        SelectWidget('title_link_target', title=MSG(u'Title link target')),
+        rte_widget
+        ]
+
 
     # Views
     view_both = HTMLContent_ViewBoth()
@@ -231,7 +250,6 @@ class HTMLContent(WebPage):
                 new_ref.path = str(target.get_pathto(new_abs_path)) + view
                 # Update the title link
                 self.set_property('title_link', str(new_ref))
-
 
 
 class BoxTags(Box):

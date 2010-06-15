@@ -21,7 +21,7 @@ from warnings import warn
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String, Boolean, DateTime, Unicode
+from itools.datatypes import String, DateTime, Unicode
 from itools.datatypes import Integer, Enumerate
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
@@ -32,18 +32,17 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
-from ikaaro.forms import PathSelectorWidget, SelectWidget, BooleanCheckBox
-from ikaaro.forms import TextWidget, rte_widget
+from ikaaro.forms import SelectWidget, TextWidget
 from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
-from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
-from ikaaro.webpage import WebPage_View, HTMLEditView
+from ikaaro.webpage import WebPage_View
 from ikaaro.website import WebSite
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
-from datatypes import PositiveInteger
+from datatypes import PositiveInteger, StateEnumerate
 from tags import TagsList
 from utils import to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
@@ -252,17 +251,25 @@ class Box_Edit(DBResource_Edit):
     title = MSG(u'Edit')
     access = 'is_allowed_to_edit'
 
-    base_schema = {'title': Unicode,
+    base_schema = {'title': Unicode(multilingual=True),
                    'timestamp': DateTime(readonly=True)}
 
-    base_widgets = [ timestamp_widget, title_widget ]
+    base_widgets = [timestamp_widget,
+                    title_widget]
 
     def get_schema(self, resource, context):
-        return merge_dicts(self.base_schema, resource.box_schema)
+        state_schema = {}
+        if isinstance(resource, WorkflowAware):
+            state_schema = {'state': StateEnumerate}
+        return merge_dicts(self.base_schema, resource.box_schema, state_schema)
 
 
     def get_widgets(self, resource, context):
-        return self.base_widgets + resource.box_widgets
+        state_widgets = []
+        if isinstance(resource, WorkflowAware):
+            state_widgets = [SelectWidget('state', title=MSG(u'Box state'),
+                                          has_empty_option=False)]
+        return self.base_widgets + state_widgets + resource.box_widgets
 
 
     def action(self, resource, context, form):
@@ -272,11 +279,12 @@ class Box_Edit(DBResource_Edit):
             return
 
         # Save changes
-        title = form['title']
         language = resource.get_content_language(context)
-        resource.set_property('title', title, language=language)
-        for key, datatype in resource.box_schema.items():
-            if getattr(datatype, 'multilingual', False) is True:
+        for key, datatype in self.get_schema(resource, context).items():
+            print '==>', key
+            if key == 'timestamp':
+                continue
+            elif getattr(datatype, 'multilingual', False) is True:
                 resource.set_property(key, form[key], language)
             else:
                 resource.set_property(key, form[key])
@@ -334,33 +342,6 @@ class BoxSectionNews_Edit(Box_Edit):
 
         # Save changes
         for key in ('count', 'tags'):
-            resource.set_property(key, form[key])
-
-
-
-################################################################################
-# Sidebar edit views
-################################################################################
-class HTMLContent_Edit(HTMLEditView):
-
-    schema = merge_dicts(HTMLEditView.schema, title_link=String,
-                         title_link_target=Target, display_title=Boolean)
-    widgets = [
-        timestamp_widget, title_widget,
-        BooleanCheckBox('display_title',
-                        title=MSG(u'Display on webpage view')),
-        PathSelectorWidget('title_link', title=MSG(u'Title link')),
-        SelectWidget('title_link_target', title=MSG(u'Title link target')),
-        rte_widget
-        ]
-
-    def action(self, resource, context, form):
-        HTMLEditView.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        for key in ('display_title', 'title_link', 'title_link_target'):
             resource.set_property(key, form[key])
 
 
@@ -433,6 +414,26 @@ class BoxNewsSiblingsToc_Preview(Box_Preview):
     def get_details(self, resource, context):
         return [u'Usefull in a news folder, show a Table of Content '
                 u'with all news.']
+
+
+class HTMLContent_Edit(Box_Edit):
+
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'data':
+            language = resource.get_content_language(context)
+            return resource.get_html_data(language=language)
+        return Box_Edit.get_value(self, resource, context, name, datatype)
+
+
+    def action(self, resource, context, form):
+        Box_Edit.action(self, resource, context, form)
+        if context.edit_conflict:
+            return
+        new_body = form['data']
+        language = resource.get_content_language(context)
+        handler = resource.get_handler(language=language)
+        handler.set_body(new_body)
 
 
 

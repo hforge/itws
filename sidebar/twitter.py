@@ -28,7 +28,6 @@ from itools.datatypes import Integer, String, XMLContent, Boolean
 from itools.gettext import MSG
 from itools.log import log_error
 from itools.rss import RSSFile
-from itools.web import FormError
 from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
@@ -58,15 +57,11 @@ def transform_links(tweet):
 
 
 
+class TwitterID(Integer):
 
-class TwitterSideBar_Edit(Box_Edit):
-
-    def _get_form(self, resource, context):
-        form = Box_Edit._get_form(self, resource, context)
-        # Check if the user_id exists
-        user_id = form['user_id']
-        uri = twitter_url % user_id
-
+    @staticmethod
+    def is_valid(value):
+        uri = twitter_url % value
         # FIXME To improve
         # NOTE urllib2 only proposes GET/POST but not HEAD
         try:
@@ -76,17 +71,8 @@ class TwitterSideBar_Edit(Box_Edit):
             data = response.read()
         except (socket.error, socket.gaierror, Exception,
                 urllib2.HTTPError), e:
-            raise FormError(invalid=['user_id'])
-
-        return form
-
-
-    def action(self, resource, context, form):
-        Box_Edit.action(self, resource, context, form)
-        if context.edit_conflict:
-            return
-        if form['force_update']:
-            resource._update_data()
+            return False
+        return True
 
 
 
@@ -107,6 +93,16 @@ class TwitterSideBar_View(Box_View):
 
 
 
+class TwitterSideBar_Edit(Box_Edit):
+
+
+    def action(self, resource, context, form):
+        if form['force_update'] is True:
+            self._update_data()
+        Box_Edit.action(self, resource, context, form)
+
+
+
 class TwitterSideBar(Box, ResourceWithCache):
 
     class_id = 'box-twitter'
@@ -118,7 +114,8 @@ class TwitterSideBar(Box, ResourceWithCache):
     #http://www.webdesignerdepot.com/2009/07/50-free-and-exclusive-twitter-icons/
 
     # Item configuration
-    box_schema = {'user_id': Integer(mandatory=True),
+
+    box_schema = {'user_id': TwitterID(mandatory=True),
                   'user_name': String(mandatory=True),
                   'limit': Integer(mandatory=True, default=5, size=3),
                   'force_update': Boolean}

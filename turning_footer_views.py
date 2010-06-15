@@ -18,18 +18,17 @@
 from random import choice
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import Unicode, Integer, Boolean
+from itools.datatypes import DateTime, Unicode, Integer, Boolean
 from itools.gettext import MSG
 from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import BooleanCheckBox, XHTMLBody, HTMLBody
+from ikaaro import messages
+from ikaaro.forms import BooleanCheckBox, TextWidget, XHTMLBody, HTMLBody
+from ikaaro.forms import timestamp_widget
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.table import OrderedTable_View, Table_EditRecord
-
-# Import from itws
-from diaporama_views import Diaporama_Edit
 
 
 
@@ -76,32 +75,37 @@ class TurningFooterFile_EditRecord(Table_EditRecord):
 
 
 
-class TurningFooterFolder_Edit(Diaporama_Edit):
-
-    def get_schema(self, resource, context):
-        schema = Diaporama_Edit.get_schema(self, resource, context)
-        return merge_dicts(schema, random=Boolean, active=Boolean)
+class TurningFooterFolder_Edit(DBResource_Edit):
 
 
-    def get_widgets(self, resource, context):
-        widgets = Diaporama_Edit.get_widgets(self, resource, context)[:]
-        # Random
-        title = MSG(u'Random selection')
-        widgets.insert(3, BooleanCheckBox('random', title=title))
-        title = MSG(u'Is active')
-        widgets.insert(3, BooleanCheckBox('active', title=title))
+    schema = {'timestamp': DateTime(readonly=True),
+              'title': Unicode(multilingual=True),
+              'random': Boolean,
+              'active': Boolean}
 
-        return widgets
+    widgets = [timestamp_widget,
+               TextWidget('title', title=MSG(u'Title')),
+               BooleanCheckBox('random', title=MSG(u'Random selection')),
+               BooleanCheckBox('active', title=MSG(u'Is active'))]
 
 
     def action(self, resource, context, form):
-        Diaporama_Edit.action(self, resource, context, form)
         # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
         if context.edit_conflict:
             return
-        resource.set_property('random', form['random'])
-        resource.set_property('active', form['active'])
 
+        # Check conflict
+        language = resource.get_content_language(context)
+        for key, datatype in self.get_schema(resource, context).items():
+            if key == 'timestamp':
+                continue
+            elif getattr(datatype, 'multilingual', False) is True:
+                resource.set_property(key, form[key], language)
+            else:
+                resource.set_property(key, form[key])
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
 
 
 class TurningFooterFolder_View(STLView):

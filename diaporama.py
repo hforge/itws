@@ -36,8 +36,8 @@ from ikaaro.table import Table
 
 # Import from itws
 from diaporama_views import DiaporamaTable_View, Diaporama_View
-from diaporama_views import Diaporama_Edit
 from repository import register_box
+from repository_views import Box_Edit
 from resources import OrderTableAware
 from utils import get_path_and_view
 from views import EasyNewInstance
@@ -184,7 +184,12 @@ class Diaporama(OrderTableAware, Folder):
 
     new_instance = EasyNewInstance()
     view = Diaporama_View()
-    edit = Diaporama_Edit()
+    edit = Box_Edit()
+
+    # Box schema / widgets
+    box_schema = {}
+    box_widgets = []
+
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):

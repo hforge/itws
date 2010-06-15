@@ -19,22 +19,16 @@ from copy import deepcopy
 from random import choice
 
 # Import from itools
-from itools.datatypes import XMLContent, Unicode, DateTime
+from itools.datatypes import XMLContent
 from itools.gettext import MSG
 from itools.uri import get_reference
-from itools.web import FormError
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.file import Image
-from ikaaro.forms import timestamp_widget, title_widget, ImageSelectorWidget
 from ikaaro.future.order import get_resource_preview
-from ikaaro.messages import MSG_CHANGES_SAVED
-from ikaaro.resource_views import DBResource_Edit
 from ikaaro.table_views import Table_View
 
 # Import from itws
-from datatypes import UnicodeString
 from repository_views import Box_View
 
 
@@ -42,47 +36,6 @@ from repository_views import Box_View
 ###########################################################################
 # Views
 ###########################################################################
-class Diaporama_Edit(DBResource_Edit):
-
-    schema = {
-        'title': Unicode,
-        'title_image': UnicodeString,
-        'timestamp': DateTime(readonly=True)}
-
-    widgets = [timestamp_widget, title_widget,
-               ImageSelectorWidget('title_image', width=640,
-                   title=MSG(u'Title image, (Replace title if defined)'))
-              ]
-
-    def _get_form(self, resource, context):
-        form = DBResource_Edit._get_form(self, resource, context)
-
-        # Check banner
-        path = str(form['title_image'])
-        if path:
-            image_resource = resource.get_resource(path, soft=True)
-            if not image_resource or not isinstance(image_resource, Image):
-                raise FormError(invalid=['title_image'])
-        return form
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        title = form['title']
-        title_image = form['title_image']
-        language = resource.get_content_language(context)
-        resource.set_property('title', title, language=language)
-        resource.set_property('title_image', title_image, language=language)
-        # Ok
-        context.message = MSG_CHANGES_SAVED
-
-
-
 class DiaporamaTable_View(Table_View):
 
     def get_item_value(self, resource, context, item, column):
