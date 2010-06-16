@@ -354,7 +354,7 @@ class Section_ManageLink(BaseManageLink):
                            'title': MSG(u'Order subsections in the TOC'),
                            'disable': len(available_sections) == 0})
 
-        left_items.append({'path': '/repository/;new_contentbar_resource',
+        left_items.append({'path': './;new_contentbar_resource',
                            'class': 'add',
                            'title': MSG(u'Create new central part box')})
 
@@ -362,7 +362,7 @@ class Section_ManageLink(BaseManageLink):
                            'class': 'order child',
                            'title': MSG(u'Order central part boxes')})
 
-        right_items.append({'path': '/repository/;new_sidebar_resource',
+        right_items.append({'path': './;new_sidebar_resource',
                             'class': 'add',
                             'title': MSG(u'Create new sidebar box')})
 

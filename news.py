@@ -226,7 +226,8 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
                             u'by date of writing')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = (['view', 'manage_view', 'edit', 'commit_log']
+    class_views = (['view', 'manage_view', 'new_sidebar_resource',
+                    'edit', 'commit_log']
                    + SideBarAware.class_views)
     __fixed_handlers__ = (SideBarAware.__fixed_handlers__ +
                           Folder.__fixed_handlers__ + ['images'])
