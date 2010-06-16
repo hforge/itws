@@ -37,7 +37,7 @@ from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
-from ikaaro.registry import get_resource_class
+from ikaaro.registry import get_resource_class, get_document_types
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage, HTMLEditView
@@ -74,9 +74,7 @@ class EasyNewInstance(NewInstance):
         return self.actions
 
 
-    def get_namespace(self, resource, context):
-        namespace = NewInstance.get_namespace(self, resource, context)
-
+    def _get_action_namespace(self, resource, context):
         # (1) Actions (submit buttons)
         actions = []
         for button in self.get_actions(resource, context):
@@ -93,7 +91,13 @@ class EasyNewInstance(NewInstance):
                  'class': button.css,
                  'onclick': onclick})
 
-        namespace['actions'] = actions
+        return actions
+
+
+    def get_namespace(self, resource, context):
+        namespace = NewInstance.get_namespace(self, resource, context)
+        # actions namespace
+        namespace['actions'] = self._get_action_namespace(resource, context)
 
         return namespace
 
@@ -194,6 +198,128 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
         # Create the resource
         cls = self._get_resource_cls(context)
+        container = self._get_container(resource, context)
+        child = cls.make_resource(cls, container, name)
+        # The metadata
+        metadata = child.metadata
+        language = resource.get_content_language(context)
+        metadata.set_property('title', title, language=language)
+
+        goto = self._get_goto(resource, context, form)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
+
+
+
+class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
+
+    template = '/ui/common/proxy_improve_auto_form.xml'
+    query_schema = freeze({'title': Unicode})
+    schema = {
+        'name': String,
+        'title': Unicode,
+        'class_id': String}
+
+    def _get_resource_class_id(self, context):
+        # Use in action method
+        raise NotImplementedError
+
+
+    def _get_resource_cls(self, context):
+        raise NotImplementedError
+
+
+    def _get_container(self, resource, context):
+        raise NotImplementedError
+
+
+    def _get_goto(self, resource, context, form):
+        name = form['name']
+        container = self._get_container(resource, context)
+        goto_method = self._get_goto_method(resource, context, form)
+        container_path = context.get_link(container)
+        if goto_method:
+            return '%s/%s/;%s' % (container_path, name, goto_method)
+        return '%s/%s/' % (container_path, name)
+
+
+    def _get_form(self, resource, context):
+        form = AutoForm._get_form(self, resource, context)
+        name = self.get_new_resource_name(form)
+
+        # Check the name
+        if not name:
+            raise FormError, messages.MSG_NAME_MISSING
+
+        try:
+            name = checkid(name)
+        except UnicodeEncodeError:
+            name = None
+
+        if name is None:
+            raise FormError, messages.MSG_BAD_NAME
+
+        # Check the name is free
+        container = self._get_container(resource, context)
+        if container.get_resource(name, soft=True) is not None:
+            raise FormError, messages.MSG_NAME_CLASH
+
+        # Ok
+        form['name'] = name
+        return form
+
+
+    def get_namespace(self, resource, context):
+        namespace = NewInstance.get_namespace(self, resource, context)
+        # actions namespace
+        namespace['actions'] = self._get_action_namespace(resource, context)
+        # proxy items
+        type = self._get_resource_class_id(context)
+        cls = get_resource_class(type)
+
+        document_types = get_document_types(type)
+        items = []
+        if document_types:
+            # Multiple types
+            if len(document_types) == 1:
+                items = None
+            else:
+                selected = context.get_form_value('class_id')
+                items = [
+                    {'title': x.class_title.gettext(),
+                     'class_id': x.class_id,
+                     'selected': x.class_id == selected,
+                     'icon': '/ui/' + x.class_icon16}
+                    for x in document_types ]
+                if selected is None:
+                    items[0]['selected'] = True
+        namespace['items'] = items
+        # class title
+        namespace['class_title'] = cls.class_title
+
+        return namespace
+
+
+    def get_title(self, context):
+        cls = self._get_resource_cls(context)
+        class_title = cls.class_title.gettext()
+        title = MSG(u'Add {class_title}')
+        return title.gettext(class_title=class_title)
+
+
+    def icon(self, resource, **kw):
+        cls = self._get_resource_cls(get_context())
+        return cls.get_class_icon()
+
+
+    def action_default(self, resource, context, form):
+        name = form['name']
+        title = form['title']
+
+        # Create the resource
+        class_id = form['class_id']
+        if class_id is None:
+            class_id = self._get_resource_class_id(context)
+        cls = get_resource_class(class_id)
         container = self._get_container(resource, context)
         child = cls.make_resource(cls, container, name)
         # The metadata

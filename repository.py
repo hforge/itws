@@ -43,6 +43,7 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
+from repository_views import BoxAwareNewInstance
 from repository_views import BoxNewsSiblingsToc_Preview
 from repository_views import BoxNewsSiblingsToc_View
 from repository_views import BoxSectionChildrenTree_View
@@ -56,11 +57,12 @@ from repository_views import Box_Edit, Box_Preview
 from repository_views import BoxesOrderedTable_View
 from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
-from repository_views import Repository_BrowseContent, Repository_NewResource
+from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
 from utils import get_path_and_view
 from views import EasyNewInstance
 from webpage import WebPage
+
 
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean})
@@ -116,6 +118,7 @@ class BoxAware(object):
 
 class Box(BoxAware, File):
 
+    class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
     download = None
     externaledit = None
@@ -493,10 +496,10 @@ class Repository(Folder):
     website_articles_view_name = 'website-articles-view'
 
     new_resource = None
-    new_sidebar_resource = Repository_NewResource(
-            title=MSG(u'Add Sidebar Resource'))
-    new_contentbar_resource = Repository_NewResource(
-            title=MSG(u'Add Central Part Resource'), is_content=True)
+    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Resource'),
+                                               is_side=True)
+    new_contentbar_resource = BoxAwareNewInstance(title=MSG(u'Add Central Part Resource'),
+                                                  is_content=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
