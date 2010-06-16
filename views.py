@@ -21,7 +21,7 @@ from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
-from itools.uri import Path
+from itools.uri import get_reference, Path
 from itools.web import get_context, BaseView, STLView, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
@@ -31,6 +31,7 @@ from ikaaro.buttons import Button
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
@@ -539,6 +540,37 @@ class SmartOrderedTable_View(ResourcesOrderedTable_View):
                           'description': view.title_description,
                           'view': view.GET(resource, context)})
         return {'views': views}
+
+
+
+############################################################
+# GoToSpecificItem
+############################################################
+class AdvanceGoToSpecificDocument(GoToSpecificDocument):
+
+    title = MSG(u'View')
+    keep_query = False
+    keep_message = False
+
+    def GET(self, resource, context):
+        specific_document = self.get_specific_document(resource, context)
+        specific_view = self.get_specific_view(resource, context)
+        goto = '%s/%s' % (context.get_link(resource), specific_document)
+        if specific_view:
+            goto = '%s/;%s' % (goto, specific_view)
+        goto = get_reference(goto)
+
+        # Keep the query
+        if self.keep_query and context.uri.query:
+            goto.query = context.uri.query.copy()
+
+        # Keep the message
+        if self.keep_message:
+            message = context.get_form_value('message')
+            if message:
+                goto = goto.replace(message=message)
+
+        return goto
 
 
 
