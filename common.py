@@ -142,6 +142,8 @@ class CommonLanguagesTemplate(LanguagesTemplate):
 
     template = '/ui/common/languages.xml'
 
+    show_language_title = False
+
     def get_namespace(self):
         context = self.context
         # Website languages
@@ -188,7 +190,8 @@ class CommonLanguagesTemplate(LanguagesTemplate):
                 'selected': selected,
                 'class': css_class})
 
-        return {'languages': languages}
+        return {'languages': languages,
+                'show_language_title': self.show_language_title}
 
 
 

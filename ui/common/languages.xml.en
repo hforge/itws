@@ -7,7 +7,10 @@
   <div id="languages">
     <stl:block stl:repeat="lang languages">
       <a id="${lang/name}" href="${lang/href}"
-         class="${lang/class}" title="${lang/value}"><span>${lang/name}</span></a>
+         class="${lang/class}" title="${lang/value}">
+          <span stl:if="not show_language_title">${lang/name}</span>
+          <span stl:if="show_language_title">${lang/value}</span>
+      </a>
     </stl:block>
   </div>
 
