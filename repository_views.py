@@ -252,7 +252,7 @@ class Box_Edit(DBResource_Edit):
     access = 'is_allowed_to_edit'
 
     base_schema = {'title': Unicode(multilingual=True),
-                   'timestamp': DateTime(readonly=True)}
+                   'timestamp': DateTime(readonly=True, ignore=True)}
 
     base_widgets = [timestamp_widget,
                     title_widget]
@@ -281,8 +281,8 @@ class Box_Edit(DBResource_Edit):
         # Save changes
         language = resource.get_content_language(context)
         for key, datatype in self.get_schema(resource, context).items():
-            print '==>', key
-            if key == 'timestamp':
+            if getattr(datatype, 'ignore', False):
+                # Skip datatype like timestamp or html data
                 continue
             elif getattr(datatype, 'multilingual', False) is True:
                 resource.set_property(key, form[key], language)

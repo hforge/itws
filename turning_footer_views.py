@@ -95,7 +95,6 @@ class TurningFooterFolder_Edit(DBResource_Edit):
         if context.edit_conflict:
             return
 
-        # Check conflict
         language = resource.get_content_language(context)
         for key, datatype in self.get_schema(resource, context).items():
             if key == 'timestamp':

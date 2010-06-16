@@ -31,7 +31,7 @@ from itools.rss import RSSFile
 from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
-from ikaaro.forms import TextWidget, CheckBoxWidget
+from ikaaro.forms import TextWidget, BooleanCheckBox
 from ikaaro.registry import register_resource_class
 
 # Import from itws
@@ -97,9 +97,9 @@ class TwitterSideBar_Edit(Box_Edit):
 
 
     def action(self, resource, context, form):
-        if form['force_update'] is True:
-            self._update_data()
         Box_Edit.action(self, resource, context, form)
+        if context.edit_conflict and form['force_update'] is True:
+            resource._update_data()
 
 
 
@@ -125,8 +125,8 @@ class TwitterSideBar(Box, ResourceWithCache):
                               title=MSG(u"Twitter account name")),
                    TextWidget('user_id', title=MSG(u"User Id")),
                    TextWidget('limit', title=MSG(u'Number of tweet')),
-                   CheckBoxWidget('force_update',
-                                  title=MSG(u'Force cache update')),
+                   BooleanCheckBox('force_update',
+                                   title=MSG(u'Force cache update')),
                   ]
 
     # Views

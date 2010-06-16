@@ -74,6 +74,7 @@ class NeutralClassSkin(Enumerate):
                {'name': '/ui/k2', 'value': u"K2"}]
 
 
+
 class StateEnumerate(Enumerate):
 
     default = ''

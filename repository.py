@@ -33,7 +33,7 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
-from ikaaro.forms import XHTMLBody, PathSelectorWidget, rte_widget
+from ikaaro.forms import HTMLBody, PathSelectorWidget, rte_widget
 from ikaaro.forms import SelectWidget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
@@ -124,7 +124,6 @@ class Box(File):
 
 
 
-
 class BoxSectionNews(Box):
 
     class_id = 'box-section-news'
@@ -160,7 +159,7 @@ class HTMLContent(WebPage):
     # Configuration of box for EditView
     box_schema = {'title_link': String,
                   'title_link_target': Target,
-                  'data': XHTMLBody,
+                  'data': HTMLBody(ignore=True),
                   'display_title': Boolean}
 
     box_widgets = [
@@ -250,6 +249,7 @@ class HTMLContent(WebPage):
                 new_ref.path = str(target.get_pathto(new_abs_path)) + view
                 # Update the title link
                 self.set_property('title_link', str(new_ref))
+
 
 
 class BoxTags(Box):
