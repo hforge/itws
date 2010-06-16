@@ -36,13 +36,13 @@
           <a name="${article/anchor}"/>
           <h1><a href="#${article/reverse_anchor}">${article/title}</a></h1>
           <p>${article/description}</p>
-          <span>
+          <p>
             <stl:inline stl:if="article/pubDate_valid">${article/formated_pubDate}, </stl:inline>
             <span>source:</span>
             <a href="${article/link}">
               ${article/channel/title}
             </a>
-          </span>
+          </p>
         </div>
       </td>
       <td id="rss-menu" valign="top">

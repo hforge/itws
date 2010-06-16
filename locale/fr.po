@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2010-06-16 15:06+CET\n"
+"POT-Creation-Date: 2010-06-16 16:06+CET\n"
 "PO-Revision-Date: 2010-06-16 17:58+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -131,11 +131,6 @@ msgctxt "link"
 msgid "<g id='1'>◄</g>  <g id='2'>►</g>"
 msgstr "<g id='1'>◄</g>  <g id='2'>►</g>"
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:42
-msgctxt "link"
-msgid "<g id='10'> ${article/channel/title} </g>  </g>"
-msgstr "<g id='10'> ${article/channel/title} </g>  </g>"
-
 #: ../ui/neutral/addimage.xml.en:89
 msgctxt "abbr"
 msgid "<g id='10'>${item/short_title}</g><x id='11'/>  <g id='12'> Select </g>"
@@ -150,18 +145,19 @@ msgstr ""
 "<g id='10'>${user/info/title}</g>  <g id='11'>|</g>  <g id='12'>Déconnexion</"
 "g>"
 
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:56
+#, fuzzy
+msgctxt "link"
+msgid ""
+"<g id='12'>${article/title}</g>  <g id='13'>${article/formated_pubDate}</g>"
+msgstr ""
+"<g id='13'>${article/title}</g>  <g id='14'>${article/formated_pubDate}</g>"
+
 #: ../ui/neutral/addlink.xml.en:90
 msgctxt "abbr"
 msgid "<g id='12'>${item/short_title}</g><x id='13'/>  <g id='14'> Select </g>"
 msgstr ""
 "<g id='12'>${item/short_title}</g><x id='13'/>  <g id='14'> Sélectionner </g>"
-
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:56
-msgctxt "link"
-msgid ""
-"<g id='13'>${article/title}</g>  <g id='14'>${article/formated_pubDate}</g>"
-msgstr ""
-"<g id='13'>${article/title}</g>  <g id='14'>${article/formated_pubDate}</g>"
 
 #: ../ui/neutral2/template.xhtml.en:60
 msgctxt "link"
@@ -238,14 +234,13 @@ msgctxt "link"
 msgid "<g id='6'>${x/short_title}</g> /"
 msgstr "<g id='6'>${x/short_title}</g> /"
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:39
-msgctxt "span"
-msgid ""
-"<g id='7'>  <g id='8'>${article/formated_pubDate}, </g>  <g id='9'>source:</"
-"g>"
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:40
+#, fuzzy
+msgctxt "paragraph"
+msgid "<g id='7'>${article/formated_pubDate}, </g>  <g id='8'>source:</g>"
 msgstr ""
 "<g id='7'>  <g id='8'>${article/formated_pubDate}, </g>  <g id='9'>source :</"
-"g>"
+"g> </g>"
 
 #: ../ui/slideshow/Slide_view_type_4.xml.en:42
 msgctxt "link"
@@ -1561,6 +1556,10 @@ msgstr "« Précédent"
 #: ../views.py:720
 msgid "…"
 msgstr "…"
+
+#~ msgctxt "link"
+#~ msgid "<g id='10'> ${article/channel/title} </g>  </g>"
+#~ msgstr "<g id='10'> ${article/channel/title} </g>  </g>"
 
 #, fuzzy
 #~ msgctxt "link"
