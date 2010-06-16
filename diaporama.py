@@ -18,7 +18,6 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import merge_dicts
 from itools.csv import Table as TableFile, Property
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
@@ -175,6 +174,7 @@ class DiaporamaTable(Table):
 class Diaporama(OrderTableAware, Folder):
 
     class_id = 'diaporama'
+    class_version = '20100616'
     class_title = MSG(u'Diaporama')
     class_description = MSG(u'Diaporama')
     # order
@@ -197,11 +197,6 @@ class Diaporama(OrderTableAware, Folder):
         OrderTableAware._make_resource(cls, folder, name, **kw)
 
 
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(Folder.get_metadata_schema(),
-                           title_image=Unicode)
-
     def get_document_types(self):
         return [Image]
 
@@ -216,77 +211,9 @@ class Diaporama(OrderTableAware, Folder):
         return u''
 
 
-    def get_links(self):
-        # Use the canonical path instead of the abspath
-        # Caution multilingual property
-
-        site_root = self.get_site_root()
-        base = self.get_canonical_path()
-        links = []
-
-        available_languages = site_root.get_property('website_languages')
-        for lang in available_languages:
-            path = self.get_property('title_image', language=lang)
-            if not path:
-                continue
-            ref = get_reference(str(path)) # Unicode -> str
-            if not ref.scheme:
-                path, view = get_path_and_view(ref.path)
-                links.append(str(base.resolve2(path)))
-
-        return links
-
-
-    def update_links(self, source, target):
-        # Use the canonical path instead of the abspath
-        # Caution multilingual property
-        site_root = self.get_site_root()
-        base = self.get_canonical_path()
-
-        available_languages = site_root.get_property('website_languages')
-        for lang in available_languages:
-            path = self.get_property('title_image', language=lang)
-            if not path:
-                continue
-            ref = get_reference(str(path)) # Unicode -> str
-            if ref.scheme:
-                continue
-            path, view = get_path_and_view(ref.path)
-            path = str(base.resolve2(path))
-            if path == source:
-                # Hit the old name
-                # Build the new reference with the right path
-                new_ref = deepcopy(ref)
-                new_ref.path = str(base.get_pathto(target)) + view
-                self.set_property('title_image', str(new_ref), language=lang)
-
-        get_context().server.change_resource(self)
-
-
-    def update_relative_links(self, source):
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-
-        for lang in available_languages:
-            path = self.get_property('title_image', language=lang)
-            if not path:
-                continue
-            ref = get_reference(str(path)) # Unicode -> str
-            if ref.scheme:
-                continue
-            path, view = get_path_and_view(ref.path)
-            # Calcul the old absolute path
-            old_abs_path = source.resolve2(path)
-            # Check if the target path has not been moved
-            new_abs_path = resources_old2new.get(old_abs_path, old_abs_path)
-            # Build the new reference with the right path
-            # Absolute path allow to call get_pathto with the target
-            new_ref = deepcopy(ref)
-            new_ref.path = str(target.get_pathto(new_abs_path)) + view
-            self.set_property('title_image', str(new_ref), language=lang)
+    def update_20100616(self):
+        # Remove title_image property
+        self.del_property('title_image')
 
 
 

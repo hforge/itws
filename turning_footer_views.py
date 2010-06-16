@@ -107,6 +107,7 @@ class TurningFooterFolder_Edit(DBResource_Edit):
         context.message = messages.MSG_CHANGES_SAVED
 
 
+
 class TurningFooterFolder_View(STLView):
 
     access = 'is_allowed_to_edit'
@@ -115,17 +116,8 @@ class TurningFooterFolder_View(STLView):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        # title and title_image
+        # title
         title = resource.get_title(fallback=False)
-        title_image_path = resource.get_property('title_image')
-        if title_image_path:
-            # NOTE title image multilingual -> Unicode => String
-            title_image = resource.get_resource(str(title_image_path),
-                                                soft=True)
-            if title_image:
-                title_image_path = context.get_link(title_image)
-                title_image_path = '%s/;download' % title_image_path
-
         menu = resource.get_resource(resource.order_path)
         handler = menu.handler
 
@@ -134,7 +126,6 @@ class TurningFooterFolder_View(STLView):
         if not ids or not is_active:
             return {'content': None,
                     'title': title,
-                    'title_image_path': title_image_path,
                     'display': False}
 
         if resource.get_property('random'):
@@ -150,5 +141,4 @@ class TurningFooterFolder_View(STLView):
         content = set_prefix(data, prefix='%s/' % here.get_pathto(menu))
         return {'content': content,
                 'title': title,
-                'title_image_path': title_image_path,
                 'display': True}

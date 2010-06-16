@@ -90,22 +90,12 @@ class Diaporama_View(Box_View):
         table = resource.get_resource(resource.order_path)
         handler = table.handler
 
-        # title and title_image
+        # title
         title = resource.get_title(fallback=False)
-        title_image_path = resource.get_property('title_image')
-        if title_image_path:
-            # NOTE title image multilingual -> Unicode => String
-            title_image = resource.get_resource(str(title_image_path),
-                                                soft=True)
-            if title_image:
-                title_image_path = context.get_link(title_image)
-                title_image_path = '%s/;download' % title_image_path
-
         ids = list(handler.get_record_ids())
         if not ids:
             return {'banner': {},
-                    'title': title,
-                    'title_image_path': title_image_path}
+                    'title': title}
 
         record = handler.get_record(choice(ids))
         get_value = handler.get_record_value
@@ -139,5 +129,4 @@ class Diaporama_View(Box_View):
         banner_ns['img_link'] = img_link
 
         return {'banner': banner_ns,
-                'title': title,
-                'title_image_path': title_image_path}
+                'title': title}

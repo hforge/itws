@@ -416,6 +416,7 @@ class BoxNewsSiblingsToc_Preview(Box_Preview):
                 u'with all news.']
 
 
+
 class HTMLContent_Edit(Box_Edit):
 
 
@@ -478,6 +479,7 @@ class Box_View(STLView):
     def is_admin(self, resource, context):
         ac = resource.get_access_control()
         return ac.is_allowed_to_edit(context.user, resource)
+
 
 
 ################################################################################
