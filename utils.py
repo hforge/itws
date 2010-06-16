@@ -144,7 +144,7 @@ class DualSelectWidget(SelectWidget):
 
 class OrderBoxEnumerate(Enumerate):
 
-    options = [{'name': 'do-not-order', 'value': MSG(u'Do not order')},
+    options = [{'name': 'do-not-order', 'value': MSG(u"Do not order (won't be displayed)")},
                {'name': 'order-top', 'value': MSG(u'Order top')},
                {'name': 'order-bottom', 'value': MSG(u'Order bottom')}]
 

@@ -188,7 +188,7 @@ class ITWSTracker_Configure(DBResource_Edit):
 class ITWSIssue(Issue):
 
     class_id = 'itws-issue'
-    class_title = MSG(u'ITWS Issue')
+    class_title = MSG(u'Issue')
 
     edit = ITWSIssue_Edit()
 
@@ -197,7 +197,7 @@ class ITWSIssue(Issue):
 class ITWSTracker(Tracker):
 
     class_id = 'itws-tracker'
-    class_title = MSG(u'ITWS Tracker')
+    class_title = MSG(u'Tracker')
     class_description = MSG(u'A customizable tracker to manage issues')
     class_views = Tracker.class_views + ['configure']
 
