@@ -369,7 +369,7 @@ class Box_Preview(STLView):
 
 
     def GET(self, resource, context):
-        title = resource.get_title()
+        title = resource.class_description
         details = self.get_details(resource, context)
         template = self.get_template()
         namespace = {'title': title,
