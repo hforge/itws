@@ -101,9 +101,14 @@
 }
 
 .admin-icons-bar table td {
-  text-align: center;
+  text-align: left;
   width: 150px;
   font-weight: bold;
+  vertical-align: top;
+}
+
+.admin-icons-bar img {
+  float: left;
 }
 
 .admin-icons-bar a {

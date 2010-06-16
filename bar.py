@@ -70,7 +70,7 @@ class Bar_View(STLView):
         section_path = context.get_link(resource)
         path = context.get_link(repository)
         buttons.append({'path': '%s/;%s' % (section_path, self.order_method),
-                        'icon': '/ui/common/icons/48x48/sort.png',
+                        'icon': '/ui/common/icons/16x16/sort.png',
                         'label': self.order_label,
                         'target': None})
 
@@ -186,14 +186,14 @@ class SideBar_View(Bar_View):
             buttons = Bar_View.get_manage_buttons(self, resource, context)
             section_path = context.get_link(resource)
             buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
-                            'icon': '/ui/common/icons/48x48/new.png',
+                            'icon': '/ui/common/icons/16x16/new.png',
                             'label': MSG(u'Add Sidebar Box'),
                             'target': None})
         else:
             # XXX What text and what icon ?
             section_path = context.get_link(resource)
             buttons = [{'path': section_path,
-                        'icon': '/ui/icons/48x48/search.png',
+                        'icon': '/ui/icons/16x16/search.png',
                         'label': MSG(u'Go there to edit sidebar'),
                         'target': None}]
         return buttons
@@ -219,7 +219,7 @@ class ContentBar_View(Bar_View):
         buttons = Bar_View.get_manage_buttons(self, resource, context)
         section_path = context.get_link(resource)
         buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
-                        'icon': '/ui/common/icons/48x48/new.png',
+                        'icon': '/ui/common/icons/16x16/new.png',
                         'label': MSG(u'Add Central Part Box'),
                         'target': None})
 

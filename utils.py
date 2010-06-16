@@ -166,9 +166,9 @@ admin_bar_icon_template = list(XMLParser("""
       <table>
         <tr>
           <td stl:repeat="button buttons">
+            <img src="${button/icon}" title="${button/label}"/>
             <a href="${button/path}" target="${button/target}">
-            ${button/label}<br/>
-              <img src="${button/icon}" title="${button/label}"/>
+              ${button/label}
             </a>
           </td>
         </tr>
