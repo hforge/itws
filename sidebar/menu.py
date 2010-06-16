@@ -31,7 +31,7 @@ from ikaaro.views import CompositeForm
 # Import from itws
 from itws.repository import register_box, BoxAware
 from itws.repository_views import Box_View
-from itws.repository_views import Box_Edit
+from itws.views import AdvanceGoToSpecificDocument
 
 
 
@@ -113,9 +113,9 @@ class MenuSideBar(BoxAware, MenuFolder):
     view = MenuSideBar_View()
     menu = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit menu'))
-    edit = GoToSpecificDocument(specific_document='menu',
-                                specific_method='edit',
-                                title=MenuFolder.edit.title)
+    edit = AdvanceGoToSpecificDocument(
+            specific_document='menu', specific_method='edit',
+            title=MenuFolder.edit.title, keep_query=True)
 
 
     def update_20100616(self):
