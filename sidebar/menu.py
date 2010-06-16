@@ -23,9 +23,8 @@ from ikaaro.future.menu import MenuFolder, get_menu_namespace
 from ikaaro.registry import register_resource_class
 
 # Import from itws
-from itws.repository import register_box
-from itws.repository_views import Box_View, Box_Edit
-from itws.views import EasyNewInstance
+from itws.repository import register_box, BoxAware
+from itws.repository_views import Box_View
 
 
 
@@ -45,21 +44,16 @@ class MenuSideBar_View(Box_View):
 
 
 
-class MenuSideBar(MenuFolder):
+class MenuSideBar(BoxAware, MenuFolder):
 
     class_id = 'box-menu'
     class_title = MSG(u'Side Menu')
     class_description = MSG(u'Box to create a sidebar menu (1 level only)')
     class_views = ['view', 'menu', 'edit']
 
-    box_schema = {}
-    box_widgets = []
-
-    new_instance = EasyNewInstance()
     view = MenuSideBar_View()
     menu = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit menu'))
-    edit = Box_Edit()
 
 
 

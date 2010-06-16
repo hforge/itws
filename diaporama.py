@@ -35,11 +35,9 @@ from ikaaro.table import Table
 
 # Import from itws
 from diaporama_views import DiaporamaTable_View, Diaporama_View
-from repository import register_box
-from repository_views import Box_Edit
+from repository import register_box, BoxAware
 from resources import OrderTableAware
 from utils import get_path_and_view
-from views import EasyNewInstance
 
 
 
@@ -171,7 +169,7 @@ class DiaporamaTable(Table):
 
 
 
-class Diaporama(OrderTableAware, Folder):
+class Diaporama(BoxAware, OrderTableAware, Folder):
 
     class_id = 'diaporama'
     class_version = '20100616'
@@ -182,13 +180,7 @@ class Diaporama(OrderTableAware, Folder):
     order_class = DiaporamaTable
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
-    new_instance = EasyNewInstance()
     view = Diaporama_View()
-    edit = Box_Edit()
-
-    # Box schema / widgets
-    box_schema = {}
-    box_widgets = []
 
 
     @staticmethod

@@ -103,18 +103,23 @@ def get_bar_item_registry():
     return get_boxes_registry()
 
 
-class Box(File):
+class BoxAware(object):
 
-    class_description = MSG(u'Sidebar box')
-    preview = order_preview = Box_Preview()
     edit = Box_Edit()
-    download = None
-    externaledit = None
     new_instance = EasyNewInstance()
-
+    preview = order_preview = Box_Preview()
 
     box_schema = {}
     box_widgets = []
+
+
+
+class Box(BoxAware, File):
+
+    class_description = MSG(u'Sidebar box')
+    download = None
+    externaledit = None
+
 
     @classmethod
     def get_metadata_schema(cls):
