@@ -20,12 +20,14 @@ from itools.datatypes import DateTime, Unicode
 
 # Import from ikaaro
 from ikaaro import messages
+from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import title_widget, timestamp_widget
 from ikaaro.future.menu import Menu, Menu_View
 from ikaaro.future.menu import MenuFolder, get_menu_namespace
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.table import Table_AddRecord
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -85,10 +87,55 @@ class MenuProxyBox_Edit(DBResource_Edit):
 
 
 
+class MenuSideBarTable_AddRecord(Table_AddRecord):
+
+    template = '/ui/common/improve_auto_form.xml'
+    actions = [Button(access='is_allowed_to_edit',
+                      name='add_record', title=MSG(u'Add'))]
+
+    def get_actions(self, resource, context):
+        return self.actions
+
+
+    def _get_action_namespace(self, resource, context):
+        # (1) Actions (submit buttons)
+        actions = []
+        for button in self.get_actions(resource, context):
+            if button.confirm:
+                confirm = button.confirm.gettext().encode('utf_8')
+                onclick = 'return confirm("%s");' % confirm
+            else:
+                onclick = None
+            actions.append(
+                {'value': button.name,
+                 'title': button.title,
+                 'class': button.css,
+                 'onclick': onclick})
+
+        return actions
+
+
+    def get_namespace(self, resource, context):
+        namespace = Table_AddRecord.get_namespace(self, resource, context)
+        # actions namespace
+        namespace['actions'] = self._get_action_namespace(resource, context)
+        return namespace
+
+
+    def action_add_record(self, resource, context, form):
+        return Table_AddRecord.action(self, resource, context, form)
+
+
+    def action_on_success(self, resource, context):
+        context.message = messages.MSG_CHANGES_SAVED
+
+
+
 class MenuSideBarTable_View(CompositeForm):
 
     access = 'is_allowed_to_edit'
     subviews = [ MenuProxyBox_Edit(), # menu folder edition view
+                 MenuSideBarTable_AddRecord(),
                  Menu_View() ]
     context_menus = [EditLanguageMenu()]
 
