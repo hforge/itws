@@ -78,6 +78,7 @@ from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import WSDataFolder_OrderedTable_View
+from ws_neutral_views import WSDataFolderBoxAwareNewInstance
 
 
 
@@ -381,6 +382,7 @@ class WSDataFolder(ManageViewAware, Folder):
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
+
 
     def get_editorial_documents_types(self):
         return [ self.parent.get_article_class() ]
@@ -848,6 +850,11 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     # Helper
     add_new_article = NeutralWS_ArticleNewInstance()
     fo_switch_mode = NeutralWS_FOSwitchMode()
+    # ws-data helper, call from ws-data, goto to ws-data
+    ws_data_new_contentbar_resource = WSDataFolderBoxAwareNewInstance(
+            is_content=True)
+    ws_data_new_sidebar_resource = WSDataFolderBoxAwareNewInstance(
+            is_side=True)
     # Order
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',

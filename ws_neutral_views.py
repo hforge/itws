@@ -46,7 +46,7 @@ from utils import set_navigation_mode_as_navigation
 from views import BaseManageLink, BaseManageContent
 from views import BaseRSS, ProxyContainerNewInstance
 from views import SmartOrderedTable_View, SmartOrderedTable_Ordered
-from views import SmartOrderedTable_Unordered
+from views import SmartOrderedTable_Unordered, BarAwareBoxAwareNewInstance
 from website import WebSite_Edit
 
 
@@ -477,7 +477,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
                                         u'view'),
                            'disable': len(available_resources) == 0})
 
-        left_items.append({'path': '/;new_contentbar_resource',
+        left_items.append({'path': '/;ws_data_new_contentbar_resource',
                            'class': 'add',
                            'title': MSG(u'Create new central part box')})
 
@@ -485,7 +485,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
                            'class': 'order child',
                            'title': MSG(u'Order central part boxes')})
 
-        right_items.append({'path': '/;new_sidebar_resource',
+        right_items.append({'path': '/;ws_data_new_sidebar_resource',
                             'class': 'add',
                             'title': MSG(u'Create new sidebar box')})
 
@@ -577,4 +577,13 @@ class WSDataFolder_OrderedTable_View(SmartOrderedTable_View):
                 form_method = getattr(view, '_get_form')
                 return form_method(resource, context)
         return None
+
+
+
+class WSDataFolderBoxAwareNewInstance(BarAwareBoxAwareNewInstance):
+
+    def _get_goto(self, resource, context, form):
+        site_root = resource.get_site_root()
+        ws_data = site_root.get_resource('ws-data')
+        return context.get_link(ws_data)
 

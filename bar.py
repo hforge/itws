@@ -185,12 +185,10 @@ class SideBar_View(Bar_View):
         if isinstance(context.resource, SideBarAware):
             buttons = Bar_View.get_manage_buttons(self, resource, context)
             section_path = context.get_link(resource)
-            repository = site_root.get_repository()
-            path = context.get_link(repository)
-            buttons.append({'path': '%s/;new_sidebar_resource' % path,
+            buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
                             'icon': '/ui/common/icons/48x48/new.png',
                             'label': MSG(u'Create new sidebar box'),
-                            'target': '_blank'})
+                            'target': None})
         else:
             # XXX What text and what icon ?
             section_path = context.get_link(resource)
@@ -220,12 +218,10 @@ class ContentBar_View(Bar_View):
         site_root = resource.get_site_root()
         buttons = Bar_View.get_manage_buttons(self, resource, context)
         section_path = context.get_link(resource)
-        repository = site_root.get_repository()
-        path = context.get_link(repository)
-        buttons.append({'path': '%s/;new_contentbar_resource' % path,
+        buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
                         'icon': '/ui/common/icons/48x48/new.png',
                         'label': MSG(u'Create new central part box'),
-                        'target': '_blank'})
+                        'target': None})
 
         return buttons
 
