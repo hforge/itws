@@ -43,7 +43,6 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
-from repository_views import BoxAwareNewInstance
 from repository_views import BoxNewsSiblingsToc_Preview
 from repository_views import BoxNewsSiblingsToc_View
 from repository_views import BoxSectionChildrenTree_View
@@ -60,7 +59,7 @@ from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
 from utils import get_path_and_view
-from views import EasyNewInstance
+from views import BoxAwareNewInstance, EasyNewInstance
 from webpage import WebPage
 
 

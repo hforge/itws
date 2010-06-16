@@ -29,6 +29,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
 from utils import get_admin_bar
+from views import BarAwareBoxAwareNewInstance
 
 
 
@@ -243,6 +244,8 @@ class SideBarAware(object):
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
         title=MSG(u'Order the sidebar boxes'))
+    new_sidebar_resource = BarAwareBoxAwareNewInstance(
+            title=MSG(u'Add Sidebar Resource'), is_side=True)
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
@@ -262,6 +265,8 @@ class ContentBarAware(object):
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
         title=MSG(u'Order the central part boxes'))
+    new_contentbar_resource = BarAwareBoxAwareNewInstance(
+            title=MSG(u'Add Central Part Resource'), is_content=True)
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):

@@ -35,7 +35,6 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.forms import SelectWidget, TextWidget
 from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.registry import get_resource_class
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View
@@ -48,83 +47,11 @@ from tags import TagsList
 from utils import to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View
-from views import ProxyContainerProxyEasyNewInstance
-from views import EasyNewInstance
 
 
 ################################################################################
 # Repository views
 ################################################################################
-class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
-
-    context_menus = []
-    schema = merge_dicts(ProxyContainerProxyEasyNewInstance.schema,
-                         class_id=String(mandatory=True))
-
-    # configuration
-    is_content = None
-    is_side = None
-
-    def get_title(self, context):
-        return self.title
-
-
-    def _get_resource_cls(self, context):
-        from repository import Box
-        return Box
-
-
-    def _get_container(self, resource, context):
-        site_root = resource.get_site_root()
-        repository = site_root.get_repository()
-        return repository
-
-
-    def get_namespace(self, resource, context):
-        namespace = EasyNewInstance.get_namespace(self, resource, context)
-        # actions namespace
-        namespace['actions'] = self._get_action_namespace(resource, context)
-        # proxy items
-        site_root = resource.get_site_root()
-        repository = site_root.get_repository()
-        document_types = repository._get_document_types(is_content=self.is_content,
-                                                        is_side=self.is_side)
-        items = []
-        selected = context.get_form_value('class_id')
-        items = [
-            {'title': x.class_title.gettext(),
-             'class_id': x.class_id,
-             'selected': x.class_id == selected,
-             'icon': '/ui/' + x.class_icon16}
-            for x in document_types ]
-        if selected is None:
-            items[0]['selected'] = True
-        namespace['items'] = items
-        # class title
-        cls = self._get_resource_cls(context)
-        namespace['class_title'] = cls.class_title
-
-        return namespace
-
-
-    def action_default(self, resource, context, form):
-        name = form['name']
-        title = form['title']
-
-        # Create the resource
-        class_id = form['class_id']
-        cls = get_resource_class(class_id)
-        container = self._get_container(resource, context)
-        child = cls.make_resource(cls, container, name)
-        # The metadata
-        metadata = child.metadata
-        language = resource.get_content_language(context)
-        metadata.set_property('title', title, language=language)
-
-        goto = self._get_goto(resource, context, form)
-        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
-
-
 
 class Repository_AddResourceMenu(AddResourceMenu):
 

@@ -438,8 +438,9 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     class_id = 'neutral'
     class_version = '20100531'
     class_title = MSG(u'neutral website')
-    class_views = ['view', 'manage_view', 'edit_ws_data', 'browse_content',
-                   'commit_log']
+    class_views = ['view', 'manage_view', 'edit_ws_data',
+                   'new_sidebar_resource', 'new_contentbar_resource',
+                   'browse_content', 'commit_log']
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name

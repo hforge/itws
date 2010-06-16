@@ -20,7 +20,8 @@
 from functools import partial
 
 # Import from itools
-from itools.datatypes import Boolean
+from itools.datatypes import Boolean, Enumerate
+from itools.gettext import MSG
 from itools.html import xhtml_uri
 from itools.stl import stl, rewrite_uris
 from itools.uri import get_reference, Path, Reference
@@ -138,6 +139,15 @@ class DualSelectWidget(SelectWidget):
             selected="${option/selected}">${option/value}</option>
         </select>
         """, stl_namespaces))
+
+
+
+class OrderBoxEnumerate(Enumerate):
+
+    options = [{'name': 'do-not-order', 'value': MSG(u'Do not order')},
+               {'name': 'order-top', 'value': MSG(u'Order top')},
+               {'name': 'order-bottom', 'value': MSG(u'Order bottom')}]
+
 
 
 ############################################################

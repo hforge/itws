@@ -27,11 +27,11 @@ from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro import messages
+from ikaaro.buttons import Button
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
-from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
-from ikaaro.forms import AutoForm, TextWidget, HTMLBody
+from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -43,7 +43,7 @@ from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage, HTMLEditView
 
 # Import from itws
-from utils import set_prefix_with_hostname
+from utils import set_prefix_with_hostname, OrderBoxEnumerate
 
 
 
@@ -322,6 +322,130 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
         cls = get_resource_class(class_id)
         container = self._get_container(resource, context)
         child = cls.make_resource(cls, container, name)
+        # The metadata
+        metadata = child.metadata
+        language = resource.get_content_language(context)
+        metadata.set_property('title', title, language=language)
+
+        goto = self._get_goto(resource, context, form)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
+
+
+
+class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
+
+    context_menus = []
+    schema = merge_dicts(ProxyContainerProxyEasyNewInstance.schema,
+                         class_id=String(mandatory=True))
+
+    # configuration
+    is_content = None
+    is_side = None
+
+    def get_title(self, context):
+        return self.title
+
+
+    def _get_resource_cls(self, context):
+        from repository import Box
+        return Box
+
+
+    def _get_container(self, resource, context):
+        site_root = resource.get_site_root()
+        repository = site_root.get_repository()
+        return repository
+
+
+    def get_namespace(self, resource, context):
+        namespace = EasyNewInstance.get_namespace(self, resource, context)
+        # actions namespace
+        namespace['actions'] = self._get_action_namespace(resource, context)
+        # proxy items
+        site_root = resource.get_site_root()
+        repository = site_root.get_repository()
+        document_types = repository._get_document_types(is_content=self.is_content,
+                                                        is_side=self.is_side)
+        items = []
+        selected = context.get_form_value('class_id')
+        items = [
+            {'title': x.class_title.gettext(),
+             'class_id': x.class_id,
+             'selected': x.class_id == selected,
+             'icon': '/ui/' + x.class_icon16}
+            for x in document_types ]
+        if selected is None:
+            items[0]['selected'] = True
+        namespace['items'] = items
+        # class title
+        cls = self._get_resource_cls(context)
+        namespace['class_title'] = cls.class_title
+
+        return namespace
+
+
+    def action_default(self, resource, context, form):
+        name = form['name']
+        title = form['title']
+
+        # Create the resource
+        class_id = form['class_id']
+        cls = get_resource_class(class_id)
+        container = self._get_container(resource, context)
+        child = cls.make_resource(cls, container, name)
+        # The metadata
+        metadata = child.metadata
+        language = resource.get_content_language(context)
+        metadata.set_property('title', title, language=language)
+
+        goto = self._get_goto(resource, context, form)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
+
+
+
+class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
+
+    widgets = freeze(BoxAwareNewInstance.widgets
+                     + [SelectRadio('order', title=MSG(u'Order box'),
+                                    has_empty_option=False)])
+
+    schema = merge_dicts(BoxAwareNewInstance.schema,
+                         order=OrderBoxEnumerate(default='not-order'))
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'order':
+            return ''
+        return BoxAwareNewInstance.get_value(self, resource, context,
+                                             name, datatype)
+
+
+    def _get_goto(self, resource, context, form):
+        return context.get_link(resource)
+
+
+    def action_default(self, resource, context, form):
+        name = form['name']
+        title = form['title']
+        order = form['order']
+
+        # Create the resource
+        class_id = form['class_id']
+        cls = get_resource_class(class_id)
+        container = self._get_container(resource, context)
+        child = cls.make_resource(cls, container, name)
+        if order != 'do-not-order':
+            if self.is_side:
+                order_table = resource.get_resource(resource.sidebar_name)
+            else:
+                order_table = resource.get_resource(resource.contentbar_name)
+
+            # Order child
+            record = order_table.add_new_record({'name': name})
+            if order == 'order-top':
+                order_table.handler.order_top([record.id])
+            else:
+                order_table.handler.order_bottom([record.id])
+
         # The metadata
         metadata = child.metadata
         language = resource.get_content_language(context)
