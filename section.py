@@ -292,7 +292,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
     edit = Section_Edit()
     order_items = GoToSpecificDocument(specific_document='order-section',
-            title=MSG(u'Order the webpages/sections'))
+            title=MSG(u'Order Webpages/Sections'))
     view = Section_View()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')

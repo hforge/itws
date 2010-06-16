@@ -239,7 +239,7 @@ class SideBarAware(object):
     order_sidebar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
-        title=MSG(u'Order the sidebar boxes'))
+        title=MSG(u'Order Sidebar Boxes'))
     new_sidebar_resource = BarAwareBoxAwareNewInstance(
             title=MSG(u'Add Sidebar Resource'), is_side=True)
 
@@ -260,7 +260,7 @@ class ContentBarAware(object):
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the central part boxes'))
+        title=MSG(u'Order Central Part Boxes'))
     new_contentbar_resource = BarAwareBoxAwareNewInstance(
             title=MSG(u'Add Central Part Resource'), is_content=True)
 

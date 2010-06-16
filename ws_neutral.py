@@ -377,7 +377,7 @@ class WSDataFolder(ManageViewAware, Folder):
     # Views
     manage_view = WSDataFolder_ManageView()
     order_articles = GoToSpecificDocument(specific_document='order-resources',
-                                          title=MSG(u'Order the webpages'),
+                                          title=MSG(u'Order Webpages'),
                                           access='is_allowed_to_edit')
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
@@ -859,15 +859,15 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document='ws-data/order-resources',
-        title=MSG(u'Order webpages'))
+        title=MSG(u'Order Webpages'))
     order_contentbar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
-        title=MSG(u'Order the central part boxes'))
+        title=MSG(u'Order Central Part Boxes'))
     order_sidebar = GoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
-        title=MSG(u'Order the sidebar boxes'))
+        title=MSG(u'Order Sidebar Boxes'))
     # Compatibility
     rss = last_news_rss = NeutralWS_RSS()
     edit_tags = GoToSpecificDocument(specific_document='tags',

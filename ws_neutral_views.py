@@ -483,7 +483,7 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
-                           'title': MSG(u'Order central part boxes')})
+                           'title': MSG(u'Order Central Part Boxes')})
 
         right_items.append({'path': '/;ws_data_new_sidebar_resource',
                             'class': 'add',

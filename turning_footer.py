@@ -188,7 +188,7 @@ class TurningFooterFolder(OrderTableAware, Folder):
 
 
     def get_document_types(self):
-        """Usefull to add images or other types of file"""
+        """Useful to add images or other types of file"""
         return [File]
 
 

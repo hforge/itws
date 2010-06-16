@@ -412,7 +412,7 @@ class BoxTags_Preview(Box_Preview):
 class BoxNewsSiblingsToc_Preview(Box_Preview):
 
     def get_details(self, resource, context):
-        return [u'Usefull in a news folder, show a Table of Content '
+        return [u'Useful in a news folder, show a Table of Content '
                 u'with all news.']
 
 
