@@ -15,5 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import sidebars
+from diaporama import Diaporama
 from menu import MenuSideBar
 from twitter import TwitterSideBar

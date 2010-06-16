@@ -29,7 +29,7 @@ from ikaaro.future.order import get_resource_preview
 from ikaaro.table_views import Table_View
 
 # Import from itws
-from repository_views import Box_View
+from itws.repository_views import Box_View
 
 
 
@@ -83,7 +83,7 @@ class Diaporama_View(Box_View):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'View')
-    template = '/ui/common/Diaporama_view.xml'
+    template = '/ui/bar_items/Diaporama_view.xml'
 
     def get_namespace(self, resource, context):
         namespace = {}

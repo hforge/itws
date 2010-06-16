@@ -34,10 +34,10 @@ from ikaaro.registry import register_resource_class
 from ikaaro.table import Table
 
 # Import from itws
-from diaporama_views import DiaporamaTable_View, Diaporama_View
-from repository import register_box, BoxAware
-from resources import OrderTableAware
-from utils import get_path_and_view
+from itws.diaporama_views import DiaporamaTable_View, Diaporama_View
+from itws.repository import register_box, BoxAware
+from itws.resources import OrderTableAware
+from itws.utils import get_path_and_view
 
 
 
