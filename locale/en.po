@@ -262,13 +262,9 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: ../bar.py:223 ../repository_views.py:111 ../ws_neutral_views.py:482
-#: ../section_views.py:359 ../repository.py:501
+#: ../bar.py:223 ../bar.py:265 ../repository_views.py:111
+#: ../ws_neutral_views.py:482 ../section_views.py:359 ../repository.py:501
 msgid "Add Central Part Box"
-msgstr ""
-
-#: ../bar.py:265
-msgid "Add Central Part Resource"
 msgstr ""
 
 #: ../rssfeeds.py:289
@@ -287,13 +283,9 @@ msgstr ""
 msgid "Add Resource: Webpage, Subsection, PDF, ODT"
 msgstr ""
 
-#: ../bar.py:190 ../repository_views.py:109 ../ws_neutral_views.py:490
-#: ../section_views.py:367 ../repository.py:498
+#: ../bar.py:190 ../bar.py:244 ../repository_views.py:109
+#: ../ws_neutral_views.py:490 ../section_views.py:367 ../repository.py:498
 msgid "Add Sidebar Box"
-msgstr ""
-
-#: ../bar.py:244
-msgid "Add Sidebar Resource"
 msgstr ""
 
 #: ../ui/addresses/Addresses_view.xml.en:8
@@ -881,6 +873,11 @@ msgstr ""
 #: ../ui/common/browse_batch.xml.en:27
 msgctxt "title attribute"
 msgid "Next »"
+msgstr ""
+
+#: ../ui/bar_items/SectionNews_view.xml.en:28
+msgctxt "div"
+msgid "No news to show"
 msgstr ""
 
 #: ../section_views.py:131

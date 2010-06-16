@@ -241,7 +241,7 @@ class SideBarAware(object):
         specific_document=sidebar_name,
         title=MSG(u'Order Sidebar Boxes'))
     new_sidebar_resource = BarAwareBoxAwareNewInstance(
-            title=MSG(u'Add Sidebar Resource'), is_side=True)
+            title=MSG(u'Add Sidebar Box'), is_side=True)
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
@@ -262,7 +262,7 @@ class ContentBarAware(object):
         specific_document=contentbar_name,
         title=MSG(u'Order Central Part Boxes'))
     new_contentbar_resource = BarAwareBoxAwareNewInstance(
-            title=MSG(u'Add Central Part Resource'), is_content=True)
+            title=MSG(u'Add Central Part Box'), is_content=True)
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):

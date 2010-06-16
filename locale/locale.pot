@@ -83,15 +83,12 @@ msgid "Add"
 msgstr ""
 
 #: ../bar.py:223
+#: ../bar.py:265
 #: ../repository_views.py:111
 #: ../ws_neutral_views.py:482
 #: ../section_views.py:359
 #: ../repository.py:501
 msgid "Add Central Part Box"
-msgstr ""
-
-#: ../bar.py:265
-msgid "Add Central Part Resource"
 msgstr ""
 
 #: ../rssfeeds.py:289
@@ -111,15 +108,12 @@ msgid "Add Resource: Webpage, Subsection, PDF, ODT"
 msgstr ""
 
 #: ../bar.py:190
+#: ../bar.py:244
 #: ../repository_views.py:109
 #: ../ws_neutral_views.py:490
 #: ../section_views.py:367
 #: ../repository.py:498
 msgid "Add Sidebar Box"
-msgstr ""
-
-#: ../bar.py:244
-msgid "Add Sidebar Resource"
 msgstr ""
 
 #: ../ws_neutral.py:308
@@ -1159,6 +1153,11 @@ msgstr ""
 #: ../ui/neutral/addlink.xml.en:48
 msgctxt "div"
 msgid "Message:"
+msgstr ""
+
+#: ../ui/bar_items/SectionNews_view.xml.en:28
+msgctxt "div"
+msgid "No news to show"
 msgstr ""
 
 #: ../ui/common/Tags_tagcloud.xml.en:8
