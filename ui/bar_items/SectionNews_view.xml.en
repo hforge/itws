@@ -22,4 +22,11 @@
     </div>
   </stl:block>
 
+  <stl:block stl:if="not items">
+    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
+    <div class="content">
+      No news to show
+    </div>
+  </stl:block>
+
 </stl:block>
