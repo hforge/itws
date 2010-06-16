@@ -28,6 +28,7 @@ from ikaaro.future.menu import MenuFolder, get_menu_namespace
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.table import Table_AddRecord
+from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -131,12 +132,21 @@ class MenuSideBarTable_AddRecord(Table_AddRecord):
 
 
 
-class MenuSideBarTable_View(CompositeForm):
+class MenuSideBarTable_View(Menu_View):
+
+    table_actions = OrderedTable_View.table_actions
+
+    def get_table_columns(self, resource, context):
+        base_columns = Menu_View.get_table_columns(self, resource, context)
+        return [ column for column in base_columns if column[0] != 'child' ]
+
+
+class MenuSideBarTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
     subviews = [ MenuProxyBox_Edit(), # menu folder edition view
                  MenuSideBarTable_AddRecord(),
-                 Menu_View() ]
+                 MenuSideBarTable_View() ]
     context_menus = [EditLanguageMenu()]
 
 
@@ -144,7 +154,7 @@ class MenuSideBarTable_View(CompositeForm):
 class MenuSideBarTable(Menu):
 
     class_id = 'box-menu-table'
-    view = MenuSideBarTable_View(title=Menu_View.title)
+    view = MenuSideBarTable_CompositeView(title=Menu_View.title)
 
 
 
