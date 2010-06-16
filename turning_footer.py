@@ -154,6 +154,7 @@ class TurningFooterTable(OrderedTable):
 class TurningFooterFolder(OrderTableAware, Folder):
 
     class_id = 'turning-footer-folder'
+    class_version = '20100616'
     class_title = MSG(u'Turning Footer Folder')
     order_class = TurningFooterTable
     order_path = 'menu'
