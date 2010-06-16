@@ -40,7 +40,7 @@ class WebPage(BaseWebPage, TagsAware):
     def get_metadata_schema(cls):
         schema = merge_dicts(BaseWebPage.get_metadata_schema(),
                              TagsAware.get_metadata_schema(),
-                             display_title=Boolean,
+                             display_title=Boolean(default=True),
                              state=String(default='public'))
         return schema
 
