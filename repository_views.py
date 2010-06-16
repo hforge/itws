@@ -106,9 +106,9 @@ class Repository_BrowseContent(Folder_BrowseContent):
                                sort_by=String(default='format'))
 
     context_menus = [ Repository_AddResourceMenu(is_side=True,
-                          title=MSG(u'Add Sidebar Resource')),
+                          title=MSG(u'Add Sidebar Box')),
                       Repository_AddResourceMenu(is_content=True,
-                          title=MSG(u'Add Central Part Resource'))]
+                          title=MSG(u'Add Central Part Box'))]
 
     links_template = list(XMLParser("""
         <stl:block stl:repeat="item items">

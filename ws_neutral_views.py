@@ -473,13 +473,13 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-resources',
                            'class': 'order child',
-                           'title': MSG(u'Order webpages in the homepage '
-                                        u'view'),
+                           'title': MSG(u'Order Webpages in the Homepage '
+                                        u'View'),
                            'disable': len(available_resources) == 0})
 
         left_items.append({'path': '/;ws_data_new_contentbar_resource',
                            'class': 'add',
-                           'title': MSG(u'Create new central part box')})
+                           'title': MSG(u'Add Central Part Box')})
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
@@ -487,11 +487,11 @@ class WSDataFolder_ManageLink(BaseManageLink):
 
         right_items.append({'path': '/;ws_data_new_sidebar_resource',
                             'class': 'add',
-                            'title': MSG(u'Create new sidebar box')})
+                            'title': MSG(u'Add Sidebar Box')})
 
         right_items.append({'path': './;order_sidebar',
                             'class': 'order child',
-                            'title': MSG(u'Order sidebar boxes')})
+                            'title': MSG(u'Order Sidebar Boxes')})
 
         return [{'items': left_items, 'class': 'left'},
                 {'items': right_items, 'class': 'right'}]

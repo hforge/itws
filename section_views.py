@@ -345,30 +345,30 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order webpages in the section '
-                                        u'view'),
+                           'title': MSG(u'Order Webpages in the Section '
+                                        u'View'),
                            'disable': len(available_articles) == 0})
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order subsections in the TOC'),
+                           'title': MSG(u'Order Subsections in the TOC'),
                            'disable': len(available_sections) == 0})
 
         left_items.append({'path': './;new_contentbar_resource',
                            'class': 'add',
-                           'title': MSG(u'Create new central part box')})
+                           'title': MSG(u'Add Central Part Box')})
 
         left_items.append({'path': './;order_contentbar',
                            'class': 'order child',
-                           'title': MSG(u'Order central part boxes')})
+                           'title': MSG(u'Order Central Part Boxes')})
 
         right_items.append({'path': './;new_sidebar_resource',
                             'class': 'add',
-                            'title': MSG(u'Create new sidebar box')})
+                            'title': MSG(u'Add Sidebar Box')})
 
         right_items.append({'path': './;order_sidebar',
                             'class': 'order child',
-                            'title': MSG(u'Order sidebar boxes')})
+                            'title': MSG(u'Order Sidebar Boxes')})
 
         return [{'items': left_items, 'class': 'left'},
                 {'items': right_items, 'class': 'right'}]

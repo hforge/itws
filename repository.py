@@ -495,10 +495,10 @@ class Repository(Folder):
     website_articles_view_name = 'website-articles-view'
 
     new_resource = None
-    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Resource'),
+    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Box'),
                                                is_side=True)
-    new_contentbar_resource = BoxAwareNewInstance(title=MSG(u'Add Central Part Resource'),
-                                                  is_content=True)
+    new_contentbar_resource = BoxAwareNewInstance(
+            title=MSG(u'Add Central Part Box'), is_content=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')

@@ -187,7 +187,7 @@ class SideBar_View(Bar_View):
             section_path = context.get_link(resource)
             buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
                             'icon': '/ui/common/icons/48x48/new.png',
-                            'label': MSG(u'Create new sidebar box'),
+                            'label': MSG(u'Add Sidebar Box'),
                             'target': None})
         else:
             # XXX What text and what icon ?
@@ -220,7 +220,7 @@ class ContentBar_View(Bar_View):
         section_path = context.get_link(resource)
         buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
                         'icon': '/ui/common/icons/48x48/new.png',
-                        'label': MSG(u'Create new central part box'),
+                        'label': MSG(u'Add Central Part Box'),
                         'target': None})
 
         return buttons
