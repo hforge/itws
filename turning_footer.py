@@ -27,13 +27,14 @@ from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import File
+from ikaaro.folder import Folder
 from ikaaro.forms import XHTMLBody, RTEWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
 from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
-from diaporama import Diaporama
+from resources import OrderTableAware
 from turning_footer_views import TurningFooterFile_EditRecord
 from turning_footer_views import TurningFooterFile_View
 from turning_footer_views import TurningFooterFolder_Edit
@@ -150,22 +151,39 @@ class TurningFooterTable(OrderedTable):
 
 
 
-class TurningFooterFolder(Diaporama):
+class TurningFooterFolder(OrderTableAware, Folder):
 
     class_id = 'turning-footer-folder'
     class_title = MSG(u'Turning Footer Folder')
     order_class = TurningFooterTable
     order_path = 'menu'
-    __fixed_handlers__ = Diaporama.__fixed_handlers__ + [order_path]
+    __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
     edit = TurningFooterFolder_Edit()
     view = TurningFooterFolder_View()
 
+
+    @staticmethod
+    def _make_resource(cls, folder, name, **kw):
+        Folder._make_resource(cls, folder, name, **kw)
+        OrderTableAware._make_resource(cls, folder, name, **kw)
+
+
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(Diaporama.get_metadata_schema(),
+        return merge_dicts(Folder.get_metadata_schema(),
                            random=Boolean(default=True),
                            active=Boolean(default=True))
+
+
+    def get_title(self, language=None, fallback=True):
+        title = self.get_property('title', language=language)
+        if title:
+            return title
+        if fallback:
+            # Fallback to the resource's name
+            return Folder.get_title(self, language)
+        return u''
 
 
     def get_document_types(self):
