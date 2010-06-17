@@ -61,8 +61,7 @@ class MenuProxyBox_Edit(DBResource_Edit):
     schema = {'title': Unicode(multilingual=True),
               'timestamp': DateTime(readonly=True, ignore=True)}
 
-    widgets = [timestamp_widget,
-               title_widget]
+    widgets = [timestamp_widget, title_widget]
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':
@@ -149,6 +148,15 @@ class MenuSideBarTable_CompositeView(CompositeForm):
                  MenuSideBarTable_View() ]
     context_menus = [EditLanguageMenu()]
 
+    def get_namespace(self, resource, context):
+        # XXX Force GET to avoid problem in STLForm.get_namespace
+        # side effect unknown
+        real_method = context.method
+        context.method = 'GET'
+        views = [ view.GET(resource, context) for view in self.subviews ]
+        context.method = real_method
+        return {'views': views}
+
 
 
 class MenuSideBarTable(Menu):
@@ -173,7 +181,7 @@ class MenuSideBar(BoxAware, MenuFolder):
     edit = AdvanceGoToSpecificDocument(
             specific_document='menu', specific_method='edit',
             title=MenuFolder.edit.title, keep_query=True)
-    
+
     use_fancybox = False
 
     def update_20100616(self):

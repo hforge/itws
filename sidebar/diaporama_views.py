@@ -19,17 +19,22 @@ from copy import deepcopy
 from random import choice
 
 # Import from itools
-from itools.datatypes import XMLContent
+from itools.datatypes import DateTime, Unicode, XMLContent
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro import messages
+from ikaaro.forms import title_widget, timestamp_widget
 from ikaaro.future.order import get_resource_preview
+from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.table_views import Table_View
+from ikaaro.views import CompositeForm
 
 # Import from itws
 from itws.repository_views import Box_View
+from itws.sidebar.menu import MenuSideBarTable_AddRecord
 
 
 
@@ -76,6 +81,63 @@ class DiaporamaTable_View(Table_View):
             reference2 = XMLContent.encode(str(reference2))
             return XMLParser('<a href="%s">%s</a>' % (reference2, reference))
         return Table_View.get_item_value(self, resource, context, item, column)
+
+
+
+class DiaporamaTable_AddRecord(MenuSideBarTable_AddRecord):
+
+    pass
+
+
+
+class DiaporamaProxyBox_Edit(DBResource_Edit):
+
+    schema = {'title': Unicode(multilingual=True),
+              'timestamp': DateTime(readonly=True, ignore=True)}
+
+    widgets = [timestamp_widget, title_widget]
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'title':
+            language = resource.get_content_language(context)
+            return resource.parent.get_property(name, language=language)
+        return DBResource_Edit.get_value(self, resource, context, name,
+                                         datatype)
+
+
+    def action(self, resource, context, form):
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        # Save changes
+        title = form['title']
+        language = resource.get_content_language(context)
+        # Set title to menufolder
+        resource.parent.set_property('title', title, language=language)
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
+
+
+
+class DiaporamaTable_CompositeView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+    title = DiaporamaTable_View.title
+    subviews = [ DiaporamaProxyBox_Edit(), # diaporama folder edition view
+                 DiaporamaTable_AddRecord(),
+                 DiaporamaTable_View() ]
+    context_menus = [EditLanguageMenu()]
+
+    def get_namespace(self, resource, context):
+        # XXX Force GET to avoid problem in STLForm.get_namespace
+        # side effect unknown
+        real_method = context.method
+        context.method = 'GET'
+        views = [ view.GET(resource, context) for view in self.subviews ]
+        context.method = real_method
+        return {'views': views}
 
 
 

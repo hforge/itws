@@ -36,7 +36,8 @@ from ikaaro.table import Table
 # Import from itws
 from itws.repository import register_box, BoxAware
 from itws.resources import OrderTableAware
-from itws.sidebar.diaporama_views import DiaporamaTable_View, Diaporama_View
+from itws.sidebar.diaporama_views import DiaporamaTable_CompositeView
+from itws.sidebar.diaporama_views import Diaporama_View
 from itws.utils import get_path_and_view
 
 
@@ -60,7 +61,7 @@ class DiaporamaTable(Table):
     class_id = 'diaporama-table'
     class_handler = DiaporamaTableFile
 
-    view = DiaporamaTable_View()
+    view = DiaporamaTable_CompositeView()
 
     form = [ImageSelectorWidget('img_path', title=MSG(u'Image path')),
             PathSelectorWidget('img_link', title=MSG(u'Image link')),
