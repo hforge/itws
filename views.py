@@ -286,11 +286,11 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
             else:
                 selected = context.get_form_value('class_id')
                 items = [
-                    {'title': x.class_title.gettext(),
-                     'class_id': x.class_id,
-                     'selected': x.class_id == selected,
-                     'icon': '/ui/' + x.class_icon16}
-                    for x in document_types ]
+                    {'title': cls.class_title,
+                     'class_id': cls.class_id,
+                     'selected': cls.class_id == selected,
+                     'icon': '/ui/' + cls.class_icon16}
+                    for cls in document_types ]
                 if selected is None:
                     items[0]['selected'] = True
         namespace['items'] = items
@@ -367,14 +367,14 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
         repository = site_root.get_repository()
         document_types = repository._get_document_types(is_content=self.is_content,
                                                         is_side=self.is_side)
-        items = []
         selected = context.get_form_value('class_id')
         items = [
-            {'title': x.class_title.gettext(),
-             'class_id': x.class_id,
-             'selected': x.class_id == selected,
-             'icon': '/ui/' + x.class_icon16}
-            for x in document_types ]
+            {'title': cls.class_title,
+             'description': cls.class_description,
+             'class_id': cls.class_id,
+             'selected': cls.class_id == selected,
+             'icon': '/ui/' + cls.class_icon16}
+            for cls in document_types ]
         if selected is None:
             items[0]['selected'] = True
         namespace['items'] = items
@@ -406,12 +406,13 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
 
 class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
+    schema = merge_dicts(BoxAwareNewInstance.schema,
+                         order=OrderBoxEnumerate(default='not-order'))
+
     widgets = freeze(BoxAwareNewInstance.widgets
                      + [SelectRadio('order', title=MSG(u'Order box'),
                                     has_empty_option=False)])
 
-    schema = merge_dicts(BoxAwareNewInstance.schema,
-                         order=OrderBoxEnumerate(default='not-order'))
 
     def get_value(self, resource, context, name, datatype):
         if name == 'order':
