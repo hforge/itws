@@ -332,27 +332,17 @@ class Section_ManageLink(BaseManageLink):
                            'title': MSG(u'Add Resource: Webpage, Subsection, '
                                         u'PDF, ODT')})
 
-        left_items.append({'path': './;browse_content',
-                           'class': 'edit',
-                           'title': MSG(u'Manage section content '
-                                        u'(cut, copy, rename, remove)')})
-
-        # Do not show the link if there is nothing to order
-        section_cls = resource.get_subsection_class()
-        article_cls = resource.get_article_class()
-        available_sections = list(resource.search_resources(cls=section_cls))
-        available_articles = list(resource.search_resources(cls=article_cls))
+        left_items.append({'path': './order-section',
+                           'class': 'add',
+                           'title': MSG(u'Add Webpages in the Section View')})
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order Webpages in the Section '
-                                        u'View'),
-                           'disable': len(available_articles) == 0})
+                           'title': MSG(u'Order Webpages in the Section View')})
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order Subsections in the TOC'),
-                           'disable': len(available_sections) == 0})
+                           'title': MSG(u'Order Subsections in the TOC')})
 
         left_items.append({'path': './;new_contentbar_resource',
                            'class': 'add',

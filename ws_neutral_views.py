@@ -464,18 +464,13 @@ class WSDataFolder_ManageLink(BaseManageLink):
                            'class': 'add',
                            'title': MSG(u'Add Resource: Webpage, PDF, ODT...')})
 
-        # Order resources
-        # Do not show the link if there is nothing to order
-        available_resources = []
-        for cls in ordered_classes:
-            l = [ x for x in resource.search_resources(cls=cls) ]
-            available_resources.extend(l)
+        left_items.append({'path': './order-resources',
+                           'class': 'add',
+                           'title': MSG(u'Add Webpages in the Homepage View')})
 
         left_items.append({'path': './order-resources',
                            'class': 'order child',
-                           'title': MSG(u'Order Webpages in the Homepage '
-                                        u'View'),
-                           'disable': len(available_resources) == 0})
+                           'title': MSG(u'Order Webpages in the Homepage View')})
 
         left_items.append({'path': '/;ws_data_new_contentbar_resource',
                            'class': 'add',
