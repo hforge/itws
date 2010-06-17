@@ -4,17 +4,16 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div id="diaporama">
-    <h3 stl:if="title" class="title">${title}</h3>
-    <div id="banners-folder-image" stl:if="banner">
-      <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
-        target="${banner/target}">
-        <img src="${banner/img_path}" alt="${banner/description}" />
-      </a>
-    </div>
-    <div class="content" stl:if="not banner">
-      No banner to show
-    </div>
+  <h3 stl:if="title" class="title">${title}</h3>
+  <div class="content" stl:if="banner">
+    <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
+      target="${banner/target}">
+      <img src="${banner/img_path}" alt="${banner/description}" />
+    </a>
+  </div>
+
+  <div class="content" stl:if="not banner">
+    No banner to show
   </div>
 
 </stl:block>
