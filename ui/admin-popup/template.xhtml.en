@@ -20,25 +20,33 @@
   <h1>${title}</h1>
   <ul id="content-languages">
     <li stl:repeat="language content_languages">
-      <a href="${language/href}" class="${language/class}">${language/title}</a>
+      <a href="${language/href}" class="${language/class}" rel="fancybox">${language/title}</a>
     </li>
   </ul>
   <div class="clear"/>
+  <div id="popup-message" style="display:none">${message}</div>
   <fieldset stl:if="description">
     <legend>Description of this box</legend>
     ${description}
   </fieldset>
   <div class="clear"/>
-  ${message}
   ${body}
   <script>
+    <![CDATA[
     $(document).ready(function() {
-      // Close if form success
-      if($('.info').length > 0){
-        parent.window.location.reload();
-        parent.$.fancybox.close();
-      }
+      // Open links in parent window, not in fancybox
+      $('a[rel!="fancybox"]').each(function(){
+        $(this).click(function(){
+          parent.window.location.href = $(this).attr('href');
+          parent.$.fancybox.close();
+        });
+      });
+
+      // Effect on info message
+      $('#popup-message').fadeIn('slow');
+
     });
+    ]]>
   </script>
 </body>
 </html>

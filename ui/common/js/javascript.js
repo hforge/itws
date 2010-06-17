@@ -32,6 +32,7 @@ $(document).ready(function() {
        'href': this.href + '?is_admin_popup=1',
        'overlayColor': '#729FCF',
        'overlayOpacity': 0.8,
+       'onClosed': function() { window.location.reload()},
        'height': 550,
        'centerOnScroll': true});
     return false;
