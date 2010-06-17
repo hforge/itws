@@ -21,11 +21,13 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody
+from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody, SelectWidget
 from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 
 # Import from itws
+from datatypes import StateEnumerate
 from tags import TagsAware_Edit
+
 
 
 class WebPage_Edit(HTMLEditView, TagsAware_Edit):
@@ -33,6 +35,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
     def get_schema(self, resource, context):
         return merge_dicts(HTMLEditView.get_schema(self, resource, context),
                            TagsAware_Edit.get_schema(self, resource, context),
+                           state=StateEnumerate,
                            display_title=Boolean)
 
 
@@ -53,6 +56,9 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
                                    toolbar2=toolbar2, plugins=plugins))
             else:
                 new_widgets.append(widget)
+
+        new_widgets.append(SelectWidget('state', title=MSG(u'State'),
+                                        has_empty_option=False))
 
         return new_widgets
 
@@ -75,6 +81,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
             return
         display_title = form['display_title']
         resource.set_property('display_title', display_title)
+        resource.set_property('state', form['state'])
 
         # Customize message for webpage which can be ordered
         site_root = resource.get_site_root()
