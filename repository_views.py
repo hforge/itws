@@ -254,8 +254,7 @@ class Box_Edit(DBResource_Edit):
     base_schema = {'title': Unicode(multilingual=True),
                    'timestamp': DateTime(readonly=True, ignore=True)}
 
-    base_widgets = [timestamp_widget,
-                    title_widget]
+    base_widgets = [title_widget, timestamp_widget]
 
     def get_schema(self, resource, context):
         state_schema = {}
