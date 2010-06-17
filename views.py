@@ -34,16 +34,20 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
+from ikaaro.forms import SelectWidget, description_widget, subject_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.registry import get_resource_class, get_document_types
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.utils import get_base_path_query
 from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage, HTMLEditView
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
+from datatypes import StateEnumerate
 from utils import set_prefix_with_hostname, OrderBoxEnumerate
 
 
@@ -985,3 +989,50 @@ class NotFoundPage_Edit(HTMLEditView):
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
 
+
+
+
+class AutomaticEditView(DBResource_Edit):
+
+    base_schema = {'title': Unicode(multilingual=True),
+                   'timestamp': DateTime(readonly=True, ignore=True)}
+
+    base_widgets = [title_widget, timestamp_widget]
+
+
+    def get_schema(self, resource, context):
+        schema = {}
+        if isinstance(resource, WorkflowAware):
+            schema['state'] = StateEnumerate
+        if getattr(resource, 'edit_show_meta', False) is True:
+            schema['description'] = Unicode(multilingual=True)
+            schema['subject'] = Unicode(multilingual=True)
+        return merge_dicts(self.base_schema, schema, resource.edit_schema)
+
+
+    def get_widgets(self, resource, context):
+        widgets = []
+        if isinstance(resource, WorkflowAware):
+            widgets.append(SelectWidget('state', title=MSG(u'Box state'),
+                                          has_empty_option=False))
+        if getattr(resource, 'edit_show_meta', False) is True:
+            widgets.extend([description_widget, subject_widget])
+        return self.base_widgets + widgets + resource.edit_widgets
+
+
+    def action(self, resource, context, form):
+        self.check_edit_conflict(resource, context, form)
+        # Check edit conflict
+        if context.edit_conflict:
+            return
+        # Save changes
+        language = resource.get_content_language(context)
+        for key, datatype in self.get_schema(resource, context).items():
+            if getattr(datatype, 'ignore', False) is True:
+                continue
+            elif getattr(datatype, 'multilingual', False) is True:
+                resource.set_property(key, form[key], language=language)
+            else:
+                resource.set_property(key, form[key])
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED

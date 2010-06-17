@@ -36,8 +36,9 @@ from ikaaro.registry import register_resource_class
 
 # Import from itws
 from itws.repository import Box, register_box
-from itws.repository_views import Box_View, Box_Edit
+from itws.repository_views import Box_View
 from itws.resources import ResourceWithCache
+from itws.views import AutomaticEditView
 
 
 
@@ -93,11 +94,11 @@ class TwitterSideBar_View(Box_View):
 
 
 
-class TwitterSideBar_Edit(Box_Edit):
+class TwitterSideBar_Edit(AutomaticEditView):
 
 
     def action(self, resource, context, form):
-        Box_Edit.action(self, resource, context, form)
+        AutomaticEditView.action(self, resource, context, form)
         if context.edit_conflict and form['force_update'] is True:
             resource._update_data()
 
@@ -115,13 +116,13 @@ class TwitterSideBar(Box, ResourceWithCache):
 
     # Item configuration
 
-    box_schema = {'user_id': TwitterID(mandatory=True),
+    edit_schema = {'user_id': TwitterID(mandatory=True),
                   'user_name': String(mandatory=True),
                   'limit': Integer(mandatory=True, default=5, size=3),
                   'force_update': Boolean}
 
 
-    box_widgets = [TextWidget('user_name',
+    edit_widgets = [TextWidget('user_name',
                               title=MSG(u"Twitter account name")),
                    TextWidget('user_id', title=MSG(u"User Id")),
                    TextWidget('limit', title=MSG(u'Number of tweet')),
@@ -137,7 +138,7 @@ class TwitterSideBar(Box, ResourceWithCache):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(Box.get_metadata_schema(),
-                           cls.box_schema)
+                           cls.edit_schema)
 
 
     def _update_data(self):

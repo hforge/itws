@@ -52,14 +52,14 @@ from repository_views import BoxSectionNews_View
 from repository_views import BoxSectionWebpages_View
 from repository_views import BoxTags_View, BoxTags_Preview
 from repository_views import BoxWebsiteWebpages_View
-from repository_views import Box_Edit, Box_Preview
+from repository_views import Box_Preview
 from repository_views import BoxesOrderedTable_View
 from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
 from utils import get_path_and_view
-from views import BoxAwareNewInstance, EasyNewInstance
+from views import AutomaticEditView, BoxAwareNewInstance, EasyNewInstance
 from webpage import WebPage
 
 
@@ -106,12 +106,12 @@ def get_bar_item_registry():
 
 class BoxAware(object):
 
-    edit = Box_Edit()
+    edit = AutomaticEditView()
     new_instance = EasyNewInstance()
     preview = order_preview = Box_Preview()
 
-    box_schema = {}
-    box_widgets = []
+    edit_schema = {}
+    edit_widgets = []
 
 
 
@@ -126,7 +126,7 @@ class Box(BoxAware, File):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(File.get_metadata_schema(),
-                           cls.box_schema,
+                           cls.edit_schema,
                            state=String(default='public'))
 
 
@@ -139,7 +139,7 @@ class BoxSectionNews(Box):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
-    box_schema = {
+    edit_schema = {
         'tags': String(multiple=True),
         'count': PositiveInteger(default=0)
         }
@@ -164,12 +164,12 @@ class HTMLContent(WebPage):
 
 
     # Configuration of box for EditView
-    box_schema = {'title_link': String,
+    edit_schema = {'title_link': String,
                   'title_link_target': Target,
                   'data': HTMLBody(ignore=True),
                   'display_title': Boolean}
 
-    box_widgets = [
+    edit_widgets = [
         BooleanCheckBox('display_title',
                         title=MSG(u'Display on webpage view')),
         PathSelectorWidget('title_link', title=MSG(u'Title link')),
@@ -268,12 +268,12 @@ class BoxTags(Box):
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
-    box_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
+    edit_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
                   'count':PositiveInteger(default=0),
                   'show_number': Boolean,
                   'random': Boolean}
 
-    box_widgets = [
+    edit_widgets = [
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         BooleanCheckBox('show_number',
@@ -306,8 +306,8 @@ class BoxSectionChildrenToc(Box):
                             u'subsections and webpages')
 
     # Box comfiguration
-    box_schema = hide_single_schema
-    box_widgets = [hide_single_widget]
+    edit_schema = hide_single_schema
+    edit_widgets = [hide_single_widget]
 
     # Views
     view = BoxSectionChildrenTree_View()
@@ -322,10 +322,10 @@ class BoxNewsSiblingsToc(Box):
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
-    box_schema = merge_dicts(hide_single_schema,
+    edit_schema = merge_dicts(hide_single_schema,
                              count=PositiveInteger(default=30))
 
-    box_widgets = [
+    edit_widgets = [
         hide_single_widget,
         TextWidget('count', size=3,
                    title=MSG(u'Maximum number of news to display'))
@@ -377,8 +377,8 @@ class ContentBoxSectionChildrenToc(Box):
     class_views = ['edit_state', 'backlinks']
 
     # Box configuration
-    box_schema = hide_single_schema
-    box_widgets = [hide_single_widget]
+    edit_schema = hide_single_schema
+    edit_widgets = [hide_single_widget]
 
     # Views
     view = ContentBoxSectionChildrenToc_View()

@@ -28,13 +28,12 @@ from itools.xapian import PhraseQuery, AndQuery, NotQuery
 from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget
-from ikaaro.forms import XHTMLBody, TextWidget
-from ikaaro.resource_views import DBResource_AddImage, DBResource_Edit
+from ikaaro.forms import XHTMLBody
+from ikaaro.resource_views import DBResource_AddImage
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from datatypes import PositiveIntegerNotNull
 from utils import xml_to_text, XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS
 from views import ProxyContainerNewInstance
@@ -191,29 +190,6 @@ class NewsItem_Edit(WebPage_Edit):
                                  u'the news visible'))
 
             context.message = messages
-
-
-
-class NewsFolder_Edit(DBResource_Edit):
-
-    schema = merge_dicts(DBResource_Edit.schema,
-                         batch_size=PositiveIntegerNotNull)
-
-    def get_widgets(self, resource, context):
-        widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
-        batch_size_widget = TextWidget('batch_size', title=MSG(u'Batch size'),
-                                       size=3)
-        widgets.insert(2, batch_size_widget)
-        return widgets
-
-
-    def action(self, resource, context, form):
-        DBResource_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        resource.set_property('batch_size', form['batch_size'])
 
 
 

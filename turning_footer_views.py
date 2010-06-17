@@ -18,16 +18,13 @@
 from random import choice
 
 # Import from itools
-from itools.datatypes import DateTime, Unicode, Integer, Boolean
+from itools.datatypes import Unicode, Integer
 from itools.gettext import MSG
 from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro import messages
-from ikaaro.forms import BooleanCheckBox, TextWidget, XHTMLBody, HTMLBody
-from ikaaro.forms import timestamp_widget
-from ikaaro.resource_views import DBResource_Edit
+from ikaaro.forms import XHTMLBody, HTMLBody
 from ikaaro.table import OrderedTable_View, Table_EditRecord
 
 
@@ -72,39 +69,6 @@ class TurningFooterFile_EditRecord(Table_EditRecord):
             return HTMLBody.decode(value)
         return Table_EditRecord.get_value(self, resource, context, name,
                                           datatype)
-
-
-
-class TurningFooterFolder_Edit(DBResource_Edit):
-
-
-    schema = {'timestamp': DateTime(readonly=True),
-              'title': Unicode(multilingual=True),
-              'random': Boolean,
-              'active': Boolean}
-
-    widgets = [timestamp_widget,
-               TextWidget('title', title=MSG(u'Title')),
-               BooleanCheckBox('random', title=MSG(u'Random selection')),
-               BooleanCheckBox('active', title=MSG(u'Is active'))]
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        language = resource.get_content_language(context)
-        for key, datatype in self.get_schema(resource, context).items():
-            if key == 'timestamp':
-                continue
-            elif getattr(datatype, 'multilingual', False) is True:
-                resource.set_property(key, form[key], language)
-            else:
-                resource.set_property(key, form[key])
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
 
 
 

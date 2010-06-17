@@ -21,7 +21,7 @@ from warnings import warn
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String, DateTime, Unicode
+from itools.datatypes import String
 from itools.datatypes import Integer, Enumerate
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
@@ -30,23 +30,20 @@ from itools.xapian import AndQuery, PhraseQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro import messages
 from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.forms import SelectWidget, TextWidget
-from ikaaro.forms import stl_namespaces, title_widget, timestamp_widget
+from ikaaro.forms import stl_namespaces
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View
 from ikaaro.website import WebSite
-from ikaaro.workflow import WorkflowAware
 
 # Import from itws
-from datatypes import PositiveInteger, StateEnumerate
+from datatypes import PositiveInteger
 from tags import TagsList
 from utils import to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
-from views import SmartOrderedTable_View
+from views import SmartOrderedTable_View, AutomaticEditView
 
 
 ################################################################################
@@ -244,59 +241,9 @@ class BoxesOrderedTable_View(SmartOrderedTable_View):
 
 
 ################################################################################
-# Base classes edit views
-################################################################################
-class Box_Edit(DBResource_Edit):
-
-    title = MSG(u'Edit')
-    access = 'is_allowed_to_edit'
-
-    base_schema = {'title': Unicode(multilingual=True),
-                   'timestamp': DateTime(readonly=True, ignore=True)}
-
-    base_widgets = [title_widget, timestamp_widget]
-
-    def get_schema(self, resource, context):
-        state_schema = {}
-        if isinstance(resource, WorkflowAware):
-            state_schema = {'state': StateEnumerate}
-        return merge_dicts(self.base_schema, resource.box_schema, state_schema)
-
-
-    def get_widgets(self, resource, context):
-        state_widgets = []
-        if isinstance(resource, WorkflowAware):
-            state_widgets = [SelectWidget('state', title=MSG(u'Box state'),
-                                          has_empty_option=False)]
-        return self.base_widgets + state_widgets + resource.box_widgets
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        language = resource.get_content_language(context)
-        for key, datatype in self.get_schema(resource, context).items():
-            if getattr(datatype, 'ignore', False):
-                # Skip datatype like timestamp or html data
-                continue
-            elif getattr(datatype, 'multilingual', False) is True:
-                resource.set_property(key, form[key], language)
-            else:
-                resource.set_property(key, form[key])
-
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-
-
-
-################################################################################
 # Bar edit views
 ################################################################################
-class BoxSectionNews_Edit(Box_Edit):
+class BoxSectionNews_Edit(AutomaticEditView):
 
     def _get_news_folder(self, resource, context):
         site_root = resource.get_site_root()
@@ -306,7 +253,7 @@ class BoxSectionNews_Edit(Box_Edit):
 
     def get_schema(self, resource, context):
         # Base schema
-        schema = Box_Edit.get_schema(self, resource, context)
+        schema = AutomaticEditView.get_schema(self, resource, context)
         # News folder
         newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
@@ -319,7 +266,7 @@ class BoxSectionNews_Edit(Box_Edit):
 
     def get_widgets(self, resource, context):
         # base widgets
-        widgets = Box_Edit.get_widgets(self, resource, context)[:]
+        widgets = AutomaticEditView.get_widgets(self, resource, context)[:]
 
         # News folder
         newsfolder = self._get_news_folder(resource, context)
@@ -334,7 +281,7 @@ class BoxSectionNews_Edit(Box_Edit):
 
 
     def action(self, resource, context, form):
-        Box_Edit.action(self, resource, context, form)
+        AutomaticEditView.action(self, resource, context, form)
         # Check edit conflict
         if context.edit_conflict:
             return
@@ -416,18 +363,18 @@ class BoxNewsSiblingsToc_Preview(Box_Preview):
 
 
 
-class HTMLContent_Edit(Box_Edit):
+class HTMLContent_Edit(AutomaticEditView):
 
 
     def get_value(self, resource, context, name, datatype):
         if name == 'data':
             language = resource.get_content_language(context)
             return resource.get_html_data(language=language)
-        return Box_Edit.get_value(self, resource, context, name, datatype)
+        return AutomaticEditView.get_value(self, resource, context, name, datatype)
 
 
     def action(self, resource, context, form):
-        Box_Edit.action(self, resource, context, form)
+        AutomaticEditView.action(self, resource, context, form)
         if context.edit_conflict:
             return
         new_body = form['data']

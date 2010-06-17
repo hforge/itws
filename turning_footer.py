@@ -28,7 +28,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
-from ikaaro.forms import XHTMLBody, RTEWidget
+from ikaaro.forms import BooleanCheckBox, XHTMLBody, RTEWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
 from ikaaro.webpage import _get_links, _change_link
@@ -37,9 +37,9 @@ from ikaaro.webpage import _get_links, _change_link
 from resources import OrderTableAware
 from turning_footer_views import TurningFooterFile_EditRecord
 from turning_footer_views import TurningFooterFile_View
-from turning_footer_views import TurningFooterFolder_Edit
 from turning_footer_views import TurningFooterFolder_View
 from utils import get_path_and_view
+from views import AutomaticEditView
 
 
 
@@ -160,8 +160,17 @@ class TurningFooterFolder(OrderTableAware, Folder):
     order_path = 'menu'
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
-    edit = TurningFooterFolder_Edit()
+    # AutomaticEditView configuration
+    edit_schema = {'random': Boolean,
+                   'active': Boolean}
+
+    edit_widgets = [
+               BooleanCheckBox('random', title=MSG(u'Random selection')),
+               BooleanCheckBox('active', title=MSG(u'Is active'))]
+
+    # Views
     view = TurningFooterFolder_View()
+    edit = AutomaticEditView()
 
 
     @staticmethod

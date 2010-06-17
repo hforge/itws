@@ -33,7 +33,7 @@ from itools.xml import XMLParser
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import stl_namespaces, XHTMLBody, Widget
+from ikaaro.forms import stl_namespaces, TextWidget, XHTMLBody, Widget
 from ikaaro.registry import register_document_type
 from ikaaro.registry import register_resource_class, register_field
 from ikaaro.skins import register_skin
@@ -42,13 +42,14 @@ from ikaaro.utils import reduce_string
 # Import from itws
 from bar import SideBarAware
 from datatypes import PositiveIntegerNotNull
-from news_views import NewsFolder_View, NewsFolder_Edit, NewsFolder_RSS
+from news_views import NewsFolder_View, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
 from news_views import NewsItem_Edit, NewsItem_View, NewsFolder_ManageView
 from repository import Repository
 from resources import ManageViewAware
 from tags import TagsAware
 from utils import is_empty, get_path_and_view
+from views import AutomaticEditView
 from webpage import WebPage
 
 
@@ -233,6 +234,11 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
                           Folder.__fixed_handlers__ + ['images'])
     news_class = NewsItem
 
+    # Configuration of automatic edit view
+    edit_show_meta = True
+    edit_schema =  {'batch_size': PositiveIntegerNotNull}
+    edit_widgets = [TextWidget('batch_size', title=MSG(u'Batch size'), size=3)]
+
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         root = get_context().root
@@ -311,7 +317,7 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
 
     view = NewsFolder_View()
-    edit = NewsFolder_Edit()
+    edit = AutomaticEditView()
     manage_view = NewsFolder_ManageView()
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
