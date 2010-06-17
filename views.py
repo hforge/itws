@@ -997,7 +997,8 @@ class AutomaticEditView(DBResource_Edit):
     base_schema = {'title': Unicode(multilingual=True),
                    'timestamp': DateTime(readonly=True, ignore=True)}
 
-    base_widgets = [title_widget, timestamp_widget]
+    # Add timestamp_widget in get_widgets method
+    base_widgets = [title_widget]
 
 
     def get_schema(self, resource, context):
@@ -1012,12 +1013,16 @@ class AutomaticEditView(DBResource_Edit):
 
     def get_widgets(self, resource, context):
         widgets = []
+        if getattr(resource, 'edit_show_meta', False) is True:
+            widgets.extend([description_widget, subject_widget])
+        widgets = self.base_widgets + widgets + resource.edit_widgets
+        # Add state widget in bottom
         if isinstance(resource, WorkflowAware):
             widgets.append(SelectWidget('state', title=MSG(u'Box state'),
                                         has_empty_option=False))
-        if getattr(resource, 'edit_show_meta', False) is True:
-            widgets.extend([description_widget, subject_widget])
-        return self.base_widgets + widgets + resource.edit_widgets
+        # Add timestamp_widget
+        widgets.append(timestamp_widget)
+        return widgets
 
 
     def action(self, resource, context, form):
