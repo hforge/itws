@@ -271,9 +271,12 @@ class BoxTags(Box):
     edit_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
                    'count':PositiveInteger(default=0),
                    'show_number': Boolean,
-                   'random': Boolean}
+                   'random': Boolean,
+                   'display_title': Boolean}
 
     edit_widgets = [
+        BooleanCheckBox('display_title',
+                        title=MSG(u'Display on tagcloud view')),
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         BooleanCheckBox('show_number',

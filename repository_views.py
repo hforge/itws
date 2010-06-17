@@ -543,6 +543,10 @@ class BoxTags_View(Box_View):
         tags_folder = self._get_tags_folder(resource, context)
         has_tags = tags_folder.is_empty(context) is False
 
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+
         # tag cloud
         box = None
         if has_tags:
@@ -561,7 +565,7 @@ class BoxTags_View(Box_View):
             # if the user cannot edit the box
             self.set_view_is_empty(True)
 
-        return {'box': box}
+        return {'title': title, 'box': box}
 
 
 

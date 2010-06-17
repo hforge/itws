@@ -4,6 +4,9 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  ${box}
+  <h3 stl:if="title" class="title">${title}</h3>
+  <div class="content">
+    ${box}
+  </div>
 
 </stl:block>
