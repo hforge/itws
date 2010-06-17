@@ -4,7 +4,7 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
   <h3 stl:if="title" class="title" title="${title}">${title}</h3>
-  <div class="content">
+  <div class="content" stl:if="items/displayed">
     <stl:block stl:repeat="item items/displayed">
       ${item}
     </stl:block>
@@ -19,6 +19,10 @@
         </stl:block>
       </div>
     </stl:block>
+  </div>
+
+  <div class="content" stl:if="not items/displayed">
+    No published news to show
   </div>
 
 </stl:block>

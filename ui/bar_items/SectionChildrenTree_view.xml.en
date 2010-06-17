@@ -17,4 +17,8 @@
     </ul>
   </div>
 
+  <div class="content" stl:if="not items">
+    No ordered webpages/subsections to show
+  </div>
+
 </stl:block>
