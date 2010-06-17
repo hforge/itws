@@ -173,7 +173,8 @@ class MenuSideBar(BoxAware, MenuFolder):
     edit = AdvanceGoToSpecificDocument(
             specific_document='menu', specific_method='edit',
             title=MenuFolder.edit.title, keep_query=True)
-
+    
+    use_fancybox = False
 
     def update_20100616(self):
         for resource in self.search_resources(cls=Menu):
