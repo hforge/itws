@@ -12,6 +12,9 @@
         <img src="${banner/img_path}" alt="${banner/description}" />
       </a>
     </div>
+    <div class="content" stl:if="not banner">
+      No banner to show
+    </div>
   </div>
 
 </stl:block>

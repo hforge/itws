@@ -7,4 +7,9 @@
   <div class="box article-item" stl:repeat="article articles">
     ${article}
   </div>
+
+  <div stl:if="not articles">
+    No ordered webpages to show
+  </div>
+
 </stl:block>
