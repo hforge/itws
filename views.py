@@ -1014,7 +1014,7 @@ class AutomaticEditView(DBResource_Edit):
         widgets = []
         if isinstance(resource, WorkflowAware):
             widgets.append(SelectWidget('state', title=MSG(u'Box state'),
-                                          has_empty_option=False))
+                                        has_empty_option=False))
         if getattr(resource, 'edit_show_meta', False) is True:
             widgets.extend([description_widget, subject_widget])
         return self.base_widgets + widgets + resource.edit_widgets

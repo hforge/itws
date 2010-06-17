@@ -370,7 +370,8 @@ class HTMLContent_Edit(AutomaticEditView):
         if name == 'data':
             language = resource.get_content_language(context)
             return resource.get_html_data(language=language)
-        return AutomaticEditView.get_value(self, resource, context, name, datatype)
+        return AutomaticEditView.get_value(self, resource, context, name,
+                                           datatype)
 
 
     def action(self, resource, context, form):

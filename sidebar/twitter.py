@@ -117,18 +117,18 @@ class TwitterSideBar(Box, ResourceWithCache):
     # Item configuration
 
     edit_schema = {'user_id': TwitterID(mandatory=True),
-                  'user_name': String(mandatory=True),
-                  'limit': Integer(mandatory=True, default=5, size=3),
-                  'force_update': Boolean}
+                   'user_name': String(mandatory=True),
+                   'limit': Integer(mandatory=True, default=5, size=3),
+                   'force_update': Boolean}
 
 
     edit_widgets = [TextWidget('user_name',
                               title=MSG(u"Twitter account name")),
-                   TextWidget('user_id', title=MSG(u"User Id")),
-                   TextWidget('limit', title=MSG(u'Number of tweet')),
-                   BooleanCheckBox('force_update',
-                                   title=MSG(u'Force cache update')),
-                  ]
+                    TextWidget('user_id', title=MSG(u"User Id")),
+                    TextWidget('limit', title=MSG(u'Number of tweet')),
+                    BooleanCheckBox('force_update',
+                                    title=MSG(u'Force cache update')),
+                   ]
 
     # Views
     view = TwitterSideBar_View()

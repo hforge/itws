@@ -165,9 +165,9 @@ class HTMLContent(WebPage):
 
     # Configuration of box for EditView
     edit_schema = {'title_link': String,
-                  'title_link_target': Target,
-                  'data': HTMLBody(ignore=True),
-                  'display_title': Boolean}
+                   'title_link_target': Target,
+                   'data': HTMLBody(ignore=True),
+                   'display_title': Boolean}
 
     edit_widgets = [
         BooleanCheckBox('display_title',
@@ -269,9 +269,9 @@ class BoxTags(Box):
 
     # Box configuration
     edit_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
-                  'count':PositiveInteger(default=0),
-                  'show_number': Boolean,
-                  'random': Boolean}
+                   'count':PositiveInteger(default=0),
+                   'show_number': Boolean,
+                   'random': Boolean}
 
     edit_widgets = [
         TextWidget('count', size=4,
@@ -323,7 +323,7 @@ class BoxNewsSiblingsToc(Box):
 
     # Box configuration
     edit_schema = merge_dicts(hide_single_schema,
-                             count=PositiveInteger(default=30))
+                              count=PositiveInteger(default=30))
 
     edit_widgets = [
         hide_single_widget,
