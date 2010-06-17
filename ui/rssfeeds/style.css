@@ -72,3 +72,8 @@
   float: left;
 }
 
+.rssfeeds-view #td-contentbar #export-opml a {
+  background: url("/ui/common/images/opml_logo.png") no-repeat scroll left top transparent;
+  height: 23px;
+  padding: 3px 0 3px 19px;
+}

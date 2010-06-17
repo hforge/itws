@@ -13,7 +13,6 @@
 
   <div id="export-opml">
     <a href="./;export_to_opml" title="Export the feeds as an OPML file">
-      <img src="/ui/common/images/opml_logo.png"/>
       Export the feeds as an OPML file
     </a>
   </div>

@@ -527,6 +527,12 @@ fieldset legend{
   font-size: 0.9em;
 }
 
+#export-opml a {
+  background: url("/ui/common/images/opml_logo.png") no-repeat scroll left 50% transparent;
+  height: 23px;
+  padding: 3px 0 3px 19px;
+}
+
 /**************************************************************************
  * MANAGE VIEW
  * ***********************************************************************/
