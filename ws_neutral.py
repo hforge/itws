@@ -24,7 +24,7 @@ from copy import deepcopy
 from decimal import Decimal
 
 # Import from itools
-from itools.core import get_abspath, merge_dicts
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
 from itools.datatypes import Boolean, Unicode, String
 from itools.fs import FileName
@@ -384,8 +384,8 @@ class WSDataFolder(ManageViewAware, Folder):
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
 
 
-    def get_editorial_documents_types(self):
-        return [ self.parent.get_article_class() ]
+    def get_internal_use_resource_names(self):
+        return freeze(self.__fixed_handlers__)
 
 
     def get_document_types(self):
@@ -606,15 +606,11 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         return WebSite.get_skin(self, context)
 
 
-    def get_editorial_documents_types(self):
-        # FIXME Should be merge with get_document_types
-        types = [SlideShow, AddressesFolder, WebPage, ITWSTracker, WikiFolder,
-                 RssFeeds]
-        if self.section_class:
-            types.append(self.section_class)
-        if self.newsfolder_class:
-            types.append(self.newsfolder_class)
-        return types
+    def get_internal_use_resource_names(self):
+        names = list(self.menus) + list(self.footers)
+        names += ['404', 'repository', 'robots.txt', 'sitemap.xml', 'style',
+                  'tags', 'turning-footer', 'ws-data']
+        return freeze(names)
 
 
     def get_document_types(self):

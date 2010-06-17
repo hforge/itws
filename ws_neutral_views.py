@@ -422,18 +422,10 @@ class NeutralWS_ManageContent(BaseManageContent):
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
-        editorial_cls = resource.get_editorial_documents_types()
-        editorial_query = [ PhraseQuery('format', cls.class_id)
-                            for cls in editorial_cls ]
-        # allow images
-        editorial_query.append(PhraseQuery('is_image', True))
-        # allow "images" folder
-        editorial_query.append(PhraseQuery('name', 'images'))
-        query = [
-            PhraseQuery('parent_path', path),
-            NotQuery(PhraseQuery('name', '404')),
-            OrQuery(*editorial_query)
-                ]
+        excluded_names = resource.get_internal_use_resource_names()
+        query = [ PhraseQuery('parent_path', path),
+                 NotQuery(OrQuery(*[ PhraseQuery('name', name)
+                                     for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
 
 
@@ -499,18 +491,10 @@ class WSDataFolder_ManageContent(BaseManageContent):
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
-        editorial_cls = resource.get_editorial_documents_types()
-        editorial_query = [ PhraseQuery('format', cls.class_id)
-                            for cls in editorial_cls ]
-        # allow images
-        editorial_query.append(PhraseQuery('is_image', True))
-        query = [
-            PhraseQuery('parent_path', path),
-            NotQuery(PhraseQuery('name', 'order-sidebar')),
-            NotQuery(PhraseQuery('name', 'order-contentbar')),
-            NotQuery(PhraseQuery('name', 'order-resources')),
-            OrQuery(*editorial_query)
-                ]
+        excluded_names = resource.get_internal_use_resource_names()
+        query = [ PhraseQuery('parent_path', path),
+                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
+                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
 
 

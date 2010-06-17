@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import String, Boolean
 from itools.gettext import MSG
 from itools.stl import rewrite_uris
@@ -131,11 +131,10 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                            show_one_article=Boolean)
 
 
-    def get_editorial_documents_types(self):
-        # FIXME Should be merge with get_document_types
-        types = [ self.get_subsection_class(),
-                  self.get_article_class() ]
-        return types
+    def get_internal_use_resource_names(self):
+        return freeze(SideBarAware.__fixed_handlers__ +
+                      ContentBarAware.__fixed_handlers__ +
+                      ['order-section'])
 
 
     def get_document_types(self):
