@@ -407,18 +407,11 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
 class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
     schema = merge_dicts(BoxAwareNewInstance.schema,
-                         order=OrderBoxEnumerate(default='not-order'))
+                         order=OrderBoxEnumerate(default='order-bottom'))
 
     widgets = freeze(BoxAwareNewInstance.widgets
                      + [SelectRadio('order', title=MSG(u'Order box'),
                                     has_empty_option=False)])
-
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'order':
-            return ''
-        return BoxAwareNewInstance.get_value(self, resource, context,
-                                             name, datatype)
 
 
     def _get_goto(self, resource, context, form):
