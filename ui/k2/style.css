@@ -501,6 +501,33 @@ fieldset legend{
 }
 
 /**************************************************************************
+ * RSSFEEDS
+ * ***********************************************************************/
+#page.rssfeeds-view #contentbar {
+  width: 930px;
+}
+
+#rss-body .rss-article {
+  width: 640px;
+  overflow-x: hidden;
+}
+
+#rss-menu {
+  padding-left: 10px;
+  width: 280px;
+}
+
+#rss-menu .rss-item {
+  color: #000;
+}
+
+#rss-menu .rss-item h1 {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+
+/**************************************************************************
  * MANAGE VIEW
  * ***********************************************************************/
 body .neutral-manage-view #content .manage-ul,
