@@ -64,7 +64,7 @@ from webpage import WebPage
 
 
 
-hide_single_schema = freeze({'hide_if_only_one_item': Boolean})
+hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
 hide_single_widget = BooleanCheckBox('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
 
