@@ -32,7 +32,7 @@ from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
 from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
-from ikaaro.forms import stl_namespaces
+from ikaaro.forms import SelectWidget, stl_namespaces
 from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
@@ -41,6 +41,7 @@ from ikaaro.webpage import HTMLEditView
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
+from datatypes import StateEnumerate
 from tags import TagsAware_Edit, TagItem_View
 from views import ProxyContainerNewInstance
 
@@ -101,7 +102,8 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
                            TagsAware_Edit.get_schema(self, resource, context),
                            long_title=Unicode, href=String,
                            image=ImagePathDataType,
-                           template_type=SlideTemplateType)
+                           template_type=SlideTemplateType,
+                           state=StateEnumerate)
 
 
     def get_widgets(self, resource, context):
@@ -113,7 +115,9 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
                  SlideTemplateTypeWidget('template_type',
                                          title=MSG('Slide layout'),
                                          has_empty_option=True,
-                                         is_inline=True)]
+                                         is_inline=True),
+                 SelectWidget('state', title=MSG(u'State'),
+                              has_empty_option=False)]
                 + TagsAware_Edit.get_widgets(self, resource, context))
 
 
@@ -143,6 +147,8 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
             resource.set_property('href', href)
         # Template layout
         resource.set_property('template_type', form['template_type'])
+        # State
+        resource.set_property('state', form['state'])
         # Ok
         context.message = MSG_CHANGES_SAVED
 
