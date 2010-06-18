@@ -452,10 +452,6 @@ class WSDataFolder_ManageLink(BaseManageLink):
         order_table = site_root.get_resource(site_root.order_path)
         ordered_classes = order_table.get_orderable_classes()
 
-        left_items.append({'path': './;new_resource',
-                           'class': 'add',
-                           'title': MSG(u'Add Resource: Webpage, PDF, ODT...')})
-
         left_items.append({'path': './order-resources',
                            'class': 'add',
                            'title': MSG(u'Add Webpages in the Homepage View')})
@@ -463,6 +459,10 @@ class WSDataFolder_ManageLink(BaseManageLink):
         left_items.append({'path': './order-resources',
                            'class': 'order child',
                            'title': MSG(u'Order Webpages in the Homepage View')})
+
+        left_items.append({'path': './;new_resource',
+                           'class': 'add',
+                           'title': MSG(u'Add Resource: Image, PDF, ODT...')})
 
         left_items.append({'path': '/;ws_data_new_contentbar_resource',
                            'class': 'add',

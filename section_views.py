@@ -329,7 +329,7 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './;new_resource',
                            'class': 'add',
-                           'title': MSG(u'Add Resource: Webpage, Subsection, '
+                           'title': MSG(u'Add Resource: Subsection, File, '
                                         u'PDF, ODT')})
 
         left_items.append({'path': './order-section',
