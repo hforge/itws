@@ -48,6 +48,7 @@ from resources import MultilingualCatalogTitleAware, ManageViewAware
 from utils import set_prefix_with_hostname, DualSelectWidget
 from utils import is_navigation_mode
 from views import EasyNewInstance, BaseRSS, ProxyContainerNewInstance
+from views import AutomaticEditView
 
 
 
@@ -426,11 +427,12 @@ class Tags_ManageView(CompositeForm):
 class Tag(File, MultilingualCatalogTitleAware):
 
     class_id = 'tag'
+    class_version = '20100618'
     class_title = MSG(u'Tag')
     class_views = ['view', 'edit', 'commit_log', 'backlinks']
 
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
-    edit = DBResource_Edit()
+    edit = AutomaticEditView()
     edit_state = None
     externaledit = None
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
@@ -438,12 +440,10 @@ class Tag(File, MultilingualCatalogTitleAware):
     view = Tag_View()
     rss = Tag_RSS()
 
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = File.get_metadata_schema()
-        schema['state'] = String(default='public')
-        return schema
-
+    # Configuration of automatic edit view
+    edit_show_meta = True
+    edit_schema = {}
+    edit_widgets = []
 
     def _get_catalog_values(self):
         return merge_dicts(File._get_catalog_values(self),
@@ -461,6 +461,15 @@ class Tag(File, MultilingualCatalogTitleAware):
 
     def can_paste_into(self, target):
         return isinstance(target, TagsFolder)
+
+
+    def update_20100618(self):
+        if self.get_property('state'):
+            # state was set
+            return
+        if self.get_workflow_state() == 'private':
+            # state was default public
+            self.set_property('state', 'public')
 
 
 
@@ -536,11 +545,12 @@ class TagsFolder(ManageViewAware, Folder):
         return len(results) == 0
 
 
-    def get_tag_brains(self, context, sort_by='name', size=0):
+    def get_tag_brains(self, context, sort_by='name', size=0, state='public'):
         # tags
         abspath = self.get_canonical_path()
         tags_query = AndQuery(PhraseQuery('parent_path', str(abspath)),
-                              PhraseQuery('format', Tag.class_id))
+                              PhraseQuery('format', Tag.class_id),
+                              PhraseQuery('workflow_state', state))
         tags_results = context.root.search(tags_query)
         documents = tags_results.get_documents(sort_by=sort_by, size=size)
         return [ x for x in documents ]
