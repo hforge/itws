@@ -48,7 +48,7 @@ from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from datatypes import StateEnumerate, OrderBoxEnumerate
-from utils import set_prefix_with_hostname
+from utils import set_prefix_with_hostname, state_widget
 
 
 
@@ -1018,8 +1018,7 @@ class AutomaticEditView(DBResource_Edit):
         widgets = self.base_widgets + widgets + resource.edit_widgets
         # Add state widget in bottom
         if isinstance(resource, WorkflowAware):
-            widgets.append(SelectWidget('state', title=MSG(u'Box state'),
-                                        has_empty_option=False))
+            widgets.append(state_widget)
         # Add timestamp_widget
         widgets.append(timestamp_widget)
         return widgets
