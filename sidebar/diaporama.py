@@ -45,12 +45,29 @@ from itws.utils import get_path_and_view
 ###########################################################################
 # Resources
 ###########################################################################
+class DiaporamaImagePathDatatype(Unicode):
+
+    @staticmethod
+    def is_valid(value):
+        here = get_context().resource
+        try:
+            ref = get_reference(str(value)) # multilingual -> unicode, multiple
+            if not ref.scheme:
+                resource = here.get_resource(ref.path, soft=True)
+                if resource and isinstance(resource, Image):
+                    return True
+        except Exception, e:
+            return False
+        return False
+
+
+
 class DiaporamaTableFile(TableFile):
 
     record_properties = {
         'title': Unicode(multiple=True),
         'description': Unicode(multiple=True),
-        'img_path': Unicode(multiple=True, mandatory=True), # multilingual
+        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True), # multilingual
         'img_link': String,
         'target': Target(mandatory=True, default='_top')}
 
