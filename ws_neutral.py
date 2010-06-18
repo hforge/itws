@@ -103,8 +103,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
     not_allowed_cls_for_sidebar_view = [ITWSTracker, ITWSTracker.issue_class,
-                                        WikiFolder, SlideShow, Slide,
-                                        RssFeeds, AddressesFolder]
+                                        WikiFolder, SlideShow, Slide, RssFeeds]
     manage_buttons = []
 
     def get_backoffice_class(self, context):
