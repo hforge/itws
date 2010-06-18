@@ -27,6 +27,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.file import Image
 from ikaaro.folder import Folder
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import ImageSelectorWidget, SelectWidget
 from ikaaro.forms import TextWidget, MultilineWidget, PathSelectorWidget
 from ikaaro.future.menu import Target
@@ -77,7 +78,7 @@ class DiaporamaTable(Table):
 
     class_id = 'diaporama-table'
     class_handler = DiaporamaTableFile
-
+    class_views = ['view', 'commit_log']
     view = DiaporamaTable_CompositeView()
 
     form = [ImageSelectorWidget('img_path', title=MSG(u'Image path')),
@@ -192,6 +193,8 @@ class Diaporama(BoxAware, OrderTableAware, Folder):
     class_id = 'diaporama'
     class_version = '20100616'
     class_title = MSG(u'Diaporama')
+    class_views = ['view', 'edit', 'browse_content', 'preview_content',
+                   'backlinks', 'commit_log']
     class_description = MSG(u'Diaporama')
     # order
     order_path = 'order-banners'
@@ -199,6 +202,10 @@ class Diaporama(BoxAware, OrderTableAware, Folder):
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
     view = Diaporama_View()
+    edit = GoToSpecificDocument(specific_document='order-banners',
+                                title=MSG(u'Edit'))
+
+    use_fancybox = False
 
 
     @staticmethod

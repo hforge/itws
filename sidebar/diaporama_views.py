@@ -125,8 +125,9 @@ class DiaporamaTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
     title = DiaporamaTable_View.title
-    subviews = [ DiaporamaProxyBox_Edit(), # diaporama folder edition view
-                 DiaporamaTable_AddRecord(),
+    subviews = [ # diaporama folder edition view
+                 DiaporamaProxyBox_Edit(title=MSG(u'Edit diaporama title')),
+                 DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View() ]
     context_menus = [EditLanguageMenu()]
 
