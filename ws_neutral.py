@@ -437,7 +437,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100531'
+    class_version = '20100618'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -824,6 +824,33 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     def update_20100531(self):
         WebSite.update_20100524(self)
+
+
+    def update_20100618(self):
+        from ikaaro.utils import generate_name
+
+        # Add default favicon
+        favicon = self.get_property('favicon')
+        favicon = self.get_resource(favicon, soft=True)
+        if isinstance(favicon, Image):
+            return
+        # images folder
+        images = self.get_resource('images', soft=True)
+        if images is None:
+            Folder.make_resource(Folder, self, 'images')
+        # Default favicon
+        favicon_resource = self.get_resource('/ui/k2/default_favicon.ico')
+        favicon_data = favicon_resource.to_str()
+        cls = Image
+        filename = name = 'favicon.ico'
+        name, extension, language = FileName.decode(name)
+        metadata = {'format': 'image/x-icon', 'filename': filename,
+                    'extension': extension, 'state': 'public',
+                    'body': favicon_data}
+        images = self.get_resource('images')
+        name = generate_name(name, self.get_names(), '_itws')
+        cls.make_resource(cls, self, 'images/%s' % name, **metadata)
+        self.set_property('favicon', 'images/favicon')
 
 
     # User Interface
