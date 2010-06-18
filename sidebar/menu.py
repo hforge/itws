@@ -58,6 +58,7 @@ class MenuSideBar_View(Box_View):
 
 class MenuProxyBox_Edit(DBResource_Edit):
 
+    title = MSG(u'Edit box title')
     schema = {'title': Unicode(multilingual=True),
               'timestamp': DateTime(readonly=True, ignore=True)}
 
@@ -89,6 +90,7 @@ class MenuProxyBox_Edit(DBResource_Edit):
 
 class MenuSideBarTable_AddRecord(Table_AddRecord):
 
+    title = MSG(u'Add entry')
     template = '/ui/common/improve_auto_form.xml'
     actions = [Button(access='is_allowed_to_edit',
                       name='add_record', title=MSG(u'Add'))]
