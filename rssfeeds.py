@@ -53,6 +53,10 @@ from ikaaro.text import CSV
 from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
 
+# Import from itws
+from datatypes import StateEnumerate
+from utils import state_widget
+
 
 
 rss_default_pub_date = datetime(1970, 1, 1)
@@ -230,23 +234,27 @@ class RssFeeds_Configure(AutoForm):
     schema = {
         'TTL': Integer(mandatory=True),
         'update_now': Boolean(),
-        'timeout': Decimal(mandatory=True)
+        'timeout': Decimal(mandatory=True),
+        'state': StateEnumerate
           }
 
     widgets = [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
                TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-               BooleanRadio('update_now', title=MSG(u"Update RSS now"))]
+               BooleanRadio('update_now', title=MSG(u"Update RSS now")),
+               state_widget]
 
 
     def get_value(self, resource, context, name, datatype):
         if name in ('TTL', 'timeout'):
             return resource.get_property(name)
+        elif name == 'state':
+            return resource.get_workflow_state()
         return AutoForm.get_value(self, resource, context, name, datatype)
 
 
     def action(self, resource, context, form):
-        resource.set_property('TTL', form['TTL'])
-        resource.set_property('timeout', form['timeout'])
+        for key in ('TTL', 'timeout', 'state'):
+            resource.set_property(key, form[key])
         if form['update_now']:
             resource.update_rss()
         return context.come_back(MSG_CHANGES_SAVED, goto='./;view')
