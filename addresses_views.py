@@ -90,10 +90,13 @@ class AddressItem_Edit(HTMLEditView):
                          # Hack
                          gps=String)
 
-    widgets = [title_widget, rte_widget, timestamp_widget,
-               TextWidget('width', title=MSG(u'Map width')),
-               TextWidget('height', title=MSG(u'Map height')),
-               GPSWidget('gps', title=MSG(u'GPS'))]
+    def get_widgets(self, resource, context):
+        width = resource.get_property('width')
+        height = resource.get_property('height')
+        return [title_widget, rte_widget, timestamp_widget,
+                TextWidget('width', title=MSG(u'Map width'), size=6),
+                TextWidget('height', title=MSG(u'Map height'), size=6),
+                GPSWidget('gps', title=MSG(u'GPS'), width=width, height=height)]
 
 
     def action(self, resource, context, form):

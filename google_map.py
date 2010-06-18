@@ -70,9 +70,12 @@ class GPSWidget(GoogleMapWidget):
           <input  class="button-ok" type="button" value="Trouver les coordonnées GPS"
               onclick="selectGPS('map_${name}');"/><br/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
-          Latitude <input type="text" id="latitude" name="latitude" value="${latitude}"/>
-          Longitude <input type="text" id="longitude" name="longitude" value="${longitude}"/>
-          Zoom <input type="text" id="zoom" name="zoom" value="${zoom}"/><br/>
+          <label for="latitude">Latitude</label>
+          <input type="text" id="latitude" name="latitude" value="${latitude}"/>
+          <label for="longitude">Longitude</label>
+          <input type="text" id="longitude" name="longitude" value="${longitude}"/>
+          <label for="zoom">Zoom</label>
+          <input type="text" id="zoom" name="zoom" value="${zoom}" size="4"/><br/>
         </p>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
         <script language="javascript">
