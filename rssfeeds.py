@@ -45,7 +45,7 @@ from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
 from ikaaro.buttons import Button
-from ikaaro.forms import AutoForm, BooleanRadio, TextWidget
+from ikaaro.forms import BooleanRadio, TextWidget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
@@ -54,8 +54,7 @@ from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from datatypes import StateEnumerate
-from utils import state_widget
+from views import AutomaticEditView
 
 
 
@@ -227,34 +226,20 @@ class CSV_View(BaseCSV_View):
 
 
 
-class RssFeeds_Configure(AutoForm):
-
-    access = 'is_allowed_to_edit'
-
-    schema = {
-        'TTL': Integer(mandatory=True),
-        'update_now': Boolean(),
-        'timeout': Decimal(mandatory=True),
-        'state': StateEnumerate
-          }
-
-    widgets = [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
-               TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-               BooleanRadio('update_now', title=MSG(u"Update RSS now")),
-               state_widget]
-
+class RssFeeds_Configure(AutomaticEditView):
 
     def get_value(self, resource, context, name, datatype):
-        if name in ('TTL', 'timeout'):
-            return resource.get_property(name)
-        elif name == 'state':
-            return resource.get_workflow_state()
-        return AutoForm.get_value(self, resource, context, name, datatype)
+        if name == 'update_now':
+            return False
+        return AutomaticEditView.get_value(self, resource, context, name,
+                                           datatype)
 
 
     def action(self, resource, context, form):
-        for key in ('TTL', 'timeout', 'state'):
-            resource.set_property(key, form[key])
+        AutomaticEditView.action(self, resource, context, form)
+        # Check edit conflict
+        if context.edit_conflict:
+            return
         if form['update_now']:
             resource.update_rss()
         return context.come_back(MSG_CHANGES_SAVED, goto='./;view')
@@ -297,6 +282,15 @@ class RssFeeds(CSV):
     add_row = CSV_AddRow(title=MSG(u'Add RSS'))
     configure = RssFeeds_Configure(title=MSG(u'Configure'))
     export_to_opml = FeedRSS_OPML()
+
+    # Configuration of automatic edit view
+    edit_show_meta = True
+    edit_schema = {'TTL': Integer(mandatory=True),
+                   'update_now': Boolean(ignore=True),
+                   'timeout': Decimal(mandatory=True)}
+    edit_widgets = [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
+                    TextWidget('timeout', title=MSG(u"Timeout in seconds")),
+                    BooleanRadio('update_now', title=MSG(u"Update RSS now"))]
 
 
     @classmethod
