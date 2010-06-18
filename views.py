@@ -47,8 +47,8 @@ from ikaaro.webpage import WebPage, HTMLEditView
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
-from datatypes import StateEnumerate
-from utils import set_prefix_with_hostname, OrderBoxEnumerate
+from datatypes import StateEnumerate, OrderBoxEnumerate
+from utils import set_prefix_with_hostname
 
 
 

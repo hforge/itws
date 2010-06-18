@@ -17,6 +17,7 @@
 
 # Import from itools
 from itools.datatypes import Integer, Enumerate, String, PathDataType
+from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import get_context
 
@@ -123,3 +124,13 @@ class ImagePathDataType(PathDataType):
         except Exception, e:
             return False
         return False
+
+
+
+class OrderBoxEnumerate(Enumerate):
+
+    options = [{'name': 'do-not-order',
+                'value': MSG(u"Do not order (won't be displayed)")},
+               {'name': 'order-top', 'value': MSG(u'Order top')},
+               {'name': 'order-bottom', 'value': MSG(u'Order bottom')}]
+
