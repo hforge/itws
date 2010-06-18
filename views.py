@@ -1025,6 +1025,13 @@ class AutomaticEditView(DBResource_Edit):
         return widgets
 
 
+    def get_value(self, resource, context, name, datatype):
+        if name == 'state':
+            return resource.get_workflow_state()
+        return DBResource_Edit.get_value(self, resource, context, name,
+                                         datatype)
+
+
     def action(self, resource, context, form):
         self.check_edit_conflict(resource, context, form)
         # Check edit conflict
