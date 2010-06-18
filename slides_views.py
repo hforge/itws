@@ -32,7 +32,7 @@ from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
 from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
-from ikaaro.forms import SelectWidget, stl_namespaces
+from ikaaro.forms import stl_namespaces
 from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
@@ -43,6 +43,7 @@ from ikaaro.webpage import HTMLEditView
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
 from tags import TagsAware_Edit, TagItem_View
+from utils import state_widget
 from views import ProxyContainerNewInstance
 
 
@@ -116,8 +117,7 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
                                          title=MSG('Slide layout'),
                                          has_empty_option=True,
                                          is_inline=True),
-                 SelectWidget('state', title=MSG(u'State'),
-                              has_empty_option=False)]
+                 state_widget]
                 + TagsAware_Edit.get_widgets(self, resource, context))
 
 

@@ -111,6 +111,11 @@ def resolve_pointer_with_hostname(offset, ref, value):
 ############################################################
 # Forms
 ############################################################
+
+state_widget = SelectWidget('state', title=MSG(u'State'),
+                            has_empty_option=False)
+
+
 class XMLTitleWidget(RTEWidget):
 
     title = None
