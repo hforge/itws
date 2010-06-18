@@ -327,7 +327,7 @@ fieldset legend{
 #contentbar {
   width: 640px;
   float: left;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 #content .batch-numerotation {
