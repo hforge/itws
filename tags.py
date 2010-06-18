@@ -141,7 +141,7 @@ class Tag_RSS(BaseRSS):
 
 
 
-class Tag_ItemView(STLView):
+class TagItem_View(STLView):
 
     access = 'is_allowed_to_view'
     template = '/ui/common/Tag_item_view.xml'
@@ -551,7 +551,7 @@ class TagsAware(object):
 
     # Only useful for the registry
     class_id = 'tags-aware'
-    tag_view = Tag_ItemView()
+    tag_view = TagItem_View()
 
     @classmethod
     def get_metadata_schema(cls):

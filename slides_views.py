@@ -41,7 +41,7 @@ from ikaaro.webpage import HTMLEditView
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull
-from tags import TagsAware_Edit, Tag_ItemView
+from tags import TagsAware_Edit, TagItem_View
 from views import ProxyContainerNewInstance
 
 
@@ -301,7 +301,7 @@ class Slide_View(STLView):
 
 
 
-class Tag_SlideView(Tag_ItemView):
+class Tag_SlideView(TagItem_View):
 
     def get_content(self, resource, context):
         view = resource.view_only_content
