@@ -52,6 +52,7 @@ from utils import get_path_and_view
 class Slide(TagsAware, WebPage):
 
     class_id = 'slide'
+    class_version = '20100618'
     class_title = MSG(u'Slide')
     class_description = MSG(u'Slide')
     class_views = ['view', 'edit', 'edit_state', 'commit_log']
@@ -61,7 +62,6 @@ class Slide(TagsAware, WebPage):
     def get_metadata_schema(cls):
         return merge_dicts(WebPage.get_metadata_schema(),
                            TagsAware.get_metadata_schema(),
-                           state=String(default='public'),
                            long_title=Unicode,
                            # Image of the slide
                            image=ImagePathDataType,
@@ -157,6 +157,16 @@ class Slide(TagsAware, WebPage):
             new_ref.path = str(target.get_pathto(new_abs_path)) + view
             # Update the property
             self.set_property(key, str(new_ref))
+
+
+    def update_20100618(self):
+        # Restore state
+        if self.get_property('state'):
+            # state was set
+            return
+        if self.get_workflow_state() == 'private':
+            # state was default public
+            self.set_property('state', 'public')
 
 
     edit = Slide_Edit()
