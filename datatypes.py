@@ -16,10 +16,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Integer, Enumerate, String
+from itools.datatypes import Integer, Enumerate, String, PathDataType
+from itools.uri import get_reference
 from itools.web import get_context
 
 # Import from ikaaro
+from ikaaro.file import Image
 from ikaaro.registry import get_document_types
 
 
@@ -104,3 +106,20 @@ class StateEnumerate(Enumerate):
 
         options.sort(key=lambda x: x['value'])
         return options
+
+
+
+class ImagePathDataType(PathDataType):
+
+    @staticmethod
+    def is_valid(value):
+        here = get_context().resource
+        try:
+            ref = get_reference(value)
+            if not ref.scheme:
+                resource = here.get_resource(ref.path, soft=True)
+                if resource and isinstance(resource, Image):
+                    return True
+        except Exception, e:
+            return False
+        return False

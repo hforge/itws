@@ -40,7 +40,7 @@ from ikaaro.skins import register_skin
 from ikaaro.webpage import WebPage
 
 # Import from itws
-from datatypes import PositiveIntegerNotNull
+from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from resources import ManageViewAware
 from slides_views import SlideShow_Edit, Slide_Edit, Tag_SlideView, Slide_View
 from slides_views import SlideShow_ManageView, SlideTemplateType
@@ -64,7 +64,7 @@ class Slide(TagsAware, WebPage):
                            state=String(default='public'),
                            long_title=Unicode,
                            # Image of the slide
-                           image=String,
+                           image=ImagePathDataType,
                            # Slide template type
                            template_type=SlideTemplateType(default=''),
                            # Slide title href
@@ -205,7 +205,7 @@ class SlideShow(ManageViewAware, ResourcesOrderedContainer):
         return merge_dicts(ResourcesOrderedContainer.get_metadata_schema(),
                            long_title=Unicode,
                            # Image of the slideshow
-                           image=String,
+                           image=ImagePathDataType,
                            # TOC width
                            toc_nb_col=PositiveIntegerNotNull(default=2),
                            # Slide template type

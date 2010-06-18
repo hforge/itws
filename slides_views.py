@@ -40,7 +40,7 @@ from ikaaro.views import CompositeForm
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
-from datatypes import PositiveIntegerNotNull
+from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from tags import TagsAware_Edit, TagItem_View
 from views import ProxyContainerNewInstance
 
@@ -100,7 +100,8 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
         return merge_dicts(HTMLEditView.get_schema(self, resource, context),
                            TagsAware_Edit.get_schema(self, resource, context),
                            long_title=Unicode, href=String,
-                           image=String, template_type=SlideTemplateType)
+                           image=ImagePathDataType,
+                           template_type=SlideTemplateType)
 
 
     def get_widgets(self, resource, context):
@@ -136,9 +137,7 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
         long_title = form['long_title']
         resource.set_property('long_title', long_title, language=language)
         # Image to appear on slide view
-        image = form['image']
-        if image:
-            resource.set_property('image', image)
+        resource.set_property('image', form['image'])
         href = form['href']
         if href:
             resource.set_property('href', href)
@@ -152,7 +151,8 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
 class SlideShow_Edit(DBResource_Edit):
 
     schema = merge_dicts(DBResource_Edit.schema, long_title=Unicode,
-                         image=String, toc_nb_col=PositiveIntegerNotNull,
+                         image=ImagePathDataType,
+                         toc_nb_col=PositiveIntegerNotNull,
                          template_type=SlideTemplateType)
 
     widgets = [title_widget, TextWidget('long_title', title=MSG(u'Long title'),
@@ -179,9 +179,7 @@ class SlideShow_Edit(DBResource_Edit):
         long_title = form['long_title']
         resource.set_property('long_title', long_title, language=language)
         # Image to appear on slide view
-        image = form['image']
-        if image:
-            resource.set_property('image', image)
+        resource.set_property('image', form['image'])
         # Toc width
         resource.set_property('toc_nb_col', form['toc_nb_col'])
         # Template layout
