@@ -268,6 +268,7 @@ class RssFeedsFile(CSVFile):
 class RssFeeds(CSV):
 
     class_id = 'rssfeeds'
+    class_version = '20100618'
     class_title = MSG(u'RSS Feeds')
     class_description = MSG(u'RSS feeds allows to aggregate external feeds, '
                             u'filtering content by keywords')
@@ -296,7 +297,6 @@ class RssFeeds(CSV):
     @classmethod
     def get_metadata_schema(cls):
         schema = CSV.get_metadata_schema()
-        schema['state'] = String(default='public')
         schema['TTL'] = Integer(default=15)
         schema['timeout'] = Decimal(default=1.0)
 
@@ -500,6 +500,15 @@ class RssFeeds(CSV):
         namespace['feeds'] = feeds
         handler = self.get_resource('/ui/rssfeeds/RssFeeds_export_to_opml.xml')
         return stl(handler, namespace=namespace)
+
+
+    def update_20100618(self):
+        if self.get_property('state'):
+            # state was set
+            return
+        if self.get_workflow_state() == 'private':
+            # state was default public
+            self.set_property('state', 'public')
 
 
 
