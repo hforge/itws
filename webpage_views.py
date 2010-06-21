@@ -31,7 +31,7 @@ from utils import state_widget
 
 
 
-class WebPage_Edit(HTMLEditView, TagsAware_Edit):
+class WebPage_Edit(TagsAware_Edit, HTMLEditView):
 
     def get_schema(self, resource, context):
         return merge_dicts(HTMLEditView.get_schema(self, resource, context),
@@ -74,10 +74,10 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
 
 
     def action(self, resource, context, form):
+        HTMLEditView.action(self, resource, context, form)
         # Check edit conflict
         if context.edit_conflict:
             return
-        HTMLEditView.action(self, resource, context, form)
         TagsAware_Edit.action(self, resource, context, form)
         display_title = form['display_title']
         resource.set_property('display_title', display_title)
