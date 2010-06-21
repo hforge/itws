@@ -131,7 +131,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         site_root_abspath = site_root.get_abspath()
         # Global RSS
         ws_title = site_root.get_title()
-        rss_title = MSG(u'{title} -- RSS Feeds').gettext(title=ws_title)
+        rss_title = MSG(u'{ws_title} -- RSS Feeds').gettext(title=ws_title)
         rss.append({'path': '/;rss', 'title': rss_title})
 
         # News RSS

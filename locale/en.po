@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-06-16 16:06+CET\n"
+"POT-Creation-Date: 2010-06-21 15:06+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,11 +41,6 @@ msgctxt "table cell"
 msgid "${location} ${message}"
 msgstr ""
 
-#: ../ui/admin-popup/template.xhtml.en:32
-msgctxt "body"
-msgid "${message} ${body}"
-msgstr ""
-
 #: ../ui/common/browse_batch.xml.en:12
 msgctxt "paragraph"
 msgid "${msg} (View from ${start} to ${end})"
@@ -56,7 +51,12 @@ msgctxt "div"
 msgid "${row/preview} <g id='4'>${more_title}</g>"
 msgstr ""
 
-#: ../tags.py:251
+#: ../ui/common/proxy_improve_auto_form.xml.en:27
+msgctxt "dd"
+msgid "${widget/widget} ${widget/suffix}"
+msgstr ""
+
+#: ../tags_views.py:250
 msgid "%s (%s)"
 msgstr ""
 
@@ -66,11 +66,11 @@ msgstr ""
 msgid "%s (obsolete)"
 msgstr ""
 
-#: ../repository_views.py:390
+#: ../repository_views.py:336
 msgid "%s: %s"
 msgstr ""
 
-#: ../rssfeeds.py:129
+#: ../rssfeeds.py:132
 msgid "%s…"
 msgstr ""
 
@@ -78,11 +78,11 @@ msgstr ""
 msgid "(Use as banner if there is no image banner)"
 msgstr ""
 
-#: ../common.py:267
+#: ../common.py:272
 msgid "+"
 msgstr ""
 
-#: ../repository.py:691
+#: ../repository.py:694
 msgid "-->"
 msgstr ""
 
@@ -114,12 +114,25 @@ msgid "<g id='1'>${tag/title}</g>  <g id='2'>,</g>"
 msgstr ""
 
 #: ../ui/common/improve_auto_form.xml.en:15
-#: ../ui/common/proxy_improve_auto_form.xml.en:15
 msgctxt "label"
 msgid ""
 "<g id='1'>${widget/title} </g>  <g id='2'>(mandatory) </g>  <g id='3'>"
 "(multiple) </g>  <g id='4'>${widget/tip}</g>  <x id='5'/> ${widget/widget} "
 "${widget/suffix}"
+msgstr ""
+
+#: ../ui/common/proxy_improve_auto_form.xml.en:15
+msgctxt "label"
+msgid ""
+"<g id='1'>${widget/title}</g>  <g id='2'>(mandatory) </g>  <g id='3'>"
+"(multiple) </g>  <g id='4'>${widget/tip}</g>"
+msgstr ""
+
+#: ../ui/common/languages.xml.en:9
+msgctxt "span"
+msgid ""
+"<g id='1'><g id='2'>${lang/name}</g></g>  <g id='3'><g id='4'>${lang/value}</"
+"g></g>"
 msgstr ""
 
 #: ../ui/slideshow/Slide_view_type_3.xml.en:13
@@ -140,10 +153,10 @@ msgid ""
 "<g id='10'>${user/info/title}</g>  <g id='11'>|</g>  <g id='12'>Log out</g>"
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:56
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:55
 msgctxt "link"
 msgid ""
-"<g id='12'>${article/title}</g>  <g id='13'>${article/formated_pubDate}</g>"
+"<g id='11'>${article/title}</g>  <g id='12'>${article/formated_pubDate}</g>"
 msgstr ""
 
 #: ../ui/neutral/addlink.xml.en:90
@@ -178,11 +191,6 @@ msgctxt "link"
 msgid "<g id='2'>${item/short_name}</g>  <g id='3'>${bc_separator}</g>"
 msgstr ""
 
-#: ../ui/common/languages.xml.en:11
-msgctxt "span"
-msgid "<g id='2'>${lang/name}</g>  <g id='3'>${lang/value}</g>"
-msgstr ""
-
 #: ../ui/neutral/addlink.xml.en:41
 msgctxt "link"
 msgid ""
@@ -214,14 +222,14 @@ msgid ""
 "<g id='4'>${item/title}</g>  <g id='5'>  <g id='6'>${item/title}</g></g>"
 msgstr ""
 
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:39
+msgctxt "paragraph"
+msgid "<g id='6'>${article/formated_pubDate}, </g>  <g id='7'>source:</g>"
+msgstr ""
+
 #: ../ui/neutral/addimage.xml.en:55
 msgctxt "link"
 msgid "<g id='6'>${x/short_title}</g> /"
-msgstr ""
-
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:40
-msgctxt "paragraph"
-msgid "<g id='7'>${article/formated_pubDate}, </g>  <g id='8'>source:</g>"
 msgstr ""
 
 #: ../ui/slideshow/Slide_view_type_4.xml.en:42
@@ -245,47 +253,56 @@ msgstr ""
 msgid "A customizable tracker to manage issues"
 msgstr ""
 
-#: ../ws_neutral.py:574
+#: ../ws_neutral.py:573
 msgid "About"
 msgstr ""
 
-#: ../rssfeeds.py:67
+#: ../rssfeeds.py:70
 msgid "Activate"
 msgstr ""
 
-#: ../rssfeeds.py:307
+#: ../rssfeeds.py:309
 msgid "Active"
 msgstr ""
 
-#: ../ws_neutral_views.py:536 ../slides_views.py:351 ../tags.py:381
-#: ../views.py:59 ../news_views.py:386 ../section_views.py:220
+#: ../tags_views.py:382 ../ws_neutral_views.py:515 ../slides_views.py:354
+#: ../views.py:64 ../sidebar/menu.py:96 ../news_views.py:362
+#: ../section_views.py:220
 msgid "Add"
 msgstr ""
 
-#: ../bar.py:223 ../bar.py:265 ../repository_views.py:111
-#: ../ws_neutral_views.py:482 ../section_views.py:359 ../repository.py:501
+#: ../bar.py:223 ../bar.py:275 ../repository_views.py:108
+#: ../ws_neutral_views.py:469 ../section_views.py:349 ../repository.py:504
 msgid "Add Central Part Box"
 msgstr ""
 
-#: ../rssfeeds.py:289
+#: ../rssfeeds.py:283
 msgid "Add RSS"
+msgstr ""
+
+#: ../ws_neutral_views.py:465
+msgid "Add Resource: Image, PDF, ODT..."
 msgstr ""
 
 #: ../ws_neutral_views.py:364
 msgid "Add Resource: Section, Wiki, Tracker, RSS agregator..."
 msgstr ""
 
-#: ../ws_neutral_views.py:465
-msgid "Add Resource: Webpage, PDF, ODT..."
-msgstr ""
-
 #: ../section_views.py:332
-msgid "Add Resource: Webpage, Subsection, PDF, ODT"
+msgid "Add Resource: Subsection, File, PDF, ODT"
 msgstr ""
 
-#: ../bar.py:190 ../bar.py:244 ../repository_views.py:109
-#: ../ws_neutral_views.py:490 ../section_views.py:367 ../repository.py:498
+#: ../bar.py:190 ../bar.py:245 ../repository_views.py:106
+#: ../ws_neutral_views.py:477 ../section_views.py:357 ../repository.py:501
 msgid "Add Sidebar Box"
+msgstr ""
+
+#: ../ws_neutral_views.py:457
+msgid "Add Webpages in the Homepage View"
+msgstr ""
+
+#: ../section_views.py:337
+msgid "Add Webpages in the Section View"
 msgstr ""
 
 #: ../ui/addresses/Addresses_view.xml.en:8
@@ -293,7 +310,7 @@ msgctxt "link"
 msgid "Add a new address"
 msgstr ""
 
-#: ../ws_neutral.py:308
+#: ../ws_neutral.py:307
 msgid "Add a section"
 msgstr ""
 
@@ -302,11 +319,19 @@ msgctxt "title attribute"
 msgid "Add a tag"
 msgstr ""
 
+#: ../sidebar/menu.py:93
+msgid "Add entry"
+msgstr ""
+
+#: ../sidebar/diaporama_views.py:130
+msgid "Add new image"
+msgstr ""
+
 #: ../ws_neutral_views.py:283
 msgid "Add new {cls}"
 msgstr ""
 
-#: ../views.py:186 ../views.py:305
+#: ../views.py:191 ../views.py:310
 msgid "Add {class_title}"
 msgstr ""
 
@@ -318,7 +343,7 @@ msgstr ""
 msgid "Addresses Folder"
 msgstr ""
 
-#: ../rssfeeds.py:140
+#: ../rssfeeds.py:143
 msgid "All feeds"
 msgstr ""
 
@@ -327,19 +352,19 @@ msgctxt "paragraph"
 msgid "An error occured, the tweets have not been updated."
 msgstr ""
 
-#: ../repository.py:450
+#: ../repository.py:453
 msgid "Available Central Part Boxes"
 msgstr ""
 
-#: ../section.py:72
+#: ../section.py:69
 msgid "Available Sections and Webpages"
 msgstr ""
 
-#: ../repository.py:421
+#: ../repository.py:424
 msgid "Available Sidebar Boxes"
 msgstr ""
 
-#: ../ws_neutral.py:426
+#: ../ws_neutral.py:425
 msgid "Available Webpages"
 msgstr ""
 
@@ -351,11 +376,11 @@ msgstr ""
 msgid "Banner title"
 msgstr ""
 
-#: ../news_views.py:204
+#: ../news.py:240
 msgid "Batch size"
 msgstr ""
 
-#: ../webpage_views.py:51 ../turning_footer.py:61
+#: ../webpage_views.py:55 ../turning_footer.py:61
 msgid "Body"
 msgstr ""
 
@@ -367,11 +392,7 @@ msgstr ""
 msgid "Box should be at least content box or side box"
 msgstr ""
 
-#: ../repository_views.py:270
-msgid "Box state"
-msgstr ""
-
-#: ../sidebar/menu.py:53
+#: ../sidebar/menu.py:176
 msgid "Box to create a sidebar menu (1 level only)"
 msgstr ""
 
@@ -394,7 +415,7 @@ msgctxt "heading"
 msgid "Browse and link to a File from the workspace"
 msgstr ""
 
-#: ../tags.py:480
+#: ../tags.py:109
 msgid "CMS"
 msgstr ""
 
@@ -403,24 +424,24 @@ msgctxt "span"
 msgid "Change"
 msgstr ""
 
-#: ../ui/common/proxy_improve_auto_form.xml.en:31
+#: ../ui/common/proxy_improve_auto_form.xml.en:34
 msgctxt "dt"
 msgid "Choose the ${class_title} type"
 msgstr ""
 
-#: ../rssfeeds.py:290 ../tracker.py:140
+#: ../rssfeeds.py:284 ../tracker.py:140
 msgid "Configure"
 msgstr ""
 
-#: ../ws_neutral.py:410 ../ws_neutral.py:483
+#: ../ws_neutral.py:409 ../ws_neutral.py:482
 msgid "Configure Homepage"
 msgstr ""
 
-#: ../ws_neutral.py:563
+#: ../ws_neutral.py:562
 msgid "Contact"
 msgstr ""
 
-#: ../ws_neutral.py:577
+#: ../ws_neutral.py:576
 msgid "Contact us"
 msgstr ""
 
@@ -441,11 +462,11 @@ msgstr ""
 msgid "Custom Data"
 msgstr ""
 
-#: ../tags.py:306 ../news_views.py:360
+#: ../tags_views.py:310 ../news_views.py:336
 msgid "Date of writing"
 msgstr ""
 
-#: ../news_views.py:190
+#: ../news_views.py:189
 msgid "Date of writing must be set to make the news visible"
 msgstr ""
 
@@ -453,20 +474,20 @@ msgstr ""
 msgid "Date of writing format (e.g. %Y/%m/%d)"
 msgstr ""
 
-#: ../rssfeeds.py:75
+#: ../rssfeeds.py:78
 msgid "Deactivate"
 msgstr ""
 
-#: ../sidebar/diaporama.py:70
+#: ../sidebar/diaporama.py:89
 msgid "Description (Alternative text)"
 msgstr ""
 
-#: ../ui/admin-popup/template.xhtml.en:28
+#: ../ui/admin-popup/template.xhtml.en:29
 msgctxt "legend"
 msgid "Description of this box"
 msgstr ""
 
-#: ../sidebar/diaporama.py:176 ../sidebar/diaporama.py:177
+#: ../sidebar/diaporama.py:195 ../sidebar/diaporama.py:198
 msgid "Diaporama"
 msgstr ""
 
@@ -474,7 +495,11 @@ msgstr ""
 msgid "Display a tag cloud"
 msgstr ""
 
-#: ../webpage_views.py:42 ../repository.py:174
+#: ../repository.py:279
+msgid "Display on tagcloud view"
+msgstr ""
+
+#: ../webpage_views.py:46 ../repository.py:174
 msgid "Display on webpage view"
 msgstr ""
 
@@ -482,23 +507,23 @@ msgstr ""
 msgid "Display the last N news filtered by tags"
 msgstr ""
 
-#: ../repository.py:321
+#: ../repository.py:324
 msgid "Display the list of news."
 msgstr ""
 
-#: ../repository.py:362
+#: ../repository.py:365
 msgid "Display the ordered webpages of the homepage"
 msgstr ""
 
-#: ../repository.py:347
+#: ../repository.py:350
 msgid "Display the ordered webpages of the section"
 msgstr ""
 
-#: ../utils.py:147
-msgid "Do not order"
+#: ../datatypes.py:133
+msgid "Do not order (won't be displayed)"
 msgstr ""
 
-#: ../repository_views.py:251
+#: ../sidebar/diaporama.py:206
 msgid "Edit"
 msgstr ""
 
@@ -515,7 +540,7 @@ msgstr ""
 msgid "Edit CSS"
 msgstr ""
 
-#: ../rssfeeds.py:288
+#: ../rssfeeds.py:282
 msgid "Edit RSS"
 msgstr ""
 
@@ -527,19 +552,27 @@ msgstr ""
 msgid "Edit banner, favicon, skin..."
 msgstr ""
 
-#: ../utils.py:195
+#: ../utils.py:192
 msgid "Edit box '%s'"
+msgstr ""
+
+#: ../sidebar/menu.py:61
+msgid "Edit box title"
+msgstr ""
+
+#: ../sidebar/diaporama_views.py:129
+msgid "Edit diaporama title"
 msgstr ""
 
 #: ../ws_neutral_views.py:377
 msgid "Edit footer"
 msgstr ""
 
-#: ../ws_neutral.py:309
+#: ../ws_neutral.py:308
 msgid "Edit languages"
 msgstr ""
 
-#: ../sidebar/menu.py:58
+#: ../sidebar/menu.py:182
 msgid "Edit menu"
 msgstr ""
 
@@ -547,7 +580,7 @@ msgstr ""
 msgid "Edit robots.txt"
 msgstr ""
 
-#: ../ws_neutral.py:876
+#: ../ws_neutral.py:906
 msgid "Edit tags"
 msgstr ""
 
@@ -567,7 +600,7 @@ msgstr ""
 msgid "Edit turning footer"
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:17
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:16
 msgctxt "link"
 msgid "Export the feeds as an OPML file"
 msgstr ""
@@ -577,15 +610,15 @@ msgctxt "title attribute"
 msgid "Export the feeds as an OPML file"
 msgstr ""
 
-#: ../rssfeeds.py:208
+#: ../rssfeeds.py:211
 msgid "Feeds activated."
 msgstr ""
 
-#: ../rssfeeds.py:222
+#: ../rssfeeds.py:225
 msgid "Feeds deactivated."
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:27
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:26
 msgctxt "span"
 msgid "Filter by feed"
 msgstr ""
@@ -595,11 +628,11 @@ msgctxt "legend"
 msgid "Filter by type"
 msgstr ""
 
-#: ../ws_neutral.py:810
+#: ../ws_neutral.py:805
 msgid "Fix %s"
 msgstr ""
 
-#: ../ws_neutral.py:847
+#: ../ws_neutral.py:877
 msgid "Footer"
 msgstr ""
 
@@ -611,19 +644,19 @@ msgstr ""
 msgid "Footer Menu"
 msgstr ""
 
-#: ../sidebar/twitter.py:129
+#: ../sidebar/twitter.py:130
 msgid "Force cache update"
 msgstr ""
 
-#: ../views.py:610
+#: ../views.py:640
 msgid "Format"
 msgstr ""
 
-#: ../tags.py:480
+#: ../tags.py:109
 msgid "GIT"
 msgstr ""
 
-#: ../addresses_views.py:96
+#: ../addresses_views.py:99
 msgid "GPS"
 msgstr ""
 
@@ -648,43 +681,35 @@ msgstr ""
 msgid "Hide if there is only one item"
 msgstr ""
 
-#: ../ws_neutral.py:560
+#: ../ws_neutral.py:559
 msgid "Homepage"
 msgstr ""
 
-#: ../slides_views.py:110
+#: ../slides_views.py:114
 msgid "Hyperlink"
 msgstr ""
 
-#: ../tracker.py:191
-msgid "ITWS Issue"
-msgstr ""
-
-#: ../tracker.py:200
-msgid "ITWS Tracker"
-msgstr ""
-
-#: ../ws_neutral.py:442
+#: ../ws_neutral.py:441
 msgid "ITWS website"
 msgstr ""
 
-#: ../slides_views.py:109 ../slides_views.py:160
+#: ../slides_views.py:113 ../slides_views.py:165
 msgid "Image"
 msgstr ""
 
-#: ../sidebar/diaporama.py:66
+#: ../sidebar/diaporama.py:85
 msgid "Image link"
 msgstr ""
 
-#: ../sidebar/diaporama.py:65
+#: ../sidebar/diaporama.py:84
 msgid "Image path"
 msgstr ""
 
-#: ../ws_neutral.py:506
+#: ../ws_neutral.py:505
 msgid "Index"
 msgstr ""
 
-#: ../views.py:471 ../views.py:473 ../views.py:506 ../views.py:508
+#: ../views.py:470 ../views.py:472 ../views.py:505 ../views.py:507
 msgid "Info"
 msgstr ""
 
@@ -698,31 +723,36 @@ msgctxt "title"
 msgid "Insert link"
 msgstr ""
 
-#: ../turning_footer_views.py:89
+#: ../turning_footer.py:169
 msgid "Is active"
 msgstr ""
 
-#: ../tags.py:337
+#: ../tracker.py:191
+msgid "Issue"
+msgstr ""
+
+#: ../tags_views.py:337
 msgid "Items number"
 msgstr ""
 
-#: ../datatypes.py:74
+#: ../datatypes.py:77
 msgid "K2"
 msgstr ""
 
-#: ../rssfeeds.py:306
+#: ../rssfeeds.py:308
 msgid "Keywords (Separated by comma)"
 msgstr ""
 
-#: ../tags.py:339 ../news_views.py:362 ../slides_views.py:324
+#: ../tags_views.py:339 ../news_views.py:338 ../slides_views.py:327
 msgid "Last Author"
 msgstr ""
 
-#: ../tags.py:338 ../news_views.py:361 ../views.py:611 ../slides_views.py:323
+#: ../views.py:641 ../tags_views.py:338 ../news_views.py:337
+#: ../slides_views.py:326
 msgid "Last Modified"
 msgstr ""
 
-#: ../views.py:912
+#: ../views.py:942
 msgid "Last News"
 msgstr ""
 
@@ -750,23 +780,23 @@ msgctxt "title attribute"
 msgid "Log out"
 msgstr ""
 
-#: ../news_views.py:150 ../slides_views.py:108 ../slides_views.py:158
+#: ../news_views.py:149 ../slides_views.py:112 ../slides_views.py:163
 msgid "Long title"
 msgstr ""
 
-#: ../ws_neutral_views.py:503
+#: ../ws_neutral_views.py:490
 msgid "Manage Homepage"
 msgstr ""
 
-#: ../ws_neutral_views.py:453 ../ws_neutral_views.py:525 ../ws_neutral.py:837
+#: ../ws_neutral_views.py:445 ../ws_neutral_views.py:504 ../ws_neutral.py:867
 msgid "Manage Homepage Content"
 msgstr ""
 
-#: ../section_views.py:402
+#: ../section_views.py:384
 msgid "Manage Section"
 msgstr ""
 
-#: ../ws_neutral_views.py:443
+#: ../ws_neutral_views.py:435
 msgid "Manage Website"
 msgstr ""
 
@@ -782,12 +812,8 @@ msgstr ""
 msgid "Manage repository"
 msgstr ""
 
-#: ../section_views.py:380
+#: ../section_views.py:370
 msgid "Manage section"
-msgstr ""
-
-#: ../section_views.py:337
-msgid "Manage section content (cut, copy, rename, remove)"
 msgstr ""
 
 #: ../ws_neutral_views.py:369
@@ -798,7 +824,8 @@ msgstr ""
 msgid "Manage the section"
 msgstr ""
 
-#: ../tags.py:408 ../news_views.py:414 ../views.py:568 ../slides_views.py:379
+#: ../views.py:598 ../tags_views.py:410 ../news_views.py:390
+#: ../slides_views.py:382
 msgid "Manage view"
 msgstr ""
 
@@ -806,19 +833,19 @@ msgstr ""
 msgid "Manage your website"
 msgstr ""
 
-#: ../addresses_views.py:95
+#: ../addresses_views.py:98
 msgid "Map height"
 msgstr ""
 
-#: ../addresses_views.py:94
+#: ../addresses_views.py:97
 msgid "Map width"
 msgstr ""
 
-#: ../repository.py:331
+#: ../repository.py:334
 msgid "Maximum number of news to display"
 msgstr ""
 
-#: ../ws_neutral.py:841
+#: ../ws_neutral.py:871
 msgid "Menu"
 msgstr ""
 
@@ -827,41 +854,42 @@ msgctxt "div"
 msgid "Message:"
 msgstr ""
 
-#: ../tags.py:335 ../news_views.py:358 ../views.py:608 ../slides_views.py:321
+#: ../views.py:638 ../tags_views.py:335 ../news_views.py:334
+#: ../slides_views.py:324
 msgid "Name"
 msgstr ""
 
-#: ../datatypes.py:72
+#: ../datatypes.py:75
 msgid "Neutral"
 msgstr ""
 
-#: ../ws_neutral.py:568 ../news.py:74
+#: ../ws_neutral.py:567 ../news.py:75
 msgid "News"
 msgstr ""
 
-#: ../news.py:224
+#: ../news.py:225
 msgid "News Folder"
 msgstr ""
 
-#: ../news.py:225
+#: ../news.py:226
 msgid "News Folder contains news ordered  by date of writing"
 msgstr ""
 
-#: ../repository_views.py:330
+#: ../repository_views.py:276
 msgid "News TAGS"
 msgstr ""
 
-#: ../repository.py:320
+#: ../repository.py:323
 msgid "News TOC"
 msgstr ""
 
-#: ../news.py:75
+#: ../news.py:76
 msgid ""
 "News is a webpage with a small description used by the News Folder, News can "
 "be tagged"
 msgstr ""
 
-#: ../repository_views.py:329
+#: ../repository_views.py:275
 msgid "News to show"
 msgstr ""
 
@@ -875,20 +903,41 @@ msgctxt "title attribute"
 msgid "Next »"
 msgstr ""
 
+#: ../ui/bar_items/Diaporama_view.xml.en:16
+msgctxt "div"
+msgid "No banner to show"
+msgstr ""
+
 #: ../ui/bar_items/SectionNews_view.xml.en:28
 msgctxt "div"
 msgid "No news to show"
+msgstr ""
+
+#: ../ui/bar_items/SectionWebpages_view.xml.en:12
+msgctxt "div"
+msgid "No ordered webpages to show"
+msgstr ""
+
+#: ../ui/bar_items/SectionChildrenTree_view.xml.en:21
+#: ../ui/bar_items/ContentBoxSectionChildrenToc_view.xml.en:19
+msgctxt "div"
+msgid "No ordered webpages/subsections to show"
+msgstr ""
+
+#: ../ui/bar_items/NewsSiblingsToc_view.xml.en:25
+msgctxt "div"
+msgid "No published news to show"
 msgstr ""
 
 #: ../section_views.py:131
 msgid "Not visible, please %s at least one webpage"
 msgstr ""
 
-#: ../sidebar/twitter.py:127
+#: ../sidebar/twitter.py:128
 msgid "Number of tweet"
 msgstr ""
 
-#: ../tags.py:479
+#: ../tags.py:108
 msgid "ODF"
 msgstr ""
 
@@ -897,7 +946,7 @@ msgctxt "span"
 msgid "OK"
 msgstr ""
 
-#: ../rssfeeds.py:161
+#: ../rssfeeds.py:164
 msgid "OPML version"
 msgstr ""
 
@@ -905,65 +954,65 @@ msgstr ""
 msgid "Old box (obsolete)"
 msgstr ""
 
-#: ../bar.py:208 ../bar.py:263 ../ws_neutral_views.py:486 ../ws_neutral.py:866
-#: ../section_views.py:363 ../repository.py:441 ../repository.py:444
+#: ../bar.py:208 ../bar.py:273 ../ws_neutral_views.py:473 ../ws_neutral.py:896
+#: ../section_views.py:353 ../repository.py:444 ../repository.py:447
 msgid "Order Central Part Boxes"
 msgstr ""
 
-#: ../ws_neutral.py:422
+#: ../ws_neutral.py:421
 msgid "Order Homepage \"Webpages Slot\""
 msgstr ""
 
-#: ../section.py:70
+#: ../section.py:67
 msgid "Order Sections and Webpages"
 msgstr ""
 
-#: ../bar.py:174 ../bar.py:242 ../ws_neutral_views.py:494 ../ws_neutral.py:870
-#: ../section_views.py:371 ../repository.py:412 ../repository.py:415
+#: ../bar.py:174 ../bar.py:243 ../ws_neutral_views.py:481 ../ws_neutral.py:900
+#: ../section_views.py:361 ../repository.py:415 ../repository.py:418
 msgid "Order Sidebar Boxes"
 msgstr ""
 
-#: ../section_views.py:354
+#: ../section_views.py:345
 msgid "Order Subsections in the TOC"
 msgstr ""
 
-#: ../ws_neutral.py:380 ../ws_neutral.py:862
+#: ../ws_neutral.py:379 ../ws_neutral.py:892
 msgid "Order Webpages"
 msgstr ""
 
-#: ../ws_neutral_views.py:476
+#: ../ws_neutral_views.py:461
 msgid "Order Webpages in the Homepage View"
 msgstr ""
 
-#: ../section_views.py:348
+#: ../section_views.py:341
 msgid "Order Webpages in the Section View"
 msgstr ""
 
-#: ../section.py:67 ../section.py:295
+#: ../section.py:64 ../section.py:220
 msgid "Order Webpages/Sections"
 msgstr ""
 
-#: ../utils.py:149
+#: ../datatypes.py:135
 msgid "Order bottom"
 msgstr ""
 
-#: ../views.py:409
+#: ../views.py:417
 msgid "Order box"
 msgstr ""
 
-#: ../ws_neutral.py:306
+#: ../ws_neutral.py:305
 msgid "Order menu"
 msgstr ""
 
-#: ../section.py:64
+#: ../section.py:61
 msgid "Order section"
 msgstr ""
 
-#: ../slides.py:200
+#: ../slides.py:210
 msgid "Order slides"
 msgstr ""
 
-#: ../utils.py:148
+#: ../datatypes.py:134
 msgid "Order top"
 msgstr ""
 
@@ -971,44 +1020,44 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: ../repository_views.py:459
+#: ../repository_views.py:406
 msgid "Preview"
 msgstr ""
 
-#: ../tags.py:479
+#: ../tags.py:108
 msgid "Python"
 msgstr ""
 
-#: ../rssfeeds.py:278
+#: ../rssfeeds.py:272
 msgid "RSS Feeds"
 msgstr ""
 
-#: ../rssfeeds.py:287
+#: ../rssfeeds.py:281
 msgid "RSS List"
 msgstr ""
 
-#: ../rssfeeds.py:236
+#: ../rssfeeds.py:292
 msgid "RSS TTL in minutes."
 msgstr ""
 
-#: ../rssfeeds.py:279
+#: ../rssfeeds.py:273
 msgid ""
 "RSS feeds allows to aggregate external feeds, filtering content by keywords"
 msgstr ""
 
-#: ../turning_footer_views.py:88
+#: ../turning_footer.py:168
 msgid "Random selection"
 msgstr ""
 
-#: ../repository.py:281
+#: ../repository.py:284
 msgid "Randomize tags"
 msgstr ""
 
-#: ../news_views.py:232
+#: ../news_views.py:208
 msgid "Read more"
 msgstr ""
 
-#: ../repository_views.py:124
+#: ../repository_views.py:121
 msgid "Referenced by"
 msgstr ""
 
@@ -1026,17 +1075,17 @@ msgctxt "span"
 msgid "Search"
 msgstr ""
 
-#: ../section.py:92
+#: ../section.py:90
 msgid "Section"
 msgstr ""
 
-#: ../section.py:93
+#: ../section.py:91
 msgid ""
 "Section allows to customize the central part and the sidebar. Section can "
 "contain subsections"
 msgstr ""
 
-#: ../repository.py:346
+#: ../repository.py:349
 msgid "Section's Webpages"
 msgstr ""
 
@@ -1050,15 +1099,15 @@ msgctxt "table cell"
 msgid "Select Resource"
 msgstr ""
 
-#: ../repository_views.py:723
+#: ../repository_views.py:674
 msgid "Show all"
 msgstr ""
 
-#: ../repository.py:280
+#: ../repository.py:283
 msgid "Show number of items for each tag"
 msgstr ""
 
-#: ../repository_views.py:404
+#: ../repository_views.py:350
 msgid "Show number of items for each tag: %s"
 msgstr ""
 
@@ -1066,11 +1115,11 @@ msgstr ""
 msgid "Show webpage one by one"
 msgstr ""
 
-#: ../sidebar/menu.py:52
+#: ../sidebar/menu.py:175
 msgid "Side Menu"
 msgstr ""
 
-#: ../repository.py:470
+#: ../repository.py:473
 msgid "Sidebar Boxes Repository"
 msgstr ""
 
@@ -1078,7 +1127,7 @@ msgstr ""
 msgid "Sidebar box"
 msgstr ""
 
-#: ../repository.py:471
+#: ../repository.py:474
 msgid "Sidebar boxes repository"
 msgstr ""
 
@@ -1090,23 +1139,24 @@ msgstr ""
 msgid "Skin"
 msgstr ""
 
-#: ../slides.py:55 ../slides.py:56
+#: ../slides.py:56 ../slides.py:57
 msgid "Slide"
 msgstr ""
 
-#: ../slides.py:173
+#: ../slides.py:183
 msgid "Slides Ordered Table"
 msgstr ""
 
-#: ../slides.py:182
+#: ../slides.py:192
 msgid "Slideshow"
 msgstr ""
 
-#: ../slides.py:183
+#: ../slides.py:193
 msgid "Slideshow allows to create and organize slides"
 msgstr ""
 
-#: ../tags.py:340 ../news_views.py:364 ../views.py:612 ../slides_views.py:325
+#: ../views.py:642 ../tags_views.py:340 ../news_views.py:340 ../utils.py:115
+#: ../slides_views.py:328
 msgid "State"
 msgstr ""
 
@@ -1114,37 +1164,37 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
-#: ../repository.py:304 ../repository.py:374
+#: ../repository.py:307 ../repository.py:377
 msgid "Subsections and Webpages TOC"
 msgstr ""
 
-#: ../tags.py:304
+#: ../tags_views.py:308
 msgid "TAGS"
 msgstr ""
 
-#: ../slides_views.py:162
+#: ../slides_views.py:167
 msgid "TOC width (nb columns)"
 msgstr ""
 
-#: ../repository.py:305
+#: ../repository.py:308
 msgid "Table Of Content (TOC) to display choosen subsections and webpages"
 msgstr ""
 
-#: ../repository.py:375
+#: ../repository.py:378
 msgid ""
 "Table Of Content (TOC) to display choosen subsections and webpages in the "
 "central part"
 msgstr ""
 
-#: ../tags.py:429
+#: ../tags.py:49
 msgid "Tag"
 msgstr ""
 
-#: ../tags.py:198 ../repository.py:266
+#: ../tags_views.py:196 ../repository.py:266
 msgid "Tag Cloud"
 msgstr ""
 
-#: ../tags.py:470
+#: ../tags.py:97
 msgid "Tags"
 msgstr ""
 
@@ -1153,15 +1203,15 @@ msgctxt "div"
 msgid "Tags are global to the website."
 msgstr ""
 
-#: ../repository.py:278
+#: ../repository.py:281
 msgid "Tags to show (0 for all tags)"
 msgstr ""
 
-#: ../repository_views.py:403
+#: ../repository_views.py:349
 msgid "Tags to show (0 for all tags): %s"
 msgstr ""
 
-#: ../sidebar/diaporama.py:67 ../resources.py:148
+#: ../sidebar/diaporama.py:86 ../resources.py:148
 msgid "Target"
 msgstr ""
 
@@ -1169,7 +1219,7 @@ msgstr ""
 msgid "The file doesn't exists"
 msgstr ""
 
-#: ../ws_neutral.py:424
+#: ../ws_neutral.py:423
 msgid ""
 "The homepage has a webpages slot, you can add several webpages to it and "
 "order them."
@@ -1185,71 +1235,71 @@ msgctxt "div"
 msgid "There are errors in this RSS:"
 msgstr ""
 
-#: ../rssfeeds.py:109
+#: ../rssfeeds.py:112
 msgid "There is no items for this feed."
 msgstr ""
 
-#: ../repository.py:452
+#: ../repository.py:455
 msgid ""
 "These boxes are available, you can make them visible in the central part by "
 "adding them to the above ordered list."
 msgstr ""
 
-#: ../repository.py:423
+#: ../repository.py:426
 msgid ""
 "These boxes are available, you can make them visible in the sidebar by "
 "adding them to the above ordered list."
 msgstr ""
 
-#: ../ws_neutral.py:428
+#: ../ws_neutral.py:427
 msgid ""
 "These webpages are available, you can make them visible in the homepage "
 "webpages slot by adding them to the ordered list."
 msgstr ""
 
-#: ../section.py:74
+#: ../section.py:71
 msgid ""
 "This Sections/Webpages are available, you can make them visible in this "
 "section by adding them to the ordered list"
 msgstr ""
 
-#: ../repository.py:283
+#: ../repository.py:286
 msgid ""
 "This tag cloud will display only the tags from selected types of content"
 msgstr ""
 
-#: ../repository_views.py:405
+#: ../repository_views.py:351
 msgid "This tag cloud will display only the tags from: %s"
 msgstr ""
 
-#: ../repository.py:446
+#: ../repository.py:449
 msgid ""
 "This website has a sidebar and a central part. The central part can be "
 "composed of several kinds of boxes: \"Webpages Slot\", \"Last News View\", "
 "Slideshow... Here you can order these boxes."
 msgstr ""
 
-#: ../repository.py:417
+#: ../repository.py:420
 msgid ""
 "This website has a sidebar and a central part. The sidebar can be composed "
 "of several kinds of boxes: Tag Cloud, \"last News View\", HTML Content, "
 "Twitter Feeds, Custom Menu... Here you can order these boxes."
 msgstr ""
 
-#: ../news_views.py:153
+#: ../news_views.py:152
 msgid "Thumbnail"
 msgstr ""
 
-#: ../rssfeeds.py:237
+#: ../rssfeeds.py:293
 msgid "Timeout in seconds"
 msgstr ""
 
-#: ../turning_footer_views.py:87 ../resources.py:145 ../slides_views.py:322
-#: ../tags.py:336 ../views.py:63 ../views.py:609 ../news_views.py:359
+#: ../views.py:68 ../views.py:639 ../tags_views.py:336 ../news_views.py:335
+#: ../resources.py:145 ../slides_views.py:325
 msgid "Title"
 msgstr ""
 
-#: ../sidebar/diaporama.py:68
+#: ../sidebar/diaporama.py:87
 msgid "Title (Link tip)"
 msgstr ""
 
@@ -1261,7 +1311,7 @@ msgstr ""
 msgid "Title link target"
 msgstr ""
 
-#: ../webpage_views.py:92
+#: ../webpage_views.py:98
 msgid ""
 "To make this webpage visible on \"{parent_view}\" please go to <a href="
 "\"{path}\">order interface</a>"
@@ -1273,7 +1323,11 @@ msgid ""
 "\"{path}\">order interface</a>"
 msgstr ""
 
-#: ../ws_neutral.py:844
+#: ../tracker.py:200
+msgid "Tracker"
+msgstr ""
+
+#: ../ws_neutral.py:874
 msgid "Turning Footer"
 msgstr ""
 
@@ -1285,35 +1339,35 @@ msgstr ""
 msgid "Turning footer"
 msgstr ""
 
-#: ../sidebar/twitter.py:109
+#: ../sidebar/twitter.py:110
 msgid "Twitter SideBar"
 msgstr ""
 
-#: ../sidebar/twitter.py:125
+#: ../sidebar/twitter.py:126
 msgid "Twitter account name"
 msgstr ""
 
-#: ../sidebar/twitter.py:110
+#: ../sidebar/twitter.py:111
 msgid "Twitter sidebar feed"
 msgstr ""
 
-#: ../repository_views.py:209 ../news_views.py:363
+#: ../repository_views.py:206 ../news_views.py:339
 msgid "Type"
 msgstr ""
 
-#: ../slides_views.py:90
+#: ../slides_views.py:92
 msgid "Type 1"
 msgstr ""
 
-#: ../slides_views.py:91
+#: ../slides_views.py:93
 msgid "Type 2"
 msgstr ""
 
-#: ../slides_views.py:92
+#: ../slides_views.py:94
 msgid "Type 3"
 msgstr ""
 
-#: ../slides_views.py:93
+#: ../slides_views.py:95
 msgid "Type 4"
 msgstr ""
 
@@ -1326,7 +1380,7 @@ msgstr ""
 msgid "UPDATE CACHE"
 msgstr ""
 
-#: ../rssfeeds.py:305
+#: ../rssfeeds.py:307
 msgid "URL"
 msgstr ""
 
@@ -1338,7 +1392,7 @@ msgstr ""
 msgid "Unexpected file of size {width}x{height}."
 msgstr ""
 
-#: ../rssfeeds.py:238
+#: ../rssfeeds.py:294
 msgid "Update RSS now"
 msgstr ""
 
@@ -1362,22 +1416,23 @@ msgctxt "span"
 msgid "Upload and Link"
 msgstr ""
 
-#: ../repository_views.py:415
+#: ../repository_views.py:361
 msgid "Useful in a news folder, show a Table of Content with all news."
 msgstr ""
 
-#: ../sidebar/twitter.py:126
+#: ../sidebar/twitter.py:127
 msgid "User Id"
 msgstr ""
 
-#: ../turning_footer_views.py:114 ../rssfeeds.py:82 ../addresses_views.py:41
-#: ../slides_views.py:197 ../tags.py:164 ../repository_views.py:492
-#: ../repository_views.py:587 ../news_views.py:92 ../news_views.py:222
-#: ../section_views.py:272 ../sidebar/diaporama_views.py:85
+#: ../turning_footer_views.py:78 ../rssfeeds.py:85 ../tags_views.py:161
+#: ../addresses_views.py:41 ../slides_views.py:200 ../views.py:549
+#: ../repository_views.py:439 ../repository_views.py:534 ../news_views.py:91
+#: ../news_views.py:198 ../section_views.py:272
+#: ../sidebar/diaporama_views.py:148
 msgid "View"
 msgstr ""
 
-#: ../repository_views.py:446
+#: ../repository_views.py:393
 msgid "View with preview"
 msgstr ""
 
@@ -1389,11 +1444,11 @@ msgstr ""
 msgid "Website View"
 msgstr ""
 
-#: ../ws_neutral.py:367
+#: ../ws_neutral.py:366
 msgid "Website data folder"
 msgstr ""
 
-#: ../repository.py:361
+#: ../repository.py:364
 msgid "Website's Webpages"
 msgstr ""
 
@@ -1420,12 +1475,12 @@ msgid ""
 "</g> ]"
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:25
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:24
 msgctxt "option"
 msgid "[${feed/nb_articles}] ${feed/title}"
 msgstr ""
 
-#: ../repository.py:688
+#: ../repository.py:691
 msgid "box %s is referenced by"
 msgstr ""
 
@@ -1441,27 +1496,27 @@ msgstr ""
 msgid "excluded roles for assign to"
 msgstr ""
 
-#: ../webpage_views.py:95
+#: ../webpage_views.py:101
 msgid "home page"
 msgstr ""
 
-#: ../turning_footer_views.py:44
+#: ../turning_footer_views.py:41
 msgid "id"
 msgstr ""
 
-#: ../repository_views.py:661
+#: ../repository_views.py:612
 msgid "resource \"%s\" not found"
 msgstr ""
 
-#: ../ws_neutral.py:135
-msgid "{title} -- RSS Feeds"
+#: ../ws_neutral.py:134
+msgid "{ws_title} -- RSS Feeds"
 msgstr ""
 
-#: ../ws_neutral.py:142
+#: ../ws_neutral.py:141
 msgid "{ws_title} {title} -- RSS Feeds"
 msgstr ""
 
-#: ../ui/rssfeeds/RssFeeds_view.xml.en:50
+#: ../ui/rssfeeds/RssFeeds_view.xml.en:49
 msgctxt "div"
 msgid " "
 msgstr ""
@@ -1486,6 +1541,6 @@ msgctxt "title attribute"
 msgid "« Previous"
 msgstr ""
 
-#: ../views.py:720
+#: ../views.py:750
 msgid "…"
 msgstr ""
