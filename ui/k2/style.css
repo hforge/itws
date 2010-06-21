@@ -431,6 +431,23 @@ fieldset legend{
   padding-left: 5px;
 }
 
+/* news sibings toc */
+.box-news-siblings-toc .newsitem {
+  margin-bottom: 8px;
+}
+
+.box-news-siblings-toc .newsitem-date {
+  text-align: right;
+}
+
+.box-news-siblings-toc .newsitem-title p {
+  margin: 0;
+}
+
+.box-news-siblings-toc .newsitem-title a {
+  text-decoration: none;
+}
+
 /**************************************************************************
  * NEWS FOLDER
  * ***********************************************************************/
