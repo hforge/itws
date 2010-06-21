@@ -26,7 +26,7 @@ from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 
 # Import from itws
 from datatypes import StateEnumerate
-from tags import TagsAware_Edit
+from tags_views import TagsAware_Edit
 from utils import state_widget
 
 

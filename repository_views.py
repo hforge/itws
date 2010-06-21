@@ -40,7 +40,7 @@ from ikaaro.website import WebSite
 
 # Import from itws
 from datatypes import PositiveInteger
-from tags import TagsList
+from tags_views import TagsList
 from utils import to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View, AutomaticEditView

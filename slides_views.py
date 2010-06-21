@@ -42,7 +42,7 @@ from ikaaro.webpage import HTMLEditView
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
-from tags import TagsAware_Edit, TagItem_View
+from tags_views import TagsAware_Edit, TagItem_View
 from utils import state_widget
 from views import ProxyContainerNewInstance
 
