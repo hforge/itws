@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String, Boolean
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -32,6 +32,7 @@ from webpage_views import WebPage_Edit, WebPage_View
 
 class WebPage(BaseWebPage, TagsAware):
     # Override the ikaaro webpage to allow to add iframe
+    class_version = '20100621'
 
     edit = WebPage_Edit()
     view = WebPage_View()
@@ -40,8 +41,7 @@ class WebPage(BaseWebPage, TagsAware):
     def get_metadata_schema(cls):
         schema = merge_dicts(BaseWebPage.get_metadata_schema(),
                              TagsAware.get_metadata_schema(),
-                             display_title=Boolean(default=True),
-                             state=String(default='public'))
+                             display_title=Boolean(default=True))
         return schema
 
 
@@ -106,6 +106,16 @@ class WebPage(BaseWebPage, TagsAware):
     def update_relative_links(self, source):
         BaseWebPage.update_relative_links(self, source)
         # Not need for TagsAware
+
+
+    def update_20100621(self):
+        # Restore state
+        if self.get_property('state'):
+            # state was already set
+            return
+        if self.get_workflow_state() == 'private':
+            # state was default public
+            self.set_property('state', 'public')
 
 
 

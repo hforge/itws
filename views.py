@@ -34,7 +34,7 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
-from ikaaro.forms import SelectWidget, description_widget, subject_widget
+from ikaaro.forms import description_widget, subject_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered

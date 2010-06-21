@@ -71,7 +71,7 @@ class InfoWidget(Widget):
 class NewsItem(WebPage):
 
     class_id = 'news'
-    class_version = '20100129'
+    class_version = '20100621'
     class_title = MSG(u'News')
     class_description = MSG(u'News is a webpage with a small description '
                             u'used by the News Folder, News can be tagged')

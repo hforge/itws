@@ -157,7 +157,7 @@ class BoxSectionNews(Box):
 class HTMLContent(WebPage):
 
     class_id = 'html-content'
-    class_version = '20091127'
+    class_version = '20100621'
     class_title = MSG(u'HTML Content')
     class_description = MSG('HTML snippet which can be displayed in the '
                             'central and/or the sidebar')

@@ -21,12 +21,13 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody, SelectWidget
+from ikaaro.forms import RTEWidget, BooleanCheckBox, XHTMLBody
 from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 
 # Import from itws
 from datatypes import StateEnumerate
 from tags import TagsAware_Edit
+from utils import state_widget
 
 
 
@@ -57,8 +58,7 @@ class WebPage_Edit(HTMLEditView, TagsAware_Edit):
             else:
                 new_widgets.append(widget)
 
-        new_widgets.append(SelectWidget('state', title=MSG(u'State'),
-                                        has_empty_option=False))
+        new_widgets.append(state_widget)
 
         return new_widgets
 
