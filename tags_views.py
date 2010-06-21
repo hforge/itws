@@ -293,6 +293,9 @@ class TagsFolder_TagCloud(STLView):
 class TagsAware_Edit(object):
     """Mixin to merge with the TagsAware edit view.
     """
+    # Little optimisation not to compute the schema too often
+    keys = ['tags', 'date_of_writing']
+
 
     def get_schema(self, resource, context):
         site_root = resource.get_site_root()

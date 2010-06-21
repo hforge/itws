@@ -122,10 +122,9 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
 
 
     def get_value(self, resource, context, name, datatype):
-        if name in TagsAware_Edit.get_schema(self, resource, context):
-            # TODO To improve
+        if name in TagsAware_Edit.keys:
             return TagsAware_Edit.get_value(self, resource, context, name,
-                                           datatype)
+                                            datatype)
         return HTMLEditView.get_value(self, resource, context, name, datatype)
 
 
