@@ -438,7 +438,9 @@ fieldset legend{
 }
 
 #page.news-folder-view .item {
-  border-bottom: 1px solid #999;
+  border-bottom: 1px dotted #999;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 #page.news-folder-view .item .actu-date {
@@ -452,12 +454,12 @@ fieldset legend{
 
 #page.news-folder-view .item h3.title {
   clear: both;
-  border-bottom: 1px solid #999;
+  border: none;
   margin-right: 0;
 }
 
 #page.news-folder-view .item h3.title a {
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 #page.news-folder-view .item .more {
