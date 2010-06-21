@@ -141,7 +141,7 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
     query_schema = freeze({'title': Unicode})
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         raise NotImplementedError
 
 
@@ -229,7 +229,7 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
         raise NotImplementedError
 
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         raise NotImplementedError
 
 
@@ -351,7 +351,7 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
         return self.title
 
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         from repository import Box
         return Box
 

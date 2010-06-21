@@ -222,7 +222,7 @@ class Section_ArticleNewInstance(ProxyContainerNewInstance):
     # SmartOrderedTable_View API
     title = title_description = None
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         here = context.resource
         # Return parent section article class
         return here.parent.get_article_class()

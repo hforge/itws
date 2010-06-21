@@ -283,7 +283,7 @@ class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
         return MSG(u'Add new {cls}').gettext(cls.class_title.gettext())
 
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         here = context.resource
         return here.get_article_class()
 
@@ -517,7 +517,7 @@ class WSDataFolder_ArticleNewInstance(ProxyContainerNewInstance):
     # SmartOrderedTable_View API
     title = title_description = None
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         here = context.resource
         # FIXME Get the first orderable classes
         # orderable classes SHOULD always contains ONE class

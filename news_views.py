@@ -361,7 +361,7 @@ class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
     actions = [Button(access='is_allowed_to_edit',
                       name='new_news', title=MSG(u'Add'))]
 
-    def _get_resource_cls(self, context):
+    def _get_resource_cls(self, resource, context):
         here = context.resource
         return here.news_class
 
