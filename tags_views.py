@@ -316,12 +316,6 @@ class TagsAware_Edit(object):
 
 
     def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # tags
         resource.set_property('tags', form['tags'])
         resource.set_property('date_of_writing', form['date_of_writing'])
 
