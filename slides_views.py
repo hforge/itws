@@ -130,11 +130,11 @@ class Slide_Edit(HTMLEditView, TagsAware_Edit):
 
 
     def action(self, resource, context, form):
-        HTMLEditView.action(self, resource, context, form)
-        TagsAware_Edit.action(self, resource, context, form)
         # Check edit conflict
         if context.edit_conflict:
             return
+        HTMLEditView.action(self, resource, context, form)
+        TagsAware_Edit.action(self, resource, context, form)
 
         language = resource.get_content_language(context)
         # Long title to appear only on slide view

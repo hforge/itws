@@ -35,7 +35,6 @@ from itools.xapian import RangeQuery, NotQuery, split_unicode
 from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import XHTMLBody, DateWidget
-from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -291,7 +290,7 @@ class TagsFolder_TagCloud(STLView):
 
 
 
-class TagsAware_Edit(DBResource_Edit):
+class TagsAware_Edit(object):
     """Mixin to merge with the TagsAware edit view.
     """
 
