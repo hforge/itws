@@ -82,34 +82,33 @@ class Bar_View(STLView):
         allowed = ac.is_allowed_to_edit(context.user, resource)
         if allowed:
             return False
-        return len(self._get_items(resource, context)) == 0
+        for item in self._get_items(resource, context):
+            return False
+        return True
 
 
     def _get_items(self, resource, context, check_acl=True):
         order = resource.get_resource(self.order_name, soft=True)
-        if order is None:
-            return []
+        if order:
+            orderfile = order.handler
+            user = context.user
+            repository = resource.get_site_root().get_repository()
+            order = orderfile.get_records_in_order()
+            items = []
 
-        orderfile = order.handler
-        user = context.user
-        repository = resource.get_site_root().get_repository()
-        order = orderfile.get_records_in_order()
-        items = []
-
-        for record in order:
-            name = orderfile.get_record_value(record, 'name')
-            item = repository.get_resource(name, soft=True)
-            if item is None:
-                path = resource.get_abspath()
-                warn('%s > bar item not found: %s' % (path, name))
-                continue
-            if check_acl:
-                ac = item.get_access_control()
-                if ac.is_allowed_to_view(user, item) is False:
+            for record in order:
+                name = orderfile.get_record_value(record, 'name')
+                item = repository.get_resource(name, soft=True)
+                if item is None:
+                    path = resource.get_abspath()
+                    warn('%s > bar item not found: %s' % (path, name))
                     continue
+                if check_acl:
+                    ac = item.get_access_control()
+                    if ac.is_allowed_to_view(user, item) is False:
+                        continue
 
-            items.append(item)
-        return items
+                yield item
 
 
     def get_items(self, resource, context):
@@ -149,7 +148,6 @@ class Bar_View(STLView):
         # Manage buttons
         manage_buttons = self.get_manage_buttons(resource, context)
         allowed_to_edit = len(manage_buttons) > 0
-        # XXX 'article-items'
         namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
 
         # Bar items
