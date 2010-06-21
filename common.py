@@ -80,6 +80,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
 
         # Complete the breadcrumb
         resource = site_root
+        user = context.user
         for name in context.uri.path:
             path = path + ('%s/' % name)
             resource = resource.get_resource(name, soft=True)
@@ -87,6 +88,10 @@ class LocationTemplateWithoutTab(LocationTemplate):
                 continue
             if resource is None:
                 break
+            # ACLs
+            ac = resource.get_access_control()
+            if ac.is_allowed_to_view(user, resource) is False:
+                path = None
             # Append
             title = resource.get_title()
             breadcrumb.append({
