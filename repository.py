@@ -469,7 +469,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100611'
+    class_version = '20100621'
     class_title = MSG(u'Sidebar Boxes Repository')
     class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -741,8 +741,6 @@ class Repository(Folder):
                 ('contentbar-item-articles', 'contentbar-box-articles'),
                 ('ws-neutral-item-articles', 'ws-neutral-box-articles'),
                 ('contentbar-item-children-toc', 'contentbar-box-children-toc'),
-                ('sidebar-items-ordered-table', 'sidebar-boxes-ordered-table'),
-                ('contentbar-items-ordered-table', 'contentbar-boxes-ordered-table'),
                 # sidebar/xxx
                 ('sidebar-item-twitter', 'box-twitter'),
                 ('sidebar-item-menu', 'box-menu')):
@@ -750,7 +748,19 @@ class Repository(Folder):
                 metadata = resource.metadata
                 metadata.set_changed()
                 metadata.format = new_cls_id
-                print old_cls_id, new_cls_id
+
+
+    def update_20100621(self):
+        # Fix repository
+        format = 'sidebar-item-section-siblings-toc'
+        new_cls = BoxSectionChildrenToc
+
+        for resource in self.search_resources(format=format):
+            metadata = resource.metadata
+            metadata.set_changed()
+            metadata.format = new_cls.class_id
+            metadata.version = new_cls.class_version
+
 
 
 ###########################################################################

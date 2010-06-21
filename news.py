@@ -221,7 +221,7 @@ class NewsItem(WebPage):
 class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
     class_id = 'news-folder'
-    class_version = '20100403'
+    class_version = '20100621'
     class_title = MSG(u'News Folder')
     class_description = MSG(u'News Folder contains news ordered  '
                             u'by date of writing')
@@ -314,6 +314,10 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
                 available_languages.append(language)
 
         return available_languages
+
+
+    def update_20100621(self):
+        SideBarAware.update_20100621(self)
 
 
     view = NewsFolder_View()

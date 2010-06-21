@@ -232,6 +232,7 @@ class ContentBar_View(Bar_View):
 ################################################################################
 class SideBarAware(object):
 
+    class_version = '20100621'
     class_views = ['order_sidebar']
     sidebar_name = 'order-sidebar'
     __fixed_handlers__ = [sidebar_name]
@@ -250,9 +251,18 @@ class SideBarAware(object):
                             '%s/%s' % (name, cls.sidebar_name))
 
 
+    def update_20100621(self):
+        # Fix class_id
+        table = self.get_resource(self.sidebar_name)
+        metadata = table.metadata
+        metadata.set_changed()
+        metadata.format = 'sidebar-boxes-ordered-table'
+
+
 
 class ContentBarAware(object):
 
+    class_version = '20100622'
     class_views = ['order_contentbar']
     contentbar_name = 'order-contentbar'
     __fixed_handlers__ = [contentbar_name]
@@ -269,3 +279,11 @@ class ContentBarAware(object):
         cls2 = ContentbarBoxesOrderedTable
         cls2._make_resource(cls2, folder,
                             '%s/%s' % (name, cls.contentbar_name))
+
+
+    def update_20100622(self):
+        # Fix class_id
+        table = self.get_resource(self.contentbar_name)
+        metadata = table.metadata
+        metadata.set_changed()
+        metadata.format = 'contentbar-boxes-ordered-table'

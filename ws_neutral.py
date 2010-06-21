@@ -437,7 +437,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100618'
+    class_version = '20100622'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -851,6 +851,14 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         name = generate_name(name, self.get_names(), '_itws')
         cls.make_resource(cls, self, 'images/%s' % name, **metadata)
         self.set_property('favicon', 'images/favicon')
+
+
+    def update_20100621(self):
+        SideBarAware.update_20100621(self)
+
+
+    def update_20100622(self):
+        ContentBarAware.update_20100622(self)
 
 
     # User Interface

@@ -34,7 +34,7 @@ import turning_footer
 import ws_neutral
 import webpage
 # obsolete
-import obsolete
+#import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()
@@ -71,4 +71,4 @@ register_domain('itws', path)
 
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
-obsolete
+#obsolete

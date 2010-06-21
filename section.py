@@ -86,10 +86,10 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
+    class_version = '20100622'
     class_title = MSG(u'Section')
     class_description = MSG(u'Section allows to customize the central part '
                             u'and the sidebar. Section can contain subsections')
-    class_version = '20100403'
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
     class_views = ['view', 'manage_view', 'backlinks', 'commit_log']
@@ -205,6 +205,14 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                 continue
             states[item.get_statename()] += 1
         return states
+
+
+    def update_20100621(self):
+        SideBarAware.update_20100621(self)
+
+
+    def update_20100622(self):
+        ContentBarAware.update_20100622(self)
 
 
     edit = Section_Edit()
