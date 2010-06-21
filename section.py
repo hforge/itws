@@ -22,8 +22,6 @@
 from itools.core import freeze, merge_dicts
 from itools.datatypes import String, Boolean
 from itools.gettext import MSG
-from itools.stl import rewrite_uris
-from itools.uri import get_reference, Path, Reference
 from itools.web import get_context
 
 # Import from ikaaro
@@ -35,7 +33,6 @@ from ikaaro.multilingual import Multilingual
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
-from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
 from bar import SideBarAware, ContentBarAware
@@ -148,85 +145,6 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         if article_cls.class_id not in cls_id_types:
             types.append(article_cls)
         return types
-
-
-    def get_links(self):
-        base = self.get_canonical_path()
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-
-        links = []
-        for language in languages:
-            events = self.get_property('data', language=language)
-            if not events:
-                continue
-            if events:
-                links.extend(_get_links(base, events))
-
-        return links
-
-
-    def update_links(self, source, target):
-        # Caution multilingual property
-        site_root = self.get_site_root()
-        base = self.get_canonical_path()
-        resources_new2old = get_context().database.resources_new2old
-        base = str(base)
-        old_base = resources_new2old.get(base, base)
-        old_base = Path(old_base)
-        new_base = Path(base)
-
-        available_languages = site_root.get_property('website_languages')
-        for language in available_languages:
-            events = self.get_property('data', language=language)
-            if not events:
-                continue
-            events = _change_link(source, target, old_base, new_base,
-                                  events)
-            self.set_property('data', list(events), language=language)
-
-        get_context().server.change_resource(self)
-
-
-    def update_relative_links(self, source):
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-
-        def my_func(value):
-            # Absolute URI or path
-            uri = get_reference(value)
-            if uri.scheme or uri.authority or uri.path.is_absolute():
-                return value
-            path = uri.path
-            if not path or path.is_absolute() and path[0] == 'ui':
-                return value
-
-            # Strip the view
-            name = path.get_name()
-            if name and name[0] == ';':
-                view = '/' + name
-                path = path[:-1]
-            else:
-                view = ''
-
-            # Resolve Path
-            # Calcul the old absolute path
-            old_abs_path = source.resolve2(path)
-            # Get the 'new' absolute parth
-            new_abs_path = resources_old2new.get(old_abs_path, old_abs_path)
-
-            path = str(target.get_pathto(new_abs_path)) + view
-            value = Reference('', '', path, uri.query.copy(), uri.fragment)
-            return str(value)
-
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-        for language in available_languages:
-            events = self.get_property('data', language=language)
-            if not events:
-                continue
-            events = rewrite_uris(events, my_func)
-            self.set_property('data', events, language=language)
 
 
     def get_subsection_class(self):
