@@ -18,3 +18,6 @@
 from diaporama import Diaporama
 from menu import MenuSideBar
 from twitter import TwitterSideBar
+
+# Silent Pyflakes
+Diaporama, MenuSideBar, TwitterSideBar
