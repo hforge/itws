@@ -271,9 +271,10 @@ class NeutralSkin(FoBoFooterAwareSkin):
         if ac.is_allowed_to_edit(context.user, here):
             edit_mode = is_navigation_mode(context) is False
             events = stl(events=self.fo_edit_template,
-                         namespace={'edit_mode': edit_mode,
-                                    'edition_title': u'Go to edition mode',
-                                    'navigation_title': u'Back to navigation'})
+                         namespace={
+                             'edit_mode': edit_mode,
+                             'edition_title': MSG(u'Go to edition mode'),
+                             'navigation_title': MSG(u'Back to navigation')})
         namespace['fo_edit_toolbar'] = events
 
         return namespace
