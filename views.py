@@ -47,7 +47,7 @@ from ikaaro.webpage import WebPage, HTMLEditView
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
-from datatypes import StateEnumerate, OrderBoxEnumerate
+from datatypes import StateEnumerate, StaticStateEnumerate, OrderBoxEnumerate
 from utils import set_prefix_with_hostname, state_widget
 
 
@@ -413,10 +413,12 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
 class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
     schema = merge_dicts(BoxAwareNewInstance.schema,
-                         order=OrderBoxEnumerate(default='order-bottom'))
+                         order=OrderBoxEnumerate(default='order-bottom'),
+                         state=StaticStateEnumerate(default='public'))
 
     widgets = freeze(BoxAwareNewInstance.widgets
-                     + [SelectRadio('order', title=MSG(u'Order box'),
+                     + [state_widget,
+                        SelectRadio('order', title=MSG(u'Order box'),
                                     has_empty_option=False)])
 
 
@@ -451,6 +453,8 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
         metadata = child.metadata
         language = resource.get_content_language(context)
         metadata.set_property('title', title, language=language)
+        if isinstance(child, WorkflowAware):
+            child.set_property('state', form['state'])
 
         goto = self._get_goto(resource, context, form)
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
