@@ -24,6 +24,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.file import Image
 from ikaaro.registry import get_document_types
+from ikaaro.workflow import WorkflowAware
 
 
 
@@ -104,6 +105,23 @@ class StateEnumerate(Enumerate):
         options = [
            {'name': x, 'value': states[x].metadata['title'].gettext()}
            for x in options ]
+
+        options.sort(key=lambda x: x['value'])
+        return options
+
+
+
+class StaticStateEnumerate(Enumerate):
+
+    workflow = WorkflowAware.workflow
+
+    def get_options(cls):
+        states = cls.workflow.states
+
+        # Options
+        options = [
+           {'name': x, 'value': states[x].metadata['title'].gettext()}
+           for x in states.keys() ]
 
         options.sort(key=lambda x: x['value'])
         return options
