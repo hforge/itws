@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-06-21 15:06+CET\n"
+"POT-Creation-Date: 2010-06-22 08:06+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgctxt "dd"
 msgid "${widget/widget} ${widget/suffix}"
 msgstr ""
 
-#: ../tags_views.py:250
+#: ../tags_views.py:249
 msgid "%s (%s)"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "A customizable tracker to manage issues"
 msgstr ""
 
-#: ../ws_neutral.py:573
+#: ../ws_neutral.py:575
 msgid "About"
 msgstr ""
 
@@ -265,14 +265,14 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: ../tags_views.py:382 ../ws_neutral_views.py:515 ../slides_views.py:354
+#: ../tags_views.py:381 ../ws_neutral_views.py:516 ../slides_views.py:354
 #: ../views.py:64 ../sidebar/menu.py:96 ../news_views.py:362
 #: ../section_views.py:220
 msgid "Add"
 msgstr ""
 
-#: ../bar.py:223 ../bar.py:275 ../repository_views.py:108
-#: ../ws_neutral_views.py:469 ../section_views.py:349 ../repository.py:504
+#: ../bar.py:221 ../bar.py:273 ../repository_views.py:108
+#: ../ws_neutral_views.py:470 ../section_views.py:349 ../repository.py:504
 msgid "Add Central Part Box"
 msgstr ""
 
@@ -280,11 +280,11 @@ msgstr ""
 msgid "Add RSS"
 msgstr ""
 
-#: ../ws_neutral_views.py:465
+#: ../ws_neutral_views.py:466
 msgid "Add Resource: Image, PDF, ODT..."
 msgstr ""
 
-#: ../ws_neutral_views.py:364
+#: ../ws_neutral_views.py:365
 msgid "Add Resource: Section, Wiki, Tracker, RSS agregator..."
 msgstr ""
 
@@ -292,12 +292,12 @@ msgstr ""
 msgid "Add Resource: Subsection, File, PDF, ODT"
 msgstr ""
 
-#: ../bar.py:190 ../bar.py:245 ../repository_views.py:106
-#: ../ws_neutral_views.py:477 ../section_views.py:357 ../repository.py:501
+#: ../bar.py:188 ../bar.py:243 ../repository_views.py:106
+#: ../ws_neutral_views.py:478 ../section_views.py:357 ../repository.py:501
 msgid "Add Sidebar Box"
 msgstr ""
 
-#: ../ws_neutral_views.py:457
+#: ../ws_neutral_views.py:458
 msgid "Add Webpages in the Homepage View"
 msgstr ""
 
@@ -310,7 +310,7 @@ msgctxt "link"
 msgid "Add a new address"
 msgstr ""
 
-#: ../ws_neutral.py:307
+#: ../ws_neutral.py:309
 msgid "Add a section"
 msgstr ""
 
@@ -327,11 +327,11 @@ msgstr ""
 msgid "Add new image"
 msgstr ""
 
-#: ../ws_neutral_views.py:283
+#: ../ws_neutral_views.py:284
 msgid "Add new {cls}"
 msgstr ""
 
-#: ../views.py:191 ../views.py:310
+#: ../views.py:191 ../views.py:311
 msgid "Add {class_title}"
 msgstr ""
 
@@ -364,8 +364,12 @@ msgstr ""
 msgid "Available Sidebar Boxes"
 msgstr ""
 
-#: ../ws_neutral.py:425
+#: ../ws_neutral.py:427
 msgid "Available Webpages"
+msgstr ""
+
+#: ../ws_neutral.py:276
+msgid "Back to navigation"
 msgstr ""
 
 #: ../ws_neutral_views.py:152
@@ -433,19 +437,19 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: ../ws_neutral.py:409 ../ws_neutral.py:482
+#: ../ws_neutral.py:411 ../ws_neutral.py:484
 msgid "Configure Homepage"
 msgstr ""
 
-#: ../ws_neutral.py:562
+#: ../ws_neutral.py:564
 msgid "Contact"
 msgstr ""
 
-#: ../ws_neutral.py:576
+#: ../ws_neutral.py:578
 msgid "Contact us"
 msgstr ""
 
-#: ../ws_neutral_views.py:409
+#: ../ws_neutral_views.py:410
 msgid "Control Panel: Manage users, Email options, Vhosts, SEO ..."
 msgstr ""
 
@@ -462,7 +466,7 @@ msgstr ""
 msgid "Custom Data"
 msgstr ""
 
-#: ../tags_views.py:310 ../news_views.py:336
+#: ../tags_views.py:309 ../news_views.py:336
 msgid "Date of writing"
 msgstr ""
 
@@ -532,11 +536,11 @@ msgctxt "heading"
 msgid "Edit"
 msgstr ""
 
-#: ../ws_neutral_views.py:401
+#: ../ws_neutral_views.py:402
 msgid "Edit 404"
 msgstr ""
 
-#: ../ws_neutral_views.py:397
+#: ../ws_neutral_views.py:398
 msgid "Edit CSS"
 msgstr ""
 
@@ -548,7 +552,7 @@ msgstr ""
 msgid "Edit address"
 msgstr ""
 
-#: ../ws_neutral_views.py:360
+#: ../ws_neutral_views.py:361
 msgid "Edit banner, favicon, skin..."
 msgstr ""
 
@@ -564,11 +568,11 @@ msgstr ""
 msgid "Edit diaporama title"
 msgstr ""
 
-#: ../ws_neutral_views.py:377
+#: ../ws_neutral_views.py:378
 msgid "Edit footer"
 msgstr ""
 
-#: ../ws_neutral.py:308
+#: ../ws_neutral.py:310
 msgid "Edit languages"
 msgstr ""
 
@@ -576,15 +580,15 @@ msgstr ""
 msgid "Edit menu"
 msgstr ""
 
-#: ../ws_neutral_views.py:405
+#: ../ws_neutral_views.py:406
 msgid "Edit robots.txt"
 msgstr ""
 
-#: ../ws_neutral.py:906
+#: ../ws_neutral.py:908
 msgid "Edit tags"
 msgstr ""
 
-#: ../ws_neutral_views.py:389
+#: ../ws_neutral_views.py:390
 msgid "Edit the central part"
 msgstr ""
 
@@ -592,11 +596,11 @@ msgstr ""
 msgid "Edit the section"
 msgstr ""
 
-#: ../ws_neutral_views.py:393
+#: ../ws_neutral_views.py:394
 msgid "Edit the sidebar"
 msgstr ""
 
-#: ../ws_neutral_views.py:381
+#: ../ws_neutral_views.py:382
 msgid "Edit turning footer"
 msgstr ""
 
@@ -628,11 +632,11 @@ msgctxt "legend"
 msgid "Filter by type"
 msgstr ""
 
-#: ../ws_neutral.py:805
+#: ../ws_neutral.py:807
 msgid "Fix %s"
 msgstr ""
 
-#: ../ws_neutral.py:877
+#: ../ws_neutral.py:879
 msgid "Footer"
 msgstr ""
 
@@ -648,7 +652,7 @@ msgstr ""
 msgid "Force cache update"
 msgstr ""
 
-#: ../views.py:640
+#: ../views.py:642
 msgid "Format"
 msgstr ""
 
@@ -660,8 +664,12 @@ msgstr ""
 msgid "GPS"
 msgstr ""
 
-#: ../bar.py:197
+#: ../bar.py:195
 msgid "Go there to edit sidebar"
+msgstr ""
+
+#: ../ws_neutral.py:275
+msgid "Go to edition mode"
 msgstr ""
 
 #: ../resources.py:146 ../repository.py:161
@@ -681,7 +689,7 @@ msgstr ""
 msgid "Hide if there is only one item"
 msgstr ""
 
-#: ../ws_neutral.py:559
+#: ../ws_neutral.py:561
 msgid "Homepage"
 msgstr ""
 
@@ -689,7 +697,7 @@ msgstr ""
 msgid "Hyperlink"
 msgstr ""
 
-#: ../ws_neutral.py:441
+#: ../ws_neutral.py:443
 msgid "ITWS website"
 msgstr ""
 
@@ -705,11 +713,11 @@ msgstr ""
 msgid "Image path"
 msgstr ""
 
-#: ../ws_neutral.py:505
+#: ../ws_neutral.py:507
 msgid "Index"
 msgstr ""
 
-#: ../views.py:470 ../views.py:472 ../views.py:505 ../views.py:507
+#: ../views.py:472 ../views.py:474 ../views.py:507 ../views.py:509
 msgid "Info"
 msgstr ""
 
@@ -731,7 +739,7 @@ msgstr ""
 msgid "Issue"
 msgstr ""
 
-#: ../tags_views.py:337
+#: ../tags_views.py:336
 msgid "Items number"
 msgstr ""
 
@@ -743,16 +751,16 @@ msgstr ""
 msgid "Keywords (Separated by comma)"
 msgstr ""
 
-#: ../tags_views.py:339 ../news_views.py:338 ../slides_views.py:327
+#: ../tags_views.py:338 ../news_views.py:338 ../slides_views.py:327
 msgid "Last Author"
 msgstr ""
 
-#: ../views.py:641 ../tags_views.py:338 ../news_views.py:337
+#: ../views.py:643 ../tags_views.py:337 ../news_views.py:337
 #: ../slides_views.py:326
 msgid "Last Modified"
 msgstr ""
 
-#: ../views.py:942
+#: ../views.py:944
 msgid "Last News"
 msgstr ""
 
@@ -784,11 +792,11 @@ msgstr ""
 msgid "Long title"
 msgstr ""
 
-#: ../ws_neutral_views.py:490
+#: ../ws_neutral_views.py:491
 msgid "Manage Homepage"
 msgstr ""
 
-#: ../ws_neutral_views.py:445 ../ws_neutral_views.py:504 ../ws_neutral.py:867
+#: ../ws_neutral_views.py:446 ../ws_neutral_views.py:505 ../ws_neutral.py:869
 msgid "Manage Homepage Content"
 msgstr ""
 
@@ -796,11 +804,11 @@ msgstr ""
 msgid "Manage Section"
 msgstr ""
 
-#: ../ws_neutral_views.py:435
+#: ../ws_neutral_views.py:436
 msgid "Manage Website"
 msgstr ""
 
-#: ../ws_neutral_views.py:373
+#: ../ws_neutral_views.py:374
 msgid "Manage menu"
 msgstr ""
 
@@ -808,7 +816,7 @@ msgstr ""
 msgid "Manage parent section"
 msgstr ""
 
-#: ../ws_neutral_views.py:385
+#: ../ws_neutral_views.py:386
 msgid "Manage repository"
 msgstr ""
 
@@ -816,7 +824,7 @@ msgstr ""
 msgid "Manage section"
 msgstr ""
 
-#: ../ws_neutral_views.py:369
+#: ../ws_neutral_views.py:370
 msgid "Manage tags"
 msgstr ""
 
@@ -824,12 +832,12 @@ msgstr ""
 msgid "Manage the section"
 msgstr ""
 
-#: ../views.py:598 ../tags_views.py:410 ../news_views.py:390
+#: ../views.py:600 ../tags_views.py:409 ../news_views.py:390
 #: ../slides_views.py:382
 msgid "Manage view"
 msgstr ""
 
-#: ../ws_neutral_views.py:353
+#: ../ws_neutral_views.py:354
 msgid "Manage your website"
 msgstr ""
 
@@ -845,7 +853,7 @@ msgstr ""
 msgid "Maximum number of news to display"
 msgstr ""
 
-#: ../ws_neutral.py:871
+#: ../ws_neutral.py:873
 msgid "Menu"
 msgstr ""
 
@@ -854,7 +862,7 @@ msgctxt "div"
 msgid "Message:"
 msgstr ""
 
-#: ../views.py:638 ../tags_views.py:335 ../news_views.py:334
+#: ../views.py:640 ../tags_views.py:334 ../news_views.py:334
 #: ../slides_views.py:324
 msgid "Name"
 msgstr ""
@@ -863,7 +871,7 @@ msgstr ""
 msgid "Neutral"
 msgstr ""
 
-#: ../ws_neutral.py:567 ../news.py:75
+#: ../ws_neutral.py:569 ../news.py:75
 msgid "News"
 msgstr ""
 
@@ -954,12 +962,12 @@ msgstr ""
 msgid "Old box (obsolete)"
 msgstr ""
 
-#: ../bar.py:208 ../bar.py:273 ../ws_neutral_views.py:473 ../ws_neutral.py:896
+#: ../bar.py:206 ../bar.py:271 ../ws_neutral_views.py:474 ../ws_neutral.py:898
 #: ../section_views.py:353 ../repository.py:444 ../repository.py:447
 msgid "Order Central Part Boxes"
 msgstr ""
 
-#: ../ws_neutral.py:421
+#: ../ws_neutral.py:423
 msgid "Order Homepage \"Webpages Slot\""
 msgstr ""
 
@@ -967,7 +975,7 @@ msgstr ""
 msgid "Order Sections and Webpages"
 msgstr ""
 
-#: ../bar.py:174 ../bar.py:243 ../ws_neutral_views.py:481 ../ws_neutral.py:900
+#: ../bar.py:172 ../bar.py:241 ../ws_neutral_views.py:482 ../ws_neutral.py:902
 #: ../section_views.py:361 ../repository.py:415 ../repository.py:418
 msgid "Order Sidebar Boxes"
 msgstr ""
@@ -976,11 +984,11 @@ msgstr ""
 msgid "Order Subsections in the TOC"
 msgstr ""
 
-#: ../ws_neutral.py:379 ../ws_neutral.py:892
+#: ../ws_neutral.py:381 ../ws_neutral.py:894
 msgid "Order Webpages"
 msgstr ""
 
-#: ../ws_neutral_views.py:461
+#: ../ws_neutral_views.py:462
 msgid "Order Webpages in the Homepage View"
 msgstr ""
 
@@ -996,11 +1004,11 @@ msgstr ""
 msgid "Order bottom"
 msgstr ""
 
-#: ../views.py:417
+#: ../views.py:419
 msgid "Order box"
 msgstr ""
 
-#: ../ws_neutral.py:305
+#: ../ws_neutral.py:307
 msgid "Order menu"
 msgstr ""
 
@@ -1155,7 +1163,7 @@ msgstr ""
 msgid "Slideshow allows to create and organize slides"
 msgstr ""
 
-#: ../views.py:642 ../tags_views.py:340 ../news_views.py:340 ../utils.py:115
+#: ../views.py:644 ../tags_views.py:339 ../news_views.py:340 ../utils.py:115
 #: ../slides_views.py:328
 msgid "State"
 msgstr ""
@@ -1168,7 +1176,7 @@ msgstr ""
 msgid "Subsections and Webpages TOC"
 msgstr ""
 
-#: ../tags_views.py:308
+#: ../tags_views.py:307
 msgid "TAGS"
 msgstr ""
 
@@ -1219,7 +1227,7 @@ msgstr ""
 msgid "The file doesn't exists"
 msgstr ""
 
-#: ../ws_neutral.py:423
+#: ../ws_neutral.py:425
 msgid ""
 "The homepage has a webpages slot, you can add several webpages to it and "
 "order them."
@@ -1251,7 +1259,7 @@ msgid ""
 "adding them to the above ordered list."
 msgstr ""
 
-#: ../ws_neutral.py:427
+#: ../ws_neutral.py:429
 msgid ""
 "These webpages are available, you can make them visible in the homepage "
 "webpages slot by adding them to the ordered list."
@@ -1294,7 +1302,7 @@ msgstr ""
 msgid "Timeout in seconds"
 msgstr ""
 
-#: ../views.py:68 ../views.py:639 ../tags_views.py:336 ../news_views.py:335
+#: ../views.py:68 ../views.py:641 ../tags_views.py:335 ../news_views.py:335
 #: ../resources.py:145 ../slides_views.py:325
 msgid "Title"
 msgstr ""
@@ -1327,7 +1335,7 @@ msgstr ""
 msgid "Tracker"
 msgstr ""
 
-#: ../ws_neutral.py:874
+#: ../ws_neutral.py:876
 msgid "Turning Footer"
 msgstr ""
 
@@ -1425,7 +1433,7 @@ msgid "User Id"
 msgstr ""
 
 #: ../turning_footer_views.py:78 ../rssfeeds.py:85 ../tags_views.py:161
-#: ../addresses_views.py:41 ../slides_views.py:200 ../views.py:549
+#: ../addresses_views.py:41 ../slides_views.py:200 ../views.py:551
 #: ../repository_views.py:439 ../repository_views.py:534 ../news_views.py:91
 #: ../news_views.py:198 ../section_views.py:272
 #: ../sidebar/diaporama_views.py:148
@@ -1440,11 +1448,11 @@ msgstr ""
 msgid "Visibility"
 msgstr ""
 
-#: ../ws_neutral_views.py:302
+#: ../ws_neutral_views.py:303
 msgid "Website View"
 msgstr ""
 
-#: ../ws_neutral.py:366
+#: ../ws_neutral.py:368
 msgid "Website data folder"
 msgstr ""
 
@@ -1541,6 +1549,6 @@ msgctxt "title attribute"
 msgid "« Previous"
 msgstr ""
 
-#: ../views.py:750
+#: ../views.py:752
 msgid "…"
 msgstr ""
