@@ -105,3 +105,8 @@ fieldset legend{
   padding: 3px 0px;
   color: #333333;
 }
+
+/* Fixes */
+body#admin-popup .ms2side__div select {
+  width: 200px;
+}

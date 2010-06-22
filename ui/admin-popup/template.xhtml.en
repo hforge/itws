@@ -16,7 +16,7 @@
   <!-- JavaScript -->
   <script type="text/javascript" stl:repeat="script scripts" src="${script}" />
 </head>
-<body>
+<body id="admin-popup">
   <h1>${title}</h1>
   <ul id="content-languages">
     <li stl:repeat="language content_languages">
