@@ -22,7 +22,7 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.file import Image as BaseImage, File as BaseFile
+from ikaaro.file import File as BaseFile
 from ikaaro.file_views import File_Download
 from ikaaro.forms import SelectWidget, HTMLBody
 from ikaaro.forms import TextWidget, PathSelectorWidget
@@ -62,16 +62,6 @@ class OrderTableAware(object):
 class File(BaseFile):
 
     new_instance = File_NewInstance()
-
-
-
-class Image(BaseImage):
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = BaseImage.get_metadata_schema()
-        schema['state'] = String(default='public')
-        return schema
 
 
 
@@ -244,7 +234,6 @@ class ManageViewAware(object):
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
 register_resource_class(File)
-register_resource_class(Image)
 register_resource_class(NotFoundPage, format='application/xhtml+xml')
 register_resource_class(RobotsTxt)
 

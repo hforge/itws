@@ -38,7 +38,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.database import ReadOnlyDatabase
-from ikaaro.file import File
+from ikaaro.file import File, Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.folder_views import GoToSpecificDocument
@@ -61,7 +61,7 @@ from common import FoBoFooterAwareSkin
 from datatypes import MultilingualString, NeutralClassSkin
 from news import NewsFolder, NewsItem
 from repository import Repository, SidebarBoxesOrderedTable
-from resources import Image, RobotsTxt, ManageViewAware
+from resources import RobotsTxt, ManageViewAware
 from rssfeeds import RssFeeds
 from section import Section
 from sitemap import SiteMap
@@ -440,7 +440,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100622'
+    class_version = '20100623'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -862,6 +862,19 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     def update_20100622(self):
         ContentBarAware.update_20100622(self)
+
+
+    def update_20100623(self):
+        for resource in self.traverse_resources():
+            if isinstance(resource, Image) is False:
+                continue
+            # Restore image state
+            if resource.get_property('state'):
+                # state was set
+                return
+            if resource.get_workflow_state() == 'private':
+                # state was default public
+                resource.set_property('state', 'public')
 
 
     # User Interface
