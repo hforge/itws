@@ -279,7 +279,8 @@ class NeutralWS_RSS(BaseRSS):
 class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
 
     def _get_view_title(self):
-        cls = self._get_resource_cls(get_context())
+        context = get_context()
+        cls = self._get_resource_cls(context.resource, context)
         return MSG(u'Add new {cls}').gettext(cls.class_title.gettext())
 
 

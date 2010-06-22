@@ -186,14 +186,15 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
 
     def get_title(self, context):
-        cls = self._get_resource_cls(context)
+        cls = self._get_resource_cls(context.resource, context)
         class_title = cls.class_title.gettext()
         title = MSG(u'Add {class_title}')
         return title.gettext(class_title=class_title)
 
 
     def icon(self, resource, **kw):
-        cls = self._get_resource_cls(get_context())
+        context = get_context()
+        cls = self._get_resource_cls(context.resource, context)
         return cls.get_class_icon()
 
 
@@ -202,7 +203,7 @@ class ProxyContainerNewInstance(EasyNewInstance):
         title = form['title']
 
         # Create the resource
-        cls = self._get_resource_cls(context)
+        cls = self._get_resource_cls(resource, context)
         container = self._get_container(resource, context)
         child = cls.make_resource(cls, container, name)
         # The metadata
@@ -305,14 +306,15 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
 
 
     def get_title(self, context):
-        cls = self._get_resource_cls(context)
+        cls = self._get_resource_cls(context.resource, context)
         class_title = cls.class_title.gettext()
         title = MSG(u'Add {class_title}')
         return title.gettext(class_title=class_title)
 
 
     def icon(self, resource, **kw):
-        cls = self._get_resource_cls(get_context())
+        context = get_context()
+        cls = self._get_resource_cls(context.resource, context)
         return cls.get_class_icon()
 
 
@@ -383,7 +385,7 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
             items[0]['selected'] = True
         namespace['items'] = items
         # class title
-        cls = self._get_resource_cls(context)
+        cls = self._get_resource_cls(resource, context)
         namespace['class_title'] = cls.class_title
 
         return namespace
