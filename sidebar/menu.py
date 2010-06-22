@@ -49,7 +49,7 @@ class MenuSideBar_View(Box_View):
         src = '%s/menu' % resource.get_abspath()
         menu = get_menu_namespace(context, depth, show_first_child, flat=flat,
                                   src=src)
-        if len(menu['items']) == 0:
+        if len(menu['items']) == 0 and not self.is_admin(resource, context):
             self.set_view_is_empty(True)
         return {'title': resource.get_title(),
                 'menu': menu}

@@ -4,17 +4,25 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <h3 class="title">
-    ${title}
-  </h3>
+  <stl:block stl:if="menu/items">
+    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
+    <div class="content">
+      <ul>
+        <li stl:repeat="item menu/items" id="${item/id}">
+          <a href="${item/path}" title="${item/title}"
+             target="${item/target}" class="${item/class}">
+            ${item/title}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </stl:block>
 
-  <ul stl:if="menu/items">
-    <li stl:repeat="item menu/items" id="${item/id}">
-      <a href="${item/path}" title="${item/title}"
-         target="${item/target}" class="${item/class}">
-        ${item/title}
-      </a>
-    </li>
-  </ul>
+  <stl:block stl:if="not menu/items">
+    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
+    <div class="content">
+      The menu is empty
+    </div>
+  </stl:block>
 
 </stl:block>
