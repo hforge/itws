@@ -915,7 +915,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 ############################################################
 # Register
 ############################################################
-register_resource_class(Image)
 register_resource_class(NeutralWS)
 register_resource_class(WSDataFolder)
 register_resource_class(WSOrderedTable)

@@ -22,7 +22,7 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.file import Image as BaseImage
+from ikaaro.file import Image as BaseImage, File as BaseFile
 from ikaaro.file_views import File_Download
 from ikaaro.forms import SelectWidget, HTMLBody
 from ikaaro.forms import TextWidget, PathSelectorWidget
@@ -35,6 +35,7 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
+from views import File_NewInstance
 from views import FooterMenu_View, NotFoundPage_Edit, BaseManage_Rename
 
 
@@ -56,8 +57,14 @@ class OrderTableAware(object):
 
 
 ############################################################
-# Image
+# File/Image
 ############################################################
+class File(BaseFile):
+
+    new_instance = File_NewInstance()
+
+
+
 class Image(BaseImage):
 
     @classmethod
@@ -236,8 +243,10 @@ class ManageViewAware(object):
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
-register_resource_class(RobotsTxt)
+register_resource_class(File)
+register_resource_class(Image)
 register_resource_class(NotFoundPage, format='application/xhtml+xml')
+register_resource_class(RobotsTxt)
 
 # multilingual title with language negociation
 register_field('m_title', Unicode(is_stored=True, is_indexed=True))

@@ -30,11 +30,12 @@ from ikaaro import messages
 from ikaaro.buttons import Button
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
+from ikaaro.file_views import File_NewInstance as BaseFile_NewInstance
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
-from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.forms import description_widget, subject_widget
+from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
@@ -461,6 +462,32 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
 
 
+class File_NewInstance(BaseFile_NewInstance):
+
+    schema = merge_dicts(BaseFile_NewInstance.schema,
+                         state=StaticStateEnumerate(default='public'))
+
+    widgets = freeze(BaseFile_NewInstance.widgets + [state_widget])
+
+
+    def action(self, resource, context, form):
+        goto = BaseFile_NewInstance.action(self, resource, context, form)
+
+        # Get the resource
+        name = form['name']
+        child = resource.get_resource(name)
+        if isinstance(child, WorkflowAware):
+            child.set_property('state', form['state'])
+
+        # Ok
+        return goto
+
+
+
+############################################################
+# Table
+############################################################
+
 class SmartOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
     def get_table_columns(self, resource, context):
@@ -550,6 +577,7 @@ class SmartOrderedTable_View(ResourcesOrderedTable_View):
 ############################################################
 # GoToSpecificItem
 ############################################################
+
 class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
     title = MSG(u'View')
