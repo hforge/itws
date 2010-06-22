@@ -117,6 +117,7 @@ class BoxAware(object):
 
 class Box(BoxAware, File):
 
+    class_version = '20100622'
     class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
     download = None
@@ -126,8 +127,17 @@ class Box(BoxAware, File):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(File.get_metadata_schema(),
-                           cls.edit_schema,
-                           state=String(default='public'))
+                           cls.edit_schema)
+
+
+    def update_20100622(self):
+        # Restore state
+        if self.get_property('state'):
+            # state was set
+            return
+        if self.get_workflow_state() == 'private':
+            # state was default public
+            self.set_property('state', 'public')
 
 
 
