@@ -200,10 +200,11 @@ def get_admin_bar(resource, buttons=[]):
         workflow = {'state': statename,
                     'title': state['title'].gettext().encode('utf-8')}
 
+    title = MSG(u"Edit box '{title}'").gettext(title=resource.get_title())
     namespace = {'link': link,
                  'rel': 'fancybox' if use_fancybox else None,
                  'buttons': buttons,
-                 'title': u"Edit box '%s'" % resource.get_title(),
+                 'title': title,
                  'workflow': workflow}
     return stl(events=events, namespace=namespace)
 

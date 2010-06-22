@@ -580,8 +580,8 @@ msgid "Edit banner, favicon, skin..."
 msgstr "Éditer la bannière, le favicon, le thème..."
 
 #: ../utils.py:192
-msgid "Edit box '%s'"
-msgstr "Éditer la boîte \"%s\""
+msgid "Edit box '{title}'"
+msgstr "Éditer la boîte \"{title}\""
 
 #: ../sidebar/menu.py:61
 msgid "Edit box title"

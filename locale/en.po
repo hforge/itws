@@ -557,7 +557,7 @@ msgid "Edit banner, favicon, skin..."
 msgstr ""
 
 #: ../utils.py:192
-msgid "Edit box '%s'"
+msgid "Edit box '{title}'"
 msgstr ""
 
 #: ../sidebar/menu.py:61
