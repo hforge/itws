@@ -372,8 +372,9 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
         # proxy items
         site_root = resource.get_site_root()
         repository = site_root.get_repository()
-        document_types = repository._get_document_types(is_content=self.is_content,
-                                                        is_side=self.is_side)
+        document_types = repository._get_document_types(
+                is_content=self.is_content, is_side=self.is_side,
+                allow_instanciation=True)
         selected = context.get_form_value('class_id')
         items = [
             {'title': cls.class_title,
