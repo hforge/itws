@@ -94,9 +94,9 @@ class NeutralSkin(FoBoFooterAwareSkin):
     """
     <div class="fo-edit">
       <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="Go to edition mode">Go to edition mode</a>
+         title="${edition_title}">${edition_title}</a>
       <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="Back to navigation">Back to navigation</a>
+         title="${navigation_title">${navigation_title}</a>
     </div>
     """, stl_namespaces))
 
@@ -271,7 +271,9 @@ class NeutralSkin(FoBoFooterAwareSkin):
         if ac.is_allowed_to_edit(context.user, here):
             edit_mode = is_navigation_mode(context) is False
             events = stl(events=self.fo_edit_template,
-                         namespace={'edit_mode': edit_mode})
+                         namespace={'edit_mode': edit_mode,
+                                    'edition_title': u'Go to edition mode',
+                                    'navigation_title': u'Back to navigation'})
         namespace['fo_edit_toolbar'] = events
 
         return namespace
@@ -316,9 +318,9 @@ class K2Skin(NeutralSkin2):
     """
     <td class="fo-edit">
       <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="Go to edition mode">Go to edition mode</a>
+         title="${edition_title}">${edition_title}</a>
       <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="Back to navigation">Back to navigation</a>
+         title="${navigation_title}">${navigation_title}</a>
     </td>
     """, stl_namespaces))
 
