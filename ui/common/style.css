@@ -115,12 +115,6 @@
   text-decoration: none;
 }
 
-.admin-bar-title {
-  padding: 5px;
-  color: #FFF;
-  background-color: #000;
-}
-
 .admin-bar {
   position: absolute;
   background-color: green;
