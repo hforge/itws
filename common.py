@@ -90,13 +90,15 @@ class LocationTemplateWithoutTab(LocationTemplate):
                 break
             # ACLs
             ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource) is False:
-                path = None
+            if ac.is_allowed_to_view(user, resource):
+                url = path
+            else:
+                url = None
             # Append
             title = resource.get_title()
             breadcrumb.append({
                 'class': '',
-                'url': path,
+                'url': url,
                 'name': title,
                 'short_name': get_breadcrumb_short_name(resource),
             })
