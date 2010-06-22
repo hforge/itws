@@ -41,7 +41,7 @@ from ikaaro.website import WebSite
 # Import from itws
 from datatypes import PositiveInteger
 from tags_views import TagsList
-from utils import to_box, DualSelectWidget
+from utils import is_empty, to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View, AutomaticEditView
 
@@ -519,12 +519,19 @@ class HTMLContent_View(Box_View, WebPage_View):
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
+        content = list(WebPage_View.GET(self, resource, context))
+        if is_empty(content):
+            content = None
+        if content is None and self.is_admin(resource, context) is False:
+            # Hide the box if the content is empty
+            self.set_view_is_empty(True)
+
         return {
             'name': resource.name,
             'title':title,
             'title_link': resource.get_property('title_link'),
             'title_link_target': resource.get_property('title_link_target'),
-            'content': WebPage_View.GET(self, resource, context)}
+            'content': content}
 
 
 

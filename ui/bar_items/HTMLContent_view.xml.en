@@ -10,5 +10,8 @@
       ${title}
     </a>
   </h3>
-  <div class="content">${content}</div>
+  <div class="content" stl:if="content">${content}</div>
+  <div class="content" stl:if="not content">
+    This HTMLContent is empty
+  </div>
 </stl:block>
