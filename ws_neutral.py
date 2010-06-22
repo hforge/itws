@@ -871,7 +871,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             # Restore image state
             if resource.get_property('state'):
                 # state was set
-                return
+                continue
             if resource.get_workflow_state() == 'private':
                 # state was default public
                 resource.set_property('state', 'public')
