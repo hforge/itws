@@ -22,7 +22,7 @@ from random import shuffle
 
 # Import from itools
 from itools.datatypes import Enumerate
-from itools.datatypes import XMLContent, String, Date
+from itools.datatypes import String, Date
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -34,7 +34,7 @@ from itools.xapian import RangeQuery, NotQuery, split_unicode
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import XHTMLBody, DateWidget
+from ikaaro.forms import DateWidget
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -247,11 +247,8 @@ class TagsFolder_TagCloud(STLView):
                 title = brain.m_title or brain.name
                 if self.show_number:
                     title = u'%s (%s)' % (title, nb_items)
-                xml_title = title.encode('utf-8')
-                xml_title = XMLContent.encode(xml_title)
-                xml_title = xml_title.replace(' ', '&nbsp;')
                 d['title'] = title
-                d['xml_title'] = XHTMLBody.decode(xml_title)
+                d['xml_title'] = title.replace(u' ', u'\u00A0')
                 d['link'] = tag_base_link % brain.name
                 d['css'] = None
                 items_nb.append(nb_items)
