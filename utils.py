@@ -30,6 +30,7 @@ from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
 from ikaaro.forms import stl_namespaces, RTEWidget, SelectWidget
+from ikaaro.workflow import WorkflowAware
 
 
 
@@ -152,9 +153,14 @@ class DualSelectWidget(SelectWidget):
 ############################################################
 
 admin_bar_template = list(XMLParser("""
-  <a href="${link}" class="admin-bar" title="${title}" rel="${rel}">
-    <img src="/ui/icons/16x16/edit.png"/>
-  </a>
+  <div class="admin-bar">
+    <a href="${link}" title="${title}" rel="${rel}">
+      <img src="/ui/icons/16x16/edit.png"/>
+      <strong stl:if="workflow" class="wf-${workflow/state}">
+        ${workflow/title}
+      </strong>
+    </a>
+  </div>
   """, stl_namespaces))
 
 admin_bar_icon_template = list(XMLParser("""
@@ -186,10 +192,19 @@ def get_admin_bar(resource, buttons=[]):
     else:
         link = '%s/;edit' % context.get_link(resource)
     use_fancybox = getattr(resource, 'use_fancybox', True)
+    # workflow
+    workflow = None
+    if isinstance(resource, WorkflowAware):
+        statename = resource.get_statename()
+        state = resource.get_state()
+        workflow = {'state': statename,
+                    'title': state['title'].gettext().encode('utf-8')}
+
     namespace = {'link': link,
                  'rel': 'fancybox' if use_fancybox else None,
                  'buttons': buttons,
-                 'title': u"Edit box '%s'" % resource.get_title()}
+                 'title': u"Edit box '%s'" % resource.get_title(),
+                 'workflow': workflow}
     return stl(events=events, namespace=namespace)
 
 

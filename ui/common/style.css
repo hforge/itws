@@ -116,14 +116,19 @@
 }
 
 .admin-bar {
-  position: absolute;
-  background-color: green;
-  opacity: 0.9;
-  color: #000;
   -moz-border-radius: 0 0 7px 0;
   -webkit-border-radius: 0 0 7px 0;
-  padding: 0;
+  border-radius: 0 0 7px 0;
+
+  position: absolute;
+  background-color: #D3D7CF;
+  opacity: 0.9;
+  padding: 0 3px 3px 0;
   z-index: 1000;
+}
+
+.admin-bar a {
+  text-decoration: none;
 }
 
 /**************************************************************************
