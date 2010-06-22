@@ -71,4 +71,3 @@ register_domain('itws', path)
 
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
-#obsolete
