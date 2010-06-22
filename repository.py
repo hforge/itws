@@ -145,6 +145,7 @@ class BoxSectionNews(Box):
 
     class_id = 'box-section-news'
     class_title = MSG(u'Last News Box')
+    class_icon16 = 'bar_items/icons/16x16/box_section_news.png'
     class_description = MSG(u'Display the last N news filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
@@ -275,6 +276,7 @@ class BoxTags(Box):
     class_version = '20100527'
     class_title = MSG(u'Tag Cloud')
     class_description = MSG(u'Display a tag cloud')
+    class_icon16 = 'bar_items/icons/16x16/box_tags.png'
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
 
     # Box configuration
