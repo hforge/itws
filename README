@@ -21,20 +21,23 @@ ITWS offers high level features through a user friendly interface:
   - display of external feeds with multiplexing and filtering
 
 - Configurable menu
-- Contents are editable directly through the front office, a specific editing mode adds helpers
+- Contents are editable directly through the front office, a specific editing
+  mode adds helpers
 - Inline editing of CSS, favicon, etc.
 - Customizable Footer with multiple content which could be ordered or
   randomized
 - `Sitemap`_
 
 
-ITWS stands for ITaapy WebSites. It is the fruit of `Itaapy`_'s work for its clients. It tries to responds different needs with a coherent product.
+ITWS stands for ITaapy WebSites. It is the fruit of `Itaapy`_'s work for its
+clients. It tries to responds different needs with a coherent product.
 
 
 Based on iKaaro
 ===============
 
-ITWS is a built on top of `iKaaro`_. It adds features to help communication and ease of use.
+ITWS is a built on top of `iKaaro`_. It adds features to help communication and
+ease of use.
 
 iKaaro is a complete CMS featuring
 
@@ -50,7 +53,8 @@ iKaaro is a complete CMS featuring
 iKaaro (and the itools libraries) main technical characteristics are:
 
 - `RESTFul`_ architecture
-- Built around data: the object database is based on file system with data in its original format
+- Built around data: the object database is based on file system with data in
+  its original format
 - Heavy use of standards (iCal, XHTML, XML)
 - Use of git as the transaction manager and versioning system
 
@@ -71,14 +75,15 @@ Participate through:
 Requirements
 ============
 
- - itools 0.61 (http://www.hforge.org/itools)
- - ikaaro 0.61 (http://www.hforge.org/ikaaro)
+ - itools 0.61.3 (http://www.hforge.org/itools)
+ - ikaaro 0.61.3 (http://www.hforge.org/ikaaro)
 
 
 Install & Deployment
 ====================
 
-See the file "INSTALL" for information on installing ITWS and deploying a website.
+See the file "INSTALL" for information on installing ITWS and deploying a
+website.
 
 
 .. _`Sitemap`: http://www.sitemaps.org/

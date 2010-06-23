@@ -1,6 +1,5 @@
 Install with PIP
 ================
-
 ::
 
    $ virtualenv .
@@ -12,8 +11,7 @@ Install with PIP
 
 
 Install without PIP
-========================
-
+===================
 ::
 
   $ virtualenv .
@@ -21,22 +19,24 @@ Install without PIP
   $ cd Packages
   $ wget http://download.hforge.org/itools/0.61/itools-0.61.3.tar.gz
   $ wget http://download.hforge.org/ikaaro/0.61/ikaaro-0.61.3.tar.gz
-  $ wget http://download.hforge.org/itws/0.61/itws-0.61.0.tar.gz
+  $ wget http://download.hforge.org/itws/1.0/itws-1.0.tar.gz
   $ wget http://download.lpod-project.org/lpod-python/lpod-python-0.9.1.tar.gz
   $ wget http://codespeak.net/lxml/lxml-2.2.6.tgz
   $ tar xzf itools-0.61.3.tar.gz
   $ tar xzf ikaaro-0.61.3.tar.gz
-  $ tar xzf itws-0.61.0.tar.gz
+  $ tar xzf itws-1.0.tar.gz
   $ tar xzf lpod-python-0.9.1.tar.gz
   $ tar xzf lxml-2.2.6.tgz
   $ ls
-  ikaaro-0.61.3         itools-0.61.3         itws-0.61.0         lpod-python-0.9.1         lxml-2.2.6
-  ikaaro-0.61.3.tar.gz  itools-0.61.3.tar.gz  itws-0.61.0.tar.gz  lpod-python-0.9.1.tar.gz  lxml-2.2.6.tgz
+  ikaaro-0.61.3         itools-0.61.3    itws-1.0
+  lpod-python-0.9.1     lxml-2.2.6       ikaaro-0.61.3.tar.gz
+  itools-0.61.3.tar.gz  itws-1.0.tar.gz  lpod-python-0.9.1.tar.gz
+  lxml-2.2.6.tgz
   $ cd itools-0.61.3/
   $ ../../bin/python setup.py install
   $ cd ../ikaaro-0.61.3/
   $ ../../bin/python setup.py install
-  $ cd ../itws-0.61.0/
+  $ cd ../itws-1.0/
   $ ../../bin/python setup.py install
   $ cd lpod-python-0.9.1/
   $ ../../bin/python setup.py install
@@ -49,7 +49,6 @@ Deployment
 
 Create your instance
 --------------------
-
 ::
 
     $ ./bin/icms-init.py -r itws INSTANCE_NAME
@@ -68,7 +67,6 @@ Create your instance
 
 Start the instance
 ------------------
-
 ::
 
    $ ./bin/icms-start.py INSTANCE_NAME
