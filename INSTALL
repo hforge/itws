@@ -1,0 +1,92 @@
+Install with PIP
+================
+
+::
+
+   $ virtualenv .
+   $ ./bin/pip install itools
+   $ ./bin/pip install ikaaro
+   $ ./bin/pip install lpod-python (optional)
+   $ ./bin/pip install lxml (required by lpod-python, optional)
+   $ ./bin/pip install itws
+
+
+Install without PIP
+========================
+
+::
+
+  $ virtualenv .
+  $ mkdir Packages
+  $ cd Packages
+  $ wget http://download.hforge.org/itools/0.61/itools-0.61.3.tar.gz
+  $ wget http://download.hforge.org/ikaaro/0.61/ikaaro-0.61.3.tar.gz
+  $ wget http://download.hforge.org/itws/0.61/itws-0.61.0.tar.gz
+  $ wget http://download.lpod-project.org/lpod-python/lpod-python-0.9.1.tar.gz
+  $ wget http://codespeak.net/lxml/lxml-2.2.6.tgz
+  $ tar xzf itools-0.61.3.tar.gz
+  $ tar xzf ikaaro-0.61.3.tar.gz
+  $ tar xzf itws-0.61.0.tar.gz
+  $ tar xzf lpod-python-0.9.1.tar.gz
+  $ tar xzf lxml-2.2.6.tgz
+  $ ls
+  ikaaro-0.61.3         itools-0.61.3         itws-0.61.0         lpod-python-0.9.1         lxml-2.2.6
+  ikaaro-0.61.3.tar.gz  itools-0.61.3.tar.gz  itws-0.61.0.tar.gz  lpod-python-0.9.1.tar.gz  lxml-2.2.6.tgz
+  $ cd itools-0.61.3/
+  $ ../../bin/python setup.py install
+  $ cd ../ikaaro-0.61.3/
+  $ ../../bin/python setup.py install
+  $ cd ../itws-0.61.0/
+  $ ../../bin/python setup.py install
+  $ cd lpod-python-0.9.1/
+  $ ../../bin/python setup.py install
+  $ cd lxml-2.2.6/
+  $ ../../bin/python setup.py install
+
+Deployment
+==========
+
+
+Create your instance
+--------------------
+
+::
+
+    $ ./bin/icms-init.py -r itws INSTANCE_NAME
+    Type your email address: admin@localhost.com
+    
+    *
+    * Welcome to ikaaro
+    * A user with administration rights has been created for you:
+    *   username: admin@localhost.com
+    *   password: xxx
+    *
+    * To start the new instance type:
+    *   icms-start.py INSTANCE_NAME
+    *
+
+
+Start the instance
+------------------
+
+::
+
+   $ ./bin/icms-start.py INSTANCE_NAME
+   Listen :8080
+   ^CShutting down the server (gracefully)...
+
+Start and detach the server::
+
+   $ ./bin/icms-start.py -d INSTANCE_NAME
+   $ firefox http://localhost:8080
+
+
+Create your website
+-------------------
+
+- Go to http://localhost:8080/;new_resource?type=WebSite
+- Choose "ITWS website"
+- Set the virtual host of your website (for example test.localhost)
+
+
+Go to http://test.localhost:8080/ and test your new "ITWS website"
