@@ -515,17 +515,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # Add an image folder
         cls = ImagesFolder
         cls._make_resource(cls, folder, '%s/%s' % (name, 'images'))
-        # Add the banner
-        banner_resource = root.get_resource('/ui/neutral/banner.png')
-        banner_data = banner_resource.to_str()
-        cls = Image
-        filename = name2 = 'banner.png'
-        name2, extension, language = FileName.decode(name2)
-        metadata = {'format': 'image/png', 'filename': filename,
-                'extension': extension, 'state': 'public',
-                'body': banner_data}
-        cls._make_resource(cls, folder, '%s/images/%s' % (name, name2),
-                **metadata)
         # Set a default banner
         if 'banner_title' not in kw:
             vhosts = website.get_property('vhosts')
