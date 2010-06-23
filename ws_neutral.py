@@ -59,6 +59,7 @@ from addresses import AddressesFolder
 from bar import ContentBarAware, SideBarAware, SideBar_View
 from common import FoBoFooterAwareSkin
 from datatypes import MultilingualString, NeutralClassSkin
+from images_folder import ImagesFolder
 from news import NewsFolder, NewsItem
 from repository import Repository, SidebarBoxesOrderedTable
 from resources import RobotsTxt, ManageViewAware
@@ -77,8 +78,8 @@ from ws_neutral_views import NeutralWS_FOSwitchMode
 from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
-from ws_neutral_views import WSDataFolder_OrderedTable_View
 from ws_neutral_views import WSDataFolderBoxAwareNewInstance
+from ws_neutral_views import WSDataFolder_OrderedTable_View
 
 
 
@@ -440,7 +441,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100623'
+    class_version = '20100624'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -512,7 +513,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # Add Robots.txt
         RobotsTxt._make_resource(RobotsTxt, folder, '%s/robots.txt' % name)
         # Add an image folder
-        Folder._make_resource(Folder, folder, '%s/%s' % (name, 'images'))
+        cls = ImagesFolder
+        cls._make_resource(cls, folder, '%s/%s' % (name, 'images'))
         # Add the banner
         banner_resource = root.get_resource('/ui/neutral/banner.png')
         banner_data = banner_resource.to_str()
@@ -875,6 +877,16 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             if resource.get_workflow_state() == 'private':
                 # state was default public
                 resource.set_property('state', 'public')
+
+
+    def update_20100624(self):
+        # change images folder class_id
+        images = self.get_resource('images')
+        if isinstance(images, Folder):
+            metadata = images.metadata
+            metadata.set_changed()
+            metadata.format = ImagesFolder.class_id
+            metadata.version = ImagesFolder.class_version
 
 
     # User Interface
