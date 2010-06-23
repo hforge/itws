@@ -42,7 +42,7 @@ class ImagesFolder_ManageView(CompositeForm):
     title = MSG(u'Manage view')
     subviews = [ ImagesFolder_FileNewInstance(),
                  Folder_PreviewContent() ]
-    context_menus = [AddResourceMenu()]
+    context_menus = Folder_PreviewContent.context_menus
     styles = ['/ui/gallery/style.css']
 
 
