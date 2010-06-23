@@ -34,7 +34,7 @@ from ikaaro.file_views import File_NewInstance as BaseFile_NewInstance
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
-from ikaaro.forms import description_widget, subject_widget
+from ikaaro.forms import FileWidget, description_widget, subject_widget
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -465,10 +465,23 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
 class File_NewInstance(BaseFile_NewInstance):
 
-    schema = merge_dicts(BaseFile_NewInstance.schema,
-                         state=StaticStateEnumerate(default='public'))
+    def get_schema(self, resource, context):
+        schema = merge_dicts(BaseFile_NewInstance.schema,
+                             state=StaticStateEnumerate(default='public'))
+        del schema['name']
+        return schema
 
-    widgets = freeze(BaseFile_NewInstance.widgets + [state_widget])
+
+    def get_widgets(self, resource, context):
+        return [ title_widget,
+                 FileWidget('file', title=MSG(u'File'), size=35),
+                 state_widget ]
+
+
+    def get_new_resource_name(self, form):
+        # As we have no name, always return the title
+        title = form['title'].strip()
+        return title
 
 
     def action(self, resource, context, form):
