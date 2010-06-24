@@ -21,7 +21,6 @@ from itools.gettext import MSG
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.messages import MSG_NEW_RESOURCE
 from ikaaro.views import CompositeForm
-from ikaaro.views_new import AddResourceMenu
 
 # Import from itws
 from itws.views import File_NewInstance
