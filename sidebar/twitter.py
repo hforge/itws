@@ -99,7 +99,7 @@ class TwitterSideBar_Edit(AutomaticEditView):
 
     def action(self, resource, context, form):
         AutomaticEditView.action(self, resource, context, form)
-        if context.edit_conflict and form['force_update'] is True:
+        if not context.edit_conflict and form['force_update']:
             resource._update_data()
 
 
