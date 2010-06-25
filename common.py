@@ -253,7 +253,8 @@ class FoBoFooterAwareSkin(Skin):
 
     def get_styles(self, context):
         styles = Skin.get_styles(self, context)
-        styles.insert(0, '/ui/common/style.css')
+        # insert common style after bo.css
+        styles.insert(1, '/ui/common/style.css')
         if self.add_common_nav_css:
             styles.append('/ui/common/menu.css')
         styles.append('/ui/common/js/jquery.multiselect2side/css/jquery.multiselect2side.css')

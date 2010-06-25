@@ -165,3 +165,36 @@
   background-color: #EEEEEC;
   font-weight: bold;
 }
+
+
+/**************************************************************************
+ * SPRITES
+ **************************************************************************/
+/*
+ * space before: 20px
+ * icon width: 16px
+ * space after: 20px
+ * vertical space: 20px
+ */
+/* buttons */
+.button-add,
+.button-copy,
+.button-cut,
+.button-delete,
+.button-paste,
+.button-retire,
+.button-publish,
+.button-rename
+{
+  background: url(/ui/common/icons/16x16/sprites.png) no-repeat top left;
+}
+
+/* buttons */
+.button-add { background-position: -15px 5px; }
+.button-copy { background-position: -15px -31px; }
+.button-paste { background-position: -15px -67px; }
+.button-rename { background-position: -15px -103px; }
+.button-delete { background-position: -15px -139px; }
+.button-cut { background-position: -15px -175px; }
+.button-retire { background-position: -15px -211px; }
+.button-publish { background-position: -15px -247px; }
