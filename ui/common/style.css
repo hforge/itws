@@ -271,3 +271,16 @@
 .button-cut { background-position: -15px -175px; }
 .button-retire { background-position: -15px -211px; }
 .button-publish { background-position: -15px -247px; }
+
+/* browse list sort up/down */
+#browse-list th a.sort-up,
+#browse-list th a.sort-up-active,
+#browse-list th a.sort-down,
+#browse-list th a.sort-down-active {
+  background: transparent url(/ui/common/images/sprites-browse-list-sort.png) no-repeat;
+}
+
+#browse-list th a.sort-down { background-position: -20px -20px; }
+#browse-list th a.sort-down-active { background-position: -20px -49px; }
+#browse-list th a.sort-up { background-position: -20px -78px; }
+#browse-list th a.sort-up-active { background-position: -20px -107px; }
