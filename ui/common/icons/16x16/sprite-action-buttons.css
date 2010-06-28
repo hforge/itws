@@ -1,0 +1,8 @@
+.add { background-position: -10px -10px; }
+.copy { background-position: -10px -36px; }
+.paste { background-position: -10px -62px; }
+.rename { background-position: -10px -88px; }
+.delete { background-position: -10px -114px; }
+.cut { background-position: -10px -140px; }
+.private { background-position: -10px -166px; }
+.public { background-position: -10px -192px; }
