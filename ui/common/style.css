@@ -277,10 +277,10 @@
 #browse-list th a.sort-up-active,
 #browse-list th a.sort-down,
 #browse-list th a.sort-down-active {
-  background: transparent url(/ui/common/images/sprites-browse-list-sort.png) no-repeat;
+  background: transparent url(/ui/common/images/sprite-browse-list-sort.png) no-repeat;
 }
 
-#browse-list th a.sort-down { background-position: -20px -20px; }
-#browse-list th a.sort-down-active { background-position: -20px -49px; }
-#browse-list th a.sort-up { background-position: -20px -78px; }
-#browse-list th a.sort-up-active { background-position: -20px -107px; }
+#browse-list th a.sort-down { background-position: -10px -10px; }
+#browse-list th a.sort-down-active { background-position: -10px -29px; }
+#browse-list th a.sort-up { background-position: -10px -48px; }
+#browse-list th a.sort-up-active { background-position: -10px -67px; }
