@@ -37,7 +37,7 @@ from itools.datatypes import Decimal, XMLContent
 from itools.gettext import MSG
 from itools.html import HTMLParser, sanitize_stream
 from itools.i18n.locale_ import format_date
-from itools.log import log_error
+from itools.log import log_warning
 from itools.rss import RSSFile
 from itools.stl import stl
 from itools.web import get_context, BaseView, INFO, ERROR, STLView
@@ -341,9 +341,10 @@ class RssFeeds(CSV):
                 errors.append(XMLParser(msg))
                 errors_str.append(msg)
 
-                summary = 'Error downloading feed\n'
+                summary = ('rssfeeds, Error downloading feed\n'
+                           'uri: %s\n\n' % str(uri))
                 details = format_exc()
-                log_error(summary + details)
+                log_warning(summary + details, domain='itws')
                 continue
 
             # Parse
@@ -355,9 +356,10 @@ class RssFeeds(CSV):
                 msg = msg.encode('utf-8')
                 errors.append(XMLParser(msg))
                 errors_str.append(msg)
-                summary = 'Error parsing feed\n'
+                summary = ('rssfeeds, Error parsing feed\n'
+                           'uri: %s\n\n' % str(uri))
                 details = format_exc()
-                log_error(summary + details)
+                log_warning(summary + details, domain='itws')
                 continue
 
             # Check
@@ -391,11 +393,13 @@ class RssFeeds(CSV):
                     msg = msg.encode('utf-8')
                     errors.append(XMLParser(msg))
                     errors_str.append(msg)
-                    summary = 'Error sanitizing feed\n'
+                    summary = ('rssfeeds, Error sanitizing feed\n'
+                               'uri: %s\n\n' % str(uri))
                     details = format_exc()
-                    log_error(summary + details)
+                    log_warning(summary + details, domain='itws')
                 except UnicodeDecodeError:
                     article['valid'] = False
+                    # Should use log_warning
                     server.log_error(context)
                     continue
 

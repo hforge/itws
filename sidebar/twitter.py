@@ -26,7 +26,7 @@ from itools import __version__ as itools_version
 from itools.core import merge_dicts
 from itools.datatypes import Integer, String, XMLContent, Boolean
 from itools.gettext import MSG
-from itools.log import log_error
+from itools.log import log_warning
 from itools.rss import RSSFile
 from itools.xml import XMLParser, XMLError
 
@@ -168,9 +168,9 @@ class TwitterSideBar(Box, ResourceWithCache):
             errors.append(XMLParser(msg))
             errors_str.append(msg)
 
-            summary = 'Error downloading feed\n'
+            summary = 'sidebar/twitter, Error downloading feed\n'
             details = format_exc()
-            log_error(summary + details)
+            log_warning(summary + details, domain='itws')
 
         if data:
             # Parse
@@ -183,9 +183,9 @@ class TwitterSideBar(Box, ResourceWithCache):
                 msg = msg.encode('utf-8')
                 errors.append(XMLParser(msg))
                 errors_str.append(msg)
-                summary = 'Error parsing feed\n'
+                summary = 'sidebar/twitter, Error parsing feed\n'
                 details = format_exc()
-                log_error(summary + details)
+                log_warning(summary + details, domain='itws')
 
             if feed:
                 data = []
