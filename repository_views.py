@@ -636,7 +636,11 @@ class BoxSectionChildrenTree_View(Box_View):
                 if item_abspath.get_prefix(here_abspath) == item_abspath:
                     # deploy sub sections
                     sub_items = self._get_items(item, context, here_abspath)
-
+                    # If there's only one sub item
+                    # and section do not show article one by one we hide subitem
+                    one_by_one = item.get_property('show_one_article')
+                    if one_by_one is False and len(sub_items) == 1:
+                        sub_items = []
             items.append({'path': path, 'title': item.get_title(),
                 'class': css, 'sub_items': sub_items})
 
