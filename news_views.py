@@ -24,6 +24,7 @@ from itools.gettext import MSG
 from itools.uri import encode_query
 from itools.web import get_context, STLView, INFO
 from itools.xapian import PhraseQuery, AndQuery, NotQuery, RangeQuery
+from itools.xml.utils import xml_to_text
 
 # Import from ikaaro
 from ikaaro.buttons import Button
@@ -34,7 +35,7 @@ from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from utils import xml_to_text, XMLTitleWidget
+from utils import XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS
 from views import ImproveDBResource_AddImage
 from views import ProxyContainerNewInstance

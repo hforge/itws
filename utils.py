@@ -60,15 +60,6 @@ def is_empty(events):
     return True
 
 
-def xml_to_text(events):
-    """Removes the markup and returns a plain text string.
-    """
-    # FIXME copy/paste from itools.xmlfile XMLFile.to_text
-    text = [ unicode(value, 'utf-8') for event, value, line in events
-             if event == TEXT ]
-    return u' '.join(text)
-
-
 def get_path_and_view(path):
     view = ''
     name = path.get_name()
