@@ -8,6 +8,7 @@
 
   <ul stl:repeat="list lists" class="manage-ul ${list/class}">
     <li stl:repeat="item list/items" class="${item/class}">
+      <img src="ui/common/images/transparent-pixel.gif" />
       <a stl:if="not item/disable" href="${item/path}" title="${item/title}">${item/title}</a>
       <span stl:if="item/disable">${item/title}</span>
     </li>

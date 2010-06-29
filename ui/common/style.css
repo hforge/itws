@@ -187,8 +187,14 @@
 
 .manage-ul li {
   list-style: none;
-  padding: 2px 0 2px 24px;
+  padding: 2px 0 2px;
+}
+
+.manage-ul li img {
   background: url('/ui/common/icons/16x16/sprites.png') top left no-repeat;
+  width: 16px;
+  height: 16px;
+  vertical-align: bottom;
 }
 
 /* disable */
@@ -201,41 +207,41 @@
   margin-left: 24px;
 }
 
-.manage-ul .edit,
-.manage-ul .tags,
-.manage-ul .robotstxt,
-.manage-ul .edit {
+.manage-ul .edit img,
+.manage-ul .tags img,
+.manage-ul .robotstxt img,
+.manage-ul .edit img {
   background-position: -20px -468px;
 }
 
-.manage-ul .menu,
-.manage-ul .footer,
-.manage-ul .turning-footer,
-.manage-ul .controlpanel {
+.manage-ul .menu img,
+.manage-ul .footer img,
+.manage-ul .turning-footer img,
+.manage-ul .controlpanel img {
   background-position: -20px -432px;
 }
 
-.manage-ul .manage-404 {
+.manage-ul .manage-404 img {
   background-position: -20px -324px;
 }
 
-.manage-ul .css {
+.manage-ul .css img {
   background-position: -20px -288px;
 }
 
-.manage-ul .repository {
+.manage-ul .repository img {
   background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
 }
 
-.manage-ul .add {
+.manage-ul .add img {
   background-position: -20px 0;
 }
 
-.manage-ul .order {
+.manage-ul .order img {
   background-position: -20px -504px;
 }
 
-.manage-ul .order.disable {
+.manage-ul .order.disable img {
   background-position: -20px -540px;
 }
 
