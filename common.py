@@ -61,7 +61,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
 
     def get_breadcrumb(self, context):
         here = context.resource
-        site_root = here.get_site_root()
+        site_root = context.site_root
         if self.skip_breadcrumb_in_homepage:
             if type(here) == type(site_root):
                 return []
@@ -154,8 +154,7 @@ class CommonLanguagesTemplate(LanguagesTemplate):
     def get_namespace(self):
         context = self.context
         # Website languages
-        site_root = context.site_root
-        ws_languages = site_root.get_property('website_languages')
+        ws_languages = context.site_root.get_property('website_languages')
         if len(ws_languages) == 1:
             return {'languages': []}
 
@@ -257,8 +256,7 @@ class FoBoFooterAwareSkin(Skin):
         # Add edit entry
         if is_navigation_mode(context) is False:
             src = data.get('src', 'menu') # FIXME
-            site_root = context.resource.get_site_root()
-            menu = site_root.get_resource(src, soft=True)
+            menu = context.site_root.get_resource(src, soft=True)
             if menu:
                 ac = menu.get_access_control()
                 if ac.is_allowed_to_edit(context.user, menu):
@@ -282,8 +280,7 @@ class FoBoFooterAwareSkin(Skin):
         ns = self._build_nav_namespace(context, data)
 
         here = context.resource
-        site_root = here.get_site_root()
-        footer = site_root.get_resource('%s/menu' % data['src'])
+        footer = context.site_root.get_resource('%s/menu' % data['src'])
         handler = footer.handler
         records = list(handler.get_records_in_order())
         get_value = handler.get_record_value

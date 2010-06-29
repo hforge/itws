@@ -149,7 +149,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
     def get_sidebar_resource(self, context):
         here = context.resource
-        site_root = here.get_site_root()
+        site_root = context.site_root
         sidebar_resource = site_root
         if isinstance(here, SideBarAware):
             sidebar_resource = here
@@ -165,7 +165,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         namespace = FoBoFooterAwareSkin.build_namespace(self, context)
 
         here = context.resource
-        site_root = here.get_site_root()
+        site_root = context.site_root
 
         # banner namespace
         banner_ns = {}
@@ -253,9 +253,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         if context.view_name not in navnfsv and not not_allowed:
             sidebar_resource = self.get_sidebar_resource(context)
 
-            # When request path is /ui/xxx -> 404
-            # site_root is the root resource, and it is not SidebarAware
-            if sidebar_resource and isinstance(sidebar_resource, SideBarAware):
+            if sidebar_resource:
                 order_name = sidebar_resource.sidebar_name
                 sidebar_view = SideBar_View(order_name=order_name)
                 if not sidebar_view.is_empty(sidebar_resource, context):
@@ -327,6 +325,7 @@ class K2Skin(NeutralSkin2):
     """, stl_namespaces))
 
 
+
 class AdminPopupSkin(Skin):
 
     def get_styles(self, context):
@@ -340,11 +339,12 @@ class AdminPopupSkin(Skin):
         scripts.append('/ui/common/js/jquery.multiselect2side/js/jquery.multiselect2side.js')
         return scripts
 
+
     def build_namespace(self, context):
         namespace = Skin.build_namespace(self, context)
         # Get some values
         resource = context.resource
-        site_root = resource.get_site_root()
+        site_root = context.site_root
         # Title & description of popup
         namespace['title'] = resource.class_title
         namespace['description'] = resource.class_description
@@ -358,6 +358,7 @@ class AdminPopupSkin(Skin):
             for x in languages ]
         # Return languages
         return namespace
+
 
 
 ############################################################
