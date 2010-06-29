@@ -80,26 +80,30 @@ def get_path_and_view(path):
     return path, view
 
 
-def set_prefix_with_hostname(stream, prefix, uri, ns_uri=xhtml_uri):
+def set_prefix_with_hostname(stream, prefix, uri, ns_uri=xhtml_uri,
+                             fix_absolute_path=False):
     if isinstance(prefix, str):
         prefix = Path(prefix)
 
     ref = Reference(scheme=uri.scheme, authority=uri.authority,
                     path='/', query={})
 
-    rewrite = partial(resolve_pointer_with_hostname, prefix, ref)
+    rewrite = partial(resolve_pointer_with_hostname, prefix, ref,
+                      fix_absolute_path)
 
     return rewrite_uris(stream, rewrite, ns_uri)
 
 
-def resolve_pointer_with_hostname(offset, ref, value):
+def resolve_pointer_with_hostname(offset, ref, fix_absolute_path, value):
     # FIXME Exception for STL
     if value[:2] == '${':
         return value
 
     # Absolute URI or path
     uri = get_reference(value)
-    if uri.scheme or uri.authority or uri.path.is_absolute():
+    if uri.scheme or uri.authority:
+        return value
+    if fix_absolute_path is False and uri.path.is_absolute():
         return value
 
     # Resolve Path
