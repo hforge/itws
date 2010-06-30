@@ -22,7 +22,7 @@
   <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}"
         type="${favicon_type}" />
 </head>
-<body class="${body_css}">
+<body class="${body_css} ${lang}">
   <div class="${page_css_class}">
     <table id="main-table">
       <tr id="tr-banner">

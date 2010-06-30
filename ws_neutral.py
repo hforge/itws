@@ -276,6 +276,11 @@ class NeutralSkin(FoBoFooterAwareSkin):
                              'navigation_title': MSG(u'Back to navigation')})
         namespace['fo_edit_toolbar'] = events
 
+        # languages
+        ws_languages = site_root.get_property('website_languages')
+        accept = context.accept_language
+        namespace['lang'] = accept.select_language(ws_languages)
+
         return namespace
 
 
