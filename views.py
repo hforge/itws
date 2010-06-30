@@ -17,6 +17,7 @@
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import String, Unicode, Boolean, DateTime
+from itools.fs import FileName
 from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
@@ -479,9 +480,12 @@ class File_NewInstance(BaseFile_NewInstance):
 
 
     def get_new_resource_name(self, form):
-        # As we have no name, always return the title
+        # As we have no name, always return the title or get it from the file
         title = form['title'].strip()
-        return title
+        if not title:
+            filename, mimetype, body = form['file']
+            name, type, language = FileName.decode(filename)
+        return title or name
 
 
     def action(self, resource, context, form):
