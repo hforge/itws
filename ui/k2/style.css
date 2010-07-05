@@ -389,6 +389,11 @@ fieldset legend{
   text-decoration: none;
 }
 
+#sidebar .content {
+  width: 248px;
+  overflow: hidden;
+}
+
 .sidebar-box ul {
   padding-left: 0;
   margin-left: 16px;
