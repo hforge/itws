@@ -55,7 +55,7 @@ class Slide(TagsAware, WebPage):
     class_version = '20100618'
     class_title = MSG(u'Slide')
     class_description = MSG(u'Slide')
-    class_views = ['view', 'edit', 'edit_state', 'commit_log']
+    class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
 
     @classmethod

@@ -20,7 +20,7 @@
 from functools import partial
 
 # Import from itools
-from itools.datatypes import Boolean
+from itools.datatypes import Boolean, XMLContent
 from itools.gettext import MSG
 from itools.html import xhtml_uri
 from itools.stl import stl, rewrite_uris
@@ -29,7 +29,7 @@ from itools.web import get_context
 from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
-from ikaaro.forms import stl_namespaces, RTEWidget, SelectWidget
+from ikaaro.forms import stl_namespaces, RTEWidget, SelectWidget, XHTMLBody
 from ikaaro.workflow import WorkflowAware
 
 
@@ -212,6 +212,57 @@ def get_admin_bar(resource, buttons=[]):
                  'workflow': workflow}
     return stl(events=events, namespace=namespace)
 
+
+############################################################
+# Links
+############################################################
+
+def get_linked_resources(resource, state='public'):
+    """Return the list of resources which are used by resource.
+    If resource is WorkflowAware:
+    resource.state is public -> return 'private', 'pending' resources
+    resource.state is pending -> return 'private' resource
+    """
+
+    map = {'public': ['pending', 'private'],
+           'pending': ['private'],
+           'private': []}
+
+    links = resource.get_links()
+    links = list(set(links))
+    # default state
+    resource_state = state
+
+    if isinstance(resource, WorkflowAware):
+        resource_state = resource.get_workflow_state()
+    filtered_states = map.get(resource_state, [])
+
+    for link in links:
+        item = resource.get_resource(link, soft=True)
+        if isinstance(item, WorkflowAware) is False:
+            continue
+        state = item.get_workflow_state()
+        if state in filtered_states:
+            yield item
+
+
+def get_linked_resources_message(resource, context, state='public'):
+    # Customize message if webpage uses private/pending resources
+    referenced_resources = list(get_linked_resources(resource))
+    if len(referenced_resources) == 0:
+        return None
+
+    message = MSG(u'This {title} uses pending/private resources '
+                  u'please go to '
+                  u'<a href="{path}/;backlinks">links interface</a>')
+    path = context.get_link(resource)
+    path = XMLContent.encode(path)
+    class_title = resource.class_title.gettext()
+    message = message.gettext(title=class_title,
+                              path=path).encode('utf8')
+    message = XHTMLBody.decode(message)
+    # Return custom message
+    return message
 
 
 ############################################################

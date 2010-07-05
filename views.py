@@ -53,6 +53,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from datatypes import StateEnumerate, StaticStateEnumerate, OrderBoxEnumerate
 from utils import set_prefix_with_hostname, state_widget
+from utils import get_linked_resources_message
 
 
 
@@ -585,7 +586,6 @@ class DBResource_CompositeLinks(CompositeForm):
 
 
 DBResource.backlinks = DBResource_CompositeLinks()
-
 
 
 ############################################################
@@ -1126,7 +1126,11 @@ class NotFoundPage_Edit(HTMLEditView):
         handler.set_body(new_body)
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
-
+        # Customize message if webpage uses private/pending resources
+        referenced_message = get_linked_resources_message(resource, context)
+        if referenced_message:
+            # Add custom message
+            context.message = [ context.message, referenced_message ]
 
 
 
@@ -1185,3 +1189,8 @@ class AutomaticEditView(DBResource_Edit):
                 resource.set_property(key, form[key])
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
+        # Customize message if webpage uses private/pending resources
+        referenced_message = get_linked_resources_message(resource, context)
+        if referenced_message:
+            # Add custom message
+            context.message = [ context.message, referenced_message ]
