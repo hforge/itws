@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import String, Unicode, Boolean, DateTime
+from itools.datatypes import Boolean, DateTime, Integer, String, Unicode
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.handlers import checkid
@@ -42,8 +42,10 @@ from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.registry import get_resource_class, get_document_types
+from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.utils import get_base_path_query
+from ikaaro.views import CompositeForm
 from ikaaro.views_new import NewInstance
 from ikaaro.webpage import WebPage, HTMLEditView
 from ikaaro.workflow import WorkflowAware
@@ -499,6 +501,90 @@ class File_NewInstance(BaseFile_NewInstance):
 
         # Ok
         return goto
+
+
+
+############################################################
+# Links
+############################################################
+
+class DBResource_Links(Folder_BrowseContent):
+    """Links are the list of resources used by this resource."""
+
+    access = 'is_allowed_to_view'
+    title = MSG(u"Links")
+    icon = 'rename.png'
+
+    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
+                               batch_size=Integer(default=0))
+
+    search_template = None
+    search_schema = {}
+
+
+    def get_items(self, resource, context):
+        links = resource.get_links()
+        links = list(set(links))
+        query = OrQuery(*[ PhraseQuery('abspath', link)
+                           for link in links ])
+        return context.root.search(query)
+
+
+    def action_links_publish(self, resource, context, form):
+        Folder_BrowseContent.action_publish(self, resource, context, form)
+
+
+    def action_links_retire(self, resource, context, form):
+        Folder_BrowseContent.action_retire(self, resource, context, form)
+
+
+    table_actions = [PublishButton(name='links_publish'),
+                     RetireButton(name='links_retire')]
+
+
+
+class DBResource_Backlinks(DBResource_Links):
+    """Backlinks are the list of resources pointing to this resource. This
+    view answers the question "where is this resource used?" You'll see all
+    WebPages (for example) referencing it. If the list is empty, you can
+    consider it is "orphan".
+    """
+
+    title = MSG(u"Backlinks")
+    query_schema = {}
+
+
+    def get_table_columns(self, resource, context):
+        cols = DBResource_Links.get_table_columns(self, resource, context)
+        return [ col for col in cols if col[0] != 'checkbox' ]
+
+
+    def get_items(self, resource, context):
+        query = PhraseQuery('links', str(resource.get_canonical_path()))
+        return context.root.search(query)
+
+
+    table_actions = []
+
+
+
+class DBResource_CompositeLinks(CompositeForm):
+
+    title = MSG(u'Links/Backlinks')
+    access = 'is_allowed_to_view'
+    template = '/ui/common/cascade.xml'
+    subviews = [ DBResource_Links(), DBResource_Backlinks() ]
+
+
+    def get_namespace(self, resource, context):
+        views = []
+        for view in self.subviews:
+            views.append({'title': view.title,
+                          'view': view.GET(resource, context)})
+        return {'views': views}
+
+
+DBResource.backlinks = DBResource_CompositeLinks()
 
 
 
