@@ -154,7 +154,12 @@ class NeutralSkin(FoBoFooterAwareSkin):
         if isinstance(here, SideBarAware):
             sidebar_resource = here
         elif isinstance(here, SidebarBoxesOrderedTable):
-            sidebar_resource = here.parent
+            parent = here.parent
+            if isinstance(parent, site_root.wsdatafolder_class):
+                # Special case for ws-data folder
+                sidebar_resource = site_root
+            else:
+                sidebar_resource = parent
         elif isinstance(here, NewsItem) or\
                 isinstance(here.parent, site_root.section_class):
             sidebar_resource = here.parent
