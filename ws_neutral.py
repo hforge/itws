@@ -464,11 +464,12 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                              'footer', 'sitemap.xml', 'robots.txt',
                              'repository', 'images', 'turning-footer',
                              'tags', 'ws-data'])
-    menus = ('menu',)
     footers = ('footer',)
-    sitemap_class = SiteMap
-    section_class = Section
+    menus = ('menu',)
     newsfolder_class = NewsFolder
+    section_class = Section
+    sitemap_class = SiteMap
+    tagsfolder_class = TagsFolder
     wsdatafolder_class = WSDataFolder
 
     @staticmethod
@@ -534,7 +535,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         cls = TurningFooterFolder
         cls._make_resource(cls, folder, '%s/turning-footer' % name)
         # Tags
-        cls = TagsFolder
+        cls = website_class.tagsfolder_class
         cls._make_resource(cls, folder, '%s/tags' % name,
                 language=default_language)
         # Default favicon

@@ -27,7 +27,7 @@ from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 # Import from itws
 from datatypes import StateEnumerate
 from tags_views import TagsAware_Edit
-from utils import get_linked_resources_message, state_widget
+from utils import auto_publish_resources, state_widget
 
 
 
@@ -80,13 +80,13 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         TagsAware_Edit.action(self, resource, context, form)
         display_title = form['display_title']
         resource.set_property('display_title', display_title)
-        resource.set_property('state', form['state'])
+        resource.set_workflow_state(form['state'])
 
-        # Customize message if webpage uses private/pending resources
-        referenced_message = get_linked_resources_message(resource, context)
-        if referenced_message:
+        # Publish referenced resources which are not public/pending
+        message2 = auto_publish_resources(resource, context, form['state'])
+        if message2:
             # Add custom message
-            context.message = [ context.message, referenced_message ]
+            context.message = [ context.message, message2 ]
 
         # Customize message for webpage which can be ordered
         site_root = resource.get_site_root()

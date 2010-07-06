@@ -43,7 +43,7 @@ from ikaaro.webpage import HTMLEditView
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
 from tags_views import TagsAware_Edit, TagItem_View
-from utils import get_linked_resources_message, state_widget
+from utils import auto_publish_resources, state_widget
 from views import ProxyContainerNewInstance
 
 
@@ -150,11 +150,11 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
         resource.set_property('state', form['state'])
         # Ok
         context.message = MSG_CHANGES_SAVED
-        # Customize message if webpage uses private/pending resources
-        referenced_message = get_linked_resources_message(resource, context)
-        if referenced_message:
+        # Publish referenced resources which are not public/pending
+        message2 = auto_publish_resources(resource, context, form['state'])
+        if message2:
             # Add custom message
-            context.message = [ context.message, referenced_message ]
+            context.message = [ context.message, message2 ]
 
 
 
