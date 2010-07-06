@@ -15,15 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
+from itools.datatypes import DateTime, String, Unicode
 from itools.gettext import MSG
-from itools.datatypes import DateTime, Unicode
 
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import title_widget, timestamp_widget
-from ikaaro.future.menu import Menu, Menu_View
+from ikaaro.future.menu import Menu, MenuFile, Menu_View
 from ikaaro.future.menu import MenuFolder, get_menu_namespace
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
@@ -37,6 +38,10 @@ from itws.repository_views import Box_View
 from itws.views import AdvanceGoToSpecificDocument
 
 
+
+##############################################################################
+# VIEWS
+##############################################################################
 
 class MenuSideBar_View(Box_View):
 
@@ -142,6 +147,7 @@ class MenuSideBarTable_View(Menu_View):
         return [ column for column in base_columns if column[0] != 'child' ]
 
 
+
 class MenuSideBarTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
@@ -161,9 +167,22 @@ class MenuSideBarTable_CompositeView(CompositeForm):
 
 
 
+##############################################################################
+# RESOURCES
+##############################################################################
+
+class MenuSideBarTableFile(MenuFile):
+
+    record_properties = merge_dicts(MenuFile.record_properties,
+                                    path=String(mandatory=True))
+
+
+
 class MenuSideBarTable(Menu):
 
     class_id = 'box-menu-table'
+    class_handler = MenuSideBarTableFile
+
     view = MenuSideBarTable_CompositeView(title=Menu_View.title)
 
 
