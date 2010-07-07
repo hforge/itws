@@ -29,13 +29,13 @@ from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget
 from ikaaro.forms import XHTMLBody
-from ikaaro.resource_views import DBResource_AddImage
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
 from utils import xml_to_text, XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS
+from views import ImproveDBResource_AddImage
 from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
@@ -125,7 +125,7 @@ class NewsItem_View(STLView):
 
 
 
-class NewsItem_AddImage(DBResource_AddImage):
+class NewsItem_AddImage(ImproveDBResource_AddImage):
 
     def get_start(self, resource):
         return resource.get_resource('../images')

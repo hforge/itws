@@ -23,7 +23,7 @@ from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
 from itools.uri import get_reference, Path
-from itools.web import get_context, BaseView, STLView, FormError
+from itools.web import get_context, BaseView, ERROR, FormError, STLView
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
@@ -43,7 +43,8 @@ from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.registry import get_resource_class, get_document_types
 from ikaaro.resource_ import DBResource
-from ikaaro.resource_views import DBResource_Edit
+from ikaaro.resource_views import DBResource_Edit, DBResource_AddLink
+from ikaaro.resource_views import DBResource_AddImage, DBResource_AddMedia
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 from ikaaro.views_new import NewInstance
@@ -585,7 +586,155 @@ class DBResource_CompositeLinks(CompositeForm):
         return {'views': views}
 
 
+
+def improve_addlink_action_upload(self, resource, context, form):
+    filename, mimetype, body = form['file']
+    name, type, language = FileName.decode(filename)
+
+    # Check the filename is good
+    title = form['title']
+    name = checkid(title) if title else checkid(name)
+    if name is None:
+        context.message = messages.MSG_BAD_NAME
+        return
+
+    # Get the container
+    container = context.root.get_resource(form['target_path'])
+
+    # Check the name is free
+    if container.get_resource(name, soft=True) is not None:
+        context.message = messages.MSG_NAME_CLASH
+        return
+
+    # Check it is of the expected type
+    cls = get_resource_class(mimetype)
+    if not self.can_upload(cls):
+        error = u'The given file is not of the expected type.'
+        context.message = ERROR(error)
+        return
+
+    # Add the image to the resource
+    cls.make_resource(cls, container, name, body, format=mimetype,
+                      filename=filename, extension=type)
+    # Get resource path
+    child = container.get_resource(name)
+    # Set title and state
+    if title:
+        language = container.get_content_language(context)
+        child.set_property('title', title, language=language)
+    child.set_property('state', form['state'])
+
+    path = resource.get_pathto(child)
+    # Add an action to the resource
+    action = self.get_resource_action(context)
+    if action:
+        path = '%s%s' % (path, action)
+    # Return javascript
+    scripts = self.get_scripts(context)
+    context.add_script(*scripts)
+    return self.get_javascript_return(context, path)
+
+
+
+class ImproveDBResource_AddLink(DBResource_AddLink):
+
+    template = '/ui/common/addlink.xml'
+    action_upload_schema = merge_dicts(DBResource_AddLink.action_upload_schema,
+                                       title=Unicode, state=StaticStateEnumerate)
+    action_add_resource_schema = merge_dicts(
+            DBResource_AddLink.action_add_resource_schema,
+            state=StaticStateEnumerate)
+
+    def get_namespace(self, resource, context):
+        namespace = DBResource_AddLink.get_namespace(self, resource, context)
+        # add state widget
+        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        namespace['state_widget'] = list(widget)
+
+        return namespace
+
+
+    def action_upload(self, resource, context, form):
+        return improve_addlink_action_upload(self, resource, context, form)
+
+
+    def action_add_resource(self, resource, context, form):
+        mode = form['mode']
+        title = form['title']
+        name = checkid(title)
+        # Check name validity
+        if name is None:
+            context.message = MSG(u"Invalid title.")
+            return
+        # Get the container
+        root = context.root
+        container = root.get_resource(context.get_form_value('target_path'))
+        # Check the name is free
+        if container.get_resource(name, soft=True) is not None:
+            context.message = messages.MSG_NAME_CLASH
+            return
+        # Get the type of resource to add
+        cls = self.get_page_type(mode)
+        # Create the resource
+        child = cls.make_resource(cls, container, name)
+        # Set state and title
+        language = container.get_content_language(context)
+        if title:
+            child.set_property('title', title, language=language)
+        child.set_property('state', form['state'])
+
+        path = context.resource.get_pathto(child)
+        scripts = self.get_scripts(context)
+        context.add_script(*scripts)
+        return self.get_javascript_return(context, path)
+
+
+
+class ImproveDBResource_AddImage(DBResource_AddImage):
+
+    template = '/ui/common/addimage.xml'
+    action_upload_schema = merge_dicts(DBResource_AddLink.action_upload_schema,
+                                       title=Unicode, state=StaticStateEnumerate)
+
+    def get_namespace(self, resource, context):
+        namespace = DBResource_AddImage.get_namespace(self, resource, context)
+        # add state widget
+        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        namespace['state_widget'] = list(widget)
+
+        return namespace
+
+
+    def action_upload(self, resource, context, form):
+        return improve_addlink_action_upload(self, resource, context, form)
+
+
+
+class ImproveDBResource_AddMedia(DBResource_AddMedia):
+
+    template = '/ui/common/addmedia.xml'
+    action_upload_schema = merge_dicts(DBResource_AddMedia.action_upload_schema,
+                                       title=Unicode, state=StaticStateEnumerate)
+
+    def get_namespace(self, resource, context):
+        namespace = DBResource_AddImage.get_namespace(self, resource, context)
+        # add state widget
+        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        namespace['state_widget'] = list(widget)
+
+        return namespace
+
+
+    def action_upload(self, resource, context, form):
+        return improve_addlink_action_upload(self, resource, context, form)
+
+
+
+# Override DBResource backlinks view
 DBResource.backlinks = DBResource_CompositeLinks()
+DBResource.add_link = ImproveDBResource_AddLink()
+DBResource.add_image = ImproveDBResource_AddImage()
+DBResource.add_media = ImproveDBResource_AddMedia()
 
 
 ############################################################
