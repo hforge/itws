@@ -24,7 +24,7 @@ from copy import deepcopy
 from itools.core import get_abspath, merge_dicts
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
-from itools.uri import get_reference
+from itools.uri import get_reference, Path
 from itools.web import get_context
 from itools.xapian import PhraseQuery, AndQuery, OrQuery
 from itools.xml import XMLParser
@@ -123,8 +123,14 @@ class NewsItem(WebPage):
         WebPage.update_links(self, source, target)
 
         site_root = self.get_site_root()
-        base = self.get_canonical_path()
         available_languages = site_root.get_property('website_languages')
+
+        base = self.get_canonical_path()
+        resources_new2old = get_context().database.resources_new2old
+        base = str(base)
+        old_base = resources_new2old.get(base, base)
+        old_base = Path(old_base)
+        new_base = Path(base)
 
         for lang in available_languages:
             path = self.get_property('thumbnail', language=lang)
@@ -134,12 +140,12 @@ class NewsItem(WebPage):
             if ref.scheme:
                 continue
             path, view = get_path_and_view(ref.path)
-            path = str(base.resolve2(path))
+            path = str(old_base.resolve2(path))
             if path == source:
                 # Hit the old name
                 # Build the new reference with the right path
                 new_ref = deepcopy(ref)
-                new_ref.path = str(base.get_pathto(target)) + view
+                new_ref.path = str(new_base.get_pathto(target)) + view
                 self.set_property('thumbnail', str(new_ref), language=lang)
 
         get_context().server.change_resource(self)
