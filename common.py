@@ -21,7 +21,7 @@
 # Import from itools
 from itools.core import get_abspath
 from itools.datatypes import Unicode
-from itools.gettext import get_domain
+from itools.gettext import get_domain, MSG
 from itools.i18n import get_language_name
 from itools.stl import stl, set_prefix
 
@@ -89,7 +89,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
                 continue
             if resource is None:
                 break
-            # ACLs
+            # Check ACL
             is_workflow_aware = isinstance(resource, WorkflowAware)
             ac = resource.get_access_control()
             if (is_workflow_aware and ac.is_allowed_to_view(user, resource)) \
@@ -216,6 +216,39 @@ class FoBoFooterAwareSkin(Skin):
 
     location_template = LocationTemplateWithoutTab
     languages_template = CommonLanguagesTemplate
+
+    def get_template_title(self, context):
+        """Return the title to give to the template document.
+        """
+        here = context.resource
+        root = here.get_site_root()
+        root_title = root.get_title()
+
+        # Choose the template
+        if root is here:
+            template = MSG(u"{root_title} - {view_title}")
+            here_title = None
+        else:
+            template = MSG(u"{root_title} - {here_title} - {view_title}")
+            # Check ACL
+            is_workflow_aware = isinstance(here, WorkflowAware)
+            ac = here.get_access_control()
+            user = context.user
+            if (is_workflow_aware and ac.is_allowed_to_view(user, here)) \
+                    or ac.is_allowed_to_edit(user, here):
+                here_title = here.get_title()
+            else:
+                here_title = here.name
+
+        # The view
+        view_title = context.view.get_title(context)
+        if type(view_title) is MSG:
+            view_title = view_title.gettext()
+
+        # Ok
+        return template.gettext(root_title=root_title, here_title=here_title,
+                                view_title=view_title)
+
 
     def get_styles(self, context):
         styles = Skin.get_styles(self, context)
