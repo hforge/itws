@@ -89,9 +89,11 @@ class LocationTemplateWithoutTab(LocationTemplate):
                 continue
             if resource is None:
                 break
-            # Check ACL
+            # ACLs
+            is_workflow_aware = isinstance(resource, WorkflowAware)
             ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource):
+            if (is_workflow_aware and ac.is_allowed_to_view(user, resource)) \
+                    or ac.is_allowed_to_edit(user, resource):
                 url = path
                 title = resource.get_title()
                 short_name = get_breadcrumb_short_name(resource)
