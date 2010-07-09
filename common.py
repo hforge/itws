@@ -32,6 +32,7 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin, register_skin
 from ikaaro.skins_views import LocationTemplate, LanguagesTemplate
 from ikaaro.utils import reduce_string
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from utils import is_navigation_mode
@@ -89,18 +90,22 @@ class LocationTemplateWithoutTab(LocationTemplate):
             if resource is None:
                 break
             # ACLs
+            is_workflow_aware = isinstance(resource, WorkflowAware)
             ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource):
+            if (is_workflow_aware and ac.is_allowed_to_view(user, resource)) \
+                    or ac.is_allowed_to_edit(user, resource):
                 url = path
+                title = resource.get_title()
+                short_name = get_breadcrumb_short_name(resource)
             else:
                 url = None
+                title = short_name = resource.name
             # Append
-            title = resource.get_title()
             breadcrumb.append({
                 'class': '',
                 'url': url,
                 'name': title,
-                'short_name': get_breadcrumb_short_name(resource),
+                'short_name': short_name,
             })
 
         breadcrumb[-1]['class'] += ' last'
