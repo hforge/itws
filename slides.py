@@ -134,7 +134,6 @@ class Slide(TagsAware, WebPage):
         WebPage.update_relative_links(self, source)
         # Not need for TagsAware
 
-        site_root = self.get_site_root()
         target = self.get_canonical_path()
         resources_old2new = get_context().database.resources_old2new
 
