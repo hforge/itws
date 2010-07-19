@@ -17,6 +17,7 @@
 # Import from standard library
 from datetime import datetime
 from traceback import format_exc
+import httplib
 import re
 import socket
 import urllib2
@@ -62,18 +63,16 @@ class TwitterID(Integer):
 
     @staticmethod
     def is_valid(value):
-        uri = twitter_url % value
-        # FIXME To improve
-        # NOTE urllib2 only proposes GET/POST but not HEAD
         try:
-            req = urllib2.Request(uri)
-            req.add_header('User-Agent', 'itools/%s' % itools_version)
-            response = urllib2.urlopen(req)
-            data = response.read()
+            conn = httplib.HTTPConnection("twitter.com")
+            conn.request("HEAD","/statuses/user_timeline/%s.rss" % value)
+            res = conn.getresponse()
+            conn.close()
+            return res.status == 200
         except (socket.error, socket.gaierror, Exception,
-                urllib2.HTTPError), e:
+                httplib.HTTPException), e:
             return False
-        return True
+        return False
 
 
 
