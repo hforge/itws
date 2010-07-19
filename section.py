@@ -163,26 +163,9 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
 
     def get_available_languages(self, languages):
-        available_langs = []
-        names = list(self.get_ordered_names())
-
-        for language in languages:
-            for name in names:
-                if name.startswith('../'):
-                    name = name[3:]
-                item = self.get_resource(name)
-                if isinstance(item, Multilingual):
-                    if item.get_handler(language=language).is_empty() is False:
-                        # get_handler always returns a handler
-                        available_langs.append(language)
-                        break
-                else:
-                    available_langs.append(language)
-                    break
-                    # TODO Check Multilingual objects into current folder
-                    # inner_languages = item.get_available_languages(languages)
-                    # available_langs.extend(inner_languages)
-        return available_langs
+        # FIXME To remove or to improve.
+        # take into account contentbar/sidebar items
+        return languages
 
 
     def get_sub_sections(self, not_empty=False):
