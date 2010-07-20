@@ -43,18 +43,17 @@ from itws.views import AutomaticEditView
 
 
 
-def transform_links(tweet):
-    tweet = tweet.split(':', 1)[1]
-    tweet = re.sub(r'(\A|\s)@(\w+)',
-                   r'\1@<a href="http://www.twitter.com/\2">\2</a>', tweet)
-    tweet = re.sub(r'(\A|\s)#(\w+)',
-               r'\1#<a href="http://search.twitter.com/search?q=%23\2">\2</a>',
-               tweet)
-    tweet = re.sub(r'(\A|\s)(http://(\w|\.|/|;|\?|=|%|&|-)+)',
-                   r'\1<a href="\2"> \2</a>', tweet)
-    tweet = re.sub('&', '&amp;', tweet)
-    return XMLParser(tweet.encode('utf-8'))
-
+def http_head(hostname, path):
+    try:
+        conn = httplib.HTTPConnection(hostname)
+        conn.request("HEAD", path)
+        res = conn.getresponse()
+        conn.close()
+        return res.status == 200
+    except (socket.error, socket.gaierror, Exception,
+            httplib.HTTPException), e:
+        return False
+    return False
 
 
 class TwitterID(Integer):
@@ -62,17 +61,18 @@ class TwitterID(Integer):
     @staticmethod
     def is_valid(value):
         hostname = "twitter.com"
-        path = "/statuses/user_timeline/{value}.rss"
-        try:
-            conn = httplib.HTTPConnection(hostname)
-            conn.request("HEAD", path.format(value=value))
-            res = conn.getresponse()
-            conn.close()
-            return res.status == 200
-        except (socket.error, socket.gaierror, Exception,
-                httplib.HTTPException), e:
-            return False
-        return False
+        path = "/statuses/user_timeline/%s.rss" % value
+        return http_head(hostname, path)
+
+
+
+class IndenticaName(String):
+
+    @staticmethod
+    def is_valid(value):
+        hostname = "identi.ca"
+        path = "/%s" % value
+        return http_head(hostname, path)
 
 
 
@@ -100,7 +100,16 @@ class TwitterSideBar_View(Box_View):
 
 
 
-class TwitterSideBar_Edit(AutomaticEditView):
+class IdenticaSideBar_View(TwitterSideBar_View):
+
+    def _get_title_href(self, resource, context):
+        user_name = resource.get_property('user_name')
+        title_href = 'http://identi.ca/%s' % user_name
+        return title_href
+
+
+
+class Microblogging_Edit(AutomaticEditView):
 
 
     def action(self, resource, context, form):
@@ -138,7 +147,7 @@ class TwitterSideBar(Box, ResourceWithCache):
 
     # Views
     view = TwitterSideBar_View()
-    edit = TwitterSideBar_Edit()
+    edit = Microblogging_Edit()
 
 
     @classmethod
@@ -150,6 +159,23 @@ class TwitterSideBar(Box, ResourceWithCache):
     def _get_account_uri(self):
         user_id = self.get_property('user_id')
         return 'http://twitter.com/statuses/user_timeline/%s.rss' % user_id
+
+
+    def _transform_links(self, item):
+        item = item.split(':', 1)[1]
+        item = re.sub(r'(\A|\s)@(\w+)',
+                      r'\1@<a href="http://www.twitter.com/\2">\2</a>', item)
+        item = re.sub(r'(\A|\s)#(\w+)',
+                   r'\1#<a href="http://search.twitter.com/search?q=%23\2">\2</a>',
+                   item)
+        item = re.sub(r'(\A|\s)(http://(\w|\.|/|;|\?|=|%|&|-)+)',
+                      r'\1<a href="\2"> \2</a>', item)
+        item = re.sub('&', '&amp;', item)
+        return XMLParser(item.encode('utf-8'))
+
+
+    def _get_data_from_item(self, item):
+        return list(self._transform_links(item['description']))
 
 
     def _update_data(self):
@@ -202,7 +228,7 @@ class TwitterSideBar(Box, ResourceWithCache):
                 for i, item in enumerate(feed.items):
                     if i == limit:
                         break
-                    data.append(list(transform_links(item['description'])))
+                    data.append(self._get_data_from_item(item))
 
         # restore the default timeout
         socket.setdefaulttimeout(default_timeout)
@@ -234,5 +260,53 @@ class TwitterSideBar(Box, ResourceWithCache):
 
 
 
+class IdenticaSideBar(TwitterSideBar):
+
+    class_id = 'box-identica'
+    class_title = MSG(u'Identi.ca SideBar')
+    class_description = MSG(u'Identi.ca sidebar feed')
+
+    # Item configuration
+
+    edit_schema = {'user_name': IndenticaName(mandatory=True),
+                   'limit': Integer(mandatory=True, default=5, size=3),
+                   'force_update': Boolean}
+
+    edit_widgets = [TextWidget('user_name',
+                              title=MSG(u"Identi.ca account name")),
+                    TextWidget('limit', title=MSG(u'Number of message')),
+                    BooleanCheckBox('force_update',
+                                    title=MSG(u'Force cache update')),
+                   ]
+
+    # Views
+    view = IdenticaSideBar_View()
+    edit = Microblogging_Edit()
+
+
+    def _get_account_uri(self):
+        user_name = self.get_property('user_name')
+        return 'http://identi.ca/%s/rss' % user_name
+
+
+    def _transform_links(self, item):
+        item = item.split(':', 1)[1]
+        item = re.sub(r'(\A|\s)@(\w+)',
+                      r'\1@<a href="http://identi.ca/\2">\2</a>', item)
+        item = re.sub(r'(\A|\s)#([^ ]+)',
+                      r'\1#<a href="http://identi.ca/tag/\2">\2</a>', item)
+        item = re.sub(r'(\A|\s)(http://(\w|\.|/|;|\?|=|%|&|-)+)',
+                      r'\1<a href="\2"> \2</a>', item)
+        item = re.sub('&', '&amp;', item)
+        return XMLParser(item.encode('utf-8'))
+
+
+    def _get_data_from_item(self, item):
+        return list(self._transform_links(item['title']))
+
+
+
+register_resource_class(IdenticaSideBar)
 register_resource_class(TwitterSideBar)
+register_box(IdenticaSideBar, allow_instanciation=True)
 register_box(TwitterSideBar, allow_instanciation=True)
