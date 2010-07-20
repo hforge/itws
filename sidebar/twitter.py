@@ -43,8 +43,6 @@ from itws.views import AutomaticEditView
 
 
 
-twitter_url = 'http://twitter.com/statuses/user_timeline/%s.rss'
-
 def transform_links(tweet):
     tweet = tweet.split(':', 1)[1]
     tweet = re.sub(r'(\A|\s)@(\w+)',
@@ -63,9 +61,11 @@ class TwitterID(Integer):
 
     @staticmethod
     def is_valid(value):
+        hostname = "twitter.com"
+        path = "/statuses/user_timeline/{value}.rss"
         try:
-            conn = httplib.HTTPConnection("twitter.com")
-            conn.request("HEAD","/statuses/user_timeline/%s.rss" % value)
+            conn = httplib.HTTPConnection(hostname)
+            conn.request("HEAD", path.format(value=value))
             res = conn.getresponse()
             conn.close()
             return res.status == 200
@@ -80,14 +80,21 @@ class TwitterSideBar_View(Box_View):
 
     template = '/ui/bar_items/twitter.xml'
 
+
+    def _get_title_href(self, resource, context):
+        user_name = resource.get_property('user_name')
+        title_href = 'http://www.twitter.com/%s' % user_name
+        return title_href
+
+
     def get_namespace(self, resource, context):
         namespace = {'title': resource.get_title(),
-                     'user_name': resource.get_property('user_name'),
-                     'twitts': []}
-        twitts, errors = resource.get_cached_data()
+                     'title_href': self._get_title_href(resource, context),
+                     'items': []}
+        items, errors = resource.get_cached_data()
         ac = resource.get_access_control()
         is_allowed_to_edit = ac.is_allowed_to_edit(context.user, resource)
-        namespace['twitts'] = twitts
+        namespace['items'] = items
         namespace['errors'] = is_allowed_to_edit and errors
         return namespace
 
@@ -140,10 +147,14 @@ class TwitterSideBar(Box, ResourceWithCache):
                            cls.edit_schema)
 
 
-    def _update_data(self):
+    def _get_account_uri(self):
         user_id = self.get_property('user_id')
+        return 'http://twitter.com/statuses/user_timeline/%s.rss' % user_id
+
+
+    def _update_data(self):
         limit = self.get_property('limit')
-        uri = twitter_url % user_id
+        uri = self._get_account_uri()
         data = None
         # errors
         errors = []

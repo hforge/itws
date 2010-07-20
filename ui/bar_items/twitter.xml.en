@@ -5,7 +5,7 @@
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h3 class="title">
-    <a href="http://www.twitter.com/${user_name}" title="${title}">${title}</a>
+    <a href="${title_href}" title="${title}">${title}</a>
   </h3>
 
   <stl:block stl:if="errors">
@@ -18,8 +18,8 @@
       </ul>
     </div>
   </stl:block>
-  <ul stl:if="twitts">
-    <li stl:repeat="t twitts">${t}</li>
+  <ul stl:if="items">
+    <li stl:repeat="item items">${item}</li>
   </ul>
 
 </stl:block>
