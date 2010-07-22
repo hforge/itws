@@ -38,7 +38,6 @@
       $('a[rel!="fancybox"]').each(function(){
         $(this).click(function(){
           parent.window.location.href = $(this).attr('href');
-          // return false to not reload current page
           return false;
         });
       });
