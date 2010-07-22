@@ -215,6 +215,9 @@ class FoBoFooterAwareSkin(Skin):
     location_template = LocationTemplateWithoutTab
     languages_template = CommonLanguagesTemplate
 
+    template_title_root = MSG(u"{root_title}")
+    template_title_base = MSG(u"{root_title} - {here_title}")
+
     def get_template_title(self, context):
         """Return the title to give to the template document.
         """
@@ -224,10 +227,10 @@ class FoBoFooterAwareSkin(Skin):
 
         # Choose the template
         if root is here:
-            template = MSG(u"{root_title} - {view_title}")
+            template = self.template_title_root
             here_title = None
         else:
-            template = MSG(u"{root_title} - {here_title} - {view_title}")
+            template = self.template_title_base
             # Check ACL
             is_workflow_aware = isinstance(here, WorkflowAware)
             ac = here.get_access_control()
