@@ -43,8 +43,9 @@ from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.registry import get_resource_class, get_document_types
 from ikaaro.resource_ import DBResource
-from ikaaro.resource_views import DBResource_Edit, DBResource_AddLink
 from ikaaro.resource_views import DBResource_AddImage, DBResource_AddMedia
+from ikaaro.resource_views import DBResource_Edit, DBResource_AddLink
+from ikaaro.user import User
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 from ikaaro.views_new import NewInstance
@@ -736,6 +737,8 @@ DBResource.add_link = ImproveDBResource_AddLink()
 DBResource.add_image = ImproveDBResource_AddImage()
 DBResource.add_media = ImproveDBResource_AddMedia()
 
+# Override User is_allowed_to_view
+User.is_allowed_to_view = User.is_allowed_to_edit
 
 ############################################################
 # Table
