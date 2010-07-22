@@ -267,6 +267,7 @@ class IdenticaSideBar(TwitterSideBar):
     class_description = MSG(u'Identi.ca sidebar feed')
     class_icon16 = 'bar_items/icons/16x16/identica.png'
     class_icon48 = 'bar_items/icons/48x48/identica.png'
+    # identica icons source: http://status.net/
 
     # Item configuration
 
