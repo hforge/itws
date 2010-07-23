@@ -152,7 +152,7 @@ class BoxSectionNews(Box):
     # Box configuration
     edit_schema = {
         'tags': String(multiple=True),
-        'count': PositiveInteger(default=0)
+        'count': PositiveInteger(default=3)
         }
 
     # Views

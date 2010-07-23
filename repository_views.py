@@ -257,10 +257,18 @@ class BoxSectionNews_Edit(AutomaticEditView):
         # News folder
         newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
+            # Count is already defined in resource.edit_schema
+            # Do not add it but override 'tags' definition
             site_root = resource.get_site_root()
-            tags = TagsList(news_folder=newsfolder, multiple=True,
-                            site_root=site_root)
-            return merge_dicts(schema, tags=tags, count=PositiveInteger())
+            # tags
+            tags = site_root.get_resource('tags')
+            sub_schema = {}
+            if len(tags.get_tag_brains(context)):
+                tags = TagsList(news_folder=newsfolder, multiple=True,
+                                site_root=site_root)
+                sub_schema['tags'] = tags
+
+            return merge_dicts(schema, sub_schema)
         return schema
 
 
@@ -271,11 +279,14 @@ class BoxSectionNews_Edit(AutomaticEditView):
         # News folder
         newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
-            widgets.extend([
-                TextWidget('count', title=MSG(u'News to show'), size=3),
-                DualSelectWidget('tags', title=MSG(u'News TAGS'),
-                                 is_inline=True, has_empty_option=False)
-                ])
+            widgets.append(TextWidget('count', title=MSG(u'News to show'),
+                                      size=3))
+            # tags
+            tags = resource.get_site_root().get_resource('tags')
+            if len(tags.get_tag_brains(context)):
+                widget = DualSelectWidget('tags', title=MSG(u'News TAGS'),
+                        is_inline=True, has_empty_option=False)
+                widgets.append(widget)
 
         return widgets
 
@@ -288,7 +299,8 @@ class BoxSectionNews_Edit(AutomaticEditView):
 
         # Save changes
         for key in ('count', 'tags'):
-            resource.set_property(key, form[key])
+            if key in form:
+                resource.set_property(key, form[key])
 
 
 
@@ -481,6 +493,7 @@ class BoxSectionNews_View(Box_View):
         items_number = 0
         if news_folder:
             news_count = resource.get_property('count')
+            # if news_count == 0, do not display all news
             if news_count:
                 items = self._get_items_ns(resource, context, render=False)
                 items_number = len(items)
