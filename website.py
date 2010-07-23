@@ -56,7 +56,7 @@ class FavIcon(Image):
     @classmethod
     def get_metadata_schema(cls):
         schema = Image.get_metadata_schema()
-        schema['state'] = String(default='pulic')
+        schema['state'] = String(default='public')
         return schema
 
 
