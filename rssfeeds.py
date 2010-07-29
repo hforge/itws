@@ -419,20 +419,20 @@ class RssFeeds(CSV):
                 # Channel is not well formed -> no attribute title
                 continue
 
+            # Add the anchors
+            uri_ref = get_reference(uri)
+            for number, article in enumerate(articles):
+                # Set prefix with url for article content
+                description = set_prefix_with_hostname(article['description'],
+                        prefix='.', uri=uri_ref, fix_absolute_path=True)
+                # Transform generator into list
+                article['description'] = list(description)
+                # Anchor
+                article['anchor'] = 'anchor%d' % number
+                article['reverse_anchor'] = 'reverse_anchor%d' % number
+
         # restore the default timeout
         socket.setdefaulttimeout(default_timeout)
-
-        # Add the anchors
-        uri_ref = get_reference(uri)
-        for number, article in enumerate(articles):
-            # Set prefix with url for article content
-            description = set_prefix_with_hostname(article['description'],
-                    prefix='.', uri=uri_ref, fix_absolute_path=True)
-            # Transform generator into list
-            article['description'] = list(description)
-            # Anchor
-            article['anchor'] = 'anchor%d' % number
-            article['reverse_anchor'] = 'reverse_anchor%d' % number
 
         # Save informations
         handler.last_download_time = datetime.now()
