@@ -277,7 +277,12 @@ class WebSite(BaseWebSite):
         from ikaaro.webpage import WebPage as BaseWebPage
         from webpage import WebPage
         # 404 webpage -> 404 not found page
-        resource = self.get_resource('404')
+        resource = self.get_resource('404', soft=True)
+        if resource is None:
+            cls = NotFoundPage
+            cls.make_resource(cls, self, '404')
+            return
+
         base_schema_keys = BaseWebPage.get_metadata_schema().keys()
         webpage_schema_keys = WebPage.get_metadata_schema().keys()
         diff = set(base_schema_keys).difference(set(webpage_schema_keys))
