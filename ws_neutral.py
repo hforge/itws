@@ -452,7 +452,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100624'
+    class_version = '20100625'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -888,6 +888,23 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             metadata.set_changed()
             metadata.format = ImagesFolder.class_id
             metadata.version = ImagesFolder.class_version
+
+
+    def update_20100625(self):
+        # Fix property without language
+        language = self.get_property('website_languages')[0]
+
+        # Fix multilingual properties
+        for resource in self.traverse_resources():
+            metadata = resource.metadata
+            properties = metadata.properties
+            for key in ('title', 'description', 'subject'):
+                if key in properties:
+                    value = properties[key]
+                    if type(value) is not dict:
+                        resource.del_property(key)
+                        resource.set_property(key, value, language=language)
+
 
 
     # User Interface
