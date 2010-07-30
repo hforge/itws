@@ -891,6 +891,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
 
     def update_20100625(self):
+        from warnings import warn
         # Fix property without language
         language = self.get_property('website_languages')[0]
 
@@ -905,6 +906,11 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                         resource.del_property(key)
                         resource.set_property(key, value, language=language)
 
+        # FIXME After this update, apply this sed command to website's metadata
+        command = ("""sed -i -e 's/format="neutral" version="20100625"/"""
+                   """format="neutral" version="20100624"/g' *.metadata""")
+        warn('Before updating database to ikaaro 0.62\n'
+             'you should execute this command:\n%s' % command)
 
 
     # User Interface
