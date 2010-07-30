@@ -387,7 +387,7 @@ class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
 class NewsFolder_ManageView(CompositeForm):
 
     access = 'is_allowed_to_edit'
-    title = MSG(u'Manage view')
+    title = MSG(u'Manage News Folder')
 
     subviews = [ NewsFolder_NewsNewInstance(),
                  NewsFolder_BrowseContent() ]
