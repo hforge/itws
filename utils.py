@@ -109,7 +109,7 @@ def resolve_pointer_with_hostname(offset, ref, fix_absolute_path, value):
     # Resolve Path
     path = offset.resolve(uri.path)
     value = Reference(ref.scheme, ref.authority, path,
-                      ref.query.copy(), ref.fragment)
+                      uri.query.copy(), uri.fragment)
     return str(value)
 
 
