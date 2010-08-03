@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
+from datetime import date
 from math import floor
 from types import GeneratorType
 
@@ -25,7 +26,7 @@ from itools.gettext import MSG
 from itools.stl import stl, set_prefix
 from itools.uri import get_reference, Reference
 from itools.web import get_context, BaseView, FormError, STLView
-from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery
+from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery, RangeQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -229,9 +230,12 @@ class NeutralWS_RSS(BaseRSS):
 
 
     def get_base_query(self, resource, context):
+        today = date.today()
+        min_date = date(1900, 1, 1)
         query = BaseRSS.get_base_query(self, resource, context)
         query.append(PhraseQuery('workflow_state', 'public'))
         query.append(PhraseQuery('is_image', False))
+        query.append(RangeQuery('date_of_writing', min_date, today))
         return query
 
 

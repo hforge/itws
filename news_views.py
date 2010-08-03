@@ -22,7 +22,7 @@ from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
 from itools.web import get_context, STLView, INFO
-from itools.xapian import PhraseQuery, AndQuery, NotQuery
+from itools.xapian import PhraseQuery, AndQuery, NotQuery, RangeQuery
 
 # Import from ikaaro
 from ikaaro.buttons import Button
@@ -291,10 +291,13 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
 class NewsFolder_RSS(BaseRSS):
 
     def get_base_query(self, resource, context):
+        today = date.today()
+        min_date = date(1900, 1, 1)
         # Filter by news folder
         abspath = resource.get_canonical_path()
         return [ get_base_path_query(str(abspath)),
-                 PhraseQuery('workflow_state', 'public') ]
+                 PhraseQuery('workflow_state', 'public'),
+                 RangeQuery('date_of_writing', min_date, today)]
 
 
     def get_allowed_formats(self, resource, context):
