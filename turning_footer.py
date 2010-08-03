@@ -28,6 +28,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import BooleanCheckBox, XHTMLBody, RTEWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
@@ -63,6 +64,8 @@ class TurningFooterTable(OrderedTable):
     # Views
     view = TurningFooterFile_View()
     edit = TurningFooterFile_EditRecord()
+    configure = GoToSpecificDocument(specific_document='..',
+            specific_view='configure', title=MSG(u'Configure'))
 
 
     def get_links(self):
@@ -156,6 +159,8 @@ class TurningFooterFolder(OrderTableAware, Folder):
     class_id = 'turning-footer-folder'
     class_version = '20100616'
     class_title = MSG(u'Turning Footer Folder')
+    class_views = ['view', 'configure', 'edit', 'browse_content',
+                   'preview_content', 'backlinks', 'commit_log']
     order_class = TurningFooterTable
     order_path = 'menu'
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
@@ -170,7 +175,9 @@ class TurningFooterFolder(OrderTableAware, Folder):
 
     # Views
     view = TurningFooterFolder_View()
-    edit = AutomaticEditView()
+    edit = GoToSpecificDocument(specific_document='menu',
+                                title=MSG(u'Edit'))
+    configure = AutomaticEditView(title=MSG(u'Configure'))
 
 
     @staticmethod
