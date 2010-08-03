@@ -9,7 +9,7 @@
     You can tag Webpages, News and Slides directly from their edit interfaces.
     <ul>
       <li>
-        You can <a href="./;new_resource?type=tag" title="Add a tag">add a new Tag</a>.
+        You can <a href="./;manage_view" title="Add a tag">add a new Tag</a>.
       </li>
       <li>
         You can <a href="./;manage_view">manage and translate</a> Tags.
