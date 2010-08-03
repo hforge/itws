@@ -30,6 +30,7 @@ from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_field, register_resource_class
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
@@ -51,7 +52,8 @@ class Tag(File, MultilingualCatalogTitleAware):
 
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
     edit = AutomaticEditView()
-    edit_state = None
+    edit_state = GoToSpecificDocument(specific_document='.',
+                                      specific_view='edit')
     externaledit = None
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
     new_instance = EasyNewInstance()
