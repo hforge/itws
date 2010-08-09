@@ -620,6 +620,7 @@ class BoxSectionChildrenTree_View(Box_View):
 
 
     def _get_items(self, section, context, here_abspath):
+        user = context.user
         section_link = context.get_link(section)
         show_one_article = section.get_property('show_one_article')
         section_class = section.get_subsection_class()
@@ -631,6 +632,12 @@ class BoxSectionChildrenTree_View(Box_View):
             if item is None:
                 warn(u'resource "%s" not found' % name)
                 continue
+
+            # Check security
+            ac = item.get_access_control()
+            if ac.is_allowed_to_view(user, item):
+                items.append(item)
+
             item_abspath = item.get_abspath()
             # css
             css = None
