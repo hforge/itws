@@ -277,7 +277,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
             events = stl(events=self.fo_edit_template,
                          namespace={
                              'edit_mode': edit_mode,
-                             'edition_title': MSG(u'Go to edition mode'),
+                             'edition_title': MSG(u'Go to editing mode'),
                              'navigation_title': MSG(u'Back to navigation')})
         namespace['fo_edit_toolbar'] = events
 

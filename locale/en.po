@@ -729,7 +729,7 @@ msgid "Go there to edit sidebar"
 msgstr ""
 
 #: ../ws_neutral.py:280
-msgid "Go to edition mode"
+msgid "Go to editing mode"
 msgstr ""
 
 #: ../resources.py:143 ../repository.py:172
