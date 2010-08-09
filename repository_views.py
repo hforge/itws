@@ -635,8 +635,8 @@ class BoxSectionChildrenTree_View(Box_View):
 
             # Check security
             ac = item.get_access_control()
-            if ac.is_allowed_to_view(user, item):
-                items.append(item)
+            if ac.is_allowed_to_view(user, item) is False:
+                continue
 
             item_abspath = item.get_abspath()
             # css
