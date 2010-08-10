@@ -45,7 +45,8 @@ class AddressItem(WebPage):
 
     # Views
     edit = AddressItem_Edit()
-    back = GoToSpecificDocument(specific_document='../')
+    back = GoToSpecificDocument(specific_document='../',
+                                title=MSG(u'Back to Addresses Folder'))
 
 
     @classmethod

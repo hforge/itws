@@ -17,8 +17,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.xml import XMLParser
+from itools.gettext import MSG
 from itools.web import get_context
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.forms import Widget, stl_namespaces
@@ -62,12 +63,13 @@ class GPSWidget(GoogleMapWidget):
     width = 800
     height = 400
 
+    find_gps_coords_label = MSG(u'Find the GPS coordinates')
     template = list(XMLParser(
         """
         <script type="text/javascript" src="/ui/addresses/google_map.js"/>
         <p>
           Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
-          <input  class="button-ok" type="button" value="Trouver les coordonnées GPS"
+          <input  class="button-ok" type="button" value="${find_gps_coords_label}"
               onclick="selectGPS('map_${name}');"/><br/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
           <label for="latitude">Latitude</label>
@@ -91,7 +93,7 @@ class GPSWidget(GoogleMapWidget):
         context = get_context()
         here = context.resource
         # Build namespace
-        namespace = {}
+        namespace = {'find_gps_coords_label': self.find_gps_coords_label}
         namespace.update(Widget.get_namespace(self, datatype, value))
         for key in ['address', 'latitude', 'longitude', 'zoom']:
             namespace[key] = here.get_property(key)
