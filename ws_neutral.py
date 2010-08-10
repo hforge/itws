@@ -286,6 +286,12 @@ class NeutralSkin(FoBoFooterAwareSkin):
         accept = context.accept_language
         namespace['lang'] = accept.select_language(ws_languages)
 
+        # Manage view acl
+        view = site_root.get_view('manage_view')
+        manage_view_allowed = ac.is_access_allowed(context.user, site_root,
+                                                   view)
+        namespace['manage_view_allowed'] = manage_view_allowed
+
         return namespace
 
 

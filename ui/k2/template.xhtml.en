@@ -34,6 +34,10 @@
           <a href="${user/info/home}" title="${user/info/title}">${user/info/title}</a>
           <span>|</span>
           <a href="${logout}" id="top-menu-logout" title="Log out">Log out</a>
+          <stl:block stl:if="manage_view_allowed">
+              <span>|</span>
+              <a href="/;manage_view" id="top-menu-manage" title="Manage Website">Manage Website</a>
+          </stl:block>
         </stl:block>
       </div>
       <table cellpadding="0" cellspacing="0" class="header-toolbar">
