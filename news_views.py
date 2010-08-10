@@ -203,7 +203,8 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
                                batch_size=Integer(default=5),
                                sort_by=String(default='date_of_writing'),
-                               reverse=Boolean(default=True))
+                               reverse=Boolean(default=True),
+                               tags=String(multiple=True))
     table_template = None
     more_title = MSG(u'Read more')
     max_middle_pages = 5
@@ -220,9 +221,12 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         # Build the query
         language = resource.get_content_language(context)
         args = list(args)
-        query_terms = resource.get_news_query_terms(state='public')
+        # Filter by tag
+        tags = context.get_query_value('tags', type=String(multiple=True))
+        query_terms = resource.get_news_query_terms(state='public', tags=tags)
         query_terms.append(PhraseQuery('available_languages', [language]))
         args.append(AndQuery(*query_terms))
+
         if len(args) == 1:
             query = args[0]
         else:
