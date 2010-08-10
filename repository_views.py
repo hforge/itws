@@ -21,10 +21,11 @@ from warnings import warn
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String
 from itools.datatypes import Integer, Enumerate
+from itools.datatypes import String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
+from itools.uri import encode_query
 from itools.web import BaseView, STLView
 from itools.xapian import AndQuery, PhraseQuery
 from itools.xml import XMLParser
@@ -449,6 +450,7 @@ class BoxSectionNews_View(Box_View):
     access = 'is_allowed_to_edit'
     template = '/ui/bar_items/SectionNews_view.xml'
     title = MSG(u'View')
+    more_title = MSG(u'Show all')
 
     def _get_news_item_view(self):
         from news_views import NewsItem_Preview
@@ -512,6 +514,15 @@ class BoxSectionNews_View(Box_View):
         namespace['title'] = title
         namespace['items'] = items
         namespace['display'] = items_number != 0
+        # more link
+        more_title = self.more_title.gettext().encode('utf-8')
+        tags = resource.get_property('tags')
+        link = context.get_link(news_folder)
+        if tags:
+            # FIXME Do not add tags to query if all tags are selected
+            query =  {'tags': tags}
+            link = '%s?%s' % (link, encode_query(query))
+        namespace['more'] = {'href': link, 'title': more_title}
 
         return namespace
 

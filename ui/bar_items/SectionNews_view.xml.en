@@ -19,6 +19,8 @@
         </div>
         <div class="clear" />
       </div>
+      <a class="more" href="${more/href}" title="${more/title}">${more/title}</a>
+      <div class="clear" />
     </div>
   </stl:block>
 

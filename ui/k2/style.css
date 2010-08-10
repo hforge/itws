@@ -426,6 +426,10 @@ fieldset legend{
   /* padding-bottom: 5px; */
 }
 
+.box-section-news .more {
+  float: right;
+}
+
 /* section siblings */
 .box-news-siblings-toc .newsitem.active {
   border-left: 5px solid #bbb;
