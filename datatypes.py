@@ -152,3 +152,9 @@ class OrderBoxEnumerate(Enumerate):
                {'name': 'order-top', 'value': MSG(u'Order top')},
                {'name': 'order-bottom', 'value': MSG(u'Order bottom')}]
 
+
+
+class OpenLayerRender(Enumerate):
+
+    options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
+               {'name': 'google', 'value': MSG(u'Google Map')}]

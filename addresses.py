@@ -31,6 +31,7 @@ from ikaaro.webpage import WebPage
 # Import from itws
 from addresses_views import AddressItem_Edit
 from addresses_views import Addresses_View
+from datatypes import OpenLayerRender
 
 
 
@@ -58,6 +59,7 @@ class AddressItem(WebPage):
         schema['width'] = Integer(default=400)
         schema['height'] = Integer(default=400)
         schema['zoom'] = Integer(default=5)
+        schema['render'] = OpenLayerRender(default='osm')
         return schema
 
 

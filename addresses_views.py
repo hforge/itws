@@ -25,13 +25,15 @@ from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import TextWidget
+from ikaaro.forms import SelectWidget, TextWidget
 from ikaaro.forms import title_widget, rte_widget, timestamp_widget
 from ikaaro.webpage import HTMLEditView
 from ikaaro.workflow import get_workflow_preview
 
 # Import from packages
-from google_map import GoogleMapWidget, GPSWidget
+from datatypes import OpenLayerRender
+from google_map import GoogleMapWidget, GPSWidget as GoogleGPSWidget
+from osm import OpenStreetMapWidget, GPSWidget as OpenStreetMapGPSWidget
 
 
 
@@ -62,7 +64,13 @@ class Addresses_View(STLView):
             google_map_key = resource.get_property('google_map_key')
             height = address.get_property('height')
             width = address.get_property('width')
-            map = GoogleMapWidget('map_%s' % index, width=width, height=height)
+            # FIXME To improve, render
+            render = address.get_property('render')
+            if render == 'google':
+                map_widget_cls = GoogleMapWidget
+            else:
+                map_widget_cls = OpenStreetMapWidget
+            map = map_widget_cls('map_%s' % index, width=width, height=height)
             is_allowed_to_edit = ac.is_allowed_to_edit(user, address)
             html_data = address.get_html_data()
             html_data = set_prefix(html_data, prefix='%s/' % address.name)
@@ -85,6 +93,7 @@ class AddressItem_Edit(HTMLEditView):
     submit_value = MSG(u'Edit address')
 
     schema = merge_dicts(HTMLEditView.schema,
+                         render=OpenLayerRender(mandatory=True),
                          width=Integer, height=Integer, address=Unicode,
                          latitude=Decimal, longitude=Decimal, zoom=Integer,
                          # Hack
@@ -93,14 +102,20 @@ class AddressItem_Edit(HTMLEditView):
     def get_widgets(self, resource, context):
         width = resource.get_property('width')
         height = resource.get_property('height')
+        render = resource.get_property('render')
+        if render == 'google':
+            gps_widget_cls = GoogleGPSWidget
+        else:
+            gps_widget_cls = OpenStreetMapGPSWidget
         return [title_widget, rte_widget, timestamp_widget,
+                SelectWidget('render', title=MSG(u'Render map with')),
                 TextWidget('width', title=MSG(u'Map width'), size=6),
                 TextWidget('height', title=MSG(u'Map height'), size=6),
-                GPSWidget('gps', title=MSG(u'GPS'), width=width, height=height)]
+                gps_widget_cls('gps', title=MSG(u'GPS'), width=width, height=height)]
 
 
     def action(self, resource, context, form):
         for key in ['zoom', 'latitude', 'longitude', 'address',
-                    'width', 'height']:
+                    'width', 'height', 'render']:
             resource.set_property(key, form[key])
         return HTMLEditView.action(self, resource, context, form)
