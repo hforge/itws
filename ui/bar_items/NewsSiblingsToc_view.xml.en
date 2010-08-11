@@ -22,7 +22,13 @@
   </div>
 
   <div class="content" stl:if="not items/displayed">
-    No published news to show
+    <stl:block stl:if="not hide_if_not_enough_items">
+      No published news to show
+    </stl:block>
+    <stl:block stl:if="hide_if_not_enough_items">
+      There is not enough published news to display the box.<br/>
+      Minimum limit: <i>${limit}</i>
+    </stl:block>
   </div>
 
 </stl:block>

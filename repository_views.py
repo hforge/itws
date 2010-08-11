@@ -703,8 +703,12 @@ class BoxSectionChildrenTree_View(Box_View):
         # Hide siblings box if the user is not authenticated and
         # submenu is empty
         min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
-        if allowed_to_edit is False and len(items) <= min_limit:
+        hide_if_not_enough_items = len(items) <= min_limit
+        if allowed_to_edit is False and hide_if_not_enough_items:
             self.set_view_is_empty(True)
+
+        namespace['hide_if_not_enough_items'] = hide_if_not_enough_items
+        namespace['limit'] = min_limit
 
         return namespace
 
@@ -773,8 +777,12 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
         # Hide siblings box if the user is not authenticated and
         # there is not other items
         min_limit = 1 if news_count else 0
-        if allowed_to_edit is False and len(displayed_items) <= min_limit:
+        hide_if_not_enough_items = len(displayed_items) <= min_limit
+        if allowed_to_edit is False and hide_if_not_enough_items:
             self.set_view_is_empty(True)
+
+        namespace['hide_if_not_enough_items'] = hide_if_not_enough_items
+        namespace['limit'] = min_limit
 
         return namespace
 
@@ -972,6 +980,7 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
         allowed_to_edit = self.is_admin(resource, context)
         min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
+        hide_if_not_enough_items = False
         if allowed_to_edit is False:
             if len(items) <= min_limit:
                 # Hide the box if there is no articles and
@@ -981,9 +990,12 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
             # If the user can edit the item and there is there is
             # not enough items reset items entry
             items_ns = []
+            hide_if_not_enough_items = True
 
         namespace['items'] = items_ns
         namespace['title'] = section.get_title()
+        namespace['hide_if_not_enough_items'] = hide_if_not_enough_items
+        namespace['limit'] = min_limit
 
         return namespace
 
