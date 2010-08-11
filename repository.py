@@ -34,7 +34,7 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
 from ikaaro.forms import HTMLBody, PathSelectorWidget, rte_widget
-from ikaaro.forms import SelectWidget
+from ikaaro.forms import BooleanRadio, SelectWidget
 from ikaaro.future.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
@@ -65,7 +65,7 @@ from webpage import WebPage
 
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
-hide_single_widget = BooleanCheckBox('hide_if_only_one_item',
+hide_single_widget = BooleanRadio('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
 
 
