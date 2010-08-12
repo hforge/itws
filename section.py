@@ -29,7 +29,6 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
-from ikaaro.multilingual import Multilingual
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile

@@ -17,12 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.gettext import MSG
-from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.forms import Widget, stl_namespaces
+from ikaaro.forms import stl_namespaces
 
 # Import from itws
 from google_map import GoogleMapWidget
