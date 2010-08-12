@@ -264,7 +264,7 @@ class NeutralWS_RSS(BaseRSS):
             if isinstance(item_resource, TagsAware):
                 return brain.date_of_writing
             else:
-                return resource.get_mtime()
+                return brain.mtime
         elif column == 'title':
             # Special case for the title
             title = item_resource.get_title()
