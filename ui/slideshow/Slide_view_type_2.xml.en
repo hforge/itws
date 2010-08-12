@@ -37,11 +37,12 @@
           <tr>
             <td class="column ${col/css}" stl:repeat="col toc/cols">
               <ul>
-                <li stl:repeat="item col/items">
-                  <span stl:if="item/selected" class="selected">${item/title}</span>
-                  <span stl:if="not item/selected">
-                    <a href="${item/href}">${item/title}</a></span>
-                </li>
+                <stl:block stl:repeat="item col/items">
+                  <li stl:if="item/selected" class="selected">${item/title}</li>
+                  <li stl:if="not item/selected">
+                    <a href="${item/href}">${item/title}</a>
+                  </li>
+                </stl:block>
               </ul>
             </td>
           </tr>

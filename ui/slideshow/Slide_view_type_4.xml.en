@@ -19,17 +19,18 @@
             <td class="column ${col/css}" stl:repeat="col toc/cols">
               <ul>
                 <stl:block stl:repeat="item col/items">
-                  <li stl:if="repeat/item/start" class="first">
-                    <span stl:if="item/selected" class="selected">${item/title}</span>
-                    <span stl:if="not item/selected">
-                      <a href="${item/href}">${item/title}</a></span>
-                  </li>
-                  <li stl:if="not repeat/item/start">
-                    <span stl:if="item/selected" class="selected">${item/title}</span>
-                    <span stl:if="not item/selected">
+                  <stl:block stl:if="repeat/item/start">
+                    <li stl:if="item/selected" class="first selected">${item/title}</li>
+                    <li stl:if="not item/selected" class="first">
                       <a href="${item/href}">${item/title}</a>
-                    </span>
-                  </li>
+                    </li>
+                  </stl:block>
+                  <stl:block stl:if="not repeat/item/start">
+                    <li stl:if="item/selected" class="selected">${item/title}</li>
+                    <li stl:if="not item/selected">
+                      <a href="${item/href}">${item/title}</a>
+                    </li>
+                  </stl:block>
                 </stl:block>
               </ul>
             </td>

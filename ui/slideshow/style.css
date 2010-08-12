@@ -50,7 +50,7 @@
   text-decoration: none;
 }
 
-.slide-view .slideshow #toc ul li .selected {
+.slide-view .slideshow #toc ul li.selected {
   font-weight: bold;
 }
 
