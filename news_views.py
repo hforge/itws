@@ -19,23 +19,20 @@ from datetime import date, datetime, time
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String, Boolean, Integer
+from itools.datatypes import String, Boolean, Integer, Unicode
 from itools.gettext import MSG
 from itools.uri import encode_query
 from itools.web import get_context, STLView, INFO
 from itools.xapian import PhraseQuery, AndQuery, NotQuery, RangeQuery
-from itools.xml.utils import xml_to_text
 
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import ImageSelectorWidget
-from ikaaro.forms import XHTMLBody
+from ikaaro.forms import ImageSelectorWidget, TextWidget
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from utils import XMLTitleWidget
 from views import BrowseFormBatchNumeric, BaseRSS
 from views import ImproveDBResource_AddImage
 from views import ProxyContainerNewInstance
@@ -138,7 +135,7 @@ class NewsItem_Edit(WebPage_Edit):
 
     def get_schema(self, resource, context):
         return merge_dicts(WebPage_Edit.get_schema(self, resource, context),
-                           long_title=XHTMLBody, thumbnail=String)
+                           long_title=Unicode, thumbnail=String)
 
 
     def get_widgets(self, resource, context):
@@ -147,8 +144,7 @@ class NewsItem_Edit(WebPage_Edit):
             if widget.name == 'display_title':
                 widgets.pop(index)
 
-        long_title_widget = XMLTitleWidget('long_title',
-                                           title=MSG(u'Long title'))
+        long_title_widget = TextWidget('long_title', title=MSG(u'Long title'))
         widgets.insert(2, long_title_widget)
         widgets.append(ImageSelectorWidget('thumbnail',
                                            title=MSG(u'Thumbnail')))
@@ -255,7 +251,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
             # long title as text
             long_title = item_resource.get_property('long_title')
             if long_title:
-                return xml_to_text(long_title)
+                return long_title
             # Fallback
             return item_resource.get_title()
         elif column == 'link':

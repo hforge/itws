@@ -33,7 +33,7 @@ from itools.xml import XMLParser
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import stl_namespaces, TextWidget, XHTMLBody, Widget
+from ikaaro.forms import stl_namespaces, TextWidget, Widget
 from ikaaro.registry import register_document_type
 from ikaaro.registry import register_resource_class, register_field
 from ikaaro.skins import register_skin
@@ -48,7 +48,7 @@ from news_views import NewsItem_Edit, NewsItem_View, NewsFolder_ManageView
 from repository import Repository
 from resources import ManageViewAware
 from tags import TagsAware
-from utils import is_empty, get_path_and_view
+from utils import get_path_and_view
 from views import AutomaticEditView
 from webpage import WebPage
 
@@ -71,7 +71,7 @@ class InfoWidget(Widget):
 class NewsItem(WebPage):
 
     class_id = 'news'
-    class_version = '20100621'
+    class_version = '20100810'
     class_title = MSG(u'News')
     class_description = MSG(u'News is a webpage with a small description '
                             u'used by the News Folder, News can be tagged')
@@ -83,7 +83,7 @@ class NewsItem(WebPage):
     @classmethod
     def get_metadata_schema(cls):
         return merge_dicts(WebPage.get_metadata_schema(),
-                           long_title=XHTMLBody,
+                           long_title=Unicode,
                            thumbnail=String(default='') # Multilingual
                           )
 
@@ -100,7 +100,6 @@ class NewsItem(WebPage):
 
 
     def get_links(self):
-        # FIXME We should add long_title content
         links = WebPage.get_links(self)
 
         base = self.get_canonical_path()
@@ -194,10 +193,8 @@ class NewsItem(WebPage):
     def get_long_title(self, language=None):
         """Return the long_title or the title"""
         long_title = self.get_property('long_title', language=language)
-        if long_title is not None:
-            long_title = list(long_title)
-            if is_empty(long_title) is False:
-                return long_title
+        if long_title:
+            return long_title
         return self.get_title()
 
 
@@ -215,6 +212,28 @@ class NewsItem(WebPage):
             if handler.is_empty() is False:
                 available_langs.append(language)
         return available_langs
+
+
+    def update_20100810(self):
+        """long_title XHTMLBody -> Unicode"""
+        from itools.xml.utils import xml_to_text
+        from ikaaro.forms import XHTMLBody
+
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
+        new_value = {}
+
+        for language in languages:
+            value = self.get_property('long_title', language)
+            if value:
+                value = XHTMLBody.decode(value.encode('utf8'))
+                value = xml_to_text(value)
+                new_value[language] = ' '.join(value.split())
+
+        self.del_property('long_title')
+
+        for key, value in new_value.iteritems():
+            self.set_property('long_title', value, language=key)
 
 
     edit = NewsItem_Edit()
