@@ -45,6 +45,8 @@ from ikaaro.registry import get_resource_class, get_document_types
 from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_AddImage, DBResource_AddMedia
 from ikaaro.resource_views import DBResource_Edit, DBResource_AddLink
+from ikaaro.text import CSS
+from ikaaro.text_views import Text_Edit
 from ikaaro.user import User
 from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
@@ -739,6 +741,37 @@ DBResource.add_media = ImproveDBResource_AddMedia()
 
 # Override User is_allowed_to_view
 User.is_allowed_to_view = User.is_allowed_to_edit
+
+
+############################################################
+# CSS
+############################################################
+
+class CSS_Edit(Text_Edit):
+
+    def get_widgets(self, resource, context):
+        widgets = Text_Edit.get_widgets(self, resource, context)
+        new_widgets = []
+        for widget in widgets:
+            if widget.name in ('timestamp', 'data'):
+                new_widgets.append(widget)
+        return new_widgets
+
+
+    def action(self, resource, context, form):
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        if form['file'] is None:
+            data = form['data']
+            resource.handler.load_state_from_string(data)
+
+
+
+CSS.edit = CSS_Edit()
+
 
 ############################################################
 # Table
