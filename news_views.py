@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from datetime import date
+from datetime import date, datetime, time
 
 # Import from itools
 from itools.core import merge_dicts
@@ -159,12 +159,15 @@ class NewsItem_Edit(WebPage_Edit):
         if name == 'long_title':
             long_title = resource.get_property('long_title', language)
             return long_title
-        elif name == 'pub_datetime':
-            # FIXME Should not be defined here
-            value = resource.get_property(name)
-            if value:
-                return value
-            return date.today()
+        elif name in ('pub_date', 'pub_time'):
+            pub_datetime = resource.get_property('pub_datetime')
+            if not pub_datetime:
+                pub_datetime = datetime.now()
+            if name == 'pub_date':
+                return date(pub_datetime.year, pub_datetime.month,
+                            pub_datetime.day)
+            else:
+                return time(pub_datetime.hour, pub_datetime.minute)
         return WebPage_Edit.get_value(self, resource, context, name, datatype)
 
 
@@ -182,7 +185,7 @@ class NewsItem_Edit(WebPage_Edit):
         thumbnail = form['thumbnail']
         resource.set_property('thumbnail', thumbnail, language=language)
         # Check pub_datetime
-        if not form['pub_datetime']:
+        if not form['pub_date']:
             messages = context.message
             if type(messages) is not list:
                 messages = [ messages ]

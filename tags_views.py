@@ -17,11 +17,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard Library
+from datetime import date, datetime, time
 from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import DateTime, Enumerate, String
+from itools.datatypes import Date, Time, Enumerate, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -33,7 +34,7 @@ from itools.xapian import RangeQuery, NotQuery, split_unicode
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import DateWidget
+from ikaaro.forms import DateWidget, TextWidget
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -296,14 +297,16 @@ class TagsAware_Edit(object):
     def get_schema(self, resource, context):
         site_root = resource.get_site_root()
         return {'tags': TagsList(site_root=site_root, multiple=True),
-                'pub_datetime': DateTime}
+                'pub_date': Date, 'pub_time': Time}
 
 
     def get_widgets(self, resource, context):
         return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
             has_empty_option=False),
-            DateWidget('pub_datetime', show_time=True,
-                       title=MSG(u'Publication date (use by RSS and TAGS'))]
+            DateWidget('pub_date',
+                       title=MSG(u'Publication date (use by RSS and TAGS)')),
+            TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5, maxlength=5,
+                       title=MSG(u'Publication time (use by RSS and TAGS)'))]
 
 
     def get_value(self, resource, context, name, datatype):
@@ -311,13 +314,27 @@ class TagsAware_Edit(object):
             tags = resource.get_property('tags')
             # tuple -> list (enumerate.get_namespace expects list)
             return list(tags)
-        elif name == 'pub_datetime':
-            return resource.get_property('pub_datetime')
+        elif name in ('pub_date', 'pub_time'):
+            pub_datetime = resource.get_property('pub_datetime')
+            if name == 'pub_date':
+                return date(pub_datetime.year, pub_datetime.month,
+                            pub_datetime.day)
+            else:
+                return time(pub_datetime.hour, pub_datetime.minute)
 
 
     def action(self, resource, context, form):
         resource.set_property('tags', form['tags'])
-        resource.set_property('pub_datetime', form['pub_datetime'])
+        pub_date = form['pub_date']
+        pub_time = form['pub_time']
+        if pub_date:
+            dt_kw = {}
+            if pub_time:
+                dt_kw = {'hour': pub_time.hour,
+                         'minute': pub_time.minute}
+            dt = datetime(pub_date.year, pub_date.month, pub_date.day,
+                          **dt_kw)
+            resource.set_property('pub_datetime', dt)
 
 
 
