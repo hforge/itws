@@ -194,6 +194,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
         # page id css
         class_id = getattr(here, 'class_id', None)
         if class_id:
+            class_id = class_id.replace('/', '-slash-')
             view_name = context.view_name or here.get_default_view_name()
             page_css_class = '%s-%s' % (class_id, view_name)
             page_css_class = page_css_class.replace('_', '-')
