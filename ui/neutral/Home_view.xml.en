@@ -13,7 +13,7 @@
     <div id="news-slot" stl:if="news">
       <div class="news-title"><h1>${news/title}</h1></div>
       <div id="news-item" stl:repeat="item news/items">
-        <p class="news-date">${item/date_of_writing}</p>
+        <p class="news-date">${item/pub_datetime}</p>
         <div class="news-title">
           <a href="${item/path}" title="${item/title}">${item/title}</a>
         </div>

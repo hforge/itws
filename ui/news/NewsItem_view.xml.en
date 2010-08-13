@@ -5,7 +5,7 @@
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div class="actu-content">
-    <div class="actu-date">${date_of_writing}</div>
+    <div class="actu-date">${pub_datetime}</div>
     <div class="actu-title">
       <h1><a stl:omit-tag="not title_link" href="${title_link}">${title}</a></h1>
     </div>

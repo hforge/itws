@@ -459,7 +459,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100625'
+    class_version = '20100626'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -603,7 +603,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                            banner_title=Unicode(default=''),
                            banner_path=MultilingualString(default=''),
                            class_skin=NeutralClassSkin(default='/ui/k2'),
-                           date_of_writing_format=String(default=''))
+                           pub_datetime_format=String(default=''))
 
 
     def get_class_skin(self):
@@ -692,7 +692,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             return value
         if language is None:
             language = self.get_content_language(get_context())
-        format = self.get_property('date_of_writing_format', language=language)
+        format = self.get_property('pub_datetime_format', language=language)
         if format:
             return value.strftime(format)
         return value
@@ -918,6 +918,24 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                    """format="neutral" version="20100624"/g' *.metadata""")
         warn('Before updating database to ikaaro 0.62\n'
              'you should execute this command:\n%s' % command)
+
+
+    def update_20100626(self):
+        from datetime import datetime
+        from itools.datatypes import Date
+        from tags import TagsAware
+
+        for resource in self.traverse_resources():
+            if isinstance(resource, TagsAware):
+                dow = resource.get_property('date_of_writing')
+                resource.del_property('date_of_writing')
+                if dow == '':
+                    continue
+                # String -> Date
+                date = Date.decode(dow)
+                if date:
+                    pub_datetime = datetime(date.year, date.month, date.day)
+                    resource.set_property('pub_datetime', pub_datetime)
 
 
     # User Interface

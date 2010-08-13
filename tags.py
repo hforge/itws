@@ -21,7 +21,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import Tokens, Boolean
-from itools.datatypes import String, Date
+from itools.datatypes import String, DateTime
 from itools.gettext import MSG
 from itools.uri import Path, encode_query
 from itools.web import get_context
@@ -188,13 +188,13 @@ class TagsAware(object):
     @classmethod
     def get_metadata_schema(cls):
         # FIXME Replace Tokens by TagsList
-        return {'tags': Tokens(), 'date_of_writing': Date}
+        return {'tags': Tokens(), 'pub_datetime': DateTime}
 
 
     def _get_catalog_values(self):
         indexes = {}
         indexes['tags'] = self.get_property('tags')
-        indexes['date_of_writing'] = self.get_property('date_of_writing')
+        indexes['pub_datetime'] = self.get_property('pub_datetime')
         indexes['is_tagsaware'] = True
         return indexes
 
@@ -210,19 +210,19 @@ class TagsAware(object):
         return tags
 
 
-    def get_date_of_writing(self):
-        return self.get_property('date_of_writing')
+    def get_pub_datetime(self):
+        return self.get_property('pub_datetime')
 
 
-    def get_date_of_writing_formatted(self, language=None):
+    def get_pub_datetime_formatted(self, language=None):
         site_root = self.get_site_root()
-        value = self.get_date_of_writing()
+        value = self.get_pub_datetime()
         return site_root.format_date(value, language)
 
 
-    def has_date_of_writing(self):
-        date_of_writing = self.get_date_of_writing()
-        return date_of_writing is not None
+    def has_pub_datetime(self):
+        pub_datetime = self.get_pub_datetime()
+        return pub_datetime is not None
 
 
     def get_links(self):
@@ -256,4 +256,4 @@ register_resource_class(Tag)
 
 register_field('is_tagsaware', Boolean(is_indexed=True))
 register_field('tags', String(is_stored=True, is_indexed=True, multiple=True))
-register_field('date_of_writing', Date(is_stored=True, is_indexed=True))
+register_field('pub_datetime', DateTime(is_stored=True, is_indexed=True))

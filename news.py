@@ -91,7 +91,7 @@ class NewsItem(WebPage):
     def _get_catalog_values(self):
         site_root = self.get_site_root()
         languages = site_root.get_property('website_languages')
-        date_of_writing = self.get_property('date_of_writing')
+        pub_datetime = self.get_property('pub_datetime')
         available_languages = self.get_available_languages(languages)
         preview_content = self.get_preview_content()
         return merge_dicts(WebPage._get_catalog_values(self),
@@ -207,7 +207,7 @@ class NewsItem(WebPage):
 
     def get_available_languages(self, languages):
         """Available languages for the current news"""
-        if self.has_date_of_writing() is False:
+        if self.has_pub_datetime() is False:
             return []
         available_langs = []
         for language in languages:
@@ -297,7 +297,7 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
         root = context.root
         results = root.search(AndQuery(*query))
-        documents = results.get_documents(sort_by='date_of_writing',
+        documents = results.get_documents(sort_by='pub_datetime',
                                           reverse=True, size=size)
         if brain_only:
             return documents

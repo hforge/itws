@@ -7,7 +7,7 @@
   <h2>${title}</h2>
   <div class="item" stl:repeat="row rows">
     <div class="actu-content">
-      <div class="actu-date">${row/date_of_writing}</div>
+      <div class="actu-date">${row/pub_datetime}</div>
       <div class="actu-tag" stl:if="row/tags">
         <stl:block stl:repeat="tag row/tags">
           <a href="${tag/href}" title="${tag/title}">${tag/title}</a>

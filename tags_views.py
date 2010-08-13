@@ -21,8 +21,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import Enumerate
-from itools.datatypes import String, Date
+from itools.datatypes import DateTime, Enumerate, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -174,7 +173,7 @@ class Tag_View(STLView):
         results = root.search(AndQuery(*query))
 
         items = []
-        for doc in results.get_documents(sort_by='date_of_writing',
+        for doc in results.get_documents(sort_by='pub_datetime',
                                          reverse=True):
             item = root.get_resource(doc.abspath)
             view = getattr(item, 'tag_view', getattr(item, 'view'))
@@ -291,19 +290,20 @@ class TagsAware_Edit(object):
     """Mixin to merge with the TagsAware edit view.
     """
     # Little optimisation not to compute the schema too often
-    keys = ['tags', 'date_of_writing']
+    keys = ['tags', 'pub_datetime']
 
 
     def get_schema(self, resource, context):
         site_root = resource.get_site_root()
         return {'tags': TagsList(site_root=site_root, multiple=True),
-                'date_of_writing': Date}
+                'pub_datetime': DateTime}
 
 
     def get_widgets(self, resource, context):
         return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
             has_empty_option=False),
-            DateWidget('date_of_writing', title=MSG(u'Date of writing'))]
+            DateWidget('pub_datetime', show_time=True,
+                       title=MSG(u'Publication date (use by RSS and TAGS'))]
 
 
     def get_value(self, resource, context, name, datatype):
@@ -311,13 +311,13 @@ class TagsAware_Edit(object):
             tags = resource.get_property('tags')
             # tuple -> list (enumerate.get_namespace expects list)
             return list(tags)
-        elif name == 'date_of_writing':
-            return resource.get_property('date_of_writing')
+        elif name == 'pub_datetime':
+            return resource.get_property('pub_datetime')
 
 
     def action(self, resource, context, form):
         resource.set_property('tags', form['tags'])
-        resource.set_property('date_of_writing', form['date_of_writing'])
+        resource.set_property('pub_datetime', form['pub_datetime'])
 
 
 

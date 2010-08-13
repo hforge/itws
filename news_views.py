@@ -46,7 +46,7 @@ class NewsItem_Preview(STLView):
     template = '/ui/news/NewsItem_preview.xml'
 
     def get_columns(self):
-        return ('title', 'long_title', 'path', 'date_of_writing',
+        return ('title', 'long_title', 'path', 'pub_datetime',
                 'thumbnail', 'css')
 
 
@@ -57,8 +57,8 @@ class NewsItem_Preview(STLView):
             return resource.get_long_title(language=language)
         elif column == 'path':
             return context.get_link(resource)
-        elif column == 'date_of_writing':
-            return resource.get_date_of_writing_formatted()
+        elif column == 'pub_datetime':
+            return resource.get_pub_datetime_formatted()
         elif column == 'thumbnail':
             path = resource.get_property('thumbnail')
             if path:
@@ -100,7 +100,7 @@ class NewsItem_View(STLView):
     def get_namespace(self, resource, context):
         news_folder = resource.parent
         language = resource.get_content_language(context)
-        dow = resource.get_date_of_writing_formatted()
+        dow = resource.get_pub_datetime_formatted()
         # title
         title = resource.get_long_title(language=language)
         # content
@@ -112,7 +112,7 @@ class NewsItem_View(STLView):
         else:
             edit = False
 
-        namespace = {'id': self.id, 'date_of_writing': dow}
+        namespace = {'id': self.id, 'pub_datetime': dow}
         namespace['title'] = title #XMLParser(XHTMLBody.encode(title) or '')
         namespace['content'] = content
         namespace['is_allowed_to_edit'] = edit
@@ -159,7 +159,7 @@ class NewsItem_Edit(WebPage_Edit):
         if name == 'long_title':
             long_title = resource.get_property('long_title', language)
             return long_title
-        elif name == 'date_of_writing':
+        elif name == 'pub_datetime':
             # FIXME Should not be defined here
             value = resource.get_property(name)
             if value:
@@ -181,8 +181,8 @@ class NewsItem_Edit(WebPage_Edit):
         # thumbnail
         thumbnail = form['thumbnail']
         resource.set_property('thumbnail', thumbnail, language=language)
-        # Check date_of_writing
-        if not form['date_of_writing']:
+        # Check pub_datetime
+        if not form['pub_datetime']:
             messages = context.message
             if type(messages) is not list:
                 messages = [ messages ]
@@ -202,7 +202,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
     styles = ['/ui/news/style.css']
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
                                batch_size=Integer(default=5),
-                               sort_by=String(default='date_of_writing'),
+                               sort_by=String(default='pub_datetime'),
                                reverse=Boolean(default=True),
                                tags=String(multiple=True))
     table_template = None
@@ -238,8 +238,8 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
-        if column == 'date_of_writing':
-            return item_resource.get_date_of_writing_formatted()
+        if column == 'pub_datetime':
+            return item_resource.get_pub_datetime_formatted()
         elif column == 'title':
             # Return title or to_text(long_title)
             title = item_resource.get_property('title')
@@ -266,7 +266,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         rows = []
         for item in items:
             d = {}
-            for key in ('date_of_writing', 'title', 'link', 'preview', 'tags'):
+            for key in ('pub_datetime', 'title', 'link', 'preview', 'tags'):
                 d[key] = self.get_item_value(resource, context, item, key)
             rows.append(d)
         return rows
@@ -332,7 +332,7 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
     access = 'is_allowed_to_edit'
 
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
-                               sort_by=String(default='date_of_writing'),
+                               sort_by=String(default='pub_datetime'),
                                reverse=Boolean(default=True))
 
     table_columns = [
@@ -340,7 +340,7 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
         ('icon', None),
         ('name', MSG(u'Name')),
         ('title', MSG(u'Title')),
-        ('date_of_writing', MSG(u'Date of writing')),
+        ('pub_datetime', MSG(u'Date of writing')),
         ('mtime', MSG(u'Last Modified')),
         ('last_author', MSG(u'Last Author')),
         ('format', MSG(u'Type')),
@@ -356,8 +356,8 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
-        if column == 'date_of_writing':
-            return brain.date_of_writing
+        if column == 'pub_datetime':
+            return brain.pub_datetime
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
 

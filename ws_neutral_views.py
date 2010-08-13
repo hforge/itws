@@ -134,7 +134,7 @@ class NeutralWS_Edit(WebSite_Edit):
                            breadcrumb_title=Unicode,
                            banner_title=Unicode,
                            banner_path=String,
-                           date_of_writing_format=String,
+                           pub_datetime_format=String,
                            class_skin=NeutralClassSkin(mandatory=True))
 
 
@@ -160,22 +160,22 @@ Preview
 <script type="text/javascript">
     var dowfp_today = new Date();
     dowfp_today.locale = "%s";
-    function update_date_of_writing_format_preview(source, target) {
+    function update_pub_datetime_format_preview(source, target) {
         var format = $("#"+source).val();
         var preview = dowfp_today.strftime(format);
         $("#"+target).text(preview);
     }
     $("#date-of-writing-format").keyup(function () {
-        update_date_of_writing_format_preview("date-of-writing-format",
+        update_pub_datetime_format_preview("date-of-writing-format",
                                               "date-of-writing-format-preview");
     });
     $(document).ready(function() {
-        update_date_of_writing_format_preview("date-of-writing-format",
+        update_pub_datetime_format_preview("date-of-writing-format",
                                               "date-of-writing-format-preview");
     });
 </script>""" % language)
         widgets.append(
-            TextWidget('date_of_writing_format', size=16,
+            TextWidget('pub_datetime_format', size=16,
                    title=MSG(u'Date of writing format (e.g. %Y/%m/%d)'),
                    suffix=suffix_js))
         # class_skin
@@ -188,7 +188,7 @@ Preview
 
 
     def get_value(self, resource, context, name, datatype):
-        if name == 'date_of_writing_format':
+        if name == 'pub_datetime_format':
             language = resource.get_content_language(context)
             data = resource.get_property(name, language=language)
             return data
@@ -214,7 +214,7 @@ Preview
         # Other (Multilingual)
         language = resource.get_content_language(context)
         for key in ['breadcrumb_title', 'banner_title',  'banner_path',
-                    'date_of_writing_format']:
+                    'pub_datetime_format']:
             resource.set_property(key, form[key], language=language)
         # Skin
         class_skin = form['class_skin']

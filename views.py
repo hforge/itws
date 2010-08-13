@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard Library
+from datetime import datetime
+
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, DateTime, Integer, String, Unicode
@@ -1100,7 +1103,14 @@ class BaseRSS(BaseView):
     def get_base_query(self, resource, context):
         # Filter by website
         abspath = resource.get_site_root().get_canonical_path()
-        return [ get_base_path_query(str(abspath)) ]
+        query = [ get_base_path_query(str(abspath)) ]
+        # Filter by pub_datetime
+        today = datetime.now()
+        min_date = datetime(1900, 1, 1)
+        query.append(RangeQuery('pub_datetime', min_date, today))
+        # Do not show image
+        query.append(PhraseQuery('is_image', False))
+        return query
 
 
     def get_allowed_formats(self, resource, context):
@@ -1127,8 +1137,9 @@ class BaseRSS(BaseView):
                                     if_modified_since):
         if not if_modified_since:
             return []
-        return AndQuery(RangeQuery('mtime', if_modified_since, None),
-                        NotQuery(PhraseQuery('mtime', if_modified_since)))
+        return AndQuery(RangeQuery('pub_datetime', if_modified_since, None),
+                        NotQuery(PhraseQuery('pub_datetime',
+                                             if_modified_since)))
 
 
     def get_items(self, resource, context, if_modified_since=None):
@@ -1187,8 +1198,8 @@ class BaseRSS(BaseView):
 
     def _sort_and_batch(self, resource, context, results):
         size = self.get_max_items_number(resource, context)
-        items = results.get_documents(sort_by='mtime', reverse=True,
-                                      size=size)
+        items = results.get_documents(sort_by='pub_datetime',
+                                      reverse=True, size=size)
         return items
 
 
@@ -1217,7 +1228,9 @@ class BaseRSS(BaseView):
         if not items:
             return
         last_brain = items[0][0]
-        return last_brain.mtime
+        dow = last_brain.pub_datetime
+        # date -> datetime
+        return datetime(dow.year, dow.month, dow.day)
 
 
     def get_item_value(self, resource, context, item, column, site_root):
@@ -1226,7 +1239,7 @@ class BaseRSS(BaseView):
             value = context.uri.resolve(context.get_link(item_resource))
             return str(value)
         elif column == 'pubDate':
-            return brain.mtime
+            return brain.pub_datetime
         elif column == 'title':
             return item_resource.get_title()
         elif column == 'description':

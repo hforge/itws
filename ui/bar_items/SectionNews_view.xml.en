@@ -12,7 +12,7 @@
           <img src="${item/thumbnail}/;download" />
         </a>
         <div class="summary">
-          <div class="newsitem-date">${item/date_of_writing}</div>
+          <div class="newsitem-date">${item/pub_datetime}</div>
           <div class="newsitem-title">
             <a href="${item/path}">${item/long_title}</a>
           </div>
