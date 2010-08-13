@@ -168,7 +168,6 @@ class SlideShow_Edit(DBResource_Edit):
     widgets = [title_widget, TextWidget('long_title', title=MSG(u'Long title'),
                                         size=70),
                ImageSelectorWidget('image', title=MSG(u'Image')),
-               description_widget, subject_widget,
                TextWidget('toc_nb_col', title=MSG(u'TOC width (nb columns)'),
                           size=1),
                SlideTemplateTypeWidget('template_type',
