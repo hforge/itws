@@ -5,6 +5,14 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h2>${title}</h2>
+  <div class="tags" stl:if="tags">
+    ${category_title}
+    <stl:block stl:repeat="tag tags">
+      <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
+      <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+    </stl:block>
+  </div>
+
   <div class="item" stl:repeat="row rows">
     <div class="actu-content">
       <div class="actu-date">${row/pub_datetime}</div>

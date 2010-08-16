@@ -21,6 +21,7 @@ from datetime import date, datetime, time
 from itools.core import merge_dicts
 from itools.datatypes import String, Boolean, Integer
 from itools.gettext import MSG
+from itools.uri import encode_query
 from itools.web import get_context, STLView, INFO
 from itools.xapian import PhraseQuery, AndQuery, NotQuery, RangeQuery
 
@@ -211,6 +212,8 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
     table_template = None
     more_title = MSG(u'Read more')
     max_middle_pages = 5
+    category_title = MSG(u"Category:") # FIXME Use plural forms
+    category_title2 = MSG(u"Categories:")
 
     def get_query_schema(self):
         here = get_context().resource
@@ -290,6 +293,24 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         namespace['more_title'] = self.more_title
         view = SideBar_View()
         namespace['sidebar_view'] = view.GET(resource, context)
+
+        # Tags
+        tags_folder = resource.get_site_root().get_resource('tags')
+        tags = context.get_query_value('tags', type=String(multiple=True))
+        if len(tags) > 1:
+            category_title = self.category_title2
+        else:
+            category_title = self.category_title
+
+        tags_ns = []
+        here_link = context.get_link(resource)
+        for tag_name in tags:
+            query = encode_query({'tags': tag_name})
+            tag = tags_folder.get_resource(tag_name)
+            tags_ns.append({'title': tag.get_title(),
+                            'href': '%s?%s' % (here_link, query)})
+        namespace['tags'] = tags_ns
+        namespace['category_title'] = category_title
 
         return namespace
 
