@@ -40,6 +40,7 @@ class SiteMapView(BaseView):
         site_root = resource.parent
         query = AndQuery(PhraseQuery('workflow_state', 'public'),
                          PhraseQuery('is_image', False))
+
         # Allow news folder
         newsfolder_cls = site_root.newsfolder_class
         if newsfolder_cls:
@@ -69,6 +70,11 @@ class SiteMapView(BaseView):
         abspath = site_root.get_canonical_path()
         query1 = get_base_path_query(str(abspath))
         query = AndQuery(query, query1)
+
+        # Add site root -> /
+        query = OrQuery(query,
+                        PhraseQuery('abspath', str(abspath)))
+
         return query
 
 
