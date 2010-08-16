@@ -27,6 +27,9 @@ from itools.web import STLView
 from ikaaro.forms import XHTMLBody, HTMLBody
 from ikaaro.table import OrderedTable_View, Table_EditRecord
 
+# Import from itws
+from utils import get_admin_bar
+
 
 
 class TurningFooterFile_View(OrderedTable_View):
@@ -90,7 +93,8 @@ class TurningFooterFolder_View(STLView):
         if not ids or not is_active:
             return {'content': None,
                     'title': title,
-                    'display': False}
+                    'display': False,
+                    'admin_bar': None}
 
         if resource.get_property('random'):
             id = choice(ids)
@@ -103,6 +107,10 @@ class TurningFooterFolder_View(STLView):
         data = XHTMLBody(sanitize_html=False).decode(data)
         here = context.resource
         content = set_prefix(data, prefix='%s/' % here.get_pathto(menu))
+        # admin bar
+        admin_bar = get_admin_bar(resource)
+
         return {'content': content,
                 'title': title,
-                'display': True}
+                'display': True,
+                'admin_bar': admin_bar}

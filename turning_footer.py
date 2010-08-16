@@ -179,6 +179,7 @@ class TurningFooterFolder(OrderTableAware, Folder):
                                 title=MSG(u'Edit'))
     configure = AutomaticEditView(title=MSG(u'Configure'))
 
+    use_fancybox = False
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):

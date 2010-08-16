@@ -5,6 +5,7 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div id="turning-footer" stl:if="display">
+    ${admin_bar}
     <h3 stl:if="title" class="title">${title}</h3>
     <div class="content" stl:if="content">${content}</div>
   </div>
