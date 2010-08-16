@@ -21,7 +21,7 @@
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
-from itools.xapian import AndQuery, OrQuery, PhraseQuery
+from itools.xapian import AndQuery, OrQuery, PhraseQuery, NotQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder
@@ -46,6 +46,26 @@ class SiteMapView(BaseView):
             query = OrQuery(query,
                             PhraseQuery('format', newsfolder_cls.class_id))
 
+        # Excluded paths
+        excluded_paths = self.get_excluded_paths(resource, context)
+        if excluded_paths:
+            if len(excluded_paths) > 1:
+                query2 = OrQuery(*[ PhraseQuery('abspath', str(path))
+                                    for path in excluded_paths ])
+            else:
+                query2 = PhraseQuery('abspath', str(excluded_paths[0]))
+            query = AndQuery(query, NotQuery(query2))
+
+        # Excluded container paths
+        excluded_cpaths = self.get_excluded_container_paths(resource, context)
+        if excluded_cpaths:
+            if len(excluded_cpaths) > 1:
+                query2 = OrQuery(*[ get_base_path_query(str(path))
+                                    for path in excluded_cpaths ])
+            else:
+                query2 = get_base_path_query(str(excluded_cpaths[0]))
+            query = AndQuery(query, NotQuery(query2))
+
         abspath = site_root.get_canonical_path()
         query1 = get_base_path_query(str(abspath))
         query = AndQuery(query, query1)
@@ -60,18 +80,24 @@ class SiteMapView(BaseView):
         return results.get_documents(sort_by='abspath')
 
 
-    def get_excluded_names(self, resource, context):
+    def get_excluded_paths(self, resource, context):
         site_root = resource.parent
         abspath = site_root.get_canonical_path()
-        # FIXME We should exluded all files defined in the robots.txt file
-        excluded = [ str(abspath.resolve2('./404')),
-                     str(abspath.resolve2('./footer')),
-                     str(abspath.resolve2('./menu')),
-                     str(abspath.resolve2('./repository')),
-                     str(abspath.resolve2('./robots.txt')),
-                     str(abspath.resolve2('./style')),
-                     str(abspath.resolve2('./ws-data')),
-                     ]
+
+        excluded = []
+        for name in ('404', 'robots.txt', 'style'):
+            excluded.append(str(abspath.resolve2(name)))
+
+        return excluded
+
+
+    def get_excluded_container_paths(self, resource, context):
+        site_root = resource.parent
+        abspath = site_root.get_canonical_path()
+
+        excluded = []
+        for name in ('footer', 'menu', 'repository', 'ws-data'):
+            excluded.append(str(abspath.resolve2(name)))
 
         return excluded
 
@@ -100,12 +126,9 @@ class SiteMapView(BaseView):
 
     def get_namespace(self, resource, context):
         urls = []
-        excluded = tuple(self.get_excluded_names(resource, context))
         site_root = resource.parent
 
         for brain in self.get_items(resource, context):
-            if brain.abspath.startswith(excluded):
-                continue
             row = {}
             for column in ('loc', 'lastmod'):
                 row[column] = self.get_item_value(resource, context, brain,
