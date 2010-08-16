@@ -26,13 +26,14 @@ from itools.xml import XMLNamespace, register_namespace
 
 # Import from itws
 from root import Root
+import archive_views
 import common
 import sidebar
 import sitemap
 import tracker
 import turning_footer
-import ws_neutral
 import webpage
+import ws_neutral
 # obsolete
 #import obsolete
 
@@ -71,3 +72,4 @@ register_domain('itws', path)
 
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
+archive_views
