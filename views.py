@@ -60,7 +60,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from datatypes import StateEnumerate, StaticStateEnumerate, OrderBoxEnumerate
 from utils import set_prefix_with_hostname, state_widget
-from utils import auto_publish_resources
+from utils import get_warn_referenced_message
 
 
 
@@ -1325,7 +1325,7 @@ class NotFoundPage_Edit(HTMLEditView):
         # Ok
         context.message = messages.MSG_CHANGES_SAVED
         # Publish referenced resources which are not public/pending
-        message2 = auto_publish_resources(resource, context, 'public')
+        message2 = get_warn_referenced_message(resource, context, 'public')
         if message2:
             # Add custom message
             context.message = [ context.message, message2 ]
@@ -1389,7 +1389,7 @@ class AutomaticEditView(DBResource_Edit):
         context.message = messages.MSG_CHANGES_SAVED
         # Publish referenced resources which are not public/pending
         state = form.get('state', 'public')
-        message2 = auto_publish_resources(resource, context, state)
+        message2 = get_warn_referenced_message(resource, context, state)
         if message2:
             # Add custom message
             context.message = [ context.message, message2 ]

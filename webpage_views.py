@@ -27,7 +27,7 @@ from ikaaro.webpage import HTMLEditView, WebPage_View as BaseWebPage_View
 # Import from itws
 from datatypes import StateEnumerate
 from tags_views import TagsAware_Edit
-from utils import auto_publish_resources, state_widget
+from utils import get_warn_referenced_message, state_widget
 
 
 
@@ -83,7 +83,7 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         resource.set_workflow_state(form['state'])
 
         # Publish referenced resources which are not public/pending
-        message2 = auto_publish_resources(resource, context, form['state'])
+        message2 = get_warn_referenced_message(resource, context, form['state'])
         if message2:
             # Add custom message
             context.message = [ context.message, message2 ]

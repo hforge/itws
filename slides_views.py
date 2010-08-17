@@ -33,7 +33,7 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
 from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
 from ikaaro.forms import stl_namespaces
-from ikaaro.forms import title_widget, description_widget, subject_widget
+from ikaaro.forms import title_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views import CompositeForm
@@ -43,7 +43,7 @@ from ikaaro.webpage import HTMLEditView
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
 from tags_views import TagsAware_Edit, TagItem_View
-from utils import auto_publish_resources, state_widget
+from utils import get_warn_referenced_message, state_widget
 from views import ProxyContainerNewInstance
 
 
@@ -151,7 +151,7 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
         # Ok
         context.message = MSG_CHANGES_SAVED
         # Publish referenced resources which are not public/pending
-        message2 = auto_publish_resources(resource, context, form['state'])
+        message2 = get_warn_referenced_message(resource, context, form['state'])
         if message2:
             # Add custom message
             context.message = [ context.message, message2 ]

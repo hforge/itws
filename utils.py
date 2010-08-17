@@ -217,31 +217,37 @@ def get_admin_bar(resource, buttons=[]):
 # Links
 ############################################################
 
-MSG_AUTO_PUBLISHED = INFO(
-    u'Some resources have been automatically published. '
+MSG_UNPUBLISHED_RESOURCES_LINKED = INFO(
+    u'You are linking to {n} unpublished resources, '
+    u'some users may not be able to see them.<br/>'
     u'See <a href="{path}/;backlinks">links interface</a>.')
 
-def build_auto_published_msg(resource, context):
+def build_warn_referenced_msg(resource, context, total):
     path = context.get_link(resource)
     path = XMLContent.encode(path)
-    message = MSG_AUTO_PUBLISHED(path=path)
+    message = MSG_UNPUBLISHED_RESOURCES_LINKED(path=path, n=total)
     message = message.gettext().encode('utf8')
     return XHTMLBody.decode(message)
 
 
-def auto_publish_resources(resource, context, state):
-    # Publish referenced resources which are not public/pending
-    site_root = resource.get_site_root()
-    tag_class = site_root.tagsfolder_class.tag_class
+_warn_workflow_states = {
+        'public': ['pending', 'private'],
+        'pending': ['private'],
+        'private': []}
+
+def get_warn_referenced_message(resource, context, state):
     referenced_resources = list(get_linked_resources(resource))
-    # FIXME Skip tags, Do not make tag public if it is pending/private
-    # not published tags do not appear in tags cloud.
-    referenced_resources = [ x for x in referenced_resources
-                             if not isinstance(x, tag_class) ]
+    sub_states = _warn_workflow_states[state]
+    total = 0
+
     for item in referenced_resources:
-        item.set_workflow_state(state)
-    if len(referenced_resources):
-        return build_auto_published_msg(resource, context)
+        workflow_state = item.get_workflow_state()
+        if workflow_state in sub_states:
+            total += 1
+
+    if total:
+        return build_warn_referenced_msg(resource, context, total)
+
     return None
 
 
