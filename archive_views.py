@@ -87,7 +87,7 @@ class Archive_ExtractTo(AutoForm):
         kk, _type, language = FileName.decode(filename)
 
         # FIXME default mimetype
-        mimetype = 'application/octet-stream'
+        mimetype = 'text/plain'
         # Find out the mimetype
         guessed, encoding = guess_type(filename)
         if encoding is not None:
