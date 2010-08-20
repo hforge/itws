@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Integer, Enumerate, String, PathDataType
+from itools.datatypes import Integer, Enumerate, String, PathDataType, Time
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import get_context
@@ -158,3 +158,14 @@ class OpenLayerRender(Enumerate):
 
     options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
                {'name': 'google', 'value': MSG(u'Google Map')}]
+
+
+
+class TimeWithoutSecond(Time):
+
+    @staticmethod
+    def encode(value):
+        # We choose the extended format as the canonical representation
+        if value is None:
+            return ''
+        return value.strftime('%H:%M')

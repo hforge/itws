@@ -22,7 +22,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import Date, Time, Enumerate, String
+from itools.datatypes import Date, Enumerate, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -38,8 +38,9 @@ from ikaaro.forms import DateWidget, TextWidget
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from utils import set_prefix_with_hostname, DualSelectWidget
+from datatypes import TimeWithoutSecond
 from utils import is_navigation_mode
+from utils import set_prefix_with_hostname, DualSelectWidget
 from views import BaseRSS, ProxyContainerNewInstance
 
 
@@ -297,7 +298,7 @@ class TagsAware_Edit(object):
     def get_schema(self, resource, context):
         site_root = resource.get_site_root()
         return {'tags': TagsList(site_root=site_root, multiple=True),
-                'pub_date': Date, 'pub_time': Time}
+                'pub_date': Date, 'pub_time': TimeWithoutSecond}
 
 
     def get_widgets(self, resource, context):

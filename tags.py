@@ -19,6 +19,7 @@
 # Import from standard Library
 
 # Import from itools
+from itools.i18n import format_datetime
 from itools.core import merge_dicts
 from itools.datatypes import Tokens, Boolean
 from itools.datatypes import String, DateTime
@@ -215,9 +216,10 @@ class TagsAware(object):
 
 
     def get_pub_datetime_formatted(self, language=None):
-        site_root = self.get_site_root()
-        value = self.get_pub_datetime()
-        return site_root.format_date(value, language)
+        pub_datetime = self.get_pub_datetime()
+        if pub_datetime is None:
+            return None
+        return format_datetime(self.get_pub_datetime())
 
 
     def has_pub_datetime(self):
