@@ -26,7 +26,7 @@ from decimal import Decimal
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
-from itools.datatypes import Boolean, Unicode, String
+from itools.datatypes import Boolean, Unicode
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.i18n import get_language_name
@@ -459,7 +459,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100626'
+    class_version = '20100627'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -602,8 +602,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                            breadcrumb_title=Unicode,
                            banner_title=Unicode(default=''),
                            banner_path=MultilingualString(default=''),
-                           class_skin=NeutralClassSkin(default='/ui/k2'),
-                           pub_datetime_format=String(default=''))
+                           class_skin=NeutralClassSkin(default='/ui/k2'))
 
 
     def get_class_skin(self):
@@ -685,17 +684,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 path = database.resources_old2new.get(path, path)
             return self.get_resource(path)
         return None
-
-
-    def format_date(self, value, language=None):
-        if not value:
-            return value
-        if language is None:
-            language = self.get_content_language(get_context())
-        format = self.get_property('pub_datetime_format', language=language)
-        if format:
-            return value.strftime(format)
-        return value
 
 
     def get_article_class(self):
@@ -936,6 +924,12 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 if date:
                     pub_datetime = datetime(date.year, date.month, date.day)
                     resource.set_property('pub_datetime', pub_datetime)
+
+
+    def update_20100627(self):
+        """Remove pub_datetime_format"""
+        if self.has_property('pub_datetime_format'):
+            self.del_property('pub_datetime_format')
 
 
     # User Interface

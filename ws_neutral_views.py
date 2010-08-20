@@ -32,8 +32,8 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.buttons import Button
-from ikaaro.forms import ImageSelectorWidget, XHTMLBody
-from ikaaro.forms import stl_namespaces, TextWidget, SelectRadio
+from ikaaro.forms import ImageSelectorWidget, SelectRadio, TextWidget
+from ikaaro.forms import stl_namespaces
 from ikaaro.views import CompositeForm
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
@@ -127,14 +127,11 @@ class NotFoundPage(BaseNotFoundView):
 
 class NeutralWS_Edit(WebSite_Edit):
 
-    scripts = ['/ui/common/js/strftime-min-1.3.js']
-
     def get_schema(self, resource, context):
         return merge_dicts(WebSite_Edit.get_schema(self, resource, context),
                            breadcrumb_title=Unicode,
                            banner_title=Unicode,
                            banner_path=String,
-                           pub_datetime_format=String,
                            class_skin=NeutralClassSkin(mandatory=True))
 
 
@@ -152,32 +149,6 @@ class NeutralWS_Edit(WebSite_Edit):
         widgets.append(
             ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
                                 width=640))
-        # Format date
-
-        suffix_js = XHTMLBody(sanitize_html=False).decode("""
-Preview
-<span id="date-of-writing-format-preview"></span>
-<script type="text/javascript">
-    var dowfp_today = new Date();
-    dowfp_today.locale = "%s";
-    function update_pub_datetime_format_preview(source, target) {
-        var format = $("#"+source).val();
-        var preview = dowfp_today.strftime(format);
-        $("#"+target).text(preview);
-    }
-    $("#date-of-writing-format").keyup(function () {
-        update_pub_datetime_format_preview("date-of-writing-format",
-                                              "date-of-writing-format-preview");
-    });
-    $(document).ready(function() {
-        update_pub_datetime_format_preview("date-of-writing-format",
-                                              "date-of-writing-format-preview");
-    });
-</script>""" % language)
-        widgets.append(
-            TextWidget('pub_datetime_format', size=16,
-                   title=MSG(u'Date of writing format (e.g. %Y/%m/%d)'),
-                   suffix=suffix_js))
         # class_skin
         widgets.append(
             NeutralClassSkinWidget('class_skin', title=MSG(u'Skin'),
@@ -185,14 +156,6 @@ Preview
 
         # ok
         return widgets
-
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'pub_datetime_format':
-            language = resource.get_content_language(context)
-            data = resource.get_property(name, language=language)
-            return data
-        return WebSite_Edit.get_value(self, resource, context, name, datatype)
 
 
     def _get_form(self, resource, context):
@@ -213,8 +176,7 @@ Preview
 
         # Other (Multilingual)
         language = resource.get_content_language(context)
-        for key in ['breadcrumb_title', 'banner_title',  'banner_path',
-                    'pub_datetime_format']:
+        for key in ['breadcrumb_title', 'banner_title',  'banner_path']:
             resource.set_property(key, form[key], language=language)
         # Skin
         class_skin = form['class_skin']
