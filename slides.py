@@ -76,15 +76,6 @@ class Slide(TagsAware, WebPage):
                            TagsAware._get_catalog_values(self))
 
 
-    def get_available_languages(self, languages):
-        available_langs = []
-        for language in languages:
-            handler = self.get_handler(language)
-            if handler.is_empty() is False:
-                available_langs.append(language)
-        return available_langs
-
-
     def get_links(self):
         links = WebPage.get_links(self)
         links.extend(TagsAware.get_links(self))

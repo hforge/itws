@@ -161,12 +161,6 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         return True
 
 
-    def get_available_languages(self, languages):
-        # FIXME To remove or to improve.
-        # take into account contentbar/sidebar items
-        return languages
-
-
     def get_sub_sections(self, not_empty=False):
         section_cls = self.get_subsection_class()
         for name in self.get_ordered_names():

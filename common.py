@@ -174,24 +174,16 @@ class CommonLanguagesTemplate(LanguagesTemplate):
         ws_languages = list(ws_languages)
         ws_languages.sort()
 
-        available_langs = ws_languages
-        # If the user can edit the resource, we display all the languages
-        if allowed is False:
-            get_available_languages = getattr(here, 'get_available_languages',
-                                              None)
-            if context.user is None and get_available_languages is not None:
-                available_langs = get_available_languages(ws_languages)
-
         languages = []
-        nb_available_langs = len(available_langs)
+        ws_languages_len = len(ws_languages)
         gettext = get_domain('itools').gettext
-        for index, language in enumerate(available_langs):
+        for index, language in enumerate(ws_languages):
             href = context.uri.replace(language=language)
             selected = (language == current_language)
             css_class = 'selected' if selected else ''
             if index == 0:
                 css_class = '%s first' % css_class
-            if index == (nb_available_langs - 1):
+            if index == (ws_languages_len - 1):
                 css_class = '%s last' % css_class
             value = get_language_name(language)
             languages.append({

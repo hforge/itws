@@ -222,12 +222,10 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
 
     def get_items(self, resource, context, *args):
         # Build the query
-        language = resource.get_content_language(context)
         args = list(args)
         # Filter by tag
         tags = context.get_query_value('tags', type=String(multiple=True))
         query_terms = resource.get_news_query_terms(state='public', tags=tags)
-        query_terms.append(PhraseQuery('available_languages', [language]))
         args.append(AndQuery(*query_terms))
 
         if len(args) == 1:

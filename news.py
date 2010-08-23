@@ -92,10 +92,8 @@ class NewsItem(WebPage):
         site_root = self.get_site_root()
         languages = site_root.get_property('website_languages')
         pub_datetime = self.get_property('pub_datetime')
-        available_languages = self.get_available_languages(languages)
         preview_content = self.get_preview_content()
         return merge_dicts(WebPage._get_catalog_values(self),
-                           available_languages=available_languages,
                            preview_content=preview_content)
 
 
@@ -202,18 +200,6 @@ class NewsItem(WebPage):
         return isinstance(target, NewsFolder)
 
 
-    def get_available_languages(self, languages):
-        """Available languages for the current news"""
-        if self.has_pub_datetime() is False:
-            return []
-        available_langs = []
-        for language in languages:
-            handler = self.get_handler(language)
-            if handler.is_empty() is False:
-                available_langs.append(language)
-        return available_langs
-
-
     def update_20100810(self):
         """long_title XHTMLBody -> Unicode"""
         from itools.xml.utils import xml_to_text
@@ -307,7 +293,6 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
         query = self.get_news_query_terms(state, tags)
         if language is None:
             language = self.get_content_language(context)
-        query.append(PhraseQuery('available_languages', [language]))
 
         # size
         size = 0
@@ -323,22 +308,6 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
         return [ root.get_resource(doc.abspath)
                  for doc in documents ]
-
-
-    def get_available_languages(self, languages):
-        """Available languages for the current news"""
-        root = get_context().root
-        query_terms = self.get_news_query_terms(state='public')
-        results = root.search(AndQuery(*query_terms))
-
-        available_languages = []
-        for language in languages:
-            sub_results = results.search(
-                    PhraseQuery('available_languages', [language]))
-            if len(sub_results):
-                available_languages.append(language)
-
-        return available_languages
 
 
     def update_20100621(self):
@@ -358,8 +327,6 @@ register_resource_class(NewsItem)
 register_resource_class(NewsFolder)
 register_document_type(NewsItem, TagsAware.class_id)
 
-register_field('available_languages', String(is_stored=True, is_indexed=True,
-                                             multiple=True))
 register_field('preview_content', Unicode(is_stored=True, is_indexed=True))
 
 # Register skin
