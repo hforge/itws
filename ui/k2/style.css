@@ -562,3 +562,11 @@ fieldset legend{
   height: 23px;
   padding: 3px 0 3px 19px;
 }
+
+/* Do not force contentbar width for specific views */
+#page.itws-tracker-view #contentbar,
+#page.itws-issue-edit #contentbar,
+#page.wikipage-view #contentbar,
+#page.wikipage-edit #contentbar {
+  width: auto;
+}
