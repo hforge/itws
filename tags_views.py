@@ -22,10 +22,10 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import Date, Enumerate, String
+from itools.core import merge_dicts
+from itools.datatypes import Boolean, Date, Enumerate, Integer, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
-from itools.stl import set_prefix
 from itools.uri import encode_query
 from itools.web import STLView, get_context
 from itools.xapian import AndQuery, PhraseQuery
@@ -42,6 +42,8 @@ from datatypes import TimeWithoutSecond
 from utils import is_navigation_mode
 from utils import set_prefix_with_hostname, DualSelectWidget
 from views import BaseRSS, ProxyContainerNewInstance
+from views import BrowseFormBatchNumeric
+
 
 
 class TagsList(Enumerate):
@@ -137,57 +139,86 @@ class Tag_RSS(BaseRSS):
 
 
 
-class TagItem_View(STLView):
-    """Preview of the resource in a tag view.
-    """
-    access = 'is_allowed_to_view'
-    template = '/ui/common/Tag_item_view.xml'
+class Tag_View(BrowseFormBatchNumeric, STLView):
 
-    def get_content(self, resource, context):
-        return resource.get_html_data()
-
-
-    def get_namespace(self, resource, context):
-        title = resource.get_title()
-        link = context.get_link(resource)
-        content = self.get_content(resource, context)
-        namespace =  {'title': title, 'link': link, 'content': content}
-        return namespace
-
-
-
-class Tag_View(STLView):
-    """View of a tag.
-    """
     title = MSG(u'View')
     access = 'is_allowed_to_view'
     template = '/ui/common/Tag_view.xml'
-    query_schema = {'formats': String(default=[], multiple=True)}
+    context_menus = []
+    styles = []
+    query_schema = merge_dicts(BrowseFormBatchNumeric.query_schema,
+                               batch_size=Integer(default=20),
+                               sort_by=String(default='pub_datetime'),
+                               reverse=Boolean(default=True))
+    table_template = None
+    more_title = MSG(u'Read more')
+    max_middle_pages = 5
+    # thumb configuration
+    thumb_width = thumb_height = 48
 
-    def get_namespace(self, resource, context):
-        root = context.root
-        here = context.resource # equal to resource
+
+    def get_items(self, resource, context, *args):
+        # Build the query
+        args = list(args)
         tag = resource.name
-        query = self.get_query(context)
-        formats = query['formats']
+        get_query_value = context.get_query_value
+        formats = get_query_value('format', type=String(multiple=True),
+                                  default=[])
         query = resource.parent.get_tags_query_terms(state='public',
                 tags=[tag], formats=formats)
-        results = root.search(AndQuery(*query))
+        args.append(AndQuery(*query))
 
-        items = []
-        for doc in results.get_documents(sort_by='pub_datetime',
-                                         reverse=True):
-            item = root.get_resource(doc.abspath)
-            view = getattr(item, 'tag_view', getattr(item, 'view'))
-            if view:
-                content = view.GET(item, context)
-                # set prefix
-                prefix = here.get_pathto(item)
-                content = set_prefix(content, '%s/' % prefix)
-                items.append({'content': content, 'format': doc.format})
+        # Ok
+        return context.root.search(AndQuery(*args))
 
-        tag_title = resource.get_title()
-        return {'items': items, 'tag_title': tag_title}
+
+    def get_item_value(self, resource, context, item, column):
+        brain, item_resource = item
+        if column == 'pub_datetime':
+            return item_resource.get_pub_datetime_formatted()
+        elif column == 'title':
+            return item_resource.get_property('title')
+        elif column == 'link':
+            return context.get_link(item_resource)
+        elif column == 'preview':
+            return brain.preview_content
+        elif column == 'thumbnail':
+            thumbnail = item_resource.get_preview_thumbnail()
+            if thumbnail:
+                return context.get_link(thumbnail)
+            return None
+        elif column == 'tags':
+            tags = brain.tags
+            if tags:
+                return item_resource.get_tags_namespace(context)
+            return []
+
+
+    def get_rows_namespace(self, resource, context, items):
+        rows = []
+        for item in items:
+            d = {}
+            for key in ('pub_datetime', 'title', 'link', 'preview', 'tags',
+                        'thumbnail'):
+                d[key] = self.get_item_value(resource, context, item, key)
+            rows.append(d)
+        return rows
+
+
+    def get_namespace(self, resource, context):
+        namespace = Folder_BrowseContent.get_namespace(self, resource, context)
+        # Get items
+        items = self.get_items(resource, context)
+        items = self.sort_and_batch(resource, context, items)
+        rows = self.get_rows_namespace(resource, context, items)
+
+        namespace['title'] = resource.get_property('title')
+        namespace['items'] = rows
+        namespace['more_title'] = self.more_title
+        namespace['thumb_width'] = self.thumb_width
+        namespace['thumb_height'] = self.thumb_height
+
+        return namespace
 
 
 
@@ -227,7 +258,7 @@ class TagsFolder_TagCloud(STLView):
         tag_brains = tags_folder.get_tag_brains(context)
         tag_base_link = '%s/%%s' % context.get_link(tags_folder)
         if self.formats:
-            query = {'formats': self.formats}
+            query = {'format': self.formats}
             tag_base_link = '%s?%s' % (tag_base_link, encode_query(query))
 
         # query

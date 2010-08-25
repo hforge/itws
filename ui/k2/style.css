@@ -470,12 +470,12 @@ fieldset legend{
   padding-top: 10px;
 }
 
-#page.news-folder-view .item .actu-date {
+#page.news-folder-view .item .pub-datetime {
   float: left;
   padding-right: 8px;
 }
 
-#page.news-folder-view .item .actu-tag {
+#page.news-folder-view .item .tag {
   float: left;
 }
 

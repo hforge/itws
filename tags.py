@@ -17,13 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard Library
+from copy import deepcopy
 
 # Import from itools
-from itools.i18n import format_datetime
 from itools.core import merge_dicts
-from itools.datatypes import Tokens, Boolean
-from itools.datatypes import String, DateTime
+from itools.datatypes import Boolean, DateTime, String, Tokens, Unicode
 from itools.gettext import MSG
+from itools.i18n import format_datetime
 from itools.uri import Path, encode_query
 from itools.web import get_context
 from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
@@ -32,16 +32,20 @@ from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.multilingual import Multilingual
 from ikaaro.registry import register_field, register_resource_class
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
+from ikaaro.utils import reduce_string
+from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
 from resources import MultilingualCatalogTitleAware, ManageViewAware
-from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud, TagItem_View
+from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsFolder_BrowseContent, Tags_ManageView
 from views import EasyNewInstance
 from views import AutomaticEditView
+
 
 
 class Tag(File, MultilingualCatalogTitleAware):
@@ -84,6 +88,9 @@ class Tag(File, MultilingualCatalogTitleAware):
         return isinstance(target, TagsFolder)
 
 
+    ##########################################################################
+    # Updates
+    ##########################################################################
     def update_20100618(self):
         if self.get_property('state'):
             # state was set
@@ -184,7 +191,6 @@ class TagsAware(object):
 
     # Only useful for the registry
     class_id = 'tags-aware'
-    tag_view = TagItem_View()
 
     @classmethod
     def get_metadata_schema(cls):
@@ -197,17 +203,24 @@ class TagsAware(object):
         indexes['tags'] = self.get_property('tags')
         indexes['pub_datetime'] = self.get_property('pub_datetime')
         indexes['is_tagsaware'] = True
+        indexes['preview_content'] = self.get_preview_content()
         return indexes
 
 
     def get_tags_namespace(self, context):
         tags_folder = self.get_site_root().get_resource('tags')
-        query = encode_query({'format': self.class_id})
+        # query
+        query = deepcopy(context.uri.query)
+        query['format'] = self.class_id
+        query = encode_query(query)
+
         tags = []
         for tag_name in self.get_property('tags'):
             tag = tags_folder.get_resource(tag_name)
-            tags.append({'title': tag.get_title(),
-                'href': '%s?%s' % (context.get_link(tag), query)})
+            href = context.get_link(tag)
+            if query:
+                href = '%s?%s' % (href, query)
+            tags.append({'title': tag.get_title(), 'href': href})
         return tags
 
 
@@ -227,6 +240,51 @@ class TagsAware(object):
         return pub_datetime is not None
 
 
+    def _get_preview_content(self, languages):
+        """"Return the preview content used in the tag view
+            Method to be overriden by sub-classes.
+
+            By default, return handler.to_text()
+        """
+        if isinstance(self, Multilingual):
+            content = {}
+            get_handler = self.get_handler
+            if isinstance(self, ResourceWithHTML):
+                get_handler = self.get_html_document
+
+            for language in languages:
+                handler = self.get_handler(language)
+                content[language] = handler.to_text()
+        else:
+            content = self.to_text()
+
+        return content
+
+
+    def get_preview_content(self):
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
+        content = self._get_preview_content(languages)
+        # Reduce content size
+        if type(content) is dict:
+            for key in content.keys():
+                content[key] = reduce_string(content[key], 10000, 255)
+        elif isinstance(content, (str, unicode)):
+            content = reduce_string(content)
+
+        return content
+
+
+    def get_preview_thumbnail(self):
+        """"Return the preview thumbnail used in the tag view
+            Method to be overriden by sub-classes.
+        """
+        return None
+
+
+    ##########################################################################
+    # Links API
+    ##########################################################################
     def get_links(self):
         site_root = self.get_site_root()
         tags_base = site_root.get_abspath().resolve2('tags')
@@ -259,3 +317,4 @@ register_resource_class(Tag)
 register_field('is_tagsaware', Boolean(is_indexed=True))
 register_field('tags', String(is_stored=True, is_indexed=True, multiple=True))
 register_field('pub_datetime', DateTime(is_stored=True, is_indexed=True))
+register_field('preview_content', Unicode(is_stored=True, is_indexed=True))

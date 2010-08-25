@@ -42,7 +42,7 @@ from ikaaro.webpage import HTMLEditView
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
-from tags_views import TagsAware_Edit, TagItem_View
+from tags_views import TagsAware_Edit
 from utils import get_warn_referenced_message, state_widget
 from views import ProxyContainerNewInstance
 
@@ -272,12 +272,7 @@ class Slide_View(STLView):
 
         # Show slide's image or slideshow's image if any
         image = resource.get_property('image')
-        if image is None:
-            image = resource.parent.get_property('image')
-            if image is not None:
-                image = slides.get_resource(image, soft=True)
-        else:
-            image = resource.get_resource(image, soft=True)
+        image = resource.get_slide_image()
         if image is not None:
             image = '%s/;download' % context.get_link(image)
 
@@ -305,14 +300,6 @@ class Slide_View(STLView):
         namespace['css'] = css
 
         return namespace
-
-
-
-class Tag_SlideView(TagItem_View):
-
-    def get_content(self, resource, context):
-        view = resource.view_only_content
-        return view.GET(resource, context)
 
 
 

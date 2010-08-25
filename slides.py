@@ -42,7 +42,7 @@ from ikaaro.webpage import WebPage
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from resources import ManageViewAware
-from slides_views import SlideShow_Edit, Slide_Edit, Tag_SlideView, Slide_View
+from slides_views import SlideShow_Edit, Slide_Edit, Slide_View
 from slides_views import SlideShow_ManageView, SlideTemplateType
 from tags import TagsAware
 from utils import get_path_and_view
@@ -76,6 +76,31 @@ class Slide(TagsAware, WebPage):
                            TagsAware._get_catalog_values(self))
 
 
+    def get_slide_image(self):
+        image = self.get_property('image')
+        if image is None:
+            image = self.parent.get_property('image')
+            if image is not None:
+                image = self.parent.get_resource(image, soft=True)
+        else:
+            image = self.get_resource(image, soft=True)
+
+        if isinstance(image, Image) is False:
+            return None
+
+        return image
+
+
+    ##########################################################################
+    # TagsAware API
+    ##########################################################################
+    def get_preview_humbnail(self):
+        return self.get_slide_image()
+
+
+    ##########################################################################
+    # Links API
+    ##########################################################################
     def get_links(self):
         links = WebPage.get_links(self)
         links.extend(TagsAware.get_links(self))
@@ -149,6 +174,9 @@ class Slide(TagsAware, WebPage):
             self.set_property(key, str(new_ref))
 
 
+    ##########################################################################
+    # Updates
+    ##########################################################################
     def update_20100618(self):
         # Restore state
         if self.get_property('state'):
@@ -163,7 +191,6 @@ class Slide(TagsAware, WebPage):
     view = Slide_View()
     # use by tag_view
     view_only_content = Slide_View(only_content=True)
-    tag_view = Tag_SlideView()
 
 
 
@@ -216,6 +243,9 @@ class SlideShow(ManageViewAware, ResourcesOrderedContainer):
         return [Slide, Image]
 
 
+    ##########################################################################
+    # Links API
+    ##########################################################################
     def get_links(self):
         base = self.get_canonical_path()
         links = ResourcesOrderedContainer.get_links(self)

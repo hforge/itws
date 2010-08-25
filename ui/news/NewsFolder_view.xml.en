@@ -13,24 +13,26 @@
     </stl:block>
   </div>
 
-  <div class="item" stl:repeat="row rows">
-    <div class="actu-content">
-      <div class="actu-date">${row/pub_datetime}</div>
-      <div class="actu-tag" stl:if="row/tags">
-        <stl:block stl:repeat="tag row/tags">
-          <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
-          <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
-        </stl:block>
+  <stl:block stl:if="items">
+    <div class="item" stl:repeat="item items">
+      <div class="content">
+        <div class="pub-datetime">${item/pub_datetime}</div>
+        <div class="tag" stl:if="item/tags">
+          <stl:block stl:repeat="tag item/tags">
+            <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
+            <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+          </stl:block>
+        </div>
+        <h3 class="title">
+          <a href="${item/link}" title="${item/title}">${item/title}</a>
+        </h3>
+        <div class="preview">
+          ${item/preview} <a href="${item/link}" class="more" title="${more_title}">${more_title}</a>
+        </div>
       </div>
-      <h3 class="title">
-        <a href="${row/link}" title="${row/title}">${row/title}</a>
-      </h3>
-      <div class="actu-preview">
-        ${row/preview}
-        <a href="${row/link}" class="more" title="${more_title}">${more_title}</a>
-      </div>
+      <div class="clear"></div>
     </div>
-    <div class="clear" />
-  </div>
+  </stl:block>
+
   ${batch}
 </stl:block>

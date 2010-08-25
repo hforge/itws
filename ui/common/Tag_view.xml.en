@@ -5,12 +5,33 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div id="tag-view">
-    <h1 id="tag-title">${tag_title}</h1>
+    <h1 id="tag-title">${title}</h1>
     <stl:block stl:if="items">
-      <div class="item ${item/format}" stl:repeat="item items">${item/content}</div>
+      <div class="item" stl:repeat="item items">
+        <div class="content">
+          <div class="pub-datetime">${item/pub_datetime}</div>
+          <div class="tag" stl:if="item/tags">
+            <stl:block stl:repeat="tag item/tags">
+              <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
+              <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+            </stl:block>
+          </div>
+          <h3 class="title">
+            <a href="${item/link}" title="${item/title}">${item/title}</a>
+          </h3>
+          <a class="image-link" stl:if="item/thumbnail" href="${item/link}">
+            <img src="${item/thumbnail}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"/>
+          </a>
+          <div class="preview">
+            ${item/preview} <a href="${item/link}" class="more" title="${more_title}">${more_title}</a>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
     </stl:block>
     <stl:block stl:if="not items">
       There are 0 items.
     </stl:block>
   </div>
+  ${batch}
 </stl:block>

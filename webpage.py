@@ -83,6 +83,9 @@ class WebPage(BaseWebPage, TagsAware):
         return None
 
 
+    ##########################################################################
+    # Links API
+    ##########################################################################
     def get_links(self):
         links = BaseWebPage.get_links(self)
         links.extend(TagsAware.get_links(self))
@@ -99,6 +102,9 @@ class WebPage(BaseWebPage, TagsAware):
         # Not need for TagsAware
 
 
+    ##########################################################################
+    # Updates
+    ##########################################################################
     def update_20100621(self):
         # Restore state
         if self.get_property('state'):

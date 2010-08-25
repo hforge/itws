@@ -33,8 +33,8 @@ from ikaaro.utils import get_base_path_query
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from views import BrowseFormBatchNumeric, BaseRSS
-from views import ImproveDBResource_AddImage
+from tags import Tag_View
+from views import BaseRSS, ImproveDBResource_AddImage
 from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
@@ -92,7 +92,7 @@ class NewsItem_View(STLView):
     template = '/ui/news/NewsItem_view.xml'
     styles = ['/ui/news/style.css']
 
-    # customization
+    # customization (obsolete)
     id = 'news'
     title_link = None
 
@@ -194,21 +194,15 @@ class NewsItem_Edit(WebPage_Edit):
 
 
 
-class NewsFolder_View(BrowseFormBatchNumeric, STLView):
+class NewsFolder_View(Tag_View):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
     template = '/ui/news/NewsFolder_view.xml'
-    context_menus = []
     styles = ['/ui/news/style.css']
-    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
+    query_schema = merge_dicts(Tag_View.query_schema,
                                batch_size=Integer(default=5),
-                               sort_by=String(default='pub_datetime'),
-                               reverse=Boolean(default=True),
                                tags=String(multiple=True))
-    table_template = None
-    more_title = MSG(u'Read more')
-    max_middle_pages = 5
     category_title = MSG(u"Category:") # FIXME Use plural forms
     category_title2 = MSG(u"Categories:")
 
@@ -216,7 +210,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         here = get_context().resource
         # FIXME May failed
         batch_size = here.get_property('batch_size')
-        return merge_dicts(BrowseFormBatchNumeric.get_query_schema(self),
+        return merge_dicts(Tag_View.get_query_schema(self),
                            batch_size=Integer(default=batch_size))
 
 
@@ -239,9 +233,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
-        if column == 'pub_datetime':
-            return item_resource.get_pub_datetime_formatted()
-        elif column == 'title':
+        if column == 'title':
             # Return title or to_text(long_title)
             title = item_resource.get_property('title')
             if title:
@@ -252,46 +244,23 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
                 return long_title
             # Fallback
             return item_resource.get_title()
-        elif column == 'link':
-            return context.get_link(item_resource)
-        elif column == 'preview':
-            return brain.preview_content
         elif column == 'tags':
             tags = brain.tags
             if tags:
-                return item_resource.get_tags_namespace(context)
+                return item_resource.get_news_tags_namespace(context)
             return []
-
-
-    def get_rows_namespace(self, resource, context, items):
-        rows = []
-        for item in items:
-            d = {}
-            for key in ('pub_datetime', 'title', 'link', 'preview', 'tags'):
-                d[key] = self.get_item_value(resource, context, item, key)
-            rows.append(d)
-        return rows
+        elif column == 'thumbnail':
+            return None
+        return Tag_View.get_item_value(self, resource, context, item, column)
 
 
     def get_namespace(self, resource, context):
-        from bar import SideBar_View
-
-        namespace = Folder_BrowseContent.get_namespace(self, resource, context)
-        # Get items
-        items = self.get_items(resource, context)
-        items = self.sort_and_batch(resource, context, items)
-        rows = self.get_rows_namespace(resource, context, items)
-
-        namespace['title'] = resource.get_property('title')
+        namespace = Tag_View.get_namespace(self, resource, context)
         namespace['news_format'] = resource.news_class.class_id
-        namespace['rows'] = rows
-        namespace['more_title'] = self.more_title
-        view = SideBar_View()
-        namespace['sidebar_view'] = view.GET(resource, context)
 
         # Tags
         tags_folder = resource.get_site_root().get_resource('tags')
-        tags = context.get_query_value('tags', type=String(multiple=True))
+        tags = context.get_query_value('tag', type=String(multiple=True))
         if len(tags) > 1:
             category_title = self.category_title2
         else:
@@ -300,7 +269,7 @@ class NewsFolder_View(BrowseFormBatchNumeric, STLView):
         tags_ns = []
         here_link = context.get_link(resource)
         for tag_name in tags:
-            query = encode_query({'tags': tag_name})
+            query = encode_query({'tag': tag_name})
             tag = tags_folder.get_resource(tag_name)
             tags_ns.append({'title': tag.get_title(),
                             'href': '%s?%s' % (here_link, query)})

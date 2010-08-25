@@ -24,7 +24,7 @@ from copy import deepcopy
 from itools.core import get_abspath, merge_dicts
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
-from itools.uri import get_reference, Path
+from itools.uri import encode_query, get_reference, Path
 from itools.web import get_context
 from itools.xapian import PhraseQuery, AndQuery, OrQuery
 from itools.xml import XMLParser
@@ -35,9 +35,8 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.forms import stl_namespaces, TextWidget, Widget
 from ikaaro.registry import register_document_type
-from ikaaro.registry import register_resource_class, register_field
+from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
-from ikaaro.utils import reduce_string
 
 # Import from itws
 from bar import SideBarAware
@@ -89,15 +88,50 @@ class NewsItem(WebPage):
                           )
 
 
-    def _get_catalog_values(self):
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-        pub_datetime = self.get_property('pub_datetime')
-        preview_content = self.get_preview_content()
-        return merge_dicts(WebPage._get_catalog_values(self),
-                           preview_content=preview_content)
+    def get_long_title(self, language=None):
+        """Return the long_title or the title"""
+        long_title = self.get_property('long_title', language=language)
+        if long_title:
+            return long_title
+        return self.get_title()
 
 
+    def can_paste_into(self, target):
+        return isinstance(target, NewsFolder)
+
+
+    ##########################################################################
+    # TagsAware API
+    ##########################################################################
+    def get_preview_thumbnail(self):
+        path = self.get_property('thumbnail')
+        if not path:
+            return None
+        ref = get_reference(path)
+        if ref.scheme:
+            return None
+        return self.get_resource(path, soft=True)
+
+
+    def get_news_tags_namespace(self, context):
+        tags_folder = self.get_site_root().get_resource('tags')
+        news_folder_link = context.get_link(self.parent)
+        # query
+        base_query = deepcopy(context.uri.query)
+
+        tags = []
+        for tag_name in self.get_property('tags'):
+            tag = tags_folder.get_resource(tag_name)
+            base_query['tag'] = tag_name
+            query = encode_query(base_query)
+            href = '%s?%s' % (news_folder_link, query)
+            tags.append({'title': tag.get_title(), 'href': href})
+        return tags
+
+
+    ##########################################################################
+    # Links API
+    ##########################################################################
     def get_links(self):
         links = WebPage.get_links(self)
 
@@ -177,30 +211,9 @@ class NewsItem(WebPage):
             self.set_property('thumbnail', str(new_ref), language=lang)
 
 
-    def get_preview_content(self):
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-        preview_content = {}
-        for language in languages:
-            handler = self.get_html_document(language)
-            text = handler.to_text()
-            data = reduce_string(text, 10000, 255)
-            preview_content[language] = data
-        return preview_content
-
-
-    def get_long_title(self, language=None):
-        """Return the long_title or the title"""
-        long_title = self.get_property('long_title', language=language)
-        if long_title:
-            return long_title
-        return self.get_title()
-
-
-    def can_paste_into(self, target):
-        return isinstance(target, NewsFolder)
-
-
+    ##########################################################################
+    # Updates
+    ##########################################################################
     def update_20100810(self):
         """long_title XHTMLBody -> Unicode"""
         from itools.xml.utils import xml_to_text
@@ -225,7 +238,6 @@ class NewsItem(WebPage):
 
     edit = NewsItem_Edit()
     view = NewsItem_View()
-    tag_view = NewsItem_View(id=None, title_link=True)
     add_image = NewsItem_AddImage()
     manage_view = GoToSpecificDocument(specific_document='..',
             specific_view='manage_view', title=NewsFolder_ManageView.title)
@@ -313,6 +325,9 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
                  for doc in documents ]
 
 
+    ##########################################################################
+    # Updates
+    ##########################################################################
     def update_20100621(self):
         SideBarAware.update_20100621(self)
 
@@ -329,8 +344,6 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
 register_resource_class(NewsItem)
 register_resource_class(NewsFolder)
 register_document_type(NewsItem, TagsAware.class_id)
-
-register_field('preview_content', Unicode(is_stored=True, is_indexed=True))
 
 # Register skin
 path = get_abspath('ui/news')

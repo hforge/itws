@@ -1,4 +1,4 @@
-.actu-content .actu-date {
+.content .pub-datetime {
   padding-bottom: 5px;
 }
 
@@ -29,17 +29,17 @@
   margin-top: 10px;
 }
 
-.news-folder-view #td-contentbar .actu-content .title {
+.news-folder-view #td-contentbar .content .title {
   clear: both;
 }
 
-.news-folder-view #td-contentbar .actu-content .actu-date,
-.news-folder-view #td-contentbar .actu-content .actu-tag {
+.news-folder-view #td-contentbar .content .pub-datetime,
+.news-folder-view #td-contentbar .content .tag {
   float:  left;
   font-size:  0.8em;
   padding-bottom:  5px;
 }
 
-.news-folder-view #td-contentbar .actu-content .actu-date {
+.news-folder-view #td-contentbar .content .pub-datetime {
   padding-right: 10px;
 }
