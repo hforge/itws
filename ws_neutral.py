@@ -55,6 +55,7 @@ from ikaaro.wiki import WikiFolder
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
+from about import About
 from addresses import AddressesFolder
 from bar import ContentBarAware, SideBarAware, SideBar_View
 from common import FoBoFooterAwareSkin
@@ -459,7 +460,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 ResourcesOrderedContainer, WebSite):
 
     class_id = 'neutral'
-    class_version = '20100627'
+    class_version = '20100628'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -589,6 +590,10 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             title = Property(MSG(u'Contact us').gettext(),
                              language=default_language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
+        # About
+        cls = About
+        cls._make_resource(cls, folder, '%s/about' % name,
+                           title={'en': u'About'})
 
 
     @classmethod
@@ -930,6 +935,18 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         """Remove pub_datetime_format"""
         if self.has_property('pub_datetime_format'):
             self.del_property('pub_datetime_format')
+
+
+    def update_20100628(self):
+        """Add about resource"""
+        about = self.get_resource('about', soft=True)
+        if about and isinstance(about, About) is False:
+            path = self.get_abspath().resolve2('about')
+            raise RuntimeError, '%s resource already exists' % path
+
+        if about is None:
+            cls = About
+            cls.make_resource(cls, self, 'about', title={'en': u'About'})
 
 
     # User Interface
