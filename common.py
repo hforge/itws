@@ -32,7 +32,6 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin, register_skin
 from ikaaro.skins_views import LocationTemplate, LanguagesTemplate
 from ikaaro.utils import reduce_string
-from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from utils import is_navigation_mode
@@ -89,17 +88,10 @@ class LocationTemplateWithoutTab(LocationTemplate):
                 continue
             if resource is None:
                 break
-            # ACLs
-            is_workflow_aware = isinstance(resource, WorkflowAware)
-            ac = resource.get_access_control()
-            if (is_workflow_aware and ac.is_allowed_to_view(user, resource)) \
-                    or ac.is_allowed_to_edit(user, resource):
-                url = path
-                title = resource.get_title()
-                short_name = get_breadcrumb_short_name(resource)
-            else:
-                url = None
-                title = short_name = resource.name
+            # FIXME Check ACL
+            url = path
+            title = resource.get_title()
+            short_name = get_breadcrumb_short_name(resource)
             # Append
             breadcrumb.append({
                 'class': '',
@@ -225,15 +217,8 @@ class FoBoFooterAwareSkin(Skin):
             here_title = None
         else:
             template = self.template_title_base
-            # Check ACL
-            is_workflow_aware = isinstance(here, WorkflowAware)
-            ac = here.get_access_control()
-            user = context.user
-            if (is_workflow_aware and ac.is_allowed_to_view(user, here)) \
-                    or ac.is_allowed_to_edit(user, here):
-                here_title = here.get_title()
-            else:
-                here_title = here.name
+            # FIXME Check ACL
+            here_title = here.get_title()
 
         # The view
         view_title = context.view.get_title(context)
