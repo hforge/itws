@@ -343,6 +343,8 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
     """Browse content with preview of tagged items number. Used in the
     Tags_ManageView composite.
     """
+    access = 'is_allowed_to_edit'
+
     # Table
     table_columns = [
         ('checkbox', None),
