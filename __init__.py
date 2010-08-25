@@ -26,6 +26,7 @@ from itools.xml import XMLNamespace, register_namespace
 
 # Import from itws
 from root import Root
+import about
 import archive_views
 import common
 import sidebar
@@ -68,7 +69,6 @@ rng_file.auto_register()
 # Register the itws domain
 path = get_abspath('locale')
 register_domain('itws', path)
-
 
 # Silent pyflakes
 Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage

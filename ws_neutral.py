@@ -472,7 +472,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     order_class = WSOrderedTable
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__
-                          + ['style', 'menu',
+                          + ['style', 'menu', 'about',
                              'footer', 'sitemap.xml', 'robots.txt',
                              'repository', 'images', 'turning-footer',
                              'tags', 'ws-data'])

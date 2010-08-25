@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+<div class="content">
+    <p>Ce site est motorisé par itws_ une solution open source de gestion de contenu développé par
+    <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>, fournisseur de solution Open Source.</p>
+
+    <p>Itws est basé sur <a href="http://www.itaapy.com/technologies/ikaaro-ged-open-source-et-plus"
+    title="iKaaro">iKaaro</a>,
+    CMS écrit en <a href="http://www.itaapy.com/technologies/python" title="Python">Python</a>, s'appuyant sur
+    <a
+    href="http://www.itaapy.com/technologies/itools-boite-a-outils-des-programmes-documentaires"
+    title="itools">itools</a> pour sa base de donnée objet et l'implémentation
+    de standards,  <a
+    href="http://www.itaapy.com/technologies/git-gestion-de-version"
+    title="GIT">Git</a> pour le versionning, <a
+    href="http://www.itaapy.com/technologies/xapian-indexation-et-recherche-haute-performances"
+    title="Xapian">Xapian</a> pour l'indexation, <a
+    href="http://live.gnome.org/LibSoup" title="Libsoup">Libsoup</a> comme
+    serveur HTTP.</p>
+
+    <p><a href="http://www.itaapy.com" title="Itaapy">Itaapy</a> vous
+    accompagne dans la réalisation de vos sites-web, site e-commerce et
+    intranet évolutifs. Notre expertise technique vous permet d'accéder à une
+    position de leader par l'innovation et de réaliser de vrais gains de
+    productivité par l'intégration à votre SI.</p>
+</div>
+
+</stl:block>
