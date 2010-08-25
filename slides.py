@@ -94,7 +94,7 @@ class Slide(TagsAware, WebPage):
     ##########################################################################
     # TagsAware API
     ##########################################################################
-    def get_preview_humbnail(self):
+    def get_preview_thumbnail(self):
         return self.get_slide_image()
 
 
