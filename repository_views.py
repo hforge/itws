@@ -1104,7 +1104,9 @@ class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
             if is_admin is False:
                 # Hide the box if there is no newsfolder
                 self.set_view_is_empty(True)
-            return {'newsfolder': None}
+            newfolder_cls = resource.get_site_root().newsfolder_class
+            return {'newsfolder': None,
+                    'newsfolder_cls_title': newfolder_cls.class_title}
 
         namespace = NewsFolder_View.get_namespace(self, resource, context)
         namespace['title'] = resource.get_property('title')

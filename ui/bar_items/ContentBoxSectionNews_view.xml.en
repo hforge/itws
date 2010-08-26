@@ -44,6 +44,6 @@
   </stl:block>
 
   <stl:block stl:if="not newsfolder">
-    No newsfolder...
+    There is currently no ${newsfolder_cls_title}.
   </stl:block>
 </stl:block>
