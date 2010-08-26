@@ -32,7 +32,7 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_PreviewContent
+from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.forms import stl_namespaces, TextWidget, Widget
 from ikaaro.registry import register_document_type
 from ikaaro.registry import register_resource_class, register_field
@@ -77,7 +77,8 @@ class NewsItem(WebPage):
                             u'used by the News Folder, News can be tagged')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
+    class_views = ['view', 'edit', 'manage_view', 'edit_state',
+                   'backlinks', 'commit_log']
 
 
     @classmethod
@@ -226,6 +227,8 @@ class NewsItem(WebPage):
     view = NewsItem_View()
     tag_view = NewsItem_View(id=None, title_link=True)
     add_image = NewsItem_AddImage()
+    manage_view = GoToSpecificDocument(specific_document='..',
+            specific_view='manage_view', title=NewsFolder_ManageView.title)
 
 
 
