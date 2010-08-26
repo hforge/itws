@@ -387,7 +387,7 @@ class RssFeeds(CSV):
                 try:
                     description = HTMLParser(description)
                     article['description'] = sanitize_stream(description)
-                except XMLError, e:
+                except (XMLError, UnicodeDecodeError), e:
                     article['valid'] = False
                     msg = '%s <br />-- Error on article: "%s"<br />-- "%s"'
                     msg = msg % (XMLContent.encode(str(uri)), e,
@@ -399,11 +399,6 @@ class RssFeeds(CSV):
                                'uri: %s\n\n' % str(uri))
                     details = format_exc()
                     log_warning(summary + details, domain='itws')
-                except UnicodeDecodeError:
-                    article['valid'] = False
-                    # Should use log_warning
-                    server.log_error(context)
-                    continue
 
             # Skip invalid articles
             feed_articles = [ article for article in feed_articles
