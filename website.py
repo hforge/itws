@@ -163,22 +163,22 @@ class WebSite(BaseWebSite):
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         BaseWebSite._make_resource(cls, folder, name, **kw)
+        website = get_context().root.get_resource(name)
+        ws_folder = website.handler
 
         # Add menus
         for item in cls.menus:
-            path = '%s/%s' % (name, item)
-            MenuFolder._make_resource(MenuFolder, folder, path)
+            MenuFolder._make_resource(MenuFolder, ws_folder, item)
         # Add footers
         for item in cls.footers:
-            path = '%s/%s' % (name, item)
-            FooterFolder._make_resource(FooterFolder, folder, path)
+            FooterFolder._make_resource(FooterFolder, ws_folder, item)
 
         # Add CSS
-        CSS._make_resource(CSS, folder, '%s/style' % name, extension='css',
+        CSS._make_resource(CSS, ws_folder, 'style', extension='css',
                            body='/* CSS */', title={'en': u'Style'},
                            state='public')
         # Add 404 page
-        NotFoundPage._make_resource(NotFoundPage, folder, '%s/404' % name)
+        NotFoundPage._make_resource(NotFoundPage, ws_folder, '404')
 
 
     @classmethod

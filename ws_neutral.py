@@ -508,21 +508,20 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # Parent
         WebSite._make_resource(cls, folder, name, **kw)
         website = root.get_resource(name)
+        ws_folder = website.handler
         # Add repository
-        Repository._make_resource(Repository, folder,
-                                  '%s/%s' % (name, 'repository'))
-        repository = root.get_resource('%s/repository' % name)
+        Repository._make_resource(Repository, ws_folder, 'repository')
+        repository = website.get_resource('repository')
         # WSDataFolder
         cls2 = website_class.wsdatafolder_class
-        cls2._make_resource(cls2, folder, '%s/ws-data' % name,
+        cls2._make_resource(cls2, ws_folder, 'ws-data',
                 title={default_language: MSG(u'Configure Homepage').gettext()})
         # Make the table for ResourcesOrderedContainer
         order_class = cls.order_class
-        order_class._make_resource(order_class, folder,
-                                   '%s/%s' % (name, cls.order_path))
+        order_class._make_resource(order_class, ws_folder, cls.order_path)
         # SideBarAware
         SideBarAware._make_resource(cls, folder, name, **kw)
-        sidebar_table = root.get_resource('%s/%s' % (name, cls.sidebar_name))
+        sidebar_table = website.get_resource(cls.sidebar_name)
         # Preorder specific sidebar boxes
         sidebar_table.add_new_record({'name': Repository.news_items_name})
         news_item = repository.get_resource(Repository.news_items_name)
@@ -530,23 +529,22 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         news_item.set_property('count', 4)
         # ContentBarAware
         ContentBarAware._make_resource(cls, folder, name, **kw)
-        contentbar_table = root.get_resource(
-                '%s/%s' % (name, cls.contentbar_name))
+        contentbar_table = website.get_resource(cls.contentbar_name)
         # Preorder specific contentbar boxes
         item_name = Repository.website_articles_view_name
         contentbar_table.add_new_record({'name': item_name})
         # index
         section_class = cls.section_class
-        section_class._make_resource(section_class, folder, '%s/index' % name,
+        section_class._make_resource(section_class, ws_folder, 'index',
                                      title={'en': u'Index'})
         # Add a sitemap
         cls = website_class.sitemap_class
-        cls._make_resource(cls, folder, '%s/sitemap.xml' % name)
+        cls._make_resource(cls, ws_folder, 'sitemap.xml')
         # Add Robots.txt
-        RobotsTxt._make_resource(RobotsTxt, folder, '%s/robots.txt' % name)
+        RobotsTxt._make_resource(RobotsTxt, ws_folder, 'robots.txt')
         # Add an image folder
         cls = ImagesFolder
-        cls._make_resource(cls, folder, '%s/%s' % (name, 'images'))
+        cls._make_resource(cls, ws_folder, 'images')
         # Set a default banner
         if 'banner_title' not in kw:
             vhosts = website.get_property('vhosts')
@@ -558,11 +556,10 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                                  language=default_language)
         # Turning footer
         cls = TurningFooterFolder
-        cls._make_resource(cls, folder, '%s/turning-footer' % name)
+        cls._make_resource(cls, ws_folder, 'turning-footer')
         # Tags
         cls = website_class.tagsfolder_class
-        cls._make_resource(cls, folder, '%s/tags' % name,
-                language=default_language)
+        cls._make_resource(cls, ws_folder, 'tags', language=default_language)
         # Default favicon
         favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
         favicon_data = favicon_resource.to_str()
@@ -572,8 +569,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         metadata = {'format': 'image/x-icon', 'filename': filename,
                     'extension': extension, 'state': 'public',
                     'body': favicon_data}
-        cls._make_resource(cls, folder, '%s/images/%s' % (name, name2),
-                **metadata)
+        cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
         website.set_property('favicon', 'images/favicon')
         # Add default news folder
         cls = website.newsfolder_class
@@ -581,7 +577,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             cls._make_resource(cls, folder, '%s/news' % name)
         # Init Website menu with 2 items + news folder
         for menu_name in website_class.menus:
-            menu = root.get_resource('%s/%s/menu' % (name, menu_name))
+            menu = website.get_resource('%s/menu' % menu_name)
             title = Property(MSG(u'Homepage').gettext(),
                              language=default_language)
             menu.add_new_record({'title': title, 'path': '/'})
@@ -595,7 +591,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 menu.add_new_record({'title': title, 'path': '/news'})
         # Init Website footer with 2 items
         for footer_name in website_class.footers:
-            menu = root.get_resource('%s/%s/menu' % (name, footer_name))
+            menu = website.get_resource('%s/menu' % footer_name)
             title = Property(MSG(u'About').gettext(),
                              language=default_language)
             menu.add_new_record({'title': title, 'path': '/;about'})
