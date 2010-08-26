@@ -44,6 +44,7 @@ from tags_views import TagsList
 from utils import is_empty, to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import SmartOrderedTable_View, AutomaticEditView
+from news_views import NewsFolder_View
 
 
 ################################################################################
@@ -1022,3 +1023,98 @@ class BoxWebsiteWebpages_View(BoxSectionWebpages_View):
 
     def is_article_one_by_one(self, resource, context):
         return False
+
+
+
+class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
+
+    access = 'is_allowed_to_view'
+    title = MSG(u'View')
+    template = '/ui/bar_items/ContentBoxSectionNews_view.xml'
+    batch_template = None
+
+
+    def _get_news_folder(self, resource, context):
+        site_root = resource.get_site_root()
+        news_folder = site_root.get_news_folder(context)
+        return news_folder
+
+
+    def get_items(self, resource, context, *args):
+        # Build the query
+        args = list(args)
+        # Filter by tag
+        tags = resource.get_property('tags')
+        news_folder = self._get_news_folder(resource, context)
+        query_terms = news_folder.get_news_query_terms(state='public',
+                                                       tags=tags)
+        args.append(AndQuery(*query_terms))
+
+        if len(args) == 1:
+            query = args[0]
+        else:
+            query = AndQuery(*args)
+
+        # Ok
+        return context.root.search(query)
+
+
+    def sort_and_batch(self, resource, context, results):
+        start = 0
+        size = count = resource.get_property('count')
+        sort_by = 'pub_datetime'
+        reverse = True
+        items = results.get_documents(sort_by=sort_by, reverse=reverse,
+                                      start=start, size=size)
+
+        # Access Control (FIXME this should be done before batch)
+        user = context.user
+        root = context.root
+        allowed_items = []
+        for item in items:
+            resource = root.get_resource(item.abspath)
+            ac = resource.get_access_control()
+            if ac.is_allowed_to_view(user, resource):
+                allowed_items.append((item, resource))
+
+        return allowed_items
+
+
+    def get_tags_namespace(self, resource, context):
+        tags_ns = []
+        news_folder = self._get_news_folder(resource, context)
+        here_link = context.get_link(news_folder)
+        tags_folder = resource.get_site_root().get_resource('tags')
+        tags = resource.get_property('tags')
+
+        for tag_name in tags:
+            query = encode_query({'tag': tag_name})
+            tag = tags_folder.get_resource(tag_name)
+            tags_ns.append({'title': tag.get_title(),
+                            'href': '%s?%s' % (here_link, query)})
+
+        return tags_ns
+
+
+    def get_namespace(self, resource, context):
+        news_folder = self._get_news_folder(resource, context)
+        is_admin = self.is_admin(resource, context)
+
+        if news_folder is None:
+            if is_admin is False:
+                # Hide the box if there is no newsfolder
+                self.set_view_is_empty(True)
+            return {'newsfolder': None}
+
+        namespace = NewsFolder_View.get_namespace(self, resource, context)
+        namespace['title'] = resource.get_property('title')
+
+        items = namespace['items']
+
+        if len(items) == 0 and is_admin is False:
+            # Hide the box if there is no news and
+            # if the user cannot edit the box
+            self.set_view_is_empty(True)
+
+        namespace['newsfolder'] = news_folder
+        return namespace

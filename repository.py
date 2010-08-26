@@ -55,6 +55,7 @@ from repository_views import BoxWebsiteWebpages_View
 from repository_views import Box_Preview
 from repository_views import BoxesOrderedTable_View
 from repository_views import ContentBoxSectionChildrenToc_View
+from repository_views import ContentBoxSectionNews_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
@@ -144,7 +145,7 @@ class Box(BoxAware, File):
 class BoxSectionNews(Box):
 
     class_id = 'box-section-news'
-    class_title = MSG(u'Last News Box')
+    class_title = MSG(u'Last News Box (Sidebar)')
     class_icon16 = 'bar_items/icons/16x16/box_section_news.png'
     class_description = MSG(u'Display the last N news filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
@@ -159,6 +160,15 @@ class BoxSectionNews(Box):
     preview = order_preview = BoxSectionNews_Preview()
     view = BoxSectionNews_View()
     edit = BoxSectionNews_Edit()
+
+
+
+class ContentBoxSectionNews(BoxSectionNews):
+
+    class_id = 'contentbar-box-section-news'
+    class_title = MSG(u'Last News Box (Contentbar)')
+
+    view = ContentBoxSectionNews_View()
 
 
 
@@ -826,6 +836,7 @@ register_resource_class(ContentbarBoxesOrderedTable)
 register_resource_class(BoxSectionWebpages)
 register_resource_class(BoxWebsiteWebpages)
 register_resource_class(ContentBoxSectionChildrenToc)
+register_resource_class(ContentBoxSectionNews)
 
 register_box(HTMLContent, allow_instanciation=True, is_content=True)
 register_box(BoxSectionNews, allow_instanciation=True,
@@ -839,6 +850,8 @@ register_box(BoxSectionWebpages, allow_instanciation=False,
 register_box(BoxWebsiteWebpages, allow_instanciation=False,
              is_content=True, is_side=False)
 register_box(ContentBoxSectionChildrenToc, allow_instanciation=False,
+             is_content=True, is_side=False)
+register_box(ContentBoxSectionNews, allow_instanciation=True,
              is_content=True, is_side=False)
 # Register skin
 path = get_abspath('ui/bar_items')

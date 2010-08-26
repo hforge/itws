@@ -252,26 +252,32 @@ class NewsFolder_View(Tag_View):
         return Tag_View.get_item_value(self, resource, context, item, column)
 
 
+    def get_tags_namespace(self, resource, context):
+        tags_ns = []
+        here_link = context.get_link(resource)
+        tags_folder = resource.get_site_root().get_resource('tags')
+        tags = context.get_query_value('tag', type=String(multiple=True))
+
+        for tag_name in tags:
+            query = encode_query({'tag': tag_name})
+            tag = tags_folder.get_resource(tag_name)
+            tags_ns.append({'title': tag.get_title(),
+                            'href': '%s?%s' % (here_link, query)})
+
+        return tags_ns
+
+
     def get_namespace(self, resource, context):
         namespace = Tag_View.get_namespace(self, resource, context)
-        namespace['news_format'] = resource.news_class.class_id
 
         # Tags
-        tags_folder = resource.get_site_root().get_resource('tags')
         tags = context.get_query_value('tag', type=String(multiple=True))
         if len(tags) > 1:
             category_title = self.category_title2
         else:
             category_title = self.category_title
 
-        tags_ns = []
-        here_link = context.get_link(resource)
-        for tag_name in tags:
-            query = encode_query({'tag': tag_name})
-            tag = tags_folder.get_resource(tag_name)
-            tags_ns.append({'title': tag.get_title(),
-                            'href': '%s?%s' % (here_link, query)})
-        namespace['tags'] = tags_ns
+        namespace['tags'] = self.get_tags_namespace(resource, context)
         namespace['category_title'] = category_title
 
         return namespace

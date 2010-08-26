@@ -139,7 +139,7 @@ class Tag_RSS(BaseRSS):
 
 
 
-class Tag_View(BrowseFormBatchNumeric, STLView):
+class Tag_View(BrowseFormBatchNumeric):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
@@ -150,6 +150,7 @@ class Tag_View(BrowseFormBatchNumeric, STLView):
                                batch_size=Integer(default=20),
                                sort_by=String(default='pub_datetime'),
                                reverse=Boolean(default=True))
+    search_template = None
     table_template = None
     more_title = MSG(u'Read more')
     max_middle_pages = 5

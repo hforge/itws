@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from standard Library
-from copy import deepcopy
-
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import Boolean, DateTime, String, Tokens, Unicode

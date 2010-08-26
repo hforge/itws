@@ -328,3 +328,44 @@
 #browse-list th a.sort-down-active { background-position: -10px -29px; }
 #browse-list th a.sort-up { background-position: -10px -48px; }
 #browse-list th a.sort-up-active { background-position: -10px -67px; }
+
+
+
+/**************************************************************************
+ * Bar items
+ * ***********************************************************************/
+.contentbar-box-section-news .item {
+  border-bottom: 1px dotted #999;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.contentbar-box-section-news .item .pub-datetime {
+  float: left;
+  padding-right: 8px;
+}
+
+.contentbar-box-section-news .item .tag {
+  float: left;
+}
+
+.contentbar-box-section-news .item h3.title {
+  clear: both;
+  border: none;
+  margin-right: 0;
+}
+
+.contentbar-box-section-news .item h3.title a {
+  text-decoration: none;
+}
+
+.contentbar-box-section-news .item .image-link {
+  float: left;
+  padding: 0 5px 5px 0;
+}
+
+.contentbar-box-section-news .item .more {
+  float: right;
+  margin-top: 10px;
+}
+
