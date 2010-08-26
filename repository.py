@@ -406,6 +406,7 @@ class ContentBoxSectionChildrenToc(Box):
 ###########################################################################
 class BoxesOrderedTable(ResourcesOrderedTable):
 
+    allow_filter_key = None
     view = BoxesOrderedTable_View()
 
     def get_order_root(self):
@@ -421,11 +422,30 @@ class BoxesOrderedTable(ResourcesOrderedTable):
     order_root_path = property(_get_order_root_path)
 
 
+    def _reduce_orderable_classes(self, types):
+        return types
+
+
+    def _orderable_classes(self):
+        registry = get_boxes_registry()
+        types = [ cls for cls, allow in registry.iteritems()
+                  if allow[self.allow_filter_key] ]
+        types.sort(lambda x, y : cmp(x.class_title.gettext(),
+                                     y.class_title.gettext()))
+        types = self._reduce_orderable_classes(types)
+        return types
+
+    orderable_classes = property(_orderable_classes)
+
+
 
 class SidebarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'sidebar-boxes-ordered-table'
     class_title = MSG(u'Order Sidebar Boxes')
+
+    # _orderable_classes configuration
+    allow_filter_key = 'side'
 
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Sidebar Boxes')
@@ -440,14 +460,16 @@ class SidebarBoxesOrderedTable(BoxesOrderedTable):
             u'in the sidebar by adding them to the above ordered list.')
 
 
-    def _orderable_classes(self):
-        registry = get_boxes_registry()
-        types = [ cls for cls, allow in registry.iteritems()
-                  if allow['side'] ] # is side
-        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
-        return types
+    def _reduce_orderable_classes(self, types):
+        here = get_context().resource
+        site_root = here.get_site_root()
+        if isinstance(here.parent, site_root.wsdatafolder_class):
+            repository = site_root.get_repository()
+            # Disable section_sidebar_children_toc_view_cls
+            if types.count(repository.section_sidebar_children_toc_view_cls):
+                types.remove(repository.section_sidebar_children_toc_view_cls)
 
-    orderable_classes = property(_orderable_classes)
+        return types
 
 
 
@@ -455,6 +477,9 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'contentbar-boxes-ordered-table'
     class_title = MSG(u'Order Central Part Boxes')
+
+    # _orderable_classes configuration
+    allow_filter_key = 'content'
 
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Central Part Boxes')
@@ -468,14 +493,17 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
             u'These boxes are available, you can make them visible '
             u'in the central part by adding them to the above ordered list.')
 
-    def _orderable_classes(self):
-        registry = get_boxes_registry()
-        types = [ cls for cls, allow in registry.iteritems()
-                  if allow['content'] ] # is content
-        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
-        return types
 
-    orderable_classes = property(_orderable_classes)
+    def _reduce_orderable_classes(self, types):
+        here = get_context().resource
+        site_root = here.get_site_root()
+        if isinstance(here.parent, site_root.section_class):
+            repository = site_root.get_repository()
+            # Disable website_articles_view_cls
+            if types.count(repository.website_articles_view_cls):
+                types.remove(repository.website_articles_view_cls)
+
+        return types
 
 
 
