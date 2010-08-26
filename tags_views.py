@@ -154,7 +154,7 @@ class Tag_View(BrowseFormBatchNumeric, STLView):
     more_title = MSG(u'Read more')
     max_middle_pages = 5
     # thumb configuration
-    thumb_width = thumb_height = 48
+    thumb_width = thumb_height = 96
 
 
     def get_items(self, resource, context, *args):

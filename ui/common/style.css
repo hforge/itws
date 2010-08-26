@@ -122,7 +122,7 @@
 }
 
 #tag-view .item h3.title a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 #tag-view .item .more {

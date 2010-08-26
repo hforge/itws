@@ -26,6 +26,9 @@
         <h3 class="title">
           <a href="${item/link}" title="${item/title}">${item/title}</a>
         </h3>
+        <a class="image-link" stl:if="item/thumbnail" href="${item/link}">
+          <img src="${item/thumbnail}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"/>
+        </a>
         <div class="preview">
           ${item/preview} <a href="${item/link}" class="more" title="${more_title}">${more_title}</a>
         </div>

@@ -249,8 +249,6 @@ class NewsFolder_View(Tag_View):
             if tags:
                 return item_resource.get_news_tags_namespace(context)
             return []
-        elif column == 'thumbnail':
-            return None
         return Tag_View.get_item_value(self, resource, context, item, column)
 
 

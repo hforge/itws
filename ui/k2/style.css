@@ -486,7 +486,12 @@ fieldset legend{
 }
 
 #page.news-folder-view .item h3.title a {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+#page.news-folder-view .item .image-link {
+  float: left;
+  padding: 0 5px 5px 0;
 }
 
 #page.news-folder-view .item .more {
