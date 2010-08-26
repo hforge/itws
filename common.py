@@ -34,7 +34,7 @@ from ikaaro.skins_views import LocationTemplate, LanguagesTemplate
 from ikaaro.utils import reduce_string
 
 # Import from itws
-from utils import is_navigation_mode
+from utils import get_admin_bar, is_navigation_mode
 
 
 
@@ -316,6 +316,10 @@ class FoBoFooterAwareSkin(Skin):
                 html = set_prefix(html, prefix)
                 item['html'] = html
         ns['separator'] = data.get('separator', '|')
+
+        # admin bar
+        ns['admin_bar'] = get_admin_bar(footer.parent) # menu folder
+
         return ns
 
 

@@ -164,6 +164,12 @@ class FooterFolder(MenuFolder):
     # Your menu ressource (for overriding the record_properties and form)
     class_menu = FooterMenu
 
+    use_fancybox = False
+
+
+    def get_admin_edit_link(self, context):
+        return context.get_link(self.get_resource('menu'))
+
 
 
 ############################################################
