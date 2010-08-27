@@ -840,7 +840,7 @@ register_resource_class(ContentBoxSectionNews)
 
 register_box(HTMLContent, allow_instanciation=True, is_content=True)
 register_box(BoxSectionNews, allow_instanciation=True,
-             is_side=True, is_content=True)
+             is_side=True, is_content=False)
 register_box(BoxTags, allow_instanciation=True)
 register_box(BoxSectionChildrenToc,
              allow_instanciation=False)
