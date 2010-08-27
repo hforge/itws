@@ -551,36 +551,44 @@ class Repository(Folder):
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         Folder._make_resource(cls, folder, name, **kw)
+        state = 'public'
+
         # Website view box
         _cls = cls.website_articles_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.website_articles_view_name),
-                            title={'en': _cls.class_title.gettext()})
+                            title={'en': _cls.class_title.gettext()},
+                            state=state)
         # section view box
         _cls = cls.section_articles_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.section_articles_view_name),
-                            title={'en': _cls.class_title.gettext()})
+                            title={'en': _cls.class_title.gettext()},
+                            state=state)
         # section content children toc
         _cls = cls.section_content_children_toc_view_cls
         _cls._make_resource(_cls, folder,
                 '%s/%s' % (name, cls.section_content_children_toc_view_name),
-                           title={'en': _cls.class_title.gettext()})
+                           title={'en': _cls.class_title.gettext()},
+                           state=state)
         # section sidebar children toc
         _cls = cls.section_sidebar_children_toc_view_cls
         _cls._make_resource(_cls, folder,
                 '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
-                           title={'en': _cls.class_title.gettext()})
+                           title={'en': _cls.class_title.gettext()},
+                           state=state)
         # news siblings box
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.news_siblings_view_name),
-                            title={'en': _cls.class_title.gettext()})
+                            title={'en': _cls.class_title.gettext()},
+                            state=state)
         # news
         _cls = cls.news_items_cls
         _cls._make_resource(_cls, folder,
                             '%s/%s' % (name, cls.news_items_name),
-                            title={'en': _cls.class_title.gettext()})
+                            title={'en': _cls.class_title.gettext()},
+                            state=state)
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
