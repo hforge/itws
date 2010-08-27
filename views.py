@@ -905,6 +905,7 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 class FooterMenu_View(Menu_View):
 
     access = 'is_allowed_to_edit'
+    table_actions = Menu_View.table_actions[1:]
 
     def get_item_value(self, resource, context, item, column):
         if column == 'html_content':
