@@ -41,7 +41,11 @@ from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
 from ikaaro.website import WebSite as BaseWebSite
-from ikaaro.wiki import WikiFolder
+# Special case for the Wiki
+try:
+    from ikaaro.wiki import WikiFolder
+except ImportError:
+    WikiFolder = None
 
 # Import from itws
 from resources import FooterFolder, NotFoundPage
@@ -205,7 +209,7 @@ class WebSite(BaseWebSite):
             if isinstance(resource, (Tracker, Issue)):
                 return False
             # Wiki only if FrontPage published
-            if isinstance(resource, WikiFolder):
+            if WikiFolder and isinstance(resource, WikiFolder):
                 frontpage = resource.get_resource('FrontPage')
                 return frontpage.get_workflow_state() == 'public'
         return BaseWebSite.is_allowed_to_view(self, user, resource)

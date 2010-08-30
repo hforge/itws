@@ -51,8 +51,12 @@ from ikaaro.skins import register_skin, Skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
 from ikaaro.website import WebSite as BaseWebSite
-from ikaaro.wiki import WikiFolder
 from ikaaro.workflow import WorkflowAware
+# Special case for the Wiki
+try:
+    from ikaaro.wiki import WikiFolder
+except ImportError:
+    WikiFolder = None
 
 # Import from itws
 from about import About
@@ -105,8 +109,16 @@ class NeutralSkin(FoBoFooterAwareSkin):
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
     not_allowed_cls_for_sidebar_view = [ITWSTracker, ITWSTracker.issue_class,
-                                        WikiFolder, SlideShow, Slide, RssFeeds]
+                                        SlideShow, Slide, RssFeeds]
     manage_buttons = []
+
+
+    def get_not_allowed_cls_for_sidebar_view(self):
+        types = self.not_allowed_cls_for_sidebar_view[:] # copy
+        if WikiFolder:
+            types.append(WikiFolder)
+        return types
+
 
     def get_backoffice_class(self, context):
         # backoffice class
@@ -253,9 +265,9 @@ class NeutralSkin(FoBoFooterAwareSkin):
         namespace['body_css'] = body_css
 
         # Sidebar
+        nacfsv = self.get_not_allowed_cls_for_sidebar_view()
         sidebar = None
-        not_allowed = isinstance(here,
-                                 tuple(self.not_allowed_cls_for_sidebar_view))
+        not_allowed = isinstance(here, tuple(nacfsv))
         navnfsv = self.not_allowed_view_name_for_sidebar_view
         if context.view_name not in navnfsv and not not_allowed:
             sidebar_resource = self.get_sidebar_resource(context)
