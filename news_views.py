@@ -376,7 +376,13 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
         if column == 'pub_datetime':
-            return brain.pub_datetime
+            # FIXME If no news/tagsaware resources have not been indexed
+            # pub_datetime index does not exist and brain.pub_datetime
+            # raise an error
+            newsfolder = item_resource.parent
+            if isinstance(item_resource, newsfolder.news_class):
+                return brain.pub_datetime
+            return
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
 
