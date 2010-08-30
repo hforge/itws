@@ -570,3 +570,10 @@ fieldset legend{
 #page.wikipage-edit #contentbar {
   width: auto;
 }
+
+/**************************************************************************
+ * Slideshow
+ * ***********************************************************************/
+#page.slide-view #contentbar {
+  width: 100%;
+}
