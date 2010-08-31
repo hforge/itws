@@ -219,7 +219,7 @@ class NeutralWS_RSS(BaseRSS):
         brain, item_resource = item
         if column == 'pubDate':
             if isinstance(item_resource, TagsAware):
-                return brain.date_of_writing
+                return brain.pub_datetime
             else:
                 return brain.mtime
         elif column == 'title':

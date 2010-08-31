@@ -320,25 +320,11 @@ class NewsFolder_RSS(BaseRSS):
         abspath = resource.get_canonical_path()
         return [ get_base_path_query(str(abspath)),
                  PhraseQuery('workflow_state', 'public'),
-                 RangeQuery('date_of_writing', min_date, today)]
+                 RangeQuery('pub_datetime', min_date, today)]
 
 
     def get_allowed_formats(self, resource, context):
         return [resource.news_class.class_id]
-
-
-    def _sort_and_batch(self, resource, context, results):
-        items = results.get_documents(sort_by='date_of_writing', reverse=True)
-        return items
-
-
-    def get_item_value(self, resource, context, item, column, site_root):
-        brain, item_resource = item
-        if column == 'pubDate':
-            return brain.date_of_writing
-
-        return BaseRSS.get_item_value(self, resource, context, item,
-                                      column, site_root)
 
 
 
