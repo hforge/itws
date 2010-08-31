@@ -510,18 +510,25 @@ class BoxSectionNews_View(Box_View):
             # if the user cannot edit the box
             self.set_view_is_empty(True)
 
+        site_root = resource.get_site_root()
+        namespace['newsfolder'] = news_folder
+        newfolder_cls_title = site_root.newsfolder_class.class_title
+        namespace['newsfolder_cls_title'] = newfolder_cls_title
         namespace['title'] = title
         namespace['items'] = items
         namespace['display'] = items_number != 0
         # more link
-        more_title = self.more_title.gettext().encode('utf-8')
-        tags = resource.get_property('tags')
-        link = context.get_link(news_folder)
-        if tags:
-            # FIXME Do not add tags to query if all tags are selected
-            query =  {'tags': tags}
-            link = '%s?%s' % (link, encode_query(query))
-        namespace['more'] = {'href': link, 'title': more_title}
+        more_link = None
+        if news_folder:
+            more_title = self.more_title.gettext().encode('utf-8')
+            tags = resource.get_property('tags')
+            link = context.get_link(news_folder)
+            if tags:
+                # FIXME Do not add tags to query if all tags are selected
+                query =  {'tag': tags}
+                link = '%s?%s' % (link, encode_query(query))
+            more_link = {'href': link, 'title': more_title}
+        namespace['more'] = more_link
 
         return namespace
 

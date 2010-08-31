@@ -4,31 +4,37 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <stl:block stl:if="items">
-    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
-    <div class="content">
-      <div class="newsitem ${item/css}" stl:repeat="item items">
-        <a stl:if="item/thumbnail" href="${item/path}" class="image-link">
-          <img src="${item/thumbnail}/;download" />
-        </a>
-        <div class="summary">
-          <div class="newsitem-date">${item/pub_datetime}</div>
-          <div class="newsitem-title">
-            <a href="${item/path}">${item/long_title}</a>
+  <stl:block stl:if="newsfolder">
+    <stl:block stl:if="items">
+      <h3 stl:if="title" class="title" title="${title}">${title}</h3>
+      <div class="content">
+        <div class="newsitem ${item/css}" stl:repeat="item items">
+          <a stl:if="item/thumbnail" href="${item/path}" class="image-link">
+            <img src="${item/thumbnail}/;download" />
+          </a>
+          <div class="summary">
+            <div class="newsitem-date">${item/pub_datetime}</div>
+            <div class="newsitem-title">
+              <a href="${item/path}">${item/long_title}</a>
+            </div>
           </div>
+          <div class="clear" />
         </div>
+        <a class="more" href="${more/href}" title="${more/title}">${more/title}</a>
         <div class="clear" />
       </div>
-      <a class="more" href="${more/href}" title="${more/title}">${more/title}</a>
-      <div class="clear" />
-    </div>
+    </stl:block>
+
+    <stl:block stl:if="not items">
+      <h3 stl:if="title" class="title" title="${title}">${title}</h3>
+      <div class="content">
+        No news to show
+      </div>
+    </stl:block>
   </stl:block>
 
-  <stl:block stl:if="not items">
-    <h3 stl:if="title" class="title" title="${title}">${title}</h3>
-    <div class="content">
-      No news to show
-    </div>
+  <stl:block stl:if="not newsfolder">
+    There is currently no ${newsfolder_cls_title}.
   </stl:block>
 
 </stl:block>
