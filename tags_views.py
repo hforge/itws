@@ -91,22 +91,6 @@ class Tag_RSS(BaseRSS):
         return query
 
 
-    def get_if_modified_since_query(self, resource, context, if_modified_since):
-        if not if_modified_since:
-            return []
-        return AndQuery(RangeQuery('date_of_writing', if_modified_since,
-                                   None),
-                        NotQuery(PhraseQuery('date_of_writing',
-                                             if_modified_since)))
-
-
-    def _sort_and_batch(self, resource, context, results):
-        size = self.get_max_items_number(resource, context)
-        items = results.get_documents(sort_by='date_of_writing',
-                                      reverse=True, size=size)
-        return items
-
-
     def get_excluded_container_paths(self, resource, context):
         site_root = resource.get_site_root()
         site_root_abspath = site_root.get_abspath()
@@ -118,9 +102,7 @@ class Tag_RSS(BaseRSS):
 
     def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
-        if column == 'pubDate':
-            return brain.date_of_writing
-        elif column == 'description':
+        if column == 'description':
             view = getattr(item_resource, 'tag_view',
                            getattr(item_resource, 'view'))
             if view:
