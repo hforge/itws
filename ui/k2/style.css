@@ -571,9 +571,13 @@ fieldset legend{
 /* Do not force contentbar width for specific views */
 #page.itws-tracker-view #contentbar,
 #page.itws-issue-edit #contentbar,
-#page.wikipage-view #contentbar,
 #page.wikipage-edit #contentbar {
   width: auto;
+}
+
+/* Do not hide sidebar on wiki view, just add overflow:hidden to pre */
+#page.wikipage-view #contentbar .literal-block {
+  overflow: auto;
 }
 
 /**************************************************************************
