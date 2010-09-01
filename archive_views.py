@@ -24,7 +24,7 @@ from itools.handlers import guess_encoding
 from itools.html import HTMLParser, stream_to_str_as_xhtml
 from itools.i18n import guess_language
 from itools.uri import Path
-from itools.web import FormError
+from itools.web import FormError, ERROR
 
 # Import from ikaaro
 from ikaaro.file import Archive, TarArchive
@@ -61,7 +61,7 @@ class Archive_ExtractTo(AutoForm):
     title = MSG(u'Extract archive')
 
     schema = {'target': PathDataType(madatory=True)}
-    widgets = [PathSelectorWidget('target', title=MSG(u'Target'),
+    widgets = [PathSelectorWidget('target', title=MSG(u'Target folder'),
                                   action='select_folder')]
 
     def _get_form(self, resource, context):
@@ -70,7 +70,18 @@ class Archive_ExtractTo(AutoForm):
         target = form['target']
         target_resource = resource.get_resource(target, soft=True)
         if isinstance(target_resource, Folder) is False:
-            raise FormError(invalid=['target'])
+            message = ERROR(u'Target folder does not exist')
+            raise FormError(message, invalid=['target'])
+
+        # Check if the target is inside the current site root
+        # Note, absolute paths are relative to site root
+        site_root = resource.get_site_root()
+        target_site_root = target_resource.get_site_root()
+        if target.is_absolute() is False:
+            if site_root.get_abspath() != target_site_root.get_abspath():
+                message = ERROR(u'Target folder is outside of the current '
+                                u'website')
+                raise FormError(message, invalid=['target'])
 
         # Check the name is free
         if target_resource.get_resource(resource.name, soft=True) is not None:
@@ -131,6 +142,12 @@ class Archive_ExtractTo(AutoForm):
 
     def action(self, resource, context, form):
         target = form['target']
+        # Check target
+        if target.is_absolute():
+            # Force the target to be inside site_root
+            abspath = resource.get_site_root().get_abspath()
+            target = abspath.resolve2('.%s' % target)
+
         fcls = Folder
         target_resource = resource.get_resource(target, soft=True)
         archive_folder = fcls.make_resource(fcls, target_resource,
