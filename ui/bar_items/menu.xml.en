@@ -8,9 +8,8 @@
     <h3 stl:if="title" class="title" title="${title}">${title}</h3>
     <div class="content">
       <ul>
-        <li stl:repeat="item menu/items" id="${item/id}">
-          <a href="${item/path}" title="${item/title}"
-             target="${item/target}" class="${item/class}">
+        <li stl:repeat="item menu/items" id="${item/id}" class="${item/class}">
+          <a href="${item/path}" title="${item/title}" target="${item/target}">
             ${item/title}
           </a>
         </li>
