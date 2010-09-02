@@ -519,7 +519,7 @@ class File_NewInstance(BaseFile_NewInstance):
 class DBResource_Links(Folder_BrowseContent):
     """Links are the list of resources used by this resource."""
 
-    access = 'is_allowed_to_view'
+    access = 'is_allowed_to_edit'
     title = MSG(u"Links")
     icon = 'rename.png'
 
@@ -579,7 +579,7 @@ class DBResource_Backlinks(DBResource_Links):
 class DBResource_CompositeLinks(CompositeForm):
 
     title = MSG(u'Links/Backlinks')
-    access = 'is_allowed_to_view'
+    access = 'is_allowed_to_edit'
     template = '/ui/common/cascade.xml'
     subviews = [ DBResource_Links(), DBResource_Backlinks() ]
 
