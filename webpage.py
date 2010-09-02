@@ -77,7 +77,12 @@ class WebPage(BaseWebPage, TagsAware):
             section_cls = site_root.section_class
             wsdata_cls = site_root.wsdatafolder_class
             if isinstance(parent, (section_cls, wsdata_cls)):
+                parent_view = parent.get_view('manage_view')
+                if parent_view is None:
+                    # not found
+                    return None
                 return GoToSpecificDocument(specific_document='..',
+                        access = parent_view.access,
                         specific_view='manage_view',
                         title=MSG(u'Manage parent section'))
         return None
