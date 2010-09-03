@@ -30,7 +30,6 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.buttons import Button
 from ikaaro.forms import ImageSelectorWidget, SelectRadio, TextWidget
 from ikaaro.forms import stl_namespaces
 from ikaaro.views import CompositeForm
@@ -45,8 +44,7 @@ from utils import set_navigation_mode_as_edition
 from utils import set_navigation_mode_as_navigation
 from views import BaseManageLink, BaseManageContent
 from views import BaseRSS, ProxyContainerNewInstance
-from views import SmartOrderedTable_View, SmartOrderedTable_Ordered
-from views import SmartOrderedTable_Unordered, BarAwareBoxAwareNewInstance
+from views import BarAwareBoxAwareNewInstance
 from website import WebSite_Edit
 
 
@@ -429,10 +427,6 @@ class WSDataFolder_ManageLink(BaseManageLink):
         left_items = []
         right_items = []
 
-        site_root = resource.parent
-        order_table = site_root.get_resource(site_root.order_path)
-        ordered_classes = order_table.get_orderable_classes()
-
         left_items.append({'path': './;new_resource',
                            'class': 'add',
                            'title': MSG(u'Add Resource: Image, PDF, ODT...')})
@@ -479,56 +473,6 @@ class WSDataFolder_ManageView(CompositeForm):
 
     subviews = [WSDataFolder_ManageLink(),
                 WSDataFolder_ManageContent()]
-
-
-
-class WSDataFolder_ArticleNewInstance(ProxyContainerNewInstance):
-
-    actions = [Button(access='is_allowed_to_edit',
-                      name='new_article', title=MSG(u'Add'))]
-
-    # SmartOrderedTable_View API
-    title = title_description = None
-
-    def _get_resource_cls(self, resource, context):
-        here = context.resource
-        # FIXME Get the first orderable classes
-        # orderable classes SHOULD always contains ONE class
-        return here.get_orderable_classes()[0]
-
-
-    def _get_container(self, resource, context):
-        # Parent ws-data folder
-        return resource.parent
-
-
-    def _get_goto(self, resource, context, form):
-        name = form['name']
-        # Assume that the resource already exists
-        container = self._get_container(resource, context)
-        child = container.get_resource(name)
-        return '%s/;edit' % context.get_link(child)
-
-
-    def action_new_article(self, resource, context, form):
-        return ProxyContainerNewInstance.action_default(self, resource,
-                context, form)
-
-
-
-class WSDataFolder_OrderedTable_View(SmartOrderedTable_View):
-
-    subviews = [ WSDataFolder_ArticleNewInstance(),
-                 SmartOrderedTable_Ordered(),
-                 SmartOrderedTable_Unordered() ]
-
-    def _get_form(self, resource, context):
-        for view in self.subviews:
-            method = getattr(view, context.form_action, None)
-            if method is not None:
-                form_method = getattr(view, '_get_form')
-                return form_method(resource, context)
-        return None
 
 
 

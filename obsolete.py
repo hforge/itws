@@ -21,6 +21,7 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
+from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
 
 # Import from itws
@@ -37,6 +38,12 @@ from webpage import WebPage
 ################################################################################
 # Update changement fonctionnement section and ws-data
 ################################################################################
+class WSOrderedTable(ResourcesOrderedTable):
+
+    class_id = 'neutral-ws-ordered-table'
+
+
+
 class BoxSectionWebpages(Box):
 
     class_id = 'contentbar-box-articles'
@@ -59,6 +66,7 @@ class BoxWebsiteWebpages(BoxSectionWebpages):
 
 
 
+register_resource_class(WSOrderedTable)
 register_resource_class(BoxSectionWebpages)
 register_resource_class(BoxWebsiteWebpages)
 

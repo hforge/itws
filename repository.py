@@ -449,18 +449,6 @@ class SidebarBoxesOrderedTable(BoxesOrderedTable):
             u'in the sidebar by adding them to the above ordered list.')
 
 
-    def _reduce_orderable_classes(self, types):
-        here = get_context().resource
-        site_root = here.get_site_root()
-        if isinstance(here.parent, site_root.wsdatafolder_class):
-            repository = site_root.get_repository()
-            # Disable section_sidebar_children_toc_view_cls
-            if types.count(repository.section_sidebar_children_toc_view_cls):
-                types.remove(repository.section_sidebar_children_toc_view_cls)
-
-        return types
-
-
 
 class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
@@ -497,23 +485,11 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
     order_root_path = property(_get_order_root_path)
 
 
-    def _reduce_orderable_classes(self, types):
-        here = get_context().resource
-        site_root = here.get_site_root()
-        if isinstance(here.parent, site_root.section_class):
-            repository = site_root.get_repository()
-            # Disable website_articles_view_cls
-            if types.count(repository.website_articles_view_cls):
-                types.remove(repository.website_articles_view_cls)
-
-        return types
-
-
 
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100621'
+    class_version = '20100624'
     class_title = MSG(u'Sidebar Boxes Repository')
     class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -697,7 +673,6 @@ class Repository(Folder):
     def update_20100609(self):
         # Remove obsolete SidebarBox_SectionSiblingsToc
         from itools.xapian import PhraseQuery
-        from obsolete import ContentBoxSectionChildrenToc
 
         old_name = 'sidebar-siblings-toc'
         box = self.get_resource(old_name, soft=True)
@@ -782,6 +757,12 @@ class Repository(Folder):
             metadata.format = new_cls.class_id
             metadata.version = new_cls.class_version
 
+
+    def update_20100624(self):
+        self.del_resource('articles-view')
+        #self.del_resource('content-children-toc')
+        #self.del_resource('sidebar-children-toc')
+        self.del_resource('website-articles-view')
 
 
 ###########################################################################

@@ -57,6 +57,7 @@ class Bar_View(STLView):
     admin_bar_prefix_name = None
     boxes_css_class = None
     box_view = BarBox_View
+    container_cls = None
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -120,7 +121,11 @@ class Bar_View(STLView):
         items = []
 
         # FIXME Add the section to the context for section TOC views
-        context._section = resource
+        _section = resource
+        while isinstance(_section, self.container_cls) is False:
+            _section = _section.parent
+        context._section = _section
+        context._bar_aware = _section
 
         for item in self._get_items(resource, context, check_acl=True):
             view = item.view
@@ -177,6 +182,12 @@ class SideBar_View(Bar_View):
     admin_bar_prefix_name = 'sidebar-box'
     boxes_css_class = 'sidebar-box'
 
+
+    @property
+    def container_cls(self):
+        return SideBarAware
+
+
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
@@ -210,6 +221,12 @@ class ContentBar_View(Bar_View):
     order_label = MSG(u'Order Central Part Boxes')
     admin_bar_prefix_name = 'contentbar-box'
     boxes_css_class = 'contentbar-box'
+
+
+    @property
+    def container_cls(self):
+        return ContentBarAware
+
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()

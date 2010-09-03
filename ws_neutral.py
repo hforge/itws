@@ -44,7 +44,6 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import stl_namespaces
 from ikaaro.future.menu import MenuFolder, Menu
-from ikaaro.future.order import ResourcesOrderedContainer, ResourcesOrderedTable
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.skins import register_skin, Skin
@@ -84,7 +83,6 @@ from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import WSDataFolderBoxAwareNewInstance
-from ws_neutral_views import WSDataFolder_OrderedTable_View
 from ws_neutral_views import NeutralWS_BarAwareBoxAwareNewInstance
 
 
@@ -473,44 +471,59 @@ class WSDataFolder(ManageViewAware, Folder):
 
 
     def update_20100623(self):
+        from repository import HTMLContent
+
         # Webpage -> HTMLContent
         wp_schema = WebPage.get_metadata_schema()
         htmlcontent_schema = HTMLContent.get_metadata_schema()
         schema_diff = set(wp_schema).difference(set(htmlcontent_schema))
 
-        for item in resource.search_resources(format=WebPage.class_id):
+        site_root = self.parent
+        # Order content
+        content_table = site_root.get_resource(site_root.contentbar_name)
+        ct_handler = content_table.get_handler()
+        # Order Articles
+        order_resources = self.get_resource('order-resources')
+
+        for item in self.search_resources(format=WebPage.class_id):
             item.metadata.format = HTMLContent.class_id
             item.metadata.version = HTMLContent.class_version
             for key in schema_diff:
                 item.del_property(key)
             item.metadata.set_changed()
 
+        # order items
+        or_handler = order_resources.get_handler()
+        try:
+            records = or_handler.get_records_in_order()
+        except IOError:
+            # empty table (xxx.metadata exists but xxx does not)
+            records = []
 
+        for record in records:
+            name = or_handler.get_record_value(record, 'name')
+            content_table.add_new_record({'name': name})
 
-class WSOrderedTable(ResourcesOrderedTable):
+        # Remove obsolete website-articles-view
+        try:
+            records = ct_handler.get_records_in_order()
+        except IOError:
+            # empty table (xxx.metadata exists but xxx does not)
+            records = []
+            records = []
 
-    class_id = 'neutral-ws-ordered-table'
-    order_root_path = '..' # Parent ws-data folder
+        for record in records:
+            name = ct_handler.get_record_value(record, 'name')
+            if name == 'website-articles-view':
+                content_table.del_record(record.id)
+                break
 
-    view = WSDataFolder_OrderedTable_View()
-    # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Homepage "Webpages Slot"')
-    ordered_view_title_description = MSG(
-            u'The homepage has a webpages slot, you can add several '
-            u'webpages to it and order them.')
-    unordered_view_title = MSG(u'Available Webpages')
-    unordered_view_title_description = MSG(
-            u'These webpages are available, '
-            u'you can make them visible in the homepage webpages slot '
-            u'by adding them to the ordered list.')
-
-    def get_orderable_classes(self):
-        return [ self.parent.parent.get_article_class() ]
+        self.del_resource('order-resources')
 
 
 
 class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
-                ResourcesOrderedContainer, WebSite):
+                WebSite):
 
     class_id = 'neutral'
     class_version = '20100628'
@@ -521,9 +534,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
-    # Order Articles
-    order_path = 'ws-data/order-resources'
-    order_class = WSOrderedTable
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__
                           + ['style', 'menu', 'about',
@@ -557,9 +567,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         cls2 = website_class.wsdatafolder_class
         cls2._make_resource(cls2, ws_folder, 'ws-data',
                 title={default_language: MSG(u'Configure Homepage').gettext()})
-        # Make the table for ResourcesOrderedContainer
-        order_class = cls.order_class
-        order_class._make_resource(order_class, ws_folder, cls.order_path)
         # SideBarAware
         SideBarAware._make_resource(cls, folder, name, **kw)
         sidebar_table = website.get_resource(cls.sidebar_name)
@@ -1050,7 +1057,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 ############################################################
 register_resource_class(NeutralWS)
 register_resource_class(WSDataFolder)
-register_resource_class(WSOrderedTable)
 register_document_type(NeutralWS, BaseWebSite.class_id)
 
 ###################

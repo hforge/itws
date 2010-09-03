@@ -799,7 +799,7 @@ class ContentBoxSectionChildrenToc_View(Box_View):
     def get_items(self, resource, context):
         user = context.user
         # Only display on a section view
-        section = context.resource
+        section = context._bar_aware
 
         items = []
         names = list(section.get_ordered_names())

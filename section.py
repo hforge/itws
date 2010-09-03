@@ -35,7 +35,7 @@ from ikaaro.table import OrderedTableFile
 
 # Import from itws
 from bar import SideBarAware, ContentBarAware
-from repository import Repository
+from repository import Repository, ContentBoxSectionChildrenToc
 from resources import ManageViewAware
 from section_views import SectionOrderedTable_View
 from section_views import Section_Edit, Section_View, Section_ManageView
@@ -110,7 +110,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         table_name = cls.contentbar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
         _cls = ContentBoxSectionChildrenToc
-        _cls.make_resource(cls, self, 'children-toc')
+        _cls._make_resource(cls, folder, '%s/children-toc' % name)
         table.add_new_record({'name': 'children-toc'})
         # Preorder specific sidebar items
         table_name = cls.sidebar_name
