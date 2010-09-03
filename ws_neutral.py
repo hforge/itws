@@ -85,6 +85,7 @@ from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import WSDataFolderBoxAwareNewInstance
 from ws_neutral_views import WSDataFolder_OrderedTable_View
+from ws_neutral_views import NeutralWS_BarAwareBoxAwareNewInstance
 
 
 
@@ -394,6 +395,31 @@ class AdminPopupSkin(Skin):
 ############################################################
 # Web Site
 ############################################################
+from itools.web import STLView
+class WSDataFolder_WP_to_HtmlContent(STLView):
+
+    access = 'is_admin'
+
+    def GET(self, resource, context):
+        from repository import HTMLContent
+
+        wp_schema = WebPage.get_metadata_schema()
+        htmlcontent_schema = HTMLContent.get_metadata_schema()
+        schema_diff = set(wp_schema).difference(set(htmlcontent_schema))
+
+        context.commit = True
+        for item in resource.search_resources(format=WebPage.class_id):
+            item.metadata.format = HTMLContent.class_id
+            item.metadata.version = HTMLContent.class_version
+            for key in schema_diff:
+                item.del_property(key)
+            item.metadata.set_changed()
+            context.database.change_resource(item)
+
+        return '/'
+
+
+
 class WSDataFolder(ManageViewAware, Folder):
 
     class_id = 'neutral-ws-data'
@@ -417,13 +443,14 @@ class WSDataFolder(ManageViewAware, Folder):
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
 
+    wp_to_htmlcontent = WSDataFolder_WP_to_HtmlContent()
 
     def get_internal_use_resource_names(self):
         return freeze(self.__fixed_handlers__)
 
 
     def get_document_types(self):
-        return [ self.parent.get_article_class(), File ]
+        return [ File ]
 
 
     def get_ordered_names(self, context=None):
@@ -977,6 +1004,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     add_new_article = NeutralWS_ArticleNewInstance()
     fo_switch_mode = NeutralWS_FOSwitchMode()
     # ws-data helper, call from ws-data, goto to ws-data
+    new_contentbar_resource = NeutralWS_BarAwareBoxAwareNewInstance()
     ws_data_new_contentbar_resource = WSDataFolderBoxAwareNewInstance(
             is_content=True)
     ws_data_new_sidebar_resource = WSDataFolderBoxAwareNewInstance(

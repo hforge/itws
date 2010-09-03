@@ -51,7 +51,6 @@ from repository_views import BoxSectionNews_Preview
 from repository_views import BoxSectionNews_View
 from repository_views import BoxSectionWebpages_View
 from repository_views import BoxTags_View, BoxTags_Preview
-from repository_views import BoxWebsiteWebpages_View
 from repository_views import Box_Preview
 from repository_views import BoxesOrderedTable_View
 from repository_views import ContentBoxSectionChildrenToc_View
@@ -209,9 +208,22 @@ class HTMLContent(WebPage):
 
     @classmethod
     def get_metadata_schema(cls):
-        return merge_dicts(WebPage.get_metadata_schema(),
-                           title_link=String(),
-                           title_link_target=Target(default='_top'))
+        schema = merge_dicts(WebPage.get_metadata_schema(),
+                             title_link=String(),
+                             title_link_target=Target(default='_top'))
+        # Not tagsaware
+        #del schema['tags'] # Can not delete tags dur to *_links methods
+        del schema['pub_datetime']
+        return schema
+
+
+    def _get_catalog_values(self):
+        values = WebPage._get_catalog_values(self)
+        # Not tagsaware
+        del values['tags']
+        del values['pub_datetime']
+        values['is_tagsaware'] = False
+        return values
 
 
     def can_paste_into(self, target):
@@ -388,7 +400,7 @@ class BoxWebsiteWebpages(BoxSectionWebpages):
     class_description = MSG(u'Display the ordered webpages of the homepage')
     class_views = ['edit_state', 'backlinks']
 
-    view = BoxWebsiteWebpages_View()
+    #view = BoxWebsiteWebpages_View()
 
     def get_admin_edit_link(self, context):
         return '/ws-data/order-resources'
@@ -502,6 +514,20 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
     unordered_view_title_description = MSG(
             u'These boxes are available, you can make them visible '
             u'in the central part by adding them to the above ordered list.')
+
+
+    def get_order_root(self):
+        return self.parent
+        #return self.get_site_root().get_repository()
+
+
+    def _get_order_root_path(self):
+        root = self.get_order_root()
+        if root:
+            return self.get_pathto(root)
+        return None
+
+    order_root_path = property(_get_order_root_path)
 
 
     def _reduce_orderable_classes(self, types):
@@ -847,8 +873,8 @@ register_box(BoxSectionChildrenToc,
 register_box(BoxNewsSiblingsToc, allow_instanciation=False)
 register_box(BoxSectionWebpages, allow_instanciation=False,
              is_content=True, is_side=False)
-register_box(BoxWebsiteWebpages, allow_instanciation=False,
-             is_content=True, is_side=False)
+#register_box(BoxWebsiteWebpages, allow_instanciation=False,
+#             is_content=True, is_side=False)
 register_box(ContentBoxSectionChildrenToc, allow_instanciation=False,
              is_content=True, is_side=False)
 register_box(ContentBoxSectionNews, allow_instanciation=True,

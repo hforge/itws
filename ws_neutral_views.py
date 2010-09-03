@@ -258,6 +258,51 @@ class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
 
 
 
+class NeutralWS_BarAwareBoxAwareNewInstance(BarAwareBoxAwareNewInstance):
+
+    is_content = True
+    is_side = None
+
+    def _get_container(self, resource, context):
+        site_root = resource.get_site_root()
+        return site_root.get_resource('ws-data')
+
+
+
+class NeutralWS_ContentBar_View(ContentBar_View):
+
+    def _get_items(self, resource, context, check_acl=True):
+        from warnings import warn
+
+        # resource == NeutralWS
+        print resource, resource.get_abspath()
+        order = resource.get_resource(self.order_name, soft=True)
+        if order:
+            orderfile = order.handler
+            user = context.user
+            # resources are order in the parent of resource
+            # /ws-data/order-contentbar
+            repository = resource.get_resource(self.repository_path)
+            order = orderfile.get_records_in_order()
+            items = []
+
+            for record in order:
+                name = orderfile.get_record_value(record, 'name')
+                item = repository.get_resource(name, soft=True)
+                if item is None:
+                    path = resource.get_abspath()
+                    warn('%s > bar item not found: %s' % (path, name))
+                    continue
+                if check_acl:
+                    ac = item.get_access_control()
+                    if ac.is_allowed_to_view(user, item) is False:
+                        continue
+
+                print u'yield %s %s' % (item, item.get_abspath())
+                yield item
+
+
+
 class NeutralWS_View(STLView):
 
     access = 'is_allowed_to_view'
@@ -265,7 +310,8 @@ class NeutralWS_View(STLView):
     template = '/ui/common/Neutral_view.xml'
 
     subviews = {'contentbar_view':
-            ContentBar_View(order_name='ws-data/order-contentbar'),
+            NeutralWS_ContentBar_View(order_name='ws-data/order-contentbar',
+                                      repository_path='ws-data'),
                 'sidebar_view':
             SideBar_View(order_name='ws-data/order-sidebar')}
 
@@ -413,14 +459,6 @@ class WSDataFolder_ManageLink(BaseManageLink):
         site_root = resource.parent
         order_table = site_root.get_resource(site_root.order_path)
         ordered_classes = order_table.get_orderable_classes()
-
-        left_items.append({'path': './order-resources',
-                           'class': 'add',
-                           'title': MSG(u'Add Webpages in the Homepage View')})
-
-        left_items.append({'path': './order-resources',
-                           'class': 'order child',
-                           'title': MSG(u'Order Webpages in the Homepage View')})
 
         left_items.append({'path': './;new_resource',
                            'class': 'add',

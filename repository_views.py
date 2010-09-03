@@ -1008,24 +1008,6 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
 
 
 
-class BoxWebsiteWebpages_View(BoxSectionWebpages_View):
-
-
-    def get_articles_container(self, resource, context):
-        site_root = resource.get_site_root()
-        return site_root.get_resource('ws-data')
-
-
-    def get_article_class(self, resource, context):
-        site_root = resource.get_site_root()
-        return site_root.get_article_class()
-
-
-    def is_article_one_by_one(self, resource, context):
-        return False
-
-
-
 class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
 
     access = 'is_allowed_to_view'
