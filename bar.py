@@ -87,12 +87,16 @@ class Bar_View(STLView):
         return True
 
 
+    def _get_repository(self, resource, context):
+        return resource.get_site_root().get_repository()
+
+
     def _get_items(self, resource, context, check_acl=True):
         order = resource.get_resource(self.order_name, soft=True)
         if order:
             orderfile = order.handler
             user = context.user
-            repository = resource.get_site_root().get_repository()
+            repository = self._get_repository(resource, context)
             order = orderfile.get_records_in_order()
             items = []
 
@@ -222,6 +226,11 @@ class ContentBar_View(Bar_View):
                         'target': None})
 
         return buttons
+
+
+    def _get_repository(self, resource, context):
+        return resource.get_site_root().get_repository()
+
 
 
 

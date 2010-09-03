@@ -26,14 +26,49 @@ from ikaaro.registry import register_resource_class
 # Import from itws
 from repository import BoxSectionChildrenToc, BoxNewsSiblingsToc
 from repository import BoxSectionNews, BoxTags
-from repository import BoxSectionWebpages, BoxWebsiteWebpages
 from repository import ContentBoxSectionChildrenToc, SidebarBoxesOrderedTable
 from repository import ContentbarBoxesOrderedTable
 from repository import register_box, Box
+from repository_views import Box_View
 from sidebar import TwitterSideBar, MenuSideBar
 from webpage import WebPage
 
 
+################################################################################
+# Update changement fonctionnement section and ws-data
+################################################################################
+class BoxSectionWebpages(Box):
+
+    class_id = 'contentbar-box-articles'
+    view = Box_View()
+
+    def get_admin_edit_link(self, context):
+        return './order-section'
+
+
+
+class BoxWebsiteWebpages(BoxSectionWebpages):
+
+    class_id = 'ws-neutral-box-articles'
+    class_title = MSG(u"Website's Webpages")
+    class_description = MSG(u'Display the ordered webpages of the homepage')
+    view = Box_View()
+
+    def get_admin_edit_link(self, context):
+        return '/ws-data/order-resources'
+
+
+
+register_resource_class(BoxSectionWebpages)
+register_resource_class(BoxWebsiteWebpages)
+
+register_box(BoxSectionWebpages, allow_instanciation=False,
+             is_content=True, is_side=False)
+register_box(BoxWebsiteWebpages, allow_instanciation=False,
+             is_content=True, is_side=False)
+
+
+################################################################################
 
 # ws_neutral.NeutralWS.update_20100429
 # Remove Obsolete article class
@@ -142,3 +177,6 @@ register_box(SidebarItemsOrderedTable)
 register_box(ContentbarItemsOrderedTable, is_side=False, is_content=True)
 register_box(OldTwitterSideBar)
 register_box(OldMenuSideBar)
+
+
+

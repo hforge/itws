@@ -423,7 +423,7 @@ class WSDataFolder_WP_to_HtmlContent(STLView):
 class WSDataFolder(ManageViewAware, Folder):
 
     class_id = 'neutral-ws-data'
-    class_version = '20100519'
+    class_version = '20100623'
     class_title = MSG(u'Website data folder')
     __fixed_handlers__ = [SideBarAware.sidebar_name,
                           ContentBarAware.contentbar_name,
@@ -470,6 +470,20 @@ class WSDataFolder(ManageViewAware, Folder):
         if not titles:
             self.set_property('title', MSG(u'Configure Homepage').gettext(),
                               languages[0])
+
+
+    def update_20100623(self):
+        # Webpage -> HTMLContent
+        wp_schema = WebPage.get_metadata_schema()
+        htmlcontent_schema = HTMLContent.get_metadata_schema()
+        schema_diff = set(wp_schema).difference(set(htmlcontent_schema))
+
+        for item in resource.search_resources(format=WebPage.class_id):
+            item.metadata.format = HTMLContent.class_id
+            item.metadata.version = HTMLContent.class_version
+            for key in schema_diff:
+                item.del_property(key)
+            item.metadata.set_changed()
 
 
 
@@ -557,9 +571,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # ContentBarAware
         ContentBarAware._make_resource(cls, folder, name, **kw)
         contentbar_table = website.get_resource(cls.contentbar_name)
-        # Preorder specific contentbar boxes
-        item_name = Repository.website_articles_view_name
-        contentbar_table.add_new_record({'name': item_name})
         # index
         section_class = cls.section_class
         section_class._make_resource(section_class, ws_folder, 'index',
@@ -982,6 +993,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         if about is None:
             cls = About
             cls.make_resource(cls, self, 'about', title={'en': u'About'})
+
 
 
     # User Interface

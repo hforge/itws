@@ -271,35 +271,10 @@ class NeutralWS_BarAwareBoxAwareNewInstance(BarAwareBoxAwareNewInstance):
 
 class NeutralWS_ContentBar_View(ContentBar_View):
 
-    def _get_items(self, resource, context, check_acl=True):
-        from warnings import warn
+    order_name = 'ws-data/order-contentbar'
 
-        # resource == NeutralWS
-        print resource, resource.get_abspath()
-        order = resource.get_resource(self.order_name, soft=True)
-        if order:
-            orderfile = order.handler
-            user = context.user
-            # resources are order in the parent of resource
-            # /ws-data/order-contentbar
-            repository = resource.get_resource(self.repository_path)
-            order = orderfile.get_records_in_order()
-            items = []
-
-            for record in order:
-                name = orderfile.get_record_value(record, 'name')
-                item = repository.get_resource(name, soft=True)
-                if item is None:
-                    path = resource.get_abspath()
-                    warn('%s > bar item not found: %s' % (path, name))
-                    continue
-                if check_acl:
-                    ac = item.get_access_control()
-                    if ac.is_allowed_to_view(user, item) is False:
-                        continue
-
-                print u'yield %s %s' % (item, item.get_abspath())
-                yield item
+    def _get_repository(self, resource, context):
+        return resource.get_resource('ws-data')
 
 
 
@@ -309,9 +284,7 @@ class NeutralWS_View(STLView):
     title = MSG(u'Website View')
     template = '/ui/common/Neutral_view.xml'
 
-    subviews = {'contentbar_view':
-            NeutralWS_ContentBar_View(order_name='ws-data/order-contentbar',
-                                      repository_path='ws-data'),
+    subviews = {'contentbar_view': NeutralWS_ContentBar_View(),
                 'sidebar_view':
             SideBar_View(order_name='ws-data/order-sidebar')}
 

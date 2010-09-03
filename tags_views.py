@@ -29,7 +29,7 @@ from itools.html import stream_to_str_as_xhtml
 from itools.uri import encode_query
 from itools.web import STLView, get_context
 from itools.xapian import AndQuery, PhraseQuery
-from itools.xapian import RangeQuery, NotQuery, split_unicode
+from itools.xapian import split_unicode
 
 # Import from ikaaro
 from ikaaro.buttons import Button

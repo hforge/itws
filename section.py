@@ -19,8 +19,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze, merge_dicts
-from itools.datatypes import String, Boolean
+from itools.core import freeze
+from itools.datatypes import String
 from itools.gettext import MSG
 from itools.web import get_context
 
@@ -85,7 +85,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
-    class_version = '20100622'
+    class_version = '20100623'
     class_title = MSG(u'Section')
     class_description = MSG(u'Section allows to customize the central part '
                             u'and the sidebar. Section can contain subsections')
@@ -95,7 +95,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
-                          + ['order-section'])
+                          + ['order-section', 'children-toc'])
     # Order Articles
     order_path = 'order-section'
     order_class = SectionOrderedTable
@@ -109,9 +109,9 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         # Preorder specific contentbar items
         table_name = cls.contentbar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        for name2 in (Repository.section_content_children_toc_view_name,
-                      Repository.section_articles_view_name):
-            table.add_new_record({'name': name2})
+        _cls = ContentBoxSectionChildrenToc
+        _cls.make_resource(cls, self, 'children-toc')
+        table.add_new_record({'name': 'children-toc'})
         # Preorder specific sidebar items
         table_name = cls.sidebar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
@@ -119,12 +119,6 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         table.add_new_record({'name': name2})
         name2 = Repository.news_items_name
         table.add_new_record({'name': name2})
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(Folder.get_metadata_schema(),
-                           show_one_article=Boolean)
 
 
     def get_internal_use_resource_names(self):
@@ -189,6 +183,34 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
     def update_20100622(self):
         ContentBarAware.update_20100622(self)
+
+
+    def update_20100623(self):
+        """
+        Remove show_one_article
+        """
+        cls = ContentBoxSectionChildrenToc
+        table = self.get_resource(self.contentbar_name)
+        handler = table.handler
+        repository = self.get_site_root().get_repository()
+
+        for record in handler.get_records():
+            name = handler.get_record_value(record, 'name')
+            item = repository.get_resource(name, soft=True)
+            if item is None:
+                table.del_record(record.id)
+                continue
+            if item.class_id == cls.class_id:
+                self.copy_resource(str(item.get_abspath()),
+                                   'children-toc')
+                table.update_record(record.id, **{'name': 'children-toc'})
+
+        # Create the toc and order it
+        if self.get_resource('children-toc', soft=True) is None:
+            cls.make_resource(cls, self, 'children-toc')
+            table.add_new_record({'name': 'children-toc'})
+
+        self.del_property('show_one_article')
 
 
     edit = Section_Edit()

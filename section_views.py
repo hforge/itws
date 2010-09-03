@@ -20,8 +20,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.uri import Path
@@ -31,9 +29,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.buttons import Button
-from ikaaro.forms import BooleanCheckBox, timestamp_widget
 from ikaaro.forms import stl_namespaces, XHTMLBody
-from ikaaro.forms import title_widget, description_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views import CompositeForm
@@ -57,31 +53,11 @@ VisibilityTemplate = list(XMLParser(
 
 class Section_Edit(DBResource_Edit):
 
-    def get_schema(self, resource, context):
-        repository = resource.get_site_root().get_repository()
-        return merge_dicts(DBResource_Edit.schema, show_one_article=Boolean)
-
-
-    def get_widgets(self, resource, context):
-        # base widgets
-        widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
-        widgets = [title_widget,
-                   BooleanCheckBox('show_one_article',
-                                   title=MSG(u'Show webpage one by one')),
-                   description_widget, subject_widget,
-                   timestamp_widget]
-
-        return widgets
-
-
     def action(self, resource, context, form):
         DBResource_Edit.action(self, resource, context, form)
         # Check edit conflict
         if context.edit_conflict:
             return
-
-        # Sections
-        resource.set_property('show_one_article', form['show_one_article'])
 
         # Ok
         messages = [ MSG_CHANGES_SAVED ]
@@ -267,6 +243,16 @@ class SectionOrderedTable_View(SmartOrderedTable_View):
 ###########################################################################
 # Section view
 ###########################################################################
+class Section_ContentBar_View(ContentBar_View):
+
+    order_name = 'order-contentbar'
+
+    def _get_repository(self, resource, context):
+        # current section
+        return resource
+
+
+
 class Section_View(STLView):
 
     title = MSG(u'View')
@@ -276,7 +262,7 @@ class Section_View(STLView):
     # subviews = {view_name: view} OR {view_name: None}
     # The view can be dynamically generated and rendered inside
     # the method get_subviews_value.
-    subviews = {'contentbar_view': ContentBar_View()}
+    subviews = {'contentbar_view': Section_ContentBar_View()}
 
     def _get_real_section(self, resource, context):
         return resource

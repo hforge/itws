@@ -49,11 +49,10 @@ from repository_views import BoxSectionChildrenTree_View
 from repository_views import BoxSectionNews_Edit
 from repository_views import BoxSectionNews_Preview
 from repository_views import BoxSectionNews_View
-from repository_views import BoxSectionWebpages_View
+from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import BoxTags_View, BoxTags_Preview
 from repository_views import Box_Preview
 from repository_views import BoxesOrderedTable_View
-from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import ContentBoxSectionNews_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
@@ -374,38 +373,6 @@ class BoxNewsSiblingsToc(Box):
 
 
 
-###########################################################################
-# Contentbar resources
-###########################################################################
-class BoxSectionWebpages(Box):
-
-    class_id = 'contentbar-box-articles'
-    class_title = MSG(u"Section's Webpages")
-    class_description = MSG(u'Display the ordered webpages of the section')
-    class_views = ['edit_state', 'backlinks']
-
-    use_fancybox = False
-
-    view = BoxSectionWebpages_View()
-
-    def get_admin_edit_link(self, context):
-        return './order-section'
-
-
-
-class BoxWebsiteWebpages(BoxSectionWebpages):
-
-    class_id = 'ws-neutral-box-articles'
-    class_title = MSG(u"Website's Webpages")
-    class_description = MSG(u'Display the ordered webpages of the homepage')
-    class_views = ['edit_state', 'backlinks']
-
-    #view = BoxWebsiteWebpages_View()
-
-    def get_admin_edit_link(self, context):
-        return '/ws-data/order-resources'
-
-
 class ContentBoxSectionChildrenToc(Box):
 
     class_id = 'contentbar-box-children-toc'
@@ -565,14 +532,6 @@ class Repository(Folder):
     news_items_name = 'news'
     news_siblings_view_cls = BoxNewsSiblingsToc
     news_siblings_view_name = 'news-siblings'
-    section_articles_view_cls = BoxSectionWebpages
-    section_articles_view_name = 'articles-view'
-    section_content_children_toc_view_cls = ContentBoxSectionChildrenToc
-    section_content_children_toc_view_name = 'content-children-toc'
-    section_sidebar_children_toc_view_cls = BoxSectionChildrenToc
-    section_sidebar_children_toc_view_name = 'sidebar-children-toc'
-    website_articles_view_cls = BoxWebsiteWebpages
-    website_articles_view_name = 'website-articles-view'
 
     new_resource = None
     new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Box'),
@@ -589,30 +548,6 @@ class Repository(Folder):
         Folder._make_resource(cls, folder, name, **kw)
         state = 'public'
 
-        # Website view box
-        _cls = cls.website_articles_view_cls
-        _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.website_articles_view_name),
-                            title={'en': _cls.class_title.gettext()},
-                            state=state)
-        # section view box
-        _cls = cls.section_articles_view_cls
-        _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.section_articles_view_name),
-                            title={'en': _cls.class_title.gettext()},
-                            state=state)
-        # section content children toc
-        _cls = cls.section_content_children_toc_view_cls
-        _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_content_children_toc_view_name),
-                           title={'en': _cls.class_title.gettext()},
-                           state=state)
-        # section sidebar children toc
-        _cls = cls.section_sidebar_children_toc_view_cls
-        _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
-                           title={'en': _cls.class_title.gettext()},
-                           state=state)
         # news siblings box
         _cls = cls.news_siblings_view_cls
         _cls._make_resource(_cls, folder,
@@ -762,6 +697,7 @@ class Repository(Folder):
     def update_20100609(self):
         # Remove obsolete SidebarBox_SectionSiblingsToc
         from itools.xapian import PhraseQuery
+        from obsolete import ContentBoxSectionChildrenToc
 
         old_name = 'sidebar-siblings-toc'
         box = self.get_resource(old_name, soft=True)
@@ -859,8 +795,6 @@ register_resource_class(BoxSectionChildrenToc)
 register_resource_class(BoxNewsSiblingsToc)
 register_resource_class(SidebarBoxesOrderedTable)
 register_resource_class(ContentbarBoxesOrderedTable)
-register_resource_class(BoxSectionWebpages)
-register_resource_class(BoxWebsiteWebpages)
 register_resource_class(ContentBoxSectionChildrenToc)
 register_resource_class(ContentBoxSectionNews)
 
@@ -871,10 +805,6 @@ register_box(BoxTags, allow_instanciation=True)
 register_box(BoxSectionChildrenToc,
              allow_instanciation=False)
 register_box(BoxNewsSiblingsToc, allow_instanciation=False)
-register_box(BoxSectionWebpages, allow_instanciation=False,
-             is_content=True, is_side=False)
-#register_box(BoxWebsiteWebpages, allow_instanciation=False,
-#             is_content=True, is_side=False)
 register_box(ContentBoxSectionChildrenToc, allow_instanciation=False,
              is_content=True, is_side=False)
 register_box(ContentBoxSectionNews, allow_instanciation=True,

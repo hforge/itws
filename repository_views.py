@@ -24,7 +24,7 @@ from itools.core import merge_dicts
 from itools.datatypes import Integer, Enumerate
 from itools.datatypes import String
 from itools.gettext import MSG
-from itools.stl import stl, set_prefix
+from itools.stl import stl
 from itools.uri import encode_query
 from itools.web import BaseView, STLView
 from itools.xapian import AndQuery, PhraseQuery
@@ -37,7 +37,6 @@ from ikaaro.forms import stl_namespaces
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View
-from ikaaro.website import WebSite
 
 # Import from itws
 from tags_views import TagsList
@@ -640,7 +639,6 @@ class BoxSectionChildrenTree_View(Box_View):
     def _get_items(self, section, context, here_abspath):
         user = context.user
         section_link = context.get_link(section)
-        show_one_article = section.get_property('show_one_article')
         section_class = section.get_subsection_class()
         items = []
 
@@ -665,19 +663,14 @@ class BoxSectionChildrenTree_View(Box_View):
                 css = 'in-path'
             # link
             is_section = type(item) == section_class
-            if show_one_article or is_section:
-                path = context.get_link(item)
-            else:
-                path = '%s#%s' % (section_link, item.name)
+            path = context.get_link(item)
             # subsections
             if is_section:
                 if item_abspath.get_prefix(here_abspath) == item_abspath:
                     # deploy sub sections
                     sub_items = self._get_items(item, context, here_abspath)
                     # If there's only one sub item
-                    # and section do not show article one by one we hide subitem
-                    one_by_one = item.get_property('show_one_article')
-                    if one_by_one is False and len(sub_items) == 1:
+                    if len(sub_items) == 1:
                         sub_items = []
             items.append({'path': path, 'title': item.get_title(),
                 'class': css, 'sub_items': sub_items})
@@ -795,156 +788,18 @@ class BoxNewsSiblingsToc_View(BoxSectionNews_View):
 
 
 
+
 ################################################################################
-# Contentbar views
+# Section View (TOC)
 ################################################################################
-class BoxSectionWebpages_View(Box_View):
-
-    template = '/ui/bar_items/SectionWebpages_view.xml'
-
-    def GET(self, resource, context):
-        site_root = resource.get_site_root()
-        section_cls = site_root.section_class
-        here = context.resource
-        parent = here.parent
-        section = context._section
-        article_cls = section.get_article_class()
-        one_by_one = self.is_article_one_by_one(resource, context)
-        if (isinstance(here, section_cls) or
-            issubclass(here.__class__, WebSite)):
-            # Section
-            # Case (1)
-            if one_by_one is True:
-                # Articles are show one by one
-                # Do not display the box
-                self.set_view_is_empty(True)
-                return None
-
-            # Case (2)
-            return Box_View.GET(self, resource, context)
-
-        if isinstance(here, article_cls):
-            if one_by_one is True:
-                return Box_View.GET(self, resource, context)
-
-            # This case should not append
-            # Article view with all articles displayed in the section view
-            self.set_view_is_empty(True)
-            return None
-
-        # Default case, Bad resource not a section or an article
-        self.set_view_is_empty(True)
-        return None
-
-
-    def get_articles_container(self, resource, context):
-        return context._section
-
-
-    def get_article_class(self, resource, context):
-        section = context._section
-        return section.get_article_class()
-
-
-    def is_article_one_by_one(self, resource, context):
-        site_root = resource.get_site_root()
-        section_cls = site_root.section_class
-        section = context._section
-        if isinstance(section, section_cls):
-            # XXX
-            return section.get_property('show_one_article')
-        return False
-
-
-    def get_items(self, resource, context):
-        user = context.user
-        here = context.resource
-        article_container = self.get_articles_container(resource, context)
-        one_by_one = self.is_article_one_by_one(resource, context)
-        article_cls = self.get_article_class(resource, context)
-
-        items = []
-        if one_by_one is False:
-            names = list(article_container.get_ordered_names())
-            for name in names:
-                article = article_container.get_resource(name, soft=True)
-                if not article:
-                    continue
-                # Ignore subsections
-                if not isinstance(article, article_cls):
-                    continue
-                # Check security
-                ac = article.get_access_control()
-                if ac.is_allowed_to_view(user, article):
-                    items.append(article)
-        else:
-            items = [ context.resource ]
-
-        return items
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-        # Articles
-        user = context.user
-        article_container = self.get_articles_container(resource, context)
-        article_cls = self.get_article_class(resource, context)
-        articles = list(self.get_items(resource, context))
-        articles_view = []
-        article_view = article_cls.view
-        if len(articles):
-            # All articles are in the same folder
-            # Compute the prefix with the first one
-            prefix = resource.get_pathto(articles[0])
-
-            for article in articles:
-                stream = set_prefix(article_view.GET(article, context),
-                                    '%s/' % prefix)
-                articles_view.append(stream)
-        namespace['articles'] = articles_view
-
-        if len(articles) == 0 and self.is_admin(resource, context) is False:
-            # Hide the box if there is no articles and
-            # if the user cannot edit the box
-            self.set_view_is_empty(True)
-
-        return namespace
-
-
-
-class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
+class ContentBoxSectionChildrenToc_View(Box_View):
 
     template = '/ui/bar_items/ContentBoxSectionChildrenToc_view.xml'
 
-    def GET(self, resource, context):
-        site_root = resource.get_site_root()
-        section_cls = site_root.section_class
-        here = context.resource
-        parent = here.parent
-        section = context._section
-        article_cls = section.get_article_class()
-        one_by_one = self.is_article_one_by_one(resource, context)
-
-        if isinstance(here, section_cls):
-            return Box_View.GET(self, resource, context)
-
-        if isinstance(here, article_cls):
-            if one_by_one is False:
-                return Box_View.GET(self, resource, context)
-
-            # This case should not append
-            self.set_view_is_empty(True)
-            return None
-
-        # Default case, Bad resource not a section or an article
-        self.set_view_is_empty(True)
-        return None
-
-
     def get_items(self, resource, context):
         user = context.user
-        here = context.resource
-        section = context._section
+        # Only display on a section view
+        section = context.resource
 
         items = []
         names = list(section.get_ordered_names())
@@ -963,27 +818,16 @@ class ContentBoxSectionChildrenToc_View(BoxSectionWebpages_View):
     def get_namespace(self, resource, context):
         namespace = {}
         # Items
-        here = context.resource
         user = context.user
-        section = context._section
-        article_cls = section.get_article_class()
-        one_by_one = self.is_article_one_by_one(resource, context)
+        # Only display on a section view
+        section = context.resource
         items = list(self.get_items(resource, context))
         items_ns = []
-        if len(items):
-            for item in items:
-                if one_by_one is True:
-                    path = context.get_link(item)
-                else:
-                    if type(item) == article_cls:
-                        path = '%s#%s' % (context.get_link(item.parent),
-                                          item.name)
-                    else:
-                        path = context.get_link(item)
 
-                ns = {'title': item.get_title(),
-                      'path': path}
-                items_ns.append(ns)
+        for item in items:
+            ns = {'title': item.get_title(),
+                  'path': context.get_link(item)}
+            items_ns.append(ns)
 
         allowed_to_edit = self.is_admin(resource, context)
         min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0

@@ -434,6 +434,9 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
                         SelectRadio('order', title=MSG(u'Order box'),
                                     has_empty_option=False)])
 
+    def _get_container(self, resource, context):
+        return resource
+
 
     def _get_goto(self, resource, context, form):
         return context.get_link(resource)
