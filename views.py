@@ -477,6 +477,14 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
 
 
+class SideBarAwareNewInstance(BarAwareBoxAwareNewInstance):
+
+    def _get_container(self, resource, context):
+        site_root = resource.get_site_root()
+        return site_root.get_repository()
+
+
+
 class File_NewInstance(BaseFile_NewInstance):
 
     def get_schema(self, resource, context):
@@ -1352,7 +1360,11 @@ class AutomaticEditView(DBResource_Edit):
         if getattr(resource, 'edit_show_meta', False) is True:
             schema['description'] = Unicode(multilingual=True)
             schema['subject'] = Unicode(multilingual=True)
-        return merge_dicts(self.base_schema, schema, resource.edit_schema)
+        schema = merge_dicts(self.base_schema, schema, resource.edit_schema)
+        # FIXME Hide/Show title
+        if getattr(resource, 'display_title', True) is False:
+            del schema['title']
+        return schema
 
 
     def get_widgets(self, resource, context):
@@ -1365,6 +1377,11 @@ class AutomaticEditView(DBResource_Edit):
             widgets.append(state_widget)
         # Add timestamp_widget
         widgets.append(timestamp_widget)
+        # FIXME Hide/Show title
+        if getattr(resource, 'display_title', True) is False:
+            to_remove = [ w for w in widgets if w.name == 'title' ]
+            if to_remove:
+                widgets.remove(to_remove[0])
         return widgets
 
 

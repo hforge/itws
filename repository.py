@@ -31,7 +31,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_PreviewContent
+from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
 from ikaaro.forms import HTMLBody, PathSelectorWidget, rte_widget
 from ikaaro.forms import BooleanRadio, SelectWidget
@@ -320,6 +320,8 @@ class BoxTags(Box):
                               u'the tags from selected types of content'))
         ]
 
+    display_title = False
+
     def update_20100527(self):
         # format -> formats
         formats = self.get_property('format')
@@ -344,6 +346,7 @@ class BoxSectionChildrenToc(Box):
     # Box comfiguration
     edit_schema = hide_single_schema
     edit_widgets = [hide_single_widget]
+    display_title = False
 
     # Views
     view = BoxSectionChildrenTree_View()
@@ -395,8 +398,27 @@ class ContentBoxSectionChildrenToc(Box):
 ###########################################################################
 class BoxesOrderedTable(ResourcesOrderedTable):
 
+    class_views = ['view', 'manage_view', 'commit_log']
     allow_filter_key = None
     view = BoxesOrderedTable_View()
+
+
+    def get_view(self, name, query=None):
+        # Add helper for manage view
+        view = ResourcesOrderedTable.get_view(self, name, query)
+        if view:
+            return view
+        if name == 'manage_view':
+            parent_view = self.parent.get_view('manage_view')
+            if parent_view is None:
+                # not found
+                return None
+            return GoToSpecificDocument(specific_document='..',
+                    access = parent_view.access,
+                    specific_view='manage_view',
+                    title=parent_view.title)
+        return None
+
 
     def get_order_root(self):
         return self.get_site_root().get_repository()

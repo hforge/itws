@@ -252,6 +252,24 @@ class Section_ContentBar_View(ContentBar_View):
         return resource
 
 
+    def get_manage_buttons(self, resource, context):
+        ac = resource.get_access_control()
+        allowed = ac.is_allowed_to_edit(context.user, resource)
+        if not allowed:
+            return []
+
+        site_root = resource.get_site_root()
+        buttons = ContentBar_View.get_manage_buttons(self, resource, context)
+        section_path = context.get_link(resource)
+        order_section = resource.get_resource('order-section')
+        buttons.append({'path': context.get_link(order_section),
+                        'icon': '/ui/icons/16x16/html.png',
+                        'label': MSG(u'Add Web Page'),
+                        'target': None})
+
+        return buttons
+
+
 
 class Section_View(STLView):
 
@@ -320,11 +338,11 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-section',
                            'class': 'add',
-                           'title': MSG(u'Add Webpages in the Section View')})
+                           'title': MSG(u'Add Webpages in the Section')})
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order Webpages in the Section View')})
+                           'title': MSG(u'Order Webpages in the TOC')})
 
         left_items.append({'path': './order-section',
                            'class': 'order child',

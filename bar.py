@@ -29,7 +29,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
 from utils import get_admin_bar
-from views import BarAwareBoxAwareNewInstance
+from views import BarAwareBoxAwareNewInstance, SideBarAwareNewInstance
 
 
 
@@ -265,7 +265,7 @@ class SideBarAware(object):
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
         title=MSG(u'Order Sidebar Boxes'))
-    new_sidebar_resource = BarAwareBoxAwareNewInstance(
+    new_sidebar_resource = SideBarAwareNewInstance(
             title=MSG(u'Add Sidebar Box'), is_side=True)
 
     # Sidebar items

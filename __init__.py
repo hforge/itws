@@ -36,7 +36,7 @@ import turning_footer
 import webpage
 import ws_neutral
 # obsolete
-import obsolete
+#import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()

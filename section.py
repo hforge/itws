@@ -58,8 +58,9 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
     class_id = 'section-ordered-table'
     class_title = MSG(u'Order section')
-    class_views = ['view']
+    class_views = ['view', 'manage_view']
     class_handler = SectionOrderedTableFile
+
     view = SectionOrderedTable_View(title=MSG(u'Order Webpages/Sections'))
 
     # Order view title & description configuration
@@ -78,6 +79,23 @@ class SectionOrderedTable(ResourcesOrderedTable):
         return (WebPage, Section)
 
     orderable_classes = property(get_orderable_classes, None, None, '')
+
+
+    def get_view(self, name, query=None):
+        # Add helper for manage view
+        view = ResourcesOrderedTable.get_view(self, name, query)
+        if view:
+            return view
+        if name == 'manage_view':
+            parent_view = self.parent.get_view('manage_view')
+            if parent_view is None:
+                # not found
+                return None
+            return GoToSpecificDocument(specific_document='..',
+                    access = parent_view.access,
+                    specific_view='manage_view',
+                    title=MSG(u'Manage section'))
+        return None
 
 
 
@@ -188,6 +206,8 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     def update_20100623(self):
         """
         Remove show_one_article
+        Add children-toc into current section
+        And remove articles-view from ordered contentbar
         """
         cls = ContentBoxSectionChildrenToc
         table = self.get_resource(self.contentbar_name)
@@ -196,6 +216,9 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
         for record in handler.get_records():
             name = handler.get_record_value(record, 'name')
+            if name == 'articles-view':
+                table.del_record(record.id)
+                continue
             item = repository.get_resource(name, soft=True)
             if item is None:
                 table.del_record(record.id)
