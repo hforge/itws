@@ -20,7 +20,7 @@ from warnings import warn
 # Import form itools
 from itools.gettext import MSG
 from itools.stl import set_prefix
-from itools.web import STLView
+from itools.web import get_context, STLView
 
 # Import from ikaaro
 from ikaaro.folder_views import GoToSpecificDocument
@@ -268,11 +268,30 @@ class SideBarAware(object):
     new_sidebar_resource = BarAwareBoxAwareNewInstance(
             title=MSG(u'Add Sidebar Box'), is_side=True)
 
+    # Sidebar items
+    # (name, cls, ordered)
+    sidebar_items = []
+
+
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         cls2 = SidebarBoxesOrderedTable
         cls2._make_resource(cls2, folder,
                             '%s/%s' % (name, cls.sidebar_name))
+
+        # Preorder specific sidebar items
+        root = get_context().root
+        table_name = cls.sidebar_name
+        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        # FIXME state should be customizable
+        state = 'public'
+
+        for item in cls.sidebar_items:
+            name2, cls2, ordered = item
+            cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
+                                state=state)
+            if ordered:
+                table.add_new_record({'name': name2})
 
 
     def update_20100621(self):
@@ -298,11 +317,30 @@ class ContentBarAware(object):
     new_contentbar_resource = BarAwareBoxAwareNewInstance(
             title=MSG(u'Add Central Part Box'), is_content=True)
 
+    # Contentbar items
+    # (name, cls, ordered)
+    contentbar_items = []
+
+
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         cls2 = ContentbarBoxesOrderedTable
         cls2._make_resource(cls2, folder,
                             '%s/%s' % (name, cls.contentbar_name))
+
+        # Preorder specific contentbar items
+        root = get_context().root
+        table_name = cls.contentbar_name
+        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        # FIXME state should be customizable
+        state = 'public'
+
+        for item in cls.contentbar_items:
+            name2, cls2, ordered = item
+            cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
+                                state=state)
+            if ordered:
+                table.add_new_record({'name': name2})
 
 
     def update_20100622(self):

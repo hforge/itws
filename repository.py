@@ -508,6 +508,8 @@ class Repository(Folder):
     news_items_name = 'news'
     news_siblings_view_cls = BoxNewsSiblingsToc
     news_siblings_view_name = 'news-siblings'
+    section_sidebar_children_toc_view_cls = BoxSectionChildrenToc
+    section_sidebar_children_toc_view_name = 'sidebar-children-toc'
 
     new_resource = None
     new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Box'),
@@ -536,6 +538,12 @@ class Repository(Folder):
                             '%s/%s' % (name, cls.news_items_name),
                             title={'en': _cls.class_title.gettext()},
                             state=state)
+        # section sidebar children toc
+        _cls = cls.section_sidebar_children_toc_view_cls
+        _cls._make_resource(_cls, folder,
+                '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
+                           title={'en': _cls.class_title.gettext()},
+                           state=state)
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,

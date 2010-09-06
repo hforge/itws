@@ -100,24 +100,24 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     order_path = 'order-section'
     order_class = SectionOrderedTable
 
+    # Contentbar items
+    # (name, cls, ordered)
+    contentbar_items = [('children-toc', ContentBoxSectionChildrenToc, True)]
+
+
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         root = get_context().root
         ResourcesOrderedContainer._make_resource(cls, folder, name, **kw)
         SideBarAware._make_resource(cls, folder, name, **kw)
         ContentBarAware._make_resource(cls, folder, name, **kw)
-        # Preorder specific contentbar items
-        table_name = cls.contentbar_name
-        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        _cls = ContentBoxSectionChildrenToc
-        _cls._make_resource(cls, folder, '%s/children-toc' % name)
-        table.add_new_record({'name': 'children-toc'})
+
         # Preorder specific sidebar items
         table_name = cls.sidebar_name
         table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        name2 = Repository.section_sidebar_children_toc_view_name
-        table.add_new_record({'name': name2})
         name2 = Repository.news_items_name
+        table.add_new_record({'name': name2})
+        name2 = Repository.section_sidebar_children_toc_view_name
         table.add_new_record({'name': name2})
 
 
