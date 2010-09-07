@@ -613,7 +613,7 @@ class BoxSectionChildrenTree_View(Box_View):
     def GET(self, resource, context):
         from section import Section
 
-        section = context._section
+        section = context._bar_aware
         if isinstance(section, Section) is False:
             self.set_view_is_empty(True)
             return None

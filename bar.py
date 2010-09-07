@@ -124,7 +124,6 @@ class Bar_View(STLView):
         _section = resource
         while isinstance(_section, self.container_cls) is False:
             _section = _section.parent
-        context._section = _section
         context._bar_aware = _section
 
         for item in self._get_items(resource, context, check_acl=True):
@@ -146,7 +145,7 @@ class Bar_View(STLView):
             items.append(render_view.GET(resource, context))
 
         # FIXME Remove the section from the context for section TOC views
-        del context._section
+        del context._bar_aware
 
         return items
 
