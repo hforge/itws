@@ -448,7 +448,7 @@ class WSDataFolder(ManageViewAware, Folder):
 
 
     def get_document_types(self):
-        return [ File ]
+        return [ File, Folder ]
 
 
     def get_ordered_names(self, context=None):
@@ -471,7 +471,20 @@ class WSDataFolder(ManageViewAware, Folder):
 
 
     def update_20100623(self):
+        """WebPage -> HTMLContent
+        Del order-resources resource
+        Del website-articles-view
+        Copy contentbar items from repository into the current folder
+        """
+        from ikaaro.utils import generate_name
         from repository import HTMLContent
+
+        def _get_records(table):
+            try:
+                return list(table.handler.get_records_in_order())
+            except IOError:
+                # empty table (xxx.metadata exists but xxx does not)
+                return []
 
         # Webpage -> HTMLContent
         wp_schema = WebPage.get_metadata_schema()
@@ -494,30 +507,60 @@ class WSDataFolder(ManageViewAware, Folder):
 
         # order items
         or_handler = order_resources.get_handler()
-        try:
-            records = or_handler.get_records_in_order()
-        except IOError:
-            # empty table (xxx.metadata exists but xxx does not)
-            records = []
-
-        for record in records:
-            name = or_handler.get_record_value(record, 'name')
-            content_table.add_new_record({'name': name})
+        or_records = _get_records(order_resources)
 
         # Remove obsolete website-articles-view
-        try:
-            records = ct_handler.get_records_in_order()
-        except IOError:
-            # empty table (xxx.metadata exists but xxx does not)
-            records = []
-            records = []
+        content_records = _get_records(content_table)
 
-        for record in records:
+        repository = site_root.get_repository()
+        content_classes = repository._get_document_types(is_content=True)
+        content_classes = tuple(content_classes)
+        website_articles_view_index = None
+
+        # Remove potential broken records
+        for record in content_records:
+            name = ct_handler.get_record_value(record, 'name')
+            if name == 'articles-view':
+                content_table.del_record(record.id)
+                continue
+            item = repository.get_resource(name, soft=True)
+            if item is None:
+                # broken reference
+                content_table.del_record(record.id)
+                continue
+        content_records = _get_records(content_table)
+
+        # Get website-articles-view index
+        # Copy/rename contentbar items
+        for index, record in enumerate(content_records):
             name = ct_handler.get_record_value(record, 'name')
             if name == 'website-articles-view':
                 content_table.del_record(record.id)
-                break
+                website_articles_view_index = index
+                continue
+            item = repository.get_resource(name, soft=True)
+            if isinstance(item, content_classes):
+                name = generate_name(name, self.get_names(), '_content')
+                self.copy_resource(str(item.get_abspath()), name)
+                content_table.update_record(record.id, **{'name': name})
 
+        # Order old webpages
+        if website_articles_view_index is not None:
+            order = list(ct_handler.get_record_ids_in_order())
+            new_record_ids = []
+            for record in or_records:
+                name = or_handler.get_record_value(record, 'name')
+                r = content_table.add_new_record({'name': name})
+                new_record_ids.append(r.id)
+
+            # Tweak order
+            order = (order[:website_articles_view_index] + new_record_ids
+                     + order[website_articles_view_index+1:])
+            # Update the order
+            order = [ str(x) for x in order ]
+            ct_handler.update_properties(order=tuple(order))
+
+        # Delete obsolete order-resources table
         self.del_resource('order-resources')
 
 

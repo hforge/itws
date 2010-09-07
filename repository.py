@@ -225,10 +225,6 @@ class HTMLContent(WebPage):
         return values
 
 
-    def can_paste_into(self, target):
-        return isinstance(target, self.parent.__class__)
-
-
     def get_links(self):
         links = WebPage.get_links(self)
         base = self.get_canonical_path()
@@ -789,6 +785,7 @@ class Repository(Folder):
 
 
     def update_20100624(self):
+        # TODO remove obsolete content items
         self.del_resource('articles-view')
         #self.del_resource('content-children-toc')
         #self.del_resource('sidebar-children-toc')
