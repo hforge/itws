@@ -34,9 +34,33 @@ from ikaaro.views import CompositeForm
 
 # Import from itws
 from tags import Tag_View
+from tags_views import TagView_Viewbox
 from views import BaseRSS, ImproveDBResource_AddImage
 from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
+
+
+class NewsItem_Viewbox(TagView_Viewbox):
+
+
+    def _get_namespace(self, resource, context, column):
+        if column == 'title':
+            # Return title or to_text(long_title)
+            title = resource.get_property('title')
+            if title:
+                return title
+            # long title as text
+            long_title = resource.get_property('long_title')
+            if long_title:
+                return long_title
+            # Fallback
+            return resource.get_title()
+        elif column == 'tags':
+            tags = self.brain.tags
+            if tags:
+                return resource.get_news_tags_namespace(context)
+            return []
+        return TagView_Viewbox._get_namespace(self, resource, context, column)
 
 
 
@@ -229,27 +253,6 @@ class NewsFolder_View(Tag_View):
 
         # Ok
         return context.root.search(query)
-
-
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'title':
-            # Return title or to_text(long_title)
-            title = item_resource.get_property('title')
-            if title:
-                return title
-            # long title as text
-            long_title = item_resource.get_property('long_title')
-            if long_title:
-                return long_title
-            # Fallback
-            return item_resource.get_title()
-        elif column == 'tags':
-            tags = brain.tags
-            if tags:
-                return item_resource.get_news_tags_namespace(context)
-            return []
-        return Tag_View.get_item_value(self, resource, context, item, column)
 
 
     def get_tags_namespace(self, resource, context):

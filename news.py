@@ -43,7 +43,8 @@ from bar import SideBarAware
 from datatypes import PositiveIntegerNotNull
 from news_views import NewsFolder_View, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
-from news_views import NewsItem_Edit, NewsItem_View, NewsFolder_ManageView
+from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
+from news_views import NewsFolder_ManageView
 from repository import Repository
 from resources import ManageViewAware
 from tags import TagsAware
@@ -79,6 +80,8 @@ class NewsItem(WebPage):
     class_views = ['view', 'edit', 'manage_view', 'edit_state',
                    'backlinks', 'commit_log']
 
+
+    viewbox = NewsItem_Viewbox()
 
     @classmethod
     def get_metadata_schema(cls):

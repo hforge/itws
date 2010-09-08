@@ -120,6 +120,50 @@ class Tag_RSS(BaseRSS):
                                       column, site_root)
 
 
+class TagView_Viewbox(STLView):
+
+    template = '/ui/common/Tag_item_viewbox.xml.fr'
+
+    brain = None
+
+    # Configuration
+    more_title = MSG(u'Read more')
+    max_middle_pages = 5
+    thumb_width = thumb_height = 96
+
+
+    def _get_namespace(self, resource, context, column):
+        if column == 'pub_datetime':
+            return resource.get_pub_datetime_formatted()
+        elif column == 'title':
+            return resource.get_property('title')
+        elif column == 'link':
+            return context.get_link(resource)
+        elif column == 'preview':
+            return self.brain.preview_content
+        elif column == 'thumbnail':
+            thumbnail = resource.get_preview_thumbnail()
+            if thumbnail:
+                return context.get_link(thumbnail)
+            return None
+        elif column == 'tags':
+            tags = self.brain.tags
+            if tags:
+                return resource.get_tags_namespace(context)
+            return []
+
+
+    def get_namespace(self, resource, context):
+        namespace = {}
+        for key in ('pub_datetime', 'title', 'link', 'preview', 'tags',
+                    'thumbnail'):
+            namespace[key] = self._get_namespace(resource, context, key)
+        namespace['more_title'] = self.more_title
+        namespace['thumb_width'] = self.thumb_width
+        namespace['thumb_height'] = self.thumb_height
+        return namespace
+
+
 
 class Tag_View(BrowseFormBatchNumeric):
 
@@ -134,10 +178,6 @@ class Tag_View(BrowseFormBatchNumeric):
                                reverse=Boolean(default=True))
     search_template = None
     table_template = None
-    more_title = MSG(u'Read more')
-    max_middle_pages = 5
-    # thumb configuration
-    thumb_width = thumb_height = 96
 
 
     def get_items(self, resource, context, *args):
@@ -155,52 +195,20 @@ class Tag_View(BrowseFormBatchNumeric):
         return context.root.search(AndQuery(*args))
 
 
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'pub_datetime':
-            return item_resource.get_pub_datetime_formatted()
-        elif column == 'title':
-            return item_resource.get_property('title')
-        elif column == 'link':
-            return context.get_link(item_resource)
-        elif column == 'preview':
-            return brain.preview_content
-        elif column == 'thumbnail':
-            thumbnail = item_resource.get_preview_thumbnail()
-            if thumbnail:
-                return context.get_link(thumbnail)
-            return None
-        elif column == 'tags':
-            tags = brain.tags
-            if tags:
-                return item_resource.get_tags_namespace(context)
-            return []
-
-
-    def get_rows_namespace(self, resource, context, items):
-        rows = []
-        for item in items:
-            d = {}
-            for key in ('pub_datetime', 'title', 'link', 'preview', 'tags',
-                        'thumbnail'):
-                d[key] = self.get_item_value(resource, context, item, key)
-            rows.append(d)
-        return rows
-
 
     def get_namespace(self, resource, context):
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
-        # Get items
+        namespace['title'] = resource.get_property('title')
+        # Get viewboxes
+        base_viewbox = TagView_Viewbox()
         items = self.get_items(resource, context)
         items = self.sort_and_batch(resource, context, items)
-        rows = self.get_rows_namespace(resource, context, items)
-
-        namespace['title'] = resource.get_property('title')
-        namespace['items'] = rows
-        namespace['more_title'] = self.more_title
-        namespace['thumb_width'] = self.thumb_width
-        namespace['thumb_height'] = self.thumb_height
-
+        namespace['viewboxes'] = []
+        for item in items:
+            brain, item_resource = item
+            viewbox = getattr(item_resource, 'viewbox', base_viewbox)
+            viewbox.brain = brain
+            namespace['viewboxes'].append(viewbox.GET(item_resource, context))
         return namespace
 
 
