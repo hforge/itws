@@ -499,11 +499,11 @@ class WSDataFolder(ManageViewAware, Folder):
         order_resources = self.get_resource('order-resources')
 
         for item in self.search_resources(format=WebPage.class_id):
+            item.metadata.set_changed()
             item.metadata.format = HTMLContent.class_id
             item.metadata.version = HTMLContent.class_version
             for key in schema_diff:
                 item.del_property(key)
-            item.metadata.set_changed()
 
         # order items
         or_handler = order_resources.get_handler()

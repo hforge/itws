@@ -208,30 +208,97 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         Remove show_one_article
         Add children-toc into current section
         And remove articles-view from ordered contentbar
+        Copy contentbar htmlcontent inside the current section
         """
+        from ikaaro.utils import generate_name
+        from repository import HTMLContent
+
         cls = ContentBoxSectionChildrenToc
-        table = self.get_resource(self.contentbar_name)
-        handler = table.handler
+        contentbar_table = self.get_resource(self.contentbar_name)
+        contentbar_handler = contentbar_table.handler
         repository = self.get_site_root().get_repository()
 
-        for record in handler.get_records():
-            name = handler.get_record_value(record, 'name')
+        contentbar_records = contentbar_handler.get_records_in_order()
+        for index, record in enumerate(contentbar_records):
+            name = contentbar_handler.get_record_value(record, 'name')
             if name == 'articles-view':
-                table.del_record(record.id)
                 continue
             item = repository.get_resource(name, soft=True)
             if item is None:
-                table.del_record(record.id)
+                contentbar_table.del_record(record.id)
                 continue
             if item.class_id == cls.class_id:
                 self.copy_resource(str(item.get_abspath()),
                                    'children-toc')
-                table.update_record(record.id, **{'name': 'children-toc'})
+                contentbar_table.update_record(record.id,
+                                               **{'name': 'children-toc'})
 
-        # Create the toc and order it
+        # Create the toc
         if self.get_resource('children-toc', soft=True) is None:
             cls.make_resource(cls, self, 'children-toc')
-            table.add_new_record({'name': 'children-toc'})
+
+        # Remove articles-view record
+        articles_view_index = None
+        contentbar_records = list(contentbar_handler.get_records_in_order())
+        records_len = len(contentbar_records)
+        for index, record in enumerate(contentbar_records):
+            name = contentbar_handler.get_record_value(record, 'name')
+            if name == 'articles-view':
+                contentbar_table.del_record(record.id)
+                articles_view_index = index
+                if index > (len(contentbar_records) - 1):
+                    articles_view_index = index-1
+                break
+
+        if articles_view_index is not None:
+            order_resources = self.get_resource('order-section')
+            or_handler = order_resources.handler
+            webpages_order = []
+
+            # Webpage -> HTMLContent
+            wp_schema = WebPage.get_metadata_schema()
+            htmlcontent_schema = HTMLContent.get_metadata_schema()
+            schema_diff = set(wp_schema).difference(set(htmlcontent_schema))
+
+            for record in or_handler.get_records_in_order():
+                name = or_handler.get_record_value(record, 'name')
+                item = self.get_resource(name, soft=True)
+                if item is None:
+                    order_resources.del_record(record.id)
+                    continue
+                if isinstance(item, WebPage):
+                    webpages_order.append(name)
+                    for key in schema_diff:
+                        item.del_property(key)
+                    metadata = item.metadata
+                    metadata.set_changed()
+                    metadata.format = HTMLContent.class_id
+                    metadata.version = HTMLContent.class_version
+
+            # Order old webpages
+            order = list(contentbar_handler.get_record_ids_in_order())
+            new_record_ids = []
+            for name in webpages_order:
+                r = contentbar_table.add_new_record({'name': name})
+                new_record_ids.append(r.id)
+
+            # Tweak order
+            order = (order[:articles_view_index] + new_record_ids
+                     + order[articles_view_index:])
+            # Update the order
+            order = [ str(x) for x in order ]
+            contentbar_handler.update_properties(order=tuple(order))
+
+        # Copy/rename contentbar items
+        content_classes = repository._get_document_types(is_content=True)
+        content_classes = tuple(content_classes)
+        for record in contentbar_handler.get_records():
+            name = contentbar_handler.get_record_value(record, 'name')
+            item = repository.get_resource(name, soft=True)
+            if isinstance(item, content_classes):
+                name = generate_name(name, self.get_names(), '_content')
+                self.copy_resource(str(item.get_abspath()), name)
+                contentbar_table.update_record(record.id, **{'name': name})
 
         self.del_property('show_one_article')
 
