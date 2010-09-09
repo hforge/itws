@@ -122,13 +122,12 @@ class Tag_RSS(BaseRSS):
 
 class TagView_Viewbox(STLView):
 
-    template = '/ui/common/Tag_item_viewbox.xml.fr'
+    template = '/ui/common/Tag_item_viewbox.xml'
 
     brain = None
 
     # Configuration
     more_title = MSG(u'Read more')
-    max_middle_pages = 5
     thumb_width = thumb_height = 96
 
 
@@ -178,6 +177,7 @@ class Tag_View(BrowseFormBatchNumeric):
                                reverse=Boolean(default=True))
     search_template = None
     table_template = None
+    max_middle_pages = 5
 
 
     def get_items(self, resource, context, *args):

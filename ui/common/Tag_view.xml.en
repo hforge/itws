@@ -7,13 +7,11 @@
   <div id="tag-view">
     <h1 id="tag-title">${title}</h1>
 
-    <div class="item" stl:repeat="viewbox viewboxes">
+    <div stl:if="viewboxes" class="item" stl:repeat="viewbox viewboxes">
       ${viewbox}
     </div>
 
-    <p stl:if="not viewboxes">
-      There are 0 items.
-    </p>
+    <p stl:if="not viewboxes">There are 0 items.</p>
 
   </div>
   ${batch}

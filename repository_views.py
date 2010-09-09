@@ -934,9 +934,8 @@ class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
         namespace = NewsFolder_View.get_namespace(self, resource, context)
         namespace['title'] = resource.get_property('title')
 
-        items = namespace['items']
-
-        if len(items) == 0 and is_admin is False:
+        viewboxes = namespace['viewboxes']
+        if len(viewboxes) == 0 and is_admin is False:
             # Hide the box if there is no news and
             # if the user cannot edit the box
             self.set_view_is_empty(True)

@@ -13,7 +13,7 @@
     </stl:block>
   </div>
 
-  <div class="item" stl:repeat="viewbox viewboxes">
+  <div stl:if="viewboxes" class="item" stl:repeat="viewbox viewboxes">
     ${viewbox}
   </div>
 
