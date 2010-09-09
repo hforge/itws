@@ -22,14 +22,14 @@ from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.file import File as BaseFile
-from ikaaro.file_views import File_Download
+from ikaaro.file import File
+from ikaaro.file_views import File_Download, File_ExternalEdit_View
 from ikaaro.forms import SelectWidget, HTMLBody
 from ikaaro.forms import TextWidget, PathSelectorWidget
 from ikaaro.future.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class, register_field
 from ikaaro.resource_ import DBResource
-from ikaaro.text import Text
+from ikaaro.text import Text, encodings
 from ikaaro.text_views import Text_View
 from ikaaro.webpage import WebPage
 
@@ -57,12 +57,13 @@ class OrderTableAware(object):
 
 
 ############################################################
-# File/Image
+# File (Monky patch)
 ############################################################
-class File(BaseFile):
-
-    new_instance = File_NewInstance()
-
+File.new_instance = File_NewInstance()
+File.externaledit = File_ExternalEdit_View(
+        template='/ui/common/externaledit.xml')
+Text.externaledit = File_ExternalEdit_View(
+        template='/ui/common/externaledit.xml', encodings=encodings)
 
 
 ############################################################
@@ -239,7 +240,6 @@ class ManageViewAware(object):
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
-register_resource_class(File)
 register_resource_class(NotFoundPage, format='application/xhtml+xml')
 register_resource_class(RobotsTxt)
 
