@@ -40,16 +40,17 @@ from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
 
+
 class NewsItem_Viewbox(TagView_Viewbox):
 
 
     def _get_namespace(self, resource, context, column):
         if column == 'title':
-            # Return title or to_text(long_title)
+            # Return title or long_title
             title = resource.get_property('title')
             if title:
                 return title
-            # long title as text
+            # long title
             long_title = resource.get_property('long_title')
             if long_title:
                 return long_title
@@ -136,7 +137,7 @@ class NewsItem_View(STLView):
             edit = False
 
         namespace = {'id': self.id, 'pub_datetime': dow}
-        namespace['title'] = title #XMLParser(XHTMLBody.encode(title) or '')
+        namespace['title'] = title
         namespace['content'] = content
         namespace['is_allowed_to_edit'] = edit
         title_link = None
@@ -226,7 +227,7 @@ class NewsFolder_View(Tag_View):
     styles = ['/ui/news/style.css']
     query_schema = merge_dicts(Tag_View.query_schema,
                                batch_size=Integer(default=5),
-                               tags=String(multiple=True))
+                               tag=String(multiple=True))
     category_title = MSG(u"Category:") # FIXME Use plural forms
     category_title2 = MSG(u"Categories:")
 
@@ -242,7 +243,7 @@ class NewsFolder_View(Tag_View):
         # Build the query
         args = list(args)
         # Filter by tag
-        tags = context.get_query_value('tags', type=String(multiple=True))
+        tags = context.get_query_value('tag', type=String(multiple=True))
         query_terms = resource.get_news_query_terms(state='public', tags=tags)
         args.append(AndQuery(*query_terms))
 
