@@ -58,7 +58,7 @@ except ImportError:
     WikiFolder = None
 
 # Import from itws
-from about import About
+from about import AboutITWS
 from addresses import AddressesFolder
 from bar import ContentBarAware, SideBarAware, SideBar_View
 from common import FoBoFooterAwareSkin
@@ -569,7 +569,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
                 WebSite):
 
     class_id = 'neutral'
-    class_version = '20100628'
+    class_version = '20100629'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'manage_view', 'edit_ws_data',
                    'new_sidebar_resource', 'new_contentbar_resource',
@@ -579,7 +579,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__
-                          + ['style', 'menu', 'about',
+                          + ['style', 'menu', 'about-itws',
                              'footer', 'sitemap.xml', 'robots.txt',
                              'repository', 'images', 'turning-footer',
                              'tags', 'ws-data'])
@@ -680,16 +680,16 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # Init Website footer with 2 items
         for footer_name in website_class.footers:
             menu = website.get_resource('%s/menu' % footer_name)
-            title = Property(MSG(u'About').gettext(),
+            title = Property(MSG(u'Powered by itws').gettext(),
                              language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;about'})
+            menu.add_new_record({'title': title, 'path': '/about-itws'})
             title = Property(MSG(u'Contact us').gettext(),
                              language=default_language)
             menu.add_new_record({'title': title, 'path': '/;contact'})
         # About
-        cls = About
-        cls._make_resource(cls, folder, '%s/about' % name,
-                           title={'en': u'About'})
+        cls = AboutITWS
+        cls._make_resource(cls, folder, '%s/about-itws' % name,
+                           title={'en': u'About ITWS'})
 
 
     @classmethod
@@ -1035,15 +1035,43 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     def update_20100628(self):
         """Add about resource"""
-        about = self.get_resource('about', soft=True)
-        if about and isinstance(about, About) is False:
-            path = self.get_abspath().resolve2('about')
+        about = self.get_resource('about-itws', soft=True)
+        if about and isinstance(about, AboutITWS) is False:
+            path = self.get_abspath().resolve2('about-itws')
             raise RuntimeError, '%s resource already exists' % path
 
         if about is None:
-            cls = About
-            cls.make_resource(cls, self, 'about', title={'en': u'About'})
+            cls = AboutITWS
+            cls.make_resource(cls, self, 'about-itws',
+                              title={'en': u'About ITWS'})
 
+
+    def update_20100629(self):
+        from obsolete import About
+
+        # Case 1, Old about
+        resource = None
+        for resource in self.search_resources(format='about'):
+            break
+        if resource:
+            self.move_resource('about', 'about-itws')
+            about = self.get_resource('about-itws')
+            about.set_property('title', u'About ITWS', language='en')
+            about.metadata.set_changed()
+            about.metadata.format = AboutITWS.class_id
+            about.metadata.version = AboutITWS.class_version
+            return
+
+        # Case 2, New about
+        about_itws = self.get_resource('about-itws')
+        if about_itws and isinstance(about_itws, AboutITWS) is False:
+            path = self.get_abspath().resolve2('about-itws')
+            raise RuntimeError, '%s resource already exists' % path
+
+        if about_itws is None:
+            cls = AboutITWS
+            cls.make_resource(cls, self, 'about-itws',
+                              title={'en': u'About ITWS'})
 
 
     # User Interface

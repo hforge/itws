@@ -27,21 +27,21 @@ from ikaaro.registry import register_resource_class
 
 
 
-class About_View(STLView):
+class AboutITWS_View(STLView):
 
     access = True
-    title = MSG(u'About')
+    title = MSG(u'View')
     template='/ui/about/view.xml'
 
 
 
-class About(Folder):
+class AboutITWS(Folder):
 
-    class_id = 'about'
-    class_title = MSG(u'About')
+    class_id = 'about-itws'
+    class_title = MSG(u'About ITWS')
     class_views = ['view', 'edit', 'browse_content']
 
-    view = About_View()
+    view = AboutITWS_View()
     browse_content = Folder_BrowseContent(access='is_admin')
 
 
@@ -51,7 +51,7 @@ class About(Folder):
 
 
 
-register_resource_class(About)
+register_resource_class(AboutITWS)
 # Register skin
 path = get_abspath('ui/about')
 skin = Skin(path)

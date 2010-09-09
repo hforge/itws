@@ -75,6 +75,14 @@ class SiteMapView(BaseView):
         query = OrQuery(query,
                         PhraseQuery('abspath', str(abspath)))
 
+        # FIXME Should be customizable
+        # Add about-itws
+        about_itws_abspath = abspath.resolve2('about-itws')
+        query = OrQuery(query,
+                        PhraseQuery('abspath', str(about_itws_abspath)))
+
+        # TODO Do not include content/side bar items
+
         return query
 
 

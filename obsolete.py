@@ -21,6 +21,7 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
+from ikaaro.folder import Folder
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
 
@@ -75,6 +76,15 @@ register_box(BoxSectionWebpages, allow_instanciation=False,
 register_box(BoxWebsiteWebpages, allow_instanciation=False,
              is_content=True, is_side=False)
 
+
+################################################################################
+# About -> AboutITWS
+################################################################################
+class About(Folder):
+
+    class_id = 'about'
+
+register_resource_class(About)
 
 ################################################################################
 
