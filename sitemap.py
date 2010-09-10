@@ -71,6 +71,14 @@ class SiteMapView(BaseView):
         query1 = get_base_path_query(str(abspath))
         query = AndQuery(query, query1)
 
+        # Do not include content/side bar items
+        repository = site_root.get_repository()
+        bar_item_classes = repository._get_document_types()
+        bar_query = [ PhraseQuery('format', cls.class_id)
+                      for cls in bar_item_classes ]
+        bar_query = NotQuery(OrQuery(*bar_query))
+        query = AndQuery(query, bar_query)
+
         # Add site root -> /
         query = OrQuery(query,
                         PhraseQuery('abspath', str(abspath)))
@@ -80,8 +88,6 @@ class SiteMapView(BaseView):
         about_itws_abspath = abspath.resolve2('about-itws')
         query = OrQuery(query,
                         PhraseQuery('abspath', str(about_itws_abspath)))
-
-        # TODO Do not include content/side bar items
 
         return query
 
