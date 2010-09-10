@@ -513,8 +513,7 @@ class Repository(Folder):
     class_icon16 = 'bar_items/icons/16x16/repository.png'
     class_icon48 = 'bar_items/icons/48x48/repository.png'
     class_views = ['browse_content', 'new_resource_form',
-                   'new_sidebar_resource', 'new_contentbar_resource',
-                   'backlinks', 'commit_log']
+                   'new_sidebar_resource', 'backlinks', 'commit_log']
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
@@ -532,8 +531,6 @@ class Repository(Folder):
     new_resource = None
     new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Box'),
                                                is_side=True)
-    new_contentbar_resource = BoxAwareNewInstance(
-            title=MSG(u'Add Central Part Box'), is_content=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
@@ -583,7 +580,7 @@ class Repository(Folder):
 
     def get_document_types(self):
         return self._get_document_types(allow_instanciation=True,
-                                        is_content=True, is_side=True)
+                                        is_side=True)
 
 
     def can_paste(self, source):

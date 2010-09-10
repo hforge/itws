@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from urllib import quote
 from warnings import warn
 
 # Import from itools
@@ -31,11 +30,10 @@ from itools.xapian import AndQuery, PhraseQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
+from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import SelectWidget, TextWidget
 from ikaaro.forms import stl_namespaces
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
-from ikaaro.views_new import AddResourceMenu
 from ikaaro.webpage import WebPage_View
 
 # Import from itws
@@ -46,66 +44,15 @@ from views import SmartOrderedTable_View, AutomaticEditView
 from news_views import NewsFolder_View
 
 
+
 ################################################################################
 # Repository views
 ################################################################################
-
-class Repository_AddResourceMenu(AddResourceMenu):
-
-    is_content = None
-    is_side = None
-
-    def __init__(self, **kw):
-        for key in kw:
-            setattr(self, key, kw[key])
-
-
-    def get_items(self, resource, context):
-        base = '%s/;new_resource' % context.get_link(resource)
-        document_types = resource._get_document_types(
-                allow_instanciation=True,
-                is_content=self.is_content,
-                is_side=self.is_side)
-        return [
-            {'src': '/ui/' + cls.class_icon16,
-             'title': cls.class_title.gettext(),
-             'href': '%s?type=%s' % (base, quote(cls.class_id))}
-            for cls in document_types ]
-
-
-
-class Repository_NewResource(Folder_NewResource):
-
-    is_content = None
-    is_side = None
-
-    def get_namespace(self, resource, context):
-        items = [
-            {'icon': '/ui/' + cls.class_icon48,
-             'title': cls.class_title.gettext(),
-             'description': cls.class_description.gettext(),
-             'url': ';new_resource?type=%s' % quote(cls.class_id)
-            }
-            for cls in resource._get_document_types(
-                allow_instanciation=True,
-                is_content=self.is_content,
-                is_side=self.is_side) ]
-
-        return {
-            'batch': None,
-            'items': items}
-
-
 
 class Repository_BrowseContent(Folder_BrowseContent):
 
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
                                sort_by=String(default='format'))
-
-    context_menus = [ Repository_AddResourceMenu(is_side=True,
-                          title=MSG(u'Add Sidebar Box')),
-                      Repository_AddResourceMenu(is_content=True,
-                          title=MSG(u'Add Central Part Box'))]
 
     links_template = list(XMLParser("""
         <stl:block stl:repeat="item items">
