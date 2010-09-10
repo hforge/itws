@@ -210,6 +210,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         And remove articles-view from ordered contentbar
         Copy contentbar htmlcontent inside the current section
         """
+        from itools.xapian import PhraseQuery
         from ikaaro.utils import generate_name
         from repository import HTMLContent
         from repository import BoxSectionNews, ContentBoxSectionNews
@@ -287,6 +288,13 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
             order = list(contentbar_handler.get_record_ids_in_order())
             new_record_ids = []
             for name in webpages_order:
+                res = contentbar_handler.search(PhraseQuery('name', name))
+                if len(res):
+                    # rename the webpage if there is an item with the same name
+                    names = self.get_names() + repository.get_names()
+                    new_name = generate_name(name, names, '-html-content')
+                    self.move_resource(name, new_name)
+                    name = new_name
                 r = contentbar_table.add_new_record({'name': name})
                 new_record_ids.append(r.id)
 
