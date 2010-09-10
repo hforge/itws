@@ -212,6 +212,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         """
         from ikaaro.utils import generate_name
         from repository import HTMLContent
+        from repository import BoxSectionNews, ContentBoxSectionNews
 
         cls = ContentBoxSectionChildrenToc
         contentbar_table = self.get_resource(self.contentbar_name)
@@ -224,10 +225,10 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
             if name == 'articles-view':
                 continue
             item = repository.get_resource(name, soft=True)
-            if item is None:
+            if item is None or name == 'website-articles-view':
                 contentbar_table.del_record(record.id)
                 continue
-            if item.class_id == cls.class_id:
+            elif item.class_id == cls.class_id:
                 self.copy_resource(str(item.get_abspath()),
                                    'children-toc')
                 contentbar_table.update_record(record.id,
@@ -250,7 +251,14 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                     articles_view_index = index-1
                 break
 
-        if articles_view_index is not None:
+        # Webpage was display one by one or not ?
+        one_by_one = self.get_property('show_one_article')
+        try:
+            one_by_one = bool(one_by_one)
+        except ValueError:
+            one_by_one = False
+
+        if one_by_one is False and articles_view_index is not None:
             order_resources = self.get_resource('order-section')
             or_handler = order_resources.handler
             webpages_order = []
@@ -295,10 +303,18 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         for record in contentbar_handler.get_records():
             name = contentbar_handler.get_record_value(record, 'name')
             item = repository.get_resource(name, soft=True)
-            if isinstance(item, content_classes):
+            if isinstance(item, content_classes) \
+                    or isinstance(item, BoxSectionNews):
                 name = generate_name(name, self.get_names(), '_content')
                 self.copy_resource(str(item.get_abspath()), name)
                 contentbar_table.update_record(record.id, **{'name': name})
+                # FIXME To improve
+                if isinstance(item, BoxSectionNews):
+                    new_item = self.get_resource(name)
+                    metadata = new_item.metadata
+                    metadata.set_changed()
+                    metadata.format = ContentBoxSectionNews.class_id
+                    metadata.version = ContentBoxSectionNews.class_version
 
         self.del_property('show_one_article')
 
