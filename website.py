@@ -33,7 +33,7 @@ from ikaaro import messages
 from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.forms import MultilineWidget, ImageSelectorWidget
+from ikaaro.forms import MultilineWidget, ImageSelectorWidget, XHTMLBody
 from ikaaro.future.menu import MenuFolder
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Edit, DBResource_AddImage
@@ -95,8 +95,12 @@ class WebSite_Edit(DBResource_Edit):
     def get_widgets(self, resource, context):
         widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
         # custom_data
-        widgets.append(
-            MultilineWidget('custom_data', title=MSG(u'Custom Data'), rows=16))
+        ga_url = 'http://code.google.com/intl/en/apis/analytics/docs/tracking/asyncTracking.html'
+        ga_link = '<a href="%s" target="_blank">snippet</a>' % ga_url
+        msg = MSG(u'You can use this to insert e.g. Google Analytics {snippet}')
+        msg = msg.gettext(snippet=ga_link).encode('utf8')
+        title = XHTMLBody.decode(msg)
+        widgets.append(MultilineWidget('custom_data', title=title, rows=16))
         # favicon
         title = MSG(u'Replace favicon file (ICO 32x32 only)')
         title = title.gettext()
