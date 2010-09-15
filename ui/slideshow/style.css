@@ -46,6 +46,10 @@
   padding-bottom: 7px;
 }
 
+.slide-view .slideshow #toc ul li.selected {
+  list-style: square outside url("/ui/common/images/arrow.png");
+}
+
 .slide-view .slideshow #toc ul li a {
   text-decoration: none;
 }
