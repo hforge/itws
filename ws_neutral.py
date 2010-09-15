@@ -591,6 +591,22 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     tagsfolder_class = TagsFolder
     wsdatafolder_class = WSDataFolder
 
+    # CSS skeleton
+    css_skeleton = """/* CSS */
+#header {
+  background: #a11;
+}
+
+#header .header-toolbar {
+  background: #822;
+}
+
+#nav ul li a {
+  background: #822;
+}
+"""
+
+
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
         website_class = cls

@@ -159,6 +159,9 @@ class WebSite(BaseWebSite):
     menus = ()
     footers = ()
 
+    # CSS skeleton
+    css_skeleton = "/* CSS */"
+
 
     @staticmethod
     def _make_resource(cls, folder, name, **kw):
@@ -175,7 +178,7 @@ class WebSite(BaseWebSite):
 
         # Add CSS
         CSS._make_resource(CSS, ws_folder, 'style', extension='css',
-                           body='/* CSS */', title={'en': u'Style'},
+                           body=cls.css_skeleton, title={'en': u'Style'},
                            state='public')
         # Add 404 page
         NotFoundPage._make_resource(NotFoundPage, ws_folder, '404')
