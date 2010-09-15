@@ -319,6 +319,7 @@ class NeutralWS_FOSwitchMode(BaseView):
 
         referer = context.get_referrer()
         if referer:
+            # FIXME Check if referer is fo_switch_mode
             goto = referer
         else:
             goto = '/'

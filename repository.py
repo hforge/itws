@@ -429,6 +429,11 @@ class BoxesOrderedTable(ResourcesOrderedTable):
     order_root_path = property(_get_order_root_path)
 
 
+    def update_relative_links(self, source):
+        """Do not rewrite link, if the resource move."""
+        pass
+
+
     def _reduce_orderable_classes(self, types):
         return types
 

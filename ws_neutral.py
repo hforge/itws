@@ -1047,8 +1047,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
 
     def update_20100629(self):
-        from obsolete import About
-
         # Case 1, Old about
         resource = None
         for resource in self.search_resources(format='about'):
