@@ -594,15 +594,28 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     # CSS skeleton
     css_skeleton = """/* CSS */
 #header {
-  background: #a11;
+  /* background: #a11; */
+
+  /* Image source: http://www.flickr.com/photos/joebeone/2240389708/ */
+  /* Image license: http://creativecommons.org/licenses/by/2.0/deed.en */
+  background: url("../images/background-ties/;download") no-repeat scroll 0 0 transparent;
 }
 
+#header .login,
 #header .header-toolbar {
   background: #822;
 }
 
+#header .title a {
+  color: #822;
+}
+
 #nav ul li a {
   background: #822;
+}
+
+#nav ul li.in-path a {
+  background: #ecc;
 }
 """
 
@@ -649,6 +662,17 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # Add an image folder
         cls = ImagesFolder
         cls._make_resource(cls, ws_folder, 'images')
+        # Add default banner
+        path = get_abspath('data/k2-banner-ties.jpg')
+        body = open(path).read()
+        filename = name2 = 'background-ties.jpg'
+        name2, extension, language = FileName.decode(name2)
+        metadata = {'format': 'image/jpeg', 'filename': filename,
+                    'extension': extension, 'state': 'public',
+                    'body': body}
+        cls = Image
+        cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
+
         # Set a default banner
         if 'banner_title' not in kw:
             vhosts = website.get_property('vhosts')
