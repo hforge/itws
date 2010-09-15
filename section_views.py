@@ -334,7 +334,7 @@ class Section_ManageLink(BaseManageLink):
         left_items.append({'path': './;new_resource',
                            'class': 'add',
                            'title': MSG(u'Add Resource: Subsection, File, '
-                                        u'PDF, ODT')})
+                                        u'PDF, ODT...')})
 
         left_items.append({'path': './order-section',
                            'class': 'add',
@@ -342,11 +342,8 @@ class Section_ManageLink(BaseManageLink):
 
         left_items.append({'path': './order-section',
                            'class': 'order child',
-                           'title': MSG(u'Order Webpages in the TOC')})
-
-        left_items.append({'path': './order-section',
-                           'class': 'order child',
-                           'title': MSG(u'Order Subsections in the TOC')})
+                           'title': MSG(u'Order Webpages and Subsections in '
+                                        u'section TOC')})
 
         left_items.append({'path': './;new_contentbar_resource',
                            'class': 'add',

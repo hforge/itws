@@ -337,14 +337,14 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './;edit',
                       'class': 'edit',
-                      'title': MSG(u'Edit banner, favicon, skin...')})
+                      'title': MSG(u'Edit banner, favicon, skin, banner...')})
 
         items.append({'path': './;new_resource',
                       'class': 'add',
                       'title': MSG(u'Add Resource: Section, Wiki, Tracker, '
                                    u'RSS agregator...')})
 
-        items.append({'path': './tags',
+        items.append({'path': './tags/;manage_view',
                       'class': 'tags',
                       'title': MSG(u'Manage tags')})
 
@@ -354,11 +354,11 @@ class NeutralWS_ManageLink(BaseManageLink):
 
         items.append({'path': './footer',
                       'class': 'footer',
-                      'title': MSG(u'Edit footer')})
+                      'title': MSG(u'Manage footer')})
 
         items.append({'path': './turning-footer/menu',
                       'class': 'turning-footer',
-                      'title': MSG(u'Edit turning footer')})
+                      'title': MSG(u'Manage turning footer')})
 
         items.append({'path': './repository',
                       'class': 'repository',

@@ -216,7 +216,7 @@ class Tag_View(BrowseFormBatchNumeric):
 class TagsFolder_TagCloud(STLView):
     """Public view of the tags folder.
     """
-    title = MSG(u'Tag Cloud')
+    title = MSG(u'Tag Cloud Preview')
     access = 'is_allowed_to_view'
     template = '/ui/common/Tags_tagcloud.xml'
 
