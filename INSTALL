@@ -1,16 +1,13 @@
 Install with PIP
 ================
 
-Note: Since itools and ikaaro are not available in version 0.61.x on pypi
-It is currently impossible to install itws just with pip.
-
 itools and ikaaro installation via pip
 
 ::
 
    $ virtualenv .
-   $ ./bin/pip install itools
-   $ ./bin/pip install ikaaro
+   $ ./bin/pip install itools==0.61.4
+   $ ./bin/pip install ikaaro==0.61.4
    $ ./bin/pip install lpod-python (optional)
    $ ./bin/pip install lxml (required by lpod-python, optional)
    $ ./bin/pip install itws
