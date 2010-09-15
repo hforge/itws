@@ -77,13 +77,14 @@ class Slide(TagsAware, WebPage):
 
 
     def get_slide_image(self):
-        image = self.get_property('image')
-        if image is None:
-            image = self.parent.get_property('image')
-            if image is not None:
-                image = self.parent.get_resource(image, soft=True)
-        else:
-            image = self.get_resource(image, soft=True)
+        # FIXME PathDatatype is 'buggy'
+        path = self.get_property('image')
+        image = self.get_resource(path, soft=True)
+        if isinstance(image, Image) is False:
+            # parent
+            parent = self.parent
+            path = parent.get_property('image')
+            image = parent.get_resource(path)
 
         if isinstance(image, Image) is False:
             return None
