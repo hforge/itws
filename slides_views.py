@@ -23,12 +23,13 @@
 from itools.core import  merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
-from itools.web import STLView
+from itools.web import FormError, STLView
 from itools.xapian import split_unicode, PhraseQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.buttons import Button
+from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
 from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
@@ -102,7 +103,8 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
         return merge_dicts(HTMLEditView.get_schema(self, resource, context),
                            TagsAware_Edit.get_schema(self, resource, context),
                            long_title=Unicode, href=String,
-                           image=ImagePathDataType,
+                            # FIXME Should be ImagePathDataType
+                           image=String,
                            template_type=SlideTemplateType,
                            state=StateEnumerate)
 
@@ -125,7 +127,28 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
         if name in TagsAware_Edit.keys:
             return TagsAware_Edit.get_value(self, resource, context, name,
                                             datatype)
-        return HTMLEditView.get_value(self, resource, context, name, datatype)
+        value = HTMLEditView.get_value(self, resource, context, name, datatype)
+        # Image workaround
+        if name == 'image' and value == '.':
+            return ''
+        return value
+
+
+    def _get_form(self, resource, context):
+        form = HTMLEditView._get_form(self, resource, context)
+
+        # Check image
+        path = form['image']
+        if path:
+            image = resource.get_resource(path, soft=True)
+            if isinstance(image, Image) is False:
+                raise FormError
+        else:
+            # FIXME image datatype is ImagePathDataType
+            # String -> ImagePathDataType
+            form['image'] = ImagePathDataType.decode(path)
+
+        return form
 
 
     def action(self, resource, context, form):
@@ -161,7 +184,7 @@ class Slide_Edit(TagsAware_Edit, HTMLEditView):
 class SlideShow_Edit(DBResource_Edit):
 
     schema = merge_dicts(DBResource_Edit.schema, long_title=Unicode,
-                         image=ImagePathDataType,
+                         image=ImagePathDataType(mandatory=True, default=''),
                          toc_nb_col=PositiveIntegerNotNull,
                          template_type=SlideTemplateType)
 
@@ -271,7 +294,6 @@ class Slide_View(STLView):
         toc_ns = {'cols': cols}
 
         # Show slide's image or slideshow's image if any
-        image = resource.get_property('image')
         image = resource.get_slide_image()
         if image is not None:
             image = '%s/;download' % context.get_link(image)
@@ -370,7 +392,7 @@ class SlideShow_SlideNewInstance(ProxyContainerNewInstance):
 class SlideShow_ManageView(CompositeForm):
 
     access = 'is_allowed_to_edit'
-    title = MSG(u'Manage view')
+    title = MSG(u'Manage Slideshow')
 
     subviews = [ SlideShow_SlideNewInstance(),
                  SlideShow_BrowseContent() ]
