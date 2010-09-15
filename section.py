@@ -142,7 +142,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     def get_internal_use_resource_names(self):
         return freeze(SideBarAware.__fixed_handlers__ +
                       ContentBarAware.__fixed_handlers__ +
-                      ['order-section'])
+                      ['order-section', 'children-toc'])
 
 
     def get_document_types(self):

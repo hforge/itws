@@ -1092,7 +1092,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     add_new_article = NeutralWS_ArticleNewInstance()
     fo_switch_mode = NeutralWS_FOSwitchMode()
     # ws-data helper, call from ws-data, goto to ws-data
-    new_contentbar_resource = NeutralWS_BarAwareBoxAwareNewInstance()
+    new_contentbar_resource = NeutralWS_BarAwareBoxAwareNewInstance(
+            title=MSG(u'Add Central Part Box'))
     ws_data_new_contentbar_resource = WSDataFolderBoxAwareNewInstance(
             is_content=True)
     ws_data_new_sidebar_resource = WSDataFolderBoxAwareNewInstance(
