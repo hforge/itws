@@ -61,7 +61,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_views = ['view', 'manage_view']
     class_handler = SectionOrderedTableFile
 
-    view = SectionOrderedTable_View(title=MSG(u'Order Webpages/Sections'))
+    view = SectionOrderedTable_View(title=MSG(u'View'))
 
     # Order view title & description configuration
     @property
