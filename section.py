@@ -273,6 +273,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         except ValueError:
             one_by_one = False
 
+        new_record_ids = []
         if one_by_one is False and articles_view_index is not None:
             order_resources = self.get_resource('order-section')
             or_handler = order_resources.handler
@@ -300,7 +301,6 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
 
             # Order old webpages
             order = list(contentbar_handler.get_record_ids_in_order())
-            new_record_ids = []
             for name in webpages_order:
                 res = contentbar_handler.search(PhraseQuery('name', name))
                 if len(res):
@@ -323,6 +323,9 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         content_classes = repository._get_document_types(is_content=True)
         content_classes = tuple(content_classes)
         for record in contentbar_handler.get_records():
+            # Check if the content item is not an old webpage
+            if record.id in new_record_ids:
+                continue
             name = contentbar_handler.get_record_value(record, 'name')
             item = repository.get_resource(name, soft=True)
             if isinstance(item, content_classes) \
