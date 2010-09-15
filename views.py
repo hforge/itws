@@ -38,7 +38,8 @@ from ikaaro.file_views import File_NewInstance as BaseFile_NewInstance
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
-from ikaaro.forms import FileWidget, description_widget, subject_widget
+from ikaaro.forms import FileWidget, MultilineWidget
+from ikaaro.forms import description_widget, subject_widget
 from ikaaro.forms import title_widget, timestamp_widget, rte_widget
 from ikaaro.future.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -520,6 +521,31 @@ class File_NewInstance(BaseFile_NewInstance):
 
         # Ok
         return goto
+
+
+
+############################################################
+# RobotsTxt
+############################################################
+
+class RobotsTxt_Edit(Text_Edit):
+
+    schema = {'timestamp': DateTime(readonly=True), 'data': String}
+    widgets = [
+        timestamp_widget,
+        MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)]
+
+
+    def action(self, resource, context, form):
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        data = form['data']
+        resource.handler.load_state_from_string(data)
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
 
 
 

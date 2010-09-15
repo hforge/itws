@@ -35,7 +35,7 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
-from views import File_NewInstance
+from views import File_NewInstance, RobotsTxt_Edit
 from views import FooterMenu_View, NotFoundPage_Edit, BaseManage_Rename
 
 
@@ -81,10 +81,11 @@ class RobotsTxt(Text):
     class_id = 'robotstxt'
     class_title = MSG(u'Robots exclusion standard')
     class_views = ['view', 'edit', 'externaledit', 'download',
-                   'upload', 'edit_state', 'history']
+                   'upload', 'edit_state', 'commit_log']
 
-    view = Text_View(access='is_allowed_to_edit')
     download = File_Download(access=True)
+    edit = RobotsTxt_Edit()
+    view = Text_View(access='is_allowed_to_edit')
 
 
     @staticmethod
