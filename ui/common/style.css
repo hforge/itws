@@ -343,6 +343,8 @@
 .contentbar-box-section-news .item .pub-datetime {
   float: left;
   padding-right: 8px;
+  font-family: Tahoma,sans-serif;
+  font-style: italic;
 }
 
 .contentbar-box-section-news .item .tag {
