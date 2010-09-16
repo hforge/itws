@@ -316,7 +316,6 @@ class BoxTags(Box):
                               u'the tags from selected types of content'))
         ]
 
-    display_title = False
 
     def update_20100527(self):
         # format -> formats
