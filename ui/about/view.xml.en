@@ -5,12 +5,11 @@
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div class="content">
-    <p>Ce site est motorisé par
+    <p>This site is powered by
       <a href="http://www.itaapy.com/nos-solutions/itws-gestion-de-contenu-open-source"
-         title="itws">itws</a>
-      une solution open source de gestion de contenu développé par
-      <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>,
-      fournisseur de solution Open Source.
+         title="itws">itws</a>, an open source content management solution developped by
+       <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>, Free software
+       solutions provider in Paris.
     </p>
 
     <p>
@@ -21,25 +20,18 @@
 
     <p>
       <a href="http://www.itaapy.com/nos-solutions/itws-gestion-de-contenu-open-source"
-         title="itws">Itws</a>
-      est basé sur
+         title="itws">Itws</a> is based on
       <a href="http://www.itaapy.com/technologies/ikaaro-ged-open-source-et-plus"
-        title="iKaaro">iKaaro</a>,
-      CMS écrit en
+        title="iKaaro">iKaaro</a>, a
       <a href="http://www.itaapy.com/technologies/python"
-        title="Python">Python</a>,
-      s'appuyant sur
+        title="Python">Python</a> CMS, built upon
       <a href="http://www.itaapy.com/technologies/itools-boite-a-outils-des-programmes-documentaires"
-        title="itools">itools</a>
-      pour sa base de donnée objet et l'implémentation de standards,
+        title="itools">itools</a> providing the object database and standards formats manipulation,
       <a href="http://www.itaapy.com/technologies/git-gestion-de-version"
-         title="GIT">Git</a>
-      pour le versionning,
+         title="GIT">Git</a> for versionning
       <a href="http://www.itaapy.com/technologies/xapian-indexation-et-recherche-haute-performances"
-         title="Xapian">Xapian</a>
-      pour l'indexation,
-      <a href="http://live.gnome.org/LibSoup" title="Libsoup">Libsoup</a>
-      comme serveur HTTP.
+         title="Xapian">Xapian</a> for indexing and
+      <a href="http://live.gnome.org/LibSoup" title="Libsoup">Libsoup</a> as HTTP server.
     </p>
 
     <p>
@@ -63,14 +55,15 @@
 
     <p>
       <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>
-      vous accompagne dans la réalisation de vos sites-web, site e-commerce et
-      intranet évolutifs. Notre expertise technique vous permet d'accéder à une
-      position de leader par l'innovation et de réaliser de vrais gains de
-      productivité par l'intégration à votre SI.  Itaapy propose egalement
+      helps you with setting up your web site , e-commerce or intranet. Our
+      technical expertise brings you the opportunity of a leadership by
+      innovation and helps improve productivity by thigh integration with your
+      existing information system.
+      Discover
       <a href="http://www.itaapy.com/nos-solutions/iscrib-dematerialisation-de-formulaires"
-         title="iScrib">iScrib</a>
-      un outil pour concevoir et déployer des applications de collectes
-      d'informations en ligne.
+         title="iScrib">iScrib</a>, a tool to create your data collection
+       applications  in just a clic using your specification on a simple
+       spreadsheet !
     </p>
 </div>
 
