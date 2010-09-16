@@ -11,8 +11,6 @@
       ${viewbox}
     </div>
 
-    <p stl:if="not viewboxes">There are 0 items.</p>
-
   </div>
   ${batch}
 </stl:block>

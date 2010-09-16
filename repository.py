@@ -485,7 +485,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
     ordered_view_title_description = MSG(
             u'This website has a sidebar and a central part. '
             u'The central part can be composed of several kinds of '
-            u'boxes: "Webpages Slot", "Last News View", Slideshow... '
+            u'boxes: "Last News View", Slideshow... '
             u'Here you can order these boxes.')
     unordered_view_title = MSG(u'Available Central Part Boxes')
     unordered_view_title_description = MSG(

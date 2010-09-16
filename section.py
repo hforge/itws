@@ -82,7 +82,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
     unordered_view_title = MSG(u'Available Sections and Webpages')
     unordered_view_title_description = MSG(
-            u'This Subsections/Webpages are available, '
+            u'These Subsections/Webpages are available, '
             u'you can make them visible in this section '
             u'by adding them to the section TOC')
 
