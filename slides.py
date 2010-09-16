@@ -3,8 +3,8 @@
 # Copyright (C) 2008-2010 Nicolas Deram <nicolas@itaapy.com>
 # Copyright (C) 2009 Alexis Huet <alexis@itaapy.com>
 # Copyright (C) 2009 Dumont Sébastien <sebastien.dumont@itaapy.com>
-# Copyright (C) 2009 Hervé Cauwelier <herve@itaapy.com>
 # Copyright (C) 2009 J. David Ibanez <jdavid@itaapy.com>
+# Copyright (C) 2009-2010 Hervé Cauwelier <herve@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

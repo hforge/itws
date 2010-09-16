@@ -4,6 +4,7 @@
 # Copyright (C) 2008-2009 Nicolas Deram <nicolas@itaapy.com>
 # Copyright (C) 2009 J. David Ibanez <jdavid@itaapy.com>
 # Copyright (C) 2009 Romain Gauthier <romain@itaapy.com>
+# Copyright (C) 2010 Hervé Cauwelier <herve@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

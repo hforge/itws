@@ -3,7 +3,7 @@
 # Copyright (C) 2008-2010 Henry Obein <henry@itaapy.com>
 # Copyright (C) 2009 Dumont Sébastien <sebastien.dumont@itaapy.com>
 # Copyright (C) 2009 J. David Ibanez <jdavid@itaapy.com>
-# Copyright (C) 2009 Taverne Sylvain <sylvain@itaapy.com>
+# Copyright (C) 2009-2010 Taverne Sylvain <sylvain@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

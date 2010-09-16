@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright (C) 2007-2009 J. David Ibanez <jdavid@itaapy.com>
 # Copyright (C) 2008 Nicolas Deram <nicolas@itaapy.com>
+# Copyright (C) 2010 Henry Obein <henry@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
