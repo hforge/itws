@@ -3,32 +3,11 @@
 Update the database
 ====================
 
-1. Before running icms-update.py script, you have to uncomment the line 'import obsolete'
-in the __init__.py file and reinstall the itws package.
+Before running icms-update script, you have to fix the root format.
 
 ::
 
-   import webpage
-   import ws_neutral
-   # obsolete
-  -#import obsolete
-  +import obsolete
-   
-   # Make the product version available to Python code
-   __version__ = get_version()
+  $ cd MY_INSTANCE/database
+  $ sed -i -e 's/format="itws"/format="iKaaro"/g' .metadata
+  $ git add .metadata && git commit -m 'Fix root format'
 
-The update process will create a new resource 'about-itws' inside each itws
-website. Before running this update, it preferable to check if a resource named
-'about-itws' already exists and rename it.
-
-2. Fix root format
-
-::
-
-  sed -i -e 's/format="itws"/format="iKaaro"/g' .metadata
-  git add .metadata && git commit -m 'Fix root format'
-
-3. Restore __init__.py
-
-After the update, you have to comment the line 'import obsolete' in the
-__init__.py file and reinstall the itws package.

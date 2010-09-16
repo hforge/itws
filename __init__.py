@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from Standard Library
+import sys
+
 # Import from itools
 from itools.core import get_abspath, get_version
 from itools.datatypes import String
@@ -36,8 +39,11 @@ import tracker
 import turning_footer
 import webpage
 import ws_neutral
-# obsolete
-import obsolete
+
+# Special for obsolete
+# Import obsolete if command is icms-update.py
+if sys.argv[0].endswith('icms-update.py'):
+    import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()
@@ -74,3 +80,4 @@ register_domain('itws', path)
 # Silent pyflakes
 common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
 archive_views
+
