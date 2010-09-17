@@ -74,7 +74,7 @@ Create your instance
 --------------------
 ::
 
-    $ ./bin/icms-init.py INSTANCE_NAME
+    $ ./bin/icms-init.py -r itws INSTANCE_NAME
     Type your email address: admin@localhost.com
     
     *
@@ -86,13 +86,6 @@ Create your instance
     * To start the new instance type:
     *   icms-start.py INSTANCE_NAME
     *
-
-
-Update INSTANCE_NAME/config.conf and add itws to the module list.
-::
-
-  modules = itws
-
 
 
 Start the instance
