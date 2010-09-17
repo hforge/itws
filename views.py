@@ -1031,8 +1031,9 @@ class BaseManage_Rename(Folder_Rename):
 
     def action(self, resource, context, form):
         ret = Folder_Rename.action(self, resource, context, form)
-        # Tweak goto
-        ret.path = Path(';manage_view')
+        if ret:
+            # Tweak goto
+            ret.path = Path(';manage_view')
         return ret
 
 
