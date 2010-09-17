@@ -21,6 +21,7 @@ from ikaaro.root import Root as BaseRoot
 
 
 class Root(BaseRoot):
+    """Useful to run icms-update.py -r itws"""
 
     class_id = 'itws'
 
