@@ -522,8 +522,7 @@ class Repository(Folder):
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + ['tags', 'website-articles-view',
                              'articles-view', 'news-siblings',
-                             'content-children-toc', 'sidebar-children-toc',
-                             'news'])
+                             'sidebar-children-toc', 'news'])
 
     # configuration
     news_items_cls = BoxSectionNews
@@ -790,7 +789,6 @@ class Repository(Folder):
         # TODO remove obsolete content items
         self.del_resource('articles-view')
         #self.del_resource('content-children-toc')
-        #self.del_resource('sidebar-children-toc')
         self.del_resource('website-articles-view')
 
 
