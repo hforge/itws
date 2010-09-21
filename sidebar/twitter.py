@@ -227,10 +227,24 @@ class TwitterSideBar(Box, ResourceWithCache):
 
             if feed:
                 data = []
-                for i, item in enumerate(feed.items):
+                i = 0
+                for item in feed.items:
                     if i == limit:
                         break
-                    data.append(self._get_data_from_item(item))
+                    try:
+                        data.append(self._get_data_from_item(item))
+                    except Exception, e:
+                        msg = '%s <br />-- Error getting data from item: "%s"'
+                        msg = msg % (XMLContent.encode(str(uri)), e)
+                        msg = msg.encode('utf-8')
+                        errors.append(XMLParser(msg))
+                        errors_str.append(msg)
+                        summary = 'sidebar/twitter, Error parsing feed\n'
+                        details = format_exc()
+                        log_warning(summary + details, domain='itws')
+                        continue
+                    else:
+                        i += 1
 
         # restore the default timeout
         socket.setdefaulttimeout(default_timeout)
