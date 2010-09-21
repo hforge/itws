@@ -480,6 +480,11 @@ class WSDataFolder_ManageView(CompositeForm):
 
 class WSDataFolderBoxAwareNewInstance(BarAwareBoxAwareNewInstance):
 
+    def _get_container(self, resource, context):
+        site_root = resource.get_site_root()
+        return site_root.get_resource('ws-data')
+
+
     def _get_goto(self, resource, context, form):
         site_root = resource.get_site_root()
         ws_data = site_root.get_resource('ws-data')
