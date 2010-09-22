@@ -480,7 +480,7 @@ class WSDataFolder_ManageView(CompositeForm):
 
 class WSDataBoxAwareNewSideBarInstance(BarAwareBoxAwareNewInstance):
 
-    is_content = False
+    is_content = None
     is_side = True
 
     def _get_container(self, resource, context):
@@ -498,7 +498,7 @@ class WSDataBoxAwareNewSideBarInstance(BarAwareBoxAwareNewInstance):
 class WSDataBoxAwareNewContentBarInstance(WSDataBoxAwareNewSideBarInstance):
 
     is_content = True
-    is_side = False
+    is_side = None
 
     def _get_container(self, resource, context):
         site_root = resource.get_site_root()
