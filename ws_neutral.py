@@ -83,7 +83,8 @@ from ws_neutral_views import NeutralWS_FOSwitchMode
 from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
-from ws_neutral_views import WSDataFolderBoxAwareNewInstance
+from ws_neutral_views import WSDataBoxAwareNewContentBarInstance
+from ws_neutral_views import WSDataBoxAwareNewSideBarInstance
 from ws_neutral_views import NeutralWS_BarAwareBoxAwareNewInstance
 
 
@@ -1135,10 +1136,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     # ws-data helper, call from ws-data, goto to ws-data
     new_contentbar_resource = NeutralWS_BarAwareBoxAwareNewInstance(
             title=MSG(u'Add Central Part Box'))
-    ws_data_new_contentbar_resource = WSDataFolderBoxAwareNewInstance(
-            is_content=True)
-    ws_data_new_sidebar_resource = WSDataFolderBoxAwareNewInstance(
-            is_side=True)
+    ws_data_new_contentbar_resource = WSDataBoxAwareNewContentBarInstance()
+    ws_data_new_sidebar_resource = WSDataBoxAwareNewSideBarInstance()
     # Order
     order_items = GoToSpecificDocument(
         access='is_allowed_to_edit',
