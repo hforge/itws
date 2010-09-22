@@ -229,6 +229,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
         from repository import HTMLContent
         from repository import BoxSectionNews, ContentBoxSectionNews
 
+        database = get_context().database
         cls = ContentBoxSectionChildrenToc
         contentbar_table = self.get_resource(self.contentbar_name)
         contentbar_handler = contentbar_table.handler
@@ -331,8 +332,15 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
             if isinstance(item, content_classes) \
                     or isinstance(item, BoxSectionNews):
                 name = generate_name(name, self.get_names(), '_content')
-                self.copy_resource(str(item.get_abspath()), name)
-                contentbar_table.update_record(record.id, **{'name': name})
+                # Resources that link to me
+                query = PhraseQuery('links', str(item.get_abspath()))
+                results = database.catalog.search(query).get_documents()
+                if len(results) < 2:
+                    # Just move the resource
+                    self.move_resource(str(item.get_abspath()), name)
+                else:
+                    self.copy_resource(str(item.get_abspath()), name)
+                    contentbar_table.update_record(record.id, **{'name': name})
                 # FIXME To improve
                 if isinstance(item, BoxSectionNews):
                     new_item = self.get_resource(name)

@@ -488,6 +488,7 @@ class WSDataFolder(ManageViewAware, Folder):
                 # empty table (xxx.metadata exists but xxx does not)
                 return []
 
+        database = get_context().database
         # Webpage -> HTMLContent
         wp_schema = WebPage.get_metadata_schema()
         htmlcontent_schema = HTMLContent.get_metadata_schema()
@@ -543,8 +544,26 @@ class WSDataFolder(ManageViewAware, Folder):
             item = repository.get_resource(name, soft=True)
             if isinstance(item, content_classes):
                 name = generate_name(name, self.get_names(), '_content')
-                self.copy_resource(str(item.get_abspath()), name)
-                content_table.update_record(record.id, **{'name': name})
+                # Resources that link to me
+                query = PhraseQuery('links', str(item.get_abspath()))
+                results = database.catalog.search(query).get_documents()
+                if len(results) < 2:
+                    # Just move the resource
+                    self.move_resource(str(item.get_abspath()), name)
+                else:
+                    self.copy_resource(str(item.get_abspath()), name)
+                    content_table.update_record(record.id, **{'name': name})
+                    # Copy linked resources
+                    copy_item = self.get_resource(name)
+                    links = item.get_links()
+                    for link in links:
+                        linked_resource = self.get_resource(link, soft=True)
+                        if linked_resource is None:
+                            continue
+                        new_name = generate_name(linked_resource.name,
+                                                 self.get_names(), '_content')
+                        self.copy_resource(str(linked_resource.get_abspath()),
+                                           new_name)
 
         # Order old webpages
         if website_articles_view_index is not None:
