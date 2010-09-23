@@ -117,7 +117,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
-    class_version = '20100623'
+    class_version = '20100624'
     class_title = MSG(u'Section')
     class_description = MSG(u'Section allows to customize the central part '
                             u'and the sidebar. Section can contain subsections')
@@ -350,6 +350,30 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                     metadata.version = ContentBoxSectionNews.class_version
 
         self.del_property('show_one_article')
+
+
+    def update_20100624(self):
+        """Remove obsolete box-section-children-toc format"""
+        site_root = self.get_site_root()
+        repository = site_root.get_repository()
+        box_name = repository.section_sidebar_children_toc_view_name
+        box_cls = repository.section_sidebar_children_toc_view_cls
+
+        table = self.get_resource(self.sidebar_name)
+        handler = table.handler
+
+        record_ids = []
+        for record in handler.get_records_in_order():
+            name = handler.get_record_value(record, 'name')
+            item = repository.get_resource(name)
+            if type(item) is box_cls:
+                record_ids.append(record.id)
+
+        if record_ids:
+            # remove [1:] and update the first one
+            for id in record_ids[1:]:
+                table.del_record(id)
+            table.update_record(record_ids[0], name=box_name)
 
 
     edit = Section_Edit()

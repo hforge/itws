@@ -512,7 +512,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 class Repository(Folder):
 
     class_id = 'repository'
-    class_version = '20100624'
+    class_version = '20100625'
     class_title = MSG(u'Sidebar Boxes Repository')
     class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
@@ -790,6 +790,17 @@ class Repository(Folder):
         self.del_resource('articles-view')
         #self.del_resource('content-children-toc')
         self.del_resource('website-articles-view')
+
+
+    def update_20100625(self):
+        """Remove obsolete BoxSectionChildrenToc"""
+        box_cls = self.section_sidebar_children_toc_view_cls
+        box_name = self.section_sidebar_children_toc_view_name
+
+        for resource in self.search_resources(cls=box_cls):
+            if resource.name == box_name:
+                continue
+            self.del_resource(resource.name)
 
 
 ###########################################################################
