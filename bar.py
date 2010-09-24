@@ -122,11 +122,12 @@ class Bar_View(STLView):
         here = context.resource
         items = []
 
-        # FIXME Add the section to the context for section TOC views
-        _section = resource
-        while isinstance(_section, self.container_cls) is False:
-            _section = _section.parent
-        context._bar_aware = _section
+        # FIXME Add the BarAware resource to the context
+        # It is used by section TOC views
+        _bar_aware = resource
+        while isinstance(_bar_aware, self.container_cls) is False:
+            _bar_aware = _bar_aware.parent
+        context._bar_aware = _bar_aware
 
         for item in self._get_items(resource, context, check_acl=True):
             view = item.view
