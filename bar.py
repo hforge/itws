@@ -94,6 +94,10 @@ class Bar_View(STLView):
         return resource.get_site_root().get_repository()
 
 
+    def _get_item_id(self, item, context):
+        return '%s-%s' % (item.class_id, item.name)
+
+
     def _get_items(self, resource, context, check_acl=True):
         order = resource.get_resource(self.order_name, soft=True)
         if order:
@@ -137,7 +141,9 @@ class Bar_View(STLView):
                 continue
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
-            item_id = '%s-%s' % (item.class_id, item.name.replace('.', '-dot-'))
+            item_id = self._get_item_id(item, context)
+            # replace '.' by -dot- because '.' is interpreted as a class in CSS
+            item_id = item_id.replace('.', '-dot-')
             namespace = {
                 'id': item_id,
                 'format': item.class_id,
@@ -250,6 +256,9 @@ class ContentBar_View(Bar_View):
     def _get_repository(self, resource, context):
         return resource.get_site_root().get_repository()
 
+
+    def _get_item_id(self, item, context):
+        return '%s-%s-%s' % (item.class_id, context._bar_aware.name, item.name)
 
 
 
