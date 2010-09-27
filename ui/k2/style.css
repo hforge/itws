@@ -573,6 +573,7 @@ fieldset legend{
 
 /* Do not force contentbar width for specific views */
 #page.itws-tracker-view #contentbar,
+#page.itws-tracker-add-issue #contentbar,
 #page.itws-issue-edit #contentbar,
 #page.wikipage-edit #contentbar,
 #page.repository-browse-content #contentbar,
