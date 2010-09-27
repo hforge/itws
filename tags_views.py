@@ -340,6 +340,8 @@ class TagsAware_Edit(object):
             return list(tags)
         elif name in ('pub_date', 'pub_time'):
             pub_datetime = resource.get_property('pub_datetime')
+            if pub_datetime is None:
+                return None
             if name == 'pub_date':
                 return date(pub_datetime.year, pub_datetime.month,
                             pub_datetime.day)
