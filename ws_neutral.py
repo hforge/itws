@@ -1090,7 +1090,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         from tags import TagsAware
 
         for resource in self.traverse_resources():
-            if isinstance(resource, TagsAware):
+            if (isinstance(resource, TagsAware) and
+                resource.class_id != 'html-content'):
                 dow = resource.get_property('date_of_writing')
                 resource.del_property('date_of_writing')
                 if dow == '':
