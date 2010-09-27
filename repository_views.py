@@ -397,7 +397,10 @@ class BoxSectionNews_View(Box_View):
     access = 'is_allowed_to_edit'
     template = '/ui/bar_items/SectionNews_view.xml'
     title = MSG(u'View')
+
+    # Configuration
     more_title = MSG(u'Show all')
+    thumb_width = thumb_height = 96
 
     def _get_news_item_view(self):
         from news_views import NewsItem_Preview
@@ -477,6 +480,9 @@ class BoxSectionNews_View(Box_View):
                 link = '%s?%s' % (link, encode_query(query))
             more_link = {'href': link, 'title': more_title}
         namespace['more'] = more_link
+        # Thumbnail configuration
+        namespace['thumb_width'] = self.thumb_width
+        namespace['thumb_height'] = self.thumb_height
 
         return namespace
 

@@ -10,7 +10,7 @@
       <div class="content">
         <div class="newsitem ${item/css}" stl:repeat="item items">
           <a stl:if="item/thumbnail" href="${item/path}" class="image-link">
-            <img src="${item/thumbnail}/;download" />
+            <img src="${item/thumbnail}/;thumb?width=${thumb_width}&amp;height=${thumb_height}" />
           </a>
           <div class="summary">
             <div class="newsitem-date">${item/pub_datetime}</div>
