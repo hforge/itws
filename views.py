@@ -809,6 +809,7 @@ class CSS_Edit(Text_Edit):
         if form['file'] is None:
             data = form['data']
             resource.handler.load_state_from_string(data)
+            context.database.change_resource(resource)
 
 
 
