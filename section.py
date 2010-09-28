@@ -32,6 +32,7 @@ from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar import SideBarAware, ContentBarAware
@@ -341,6 +342,11 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                 else:
                     self.copy_resource(str(item.get_abspath()), name)
                     contentbar_table.update_record(record.id, **{'name': name})
+                    # Keep state
+                    if isinstance(item, WorkflowAware):
+                        state = item.get_workflow_state()
+                        copy_resource = self.get_resource(name)
+                        copy_resource.set_workflow_state(state)
                 # FIXME To improve
                 if isinstance(item, BoxSectionNews):
                     new_item = self.get_resource(name)

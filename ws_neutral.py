@@ -205,14 +205,13 @@ class NeutralSkin(FoBoFooterAwareSkin):
         text = context.get_form_value('site_search_text', type=Unicode)
         namespace['text'] = text.strip()
 
-        # page id css
+        # Specific class based on the current resource format
         class_id = getattr(here, 'class_id', None)
         if class_id:
             class_id = class_id.replace('/', '-slash-')
             view_name = context.view_name or here.get_default_view_name()
             page_css_class = '%s-%s' % (class_id, view_name)
             page_css_class = page_css_class.replace('_', '-')
-            namespace['page_css_class'] = page_css_class.lower()
         else:
             namespace['page_css_class'] = None
 
@@ -564,6 +563,11 @@ class WSDataFolder(ManageViewAware, Folder):
                                                  self.get_names(), '_content')
                         self.copy_resource(str(linked_resource.get_abspath()),
                                            new_name)
+                        # Keep state
+                        if isinstance(linked_resource, WorkflowAware):
+                            state = linked_resource.get_workflow_state()
+                            copy_resource = self.get_resource(new_name)
+                            copy_resource.set_workflow_state(state)
 
         # Order old webpages
         if website_articles_view_index is not None:
