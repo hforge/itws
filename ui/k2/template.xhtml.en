@@ -61,7 +61,7 @@
         </a>
       </div>
     </div>
-    <div id="content">
+    <div id="content" class="${resource_class}">
       ${location}
       ${message}
       <div id="contentbar">${body}</div>
