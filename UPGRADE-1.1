@@ -3,7 +3,12 @@
 Update the database
 ====================
 
+Fix the root format
+-------------------
+
 Before running icms-update script, you have to fix the root format.
+
+Note: The is not required if you update the database with itws > 1.1 (e.g 1.1.x)
 
 ::
 
@@ -11,3 +16,18 @@ Before running icms-update script, you have to fix the root format.
   $ sed -i -e 's/format="itws"/format="iKaaro"/g' .metadata
   $ git add .metadata && git commit -m 'Fix root format'
 
+
+Update the database
+-------------------
+
+As usual instances must be updated following the standard procedure:
+
+  1. Make a backup
+
+  2. Update the database:
+
+     $ icms-update.py xxx
+
+  3. Rebuild the catalog:
+
+     $ icms-update-catalog.py xxx
