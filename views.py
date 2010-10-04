@@ -28,7 +28,7 @@ from itools.handlers import checkid
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
 from itools.uri import get_reference, Path
-from itools.web import get_context, BaseView, ERROR, FormError, STLView
+from itools.web import get_context, BaseView, ERROR, FormError
 from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
@@ -379,16 +379,19 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
         return repository
 
 
+    def get_aware_document_types(self, resource, context):
+        site_root = resource.get_site_root()
+        repository = site_root.get_repository()
+        return repository._get_document_types(
+                is_content=self.is_content, is_side=self.is_side,
+                allow_instanciation=True)
+
+
     def get_namespace(self, resource, context):
         namespace = EasyNewInstance.get_namespace(self, resource, context)
         # actions namespace
         namespace['actions'] = self._get_action_namespace(resource, context)
         # proxy items
-        site_root = resource.get_site_root()
-        repository = site_root.get_repository()
-        document_types = repository._get_document_types(
-                is_content=self.is_content, is_side=self.is_side,
-                allow_instanciation=True)
         selected = context.get_form_value('class_id')
         items = [
             {'title': cls.class_title,
@@ -396,14 +399,13 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
              'class_id': cls.class_id,
              'selected': cls.class_id == selected,
              'icon': '/ui/' + cls.class_icon16}
-            for cls in document_types ]
+            for cls in self.get_aware_document_types(resource, context) ]
         if selected is None:
             items[0]['selected'] = True
         namespace['items'] = items
         # class title
         cls = self._get_resource_cls(resource, context)
         namespace['class_title'] = cls.class_title
-
         return namespace
 
 
@@ -432,18 +434,45 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
                          order=OrderBoxEnumerate(default='order-bottom'),
                          state=StaticStateEnumerate(default='public'))
 
-    widgets = freeze(BoxAwareNewInstance.widgets
-                     + [state_widget,
-                        SelectRadio('order', title=MSG(u'Order box'),
-                                    has_empty_option=False)])
+    order_widget_title = MSG(u'Order box')
+    is_content = True
+    is_side = None
 
     def _get_container(self, resource, context):
-        return resource
+        return resource.parent
 
 
-    def _get_goto(self, resource, context, form):
-        return context.get_link(resource)
+    def _get_order_table(self, resource, context):
+        if resource.parent.name == 'ws-data':
+            bar_aware_resource = resource.parent.parent
+        else:
+            bar_aware_resource = resource.parent
+        if self.is_side:
+            bar_name = bar_aware_resource.sidebar_name
+            order_table = bar_aware_resource.get_resource(bar_name)
+        else:
+            bar_name = bar_aware_resource.contentbar_name
+            order_table = bar_aware_resource.get_resource(bar_name)
+        return order_table
 
+
+    def _get_box_goto(self, child, context):
+        link_child = '%s/;edit' % context.get_link(child)
+        goto = get_reference(link_child)
+        # Is admin popup ?
+        if ('is_admin_popup' in context.get_referrer() and
+            getattr(child, 'use_fancybox', True) is True):
+            goto.query['is_admin_popup'] = '1'
+        else:
+            goto = None
+        return goto
+
+
+    def get_widgets(self, resource, context):
+        return freeze(BoxAwareNewInstance.widgets +
+                      [state_widget,
+                       SelectRadio('order', title=self.order_widget_title,
+                                  has_empty_option=False)])
 
     def action_default(self, resource, context, form):
         name = form['name']
@@ -456,10 +485,7 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
         container = self._get_container(resource, context)
         child = cls.make_resource(cls, container, name)
         if order != 'do-not-order':
-            if self.is_side:
-                order_table = resource.get_resource(resource.sidebar_name)
-            else:
-                order_table = resource.get_resource(resource.contentbar_name)
+            order_table = self._get_order_table(resource, context)
 
             # Order child
             record = order_table.add_new_record({'name': name})
@@ -475,12 +501,17 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
         if isinstance(child, WorkflowAware):
             child.set_property('state', form['state'])
 
-        goto = self._get_goto(resource, context, form)
+        # Calcul Goto
+        goto = self._get_box_goto(child, context)
+
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 
 
 class SideBarAwareNewInstance(BarAwareBoxAwareNewInstance):
+
+    is_side = True
+    is_content = None
 
     def _get_container(self, resource, context):
         site_root = resource.get_site_root()
@@ -838,7 +869,7 @@ class SmartOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
         return new_columns
 
 
-    def get_title(self):
+    def get_title(self, context):
         context = get_context()
         resource = context.resource
         return getattr(resource, 'ordered_view_title', None)
@@ -873,7 +904,7 @@ class SmartOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         return new_columns
 
 
-    def get_title(self):
+    def get_title(self, context):
         context = get_context()
         resource = context.resource
         return getattr(resource, 'unordered_view_title', None)
@@ -899,7 +930,7 @@ class SmartOrderedTable_View(ResourcesOrderedTable_View):
     def get_namespace(self, resource, context):
         views = []
         for view in self.subviews:
-            views.append({'title': view.title,
+            views.append({'title': view.get_title(context),
                           'description': view.title_description,
                           'view': view.GET(resource, context)})
         return {'views': views}
@@ -956,38 +987,8 @@ class FooterMenu_View(Menu_View):
 
 
 ############################################################
-# Manage link view
+# Manage Content
 ############################################################
-
-class BaseManageLink(STLView):
-
-    template = '/ui/neutral/manage_link.xml'
-    title = MSG(u'Manage view')
-
-    def get_items(self, resource, context):
-        items_list = [[]]
-
-        return items_list
-
-
-    def get_namespace(self, resource, context):
-        items_list = self.get_items(resource, context)
-
-        # Post process link
-        # FIXME Does not work for absolute links
-        here_link = Path(context.get_link(resource))
-        for list in items_list:
-            for item in list['items']:
-                new_path = here_link.resolve2(item['path'])
-                item['path'] = new_path
-                disable = item.get('disable', False)
-                item['disable'] = disable
-                if disable:
-                    item['class'] = '%s disable' % item['class']
-
-        return {'lists': items_list, 'title': self.title}
-
-
 
 class BaseManageContent(Folder_BrowseContent):
 

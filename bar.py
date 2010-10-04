@@ -24,14 +24,11 @@ from itools.gettext import MSG
 from itools.stl import set_prefix
 from itools.web import get_context, STLView
 
-# Import from ikaaro
-from ikaaro.folder_views import GoToSpecificDocument
-
 # Import from itws
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
 from utils import get_admin_bar
-from views import BarAwareBoxAwareNewInstance, SideBarAwareNewInstance
+from views import AdvanceGoToSpecificDocument
 
 
 
@@ -74,6 +71,7 @@ class Bar_View(STLView):
         path = context.get_link(repository)
         buttons.append({'path': '%s/;%s' % (section_path, self.order_method),
                         'icon': '/ui/common/icons/16x16/sort.png',
+                        'rel': 'fancybox',
                         'label': self.order_label,
                         'target': None})
 
@@ -209,6 +207,7 @@ class SideBar_View(Bar_View):
             buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
                             'icon': '/ui/common/icons/16x16/new.png',
                             'label': MSG(u'Add Sidebar Box'),
+                            'rel': 'fancybox',
                             'target': None})
         else:
             # XXX What text and what icon ?
@@ -216,6 +215,7 @@ class SideBar_View(Bar_View):
             buttons = [{'path': section_path,
                         'icon': '/ui/icons/16x16/search.png',
                         'label': MSG(u'Go there to edit sidebar'),
+                        'rel': None,
                         'target': None}]
         return buttons
 
@@ -247,6 +247,7 @@ class ContentBar_View(Bar_View):
         section_path = context.get_link(resource)
         buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
                         'icon': '/ui/common/icons/16x16/new.png',
+                        'rel': 'fancybox',
                         'label': MSG(u'Add Central Part Box'),
                         'target': None})
 
@@ -272,12 +273,17 @@ class SideBarAware(object):
     sidebar_name = 'order-sidebar'
     __fixed_handlers__ = [sidebar_name]
 
-    order_sidebar = GoToSpecificDocument(
+    order_sidebar = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
+        keep_query=True,
         specific_document=sidebar_name,
         title=MSG(u'Order Sidebar Boxes'))
-    new_sidebar_resource = SideBarAwareNewInstance(
-            title=MSG(u'Add Sidebar Box'), is_side=True)
+
+    new_sidebar_resource = AdvanceGoToSpecificDocument(
+        access='is_allowed_to_edit',
+        keep_query=True,
+        specific_document='%s/;add_box' % sidebar_name,
+        title=MSG(u'Order Sidebar Boxes'))
 
     # Sidebar items
     # (name, cls, ordered)
@@ -321,12 +327,16 @@ class ContentBarAware(object):
     contentbar_name = 'order-contentbar'
     __fixed_handlers__ = [contentbar_name]
 
-    order_contentbar = GoToSpecificDocument(
+    order_contentbar = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
+        keep_query=True,
         specific_document=contentbar_name,
         title=MSG(u'Order Central Part Boxes'))
-    new_contentbar_resource = BarAwareBoxAwareNewInstance(
-            title=MSG(u'Add Central Part Box'), is_content=True)
+    new_contentbar_resource = AdvanceGoToSpecificDocument(
+        access='is_allowed_to_edit',
+        keep_query=True,
+        specific_document='%s/;add_box' % contentbar_name,
+        title=MSG(u'Order Central Part Boxes'))
 
     # Contentbar items
     # (name, cls, ordered)

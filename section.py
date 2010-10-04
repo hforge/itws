@@ -38,8 +38,10 @@ from ikaaro.workflow import WorkflowAware
 from bar import SideBarAware, ContentBarAware
 from repository import Repository, ContentBoxSectionChildrenToc
 from resources import ManageViewAware
-from section_views import SectionOrderedTable_View
-from section_views import Section_Edit, Section_View, Section_ManageView
+from section_views import Section_ManageContent
+from section_views import Section_Edit, Section_View
+from section_views import Section_AddContent
+from views import SmartOrderedTable_View
 from webpage import WebPage
 
 
@@ -62,7 +64,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_views = ['view', 'manage_view']
     class_handler = SectionOrderedTableFile
 
-    view = SectionOrderedTable_View(title=MSG(u'View'))
+    view = SmartOrderedTable_View(title=MSG(u'View'))
 
     # Order view title & description configuration
     @property
@@ -124,7 +126,8 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
                             u'and the sidebar. Section can contain subsections')
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
-    class_views = ['view', 'manage_view', 'backlinks', 'commit_log']
+    class_views = ['view', 'edit', 'manage_content', 'add_content',
+                   'new_resource', 'order_items', 'backlinks', 'commit_log']
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
@@ -382,14 +385,15 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
             table.update_record(record_ids[0], name=box_name)
 
 
-    edit = Section_Edit()
-    order_items = GoToSpecificDocument(specific_document='order-section',
-            title=MSG(u'Order Webpages/Sections'))
     view = Section_View()
+    edit = Section_Edit()
+    manage_content = Section_ManageContent()
+    add_content = Section_AddContent()
+    order_items = GoToSpecificDocument(specific_document='order-section',
+            title=MSG(u'Manage TOC'))
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
-    manage_view = Section_ManageView()
 
 
 
