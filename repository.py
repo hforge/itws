@@ -50,16 +50,19 @@ from repository_views import BoxSectionChildrenTree_View
 from repository_views import BoxSectionNews_Edit
 from repository_views import BoxSectionNews_Preview
 from repository_views import BoxSectionNews_View
+from repository_views import BoxesOrderedTable_Ordered
+from repository_views import BoxesOrderedTable_Unordered
 from repository_views import ContentBoxSectionChildrenToc_View
 from repository_views import BoxTags_View, BoxTags_Preview
 from repository_views import Box_Preview
-from repository_views import BoxesOrderedTable_View
 from repository_views import ContentBoxSectionNews_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
 from utils import get_path_and_view
 from views import AutomaticEditView, BoxAwareNewInstance, EasyNewInstance
+from views import SideBarAwareNewInstance
+from views import BarAwareBoxAwareNewInstance
 from webpage import WebPage
 
 
@@ -392,11 +395,16 @@ class ContentBoxSectionChildrenToc(Box):
 ###########################################################################
 # Repository
 ###########################################################################
+
 class BoxesOrderedTable(ResourcesOrderedTable):
 
-    class_views = ['view', 'manage_view', 'commit_log']
+    class_views = ['view', 'add_box', 'new_box', 'manage_view', 'commit_log']
     allow_filter_key = None
-    view = BoxesOrderedTable_View()
+
+    # Views
+    view = BoxesOrderedTable_Ordered()
+    add_box = BoxesOrderedTable_Unordered()
+    new_box = None
 
 
     def get_view(self, name, query=None):
@@ -454,10 +462,14 @@ class BoxesOrderedTable(ResourcesOrderedTable):
 class SidebarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'sidebar-boxes-ordered-table'
-    class_title = MSG(u'Order Sidebar Boxes')
+    class_title = MSG(u'Manage sidebar Boxes')
+    class_description = None
 
     # _orderable_classes configuration
     allow_filter_key = 'side'
+
+    # New box (Add a sidebar box)
+    new_box = SideBarAwareNewInstance(title=MSG(u'Create a new Sidebar Box'))
 
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Sidebar Boxes')
@@ -480,6 +492,10 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
     # _orderable_classes configuration
     allow_filter_key = 'content'
+
+    # New box (Add a content bar)
+    new_box = BarAwareBoxAwareNewInstance(
+                    title=MSG(u'Create a new ContentBar Box'))
 
     # Order view title & description configuration
     ordered_view_title = MSG(u'Order Central Part Boxes')
@@ -533,7 +549,7 @@ class Repository(Folder):
     section_sidebar_children_toc_view_name = 'sidebar-children-toc'
 
     new_resource = None
-    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Add Sidebar Box'),
+    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Create a new Sidebar Box'),
                                                is_side=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
@@ -569,6 +585,9 @@ class Repository(Folder):
                             is_side=None):
         registry = get_boxes_registry()
         types = []
+        print is_content, is_side
+        from pprint import pprint
+        pprint(registry)
         for cls, allow in registry.iteritems():
             if allow_instanciation is not None and \
                     allow_instanciation <> allow['instanciation']:

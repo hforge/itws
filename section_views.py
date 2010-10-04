@@ -22,24 +22,22 @@
 # Import from itools
 from itools.gettext import MSG
 from itools.stl import stl
-from itools.uri import Path
+from itools.uri import Path, get_reference
 from itools.web import STLView
 from itools.xapian import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.buttons import Button
 from ikaaro.forms import stl_namespaces, XHTMLBody
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.views import CompositeForm
 
 # Import from itws
 from bar import ContentBar_View
-from views import BaseManageLink, BaseManageContent
-from views import SmartOrderedTable_View
+from views import BarAwareBoxAwareNewInstance
+from views import BaseManageContent
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
-from views import ProxyContainerNewInstance
+from webpage import WebPage
 
 
 
@@ -141,7 +139,7 @@ class SectionOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
 class SectionOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
-    def get_query(self, resource, context):
+    def get_items_query(self, resource, context):
         order_root = resource.get_order_root()
         # Only in the given root
         parent_path = order_root.get_abspath()
@@ -190,56 +188,6 @@ class SectionOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
 
-class Section_ArticleNewInstance(ProxyContainerNewInstance):
-
-    actions = [Button(access='is_allowed_to_edit',
-                      name='new_article', title=MSG(u'Add'))]
-
-    # SmartOrderedTable_View API
-    title = title_description = None
-
-    def _get_resource_cls(self, resource, context):
-        here = context.resource
-        # Return parent section article class
-        return here.parent.get_article_class()
-
-
-    def _get_container(self, resource, context):
-        # Parent section
-        return resource.parent
-
-
-    def _get_goto(self, resource, context, form):
-        name = form['name']
-        # Assume that the resource already exists
-        container = self._get_container(resource, context)
-        child = container.get_resource(name)
-        return '%s/;edit' % context.get_link(child)
-
-
-    def action_new_article(self, resource, context, form):
-        return ProxyContainerNewInstance.action_default(self, resource,
-                context, form)
-
-
-
-class SectionOrderedTable_View(SmartOrderedTable_View):
-
-    subviews = [Section_ArticleNewInstance(),
-                SectionOrderedTable_Ordered(),
-                SectionOrderedTable_Unordered()]
-
-
-    def _get_form(self, resource, context):
-        for view in self.subviews:
-            method = getattr(view, context.form_action, None)
-            if method is not None:
-                form_method = getattr(view, '_get_form')
-                return form_method(resource, context)
-        return None
-
-
-
 ###########################################################################
 # Section view
 ###########################################################################
@@ -250,25 +198,6 @@ class Section_ContentBar_View(ContentBar_View):
     def _get_repository(self, resource, context):
         # current section
         return resource
-
-
-    def get_manage_buttons(self, resource, context):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        site_root = resource.get_site_root()
-        buttons = ContentBar_View.get_manage_buttons(self, resource, context)
-        section_path = context.get_link(resource)
-        order_section = resource.get_resource('order-section')
-        buttons.append({'path': context.get_link(order_section),
-                        'icon': '/ui/icons/16x16/html.png',
-                        'label': MSG(u'Add Web Page'),
-                        'target': None})
-
-        return buttons
-
 
 
 class Section_View(STLView):
@@ -316,59 +245,34 @@ class Section_View(STLView):
 
 
 
-class Section_ManageLink(BaseManageLink):
+class Section_AddContent(BarAwareBoxAwareNewInstance):
 
-    title = MSG(u'Manage the section')
+    title=  MSG(u'Add content')
 
-    def get_items(self, resource, context):
-        left_items = []
-        right_items = []
+    order_widget_title = MSG(u'Order content in the TOC ?')
 
-        order_table = resource.get_resource(resource.order_path)
-        ordered_classes = order_table.get_orderable_classes()
 
-        left_items.append({'path': './;edit',
-                           'class': 'edit',
-                           'title': MSG(u'Edit the section')})
+    def _get_container(self, resource, context):
+        return resource
 
-        left_items.append({'path': './;new_resource',
-                           'class': 'add',
-                           'title': MSG(u'Add Resource: Subsection, File, '
-                                        u'PDF, ODT...')})
+    def _get_order_table(self, resource, context):
+        return resource.get_resource(resource.order_path)
 
-        left_items.append({'path': './order-section',
-                           'class': 'add',
-                           'title': MSG(u'Add Webpages in the Section')})
 
-        left_items.append({'path': './order-section',
-                           'class': 'order child',
-                           'title': MSG(u'Order Webpages and Subsections in '
-                                        u'section TOC')})
+    def _get_box_goto(self, child, context):
+        link_child = '%s/;edit' % context.get_link(child)
+        return get_reference(link_child)
 
-        left_items.append({'path': './;new_contentbar_resource',
-                           'class': 'add',
-                           'title': MSG(u'Add Central Part Box')})
 
-        left_items.append({'path': './;order_contentbar',
-                           'class': 'order child',
-                           'title': MSG(u'Order Central Part Boxes')})
-
-        right_items.append({'path': './;new_sidebar_resource',
-                            'class': 'add',
-                            'title': MSG(u'Add Sidebar Box')})
-
-        right_items.append({'path': './;order_sidebar',
-                            'class': 'order child',
-                            'title': MSG(u'Order Sidebar Boxes')})
-
-        return [{'items': left_items, 'class': 'left'},
-                {'items': right_items, 'class': 'right'}]
+    def get_aware_document_types(self, resource, context):
+        from section import Section
+        return [Section, WebPage]
 
 
 
 class Section_ManageContent(BaseManageContent):
 
-    title = MSG(u'Manage section')
+    title = MSG(u'Browse section')
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())
@@ -377,14 +281,3 @@ class Section_ManageContent(BaseManageContent):
                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
-
-
-
-class Section_ManageView(CompositeForm):
-
-    title = MSG(u'Manage Section')
-    access = 'is_allowed_to_edit'
-
-    subviews = [Section_ManageLink(),
-                Section_ManageContent()]
-

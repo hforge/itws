@@ -4,12 +4,19 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
+<fieldset>
+  <legend>How to add a box in the sidebar ?</legend>
+    You have to choose a box in the collection of boxes below or
+    <a href="./;new_box?is_admin_popup=1" class="button button-ok" rel="fancybox">create a new box</a>
+</fieldset>
+
 <form action="" method="get">
   <fieldset>
     <legend>Filter by type</legend>
     ${format_widget}
     <!-- OK -->
     &nbsp; &nbsp;
+    <input type="hidden" name="is_admin_popup" value="${is_admin_popup}"/>
     <button type="submit" class="button-search"><span>OK</span></button>
   </fieldset>
 </form>

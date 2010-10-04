@@ -24,7 +24,7 @@ from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, Unicode, String
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import get_reference, Reference
+from itools.uri import get_reference, Path, Reference
 from itools.web import get_context, BaseView, FormError, STLView
 from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery
 from itools.xml import XMLParser
@@ -33,7 +33,6 @@ from itools.xml import XMLParser
 from ikaaro import messages
 from ikaaro.forms import ImageSelectorWidget, SelectRadio, TextWidget
 from ikaaro.forms import stl_namespaces
-from ikaaro.views import CompositeForm
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
@@ -43,7 +42,7 @@ from section import Section
 from tags import TagsAware
 from utils import set_navigation_mode_as_edition
 from utils import set_navigation_mode_as_navigation
-from views import BaseManageLink, BaseManageContent
+from views import BaseManageContent
 from views import BaseRSS, ProxyContainerNewInstance
 from views import BarAwareBoxAwareNewInstance
 from website import WebSite_Edit
@@ -329,7 +328,10 @@ class NeutralWS_FOSwitchMode(BaseView):
 
 
 
-class NeutralWS_ManageLink(BaseManageLink):
+class NeutralWS_ManageLink(STLView):
+
+    access = 'is_allowed_to_edit'
+    template = '/ui/neutral/manage_link.xml'
 
     title = MSG(u'Manage your website')
 
@@ -339,11 +341,6 @@ class NeutralWS_ManageLink(BaseManageLink):
         items.append({'path': './;edit',
                       'class': 'edit',
                       'title': MSG(u'Edit banner, favicon, skin, banner...')})
-
-        items.append({'path': './;new_resource',
-                      'class': 'add',
-                      'title': MSG(u'Add Resource: Section, Wiki, Tracker, '
-                                   u'RSS agregator...')})
 
         items.append({'path': './tags/;manage_view',
                       'class': 'tags',
@@ -360,18 +357,6 @@ class NeutralWS_ManageLink(BaseManageLink):
         items.append({'path': './turning-footer/menu',
                       'class': 'turning-footer',
                       'title': MSG(u'Manage turning footer')})
-
-        items.append({'path': './repository',
-                      'class': 'repository',
-                      'title': MSG(u'Manage repository')})
-
-        items.append({'path': './;order_contentbar',
-                      'class': 'order child',
-                      'title': MSG(u'Edit the central part')})
-
-        items.append({'path': './;order_sidebar',
-                      'class': 'order child',
-                      'title': MSG(u'Edit the sidebar')})
 
         items.append({'path': './style/;edit',
                       'class': 'css',
@@ -398,6 +383,25 @@ class NeutralWS_ManageLink(BaseManageLink):
                 {'items': right_items, 'class': 'right'}]
 
 
+    def get_namespace(self, resource, context):
+        items_list = self.get_items(resource, context)
+
+        # Post process link
+        # FIXME Does not work for absolute links
+        here_link = Path(context.get_link(resource))
+        for list in items_list:
+            for item in list['items']:
+                new_path = here_link.resolve2(item['path'])
+                item['path'] = new_path
+                disable = item.get('disable', False)
+                item['disable'] = disable
+                if disable:
+                    item['class'] = '%s disable' % item['class']
+
+        return {'lists': items_list, 'title': self.title}
+
+
+
 
 class NeutralWS_ManageContent(BaseManageContent):
 
@@ -409,48 +413,6 @@ class NeutralWS_ManageContent(BaseManageContent):
                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
 
-
-
-class NeutralWS_ManageView(CompositeForm):
-
-    title = MSG(u'Manage Website')
-    access = 'is_allowed_to_edit'
-
-    subviews = [NeutralWS_ManageLink(),
-                NeutralWS_ManageContent()]
-
-
-
-class WSDataFolder_ManageLink(BaseManageLink):
-
-    title = MSG(u'Manage Homepage Content')
-
-    def get_items(self, resource, context):
-        left_items = []
-        right_items = []
-
-        left_items.append({'path': './;new_resource',
-                           'class': 'add',
-                           'title': MSG(u'Add Resource: Image, PDF, ODT...')})
-
-        left_items.append({'path': '/;ws_data_new_contentbar_resource',
-                           'class': 'add',
-                           'title': MSG(u'Add Central Part Box')})
-
-        left_items.append({'path': './;order_contentbar',
-                           'class': 'order child',
-                           'title': MSG(u'Order Central Part Boxes')})
-
-        right_items.append({'path': '/;ws_data_new_sidebar_resource',
-                            'class': 'add',
-                            'title': MSG(u'Add Sidebar Box')})
-
-        right_items.append({'path': './;order_sidebar',
-                            'class': 'order child',
-                            'title': MSG(u'Order Sidebar Boxes')})
-
-        return [{'items': left_items, 'class': 'left'},
-                {'items': right_items, 'class': 'right'}]
 
 
 
@@ -465,16 +427,6 @@ class WSDataFolder_ManageContent(BaseManageContent):
                   NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                       for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
-
-
-
-class WSDataFolder_ManageView(CompositeForm):
-
-    title = MSG(u'Manage Homepage Content')
-    access = 'is_allowed_to_edit'
-
-    subviews = [WSDataFolder_ManageLink(),
-                WSDataFolder_ManageContent()]
 
 
 

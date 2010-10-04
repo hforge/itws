@@ -76,16 +76,19 @@ from tags import TagsFolder
 from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view, is_navigation_mode
+from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
 from website import WebSite
 from ws_neutral_views import NeutralWS_ArticleNewInstance
+from ws_neutral_views import NeutralWS_ManageContent
 from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_ManageView, WSDataFolder_ManageView
+from ws_neutral_views import NeutralWS_ManageLink
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NotFoundPage, NeutralWS_RSS
 from ws_neutral_views import WSDataBoxAwareNewContentBarInstance
 from ws_neutral_views import WSDataBoxAwareNewSideBarInstance
 from ws_neutral_views import NeutralWS_BarAwareBoxAwareNewInstance
+from ws_neutral_views import WSDataFolder_ManageContent
 
 
 
@@ -444,7 +447,7 @@ class WSDataFolder(ManageViewAware, Folder):
     order_sidebar = SideBarAware.order_sidebar
 
     # Views
-    manage_view = WSDataFolder_ManageView()
+    manage_view = WSDataFolder_ManageContent()
     order_articles = GoToSpecificDocument(specific_document='order-resources',
                                           title=MSG(u'Order Webpages'),
                                           access='is_allowed_to_edit')
@@ -606,9 +609,8 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     class_id = 'neutral'
     class_version = '20100629'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'manage_view', 'edit_ws_data',
-                   'new_sidebar_resource', 'new_contentbar_resource',
-                   'browse_content', 'commit_log']
+    class_views = ['view', 'manage_view',
+                   'manage_content', 'new_resource', 'commit_log']
 
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
@@ -1149,10 +1151,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
 
     # User Interface
-    edit_ws_data = GoToSpecificDocument(
-            specific_document='ws-data',
-            title=MSG(u'Manage Homepage Content'),
-            access='is_allowed_to_edit')
     edit_menu = GoToSpecificDocument(
             specific_document='menu/menu',
             title=MSG(u'Menu'), access='is_allowed_to_edit')
@@ -1163,28 +1161,42 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             specific_document='footer/menu',
             title=MSG(u'Footer'), access='is_allowed_to_edit')
     view = NeutralWS_View()
-    manage_view = NeutralWS_ManageView()
+    manage_view = NeutralWS_ManageLink()
+    manage_content = NeutralWS_ManageContent()
     # Helper
     add_new_article = NeutralWS_ArticleNewInstance()
     fo_switch_mode = NeutralWS_FOSwitchMode()
     # ws-data helper, call from ws-data, goto to ws-data
-    new_contentbar_resource = NeutralWS_BarAwareBoxAwareNewInstance(
-            title=MSG(u'Add Central Part Box'))
     ws_data_new_contentbar_resource = WSDataBoxAwareNewContentBarInstance()
     ws_data_new_sidebar_resource = WSDataBoxAwareNewSideBarInstance()
     # Order
-    order_items = GoToSpecificDocument(
+    order_items = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document='ws-data/order-resources',
         title=MSG(u'Order Webpages'))
-    order_contentbar = GoToSpecificDocument(
+    order_contentbar = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=contentbar_name,
+        keep_query=True,
         title=MSG(u'Order Central Part Boxes'))
-    order_sidebar = GoToSpecificDocument(
+    order_sidebar = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document=sidebar_name,
+        keep_query=True,
         title=MSG(u'Order Sidebar Boxes'))
+
+    # New sidebar/contenbar resource
+    new_sidebar_resource = AdvanceGoToSpecificDocument(
+        access='is_allowed_to_edit',
+        keep_query=True,
+        specific_document='%s/;add_box' % sidebar_name,
+        title=MSG(u'Order Sidebar Boxes'))
+    new_contentbar_resource = AdvanceGoToSpecificDocument(
+            access='is_allowed_to_edit',
+            keep_query=True,
+            specific_document='%s/;add_box' % contentbar_name,
+            title=MSG(u'Add Central Part Box'))
+
     # Compatibility
     rss = last_news_rss = NeutralWS_RSS()
     edit_tags = GoToSpecificDocument(specific_document='tags',

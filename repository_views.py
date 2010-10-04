@@ -41,7 +41,7 @@ from ikaaro.webpage import WebPage_View
 from tags_views import TagsList
 from utils import is_empty, to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
-from views import SmartOrderedTable_View, AutomaticEditView
+from views import AutomaticEditView
 from news_views import NewsFolder_View
 
 
@@ -97,7 +97,8 @@ class Repository_BrowseContent(Folder_BrowseContent):
 
 class BoxesOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
-    query_schema = {}
+    columns = [('checkbox', None),
+               ('title', MSG(u'Title'), False)]
 
     def sort_and_batch(self, resource, context, items):
         # Sort by order regardless query
@@ -111,17 +112,18 @@ class BoxesOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = SmartOrderedTable_Ordered.get_table_columns(self,
-                resource, context)
-
-        # Column to remove
-        indexes = [ x for x, column in enumerate(columns)
-                    if column[0] in ('name', 'order') ]
-        indexes.sort(reverse=True)
-        for index in indexes:
-            columns.pop(index)
-
-        return columns
+        return self.columns
+#        columns = SmartOrderedTable_Ordered.get_table_columns(self,
+#                resource, context)
+#
+#        # Column to remove
+#        indexes = [ x for x, column in enumerate(columns)
+#                    if column[0] in ('name', 'order') ]
+#        indexes.sort(reverse=True)
+#        for index in indexes:
+#            columns.pop(index)
+#
+#        return columns
 
 
 
@@ -136,8 +138,8 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
         return self.query_schema
 
 
-    def get_query(self, resource, context):
-        query = SmartOrderedTable_Unordered.get_query(self, resource, context)
+    def get_items_query(self, resource, context):
+        query = SmartOrderedTable_Unordered.get_items_query(self, resource, context)
         # Add format filter
         format = context.query['format']
         if format:
@@ -176,15 +178,10 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
         widget = SelectWidget('format')
         namespace = {}
         namespace['format_widget'] = widget.to_html(enum, format)
+        namespace['is_admin_popup'] = context.get_form_value('is_admin_popup')
 
         return namespace
 
-
-
-class BoxesOrderedTable_View(SmartOrderedTable_View):
-
-    subviews = [BoxesOrderedTable_Ordered(),
-                BoxesOrderedTable_Unordered()]
 
 
 
