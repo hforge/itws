@@ -21,7 +21,7 @@
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
-from itools.xapian import AndQuery, OrQuery, PhraseQuery, NotQuery
+from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder

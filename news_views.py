@@ -17,28 +17,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from datetime import date, datetime, time
+from datetime import date
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String, Boolean, Integer, Unicode
+from itools.datatypes import String, Boolean, Integer, PathDataType
 from itools.gettext import MSG
 from itools.uri import encode_query
-from itools.web import get_context, STLView, INFO
-from itools.xapian import PhraseQuery, AndQuery, NotQuery, RangeQuery
+from itools.web import get_context, STLView
+from itools.database import PhraseQuery, AndQuery, NotQuery, RangeQuery
 
 # Import from ikaaro
-from ikaaro.buttons import Button
+from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import ImageSelectorWidget, TextWidget
+from ikaaro.autoform import ImageSelectorWidget, TextWidget
 from ikaaro.utils import get_base_path_query
-from ikaaro.views import CompositeForm
 
 # Import from itws
 from tags import Tag_View
 from tags_views import TagView_Viewbox
 from views import BaseRSS, ImproveDBResource_AddImage
-from views import ProxyContainerNewInstance
 from webpage_views import WebPage_Edit
 
 
@@ -125,10 +123,9 @@ class NewsItem_View(STLView):
 
     def get_namespace(self, resource, context):
         news_folder = resource.parent
-        language = resource.get_content_language(context)
         dow = resource.get_pub_datetime_formatted()
         # title
-        title = resource.get_long_title(language=language)
+        title = resource.get_long_title()
         # content
         content = resource.get_html_data()
         # Allowed to edit
@@ -160,64 +157,19 @@ class NewsItem_AddImage(ImproveDBResource_AddImage):
 
 class NewsItem_Edit(WebPage_Edit):
 
-    def get_schema(self, resource, context):
-        return merge_dicts(WebPage_Edit.get_schema(self, resource, context),
-                           long_title=Unicode, thumbnail=String)
+    def _get_schema(self, resource, context):
+        return merge_dicts(WebPage_Edit._get_schema(self, resource, context),
+                           long_title=Multilingual,
+                           thumbnail=PathDataType)
 
 
-    def get_widgets(self, resource, context):
-        widgets = WebPage_Edit.get_widgets(self, resource, context)[:]
-        for index, widget in enumerate(widgets):
-            if widget.name == 'display_title':
-                widgets.pop(index)
-
-        long_title_widget = TextWidget('long_title', title=MSG(u'Long title'))
-        widgets.insert(2, long_title_widget)
-        widgets.append(ImageSelectorWidget('thumbnail',
-                                           title=MSG(u'Thumbnail')))
-
+    def _get_widgets(self, resource, context):
+        widgets = WebPage_Edit._get_widgets(self, resource, context)[:]
+        widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
+        widgets.append(
+            ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')))
         return widgets
 
-
-    def get_value(self, resource, context, name, datatype):
-        language = resource.get_content_language(context)
-        if name == 'long_title':
-            long_title = resource.get_property('long_title', language)
-            return long_title
-        elif name in ('pub_date', 'pub_time'):
-            pub_datetime = resource.get_property('pub_datetime')
-            if not pub_datetime:
-                pub_datetime = datetime.now()
-            if name == 'pub_date':
-                return date(pub_datetime.year, pub_datetime.month,
-                            pub_datetime.day)
-            else:
-                return time(pub_datetime.hour, pub_datetime.minute)
-        return WebPage_Edit.get_value(self, resource, context, name, datatype)
-
-
-    def action(self, resource, context, form):
-        WebPage_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        language = resource.get_content_language(context)
-        # long title
-        long_title = form['long_title']
-        resource.set_property('long_title', long_title, language=language)
-        # thumbnail
-        thumbnail = form['thumbnail']
-        resource.set_property('thumbnail', thumbnail, language=language)
-        # Check pub_datetime
-        if not form['pub_date']:
-            messages = context.message
-            if type(messages) is not list:
-                messages = [ messages ]
-            messages.append(INFO(u'Date of writing must be set to make '
-                                 u'the news visible'))
-
-            context.message = messages
 
 
 
@@ -353,48 +305,30 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
 
 
 
-class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
-
-    actions = [Button(access='is_allowed_to_edit',
-                      name='new_news', title=MSG(u'Add'))]
-
-    def _get_resource_cls(self, resource, context):
-        here = context.resource
-        return here.news_class
-
-
-    def _get_container(self, resource, context):
-        return resource
-
-
-    def _get_goto(self, resource, context, form):
-        name = form['name']
-        # Assume that the resource already exists
-        container = self._get_container(resource, context)
-        child = container.get_resource(name)
-        return '%s/;edit' % context.get_link(child)
-
-
-    def action_new_news(self, resource, context, form):
-        return ProxyContainerNewInstance.action_default(self, resource,
-                context, form)
-
-
-
-class NewsFolder_ManageView(CompositeForm):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Manage News Folder')
-
-    subviews = [ NewsFolder_NewsNewInstance(),
-                 NewsFolder_BrowseContent() ]
-
-
-    def _get_form(self, resource, context):
-        for view in self.subviews:
-            method = getattr(view, context.form_action, None)
-            if method is not None:
-                form_method = getattr(view, '_get_form')
-                return form_method(resource, context)
-        return None
-
+# XXX Migration
+# Decide if we remove it or not
+#class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
+#
+#    actions = [Button(access='is_allowed_to_edit',
+#                      name='new_news', title=MSG(u'Add'))]
+#
+#    def _get_resource_cls(self, resource, context):
+#        here = context.resource
+#        return here.news_class
+#
+#
+#    def _get_container(self, resource, context):
+#        return resource
+#
+#
+#    def _get_goto(self, resource, context, form):
+#        name = form['name']
+#        # Assume that the resource already exists
+#        container = self._get_container(resource, context)
+#        child = container.get_resource(name)
+#        return '%s/;edit' % context.get_link(child)
+#
+#
+#    def action_new_news(self, resource, context, form):
+#        return ProxyContainerNewInstance.action_default(self, resource,
+#                context, form)

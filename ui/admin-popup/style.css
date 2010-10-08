@@ -29,44 +29,6 @@ h1{
   -webkit-box-shadow:0 0 3px #CCCCCC;
 }
 
-/* Content language menu */
-#content-languages{
-  padding: 0;
-  margin: 0;
-  float: right;
-}
-
-#content-languages li{
-  float: left;
-  list-style-type: none;
-  margin: 0 5px;
-}
-
-#content-languages li a{
-  display: block;
-  text-decoration: none;
-  padding: 5px;
-  border-radius-topleft: 5px;
-  border-radius-topright: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-topright: 5px;
-  -webkit-border-radius-topleft: 5px;
-  -webkit-border-radius-topright: 5px;
-  margin: 0px;
-  background-color: #F9F9F9;
-  color: #CCCCCC;
-  border:1px solid #CCCCCC;
-  box-shadow:0 0 3px #CCCCCC;
-  -moz-box-shadow:0 0 3px #CCCCCC;
-  -webkit-box-shadow:0 0 3px #CCCCCC;
-}
-
-#content-languages li a.nav-active {
-  display: block;
-  color: #FFF;
-  background-color: #8BAFD5;
-}
-
 /* Forms look */
 input, textarea, select{
   border: 1px solid gray;

@@ -17,10 +17,8 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import Boolean
-from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.webpage import WebPage as BaseWebPage
 
@@ -31,66 +29,30 @@ from webpage_views import WebPage_Edit, WebPage_View
 
 
 class WebPage(BaseWebPage, TagsAware):
-    # Override the ikaaro webpage to allow to add iframe
+    """
+    We override the ikaaro webpage to:
+      - Override RTE to allow to add iframe
+      - Add tags to webpages
+      - Add publication date and time
+      - Allow to configure if we display title or not
+    """
+
+    # XXX We override ikaaro class_id
+    class_id = 'webpage'
     class_version = '20100621'
-
-    edit = WebPage_Edit()
-    view = WebPage_View()
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = merge_dicts(BaseWebPage.get_metadata_schema(),
-                             TagsAware.get_metadata_schema(),
-                             display_title=Boolean(default=True))
-        return schema
+    class_schema = merge_dicts(BaseWebPage.class_schema,
+                               TagsAware.class_schema,
+                               display_title=Boolean(source='metadata', default=True))
 
 
-    def _get_catalog_values(self):
-        return merge_dicts(BaseWebPage._get_catalog_values(self),
-                           TagsAware._get_catalog_values(self))
+    def get_catalog_values(self):
+        return merge_dicts(BaseWebPage.get_catalog_values(self),
+                           TagsAware.get_catalog_values(self))
 
 
-    def get_class_views(self):
-        # Add helper for manage view
-        views = BaseWebPage.class_views
-        parent = self.parent
-        site_root = self.get_site_root()
-        section_cls = site_root.section_class
-        wsdata_cls = site_root.wsdatafolder_class
-        if isinstance(parent, (section_cls, wsdata_cls)):
-            new_views = list(views)
-            new_views.insert(2, 'manage_view')
-            return new_views
-        return views
-
-    class_views = property(get_class_views, None, None, '')
-
-
-    def get_view(self, name, query=None):
-        # Add helper for manage view
-        view = BaseWebPage.get_view(self, name, query)
-        if view:
-            return view
-        if name == 'manage_view':
-            parent = self.parent
-            site_root = self.get_site_root()
-            section_cls = site_root.section_class
-            wsdata_cls = site_root.wsdatafolder_class
-            if isinstance(parent, (section_cls, wsdata_cls)):
-                parent_view = parent.get_view('manage_view')
-                if parent_view is None:
-                    # not found
-                    return None
-                return GoToSpecificDocument(specific_document='..',
-                        access = parent_view.access,
-                        specific_view='manage_view',
-                        title=MSG(u'Manage parent section'))
-        return None
-
-
-    ##########################################################################
+    #########################################################
     # Links API
-    ##########################################################################
+    #########################################################
     def get_links(self):
         links = BaseWebPage.get_links(self)
         links.extend(TagsAware.get_links(self))
@@ -104,8 +66,14 @@ class WebPage(BaseWebPage, TagsAware):
 
     def update_relative_links(self, source):
         BaseWebPage.update_relative_links(self, source)
-        # Not need for TagsAware
+        TagsAware.update_relative_links(self, source)
 
+
+    ##########################
+    # Views
+    ##########################
+    edit = WebPage_Edit()
+    view = WebPage_View()
 
 
 

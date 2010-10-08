@@ -26,18 +26,17 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
+from ikaaro.autoform import ImageSelectorWidget, SelectWidget
+from ikaaro.autoform import TextWidget, MultilineWidget, PathSelectorWidget
 from ikaaro.file import Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.forms import ImageSelectorWidget, SelectWidget
-from ikaaro.forms import TextWidget, MultilineWidget, PathSelectorWidget
-from ikaaro.future.menu import Target
+from ikaaro.menu import Target
 from ikaaro.registry import register_resource_class
 from ikaaro.table import Table
 
 # Import from itws
 from itws.repository import register_box, BoxAware
-from itws.resources import OrderTableAware
 from itws.sidebar.diaporama_views import DiaporamaTable_CompositeView
 from itws.sidebar.diaporama_views import Diaporama_View
 from itws.utils import get_path_and_view
@@ -189,7 +188,7 @@ class DiaporamaTable(Table):
 
 
 
-class Diaporama(BoxAware, OrderTableAware, Folder):
+class Diaporama(BoxAware, Folder):
 
     class_id = 'diaporama'
     class_version = '20100616'
@@ -197,22 +196,18 @@ class Diaporama(BoxAware, OrderTableAware, Folder):
     class_views = ['view', 'edit', 'browse_content', 'preview_content',
                    'backlinks', 'commit_log']
     class_description = MSG(u'Diaporama')
-    # order
-    order_path = 'order-banners'
-    order_class = DiaporamaTable
-    __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
-    view = Diaporama_View()
-    edit = GoToSpecificDocument(specific_document='order-banners',
-                                title=MSG(u'Edit'))
+    __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
 
+    # Configuration
     use_fancybox = False
 
+    order_path = 'order-banners'
+    order_table = DiaporamaTable
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        Folder._make_resource(cls, folder, name, **kw)
-        OrderTableAware._make_resource(cls, folder, name, **kw)
+    def init_resource(self, **kw):
+        Folder.init_resource(self, **kw)
+        self.make_resource(self.order_path, self.order_class)
 
 
     def get_document_types(self):
@@ -227,6 +222,13 @@ class Diaporama(BoxAware, OrderTableAware, Folder):
             # Fallback to the resource's name
             return Folder.get_title(self, language)
         return u''
+
+    ##############
+    # Views
+    ##############
+    view = Diaporama_View()
+    edit = GoToSpecificDocument(specific_document='order-banners',
+                                title=MSG(u'Edit'))
 
 
 

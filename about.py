@@ -36,23 +36,25 @@ class AboutITWS_View(STLView):
 
 
 class AboutITWS(Folder):
+    """
+    Default about-iws webpage
+    """
 
     class_id = 'about-itws'
     class_title = MSG(u'About ITWS')
     class_views = ['view', 'edit', 'browse_content']
 
+    def get_catalog_values(self):
+        return merge_dicts(Folder.get_catalog_values(self),
+                           workflow_state='public')
+
+    #########
+    # Views
+    #########
     view = AboutITWS_View()
     browse_content = Folder_BrowseContent(access='is_admin')
 
 
-    def _get_catalog_values(self):
-        return merge_dicts(Folder._get_catalog_values(self),
-                           workflow_state='public')
-
-
-
+# Register
 register_resource_class(AboutITWS)
-# Register skin
-path = get_abspath('ui/about')
-skin = Skin(path)
-register_skin('about', skin)
+register_skin('about', Skin(get_abspath('ui/about')))

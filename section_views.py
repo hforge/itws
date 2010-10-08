@@ -24,11 +24,11 @@ from itools.gettext import MSG
 from itools.stl import stl
 from itools.uri import Path, get_reference
 from itools.web import STLView
-from itools.xapian import AndQuery, OrQuery, PhraseQuery, NotQuery
+from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.forms import stl_namespaces, XHTMLBody
+from ikaaro.autoform import stl_namespaces, XHTMLBody
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 

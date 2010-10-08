@@ -20,7 +20,7 @@
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.forms import stl_namespaces
+from ikaaro.autoform import stl_namespaces
 
 # Import from itws
 from google_map import GoogleMapWidget

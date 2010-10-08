@@ -29,22 +29,17 @@ from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.uri import encode_query
 from itools.web import STLView, get_context
-from itools.xapian import AndQuery, PhraseQuery
-from itools.xapian import split_unicode
+from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
-from ikaaro.buttons import Button
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import DateWidget, TextWidget
-from ikaaro.views import CompositeForm
+from ikaaro.autoform import DateWidget, TextWidget
 
 # Import from itws
 from datatypes import TimeWithoutSecond
 from utils import is_navigation_mode
 from utils import set_prefix_with_hostname, DualSelectWidget
-from views import BaseRSS, ProxyContainerNewInstance
-from views import BrowseFormBatchNumeric
-
+from views import BaseRSS
 
 
 class TagsList(Enumerate):
@@ -165,14 +160,14 @@ class TagView_Viewbox(STLView):
 
 
 
-class Tag_View(BrowseFormBatchNumeric):
+class Tag_View(Folder_BrowseContent):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
     template = '/ui/common/Tag_view.xml'
     context_menus = []
     styles = []
-    query_schema = merge_dicts(BrowseFormBatchNumeric.query_schema,
+    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
                                batch_size=Integer(default=20),
                                sort_by=String(default='pub_datetime'),
                                reverse=Boolean(default=True))
@@ -315,16 +310,16 @@ class TagsAware_Edit(object):
     """Mixin to merge with the TagsAware edit view.
     """
     # Little optimisation not to compute the schema too often
-    keys = ['tags', 'pub_datetime']
+    keys = ['tags', 'pub_datetime', 'pub_date', 'pub_time']
 
 
-    def get_schema(self, resource, context):
+    def _get_schema(self, resource, context):
         site_root = resource.get_site_root()
         return {'tags': TagsList(site_root=site_root, multiple=True),
                 'pub_date': Date, 'pub_time': TimeWithoutSecond}
 
 
-    def get_widgets(self, resource, context):
+    def _get_widgets(self, resource, context):
         return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
             has_empty_option=False),
             DateWidget('pub_date',
@@ -349,18 +344,20 @@ class TagsAware_Edit(object):
                 return time(pub_datetime.hour, pub_datetime.minute)
 
 
-    def action(self, resource, context, form):
-        resource.set_property('tags', form['tags'])
-        pub_date = form['pub_date']
-        pub_time = form['pub_time']
-        if pub_date:
-            dt_kw = {}
-            if pub_time:
-                dt_kw = {'hour': pub_time.hour,
-                         'minute': pub_time.minute}
-            dt = datetime(pub_date.year, pub_date.month, pub_date.day,
-                          **dt_kw)
-            resource.set_property('pub_datetime', dt)
+    def set_value(self, resource, context, name, form):
+        if name == 'tags':
+            resource.set_property('tags', form['tags'])
+        elif name in ('pub_date', 'pub_time'):
+            pub_date = form['pub_date']
+            pub_time = form['pub_time']
+            if pub_date:
+                dt_kw = {}
+                if pub_time:
+                    dt_kw = {'hour': pub_time.hour,
+                             'minute': pub_time.minute}
+                dt = datetime(pub_date.year, pub_date.month, pub_date.day,
+                              **dt_kw)
+                resource.set_property('pub_datetime', dt)
 
 
 
@@ -380,24 +377,6 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
         ('last_author', MSG(u'Last Author')),
         ('workflow_state', MSG(u'State'))]
 
-    def get_items(self, resource, context, *args):
-        # Get the parameters from the query
-        query = context.query
-        search_term = query['search_term'].strip()
-        field = query['search_field']
-
-        abspath = resource.get_abspath()
-        query = [PhraseQuery('parent_path', str(abspath)),
-                 PhraseQuery('format', resource.tag_class.class_id)]
-        if search_term:
-            language = resource.get_content_language(context)
-            terms_query = [ PhraseQuery(field, term)
-                            for term in split_unicode(search_term, language) ]
-            query.append(AndQuery(*terms_query))
-        query = AndQuery(*query)
-
-        return context.root.search(query)
-
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
@@ -413,51 +392,3 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
 
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
-
-
-
-class TagsFolder_TagNewInstance(ProxyContainerNewInstance):
-    """Simple form to create a tag. Used in the Tags_ManageView composite.
-    """
-    actions = [Button(access='is_allowed_to_edit',
-                      name='new_tag', title=MSG(u'Add'))]
-
-    def _get_resource_cls(self, resource, context):
-        return resource.tag_class
-
-
-    def _get_container(self, resource, context):
-        return resource
-
-
-    def _get_goto(self, resource, context, form):
-        referrer = context.get_referrer()
-        if referrer:
-            return referrer
-        return '.'
-
-
-    def action_new_tag(self, resource, context, form):
-        return ProxyContainerNewInstance.action_default(self, resource,
-                context, form)
-
-
-
-class Tags_ManageView(CompositeForm):
-    """Create+browse form.
-    """
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Manage view')
-
-    subviews = [ TagsFolder_TagNewInstance(),
-                 TagsFolder_BrowseContent() ]
-
-
-    def _get_form(self, resource, context):
-        for view in self.subviews:
-            method = getattr(view, context.form_action, None)
-            if method is not None:
-                form_method = getattr(view, '_get_form')
-                return form_method(resource, context)
-        return None

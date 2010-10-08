@@ -24,17 +24,17 @@ from itools.core import  merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
 from itools.web import FormError, STLView
-from itools.xapian import split_unicode, PhraseQuery, AndQuery
+from itools.database import PhraseQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import ImageSelectorWidget, PathSelectorWidget, TextWidget
-from ikaaro.forms import SelectRadio, rte_widget, timestamp_widget
-from ikaaro.forms import stl_namespaces
-from ikaaro.forms import title_widget, subject_widget
+from ikaaro.autoform import ImageSelectorWidget, PathSelectorWidget, TextWidget
+from ikaaro.autoform import RadioWidget, rte_widget, timestamp_widget
+from ikaaro.autoform import stl_namespaces
+from ikaaro.autoform import title_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.views import CompositeForm
@@ -49,7 +49,7 @@ from views import ProxyContainerNewInstance
 
 
 
-class SlideTemplateTypeWidget(SelectRadio):
+class SlideTemplateTypeWidget(RadioWidget):
 
     template = list(XMLParser("""
         <stl:block stl:if="has_empty_option">

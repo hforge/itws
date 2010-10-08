@@ -22,7 +22,7 @@ from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.forms import Widget, stl_namespaces
+from ikaaro.autoform import Widget, stl_namespaces
 
 
 
@@ -62,6 +62,9 @@ class GPSWidget(GoogleMapWidget):
 
     width = 800
     height = 400
+    latitude = None
+    longitude = None
+    zoom = 5
 
     find_gps_coords_label = MSG(u'Find the GPS coordinates')
     template = list(XMLParser(
@@ -87,16 +90,3 @@ class GPSWidget(GoogleMapWidget):
         </script>
         """,
         stl_namespaces))
-
-
-    def get_namespace(self, datatype, value):
-        context = get_context()
-        here = context.resource
-        # Build namespace
-        namespace = {'find_gps_coords_label': self.find_gps_coords_label}
-        namespace.update(Widget.get_namespace(self, datatype, value))
-        for key in ['address', 'latitude', 'longitude', 'zoom']:
-            namespace[key] = here.get_property(key)
-        for key in ['width', 'height']:
-            namespace[key] = getattr(self, key)
-        return namespace

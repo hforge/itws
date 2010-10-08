@@ -25,7 +25,7 @@ from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import XHTMLBody, HTMLBody
+from ikaaro.autoform import XHTMLBody, HTMLBody
 from ikaaro.table import OrderedTable_View, Table_EditRecord
 
 # Import from itws

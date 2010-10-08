@@ -27,11 +27,11 @@
     <div id="header">
       <div id="nav" stl:if="display_menu">${nav}</div>
       <div class="login">
-        <stl:block stl:if="not user/info">
+        <stl:block stl:if="not user">
           <a href="${login}" id="top-menu-login" title="Log in">Log in</a>
         </stl:block>
-        <stl:block stl:if="user/info">
-          <a href="${user/info/home}" title="${user/info/title}">${user/info/title}</a>
+        <stl:block stl:if="user">
+          <a href="${user/home}" title="${user/title}">${user/title}</a>
           <span>|</span>
           <a href="${logout}" id="top-menu-logout" title="Log out">Log out</a>
           <stl:block stl:if="manage_view_allowed">

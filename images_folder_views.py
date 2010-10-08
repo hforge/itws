@@ -18,12 +18,10 @@
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.file_views import File_NewInstance
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.messages import MSG_NEW_RESOURCE
 from ikaaro.views import CompositeForm
-
-# Import from itws
-from itws.views import File_NewInstance
 
 
 

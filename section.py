@@ -32,12 +32,10 @@ from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
-from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar import SideBarAware, ContentBarAware
 from repository import Repository, ContentBoxSectionChildrenToc
-from resources import ManageViewAware
 from section_views import Section_ManageContent
 from section_views import Section_Edit, Section_View
 from section_views import Section_AddContent
@@ -116,7 +114,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
 
 
-class Section(ManageViewAware, SideBarAware, ContentBarAware,
+class Section(SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
@@ -141,20 +139,19 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     contentbar_items = [('children-toc', ContentBoxSectionChildrenToc, True)]
 
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        root = get_context().root
-        ResourcesOrderedContainer._make_resource(cls, folder, name, **kw)
-        SideBarAware._make_resource(cls, folder, name, **kw)
-        ContentBarAware._make_resource(cls, folder, name, **kw)
+    def init_resource(self, **kw):
+        SideBarAware.init_resource(self, **kw)
+        ContentBarAware.init_resource(self, **kw)
+        ResourcesOrderedContainer.init_resource(self, **kw)
 
+        # XXX
         # Preorder specific sidebar items
-        table_name = cls.sidebar_name
-        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        name2 = Repository.news_items_name
-        table.add_new_record({'name': name2})
-        name2 = Repository.section_sidebar_children_toc_view_name
-        table.add_new_record({'name': name2})
+        #table_name = cls.sidebar_name
+        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        #name2 = Repository.news_items_name
+        #table.add_new_record({'name': name2})
+        #name2 = Repository.section_sidebar_children_toc_view_name
+        #table.add_new_record({'name': name2})
 
 
     def get_internal_use_resource_names(self):

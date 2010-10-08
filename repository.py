@@ -33,14 +33,15 @@ from itools.web import get_context
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
-from ikaaro.forms import SelectRadio, BooleanCheckBox, TextWidget
-from ikaaro.forms import HTMLBody, PathSelectorWidget, rte_widget
-from ikaaro.forms import BooleanRadio, SelectWidget
-from ikaaro.future.menu import Target
+from ikaaro.autoform import RadioWidget, CheckboxWidget, TextWidget
+from ikaaro.autoform import HTMLBody, PathSelectorWidget, rte_widget
+from ikaaro.autoform import SelectWidget
+from ikaaro.menu import Target
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.skins import register_skin
+from ikaaro.webpage import WebPage
 
 # Import from itws
 from datatypes import PositiveInteger, TagsAwareClassEnumerate
@@ -59,16 +60,16 @@ from repository_views import ContentBoxSectionNews_View
 from repository_views import HTMLContent_ViewBoth, HTMLContent_Edit
 from repository_views import Repository_BrowseContent
 from repository_views import SidebarBox_Preview, HTMLContent_View
+from tags_views import TagsList
 from utils import get_path_and_view
 from views import AutomaticEditView, BoxAwareNewInstance, EasyNewInstance
 from views import SideBarAwareNewInstance
 from views import BarAwareBoxAwareNewInstance
-from webpage import WebPage
 
 
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
-hide_single_widget = BooleanRadio('hide_if_only_one_item',
+hide_single_widget = RadioWidget('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
 
 
@@ -123,15 +124,12 @@ class Box(BoxAware, File):
     class_version = '20100622'
     class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
+    edit_schema = {}
+    class_schema = merge_dicts(File.class_schema,
+                               edit_schema)
+
     download = None
     externaledit = None
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(File.get_metadata_schema(),
-                           cls.edit_schema)
-
 
 
 class BoxSectionNews(Box):
@@ -142,11 +140,9 @@ class BoxSectionNews(Box):
     class_description = MSG(u'Display the last N news filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
-    # Box configuration
-    edit_schema = {
-        'tags': String(multiple=True),
-        'count': PositiveInteger(default=3)
-        }
+    class_schema = merge_dicts(Box.class_schema,
+                               count=PositiveInteger(default=3),
+                               tags=TagsList)
 
     # Views
     preview = order_preview = BoxSectionNews_Preview()
@@ -175,6 +171,10 @@ class HTMLContent(WebPage):
     class_description = MSG(u'HTML snippet which can be displayed in the '
                              'central and/or the sidebar')
 
+    class_schema = merge_dicts(WebPage.class_schema,
+         # Metadata
+         title_link=String(source='metadata'),
+         title_link_target=Target(source='metadata', default='_top'))
 
     # Configuration of box for EditView
     edit_schema = {'title_link': String,
@@ -183,7 +183,7 @@ class HTMLContent(WebPage):
                    'display_title': Boolean}
 
     edit_widgets = [
-        BooleanCheckBox('display_title',
+        CheckboxWidget('display_title',
                         title=MSG(u'Display on webpage view')),
         PathSelectorWidget('title_link', title=MSG(u'Title link')),
         SelectWidget('title_link_target', title=MSG(u'Title link target')),
@@ -191,33 +191,9 @@ class HTMLContent(WebPage):
         ]
 
 
-    # Views
-    view_both = HTMLContent_ViewBoth()
-    preview = order_preview = SidebarBox_Preview()
-    edit = HTMLContent_Edit()
-    view = HTMLContent_View()
-    new_instance = EasyNewInstance()
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = merge_dicts(WebPage.get_metadata_schema(),
-                             title_link=String(),
-                             title_link_target=Target(default='_top'))
-        # Not tagsaware
-        #del schema['tags'] # Can not delete tags dur to *_links methods
-        del schema['pub_datetime']
-        return schema
-
-
-    def _get_catalog_values(self):
-        values = WebPage._get_catalog_values(self)
-        # Not tagsaware
-        del values['tags']
-        del values['pub_datetime']
-        values['is_tagsaware'] = False
-        return values
-
+    ###########################
+    ## Links API
+    ###########################
 
     def get_links(self):
         links = WebPage.get_links(self)
@@ -280,6 +256,16 @@ class HTMLContent(WebPage):
                 self.set_property('title_link', str(new_ref))
 
 
+    #########
+    # Views
+    #########
+    view_both = HTMLContent_ViewBoth()
+    preview = order_preview = SidebarBox_Preview()
+    edit = HTMLContent_Edit()
+    view = HTMLContent_View()
+    new_instance = EasyNewInstance()
+
+
 
 class BoxTags(Box):
 
@@ -298,14 +284,14 @@ class BoxTags(Box):
                    'display_title': Boolean}
 
     edit_widgets = [
-        BooleanCheckBox('display_title',
+        CheckboxWidget('display_title',
                         title=MSG(u'Display on tagcloud view')),
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
-        BooleanCheckBox('show_number',
+        CheckboxWidget('show_number',
                         title=MSG(u'Show number of items for each tag')),
-        BooleanCheckBox('random', title=MSG(u'Randomize tags')),
-        SelectRadio('formats', has_empty_option=False,
+        CheckboxWidget('random', title=MSG(u'Randomize tags')),
+        RadioWidget('formats', has_empty_option=False,
                     title=MSG(u'This tag cloud will display only '
                               u'the tags from selected types of content'))
         ]
@@ -379,13 +365,8 @@ class ContentBoxSectionChildrenToc(Box):
 
 class BoxesOrderedTable(ResourcesOrderedTable):
 
-    class_views = ['view', 'add_box', 'new_box', 'manage_view', 'commit_log']
+    class_views = ['view', 'add_box', 'new_box', 'commit_log']
     allow_filter_key = None
-
-    # Views
-    view = BoxesOrderedTable_Ordered()
-    add_box = BoxesOrderedTable_Unordered()
-    new_box = None
 
 
     def get_view(self, name, query=None):
@@ -437,6 +418,13 @@ class BoxesOrderedTable(ResourcesOrderedTable):
         return types
 
     orderable_classes = property(_orderable_classes)
+
+    ############
+    # Views
+    ############
+    view = BoxesOrderedTable_Ordered()
+    add_box = BoxesOrderedTable_Unordered()
+    new_box = None
 
 
 
@@ -521,54 +509,20 @@ class Repository(Folder):
                              'articles-view', 'news-siblings',
                              'sidebar-children-toc', 'news'])
 
-    # configuration
-    news_items_cls = BoxSectionNews
-    news_items_name = 'news'
-    news_siblings_view_cls = BoxNewsSiblingsToc
-    news_siblings_view_name = 'news-siblings'
-    section_sidebar_children_toc_view_cls = BoxSectionChildrenToc
-    section_sidebar_children_toc_view_name = 'sidebar-children-toc'
-
-    new_resource = None
-    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Create a new Sidebar Box'),
-                                               is_side=True)
-    browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
-    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
-    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
-
-
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        Folder._make_resource(cls, folder, name, **kw)
-        state = 'public'
-
-        # news siblings box
-        _cls = cls.news_siblings_view_cls
-        _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.news_siblings_view_name),
-                            title={'en': _cls.class_title.gettext()},
-                            state=state)
-        # news
-        _cls = cls.news_items_cls
-        _cls._make_resource(_cls, folder,
-                            '%s/%s' % (name, cls.news_items_name),
-                            title={'en': _cls.class_title.gettext()},
-                            state=state)
-        # section sidebar children toc
-        _cls = cls.section_sidebar_children_toc_view_cls
-        _cls._make_resource(_cls, folder,
-                '%s/%s' % (name, cls.section_sidebar_children_toc_view_name),
-                           title={'en': _cls.class_title.gettext()},
-                           state=state)
+    def init_resource(self, **kw):
+        Folder.init_resource(self, **kw)
+        # We initialize repository with some boxes
+        kw = {'title': {'en': BoxNewsSiblingsToc.class_title.gettext()},
+              'state': 'public'}
+        self.make_resource('news-siblings', BoxNewsSiblingsToc)
+        self.make_resource('sidebar-children-toc', BoxSectionChildrenToc)
+        self.make_resource('news', BoxSectionNews)
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
                             is_side=None):
         registry = get_boxes_registry()
         types = []
-        print is_content, is_side
-        from pprint import pprint
-        pprint(registry)
         for cls, allow in registry.iteritems():
             if allow_instanciation is not None and \
                     allow_instanciation <> allow['instanciation']:
@@ -594,6 +548,18 @@ class Repository(Folder):
         """
         allowed_types = self.get_document_types() + [Box]
         return isinstance(source, tuple(allowed_types))
+
+
+    #################
+    # Views
+    ################
+    new_resource = None
+    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Create a new Sidebar Box'),
+                                               is_side=True)
+    browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
+    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
+    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+
 
 
 

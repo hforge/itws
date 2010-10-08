@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import get_abspath
+from itools.core import get_abspath, merge_dicts
 from itools.datatypes import Unicode, Integer, Decimal
 from itools.gettext import MSG
 
@@ -40,27 +40,27 @@ class AddressItem(WebPage):
     class_id = 'address'
     class_version = '20100408'
     class_title = MSG(u'Address')
+    class_description = MSG(u'Address')
     class_icon16 = 'addresses/icons/16x16/addresses.png'
     class_icon48 = 'addresses/icons/48x48/addresses.png'
     class_views = ['edit', 'back', 'edit_state']
+
+    # Schema
+    class_schema = merge_dicts(WebPage.class_schema,
+          # Metadata
+          address=Unicode(source='metadata'),
+          latitude=Decimal(source='metadata', default=Decimal.encode('48.8566')),
+          longitude=Decimal(source='metadata', default=Decimal.encode('2.3509')),
+          width=Integer(source='metadata', default=400),
+          height=Integer(source='metadata', default=5),
+          zoom=Integer(source='metadata', default=5),
+          render=OpenLayerRender(source='metadata', default='osm'))
+
 
     # Views
     edit = AddressItem_Edit()
     back = GoToSpecificDocument(specific_document='../',
                                 title=MSG(u'Back to Addresses Folder'))
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = WebPage.get_metadata_schema()
-        schema['address'] = Unicode
-        schema['latitude'] = Decimal(default=Decimal.encode('48.8566'))
-        schema['longitude'] = Decimal(default=Decimal.encode('2.3509'))
-        schema['width'] = Integer(default=400)
-        schema['height'] = Integer(default=400)
-        schema['zoom'] = Integer(default=5)
-        schema['render'] = OpenLayerRender(default='osm')
-        return schema
 
 
 

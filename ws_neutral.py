@@ -25,427 +25,90 @@ from copy import deepcopy
 from decimal import Decimal
 
 # Import from itools
-from itools.core import freeze, get_abspath, merge_dicts
-from itools.csv import Property
-from itools.datatypes import Boolean, Unicode
-from itools.fs import FileName
+from itools.core import freeze, merge_dicts
+from itools.database.ro import ROGitDatabase
+from itools.datatypes import Boolean, String, Unicode
 from itools.gettext import MSG
-from itools.i18n import get_language_name
-from itools.stl import stl
-from itools.uri import get_reference, resolve_uri, Path
+from itools.uri import get_reference, Path
 from itools.web import get_context
-from itools.xapian import AndQuery, PhraseQuery
-from itools.xml import XMLParser
+from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
-from ikaaro.database import ReadOnlyDatabase
-from ikaaro.file import File, Image
+from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.forms import stl_namespaces
-from ikaaro.future.menu import MenuFolder, Menu
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.resource_views import DBResource_Backlinks
-from ikaaro.skins import register_skin, Skin
-from ikaaro.text import CSS
-from ikaaro.tracker import Tracker, Issue
-from ikaaro.website import WebSite as BaseWebSite
+from ikaaro.revisions_views import DBResource_CommitLog
+from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
-# Special case for the Wiki
-try:
-    from ikaaro.wiki import WikiFolder
-except ImportError:
-    WikiFolder = None
 
 # Import from itws
 from about import AboutITWS
 from addresses import AddressesFolder
-from bar import ContentBarAware, SideBarAware, SideBar_View
-from common import FoBoFooterAwareSkin
+from bar import ContentBarAware, SideBarAware
+from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
+from control_panel import CPEdit404, CPEditRobotsTXT
 from datatypes import MultilingualString, NeutralClassSkin
 from images_folder import ImagesFolder
-from news import NewsFolder, NewsItem
-from repository import Repository, SidebarBoxesOrderedTable
-from resources import RobotsTxt, ManageViewAware
+from news import NewsFolder
+from repository import Repository
+from resources import FooterFolder, RobotsTxt, NotFoundPage
 from rssfeeds import RssFeeds
 from section import Section
 from sitemap import SiteMap
-from slides import SlideShow, Slide
+from slides import SlideShow
 from tags import TagsFolder
 from turning_footer import TurningFooterFolder
-from utils import get_path_and_view, is_navigation_mode
+from utils import get_path_and_view
 from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
-from website import WebSite
-from ws_neutral_views import NeutralWS_ArticleNewInstance
-from ws_neutral_views import NeutralWS_ManageContent
 from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_ManageLink
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
-from ws_neutral_views import NotFoundPage, NeutralWS_RSS
-from ws_neutral_views import WSDataBoxAwareNewContentBarInstance
-from ws_neutral_views import WSDataBoxAwareNewSideBarInstance
-from ws_neutral_views import NeutralWS_BarAwareBoxAwareNewInstance
+from ws_neutral_views import NotFoundPage_View
+from ws_neutral_views import NeutralWS_RSS
 from ws_neutral_views import WSDataFolder_ManageContent
 
 
 
-############################################################
-# Skin
-############################################################
-class NeutralSkin(FoBoFooterAwareSkin):
 
-    nav_data = {'template': '/ui/neutral/template_nav.xml',
-                'depth': 1, 'show_first_child': False}
-
-    fo_edit_template = list(XMLParser(
-    """
-    <div class="fo-edit">
-      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="${edition_title}">${edition_title}</a>
-      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="${navigation_title">${navigation_title}</a>
-    </div>
-    """, stl_namespaces))
-
-    not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
-                                              'credits', 'license']
-    not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class,
-                                        SlideShow, Slide, RssFeeds]
-    manage_buttons = []
-
-
-    def get_not_allowed_cls_for_sidebar_view(self):
-        types = self.not_allowed_cls_for_sidebar_view[:] # copy
-        if WikiFolder:
-            types.append(WikiFolder)
-        return types
-
-
-    def get_backoffice_class(self, context):
-        # backoffice class
-        here = context.resource
-        bo_class = None
-        current_view = context.view_name
-        if current_view in ('edit', 'browse_content', 'preview_content',
-                            'login', 'new_resource', 'backlinks', 'edit_state'):
-            bo_class = 'backoffice'
-        elif isinstance(here, (Tracker, Issue, CSS, MenuFolder, Menu)):
-            bo_class = 'backoffice'
-        elif isinstance(here, BaseWebSite):
-            ac = here.get_access_control()
-            if ac.is_allowed_to_edit(context.user, here):
-                bo_class = 'backoffice'
-        elif here.name in ('order-slides',):
-            bo_class = 'backoffice'
-
-        return bo_class
-
-
-    def get_rss_feeds(self, context, site_root):
-        rss = []
-        site_root_abspath = site_root.get_abspath()
-        # Global RSS
-        ws_title = site_root.get_title()
-        rss_title = MSG(u'{ws_title} -- RSS Feeds').gettext(ws_title=ws_title)
-        rss.append({'path': '/;rss', 'title': rss_title})
-
-        # News RSS
-        news_folder = site_root.get_news_folder(context)
-        if news_folder:
-            title = news_folder.get_title()
-            rss_title = MSG(u'{ws_title} {title} -- RSS Feeds')
-            rss_title = rss_title.gettext(title=title, ws_title=ws_title)
-            rss.append({'path': '%s/;rss' % context.get_link(news_folder),
-                        'title': rss_title})
-
-        return rss
-
-
-    def get_sidebar_resource(self, context):
-        here = context.resource
-        site_root = context.site_root
-        sidebar_resource = site_root
-        if isinstance(here, SideBarAware):
-            sidebar_resource = here
-        elif isinstance(here, SidebarBoxesOrderedTable):
-            parent = here.parent
-            if isinstance(parent, site_root.wsdatafolder_class):
-                # Special case for ws-data folder
-                sidebar_resource = site_root
-            else:
-                sidebar_resource = parent
-        elif isinstance(here, NewsItem) or\
-                isinstance(here.parent, site_root.section_class):
-            sidebar_resource = here.parent
-        return sidebar_resource
-
-
-    def build_namespace(self, context):
-        namespace = FoBoFooterAwareSkin.build_namespace(self, context)
-
-        here = context.resource
-        site_root = context.site_root
-
-        # banner namespace
-        banner_ns = {}
-        banner_ns['title'] = site_root.get_property('banner_title')
-        banner_ns['description'] = site_root.get_property('description')
-        banner_path = None
-        path = site_root.get_property('banner_path')
-        if path:
-            banner = site_root.get_resource(path, soft=True)
-            if banner:
-                ac = banner.get_access_control()
-                if ac.is_allowed_to_view(context.user, banner):
-                    banner_path = context.get_link(banner)
-        banner_ns['path'] = banner_path
-        namespace['banner'] = banner_ns
-
-        # site search
-        text = context.get_form_value('site_search_text', type=Unicode)
-        namespace['text'] = text.strip()
-
-        # Specific class based on the current resource format
-        class_id = getattr(here, 'class_id', None)
-        if class_id:
-            class_id = class_id.replace('/', '-slash-')
-            view_name = context.view_name or here.get_default_view_name()
-            page_css_class = '%s-%s' % (class_id, view_name)
-            page_css_class = page_css_class.replace('_', '-')
-            namespace['page_css_class'] = page_css_class.lower()
-            # resources classes
-            resource_classes = []
-            r = here
-            while not isinstance(r, type(site_root)):
-                resource_classes.append(r)
-                r = r.parent
-            resource_classes = [ r.name for r in reversed(resource_classes) ]
-            namespace['resource_class'] = ' '.join(resource_classes)
-        else:
-            namespace['page_css_class'] = None
-            namespace['resource_class'] = None
-
-        # Add custom data inside the template
-        custom_data = site_root.get_property('custom_data') or ''
-        namespace['custom_data'] = XMLParser(custom_data)
-
-        # RSS Feeds title
-        namespace['rss_feeds'] = self.get_rss_feeds(context, site_root)
-
-        # favicon
-        favicon = site_root.get_property('favicon')
-        namespace['favicon'] = False
-        if favicon:
-            favicon_resource = site_root.get_resource(favicon, soft=True)
-            if favicon_resource:
-                ac = favicon_resource.get_access_control()
-                if ac.is_allowed_to_view(context.user, favicon_resource):
-                    mimetype = favicon_resource.handler.get_mimetype()
-                    favicon_href = '%s/;download' % resolve_uri('/', favicon)
-                    namespace['favicon_href'] = favicon_href
-                    namespace['favicon_type'] = mimetype
-                    namespace['favicon'] = True
-
-        if namespace['favicon'] is False:
-            # ikaaro add a default favicon
-            if 'image' in namespace['favicon_type']:
-                namespace['favicon'] = True
-
-        # Turning footer
-        turning_footer = site_root.get_resource('turning-footer', soft=True)
-        if turning_footer:
-            view = turning_footer.view
-            namespace['turning_footer'] = view.GET(turning_footer, context)
-        else:
-            namespace['turning_footer'] = None
-
-        # manage buttons
-        manage_buttons = []
-        if context.user:
-            manage_buttons = self.manage_buttons
-        namespace['manage_buttons'] = manage_buttons
-
-        # backoffice class
-        namespace['bo_class'] = self.get_backoffice_class(context)
-
-        # Readonly
-        body_css = None
-        if type(context.database) is ReadOnlyDatabase:
-            body_css = 'read-only'
-        namespace['body_css'] = body_css
-
-        # Sidebar
-        nacfsv = self.get_not_allowed_cls_for_sidebar_view()
-        sidebar = None
-        not_allowed = isinstance(here, tuple(nacfsv))
-        navnfsv = self.not_allowed_view_name_for_sidebar_view
-        if context.view_name not in navnfsv and not not_allowed:
-            sidebar_resource = self.get_sidebar_resource(context)
-
-            if sidebar_resource:
-                order_name = sidebar_resource.sidebar_name
-                sidebar_view = SideBar_View(order_name=order_name)
-                if not sidebar_view.is_empty(sidebar_resource, context):
-                    # Heuristic, do not compute sidebar view
-                    # if there is no items
-                    sidebar = sidebar_view.GET(sidebar_resource, context)
-
-        namespace['sidebar_view'] = sidebar
-        namespace['sidebar'] = sidebar or namespace['context_menus']
-
-        # FO edit/no edit
-        ac = here.get_access_control()
-        events = None
-        if ac.is_allowed_to_edit(context.user, here):
-            edit_mode = is_navigation_mode(context) is False
-            events = stl(events=self.fo_edit_template,
-                         namespace={
-                             'edit_mode': edit_mode,
-                             'edition_title': MSG(u'Go to editing mode'),
-                             'navigation_title': MSG(u'Back to navigation')})
-        namespace['fo_edit_toolbar'] = events
-
-        # languages
-        ws_languages = site_root.get_property('website_languages')
-        accept = context.accept_language
-        namespace['lang'] = accept.select_language(ws_languages)
-
-        # Manage view acl
-        view = site_root.get_view('manage_view')
-        manage_view_allowed = ac.is_access_allowed(context.user, site_root,
-                                                   view)
-        namespace['manage_view_allowed'] = manage_view_allowed
-
-        return namespace
-
-
-    def get_styles(self, context):
-        styles = FoBoFooterAwareSkin.get_styles(self, context)
-        if styles.count('/ui/aruni/aruni.css'):
-            styles.remove('/ui/aruni/aruni.css')
-        # In edition mode we add fancybox css
-        edit_mode = is_navigation_mode(context) is False
-        if edit_mode is True:
-            styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
-        return styles
-
-
-    def get_scripts(self, context):
-        scripts = FoBoFooterAwareSkin.get_scripts(self, context)
-        # In edition mode we add fancybox script
-        edit_mode = is_navigation_mode(context) is False
-        if edit_mode is True:
-            scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
-        return scripts
-
-
-
-class NeutralSkin2(NeutralSkin):
-
-    add_common_nav_css = False
-    manage_buttons = [
-        {'path': '/menu/menu', 'label': MSG(u'Order menu')},
-        {'path': '/;new_resource?type=section',
-         'label': MSG(u'Add a section')},
-        {'path': '/;edit_languages', 'label': MSG(u'Edit languages')}]
-
-
-
-class K2Skin(NeutralSkin2):
-
-    # FIXME
-    fo_edit_template = list(XMLParser(
-    """
-    <td class="fo-edit">
-      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="${edition_title}">${edition_title}</a>
-      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="${navigation_title}">${navigation_title}</a>
-    </td>
-    """, stl_namespaces))
-
-
-
-class AdminPopupSkin(Skin):
-
-    def get_styles(self, context):
-        styles = Skin.get_styles(self, context)
-        styles.append('/ui/common/js/jquery.multiselect2side/css/jquery.multiselect2side.css')
-        return styles
-
-
-    def get_scripts(self, context):
-        scripts = Skin.get_scripts(self, context)
-        scripts.append('/ui/common/js/jquery.multiselect2side/js/jquery.multiselect2side.js')
-        return scripts
-
-
-    def build_namespace(self, context):
-        namespace = Skin.build_namespace(self, context)
-        # Get some values
-        resource = context.resource
-        site_root = context.site_root
-        # Title & description of popup
-        namespace['title'] = resource.class_title
-        namespace['description'] = resource.class_description
-        # Content language
-        content_language = resource.get_content_language(context)
-        languages = site_root.get_property('website_languages')
-        namespace['content_languages'] = [
-            {'title': get_language_name(x),
-             'href': context.uri.replace(content_language=x),
-             'class': 'nav-active' if (x == content_language) else None}
-            for x in languages ]
-        # Return languages
-        return namespace
-
-
-
-############################################################
-# Web Site
-############################################################
-from itools.web import STLView
-class WSDataFolder_WP_to_HtmlContent(STLView):
-
-    access = 'is_admin'
-
-    def GET(self, resource, context):
-        from repository import HTMLContent
-
-        wp_schema = WebPage.get_metadata_schema()
-        htmlcontent_schema = HTMLContent.get_metadata_schema()
-        schema_diff = set(wp_schema).difference(set(htmlcontent_schema))
-
-        context.commit = True
-        for item in resource.search_resources(format=WebPage.class_id):
-            item.metadata.format = HTMLContent.class_id
-            item.metadata.version = HTMLContent.class_version
-            for key in schema_diff:
-                item.del_property(key)
-            item.metadata.set_changed()
-            context.database.change_resource(item)
-
-        return '/'
-
-
-
-class WSDataFolder(ManageViewAware, Folder):
+class WSDataFolder(SideBarAware, ContentBarAware, Folder):
 
     class_id = 'neutral-ws-data'
     class_version = '20100623'
     class_title = MSG(u'Website data folder')
-    __fixed_handlers__ = [SideBarAware.sidebar_name,
-                          ContentBarAware.contentbar_name,
-                          'order-resources' # FIXME
-                         ]
     class_views = ['manage_view', 'backlinks', 'commit_log']
 
-    order_contentbar = ContentBarAware.order_contentbar
-    order_sidebar = SideBarAware.order_sidebar
 
+    __fixed_handlers__ = [SideBarAware.sidebar_name,
+                          'order-resources', # FIXME
+                          ContentBarAware.contentbar_name]
+
+
+    def init_resource(self, **kw):
+        # Initialize ikaaro website (Parent class)
+        Folder.init_resource(self, **kw)
+        # Sidebar Aware
+        SideBarAware.init_resource(self, **kw)
+        # ContentBar Aware
+        ContentBarAware.init_resource(self, **kw)
+
+
+    def get_internal_use_resource_names(self):
+        return freeze(self.__fixed_handlers__)
+
+
+    def get_document_types(self):
+        return [File, Folder]
+
+
+    def get_ordered_names(self, context=None):
+        return self.parent.get_ordered_names(context)
+
+    ##############
     # Views
+    ##############
     manage_view = WSDataFolder_ManageContent()
     order_articles = GoToSpecificDocument(specific_document='order-resources',
                                           title=MSG(u'Order Webpages'),
@@ -454,39 +117,41 @@ class WSDataFolder(ManageViewAware, Folder):
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
 
-    wp_to_htmlcontent = WSDataFolder_WP_to_HtmlContent()
 
-    def get_internal_use_resource_names(self):
-        return freeze(self.__fixed_handlers__)
+############################################################
+# Neutral Web Site
+############################################################
 
-
-    def get_document_types(self):
-        return [ File, Folder ]
-
-
-    def get_ordered_names(self, context=None):
-        # proxy
-        return self.parent.get_ordered_names(context)
-
-
-
-class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
-                WebSite):
+class NeutralWS(WebSite):
 
     class_id = 'neutral'
     class_version = '20100629'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'manage_view',
-                   'manage_content', 'new_resource', 'commit_log']
+    class_views = ['view', 'edit', 'control_panel', 'new_resource', 'commit_log']
 
-    sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
-    contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
+    class_control_panel = (WebSite.class_control_panel +
+                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
+                            'edit_404', 'edit_robots_txt'])
+
+    class_schema = merge_dicts(WebSite.class_schema,
+                              # Metadata
+                              # XXX Now its on ikaaro
+                               custom_data=String(source='metadata', default=''),
+                               breadcrumb_title=Unicode(source='metadata'),
+                               banner_title=Unicode(source='metadata', default=''),
+                               banner_path=MultilingualString(source='metadata', default=''),
+                               class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
+
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__
                           + ['style', 'menu', 'about-itws',
                              'footer', 'sitemap.xml', 'robots.txt',
                              'repository', 'images', 'turning-footer',
                              'tags', 'ws-data'])
+
+    #################
+    # Configuration
+    #################
     footers = ('footer',)
     menus = ('menu',)
     newsfolder_class = NewsFolder
@@ -494,160 +159,117 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
     sitemap_class = SiteMap
     tagsfolder_class = TagsFolder
     wsdatafolder_class = WSDataFolder
-
-    # CSS skeleton
-    css_skeleton = """/* CSS */
-#header {
-  /* background: #a11; */
-
-  /* Image source: http://www.flickr.com/photos/joebeone/2240389708/ */
-  /* Image license: http://creativecommons.org/licenses/by/2.0/deed.en */
-  background: url("../images/background-ties/;download") no-repeat scroll 0 0 transparent;
-}
-
-#header .login,
-#header .header-toolbar {
-  background: #822;
-}
-
-#header .title a {
-  color: #822;
-}
-
-#nav ul li a {
-  background: #822;
-}
-
-#nav ul li.in-path a {
-  background: #ecc;
-}
-"""
+    sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
+    contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
 
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        website_class = cls
-        context = get_context()
-        root = context.root
-        # XXX How to choose language
+
+    def init_resource(self, **kw):
+        # XXX Check if it works
+        kw['website_is_open'] = True
         # TODO allow to choose language at website creation
         default_language = 'en'
-        # Parent
-        WebSite._make_resource(cls, folder, name, **kw)
-        website = root.get_resource(name)
-        ws_folder = website.handler
-        # Add repository
-        Repository._make_resource(Repository, ws_folder, 'repository')
-        repository = website.get_resource('repository')
-        # WSDataFolder
-        cls2 = website_class.wsdatafolder_class
-        cls2._make_resource(cls2, ws_folder, 'ws-data',
-                title={default_language: MSG(u'Configure Homepage').gettext()})
-        # SideBarAware
-        SideBarAware._make_resource(cls, folder, name, **kw)
-        sidebar_table = website.get_resource(cls.sidebar_name)
-        # Preorder specific sidebar boxes
-        sidebar_table.add_new_record({'name': Repository.news_items_name})
-        news_item = repository.get_resource(Repository.news_items_name)
-        # Hook default property
-        news_item.set_property('count', 4)
-        # ContentBarAware
-        ContentBarAware._make_resource(cls, folder, name, **kw)
-        contentbar_table = website.get_resource(cls.contentbar_name)
-        # index
-        section_class = cls.section_class
-        section_class._make_resource(section_class, ws_folder, 'index',
-                                     title={'en': u'Index'})
+        # Initialize ikaaro website (Parent class)
+        WebSite.init_resource(self, **kw)
+        # Create repository
+        self.make_resource('repository', Repository)
         # Add a sitemap
-        cls = website_class.sitemap_class
-        cls._make_resource(cls, ws_folder, 'sitemap.xml')
-        # Add Robots.txt
-        RobotsTxt._make_resource(RobotsTxt, ws_folder, 'robots.txt')
+        self.make_resource('sitemap.xml', self.sitemap_class)
+        # Create WsData container
+        self.make_resource('ws-data', self.wsdatafolder_class,
+                title={default_language: MSG(u'Configure Homepage').gettext()})
+        # Create Robots.txt
+        self.make_resource('robots.txt', RobotsTxt)
         # Add an image folder
-        cls = ImagesFolder
-        cls._make_resource(cls, ws_folder, 'images')
-        # Add default banner
-        path = get_abspath('data/k2-banner-ties.jpg')
-        body = open(path).read()
-        filename = name2 = 'background-ties.jpg'
-        name2, extension, language = FileName.decode(name2)
-        metadata = {'format': 'image/jpeg', 'filename': filename,
-                    'extension': extension, 'state': 'public',
-                    'body': body}
-        cls = Image
-        cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
-
-        # Set a default banner
-        if 'banner_title' not in kw:
-            vhosts = website.get_property('vhosts')
-            if vhosts:
-                banner_title = vhosts[0]
-            else:
-                banner_title = website.get_title()
-            website.set_property('banner_title', banner_title,
-                                 language=default_language)
+        self.make_resource('images', ImagesFolder)
         # Turning footer
-        cls = TurningFooterFolder
-        cls._make_resource(cls, ws_folder, 'turning-footer')
+        self.make_resource('turning-footer', TurningFooterFolder)
         # Tags
-        cls = website_class.tagsfolder_class
-        cls._make_resource(cls, ws_folder, 'tags', language=default_language)
-        # Default favicon
-        favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
-        favicon_data = favicon_resource.to_str()
-        cls = Image
-        filename = name2 = 'favicon.ico'
-        name2, extension, language = FileName.decode(name2)
-        metadata = {'format': 'image/x-icon', 'filename': filename,
-                    'extension': extension, 'state': 'public',
-                    'body': favicon_data}
-        cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
-        website.set_property('favicon', 'images/favicon')
+        self.make_resource('tags', self.tagsfolder_class, language=default_language)
         # Add default news folder
-        cls = website.newsfolder_class
-        if cls:
-            cls._make_resource(cls, folder, '%s/news' % name)
-        # Init Website menu with 2 items + news folder
-        for menu_name in website_class.menus:
-            menu = website.get_resource('%s/menu' % menu_name)
-            title = Property(MSG(u'Homepage').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/'})
-            title = Property(MSG(u'Contact').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;contact'})
-            if cls:
-                # Add news if newsfolder_class is defined
-                title = Property(MSG(u'News').gettext(),
-                                 language=default_language)
-                menu.add_new_record({'title': title, 'path': '/news'})
-        # Init Website footer with 2 items
-        for footer_name in website_class.footers:
-            menu = website.get_resource('%s/menu' % footer_name)
-            title = Property(MSG(u'Powered by itws').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/about-itws'})
-            title = Property(MSG(u'Contact us').gettext(),
-                             language=default_language)
-            menu.add_new_record({'title': title, 'path': '/;contact'})
+        if self.newsfolder_class:
+            self.make_resource('news', self.newsfolder_class)
         # About
-        cls = AboutITWS
-        cls._make_resource(cls, folder, '%s/about-itws' % name,
+        self.make_resource('about-itws', AboutITWS,
                            title={'en': u'About ITWS'})
+        # Add footers
+        for item in self.footers:
+            self.make_resource(item, FooterFolder)
+        # Add 404 page
+        self.make_resource('404', NotFoundPage)
 
+
+
+
+        # XXX TODO Initialize website with data
+        ## Preorder specific sidebar boxes
+        #sidebar_table.add_new_record({'name': Repository.news_items_name})
+        #news_item = repository.get_resource(Repository.news_items_name)
+        ## Hook default property
+        #news_item.set_property('count', 4)
+        # ContentBarAware
+        # index
+        #section_class = cls.section_class
+        #section_class._make_resource(section_class, ws_folder, 'index',
+        #                             title={'en': u'Index'})
+        # Add default banner
+        #path = get_abspath('data/k2-banner-ties.jpg')
+        #body = open(path).read()
+        #filename = name2 = 'background-ties.jpg'
+        #name2, extension, language = FileName.decode(name2)
+        #metadata = {'format': 'image/jpeg', 'filename': filename,
+        #            'extension': extension, 'state': 'public',
+        #            'body': body}
+        #cls = Image
+        #cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
+
+        ## Set a default banner
+        #if 'banner_title' not in kw:
+        #    vhosts = website.get_property('vhosts')
+        #    if vhosts:
+        #        banner_title = vhosts[0]
+        #    else:
+        #        banner_title = website.get_title()
+        #    website.set_property('banner_title', banner_title,
+        #                         language=default_language)
+        # Default favicon
+        #favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
+        #favicon_data = favicon_resource.to_str()
+        #cls = Image
+        #filename = name2 = 'favicon.ico'
+        #name2, extension, language = FileName.decode(name2)
+        #metadata = {'format': 'image/x-icon', 'filename': filename,
+        #            'extension': extension, 'state': 'public',
+        #            'body': favicon_data}
+        #cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
+        #website.set_property('favicon', 'images/favicon')
+        # Init Website menu with 2 items + news folder
+        #for menu_name in website_class.menus:
+        #    menu = website.get_resource('%s/menu' % menu_name)
+        #    title = Property(MSG(u'Homepage').gettext(),
+        #                     language=default_language)
+        #    menu.add_new_record({'title': title, 'path': '/'})
+        #    title = Property(MSG(u'Contact').gettext(),
+        #                     language=default_language)
+        #    menu.add_new_record({'title': title, 'path': '/;contact'})
+        #    if cls:
+        #        # Add news if newsfolder_class is defined
+        #        title = Property(MSG(u'News').gettext(),
+        #                         language=default_language)
+        #        menu.add_new_record({'title': title, 'path': '/news'})
+        ## Init Website footer with 2 items
+        #for footer_name in website_class.footers:
+        #    menu = website.get_resource('%s/menu' % footer_name)
+        #    title = Property(MSG(u'Powered by itws').gettext(),
+        #                     language=default_language)
+        #    menu.add_new_record({'title': title, 'path': '/about-itws'})
+        #    title = Property(MSG(u'Contact us').gettext(),
+        #                     language=default_language)
+        #    menu.add_new_record({'title': title, 'path': '/;contact'})
 
     @classmethod
     def get_orderable_classes(cls):
         return (cls, Section)
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(WebSite.get_metadata_schema(),
-                           breadcrumb_title=Unicode,
-                           banner_title=Unicode(default=''),
-                           banner_path=MultilingualString(default=''),
-                           class_skin=NeutralClassSkin(default='/ui/k2'))
 
 
     def get_class_skin(self):
@@ -710,17 +332,18 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
     def get_news_folder(self, context):
         # News folder MUST be in root '/xxx'
+        from ikaaro.utils import get_base_path_query
         abspath = self.get_canonical_path()
-        query = [PhraseQuery('parent_path', str(abspath)),
-                 PhraseQuery('format', self.newsfolder_class.class_id)]
-        query = AndQuery(*query)
+        query = [get_base_path_query(str(abspath)),
+                  PhraseQuery('format', self.newsfolder_class.class_id)]
+        #query = get_base_path_query(str(abspath))
         # Search
-        results = context.root.search(query, sort_by='name')
+        results = context.root.search(AndQuery(*query), sort_by='name')
         if len(results):
             database = context.database
             doc = results.get_documents()[0]
             path = doc.abspath
-            if type(context.database) is not ReadOnlyDatabase:
+            if type(context.database) is not ROGitDatabase:
                 path = database.resources_old2new.get(path, path)
             return self.get_resource(path)
         return None
@@ -730,6 +353,11 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         # ContentBarItem_Articles_View API
         return WebPage
 
+    ############################################################################
+    # Get links / update links
+    # XXX We have to do it on ikaaro !
+    # TODO Check on favicon
+    ############################################################################
 
     def get_links(self):
         links = WebSite.get_links(self)
@@ -837,26 +465,28 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
         return role is not None
 
 
-    # User Interface
-    edit_menu = GoToSpecificDocument(
-            specific_document='menu/menu',
-            title=MSG(u'Menu'), access='is_allowed_to_edit')
-    edit_turning_footer = GoToSpecificDocument(
-            specific_document='turning-footer',
-            title=MSG(u'Turning Footer'), access='is_allowed_to_edit')
-    edit_footer = GoToSpecificDocument(
-            specific_document='footer/menu',
-            title=MSG(u'Footer'), access='is_allowed_to_edit')
+    #######################################################################
+    # Views
+    #######################################################################
+
+    # Base views
     view = NeutralWS_View()
-    manage_view = NeutralWS_ManageLink()
-    manage_content = NeutralWS_ManageContent()
-    # Helper
-    add_new_article = NeutralWS_ArticleNewInstance()
+    edit = NeutralWS_Edit()
     fo_switch_mode = NeutralWS_FOSwitchMode()
-    # ws-data helper, call from ws-data, goto to ws-data
-    ws_data_new_contentbar_resource = WSDataBoxAwareNewContentBarInstance()
-    ws_data_new_sidebar_resource = WSDataBoxAwareNewSideBarInstance()
-    # Order
+    not_found = NotFoundPage_View()
+    rss = last_news_rss = NeutralWS_RSS()
+    browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
+    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
+    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+
+    # Control panel
+    edit_tags = CPEditTags()
+    edit_footer = CPManageFooter()
+    edit_turning_footer = CPManageTurningFooter()
+    edit_404 = CPEdit404()
+    edit_robots_txt = CPEditRobotsTXT()
+
+    # Sidebar views
     order_items = AdvanceGoToSpecificDocument(
         access='is_allowed_to_edit',
         specific_document='ws-data/order-resources',
@@ -884,15 +514,6 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
             specific_document='%s/;add_box' % contentbar_name,
             title=MSG(u'Add Central Part Box'))
 
-    # Compatibility
-    rss = last_news_rss = NeutralWS_RSS()
-    edit_tags = GoToSpecificDocument(specific_document='tags',
-                                     specific_view='browse_content',
-                                     access='is_allowed_to_edit',
-                                     title=MSG(u'Edit tags'))
-    edit = NeutralWS_Edit()
-    not_found = NotFoundPage()
-
 
 
 ############################################################
@@ -900,25 +521,4 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 ############################################################
 register_resource_class(NeutralWS)
 register_resource_class(WSDataFolder)
-register_document_type(NeutralWS, BaseWebSite.class_id)
-
-###################
-# Register skins
-###################
-
-# neutral
-path = get_abspath('ui/neutral')
-skin = NeutralSkin(path)
-register_skin('neutral', skin)
-# neutral 2
-path = get_abspath('ui/neutral2')
-skin = NeutralSkin2(path)
-register_skin('neutral2', skin)
-# k2
-path = get_abspath('ui/k2')
-skin = K2Skin(path)
-register_skin('k2', skin)
-# Admin popup
-path = get_abspath('ui/admin-popup')
-skin = AdminPopupSkin(path)
-register_skin('admin-popup', skin)
+register_document_type(NeutralWS, WebSite.class_id)

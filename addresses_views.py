@@ -25,8 +25,8 @@ from itools.stl import set_prefix
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.forms import SelectWidget, TextWidget
-from ikaaro.forms import title_widget, rte_widget, timestamp_widget
+from ikaaro.autoform import SelectWidget, TextWidget
+from ikaaro.autoform import title_widget, rte_widget, timestamp_widget
 from ikaaro.webpage import HTMLEditView
 from ikaaro.workflow import get_workflow_preview
 
@@ -59,25 +59,22 @@ class Addresses_View(STLView):
             if ac.is_allowed_to_view(user, address) is False:
                 continue
             kw = {}
-            for key in ['latitude', 'longitude', 'zoom']:
+            for key in ['latitude', 'longitude', 'zoom', 'width', 'height']:
                 kw[key] = address.get_property(key)
-            google_map_key = resource.get_property('google_map_key')
-            height = address.get_property('height')
-            width = address.get_property('width')
             # FIXME To improve, render
             render = address.get_property('render')
             if render == 'google':
                 map_widget_cls = GoogleMapWidget
             else:
                 map_widget_cls = OpenStreetMapWidget
-            map = map_widget_cls('map_%s' % index, width=width, height=height)
+            map = map_widget_cls('map_%s' % index, **kw)
             is_allowed_to_edit = ac.is_allowed_to_edit(user, address)
             html_data = address.get_html_data()
             html_data = set_prefix(html_data, prefix='%s/' % address.name)
             an_address = {'name': address.name,
                           'title': address.get_title(),
                           'html': html_data,
-                          'map': map.to_html(None, kw),
+                          'map': map.render(),
                           'is_allowed_to_edit': is_allowed_to_edit,
                           'workflow': get_workflow_preview(address, context),
                           }
@@ -92,26 +89,36 @@ class AddressItem_Edit(HTMLEditView):
     title = MSG(u"Edit address")
     submit_value = MSG(u'Edit address')
 
-    schema = merge_dicts(HTMLEditView.schema,
-                         render=OpenLayerRender(mandatory=True),
-                         width=Integer, height=Integer, address=Unicode,
-                         latitude=Decimal, longitude=Decimal, zoom=Integer,
-                         # Hack
-                         gps=String)
+
+    def _get_schema(self, resource, context):
+        return merge_dicts(HTMLEditView._get_schema(self, resource, context),
+                           render=OpenLayerRender(mandatory=True),
+                           width=Integer, height=Integer, address=Unicode,
+                           latitude=Decimal, longitude=Decimal, zoom=Integer,
+                           # Hack
+                           gps=String)
+
 
     def get_widgets(self, resource, context):
-        width = resource.get_property('width')
-        height = resource.get_property('height')
-        render = resource.get_property('render')
-        if render == 'google':
+        # What type of map ?
+        if resource.get_property('render') == 'google':
             gps_widget_cls = GoogleGPSWidget
         else:
             gps_widget_cls = OpenStreetMapGPSWidget
+        # Map configuration
+        config_map = {'width': resource.get_property('width'),
+                      'height': resource.get_property('height'),
+                      'address': resource.get_property('address'),
+                      'latitude': resource.get_property('latitude'),
+                      'longitude': resource.get_property('longitude'),
+                      'zoom': resource.get_property('zoom')}
+        # Return widgets
         return [title_widget, rte_widget, timestamp_widget,
                 SelectWidget('render', title=MSG(u'Render map with')),
                 TextWidget('width', title=MSG(u'Map width'), size=6),
                 TextWidget('height', title=MSG(u'Map height'), size=6),
-                gps_widget_cls('gps', title=MSG(u'GPS'), width=width, height=height)]
+                gps_widget_cls('gps', title=MSG(u'GPS'), resource=resource,
+                              **config_map)]
 
 
     def action(self, resource, context, form):

@@ -18,16 +18,18 @@
 from datetime import datetime, timedelta
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.datatypes import String, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.datatypes import Multilingual
 from ikaaro.file import File
 from ikaaro.file_views import File_Download, File_ExternalEdit_View
-from ikaaro.forms import SelectWidget, HTMLBody
-from ikaaro.forms import TextWidget, PathSelectorWidget
-from ikaaro.future.menu import MenuFolder, Menu, MenuFile, Target
-from ikaaro.registry import register_resource_class, register_field
+from ikaaro.autoform import SelectWidget, HTMLBody
+from ikaaro.autoform import TextWidget, PathSelectorWidget
+from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
+from ikaaro.registry import register_resource_class
 from ikaaro.resource_ import DBResource
 from ikaaro.text import Text, encodings
 from ikaaro.text_views import Text_View
@@ -35,31 +37,13 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
-from views import File_NewInstance, RobotsTxt_Edit
-from views import FooterMenu_View, NotFoundPage_Edit, BaseManage_Rename
-
-
-
-############################################################
-# Order
-############################################################
-class OrderTableAware(object):
-
-    order_path = None
-    order_class = None
-
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        order_class = cls.order_class
-        order_class._make_resource(order_class, folder,
-                                   '%s/%s' % (name, cls.order_path))
-
+from views import RobotsTxt_Edit
+from views import FooterMenu_View, NotFoundPage_Edit
 
 
 ############################################################
 # File (Monky patch)
 ############################################################
-File.new_instance = File_NewInstance()
 File.externaledit = File_ExternalEdit_View(
         template='/ui/common/externaledit.xml')
 Text.externaledit = File_ExternalEdit_View(
@@ -83,22 +67,22 @@ class RobotsTxt(Text):
     class_views = ['view', 'edit', 'externaledit', 'download',
                    'upload', 'edit_state', 'commit_log']
 
+    class_schema = merge_dicts(Text.class_schema,
+                               state=String(source='metadata', default='public'))
+
+
+    def init_resource(self, **kw):
+        kw['extension'] = 'txt'
+        Text.init_resource(self, **kw)
+
+
+    ################
+    ## Views
+    ################
     download = File_Download(access=True)
     edit = RobotsTxt_Edit()
     view = Text_View(access='is_allowed_to_edit')
 
-
-    @staticmethod
-    def _make_resource(cls, folder, name, body=RobotsTxt_body, filename=None,
-                     extension='txt', **kw):
-        Text._make_resource(cls, folder, name, body, filename, extension, **kw)
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = Text.get_metadata_schema()
-        schema['state'] = String(default='public')
-        return schema
 
 
 
@@ -120,9 +104,9 @@ class NotFoundPage(WebPage):
 class FooterMenuFile(MenuFile):
 
     record_properties = {
-        'title': Unicode(multiple=True, default=''),
+        'title': Multilingual,
         # HACK datatype should be HTMLBody
-        'html_content': Unicode(multiple=True),
+        'html_content': Multilingual,
         'path': String,
         'target': Target(mandatory=True, default='_top')}
 
@@ -179,7 +163,10 @@ class FooterFolder(MenuFolder):
 ############################################################
 class MultilingualCatalogTitleAware(object):
 
-    def _get_catalog_values(self):
+    # multilingual title with language negociation
+    # register_field('m_title', Unicode(is_stored=True, is_indexed=True))
+
+    def get_catalog_values(self):
         # Get the languages
         site_root = self.get_site_root()
         languages = site_root.get_property('website_languages')
@@ -233,16 +220,8 @@ class ResourceWithCache(DBResource):
 
 
 
-class ManageViewAware(object):
-
-    rename = BaseManage_Rename()
-
-
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
 register_resource_class(NotFoundPage, format='application/xhtml+xml')
 register_resource_class(RobotsTxt)
-
-# multilingual title with language negociation
-register_field('m_title', Unicode(is_stored=True, is_indexed=True))

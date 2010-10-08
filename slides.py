@@ -41,7 +41,6 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
-from resources import ManageViewAware
 from slides_views import SlideShow_Edit, Slide_Edit, Slide_View
 from slides_views import SlideShow_ManageView, SlideTemplateType
 from tags import TagsAware
@@ -58,22 +57,17 @@ class Slide(TagsAware, WebPage):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
 
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(WebPage.get_metadata_schema(),
-                           TagsAware.get_metadata_schema(),
-                           long_title=Unicode,
-                           # Image of the slide
-                           image=ImagePathDataType,
-                           # Slide template type
-                           template_type=SlideTemplateType(default=''),
-                           # Slide title href
-                           href=String)
+    class_schema = merge_dicts(WebPage.class_schema,
+                       TagsAware.class_schema,
+                       long_title=Unicode(source='metadata'),
+                       image=ImagePathDataType(source='metadata'),
+                       template_type=SlideTemplateType(source='metadata', default=''),
+                       href=String(source='metadata'))
 
 
-    def _get_catalog_values(self):
-        return merge_dicts(WebPage._get_catalog_values(self),
-                           TagsAware._get_catalog_values(self))
+    def get_catalog_values(self):
+        return merge_dicts(WebPage.get_catalog_values(self),
+                           TagsAware.get_catalog_values(self))
 
 
     def get_slide_image(self):
@@ -175,8 +169,13 @@ class Slide(TagsAware, WebPage):
             self.set_property(key, str(new_ref))
 
 
+    ###################
+    ## Views
+    ###################
     edit = Slide_Edit()
     view = Slide_View()
+
+    # XXX Not used
     # use by tag_view
     view_only_content = Slide_View(only_content=True)
 
@@ -191,7 +190,7 @@ class Slides_OrderedTable(ResourcesOrderedTable):
 
 
 
-class SlideShow(ManageViewAware, ResourcesOrderedContainer):
+class SlideShow(ResourcesOrderedContainer):
 
     class_id = 'slides'
     class_title = MSG(u'Slideshow')
@@ -199,6 +198,12 @@ class SlideShow(ManageViewAware, ResourcesOrderedContainer):
     class_icon16 = 'slideshow/icons/16x16/slideshow.png'
     class_icon48 = 'slideshow/icons/48x48/slideshow.png'
     class_views = ['manage_view', 'view', 'edit', 'order']
+    class_schema = merge_dicts(ResourcesOrderedContainer.class_schema,
+                   long_title=Unicode(source='metadata'),
+                   image=ImagePathDataType(source='metadata'),
+                   toc_nb_col=PositiveIntegerNotNull(source='metadata', default=2),
+                   template_type=SlideTemplateType(source='metadata', default='1'))
+
 
     __fixed_handlers__ = ['order-slides']
 
@@ -213,18 +218,6 @@ class SlideShow(ManageViewAware, ResourcesOrderedContainer):
     view = GoToFirstOrderedResource()
     edit = SlideShow_Edit()
     order = GoToOrderedTable(title=MSG(u'Order slides'))
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(ResourcesOrderedContainer.get_metadata_schema(),
-                           long_title=Unicode,
-                           # Image of the slideshow
-                           image=ImagePathDataType,
-                           # TOC width
-                           toc_nb_col=PositiveIntegerNotNull(default=2),
-                           # Slide template type
-                           template_type=SlideTemplateType(default='1'))
 
 
     def get_document_types(self):

@@ -32,9 +32,9 @@ from itools.xml import XMLNamespace, register_namespace
 # Import from itws
 from root import Root
 import about
-import common
 import sidebar
 import sitemap
+import skin
 import turning_footer
 import webpage
 import ws_neutral
@@ -79,5 +79,5 @@ path = get_abspath('locale')
 register_domain('itws', path)
 
 # Silent pyflakes
-Root, common, sidebar, sitemap, turning_footer, ws_neutral, webpage
+Root, skin, about, sidebar, sitemap, turning_footer, ws_neutral, webpage
 

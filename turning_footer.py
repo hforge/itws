@@ -30,13 +30,12 @@ from itools.web import get_context
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.forms import BooleanCheckBox, XHTMLBody, RTEWidget
+from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
 from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
-from resources import OrderTableAware
 from turning_footer_views import TurningFooterFile_EditRecord
 from turning_footer_views import TurningFooterFile_View
 from turning_footer_views import TurningFooterFolder_View
@@ -155,15 +154,22 @@ class TurningFooterTable(OrderedTable):
 
 
 
-class TurningFooterFolder(OrderTableAware, Folder):
+class TurningFooterFolder(Folder):
 
     class_id = 'turning-footer-folder'
     class_version = '20100616'
     class_title = MSG(u'Turning Footer Folder')
     class_views = ['view', 'configure', 'edit', 'browse_content',
                    'preview_content', 'backlinks', 'commit_log']
+
+
+    class_schema = merge_dicts(Folder.class_schema,
+                           random=Boolean(source='metadata', default=True),
+                           active=Boolean(source='metadata', default=True))
+
     order_class = TurningFooterTable
     order_path = 'menu'
+
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
     # AutomaticEditView configuration
@@ -171,10 +177,12 @@ class TurningFooterFolder(OrderTableAware, Folder):
                    'active': Boolean}
 
     edit_widgets = [
-               BooleanCheckBox('random', title=MSG(u'Random selection')),
-               BooleanCheckBox('active', title=MSG(u'Is active'))]
+               CheckboxWidget('random', title=MSG(u'Random selection')),
+               CheckboxWidget('active', title=MSG(u'Is active'))]
 
+    #############################
     # Views
+    #############################
     view = TurningFooterFolder_View()
     edit = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit'))
@@ -182,17 +190,9 @@ class TurningFooterFolder(OrderTableAware, Folder):
 
     use_fancybox = False
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        Folder._make_resource(cls, folder, name, **kw)
-        OrderTableAware._make_resource(cls, folder, name, **kw)
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(Folder.get_metadata_schema(),
-                           random=Boolean(default=True),
-                           active=Boolean(default=True))
+    def init_resource(self, **kw):
+        Folder.init_resource(self, **kw)
+        self.make_resource(self.order_path, self.order_class)
 
 
     def get_title(self, language=None, fallback=True):

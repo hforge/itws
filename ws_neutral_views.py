@@ -16,23 +16,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from math import floor
 from types import GeneratorType
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, Unicode, String
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.uri import get_reference, Path, Reference
-from itools.web import get_context, BaseView, FormError, STLView
-from itools.xapian import PhraseQuery, NotQuery, OrQuery, AndQuery
+from itools.uri import get_reference, Reference
+from itools.web import get_context, BaseView, STLView
+from itools.database import PhraseQuery, NotQuery, OrQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro import messages
-from ikaaro.forms import ImageSelectorWidget, SelectRadio, TextWidget
-from ikaaro.forms import stl_namespaces
+from ikaaro.autoform import ImageSelectorWidget, SelectWidget, TextWidget
+from ikaaro.datatypes import Multilingual
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
@@ -45,52 +44,14 @@ from utils import set_navigation_mode_as_navigation
 from views import BaseManageContent
 from views import BaseRSS, ProxyContainerNewInstance
 from views import BarAwareBoxAwareNewInstance
-from website import WebSite_Edit
 
-
-
-class NeutralClassSkinWidget(SelectRadio):
-
-    template = list(XMLParser("""
-        <table border="0">
-          <tr>
-            <td style="text-align:center">
-              <input type="radio" id="${name}-${option_0/name}" name="${name}"
-              value="${option_0/name}" checked="checked"
-              stl:if="option_0/selected"/>
-              <input type="radio" id="${name}-${option_0/name}" name="${name}"
-                value="${option_0/name}" stl:if="not option_0/selected"/>
-              <label for="${name}-${option_0/name}">${option_0/value}</label>
-            </td>
-            <td style="text-align:center">
-              <input type="radio" id="${name}-${option_1/name}" name="${name}"
-              value="${option_1/name}" checked="checked"
-              stl:if="option_1/selected"/>
-              <input type="radio" id="${name}-${option_1/name}" name="${name}"
-                value="${option_1/name}" stl:if="not option_1/selected"/>
-              <label for="${name}-${option_1/name}">${option_1/value}</label>
-            </td>
-          </tr>
-          <tr>
-            <td style="text-align:center"><img src="${option_0/name}/preview.png" /></td>
-            <td style="text-align:center"><img src="${option_1/name}/preview.png" /></td>
-          </tr>
-        </table>
-        """, stl_namespaces))
-
-
-    def get_namespace(self, datatype, value):
-        namespace = SelectRadio.get_namespace(self, datatype, value)
-        namespace['option_0'] = namespace['options'][0]
-        namespace['option_1'] = namespace['options'][1]
-        return namespace
 
 
 
 ############################################################
 # Views
 ############################################################
-class NotFoundPage(BaseNotFoundView):
+class NotFoundPage_View(BaseNotFoundView):
 
     not_found_template = '404'
 
@@ -122,19 +83,18 @@ class NotFoundPage(BaseNotFoundView):
 
 
 
-class NeutralWS_Edit(WebSite_Edit):
+class NeutralWS_Edit(DBResource_Edit):
 
-    def get_schema(self, resource, context):
-        return merge_dicts(WebSite_Edit.get_schema(self, resource, context),
-                           breadcrumb_title=Unicode,
-                           banner_title=Unicode,
-                           banner_path=String,
+    def _get_schema(self, resource, context):
+        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+                           breadcrumb_title=Multilingual,
+                           banner_title=Multilingual,
+                           banner_path=Multilingual,
                            class_skin=NeutralClassSkin(mandatory=True))
 
 
-    def get_widgets(self, resource, context):
-        widgets = WebSite_Edit.get_widgets(self, resource, context)[:]
-        language = resource.get_content_language(context)
+    def _get_widgets(self, resource, context):
+        widgets = DBResource_Edit._get_widgets(self, resource, context)[:]
         # Breadcrumb title
         widgets.append(
             TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')))
@@ -148,38 +108,13 @@ class NeutralWS_Edit(WebSite_Edit):
                                 width=640))
         # class_skin
         widgets.append(
-            NeutralClassSkinWidget('class_skin', title=MSG(u'Skin'),
-                                   has_empty_option=False))
+            SelectWidget('class_skin', title=MSG(u'Skin'),
+                         has_empty_option=False))
 
         # ok
         return widgets
 
 
-    def _get_form(self, resource, context):
-        form = WebSite_Edit._get_form(self, resource, context)
-
-        # Check banner
-        banner_path = form['banner_path']
-        if banner_path and not resource.get_resource(banner_path, soft=True):
-            raise FormError(invalid=['banner_path'])
-        return form
-
-
-    def action(self, resource, context, form):
-        WebSite_Edit.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Other (Multilingual)
-        language = resource.get_content_language(context)
-        for key in ['breadcrumb_title', 'banner_title',  'banner_path']:
-            resource.set_property(key, form[key], language=language)
-        # Skin
-        class_skin = form['class_skin']
-        resource.set_property('class_skin', class_skin)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
 
 
 
@@ -233,26 +168,6 @@ class NeutralWS_RSS(BaseRSS):
         return BaseRSS.get_item_value(self, resource, context, item,
                                       column, site_root)
 
-
-
-class NeutralWS_ArticleNewInstance(ProxyContainerNewInstance):
-
-    def _get_view_title(self):
-        context = get_context()
-        cls = self._get_resource_cls(context.resource, context)
-        return MSG(u'Add new {cls}').gettext(cls.class_title.gettext())
-
-
-    def _get_resource_cls(self, resource, context):
-        here = context.resource
-        return here.get_article_class()
-
-
-    def _get_container(self, resource, context):
-        return resource.get_resource('ws-data')
-
-
-    title = property(_get_view_title)
 
 
 
@@ -328,92 +243,6 @@ class NeutralWS_FOSwitchMode(BaseView):
 
 
 
-class NeutralWS_ManageLink(STLView):
-
-    access = 'is_allowed_to_edit'
-    template = '/ui/neutral/manage_link.xml'
-
-    title = MSG(u'Manage your website')
-
-    def get_items(self, resource, context):
-        items = []
-
-        items.append({'path': './;edit',
-                      'class': 'edit',
-                      'title': MSG(u'Edit banner, favicon, skin, banner...')})
-
-        items.append({'path': './tags/;manage_view',
-                      'class': 'tags',
-                      'title': MSG(u'Manage tags')})
-
-        items.append({'path': './menu',
-                      'class': 'menu',
-                      'title': MSG(u'Manage menu')})
-
-        items.append({'path': './footer',
-                      'class': 'footer',
-                      'title': MSG(u'Manage footer')})
-
-        items.append({'path': './turning-footer/menu',
-                      'class': 'turning-footer',
-                      'title': MSG(u'Manage turning footer')})
-
-        items.append({'path': './style/;edit',
-                      'class': 'css',
-                      'title': MSG(u'Edit CSS')})
-
-        items.append({'path': './404/;edit',
-                      'class': 'manage-404',
-                      'title': MSG(u'Edit 404')})
-
-        items.append({'path': './robots.txt/;edit',
-                      'class': 'robotstxt',
-                      'title': MSG(u'Edit robots.txt')})
-
-        items.append({'path': './;control_panel',
-                      'class': 'controlpanel',
-                      'title': MSG(u'Control Panel: Manage users, Email '
-                                   u'options, Vhosts, SEO ...')})
-
-        middle = int(floor(len(items) / 2.0))
-        left_items = items[:middle]
-        right_items = items[middle:]
-
-        return [{'items': left_items, 'class': 'left'},
-                {'items': right_items, 'class': 'right'}]
-
-
-    def get_namespace(self, resource, context):
-        items_list = self.get_items(resource, context)
-
-        # Post process link
-        # FIXME Does not work for absolute links
-        here_link = Path(context.get_link(resource))
-        for list in items_list:
-            for item in list['items']:
-                new_path = here_link.resolve2(item['path'])
-                item['path'] = new_path
-                disable = item.get('disable', False)
-                item['disable'] = disable
-                if disable:
-                    item['class'] = '%s disable' % item['class']
-
-        return {'lists': items_list, 'title': self.title}
-
-
-
-
-class NeutralWS_ManageContent(BaseManageContent):
-
-    def get_items(self, resource, context, *args):
-        path = str(resource.get_canonical_path())
-        excluded_names = resource.get_internal_use_resource_names()
-        query = [ PhraseQuery('parent_path', path),
-                 NotQuery(OrQuery(*[ PhraseQuery('name', name)
-                                     for name in excluded_names ]))]
-        return context.root.search(AndQuery(*query))
-
-
 
 
 class WSDataFolder_ManageContent(BaseManageContent):
@@ -427,31 +256,3 @@ class WSDataFolder_ManageContent(BaseManageContent):
                   NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                       for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
-
-
-
-class WSDataBoxAwareNewSideBarInstance(BarAwareBoxAwareNewInstance):
-
-    is_content = None
-    is_side = True
-
-    def _get_container(self, resource, context):
-        site_root = resource.get_site_root()
-        return site_root.get_repository()
-
-
-    def _get_goto(self, resource, context, form):
-        site_root = resource.get_site_root()
-        ws_data = site_root.get_resource('ws-data')
-        return context.get_link(ws_data)
-
-
-
-class WSDataBoxAwareNewContentBarInstance(WSDataBoxAwareNewSideBarInstance):
-
-    is_content = True
-    is_side = None
-
-    def _get_container(self, resource, context):
-        site_root = resource.get_site_root()
-        return site_root.get_resource('ws-data')

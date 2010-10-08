@@ -31,7 +31,7 @@ import urllib2
 
 # Import from itools
 from itools import __version__ as itools_version
-from itools.core import get_abspath
+from itools.core import get_abspath, merge_dicts
 from itools.csv import CSVFile
 from itools.datatypes import Boolean, Integer, URI, Unicode, String, HTTPDate
 from itools.datatypes import Decimal, XMLContent
@@ -47,8 +47,7 @@ from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
 from ikaaro.buttons import Button
-from ikaaro.forms import BooleanRadio, TextWidget
-from ikaaro.messages import MSG_CHANGES_SAVED
+from ikaaro.autoform import RadioWidget, TextWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
 from ikaaro.text import CSV
@@ -238,14 +237,10 @@ class RssFeeds_Configure(AutomaticEditView):
                                            datatype)
 
 
-    def action(self, resource, context, form):
-        AutomaticEditView.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-        if form['update_now']:
+    def set_value(self, resource, context, name, form):
+        if name == 'update_now':
             resource.update_rss()
-        return context.come_back(MSG_CHANGES_SAVED, goto='./;view')
+        return AutomaticEditView.set_value(self, resource, context, name, form)
 
 
 
@@ -277,6 +272,9 @@ class RssFeeds(CSV):
                             u'filtering content by keywords')
     class_views = ['view', 'edit', 'add_row', 'configure']
     class_handler = RssFeedsFile
+    class_schema = merge_dicts(CSV.class_schema,
+                               TTL=Integer(default=15),
+                               timeout=Decimal(default=1.0))
 
     # Views
     new_instance = NewInstance()
@@ -294,16 +292,9 @@ class RssFeeds(CSV):
                    'timeout': Decimal(mandatory=True)}
     edit_widgets = [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
                     TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-                    BooleanRadio('update_now', title=MSG(u"Update RSS now"))]
+                    RadioWidget('update_now', title=MSG(u"Update RSS now"))]
 
 
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = CSV.get_metadata_schema()
-        schema['TTL'] = Integer(default=15)
-        schema['timeout'] = Decimal(default=1.0)
-
-        return schema
 
 
     def get_columns(self):

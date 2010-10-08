@@ -22,7 +22,7 @@ from warnings import warn
 # Import form itools
 from itools.gettext import MSG
 from itools.stl import set_prefix
-from itools.web import get_context, STLView
+from itools.web import STLView
 
 # Import from itws
 from repository import ContentbarBoxesOrderedTable
@@ -128,6 +128,8 @@ class Bar_View(STLView):
         # It is used by section TOC views
         _bar_aware = resource
         while isinstance(_bar_aware, self.container_cls) is False:
+            if _bar_aware.parent is None:
+                break
             _bar_aware = _bar_aware.parent
         context._bar_aware = _bar_aware
 
@@ -195,13 +197,14 @@ class SideBar_View(Bar_View):
 
 
     def get_manage_buttons(self, resource, context):
+        from ws_neutral import NeutralWS
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
         if not allowed:
             return []
 
         site_root = resource.get_site_root()
-        if isinstance(context.resource, SideBarAware):
+        if isinstance(context.resource, (NeutralWS, SideBarAware)):
             buttons = Bar_View.get_manage_buttons(self, resource, context)
             section_path = context.get_link(resource)
             buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
@@ -270,6 +273,8 @@ class SideBarAware(object):
 
     class_version = '20100621'
     class_views = ['order_sidebar']
+    class_schema = {}
+
     sidebar_name = 'order-sidebar'
     __fixed_handlers__ = [sidebar_name]
 
@@ -290,25 +295,23 @@ class SideBarAware(object):
     sidebar_items = []
 
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        cls2 = SidebarBoxesOrderedTable
-        cls2._make_resource(cls2, folder,
-                            '%s/%s' % (name, cls.sidebar_name))
+    def init_resource(self, **kw):
+        self.make_resource(self.sidebar_name, SidebarBoxesOrderedTable)
 
-        # Preorder specific sidebar items
-        root = get_context().root
-        table_name = cls.sidebar_name
-        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        # FIXME state should be customizable
-        state = 'public'
+        # XXX Migration TODO
+        ## Preorder specific sidebar items
+        #root = get_context().root
+        #table_name = cls.sidebar_name
+        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        ## FIXME state should be customizable
+        #state = 'public'
 
-        for item in cls.sidebar_items:
-            name2, cls2, ordered = item
-            cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-                                state=state)
-            if ordered:
-                table.add_new_record({'name': name2})
+        #for item in cls.sidebar_items:
+        #    name2, cls2, ordered = item
+        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
+        #                        state=state)
+        #    if ordered:
+        #        table.add_new_record({'name': name2})
 
 
 
@@ -334,23 +337,19 @@ class ContentBarAware(object):
     # (name, cls, ordered)
     contentbar_items = []
 
+    def init_resource(self, **kw):
+        self.make_resource(self.contentbar_name, ContentbarBoxesOrderedTable)
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        cls2 = ContentbarBoxesOrderedTable
-        cls2._make_resource(cls2, folder,
-                            '%s/%s' % (name, cls.contentbar_name))
+        ## Preorder specific contentbar items
+        #root = get_context().root
+        #table_name = cls.contentbar_name
+        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        ## FIXME state should be customizable
+        #state = 'public'
 
-        # Preorder specific contentbar items
-        root = get_context().root
-        table_name = cls.contentbar_name
-        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        # FIXME state should be customizable
-        state = 'public'
-
-        for item in cls.contentbar_items:
-            name2, cls2, ordered = item
-            cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-                                state=state)
-            if ordered:
-                table.add_new_record({'name': name2})
+        #for item in cls.contentbar_items:
+        #    name2, cls2, ordered = item
+        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
+        #                        state=state)
+        #    if ordered:
+        #        table.add_new_record({'name': name2})

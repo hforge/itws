@@ -19,28 +19,28 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Boolean, DateTime, String, Tokens, Unicode
+from itools.datatypes import Boolean, DateTime, Tokens, Unicode
 from itools.gettext import MSG
 from itools.i18n import format_datetime
 from itools.uri import Path, encode_query
 from itools.web import get_context
-from itools.xapian import AndQuery, PhraseQuery, StartQuery, OrQuery
+from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.multilingual import Multilingual
-from ikaaro.registry import register_field, register_resource_class
+from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import reduce_string
 from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
-from resources import MultilingualCatalogTitleAware, ManageViewAware
+from resources import MultilingualCatalogTitleAware
 from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
-from tags_views import TagsFolder_BrowseContent, Tags_ManageView
+from tags_views import TagsFolder_BrowseContent
 from views import EasyNewInstance
 from views import AutomaticEditView
 
@@ -68,9 +68,9 @@ class Tag(File, MultilingualCatalogTitleAware):
     edit_schema = {}
     edit_widgets = []
 
-    def _get_catalog_values(self):
-        return merge_dicts(File._get_catalog_values(self),
-                MultilingualCatalogTitleAware._get_catalog_values(self))
+    def get_catalog_values(self):
+        return merge_dicts(File.get_catalog_values(self),
+                MultilingualCatalogTitleAware.get_catalog_values(self))
 
 
     def get_title(self, language=None, fallback=True):
@@ -87,39 +87,34 @@ class Tag(File, MultilingualCatalogTitleAware):
 
 
 
-class TagsFolder(ManageViewAware, Folder):
+class TagsFolder(Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
-    class_views = ['tag_cloud', 'manage_view']
+    class_views = ['tag_cloud', 'browse_content', 'new_resource?type=tag']
     class_version = '20100118'
 
     tag_class = Tag
 
     tag_cloud = TagsFolder_TagCloud()
     browse_content = TagsFolder_BrowseContent()
-    manage_view = Tags_ManageView()
 
     # Tags to create when creating the tags folder
     default_tags = [('odf', u'ODF'), ('python', u'Python'),
                     ('cms', u'CMS'), ('git', u'GIT')]
 
 
-    @staticmethod
-    def _make_resource(cls, folder, name, language=None, **kw):
-        Folder._make_resource(cls, folder, name, **kw)
-        if language is None:
-            site_root = get_context().resource.get_site_root()
-            language = site_root.get_property('website_languages')[0]
+    def init_resource(self, **kw):
+        site_root = self.get_site_root()
+        language = site_root.get_property('website_languages')[0]
         # Create default tags
-        for tag in cls.default_tags:
+        for tag in self.default_tags:
             tag_name, title = tag
-            Tag._make_resource(Tag, folder, '%s/%s' % (name, tag_name),
-                               title={language: title})
+            self._make_resource('tag_name', Tag, title={language: title})
 
 
     def get_document_types(self):
-        return [ Tag ]
+        return [Tag]
 
 
     def get_tags_query_terms(self, state=None, tags=[], formats=[]):
@@ -178,13 +173,16 @@ class TagsAware(object):
     # Only useful for the registry
     class_id = 'tags-aware'
 
-    @classmethod
-    def get_metadata_schema(cls):
-        # FIXME Replace Tokens by TagsList
-        return {'tags': Tokens(), 'pub_datetime': DateTime}
+    class_schema = {# Metadata
+                    'tags': Tokens(source='metadata', is_indexed=True, is_stored=True), #FIXME Replace Tokens by TagsList
+                    'pub_datetime': DateTime(source='metadata', is_indexed=True, is_stored=True),
+                    # Catalog
+                    'is_tagsaware': Boolean(is_indexed=True),
+                    'preview_content': Unicode(is_stored=True, is_indexed=True),
+                    }
 
 
-    def _get_catalog_values(self):
+    def get_catalog_values(self):
         indexes = {}
         indexes['tags'] = self.get_property('tags')
         indexes['pub_datetime'] = self.get_property('pub_datetime')
@@ -296,11 +294,9 @@ class TagsAware(object):
         get_context().database.change_resource(self)
 
 
+    def update_relative_links(self, source, target):
+        pass
+
 
 register_resource_class(TagsFolder)
 register_resource_class(Tag)
-
-register_field('is_tagsaware', Boolean(is_indexed=True))
-register_field('tags', String(is_stored=True, is_indexed=True, multiple=True))
-register_field('pub_datetime', DateTime(is_stored=True, is_indexed=True))
-register_field('preview_content', Unicode(is_stored=True, is_indexed=True))

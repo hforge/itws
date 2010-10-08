@@ -26,7 +26,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.forms import title_widget, timestamp_widget
+from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.future.order import get_resource_preview
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.table_views import Table_View

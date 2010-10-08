@@ -17,6 +17,7 @@
 # Import from ikaaro
 from ikaaro.folder import Folder
 from ikaaro.registry import register_resource_class
+from ikaaro.tracker import Tracker, Issue
 
 ###########################
 # Tracker
@@ -27,12 +28,18 @@ from ikaaro.registry import register_resource_class
 # assigned_to_excluded_roles #==> included_roles_assigned_to
 # cc_excluded_roles #===> included_roles_cc
 
-class Old_Tracker(Folder):
+class Old_TrackerCalendar(Folder):
+    class_id = 'tracker_calendar'
+    class_version = '20090122'
+
+class Old_Tracker(Tracker):
 
     class_id = 'itws-tracker'
-    class_version = '20101108'
+    class_version = '20100429'
 
-    def update_20101108(self):
+    def update_20100429(self):
+        # Do parent
+        Tracker.update_20100429(self)
         # Update format
         metadata = self.metadata
         metadata.format = 'tracker'
@@ -42,12 +49,12 @@ class Old_Tracker(Folder):
         for old_name, new_name in [('assigned_to_excluded_roles', 'included_roles_assigned_to'),
                                    ('cc_excluded_roles', 'included_roles_cc')]:
             roles = []
-            excluded = metadata.get_property(old_name)
+            excluded = self.get_property(old_name)
             metadata.del_property(old_name)
             for x in site_root.get_roles_namespace():
                 if x['name'] not in excluded:
                     roles.append(x['name'])
-            metadata.set_property(new_name, tuple(roles))
+            self.set_property(new_name, tuple(roles))
 
 
 
@@ -61,6 +68,24 @@ class Old_Issue(Folder):
         metadata.format = 'issue'
         metadata.set_changed()
 
+class New_Issue(Issue):
+    class_id = 'issue'
+    class_version = '20101108'
+
+################################
+# Favicon
+################################
+class FavIcon(Image):
+
+    class_id = 'favicon'
+
+    @classmethod
+    def get_metadata_schema(cls):
+        schema = Image.get_metadata_schema()
+        schema['state'] = String(default='public')
+        return schema
 
 register_resource_class(Old_Tracker)
 register_resource_class(Old_Issue)
+register_resource_class(New_Issue)
+register_resource_class(Old_TrackerCalendar)

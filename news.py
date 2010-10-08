@@ -23,18 +23,19 @@ from copy import deepcopy
 
 # Import from itools
 from itools.core import get_abspath, merge_dicts
-from itools.datatypes import String, Unicode
+from itools.datatypes import String, PathDataType
 from itools.gettext import MSG
 from itools.uri import encode_query, get_reference, Path
 from itools.web import get_context
-from itools.xapian import PhraseQuery, AndQuery, OrQuery
+from itools.database import PhraseQuery, AndQuery, OrQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.file import File
+from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
-from ikaaro.forms import stl_namespaces, TextWidget, Widget
+from ikaaro.folder_views import Folder_PreviewContent
+from ikaaro.autoform import stl_namespaces, TextWidget, Widget
 from ikaaro.registry import register_document_type
 from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
@@ -45,9 +46,7 @@ from datatypes import PositiveIntegerNotNull
 from news_views import NewsFolder_View, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
 from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
-from news_views import NewsFolder_ManageView
 from repository import Repository
-from resources import ManageViewAware
 from tags import TagsAware
 from utils import get_path_and_view
 from views import AutomaticEditView
@@ -78,19 +77,22 @@ class NewsItem(WebPage):
                             u'used by the News Folder, News can be tagged')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = ['view', 'edit', 'manage_view', 'edit_state',
+    class_views = ['view', 'edit', 'edit_state',
                    'backlinks', 'commit_log']
 
 
+    class_schema = merge_dicts(WebPage.class_schema,
+             long_title=Multilingual(source='metatada'),
+             thumbnail=PathDataType(source='metadata', multilingual=True,
+                                    parameters_schema={'lang': String}))
+
+
+    # Configuration
     viewbox = NewsItem_Viewbox()
 
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(WebPage.get_metadata_schema(),
-                           long_title=Unicode,
-                           thumbnail=String(default='') # Multilingual
-                          )
-
+    ##############
+    # API
+    ###############
 
     def get_long_title(self, language=None):
         """Return the long_title or the title"""
@@ -215,15 +217,16 @@ class NewsItem(WebPage):
             self.set_property('thumbnail', str(new_ref), language=lang)
 
 
+    #####################
+    # Views
+    #####################
     edit = NewsItem_Edit()
     view = NewsItem_View()
     add_image = NewsItem_AddImage()
-    manage_view = GoToSpecificDocument(specific_document='..',
-            specific_view='manage_view', title=NewsFolder_ManageView.title)
 
 
 
-class NewsFolder(ManageViewAware, SideBarAware, Folder):
+class NewsFolder(SideBarAware, Folder):
 
     class_id = 'news-folder'
     class_version = '20100621'
@@ -232,10 +235,19 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
                             u'by date of writing')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = (['view', 'manage_view',
+    class_views = (['view', 'new_resource?type=news', 'browse_content',
                     'edit', 'backlinks', 'commit_log'])
+
+    class_schema = merge_dicts(
+          SideBarAware.class_schema,
+          Folder.class_schema,
+          batch_size=PositiveIntegerNotNull(source='metadata', default=7))
+
+
     __fixed_handlers__ = (SideBarAware.__fixed_handlers__ +
                           Folder.__fixed_handlers__ + ['images'])
+
+    # Configuration
     news_class = NewsItem
 
     # Configuration of automatic edit view
@@ -243,25 +255,17 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
     edit_schema =  {'batch_size': PositiveIntegerNotNull}
     edit_widgets = [TextWidget('batch_size', title=MSG(u'Batch size'), size=3)]
 
-    @staticmethod
-    def _make_resource(cls, folder, name, **kw):
-        root = get_context().root
-        Folder._make_resource(cls, folder, name, **kw)
-        Folder._make_resource(Folder, folder, '%s/images' % name)
-        SideBarAware._make_resource(SideBarAware, folder, name, **kw)
-        # Add siblings item
-        siblings_item_name = Repository.news_siblings_view_name
-        table_name = cls.sidebar_name
-        table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        table.add_new_record({'name': siblings_item_name})
 
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = Folder.get_metadata_schema()
-        schema['batch_size'] = PositiveIntegerNotNull(default=7)
-        return schema
-
+    def init_resource(self, **kw):
+        SideBarAware.init_resource(self, **kw)
+        Folder.init_resource(self, **kw)
+        # Create images folder
+        self.make_resource('images', Folder)
+        # XXX Migration Add siblings item
+        #siblings_item_name = Repository.news_siblings_view_name
+        #table_name = cls.sidebar_name
+        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
+        #table.add_new_record({'name': siblings_item_name})
 
     def get_document_types(self):
         return [self.news_class, File]
@@ -302,10 +306,12 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
         return [ root.get_resource(doc.abspath)
                  for doc in documents ]
 
+    ##########################
+    # Views
+    ##########################
 
     view = NewsFolder_View()
     edit = AutomaticEditView()
-    manage_view = NewsFolder_ManageView()
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     rss = NewsFolder_RSS()

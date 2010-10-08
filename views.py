@@ -21,7 +21,8 @@ from datetime import datetime
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, DateTime, Integer, String, Unicode
+from itools.csv import Property
+from itools.datatypes import Boolean, DateTime, Enumerate, Integer, String, Unicode
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.handlers import checkid
@@ -29,28 +30,29 @@ from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
 from itools.uri import get_reference, Path
 from itools.web import get_context, BaseView, ERROR, FormError
-from itools.xapian import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
+from itools.database import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.buttons import Button
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
-from ikaaro.file_views import File_NewInstance as BaseFile_NewInstance
+from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.forms import AutoForm, TextWidget, HTMLBody, SelectRadio
-from ikaaro.forms import FileWidget, MultilineWidget
-from ikaaro.forms import description_widget, subject_widget
-from ikaaro.forms import title_widget, timestamp_widget, rte_widget
-from ikaaro.future.menu import Menu_View
+from ikaaro.autoform import AutoForm, TextWidget, HTMLBody, RadioWidget
+from ikaaro.autoform import FileWidget, SelectWidget, MultilineWidget
+from ikaaro.autoform import description_widget, subject_widget
+from ikaaro.autoform import title_widget, timestamp_widget, rte_widget
+from ikaaro.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
+from ikaaro.popup import DBResource_AddImage, DBResource_AddMedia
+from ikaaro.popup import DBResource_AddLink
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.registry import get_resource_class, get_document_types
 from ikaaro.resource_ import DBResource
-from ikaaro.resource_views import DBResource_AddImage, DBResource_AddMedia
-from ikaaro.resource_views import DBResource_Edit, DBResource_AddLink
 from ikaaro.text import CSS
 from ikaaro.text_views import Text_Edit
 from ikaaro.user import User
@@ -66,6 +68,25 @@ from utils import set_prefix_with_hostname, state_widget
 from utils import get_warn_referenced_message
 
 
+class MyAuthorized_Classid(Enumerate):
+
+    @classmethod
+    def get_options(cls):
+        options = []
+        #selected = context.get_form_value('class_id')
+        #items = [
+        #    {'title': cls.class_title,
+        #     'description': cls.class_description,
+        #     'class_id': cls.class_id,
+        #     'selected': cls.class_id == selected,
+        #     'icon': '/ui/' + cls.class_icon16}
+        #    for cls in self.get_aware_document_types(resource, context) ]
+        for cls in cls.view.get_aware_document_types(cls.resource, cls.context):
+            options.append({'name': cls.class_id,
+                            'value': cls.class_title})
+        return options
+
+
 
 ############################################################
 # NewInstance
@@ -74,9 +95,6 @@ from utils import get_warn_referenced_message
 class EasyNewInstance(NewInstance):
     """ ikaaro.views_new.NewInstance without field name.
     """
-    template = '/ui/common/improve_auto_form.xml'
-    actions = [Button(access='is_allowed_to_edit',
-                      name='default', title=MSG(u'Add'))]
 
     query_schema = freeze({'type': String, 'title': Unicode})
     widgets = freeze([
@@ -88,38 +106,6 @@ class EasyNewInstance(NewInstance):
         # As we have no name, always return the title
         title = form['title'].strip()
         return title
-
-
-    def get_actions(self, resource, context):
-        return self.actions
-
-
-    def _get_action_namespace(self, resource, context):
-        # (1) Actions (submit buttons)
-        actions = []
-        for button in self.get_actions(resource, context):
-            #if button.show(resource, context, []) is False:
-            #    continue
-            if button.confirm:
-                confirm = button.confirm.gettext().encode('utf_8')
-                onclick = 'return confirm("%s");' % confirm
-            else:
-                onclick = None
-            actions.append(
-                {'value': button.name,
-                 'title': button.title,
-                 'class': button.css,
-                 'onclick': onclick})
-
-        return actions
-
-
-    def get_namespace(self, resource, context):
-        namespace = NewInstance.get_namespace(self, resource, context)
-        # actions namespace
-        namespace['actions'] = self._get_action_namespace(resource, context)
-
-        return namespace
 
 
     def _get_goto_method(self, resource, context, form):
@@ -233,7 +219,7 @@ class ProxyContainerNewInstance(EasyNewInstance):
 
 class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
 
-    template = '/ui/common/proxy_improve_auto_form.xml'
+
     query_schema = freeze({'title': Unicode})
     schema = {
         'name': String,
@@ -289,37 +275,6 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
         return form
 
 
-    def get_namespace(self, resource, context):
-        namespace = NewInstance.get_namespace(self, resource, context)
-        # actions namespace
-        namespace['actions'] = self._get_action_namespace(resource, context)
-        # proxy items
-        type = self._get_resource_class_id(context)
-        cls = get_resource_class(type)
-
-        document_types = get_document_types(type)
-        items = []
-        if document_types:
-            # Multiple types
-            if len(document_types) == 1:
-                items = None
-            else:
-                selected = context.get_form_value('class_id')
-                items = [
-                    {'title': cls.class_title,
-                     'class_id': cls.class_id,
-                     'selected': cls.class_id == selected,
-                     'icon': '/ui/' + cls.class_icon16}
-                    for cls in document_types ]
-                if selected is None:
-                    items[0]['selected'] = True
-        namespace['items'] = items
-        # class title
-        namespace['class_title'] = cls.class_title
-
-        return namespace
-
-
     def get_title(self, context):
         cls = self._get_resource_cls(context.resource, context)
         class_title = cls.class_title.gettext()
@@ -333,7 +288,7 @@ class ProxyContainerProxyEasyNewInstance(EasyNewInstance):
         return cls.get_class_icon()
 
 
-    def action_default(self, resource, context, form):
+    def action(self, resource, context, form):
         name = form['name']
         title = form['title']
 
@@ -387,29 +342,7 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
                 allow_instanciation=True)
 
 
-    def get_namespace(self, resource, context):
-        namespace = EasyNewInstance.get_namespace(self, resource, context)
-        # actions namespace
-        namespace['actions'] = self._get_action_namespace(resource, context)
-        # proxy items
-        selected = context.get_form_value('class_id')
-        items = [
-            {'title': cls.class_title,
-             'description': cls.class_description,
-             'class_id': cls.class_id,
-             'selected': cls.class_id == selected,
-             'icon': '/ui/' + cls.class_icon16}
-            for cls in self.get_aware_document_types(resource, context) ]
-        if selected is None:
-            items[0]['selected'] = True
-        namespace['items'] = items
-        # class title
-        cls = self._get_resource_cls(resource, context)
-        namespace['class_title'] = cls.class_title
-        return namespace
-
-
-    def action_default(self, resource, context, form):
+    def action(self, resource, context, form):
         name = form['name']
         title = form['title']
 
@@ -429,10 +362,6 @@ class BoxAwareNewInstance(ProxyContainerProxyEasyNewInstance):
 
 
 class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
-
-    schema = merge_dicts(BoxAwareNewInstance.schema,
-                         order=OrderBoxEnumerate(default='order-bottom'),
-                         state=StaticStateEnumerate(default='public'))
 
     order_widget_title = MSG(u'Order box')
     is_content = True
@@ -468,13 +397,22 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
         return goto
 
 
+    def get_schema(self, resource, context):
+        return merge_dicts(BoxAwareNewInstance.get_schema(self, resource, context),
+                           class_id=MyAuthorized_Classid(view=self, resource=resource, context=context),
+                           order=OrderBoxEnumerate(default='order-bottom'),
+                           state=StaticStateEnumerate(default='public'))
+
+
     def get_widgets(self, resource, context):
-        return freeze(BoxAwareNewInstance.widgets +
-                      [state_widget,
-                       SelectRadio('order', title=self.order_widget_title,
+        return freeze(BoxAwareNewInstance.get_widgets(self, resource, context) +
+                      [
+                       state_widget,
+                       SelectWidget('class_id', title=MSG(u'Class id')),
+                       RadioWidget('order', title=self.order_widget_title,
                                   has_empty_option=False)])
 
-    def action_default(self, resource, context, form):
+    def action(self, resource, context, form):
         name = form['name']
         title = form['title']
         order = form['order']
@@ -483,7 +421,9 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
         class_id = form['class_id']
         cls = get_resource_class(class_id)
         container = self._get_container(resource, context)
-        child = cls.make_resource(cls, container, name)
+        child = container.make_resource(name, cls)
+
+        # We order the resource in table if needed
         if order != 'do-not-order':
             order_table = self._get_order_table(resource, context)
 
@@ -496,8 +436,13 @@ class BarAwareBoxAwareNewInstance(BoxAwareNewInstance):
 
         # The metadata
         metadata = child.metadata
-        language = resource.get_content_language(context)
-        metadata.set_property('title', title, language=language)
+        language = 'en'
+        # XXX Migration
+        #resource.get_content_language(context)
+        title = Property(title, lang=language)
+        metadata.set_property('title', title)
+
+        # Workflow
         if isinstance(child, WorkflowAware):
             child.set_property('state', form['state'])
 
@@ -519,42 +464,42 @@ class SideBarAwareNewInstance(BarAwareBoxAwareNewInstance):
 
 
 
-class File_NewInstance(BaseFile_NewInstance):
-
-    def get_schema(self, resource, context):
-        schema = merge_dicts(BaseFile_NewInstance.schema,
-                             state=StaticStateEnumerate(default='public'))
-        del schema['name']
-        return schema
-
-
-    def get_widgets(self, resource, context):
-        return [ title_widget,
-                 FileWidget('file', title=MSG(u'File'), size=35),
-                 state_widget ]
-
-
-    def get_new_resource_name(self, form):
-        # As we have no name, always return the title or get it from the file
-        title = form['title'].strip()
-        if not title:
-            filename, mimetype, body = form['file']
-            name, type, language = FileName.decode(filename)
-        return title or name
-
-
-    def action(self, resource, context, form):
-        goto = BaseFile_NewInstance.action(self, resource, context, form)
-
-        # Get the resource
-        name = form['name']
-        child = resource.get_resource(name)
-        if isinstance(child, WorkflowAware):
-            child.set_property('state', form['state'])
-
-        # Ok
-        return goto
-
+#class File_NewInstance(BaseFile_NewInstance):
+#
+#    def get_schema(self, resource, context):
+#        schema = merge_dicts(BaseFile_NewInstance.schema,
+#                             state=StaticStateEnumerate(default='public'))
+#        del schema['name']
+#        return schema
+#
+#
+#    def get_widgets(self, resource, context):
+#        return [ title_widget,
+#                 FileWidget('file', title=MSG(u'File'), size=35),
+#                 state_widget ]
+#
+#
+#    def get_new_resource_name(self, form):
+#        # As we have no name, always return the title or get it from the file
+#        title = form['title'].strip()
+#        if not title:
+#            filename, mimetype, body = form['file']
+#            name, type, language = FileName.decode(filename)
+#        return title or name
+#
+#
+#    def action(self, resource, context, form):
+#        goto = BaseFile_NewInstance.action(self, resource, context, form)
+#
+#        # Get the resource
+#        name = form['name']
+#        child = resource.get_resource(name)
+#        if isinstance(child, WorkflowAware):
+#            child.set_property('state', form['state'])
+#
+#        # Ok
+#        return goto
+#
 
 
 ############################################################
@@ -567,7 +512,6 @@ class RobotsTxt_Edit(Text_Edit):
     widgets = [
         timestamp_widget,
         MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)]
-
 
     def action(self, resource, context, form):
         # Check edit conflict
@@ -724,7 +668,7 @@ class ImproveDBResource_AddLink(DBResource_AddLink):
     def get_namespace(self, resource, context):
         namespace = DBResource_AddLink.get_namespace(self, resource, context)
         # add state widget
-        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
         namespace['state_widget'] = list(widget)
 
         return namespace
@@ -775,7 +719,7 @@ class ImproveDBResource_AddImage(DBResource_AddImage):
     def get_namespace(self, resource, context):
         namespace = DBResource_AddImage.get_namespace(self, resource, context)
         # add state widget
-        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
         namespace['state_widget'] = list(widget)
 
         return namespace
@@ -795,7 +739,7 @@ class ImproveDBResource_AddMedia(DBResource_AddMedia):
     def get_namespace(self, resource, context):
         namespace = DBResource_AddImage.get_namespace(self, resource, context)
         # add state widget
-        widget = state_widget.to_html(StaticStateEnumerate, 'public')
+        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
         namespace['state_widget'] = list(widget)
 
         return namespace
@@ -1041,95 +985,6 @@ class BaseManage_Rename(Folder_Rename):
 
 
 ############################################################
-# Numeric batch
-############################################################
-
-class BrowseFormBatchNumeric(Folder_BrowseContent):
-
-    batch_template = '/ui/common/browse_batch.xml'
-    max_middle_pages = None
-
-    def get_batch_namespace(self, resource, context, items):
-        namespace = {}
-        batch_start = context.query['batch_start']
-        size = context.query['batch_size']
-        uri = context.uri
-
-        # Calcul nb_pages and current_page
-        total = len(items)
-        end = min(batch_start + size, total)
-        nb_pages = total / size
-        if total % size > 0:
-            nb_pages += 1
-        current_page = (batch_start / size) + 1
-
-        namespace['control'] = nb_pages > 1
-
-        # Message (singular or plural)
-        total = len(items)
-        if total == 1:
-            namespace['msg'] = self.batch_msg1.gettext()
-        else:
-            namespace['msg'] = self.batch_msg2.gettext(n=total)
-
-        # Add start & end value in namespace
-        namespace['start'] = batch_start + 1
-        namespace['end'] = end
-
-        # See previous button ?
-        if current_page != 1:
-            previous = max(batch_start - size, 0)
-            namespace['previous'] = uri.replace(batch_start=previous)
-        else:
-            namespace['previous'] = None
-
-        # See next button ?
-        if current_page < nb_pages:
-            namespace['next'] = uri.replace(batch_start=batch_start+size)
-        else:
-            namespace['next'] = None
-
-        # Add middle pages
-        middle_pages = range(max(current_page - 3, 2),
-                             min(current_page + 3, nb_pages-1) + 1)
-
-        # Truncate middle pages if nedded
-        if self.max_middle_pages:
-            middle_pages_len = len(middle_pages)
-            if middle_pages_len > self.max_middle_pages:
-                delta = middle_pages_len - self.max_middle_pages
-                delta_start = delta_end = delta / 2
-                if delta % 2 == 1:
-                    delta_end = delta_end +1
-                middle_pages = middle_pages[delta_start:-delta_end]
-
-        pages = [1] + middle_pages
-        if nb_pages > 1:
-            pages.append(nb_pages)
-
-        namespace['pages'] = []
-        for i in pages:
-            namespace['pages'].append(
-                {'number': i,
-                 'css': 'current' if i == current_page else None,
-                 'uri': uri.replace(batch_start=((i-1) * size))})
-
-        # Add ellipsis if needed
-        if nb_pages > 5:
-            ellipsis = {'number': u'…',
-                        'css': 'ellipsis',
-                        'uri': None}
-            if 2 not in middle_pages:
-                namespace['pages'].insert(1, ellipsis)
-            if (nb_pages - 1) not in middle_pages:
-                namespace['pages'].insert(len(namespace['pages']) - 1,
-                                          ellipsis)
-
-        return namespace
-
-
-
-############################################################
 # RSS
 ############################################################
 
@@ -1304,7 +1159,8 @@ class BaseRSS(BaseView):
     def GET(self, resource, context):
         language = context.get_query_value('language')
         if language is None:
-            language = resource.get_content_language(context)
+            language = 'en'
+            # XXX migration resource.get_content_language(context)
         if_modified_since = context.get_header('if-modified-since')
         items = self.get_items(resource, context, if_modified_since)
         items = self.sort_and_batch(resource, context, items)
@@ -1377,14 +1233,14 @@ class NotFoundPage_Edit(HTMLEditView):
 
 class AutomaticEditView(DBResource_Edit):
 
-    base_schema = {'title': Unicode(multilingual=True),
+    base_schema = {'title': Multilingual,
                    'timestamp': DateTime(readonly=True, ignore=True)}
 
     # Add timestamp_widget in get_widgets method
     base_widgets = [title_widget]
 
 
-    def get_schema(self, resource, context):
+    def _get_schema(self, resource, context):
         schema = {}
         if isinstance(resource, WorkflowAware):
             schema['state'] = StateEnumerate
@@ -1398,7 +1254,7 @@ class AutomaticEditView(DBResource_Edit):
         return schema
 
 
-    def get_widgets(self, resource, context):
+    def _get_widgets(self, resource, context):
         widgets = []
         if getattr(resource, 'edit_show_meta', False) is True:
             widgets.extend([description_widget, subject_widget])
@@ -1424,24 +1280,12 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def action(self, resource, context, form):
-        self.check_edit_conflict(resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-        # Save changes
-        language = resource.get_content_language(context)
-        for key, datatype in self.get_schema(resource, context).items():
-            if getattr(datatype, 'ignore', False) is True:
-                continue
-            elif getattr(datatype, 'multilingual', False) is True:
-                resource.set_property(key, form[key], language=language)
-            else:
-                resource.set_property(key, form[key])
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-        # Publish referenced resources which are not public/pending
-        state = form.get('state', 'public')
-        message2 = get_warn_referenced_message(resource, context, state)
-        if message2:
-            # Add custom message
-            context.message = [ context.message, message2 ]
+        from pprint import pprint
+        pprint(form)
+    # XXX Migration
+    ## Publish referenced resources which are not public/pending
+    #state = form.get('state', 'public')
+    #message2 = get_warn_referenced_message(resource, context, state)
+    #if message2:
+    #    # Add custom message
+    #    context.message = [ context.message, message2 ]

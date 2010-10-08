@@ -27,17 +27,19 @@ from itools.gettext import MSG
 from itools.stl import stl
 from itools.uri import encode_query
 from itools.web import BaseView, STLView
-from itools.xapian import AndQuery, PhraseQuery
+from itools.database import AndQuery, PhraseQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.forms import SelectWidget, TextWidget
-from ikaaro.forms import stl_namespaces
+from ikaaro.autoform import SelectWidget, TextWidget
+from ikaaro.autoform import stl_namespaces
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.webpage import WebPage_View
 
 # Import from itws
+from datatypes import PositiveInteger
 from tags_views import TagsList
 from utils import is_empty, to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
@@ -175,9 +177,9 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
         enum.options = options
 
         format = context.query['format']
-        widget = SelectWidget('format')
+        widget = SelectWidget('format', datatype=enum, value=format)
         namespace = {}
-        namespace['format_widget'] = widget.to_html(enum, format)
+        namespace['format_widget'] = widget.render()
         namespace['is_admin_popup'] = context.get_form_value('is_admin_popup')
 
         return namespace
@@ -188,7 +190,7 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
 ################################################################################
 # Bar edit views
 ################################################################################
-class BoxSectionNews_Edit(AutomaticEditView):
+class BoxSectionNews_Edit(DBResource_Edit):
 
     def _get_news_folder(self, resource, context):
         site_root = resource.get_site_root()
@@ -196,9 +198,10 @@ class BoxSectionNews_Edit(AutomaticEditView):
         return news_folder
 
 
-    def get_schema(self, resource, context):
-        # Base schema
-        schema = AutomaticEditView.get_schema(self, resource, context)
+    def _get_schema(self, resource, context):
+        schema = merge_dicts(
+            DBResource_Edit.get_schema(self, resource, context),
+            count=PositiveInteger(default=3))
         # News folder
         newsfolder = self._get_news_folder(resource, context)
         if newsfolder:
@@ -234,19 +237,6 @@ class BoxSectionNews_Edit(AutomaticEditView):
                 widgets.append(widget)
 
         return widgets
-
-
-    def action(self, resource, context, form):
-        AutomaticEditView.action(self, resource, context, form)
-        # Check edit conflict
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        for key in ('count', 'tags'):
-            if key in form:
-                resource.set_property(key, form[key])
-
 
 
 ################################################################################
@@ -325,20 +315,24 @@ class HTMLContent_Edit(AutomaticEditView):
 
     def get_value(self, resource, context, name, datatype):
         if name == 'data':
-            language = resource.get_content_language(context)
+            # XXX Migration
+            #language = resource.get_content_language(context)
+            language = 'en'
             return resource.get_html_data(language=language)
         return AutomaticEditView.get_value(self, resource, context, name,
                                            datatype)
 
 
-    def action(self, resource, context, form):
-        AutomaticEditView.action(self, resource, context, form)
-        if context.edit_conflict:
-            return
-        new_body = form['data']
-        language = resource.get_content_language(context)
-        handler = resource.get_handler(language=language)
-        handler.set_body(new_body)
+    def set_value(self, resource, context, name, form):
+        if name == 'data':
+            new_body = form['data']
+            # XXX Migration
+            # language = resource.get_content_language(context)
+            language = 'en'
+            handler = resource.get_handler(language=language)
+            handler.set_body(new_body)
+        return AutomaticEditView.set_value(self, resource, context, name,
+                                           form)
 
 
 

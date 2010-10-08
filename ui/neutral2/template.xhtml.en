@@ -94,14 +94,14 @@
           <div id="footer-wrapper">
             <div id="footer">${footer}</div>
             <div id="backoffice">
-              <a stl:if="not user/info" href="${login}"
+              <a stl:if="not user" href="${login}"
                 id="top-menu-login">Log in</a>
-              <a stl:if="user/info" href="${logout}"
+              <a stl:if="user" href="${logout}"
                 id="top-menu-logout">Log out</a>
             </div>
           </div>
         </td>
-        <td stl:if="user/info" id="right" valign="top">
+        <td stl:if="user" id="right" valign="top">
           <stl:block stl:repeat="menu context_menus">${menu}<br/></stl:block>
         </td>
       </tr>

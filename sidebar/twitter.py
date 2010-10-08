@@ -34,7 +34,7 @@ from itools.rss import RSSFile
 from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
-from ikaaro.forms import TextWidget, BooleanCheckBox
+from ikaaro.autoform import TextWidget, CheckboxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
@@ -143,19 +143,15 @@ class TwitterSideBar(Box, ResourceWithCache):
                               title=MSG(u"Twitter account name")),
                     TextWidget('user_id', title=MSG(u"User Id")),
                     TextWidget('limit', title=MSG(u'Number of tweet')),
-                    BooleanCheckBox('force_update',
+                    CheckboxWidget('force_update',
                                     title=MSG(u'Force cache update')),
                    ]
+
+    class_schema = merge_dicts(Box.edit_schema, edit_schema)
 
     # Views
     view = TwitterSideBar_View()
     edit = Microblogging_Edit()
-
-
-    @classmethod
-    def get_metadata_schema(cls):
-        return merge_dicts(Box.get_metadata_schema(),
-                           cls.edit_schema)
 
 
     def _get_account_uri(self):
@@ -294,7 +290,7 @@ class IdenticaSideBar(TwitterSideBar):
     edit_widgets = [TextWidget('user_name',
                               title=MSG(u"Identi.ca account name")),
                     TextWidget('limit', title=MSG(u'Number of message')),
-                    BooleanCheckBox('force_update',
+                    CheckboxWidget('force_update',
                                     title=MSG(u'Force cache update')),
                    ]
 
