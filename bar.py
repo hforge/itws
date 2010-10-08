@@ -311,14 +311,6 @@ class SideBarAware(object):
                 table.add_new_record({'name': name2})
 
 
-    def update_20100621(self):
-        # Fix class_id
-        table = self.get_resource(self.sidebar_name)
-        metadata = table.metadata
-        metadata.set_changed()
-        metadata.format = 'sidebar-boxes-ordered-table'
-
-
 
 class ContentBarAware(object):
 
@@ -362,11 +354,3 @@ class ContentBarAware(object):
                                 state=state)
             if ordered:
                 table.add_new_record({'name': name2})
-
-
-    def update_20100622(self):
-        # Fix class_id
-        table = self.get_resource(self.contentbar_name)
-        metadata = table.metadata
-        metadata.set_changed()
-        metadata.format = 'contentbar-boxes-ordered-table'

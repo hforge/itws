@@ -285,34 +285,6 @@ class WebSite(BaseWebSite):
                 self.set_property('favicon', str(new_ref))
 
 
-    def update_20100524(self):
-        from ikaaro.webpage import WebPage as BaseWebPage
-        from webpage import WebPage
-        # 404 webpage -> 404 not found page
-        resource = self.get_resource('404', soft=True)
-        if resource is None:
-            cls = NotFoundPage
-            cls.make_resource(cls, self, '404')
-            return
-
-        base_schema_keys = BaseWebPage.get_metadata_schema().keys()
-        webpage_schema_keys = WebPage.get_metadata_schema().keys()
-        diff = set(base_schema_keys).difference(set(webpage_schema_keys))
-        diff2 = set(webpage_schema_keys).difference(set(base_schema_keys))
-        # Remove obsolete property
-        for key in diff:
-            resource.del_property(key)
-            print u'del %s' % key
-        for key in diff2:
-            resource.del_property(key)
-            print u'del %s' % key
-
-        metadata = resource.metadata
-        metadata.set_changed()
-        metadata.format = NotFoundPage.class_id
-        metadata.version = NotFoundPage.class_version
-
-
     #######################################################################
     # User Interface
     #######################################################################

@@ -107,18 +107,6 @@ class WebPage(BaseWebPage, TagsAware):
         # Not need for TagsAware
 
 
-    ##########################################################################
-    # Updates
-    ##########################################################################
-    def update_20100621(self):
-        # Restore state
-        if self.get_property('state'):
-            # state was already set
-            return
-        if self.get_workflow_state() == 'private':
-            # state was default public
-            self.set_property('state', 'public')
-
 
 
 register_resource_class(WebPage)

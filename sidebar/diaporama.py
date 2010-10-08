@@ -229,10 +229,6 @@ class Diaporama(BoxAware, OrderTableAware, Folder):
         return u''
 
 
-    def update_20100616(self):
-        # Remove title_image property
-        self.del_property('title_image')
-
 
 
 register_resource_class(Diaporama)

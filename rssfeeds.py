@@ -508,14 +508,6 @@ class RssFeeds(CSV):
         return stl(handler, namespace=namespace)
 
 
-    def update_20100618(self):
-        if self.get_property('state'):
-            # state was set
-            return
-        if self.get_workflow_state() == 'private':
-            # state was default public
-            self.set_property('state', 'public')
-
 
 
 register_resource_class(RssFeeds)

@@ -215,31 +215,6 @@ class NewsItem(WebPage):
             self.set_property('thumbnail', str(new_ref), language=lang)
 
 
-    ##########################################################################
-    # Updates
-    ##########################################################################
-    def update_20100810(self):
-        """long_title XHTMLBody -> Unicode"""
-        from itools.xml.utils import xml_to_text
-        from ikaaro.forms import XHTMLBody
-
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-        new_value = {}
-
-        for language in languages:
-            value = self.get_property('long_title', language)
-            if value:
-                value = XHTMLBody.decode(value.encode('utf8'))
-                value = xml_to_text(value)
-                new_value[language] = ' '.join(value.split())
-
-        self.del_property('long_title')
-
-        for key, value in new_value.iteritems():
-            self.set_property('long_title', value, language=key)
-
-
     edit = NewsItem_Edit()
     view = NewsItem_View()
     add_image = NewsItem_AddImage()
@@ -326,13 +301,6 @@ class NewsFolder(ManageViewAware, SideBarAware, Folder):
 
         return [ root.get_resource(doc.abspath)
                  for doc in documents ]
-
-
-    ##########################################################################
-    # Updates
-    ##########################################################################
-    def update_20100621(self):
-        SideBarAware.update_20100621(self)
 
 
     view = NewsFolder_View()

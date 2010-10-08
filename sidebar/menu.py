@@ -207,14 +207,6 @@ class MenuSideBar(BoxAware, MenuFolder):
 
     use_fancybox = False
 
-    def update_20100616(self):
-        for resource in self.search_resources(cls=Menu):
-            metadata = resource.metadata
-            metadata.set_changed()
-            metadata.format = MenuSideBarTable.class_id
-            metadata.version = MenuSideBarTable.class_version
-            metadata.set_changed()
-
 
 
 register_resource_class(MenuSideBar)

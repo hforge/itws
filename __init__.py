@@ -43,8 +43,8 @@ import ws_neutral
 
 # Special for obsolete
 # Import obsolete if command is icms-update.py
-if sys.argv[0].endswith('icms-update.py'):
-    import obsolete
+#if sys.argv[0].endswith('icms-update.py'):
+#    import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()

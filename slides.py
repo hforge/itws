@@ -175,19 +175,6 @@ class Slide(TagsAware, WebPage):
             self.set_property(key, str(new_ref))
 
 
-    ##########################################################################
-    # Updates
-    ##########################################################################
-    def update_20100618(self):
-        # Restore state
-        if self.get_property('state'):
-            # state was set
-            return
-        if self.get_workflow_state() == 'private':
-            # state was default public
-            self.set_property('state', 'public')
-
-
     edit = Slide_Edit()
     view = Slide_View()
     # use by tag_view

@@ -86,18 +86,6 @@ class Tag(File, MultilingualCatalogTitleAware):
         return isinstance(target, TagsFolder)
 
 
-    ##########################################################################
-    # Updates
-    ##########################################################################
-    def update_20100618(self):
-        if self.get_property('state'):
-            # state was set
-            return
-        if self.get_workflow_state() == 'private':
-            # state was default public
-            self.set_property('state', 'public')
-
-
 
 class TagsFolder(ManageViewAware, Folder):
 
