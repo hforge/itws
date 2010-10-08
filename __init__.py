@@ -35,15 +35,16 @@ import about
 import common
 import sidebar
 import sitemap
-import tracker
 import turning_footer
 import webpage
 import ws_neutral
 
 # Special for obsolete
 # Import obsolete if command is icms-update.py
-#if sys.argv[0].endswith('icms-update.py'):
-#    import obsolete
+print sys.argv[0]
+if sys.argv[0].endswith('icms-update.py'):
+    print 'Import obsolete'
+    import obsolete
 
 # Make the product version available to Python code
 __version__ = get_version()
@@ -78,5 +79,5 @@ path = get_abspath('locale')
 register_domain('itws', path)
 
 # Silent pyflakes
-Root, common, sidebar, sitemap, tracker, turning_footer, ws_neutral, webpage
+Root, common, sidebar, sitemap, turning_footer, ws_neutral, webpage
 

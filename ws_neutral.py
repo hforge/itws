@@ -73,7 +73,6 @@ from section import Section
 from sitemap import SiteMap
 from slides import SlideShow, Slide
 from tags import TagsFolder
-from tracker import ITWSTracker
 from turning_footer import TurningFooterFolder
 from utils import get_path_and_view, is_navigation_mode
 from views import AdvanceGoToSpecificDocument
@@ -112,7 +111,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
-    not_allowed_cls_for_sidebar_view = [ITWSTracker, ITWSTracker.issue_class,
+    not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class,
                                         SlideShow, Slide, RssFeeds]
     manage_buttons = []
 
@@ -671,12 +670,7 @@ class NeutralWS(ManageViewAware, SideBarAware, ContentBarAware,
 
 
     def get_document_types(self):
-        types = []
-        for _type in WebSite.get_document_types(self):
-            if _type is Tracker:
-                types.append(ITWSTracker)
-            else:
-                types.append(_type)
+        types = WebSite.get_document_types(self)
         # News Folder can only be instanciated once
         if self.newsfolder_class:
             if self.get_news_folder(get_context()) is None:
