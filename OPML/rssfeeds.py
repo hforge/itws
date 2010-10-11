@@ -55,8 +55,8 @@ from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from utils import set_prefix_with_hostname
-from views import AutomaticEditView
+from itws.utils import set_prefix_with_hostname
+from itws.views import AutomaticEditView
 
 
 

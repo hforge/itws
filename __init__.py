@@ -32,6 +32,7 @@ from itools.xml import XMLNamespace, register_namespace
 # Import from itws
 from root import Root
 import about
+import OPML
 import sidebar
 import sitemap
 import skin
@@ -50,9 +51,6 @@ if sys.argv[0].endswith('icms-update.py'):
 # Make the product version available to Python code
 __version__ = get_version()
 
-# Read the Relax NG schema of OPML and register its namespace
-rng_file = ro_database.get_handler(get_abspath('OPML-schema.rng'), RelaxNGFile)
-rng_file.auto_register()
 
 #############################################################################
 # SITEMAP

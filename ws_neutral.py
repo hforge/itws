@@ -53,9 +53,9 @@ from control_panel import CPEdit404, CPEditRobotsTXT
 from datatypes import MultilingualString, NeutralClassSkin
 from images_folder import ImagesFolder
 from news import NewsFolder
+from OPML import RssFeeds
 from repository import Repository
 from resources import FooterFolder, RobotsTxt, NotFoundPage
-from rssfeeds import RssFeeds
 from section import Section
 from sitemap import SiteMap
 from slides import SlideShow
