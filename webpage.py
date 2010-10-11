@@ -37,7 +37,9 @@ class WebPage(BaseWebPage, TagsAware):
       - Allow to configure if we display title or not
     """
 
+    # TODO: When publish webpage add a mechanism to check public pages
     # XXX We override ikaaro class_id
+
     class_id = 'webpage'
     class_version = '20100621'
     class_schema = merge_dicts(BaseWebPage.class_schema,

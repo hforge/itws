@@ -17,18 +17,17 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Boolean, XMLContent
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.autoform import RadioWidget, CheckboxWidget, XHTMLBody
+from ikaaro.autoform import RadioWidget
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
 from tags_views import TagsAware_Edit
-from utils import get_warn_referenced_message
 
 
 
@@ -71,45 +70,7 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView, DBResource_Edit):
 
 
     def action(self, resource, context, form):
-        print 'ok'
         return DBResource_Edit.action(self, resource, context, form)
-
-
-    # XXX Migration See how do it
-    ## Publish referenced resources which are not public/pending
-    #message2 = get_warn_referenced_message(resource, context, form['state'])
-    #if message2:
-    #    # Add custom message
-    #    context.message = [ context.message, message2 ]
-
-    ## Customize message for webpage which can be ordered
-    #site_root = resource.get_site_root()
-    #section_class = site_root.section_class
-    #wsdatafolder_class = site_root.wsdatafolder_class
-    #parent = resource.parent
-    #if isinstance(parent, (section_class, wsdatafolder_class)) is False:
-    #    return
-
-    ## Customize message
-    #order_names = parent.get_ordered_names()
-    #if resource.name in order_names:
-    #    return
-
-    #message2 = MSG(u'To make this webpage visible on "{parent_view}" '
-    #               u'please go to <a href="{path}">order interface</a>')
-    #if isinstance(parent, wsdatafolder_class):
-    #    parent_view = MSG(u'home page').gettext()
-    #    order_resource = site_root.get_resource(site_root.order_path)
-    #else:
-    #    parent_view = parent.class_title.gettext()
-    #    order_resource = parent.get_resource(parent.order_path)
-    #path = context.get_link(order_resource)
-    #parent_view = XMLContent.encode(parent_view)
-    #message2 = message2.gettext(parent_view=parent_view,
-    #                            path=path).encode('utf8')
-    #message2 = XHTMLBody.decode(message2)
-    ## Add custom message
-    #context.message = [ context.message, message2 ]
 
 
 
