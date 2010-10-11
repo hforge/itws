@@ -23,11 +23,7 @@ import sys
 
 # Import from itools
 from itools.core import get_abspath, get_version
-from itools.datatypes import String
 from itools.gettext import register_domain
-from itools.handlers import ro_database
-from itools.relaxng import RelaxNGFile
-from itools.xml import XMLNamespace, register_namespace
 
 # Import from itws
 from root import Root
@@ -41,42 +37,17 @@ import webpage
 import widgets
 import ws_neutral
 
-# Special for obsolete
 # Import obsolete if command is icms-update.py
-print sys.argv[0]
 if sys.argv[0].endswith('icms-update.py'):
-    print 'Import obsolete'
     import obsolete
+    print 'Import %s', obsolete.__name__
 
 # Make the product version available to Python code
 __version__ = get_version()
 
-
-#############################################################################
-# SITEMAP
-#############################################################################
-# Required by the SiteMap
-xsins_uri = 'http://www.w3.org/2001/XMLSchema-instance'
-xsi_namespace = XMLNamespace(
-    xsins_uri, 'xsi',
-    free_attributes={'schemaLocation': String})
-register_namespace(xsi_namespace)
-
-# Read the Relax NG schema of SiteMap and register its namespace
-rng_file = ro_database.get_handler(get_abspath('SiteMap-schema.rng'),
-                                   RelaxNGFile)
-for namespace in rng_file.namespaces.itervalues():
-    namespace.prefix = None
-rng_file.auto_register()
-
-#############################################################################
-# DOMAIN
-#############################################################################
-
 # Register the itws domain
-path = get_abspath('locale')
-register_domain('itws', path)
+register_domain('itws', get_abspath('locale'))
 
 # Silent pyflakes
-Root, skin, about, sidebar, sitemap, turning_footer, ws_neutral, webpage
-
+Root, skin, about, OPML, sidebar, sitemap, turning_footer, ws_neutral, webpage,
+widgets
