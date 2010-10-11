@@ -1,0 +1,216 @@
+# -*- coding: UTF-8 -*-
+# Copyright (C) 2010 Sylvain Taverne <sylvain@itaapy.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Import from standard library
+from copy import deepcopy
+
+# Import from itools
+from itools.core import merge_dicts
+from itools.datatypes import Boolean, String
+from itools.gettext import MSG
+from itools.uri import get_reference, Path
+from itools.web import get_context
+
+# Import from ikaaro
+from ikaaro.menu import Target
+from ikaaro.webpage import WebPage_View
+from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
+from ikaaro.autoform import rte_widget, SelectWidget
+
+# Import from itws
+from base_view import Box_View
+from news import SidebarBox_Preview
+from itws.utils import get_path_and_view, is_empty
+from itws.views import AutomaticEditView, EasyNewInstance
+from itws.webpage import WebPage
+
+
+
+class HTMLContent_ViewBoth():
+
+    title = MSG(u'View with preview')
+    template = '/ui/bar_items/HTMLContent_viewboth.xml'
+
+
+    def get_namespace(self, resource, context):
+        namespace = {}
+        namespace['content'] = resource.view.GET(resource, context)
+        namespace['right_rendered'] = resource.preview.GET(resource, context)
+        return namespace
+
+
+
+
+
+class HTMLContent_View(Box_View, WebPage_View):
+
+    template = '/ui/bar_items/HTMLContent_view.xml'
+
+    def GET(self, resource, context):
+        return Box_View.GET(self, resource, context)
+
+
+    def get_namespace(self, resource, context):
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+        content = list(WebPage_View.GET(self, resource, context))
+        if is_empty(content):
+            content = None
+        if content is None and self.is_admin(resource, context) is False:
+            # Hide the box if the content is empty
+            self.set_view_is_empty(True)
+
+        return {
+            'name': resource.name,
+            'title':title,
+            'title_link': resource.get_property('title_link'),
+            'title_link_target': resource.get_property('title_link_target'),
+            'content': content}
+
+
+class HTMLContent_Edit(AutomaticEditView):
+
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'data':
+            # XXX Migration
+            #language = resource.get_content_language(context)
+            language = 'en'
+            return resource.get_html_data(language=language)
+        return AutomaticEditView.get_value(self, resource, context, name,
+                                           datatype)
+
+
+    def set_value(self, resource, context, name, form):
+        if name == 'data':
+            new_body = form['data']
+            # XXX Migration
+            # language = resource.get_content_language(context)
+            language = 'en'
+            handler = resource.get_handler(language=language)
+            handler.set_body(new_body)
+        return AutomaticEditView.set_value(self, resource, context, name,
+                                           form)
+
+
+
+
+class HTMLContent(WebPage):
+
+    class_id = 'html-content'
+    class_version = '20100621'
+    class_title = MSG(u'HTML Content')
+    class_description = MSG(u'HTML snippet which can be displayed in the '
+                             'central and/or the sidebar')
+
+    class_schema = merge_dicts(WebPage.class_schema,
+         # Metadata
+         title_link=String(source='metadata'),
+         title_link_target=Target(source='metadata', default='_top'))
+
+    # Configuration
+    allow_instanciation = True
+    is_content = True
+
+    # Configuration of box for EditView
+    edit_schema = {'title_link': String,
+                   'title_link_target': Target,
+                   'data': HTMLBody(ignore=True),
+                   'display_title': Boolean}
+
+    edit_widgets = [
+        CheckboxWidget('display_title',
+                        title=MSG(u'Display on webpage view')),
+        PathSelectorWidget('title_link', title=MSG(u'Title link')),
+        SelectWidget('title_link_target', title=MSG(u'Title link target')),
+        rte_widget
+        ]
+
+
+    ###########################
+    ## Links API
+    ###########################
+
+    def get_links(self):
+        links = WebPage.get_links(self)
+        base = self.get_canonical_path()
+        path = self.get_property('title_link')
+        if path:
+            ref = get_reference(path)
+            if not ref.scheme:
+                path, view = get_path_and_view(ref.path)
+                links.append(str(base.resolve2(path)))
+        return links
+
+
+    def update_links(self, source, target):
+        WebPage.update_links(self, source, target)
+
+        base = self.get_canonical_path()
+        resources_new2old = get_context().database.resources_new2old
+        base = str(base)
+        old_base = resources_new2old.get(base, base)
+        old_base = Path(old_base)
+        new_base = Path(base)
+
+        path = self.get_property('title_link')
+        if path:
+            ref = get_reference(path)
+            if not ref.scheme:
+                path, view = get_path_and_view(ref.path)
+                path = str(old_base.resolve2(path))
+                if path == source:
+                    # Hit the old name
+                    # Build the new reference with the right path
+                    new_ref = deepcopy(ref)
+                    new_ref.path = str(new_base.get_pathto(target)) + view
+                    self.set_property('title_link', str(new_ref))
+
+        get_context().server.change_resource(self)
+
+
+    def update_relative_links(self, source):
+        WebPage.update_relative_links(self, source)
+
+        target = self.get_canonical_path()
+        resources_old2new = get_context().database.resources_old2new
+        path = self.get_property('title_link')
+        if path:
+            ref = get_reference(str(path))
+            if not ref.scheme:
+                path, view = get_path_and_view(ref.path)
+                # Calcul the old absolute path
+                old_abs_path = source.resolve2(path)
+                # Check if the target path has not been moved
+                new_abs_path = resources_old2new.get(old_abs_path,
+                                                     old_abs_path)
+                # Build the new reference with the right path
+                # Absolute path allow to call get_pathto with the target
+                new_ref = deepcopy(ref)
+                new_ref.path = str(target.get_pathto(new_abs_path)) + view
+                # Update the title link
+                self.set_property('title_link', str(new_ref))
+
+
+    #########
+    # Views
+    #########
+    view_both = HTMLContent_ViewBoth()
+    preview = order_preview = SidebarBox_Preview()
+    edit = HTMLContent_Edit()
+    view = HTMLContent_View()
+    new_instance = EasyNewInstance()

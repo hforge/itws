@@ -38,7 +38,7 @@ from ikaaro.autoform import TextWidget, CheckboxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
-from itws.repository import Box, register_box
+from itws.repository import Box
 from itws.repository_views import Box_View
 from itws.resources import ResourceWithCache
 from itws.views import AutomaticEditView
@@ -148,6 +148,8 @@ class TwitterSideBar(Box, ResourceWithCache):
                    ]
 
     class_schema = merge_dicts(Box.edit_schema, edit_schema)
+
+    allow_instanciation = True
 
     # Views
     view = TwitterSideBar_View()
@@ -282,6 +284,7 @@ class IdenticaSideBar(TwitterSideBar):
     # identica icons source: http://status.net/
 
     # Item configuration
+    allow_instanciation = True
 
     edit_schema = {'user_name': IndenticaName(mandatory=True),
                    'limit': Integer(mandatory=True, default=5, size=3),
@@ -323,5 +326,3 @@ class IdenticaSideBar(TwitterSideBar):
 
 register_resource_class(IdenticaSideBar)
 register_resource_class(TwitterSideBar)
-register_box(IdenticaSideBar, allow_instanciation=True)
-register_box(TwitterSideBar, allow_instanciation=True)

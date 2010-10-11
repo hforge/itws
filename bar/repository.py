@@ -1,0 +1,251 @@
+# -*- coding: UTF-8 -*-
+# Copyright (C) 2008-2010 Henry Obein <henry@itaapy.com>
+# Copyright (C) 2009 Dumont Sébastien <sebastien.dumont@itaapy.com>
+# Copyright (C) 2009 Nicolas Deram <nicolas@itaapy.com>
+# Copyright (C) 2009-2010 Hervé Cauwelier <herve@itaapy.com>
+# Copyright (C) 2010 Taverne Sylvain <sylvain@itaapy.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# Import from itools
+from itools.core import get_abspath
+from itools.gettext import MSG
+
+# Import from ikaaro
+from ikaaro.folder import Folder
+from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
+from ikaaro.future.order import ResourcesOrderedTable
+from ikaaro.revisions_views import DBResource_CommitLog
+from ikaaro.skins import register_skin
+
+# Import from itws
+from base import Box
+from registry import get_boxes_registry
+from repository_views import BoxesOrderedTable_Ordered
+from repository_views import BoxesOrderedTable_Unordered
+from repository_views import Repository_BrowseContent
+from itws.views import BoxAwareNewInstance
+from itws.views import SideBarAwareNewInstance
+from itws.views import BarAwareBoxAwareNewInstance
+
+
+
+###########################################################################
+# Repository
+###########################################################################
+
+class BoxesOrderedTable(ResourcesOrderedTable):
+
+    class_views = ['view', 'add_box', 'new_box', 'commit_log']
+    allow_filter_key = None
+
+
+    def get_view(self, name, query=None):
+        # Add helper for manage view
+        view = ResourcesOrderedTable.get_view(self, name, query)
+        if view:
+            return view
+        if name == 'manage_view':
+            parent_view = self.parent.get_view('manage_view')
+            if parent_view is None:
+                # not found
+                return None
+            return GoToSpecificDocument(specific_document='..',
+                    access = parent_view.access,
+                    specific_view='manage_view',
+                    title=parent_view.title)
+        return None
+
+
+    def get_order_root(self):
+        return self.get_site_root().get_repository()
+
+
+    def _get_order_root_path(self):
+        root = self.get_order_root()
+        if root:
+            return self.get_pathto(root)
+        return None
+
+    order_root_path = property(_get_order_root_path)
+
+
+    def update_relative_links(self, source):
+        """Do not rewrite link, if the resource move."""
+        pass
+
+
+    def _reduce_orderable_classes(self, types):
+        return types
+
+
+    def _orderable_classes(self):
+        registry = get_boxes_registry()
+        types = [ cls for cls, allow in registry.iteritems()
+                  if allow[self.allow_filter_key] ]
+        types.sort(lambda x, y : cmp(x.class_title.gettext(),
+                                     y.class_title.gettext()))
+        types = self._reduce_orderable_classes(types)
+        return types
+
+    orderable_classes = property(_orderable_classes)
+
+    ############
+    # Views
+    ############
+    view = BoxesOrderedTable_Ordered()
+    add_box = BoxesOrderedTable_Unordered()
+    new_box = None
+
+
+
+class SidebarBoxesOrderedTable(BoxesOrderedTable):
+
+    class_id = 'sidebar-boxes-ordered-table'
+    class_title = MSG(u'Manage sidebar Boxes')
+    class_description = None
+
+    # _orderable_classes configuration
+    allow_filter_key = 'side'
+
+    # New box (Add a sidebar box)
+    new_box = SideBarAwareNewInstance(title=MSG(u'Create a new Sidebar Box'))
+
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Sidebar Boxes')
+    ordered_view_title_description = MSG(
+            u'This website has a sidebar and a central part. '
+            u'The sidebar can be composed of several kinds of boxes: '
+            u'Tag Cloud, "last News View", HTML Content, Twitter Feeds, '
+            u'Custom Menu... Here you can order these boxes.')
+    unordered_view_title = MSG(u'Available Sidebar Boxes')
+    unordered_view_title_description = MSG(
+            u'These boxes are available, you can make them visible '
+            u'in the sidebar by adding them to the above ordered list.')
+
+
+
+class ContentbarBoxesOrderedTable(BoxesOrderedTable):
+
+    class_id = 'contentbar-boxes-ordered-table'
+    class_title = MSG(u'Order Central Part Boxes')
+
+    # _orderable_classes configuration
+    allow_filter_key = 'content'
+
+    # New box (Add a content bar)
+    new_box = BarAwareBoxAwareNewInstance(
+                    title=MSG(u'Create a new ContentBar Box'))
+
+    # Order view title & description configuration
+    ordered_view_title = MSG(u'Order Central Part Boxes')
+    ordered_view_title_description = MSG(
+            u'This website has a sidebar and a central part. '
+            u'The central part can be composed of several kinds of '
+            u'boxes: "Last News View", Slideshow... '
+            u'Here you can order these boxes.')
+    unordered_view_title = MSG(u'Available Central Part Boxes')
+    unordered_view_title_description = MSG(
+            u'These boxes are available, you can make them visible '
+            u'in the central part by adding them to the above ordered list.')
+
+
+    def get_order_root(self):
+        return self.parent
+        #return self.get_site_root().get_repository()
+
+
+    def _get_order_root_path(self):
+        root = self.get_order_root()
+        if root:
+            return self.get_pathto(root)
+        return None
+
+    order_root_path = property(_get_order_root_path)
+
+
+
+class Repository(Folder):
+
+    class_id = 'repository'
+    class_version = '20100625'
+    class_title = MSG(u'Sidebar Boxes Repository')
+    class_description = MSG(u'Sidebar boxes repository')
+    class_icon16 = 'bar_items/icons/16x16/repository.png'
+    class_icon48 = 'bar_items/icons/48x48/repository.png'
+    class_views = ['browse_content', 'new_resource_form',
+                   'new_sidebar_resource', 'backlinks', 'commit_log']
+    __fixed_handlers__ = (Folder.__fixed_handlers__
+                          + ['tags', 'website-articles-view',
+                             'articles-view', 'news-siblings',
+                             'sidebar-children-toc', 'news'])
+
+    def init_resource(self, **kw):
+        Folder.init_resource(self, **kw)
+        # XXX Migration
+        # We initialize repository with some boxes
+        #kw = {'title': {'en': BoxNewsSiblingsToc.class_title.gettext()},
+        #      'state': 'public'}
+        #self.make_resource('news-siblings', BoxNewsSiblingsToc)
+        #self.make_resource('sidebar-children-toc', BoxSectionChildrenToc)
+        #self.make_resource('news', BoxSectionNews)
+
+
+    def _get_document_types(self, allow_instanciation=None, is_content=None,
+                            is_side=None):
+        registry = get_boxes_registry()
+        types = []
+        for cls, allow in registry.iteritems():
+            if allow_instanciation is not None and \
+                    allow_instanciation <> allow['instanciation']:
+                continue
+            if is_content is not None and is_content <> allow['content']:
+                continue
+            if is_side is not None and is_side <> allow['side']:
+                continue
+            types.append(cls)
+        types.sort(lambda x, y : cmp(x.class_id, y.class_id))
+        return types
+
+
+    def get_document_types(self):
+        return self._get_document_types(allow_instanciation=True,
+                                        is_side=True)
+
+
+    def can_paste(self, source):
+        """Is the source resource can be pasted into myself.
+        Allow RightItem and Box
+        but Box cannot be directly instanciated
+        """
+        allowed_types = self.get_document_types() + [Box]
+        return isinstance(source, tuple(allowed_types))
+
+
+    #################
+    # Views
+    ################
+    new_resource = None
+    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Create a new Sidebar Box'),
+                                               is_side=True)
+    browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
+    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
+    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+
+
+
+# Register skin
+path = get_abspath('ui/bar_items')
+register_skin('bar_items', path)

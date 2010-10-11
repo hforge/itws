@@ -35,7 +35,7 @@ from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from itws.repository import register_box, BoxAware
+from itws.repository import BoxAware
 from itws.repository_views import Box_View
 from itws.views import AdvanceGoToSpecificDocument
 
@@ -198,6 +198,11 @@ class MenuSideBar(BoxAware, MenuFolder):
     class_views = ['view', 'menu', 'edit']
     class_menu = MenuSideBarTable
 
+    # Configuration
+    use_fancybox = False
+    allow_instanciation = True
+
+    # Views
     view = MenuSideBar_View()
     menu = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit menu'))
@@ -205,10 +210,8 @@ class MenuSideBar(BoxAware, MenuFolder):
             specific_document='menu', specific_method='edit',
             title=MenuFolder.edit.title, keep_query=True)
 
-    use_fancybox = False
 
 
 
 register_resource_class(MenuSideBar)
 register_resource_class(MenuSideBarTable)
-register_box(MenuSideBar, allow_instanciation=True)

@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2010 Henry Obein <henry@itaapy.com>
-# Copyright (C) 2010 Hervé Cauwelier <herve@itaapy.com>
-# Copyright (C) 2010 Taverne Sylvain <sylvain@itaapy.com>
+# Copyright (C) 2010 Sylvain Taverne <sylvain@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,25 +14,64 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from warnings import warn
-
-# Import form itools
+# Import from itools
 from itools.gettext import MSG
-from itools.stl import set_prefix
+from itools.stl import set_prefix, stl
 from itools.web import STLView
+from itools.xml import XMLParser
+
+# Import from ikaaro
+from ikaaro.autoform import stl_namespaces
 
 # Import from itws
-from repository import ContentbarBoxesOrderedTable
-from repository import SidebarBoxesOrderedTable
-from utils import get_admin_bar
-from views import AdvanceGoToSpecificDocument
+from bar_aware import ContentBarAware, SideBarAware
+from itws.utils import get_admin_bar
+
+
+class Box_View(STLView):
+
+    def get_view_is_empty(self):
+        return getattr(self, '_view_is_empty', False)
+
+
+    def set_view_is_empty(self, value):
+        setattr(self, '_view_is_empty', value)
+
+
+    def is_admin(self, resource, context):
+        ac = resource.get_access_control()
+        return ac.is_allowed_to_edit(context.user, resource)
+
+
+class Box_Preview(STLView):
+
+    template = list(XMLParser(
+        """
+        <p>${title}</p>
+        <ul stl:if="details">
+            <li stl:repeat="detail details">${detail}</li>
+        </ul>
+        """, stl_namespaces))
+
+
+    def get_template(self):
+        return self.template
+
+
+    def get_details(self, resource, context):
+        return []
+
+
+    def GET(self, resource, context):
+        title = resource.class_description
+        details = self.get_details(resource, context)
+        template = self.get_template()
+        namespace = {'title': title,
+                     'details': details}
+        return stl(events=template, namespace=namespace)
 
 
 
-################################################################################
-# Views
-################################################################################
 class BarBox_View(STLView):
 
     template = '/ui/common/BarBox_view.xml'
@@ -266,90 +303,3 @@ class ContentBar_View(Bar_View):
 
 
 
-################################################################################
-# Resources
-################################################################################
-class SideBarAware(object):
-
-    class_version = '20100621'
-    class_views = ['order_sidebar']
-    class_schema = {}
-
-    sidebar_name = 'order-sidebar'
-    __fixed_handlers__ = [sidebar_name]
-
-    order_sidebar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document=sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-
-    new_sidebar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-
-    # Sidebar items
-    # (name, cls, ordered)
-    sidebar_items = []
-
-
-    def init_resource(self, **kw):
-        self.make_resource(self.sidebar_name, SidebarBoxesOrderedTable)
-
-        # XXX Migration TODO
-        ## Preorder specific sidebar items
-        #root = get_context().root
-        #table_name = cls.sidebar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        ## FIXME state should be customizable
-        #state = 'public'
-
-        #for item in cls.sidebar_items:
-        #    name2, cls2, ordered = item
-        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-        #                        state=state)
-        #    if ordered:
-        #        table.add_new_record({'name': name2})
-
-
-
-class ContentBarAware(object):
-
-    class_version = '20100622'
-    class_views = ['order_contentbar']
-    contentbar_name = 'order-contentbar'
-    __fixed_handlers__ = [contentbar_name]
-
-    order_contentbar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document=contentbar_name,
-        title=MSG(u'Order Central Part Boxes'))
-    new_contentbar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % contentbar_name,
-        title=MSG(u'Order Central Part Boxes'))
-
-    # Contentbar items
-    # (name, cls, ordered)
-    contentbar_items = []
-
-    def init_resource(self, **kw):
-        self.make_resource(self.contentbar_name, ContentbarBoxesOrderedTable)
-
-        ## Preorder specific contentbar items
-        #root = get_context().root
-        #table_name = cls.contentbar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        ## FIXME state should be customizable
-        #state = 'public'
-
-        #for item in cls.contentbar_items:
-        #    name2, cls2, ordered = item
-        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-        #                        state=state)
-        #    if ordered:
-        #        table.add_new_record({'name': name2})

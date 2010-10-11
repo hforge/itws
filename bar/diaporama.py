@@ -36,7 +36,7 @@ from ikaaro.registry import register_resource_class
 from ikaaro.table import Table
 
 # Import from itws
-from itws.repository import register_box, BoxAware
+from itws.repository import BoxAware
 from itws.sidebar.diaporama_views import DiaporamaTable_CompositeView
 from itws.sidebar.diaporama_views import Diaporama_View
 from itws.utils import get_path_and_view
@@ -201,6 +201,9 @@ class Diaporama(BoxAware, Folder):
 
     # Configuration
     use_fancybox = False
+    allow_instanciation = True
+    is_content = True
+    is_side = False
 
     order_path = 'order-banners'
     order_table = DiaporamaTable
@@ -235,5 +238,3 @@ class Diaporama(BoxAware, Folder):
 
 register_resource_class(Diaporama)
 register_resource_class(DiaporamaTable)
-register_box(Diaporama, allow_instanciation=True, is_content=True,
-             is_side=False)
