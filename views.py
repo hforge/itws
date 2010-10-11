@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from standard Library
-from datetime import datetime
-
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.csv import Property
@@ -26,46 +23,36 @@ from itools.datatypes import Boolean, DateTime, Enumerate, Integer, String, Unic
 from itools.fs import FileName
 from itools.gettext import MSG
 from itools.handlers import checkid
-from itools.html import stream_to_str_as_xhtml
-from itools.rss import RSSFile
-from itools.uri import get_reference, Path
-from itools.web import get_context, BaseView, ERROR, FormError
-from itools.database import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
+from itools.uri import get_reference
+from itools.web import get_context, ERROR, FormError
+from itools.database import PhraseQuery
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.buttons import Button
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
 from ikaaro.datatypes import Multilingual
-from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
+from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import AutoForm, TextWidget, HTMLBody, RadioWidget
-from ikaaro.autoform import FileWidget, SelectWidget, MultilineWidget
+from ikaaro.autoform import SelectWidget, MultilineWidget
 from ikaaro.autoform import description_widget, subject_widget
-from ikaaro.autoform import title_widget, timestamp_widget, rte_widget
+from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.menu import Menu_View
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
-from ikaaro.popup import DBResource_AddImage, DBResource_AddMedia
-from ikaaro.popup import DBResource_AddLink
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.registry import get_resource_class, get_document_types
-from ikaaro.resource_ import DBResource
+from ikaaro.registry import get_resource_class
 from ikaaro.text import CSS
 from ikaaro.text_views import Text_Edit
 from ikaaro.user import User
-from ikaaro.utils import get_base_path_query
-from ikaaro.views import CompositeForm
 from ikaaro.views_new import NewInstance
-from ikaaro.webpage import WebPage, HTMLEditView
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from datatypes import StateEnumerate, StaticStateEnumerate, OrderBoxEnumerate
-from utils import set_prefix_with_hostname, state_widget
-from utils import get_warn_referenced_message
+from utils import state_widget
 
 
 class MyAuthorized_Classid(Enumerate):
@@ -464,44 +451,6 @@ class SideBarAwareNewInstance(BarAwareBoxAwareNewInstance):
 
 
 
-#class File_NewInstance(BaseFile_NewInstance):
-#
-#    def get_schema(self, resource, context):
-#        schema = merge_dicts(BaseFile_NewInstance.schema,
-#                             state=StaticStateEnumerate(default='public'))
-#        del schema['name']
-#        return schema
-#
-#
-#    def get_widgets(self, resource, context):
-#        return [ title_widget,
-#                 FileWidget('file', title=MSG(u'File'), size=35),
-#                 state_widget ]
-#
-#
-#    def get_new_resource_name(self, form):
-#        # As we have no name, always return the title or get it from the file
-#        title = form['title'].strip()
-#        if not title:
-#            filename, mimetype, body = form['file']
-#            name, type, language = FileName.decode(filename)
-#        return title or name
-#
-#
-#    def action(self, resource, context, form):
-#        goto = BaseFile_NewInstance.action(self, resource, context, form)
-#
-#        # Get the resource
-#        name = form['name']
-#        child = resource.get_resource(name)
-#        if isinstance(child, WorkflowAware):
-#            child.set_property('state', form['state'])
-#
-#        # Ok
-#        return goto
-#
-
-
 ############################################################
 # RobotsTxt
 ############################################################
@@ -526,269 +475,9 @@ class RobotsTxt_Edit(Text_Edit):
 
 
 
-############################################################
-# Links
-############################################################
-
-class DBResource_Links(Folder_BrowseContent):
-    """Links are the list of resources used by this resource."""
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u"Links")
-    icon = 'rename.png'
-
-    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
-                               batch_size=Integer(default=0))
-
-    search_template = None
-    search_schema = {}
-
-
-    def get_items(self, resource, context):
-        links = resource.get_links()
-        links = list(set(links))
-        query = OrQuery(*[ PhraseQuery('abspath', link)
-                           for link in links ])
-        return context.root.search(query)
-
-
-    def action_links_publish(self, resource, context, form):
-        Folder_BrowseContent.action_publish(self, resource, context, form)
-
-
-    def action_links_retire(self, resource, context, form):
-        Folder_BrowseContent.action_retire(self, resource, context, form)
-
-
-    table_actions = [PublishButton(name='links_publish'),
-                     RetireButton(name='links_retire')]
-
-
-
-class DBResource_Backlinks(DBResource_Links):
-    """Backlinks are the list of resources pointing to this resource. This
-    view answers the question "where is this resource used?" You'll see all
-    WebPages (for example) referencing it. If the list is empty, you can
-    consider it is "orphan".
-    """
-
-    title = MSG(u"Backlinks")
-    query_schema = {}
-
-
-    def get_table_columns(self, resource, context):
-        cols = DBResource_Links.get_table_columns(self, resource, context)
-        return [ col for col in cols if col[0] != 'checkbox' ]
-
-
-    def get_items(self, resource, context):
-        query = PhraseQuery('links', str(resource.get_canonical_path()))
-        return context.root.search(query)
-
-
-    table_actions = []
-
-
-
-class DBResource_CompositeLinks(CompositeForm):
-
-    title = MSG(u'Links/Backlinks')
-    access = 'is_allowed_to_edit'
-    template = '/ui/common/cascade.xml'
-    subviews = [ DBResource_Links(), DBResource_Backlinks() ]
-
-
-    def get_namespace(self, resource, context):
-        views = []
-        for view in self.subviews:
-            views.append({'title': view.title,
-                          'view': view.GET(resource, context)})
-        return {'views': views}
-
-
-
-def improve_addlink_action_upload(self, resource, context, form):
-    filename, mimetype, body = form['file']
-    name, type, language = FileName.decode(filename)
-
-    # Check the filename is good
-    title = form['title']
-    name = checkid(title) if title else checkid(name)
-    if name is None:
-        context.message = messages.MSG_BAD_NAME
-        return
-
-    # Get the container
-    container = context.root.get_resource(form['target_path'])
-
-    # Check the name is free
-    if container.get_resource(name, soft=True) is not None:
-        context.message = messages.MSG_NAME_CLASH
-        return
-
-    # Check it is of the expected type
-    cls = get_resource_class(mimetype)
-    if not self.can_upload(cls):
-        error = u'The given file is not of the expected type.'
-        context.message = ERROR(error)
-        return
-
-    # Add the image to the resource
-    cls.make_resource(cls, container, name, body, format=mimetype,
-                      filename=filename, extension=type)
-    # Get resource path
-    child = container.get_resource(name)
-    # Set title and state
-    if title:
-        language = container.get_content_language(context)
-        child.set_property('title', title, language=language)
-    child.set_property('state', form['state'])
-
-    path = resource.get_pathto(child)
-    # Add an action to the resource
-    action = self.get_resource_action(context)
-    if action:
-        path = '%s%s' % (path, action)
-    # Return javascript
-    scripts = self.get_scripts(context)
-    context.add_script(*scripts)
-    return self.get_javascript_return(context, path)
-
-
-
-class ImproveDBResource_AddLink(DBResource_AddLink):
-
-    template = '/ui/common/addlink.xml'
-    action_upload_schema = merge_dicts(DBResource_AddLink.action_upload_schema,
-                                       title=Unicode, state=StaticStateEnumerate)
-    action_add_resource_schema = merge_dicts(
-            DBResource_AddLink.action_add_resource_schema,
-            state=StaticStateEnumerate)
-
-    def get_namespace(self, resource, context):
-        namespace = DBResource_AddLink.get_namespace(self, resource, context)
-        # add state widget
-        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
-        namespace['state_widget'] = list(widget)
-
-        return namespace
-
-
-    def action_upload(self, resource, context, form):
-        return improve_addlink_action_upload(self, resource, context, form)
-
-
-    def action_add_resource(self, resource, context, form):
-        mode = form['mode']
-        title = form['title']
-        name = checkid(title)
-        # Check name validity
-        if name is None:
-            context.message = MSG(u"Invalid title.")
-            return
-        # Get the container
-        root = context.root
-        container = root.get_resource(context.get_form_value('target_path'))
-        # Check the name is free
-        if container.get_resource(name, soft=True) is not None:
-            context.message = messages.MSG_NAME_CLASH
-            return
-        # Get the type of resource to add
-        cls = self.get_page_type(mode)
-        # Create the resource
-        child = cls.make_resource(cls, container, name)
-        # Set state and title
-        language = container.get_content_language(context)
-        if title:
-            child.set_property('title', title, language=language)
-        child.set_property('state', form['state'])
-
-        path = context.resource.get_pathto(child)
-        scripts = self.get_scripts(context)
-        context.add_script(*scripts)
-        return self.get_javascript_return(context, path)
-
-
-
-class ImproveDBResource_AddImage(DBResource_AddImage):
-
-    template = '/ui/common/addimage.xml'
-    action_upload_schema = merge_dicts(DBResource_AddLink.action_upload_schema,
-                                       title=Unicode, state=StaticStateEnumerate)
-
-    def get_namespace(self, resource, context):
-        namespace = DBResource_AddImage.get_namespace(self, resource, context)
-        # add state widget
-        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
-        namespace['state_widget'] = list(widget)
-
-        return namespace
-
-
-    def action_upload(self, resource, context, form):
-        return improve_addlink_action_upload(self, resource, context, form)
-
-
-
-class ImproveDBResource_AddMedia(DBResource_AddMedia):
-
-    template = '/ui/common/addmedia.xml'
-    action_upload_schema = merge_dicts(DBResource_AddMedia.action_upload_schema,
-                                       title=Unicode, state=StaticStateEnumerate)
-
-    def get_namespace(self, resource, context):
-        namespace = DBResource_AddImage.get_namespace(self, resource, context)
-        # add state widget
-        widget = state_widget(datatype=StaticStateEnumerate, value='public').render()
-        namespace['state_widget'] = list(widget)
-
-        return namespace
-
-
-    def action_upload(self, resource, context, form):
-        return improve_addlink_action_upload(self, resource, context, form)
-
-
-
-# Override DBResource backlinks view
-DBResource.backlinks = DBResource_CompositeLinks()
-DBResource.add_link = ImproveDBResource_AddLink()
-DBResource.add_image = ImproveDBResource_AddImage()
-DBResource.add_media = ImproveDBResource_AddMedia()
 
 # Override User is_allowed_to_view
 User.is_allowed_to_view = User.is_allowed_to_edit
-
-
-############################################################
-# CSS
-############################################################
-
-class CSS_Edit(Text_Edit):
-
-    def get_widgets(self, resource, context):
-        widgets = Text_Edit.get_widgets(self, resource, context)
-        new_widgets = []
-        for widget in widgets:
-            if widget.name in ('timestamp', 'data'):
-                new_widgets.append(widget)
-        return new_widgets
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        if form['file'] is None:
-            data = form['data']
-            resource.handler.load_state_from_string(data)
-            context.database.change_resource(resource)
-
-
-
-CSS.edit = CSS_Edit()
 
 
 ############################################################
@@ -973,264 +662,6 @@ class BaseManageContent(Folder_BrowseContent):
 
 
 
-class BaseManage_Rename(Folder_Rename):
-
-    def action(self, resource, context, form):
-        ret = Folder_Rename.action(self, resource, context, form)
-        if ret:
-            # Tweak goto
-            ret.path = Path(';manage_view')
-        return ret
-
-
-
-############################################################
-# RSS
-############################################################
-
-class BaseRSS(BaseView):
-
-    access = True
-    allowed_formats = freeze([])
-    excluded_formats = freeze([])
-    excluded_paths = freeze([])
-    excluded_container_paths = freeze([])
-    max_items_number = 20
-
-
-    def get_base_query(self, resource, context):
-        # Filter by website
-        abspath = resource.get_site_root().get_canonical_path()
-        query = [ get_base_path_query(str(abspath)) ]
-        # Filter by pub_datetime
-        today = datetime.now()
-        min_date = datetime(1900, 1, 1)
-        query.append(RangeQuery('pub_datetime', min_date, today))
-        # Do not show image
-        query.append(PhraseQuery('is_image', False))
-        return query
-
-
-    def get_allowed_formats(self, resource, context):
-        return self.allowed_formats
-
-
-    def get_excluded_formats(self, resource, context):
-        return self.excluded_formats
-
-
-    def get_excluded_paths(self, resource, context):
-        return self.excluded_paths
-
-
-    def get_excluded_container_paths(self, resource, context):
-        return self.excluded_container_paths
-
-
-    def get_max_items_number(self, resource, context):
-        return self.max_items_number
-
-
-    def get_if_modified_since_query(self, resource, context,
-                                    if_modified_since):
-        if not if_modified_since:
-            return []
-        return AndQuery(RangeQuery('pub_datetime', if_modified_since, None),
-                        NotQuery(PhraseQuery('pub_datetime',
-                                             if_modified_since)))
-
-
-    def get_items(self, resource, context, if_modified_since=None):
-        # Base query (workflow aware, image, state ...)
-        query = self.get_base_query(resource, context)
-
-        # Allowed formats
-        formats = self.get_allowed_formats(resource, context)
-        if formats:
-            if len(formats) > 1:
-                query2 = OrQuery(*[ PhraseQuery('format', format)
-                                    for format in formats ])
-            else:
-                query2 = PhraseQuery('format', formats[0])
-            query.append(query2)
-
-        # Excluded formats
-        excluded_formats = self.get_excluded_formats(resource, context)
-        if excluded_formats:
-            if len(excluded_formats) > 1:
-                query2 = OrQuery(*[ PhraseQuery('format', format)
-                                    for format in excluded_formats ])
-            else:
-                query2 = PhraseQuery('format', excluded_formats[0])
-            query.append(NotQuery(query2))
-
-        # Excluded paths
-        excluded_paths = self.get_excluded_paths(resource, context)
-        if excluded_paths:
-            if len(excluded_paths) > 1:
-                query2 = OrQuery(*[ PhraseQuery('abspath', str(path))
-                                    for path in excluded_paths ])
-            else:
-                query2 = PhraseQuery('abspath', str(excluded_paths[0]))
-            query.append(NotQuery(query2))
-
-        # Excluded container paths
-        excluded_cpaths = self.get_excluded_container_paths(resource, context)
-        if excluded_cpaths:
-            if len(excluded_cpaths) > 1:
-                query2 = OrQuery(*[ get_base_path_query(str(path))
-                                    for path in excluded_cpaths ])
-            else:
-                query2 = get_base_path_query(str(excluded_cpaths[0]))
-            query.append(NotQuery(query2))
-
-        # An If-Modified-Since ?
-        query2 = self.get_if_modified_since_query(resource, context,
-                                                  if_modified_since)
-        if query2:
-            query.append(query2)
-
-        query = AndQuery(*query)
-        return resource.get_root().search(query)
-
-
-    def _sort_and_batch(self, resource, context, results):
-        size = self.get_max_items_number(resource, context)
-        items = results.get_documents(sort_by='pub_datetime',
-                                      reverse=True, size=size)
-        return items
-
-
-    def sort_and_batch(self, resource, context, results):
-        items = self._sort_and_batch(resource, context, results)
-
-        # Access Control (FIXME this should be done before batch)
-        user = context.user
-        root = context.root
-        allowed_items = []
-        for item in items:
-            abspath = item.abspath
-            resource = root.get_resource(abspath)
-            ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource):
-                allowed_items.append((item, resource))
-
-        return allowed_items
-
-
-    def get_mtime(self, resource):
-        context = get_context()
-        items = self.get_items(resource, context)
-        items = self.sort_and_batch(resource, context, items)
-        # FIXME If there is no modifications ?
-        if not items:
-            return
-        last_brain = items[0][0]
-        dow = last_brain.pub_datetime
-        # date -> datetime
-        return datetime(dow.year, dow.month, dow.day)
-
-
-    def get_item_value(self, resource, context, item, column, site_root):
-        brain, item_resource = item
-        if column in ('link', 'guid'):
-            value = context.uri.resolve(context.get_link(item_resource))
-            return str(value)
-        elif column == 'pubDate':
-            return brain.pub_datetime
-        elif column == 'title':
-            return item_resource.get_title()
-        elif column == 'description':
-            if isinstance(item_resource, WebPage):
-                data = item_resource.get_html_data()
-                if data is None:
-                    # Skip empty content
-                    return ''
-                # Set the prefix
-                prefix = site_root.get_pathto(item_resource)
-                data = set_prefix_with_hostname(data, '%s/' % prefix,
-                                                uri=context.uri)
-                data = stream_to_str_as_xhtml(data)
-                return data.decode('utf-8')
-            else:
-                return item_resource.get_property('description')
-
-
-    def GET(self, resource, context):
-        language = context.get_query_value('language')
-        if language is None:
-            language = 'en'
-            # XXX migration resource.get_content_language(context)
-        if_modified_since = context.get_header('if-modified-since')
-        items = self.get_items(resource, context, if_modified_since)
-        items = self.sort_and_batch(resource, context, items)
-
-        # Construction of the RSS flux
-        feed = RSSFile()
-
-        site_root = resource.get_site_root()
-        host = context.uri.authority
-        # The channel
-        channel = feed.channel
-        channel['title'] = site_root.get_property('title')
-        channel['link'] = 'http://%s/?language=%s' % (host, language)
-        channel['description'] = MSG(u'Last News').gettext()
-        channel['language'] = language
-
-        # The new items
-        feed_items = feed.items
-        for item in items:
-            ns = {}
-            for key in ('link', 'guid', 'title', 'pubDate', 'description'):
-                ns[key] = self.get_item_value(resource, context, item, key,
-                                              site_root)
-            feed_items.append(ns)
-
-        # Filename and Content-Type
-        context.set_content_disposition('inline', "last_news.rss")
-        context.set_content_type('application/rss+xml')
-        return feed.to_str()
-
-
-
-############################################################
-# 404
-############################################################
-
-class NotFoundPage_Edit(HTMLEditView):
-
-    schema = {
-        'data': HTMLBody,
-        'title': Unicode,
-        'timestamp': DateTime(readonly=True)}
-
-    widgets = [ timestamp_widget,
-                title_widget,
-                rte_widget ]
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        title = form['title']
-        language = resource.get_content_language(context)
-        resource.set_property('title', title, language=language)
-        new_body = form['data']
-        handler = resource.get_handler(language=language)
-        handler.set_body(new_body)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-        # Publish referenced resources which are not public/pending
-        message2 = get_warn_referenced_message(resource, context, 'public')
-        if message2:
-            # Add custom message
-            context.message = [ context.message, message2 ]
-
-
-
 class AutomaticEditView(DBResource_Edit):
 
     base_schema = {'title': Multilingual,
@@ -1277,15 +708,3 @@ class AutomaticEditView(DBResource_Edit):
             return resource.get_workflow_state()
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
-
-
-    def action(self, resource, context, form):
-        from pprint import pprint
-        pprint(form)
-    # XXX Migration
-    ## Publish referenced resources which are not public/pending
-    #state = form.get('state', 'public')
-    #message2 = get_warn_referenced_message(resource, context, state)
-    #if message2:
-    #    # Add custom message
-    #    context.message = [ context.message, message2 ]

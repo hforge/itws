@@ -34,9 +34,10 @@ from ikaaro.autoform import ImageSelectorWidget, TextWidget
 from ikaaro.utils import get_base_path_query
 
 # Import from itws
+from rss import BaseRSS
 from tags import Tag_View
 from tags_views import TagView_Viewbox
-from views import BaseRSS, ImproveDBResource_AddImage
+from views import ImproveDBResource_AddImage
 from webpage_views import WebPage_Edit
 
 

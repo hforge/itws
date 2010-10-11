@@ -37,9 +37,9 @@ from ikaaro.autoform import DateWidget, TextWidget
 
 # Import from itws
 from datatypes import TimeWithoutSecond
+from rss import BaseRSS
 from utils import is_navigation_mode
 from utils import set_prefix_with_hostname, DualSelectWidget
-from views import BaseRSS
 
 
 class TagsList(Enumerate):

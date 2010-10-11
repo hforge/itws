@@ -15,15 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from types import GeneratorType
-
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
-from itools.stl import stl, set_prefix
-from itools.uri import get_reference, Reference
+from itools.uri import get_reference
 from itools.web import get_context, BaseView, STLView
 from itools.database import PhraseQuery, NotQuery, OrQuery, AndQuery
 from itools.xml import XMLParser
@@ -32,17 +28,17 @@ from itools.xml import XMLParser
 from ikaaro.autoform import ImageSelectorWidget, SelectWidget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.website import NotFoundView as BaseNotFoundView
 
 # Import from itws
 from bar import ContentBar_View, SideBar_View
 from datatypes import NeutralClassSkin
+from rss import BaseRSS
 from section import Section
 from tags import TagsAware
 from utils import set_navigation_mode_as_edition
 from utils import set_navigation_mode_as_navigation
 from views import BaseManageContent
-from views import BaseRSS, ProxyContainerNewInstance
+from views import ProxyContainerNewInstance
 from views import BarAwareBoxAwareNewInstance
 
 
@@ -51,35 +47,6 @@ from views import BarAwareBoxAwareNewInstance
 ############################################################
 # Views
 ############################################################
-class NotFoundPage_View(BaseNotFoundView):
-
-    not_found_template = '404'
-
-    def get_template(self, resource, context):
-        site_root = resource.get_site_root()
-        template = site_root.get_resource(self.not_found_template, soft=True)
-        if template and not template.handler.is_empty():
-            # When 404 occurs context.resource is the last valid resource
-            # in the context.path. We need to compute prefix from context.path
-            # instead of context.resource
-            path = site_root.get_abspath().resolve2('.%s' % context.path)
-            prefix = path.get_pathto(template.get_abspath())
-            return set_prefix(template.handler.events, '%s/' % prefix)
-        # default
-        return BaseNotFoundView.get_template(self, resource, context)
-
-
-    def GET(self, resource, context):
-        # Get the namespace
-        namespace = self.get_namespace(resource, context)
-        if isinstance(namespace, Reference):
-            return namespace
-
-        # STL
-        template = self.get_template(resource, context)
-        if isinstance(template, (GeneratorType, XMLParser)):
-            return stl(events=template, namespace=namespace)
-        return stl(template, namespace)
 
 
 

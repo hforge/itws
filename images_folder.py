@@ -24,7 +24,6 @@ from ikaaro.registry import register_resource_class
 
 # Import from itws
 from itws.images_folder_views import ImagesFolder_ManageView
-from itws.views import BaseManage_Rename
 
 
 
@@ -35,7 +34,6 @@ class ImagesFolder(Folder):
     class_views = ['manage_view', 'backlinks', 'commit_log']
 
     manage_view = ImagesFolder_ManageView()
-    rename = BaseManage_Rename()
 
 
     def get_document_types(self):

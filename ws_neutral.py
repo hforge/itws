@@ -66,9 +66,9 @@ from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_FOSwitchMode
 from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
-from ws_neutral_views import NotFoundPage_View
 from ws_neutral_views import NeutralWS_RSS
 from ws_neutral_views import WSDataFolder_ManageContent
+from website_errors_pages import NotFoundPage_View
 
 
 

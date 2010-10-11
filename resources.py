@@ -33,12 +33,11 @@ from ikaaro.registry import register_resource_class
 from ikaaro.resource_ import DBResource
 from ikaaro.text import Text, encodings
 from ikaaro.text_views import Text_View
-from ikaaro.webpage import WebPage
 
 # Import from itws
 from utils import XMLTitleWidget
 from views import RobotsTxt_Edit
-from views import FooterMenu_View, NotFoundPage_Edit
+from views import FooterMenu_View
 
 
 ############################################################
@@ -89,12 +88,6 @@ class RobotsTxt(Text):
 ############################################################
 # 404
 ############################################################
-class NotFoundPage(WebPage):
-
-    class_id = '404'
-    class_title = MSG(u'404 page')
-
-    edit = NotFoundPage_Edit()
 
 
 
