@@ -44,7 +44,7 @@ from tags_views import TagsList
 from utils import is_empty, to_box, DualSelectWidget
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import AutomaticEditView
-from news_views import NewsFolder_View
+from news.news_views import NewsFolder_View
 
 
 
@@ -394,7 +394,7 @@ class BoxSectionNews_View(Box_View):
     thumb_width = thumb_height = 96
 
     def _get_news_item_view(self):
-        from news_views import NewsItem_Preview
+        from news.news_views import NewsItem_Preview
         return NewsItem_Preview()
 
 

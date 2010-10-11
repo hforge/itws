@@ -46,7 +46,7 @@ except ImportError:
 
 # Import from itws
 from bar import ContentBarAware, SideBarAware, SideBar_View
-from news import NewsFolder, NewsItem
+from news import NewsItem
 from repository import Repository, SidebarBoxesOrderedTable
 from utils import get_admin_bar, is_navigation_mode
 
