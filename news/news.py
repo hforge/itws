@@ -28,14 +28,13 @@ from itools.gettext import MSG
 from itools.uri import encode_query, get_reference, Path
 from itools.web import get_context
 from itools.database import PhraseQuery, AndQuery, OrQuery
-from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.autoform import stl_namespaces, TextWidget, Widget
+from ikaaro.autoform import TextWidget
 from ikaaro.registry import register_document_type
 from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
@@ -51,16 +50,6 @@ from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView
 from itws.webpage import WebPage
 
-
-
-class InfoWidget(Widget):
-
-    template = list(XMLParser(
-        """${value}""", stl_namespaces))
-
-
-    def get_namespace(self, datatype, value):
-        return {'value': value}
 
 
 

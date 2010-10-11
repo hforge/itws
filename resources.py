@@ -35,9 +35,9 @@ from ikaaro.text import Text, encodings
 from ikaaro.text_views import Text_View
 
 # Import from itws
-from utils import XMLTitleWidget
 from views import RobotsTxt_Edit
 from views import FooterMenu_View
+from widgets import XMLTitleWidget
 
 
 ############################################################

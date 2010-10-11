@@ -18,7 +18,6 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -58,7 +57,7 @@ class GoogleMapWidget(Widget):
 
 
 
-class GPSWidget(GoogleMapWidget):
+class GoogleGPSWidget(GoogleMapWidget):
 
     width = 800
     height = 400

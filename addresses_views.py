@@ -32,8 +32,8 @@ from ikaaro.workflow import get_workflow_preview
 
 # Import from packages
 from datatypes import OpenLayerRender
-from google_map import GoogleMapWidget, GPSWidget as GoogleGPSWidget
-from osm import OpenStreetMapWidget, GPSWidget as OpenStreetMapGPSWidget
+from widgets import GoogleMapWidget, GoogleGPSWidget
+from widgets import OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 
 

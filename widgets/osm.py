@@ -23,8 +23,7 @@ from itools.xml import XMLParser
 from ikaaro.autoform import stl_namespaces
 
 # Import from itws
-from google_map import GoogleMapWidget
-from google_map import GPSWidget as GoogleGPSWidget
+from google_map import GoogleMapWidget, GoogleGPSWidget
 
 
 
@@ -46,7 +45,7 @@ class OpenStreetMapWidget(GoogleMapWidget):
 
 
 
-class GPSWidget(GoogleGPSWidget):
+class OpenStreetMapGPSWidget(GoogleGPSWidget):
 
     template = list(XMLParser(
         """

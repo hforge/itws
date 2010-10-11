@@ -41,10 +41,11 @@ from ikaaro.webpage import WebPage_View
 # Import from itws
 from datatypes import PositiveInteger
 from tags_views import TagsList
-from utils import is_empty, to_box, DualSelectWidget
+from utils import is_empty, to_box
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 from views import AutomaticEditView
 from news.news_views import NewsFolder_View
+from widgets import DualSelectWidget
 
 
 

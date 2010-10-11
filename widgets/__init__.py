@@ -14,13 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from ikaaro
-from ikaaro.autoform import RTEWidget
-
-
-class Advance_RTEWidget(RTEWidget):
-
-    extended_valid_elements = "iframe[src|name|id|class|style|frameborder|width|height]"
-
-    toolbar2 = RTEWidget.toolbar2 + ('|attribs')
-    plugins = RTEWidget.plugins + ('xhtmlxtras')
+from base import Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
+from google_map import GoogleMapWidget, GoogleGPSWidget
+from osm import OpenStreetMapWidget, OpenStreetMapGPSWidget

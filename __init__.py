@@ -37,6 +37,7 @@ import sitemap
 import skin
 import turning_footer
 import webpage
+import widgets
 import ws_neutral
 
 # Special for obsolete

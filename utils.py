@@ -30,7 +30,7 @@ from itools.web import get_context, INFO
 from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces, RTEWidget, SelectWidget, XHTMLBody
+from ikaaro.autoform import stl_namespaces, XHTMLBody
 from ikaaro.workflow import WorkflowAware
 
 
@@ -111,37 +111,6 @@ def resolve_pointer_with_hostname(offset, ref, fix_absolute_path, value):
 
 state_widget = SelectWidget('state', title=MSG(u'State'),
                             has_empty_option=False)
-
-
-class XMLTitleWidget(RTEWidget):
-
-    title = None
-    width = '512px'
-    height = '100px'
-    toolbar1 = ('code,removeformat,|,bold,italic,underline,strikethrough,|'
-                ',undo,redo,|,link,unlink')
-    toolbar2 = None
-    plugins = None
-
-
-
-class DualSelectWidget(SelectWidget):
-
-    css = 'dual-select'
-    template = list(XMLParser("""
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $("#${id}.${css}").multiselect2side({selectedPosition: 'right', moveOptions: false});
-            });
-        </script>
-        <select id="${id}" name="${name}" multiple="${multiple}" size="${size}"
-            class="${css}">
-          <option value="" stl:if="has_empty_option"></option>
-          <option stl:repeat="option options" value="${option/name}"
-            selected="${option/selected}">${option/value}</option>
-        </select>
-        """, stl_namespaces))
-
 
 
 ############################################################
