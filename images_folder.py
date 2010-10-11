@@ -19,11 +19,39 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.file import File
+from ikaaro.file_views import File_NewInstance
 from ikaaro.folder import Folder
+from ikaaro.folder_views import Folder_PreviewContent
+from ikaaro.messages import MSG_NEW_RESOURCE
 from ikaaro.registry import register_resource_class
+from ikaaro.views import CompositeForm
 
-# Import from itws
-from itws.images_folder_views import ImagesFolder_ManageView
+
+class ImagesFolder_FileNewInstance(File_NewInstance):
+
+    def action(self, resource, context, form):
+        File_NewInstance.action(self, resource, context, form)
+        return context.come_back(MSG_NEW_RESOURCE)
+
+
+
+class ImagesFolder_ManageView(CompositeForm):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage view')
+    subviews = [ ImagesFolder_FileNewInstance(),
+                 Folder_PreviewContent() ]
+    context_menus = Folder_PreviewContent.context_menus
+    styles = ['/ui/gallery/style.css']
+
+
+    def _get_form(self, resource, context):
+        for view in self.subviews:
+            method = getattr(view, context.form_action, None)
+            if method is not None:
+                form_method = getattr(view, '_get_form')
+                return form_method(resource, context)
+        return None
 
 
 
