@@ -21,15 +21,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from copy import deepcopy
 from decimal import Decimal
 
 # Import from itools
-from itools.core import freeze, merge_dicts
+from itools.core import freeze
 from itools.database.ro import ROGitDatabase
-from itools.datatypes import Boolean, String, Unicode
+from itools.datatypes import Boolean
 from itools.gettext import MSG
-from itools.uri import get_reference, Path
 from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery
 
@@ -50,7 +48,6 @@ from addresses import AddressesFolder
 from bar import ContentBarAware, SideBarAware
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
 from control_panel import CPEdit404, CPEditRobotsTXT
-from datatypes import MultilingualString, NeutralClassSkin
 from images_folder import ImagesFolder
 from news import NewsFolder
 from OPML import RssFeeds
@@ -61,12 +58,12 @@ from section import Section
 from sitemap import SiteMap
 from slides import SlideShow
 from tags import TagsFolder
+from theme import Theme
 from turning_footer import TurningFooterFolder
-from utils import get_path_and_view
 from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
+from ws_neutral_views import NeutralWS_View
 from ws_neutral_views import NeutralWS_RSS
 from ws_neutral_views import WSDataFolder_ManageContent
 from website_errors_pages import NotFoundPage_View
@@ -77,7 +74,7 @@ from website_errors_pages import NotFoundPage_View
 class WSDataFolder(SideBarAware, ContentBarAware, Folder):
 
     class_id = 'neutral-ws-data'
-    class_version = '20100623'
+    class_version = '20101012'
     class_title = MSG(u'Website data folder')
     class_views = ['manage_view', 'backlinks', 'commit_log']
 
@@ -126,23 +123,13 @@ class WSDataFolder(SideBarAware, ContentBarAware, Folder):
 class NeutralWS(WebSite):
 
     class_id = 'neutral'
-    class_version = '20100629'
+    class_version = '20101012'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'edit', 'control_panel', 'new_resource', 'commit_log']
 
     class_control_panel = (WebSite.class_control_panel +
                            ['edit_tags', 'edit_footer', 'edit_turning_footer',
                             'edit_404', 'edit_robots_txt'])
-
-    class_schema = merge_dicts(WebSite.class_schema,
-                              # Metadata
-                              # XXX Now its on ikaaro
-                               custom_data=String(source='metadata', default=''),
-                               breadcrumb_title=Unicode(source='metadata'),
-                               banner_title=Unicode(source='metadata', default=''),
-                               banner_path=MultilingualString(source='metadata', default=''),
-                               class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
-
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__
                           + ['style', 'menu', 'about-itws',
@@ -153,6 +140,7 @@ class NeutralWS(WebSite):
     #################
     # Configuration
     #################
+    class_theme = Theme
     footers = ('footer',)
     menus = ('menu',)
     newsfolder_class = NewsFolder
@@ -274,7 +262,7 @@ class NeutralWS(WebSite):
 
 
     def get_class_skin(self):
-        return self.get_property('class_skin')
+        return self.get_resource('theme').get_property('class_skin')
 
     class_skin = property(get_class_skin, None, None, '')
 
@@ -354,85 +342,6 @@ class NeutralWS(WebSite):
         # ContentBarItem_Articles_View API
         return WebPage
 
-    ############################################################################
-    # Get links / update links
-    # XXX We have to do it on ikaaro !
-    # TODO Check on favicon
-    ############################################################################
-
-    def get_links(self):
-        links = WebSite.get_links(self)
-
-        base = self.get_canonical_path()
-        available_languages = self.get_property('website_languages')
-
-        for lang in available_languages:
-            path = self.get_property('banner_path', language=lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if not ref.scheme:
-                path, view = get_path_and_view(ref.path)
-                links.append(str(base.resolve2(path)))
-
-        return links
-
-
-    def update_links(self, source, target):
-        WebSite.update_links(self, source, target)
-        # Caution multilingual banner_path
-        base = self.get_canonical_path()
-        resources_new2old = get_context().database.resources_new2old
-        base = str(base)
-        old_base = resources_new2old.get(base, base)
-        old_base = Path(old_base)
-        new_base = Path(base)
-
-        available_languages = self.get_property('website_languages')
-        for lang in available_languages:
-            path = self.get_property('banner_path', language=lang)
-            if not path:
-                continue
-            ref = get_reference(str(path)) # Unicode -> str
-            if ref.scheme:
-                continue
-            path, view = get_path_and_view(ref.path)
-            path = str(old_base.resolve2(path))
-            if path == source:
-                # Hit the old name
-                # Build the new reference with the right path
-                new_ref = deepcopy(ref)
-                new_ref.path = str(new_base.get_pathto(target)) + view
-                self.set_property('banner_path', str(new_ref), language=lang)
-
-        get_context().server.change_resource(self)
-
-
-    def update_relative_links(self, source):
-        WebSite.update_relative_links(self, source)
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-        # Caution multilingual banner_path
-        available_languages = self.get_property('website_languages')
-        for lang in available_languages:
-            path = self.get_property('banner_path', language=lang)
-            if path:
-                ref = get_reference(str(path))
-                if not ref.scheme:
-                    path, view = get_path_and_view(ref.path)
-                    # Calcul the old absolute path
-                    old_abs_path = source.resolve2(path)
-                    # Check if the target path has not been moved
-                    new_abs_path = resources_old2new.get(old_abs_path,
-                                                         old_abs_path)
-                    # Build the new reference with the right path
-                    # Absolute path allow to call get_pathto with the target
-                    new_ref = deepcopy(ref)
-                    new_ref.path = str(target.get_pathto(new_abs_path)) + view
-                    # Update the title link
-                    self.set_property('banner_path', str(new_ref),
-                                      language=lang)
-
 
     ############################################################################
     # ACL
@@ -472,7 +381,6 @@ class NeutralWS(WebSite):
 
     # Base views
     view = NeutralWS_View()
-    edit = NeutralWS_Edit()
     fo_switch_mode = NeutralWS_FOSwitchMode()
     not_found = NotFoundPage_View()
     rss = last_news_rss = NeutralWS_RSS()
@@ -514,6 +422,62 @@ class NeutralWS(WebSite):
             keep_query=True,
             specific_document='%s/;add_box' % contentbar_name,
             title=MSG(u'Add Central Part Box'))
+
+
+    ###########################################
+    # Upgrade to 0.62
+    ###########################################
+    def update_20100702(self):
+        # Add theme
+        theme = self.get_resource('theme', soft=True)
+        class_theme = self.class_theme
+        if theme and isinstance(theme, class_theme) is False:
+            raise RuntimeError, 'A resource named theme already exists'
+
+        # Create theme
+        theme = self.make_resource('theme', class_theme, title={'en': u'Theme'})
+
+
+    def update_20100703(self):
+        # Del old menu
+        theme = self.get_resource('theme')
+        theme.del_resource('menu')
+
+
+    def update_20100704(self):
+        theme = self.get_resource('theme')
+        self.move_resource('menu', 'theme/menu')
+
+        # Import old style
+        css = self.get_resource('style').handler.to_str()
+        self.del_resource('style')
+        style = theme.get_resource('style')
+        style.handler.load_state_from_string(css)
+
+
+    def update_20100705(self):
+        # Logo
+        theme = self.get_resource('theme')
+        theme.set_property('logo', None)
+
+        # Favicon
+        favicon = self.get_resource(self.get_property('favicon'), soft=True)
+        self.del_property('favicon')
+        if favicon:
+            theme.set_property('favicon', self.get_pathto(favicon))
+
+        # Other
+        for key in ['custom_data', 'class_skin']:
+            value = self.get_property(key)
+            if value:
+                theme.set_property(key, value)
+            self.del_property(key)
+        for key in ['breadcrumb_title', 'banner_title', 'banner_path']:
+            for lang in self.get_property('website_languages'):
+                value = self.get_property(key, language=lang)
+                if value:
+                    theme.set_property(key, value, language=lang)
+            self.del_property(key)
 
 
 

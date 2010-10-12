@@ -32,6 +32,7 @@ import bar
 import OPML
 import sitemap
 import skin
+import theme
 import turning_footer
 import webpage
 import widgets
@@ -50,4 +51,4 @@ register_domain('itws', get_abspath('locale'))
 
 # Silent pyflakes
 Root, skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
-widgets
+widgets, theme
