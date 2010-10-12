@@ -29,12 +29,13 @@ from ikaaro.menu import Target
 from ikaaro.webpage import WebPage_View
 from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
 from ikaaro.autoform import rte_widget, SelectWidget
+from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from base_views import Box_View
 from news import SidebarBox_Preview
 from itws.utils import get_path_and_view, is_empty
-from itws.views import AutomaticEditView, EasyNewInstance
+from itws.views import EasyNewInstance
 from itws.webpage import WebPage
 
 
@@ -82,7 +83,25 @@ class HTMLContent_View(Box_View, WebPage_View):
             'content': content}
 
 
-class HTMLContent_Edit(AutomaticEditView):
+class HTMLContent_Edit(DBResource_Edit):
+
+
+    def _get_schema(self, resource, context):
+        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+                           title_link=String,
+                           title_link_target=Target,
+                           data=HTMLBody,
+                           display_title=Boolean)
+
+
+    def _get_widgets(self, resource, context):
+        widgets = DBResource_Edit._get_widgets(self, resource, context)
+        return widgets + [
+            CheckboxWidget('display_title',
+                            title=MSG(u'Display on webpage view')),
+            PathSelectorWidget('title_link', title=MSG(u'Title link')),
+            SelectWidget('title_link_target', title=MSG(u'Title link target')),
+            rte_widget ]
 
 
     def get_value(self, resource, context, name, datatype):
@@ -91,8 +110,8 @@ class HTMLContent_Edit(AutomaticEditView):
             #language = resource.get_content_language(context)
             language = 'en'
             return resource.get_html_data(language=language)
-        return AutomaticEditView.get_value(self, resource, context, name,
-                                           datatype)
+        return DBResource_Edit.get_value(self, resource, context, name,
+                                         datatype)
 
 
     def set_value(self, resource, context, name, form):
@@ -103,8 +122,9 @@ class HTMLContent_Edit(AutomaticEditView):
             language = 'en'
             handler = resource.get_handler(language=language)
             handler.set_body(new_body)
-        return AutomaticEditView.set_value(self, resource, context, name,
-                                           form)
+            return
+        return DBResource_Edit.set_value(self, resource, context, name,
+                                         form)
 
 
 
@@ -126,20 +146,6 @@ class HTMLContent(WebPage):
     allow_instanciation = True
     is_content = True
     is_side = True
-
-    # Configuration of box for EditView
-    edit_schema = {'title_link': String,
-                   'title_link_target': Target,
-                   'data': HTMLBody(ignore=True),
-                   'display_title': Boolean}
-
-    edit_widgets = [
-        CheckboxWidget('display_title',
-                        title=MSG(u'Display on webpage view')),
-        PathSelectorWidget('title_link', title=MSG(u'Title link')),
-        SelectWidget('title_link_target', title=MSG(u'Title link target')),
-        rte_widget
-        ]
 
 
     ###########################
