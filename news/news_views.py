@@ -97,7 +97,9 @@ class NewsItem_Preview(STLView):
 
 
     def get_namespace(self, resource, context):
-        language = resource.get_content_language(context)
+        language = 'en'
+        # XXX Migration
+        #resource.get_content_language(context)
         namespace = {}
 
         here_abspath = context.resource.get_abspath()

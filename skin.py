@@ -24,6 +24,7 @@ from itools.database.ro import ROGitDatabase
 from itools.datatypes import Unicode
 from itools.gettext import get_domain, MSG
 from itools.i18n import get_language_name
+from itools.uri import resolve_uri
 from itools.stl import stl, set_prefix
 from itools.xml import XMLParser
 
@@ -459,15 +460,16 @@ class NeutralSkin(FoBoFooterAwareSkin):
 
         here = context.resource
         site_root = context.site_root
+        theme = site_root.get_resource('theme')
 
         # banner namespace
         banner_ns = {}
-        banner_ns['title'] = site_root.get_property('banner_title')
+        banner_ns['title'] = theme.get_property('banner_title')
         banner_ns['description'] = site_root.get_property('description')
         banner_path = None
-        path = site_root.get_property('banner_path')
+        path = theme.get_property('banner_path')
         if path:
-            banner = site_root.get_resource(path, soft=True)
+            banner = theme.get_resource(path, soft=True)
             if banner:
                 ac = banner.get_access_control()
                 if ac.is_allowed_to_view(context.user, banner):
@@ -500,7 +502,7 @@ class NeutralSkin(FoBoFooterAwareSkin):
             namespace['resource_class'] = None
 
         # Add custom data inside the template
-        custom_data = site_root.get_property('custom_data') or ''
+        custom_data = theme.get_property('custom_data') or ''
         namespace['custom_data'] = XMLParser(custom_data)
 
         # RSS Feeds title

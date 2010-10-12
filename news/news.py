@@ -277,7 +277,9 @@ class NewsFolder(SideBarAware, Folder):
                  tags=[], brain_only=False):
         query = self.get_news_query_terms(state, tags)
         if language is None:
-            language = self.get_content_language(context)
+            # XXX Migration
+            language = 'en'
+            #language = self.get_content_language(context)
 
         # size
         size = 0
@@ -311,5 +313,4 @@ register_resource_class(NewsFolder)
 register_document_type(NewsItem, TagsAware.class_id)
 
 # Register skin
-path = get_abspath('ui/news')
-register_skin('news', path)
+register_skin('news', get_abspath('../ui/news'))

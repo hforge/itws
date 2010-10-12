@@ -48,7 +48,7 @@ class TurningFooterFile(OrderedTableFile):
 
     record_properties = {'data': Unicode(mandatory=True,
                                          # Multilingual
-                                         multiple=True)}
+                                         multilingual=True)}
 
 
 

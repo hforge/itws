@@ -40,13 +40,12 @@ from ikaaro.webpage import ResourceWithHTML
 # Import from itws
 from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsFolder_BrowseContent
-from itws.resources import MultilingualCatalogTitleAware
 from itws.views import EasyNewInstance
 from itws.views import AutomaticEditView
 
 
 
-class Tag(File, MultilingualCatalogTitleAware):
+class Tag(File):
 
     class_id = 'tag'
     class_version = '20100618'
@@ -67,10 +66,6 @@ class Tag(File, MultilingualCatalogTitleAware):
     edit_show_meta = True
     edit_schema = {}
     edit_widgets = []
-
-    def get_catalog_values(self):
-        return merge_dicts(File.get_catalog_values(self),
-                MultilingualCatalogTitleAware.get_catalog_values(self))
 
 
     def get_title(self, language=None, fallback=True):
@@ -174,11 +169,11 @@ class TagsAware(object):
     class_id = 'tags-aware'
 
     class_schema = {# Metadata
-                    'tags': Tokens(source='metadata', is_indexed=True, is_stored=True), #FIXME Replace Tokens by TagsList
-                    'pub_datetime': DateTime(source='metadata', is_indexed=True, is_stored=True),
+                    'tags': Tokens(source='metadata', indexed=True, stored=True), #FIXME Replace Tokens by TagsList
+                    'pub_datetime': DateTime(source='metadata', indexed=True, stored=True),
                     # Catalog
-                    'is_tagsaware': Boolean(is_indexed=True),
-                    'preview_content': Unicode(is_stored=True, is_indexed=True),
+                    'is_tagsaware': Boolean(indexed=True),
+                    'preview_content': Unicode(stored=True, indexed=True),
                     }
 
 

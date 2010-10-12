@@ -73,7 +73,7 @@ class BoxSectionNews_View(Box_View):
     thumb_width = thumb_height = 96
 
     def _get_news_item_view(self):
-        from news.news.news_views import NewsItem_Preview
+        from itws.news.news_views import NewsItem_Preview
         return NewsItem_Preview()
 
 
@@ -167,7 +167,7 @@ class BoxSectionNews_Edit(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         schema = merge_dicts(
-            DBResource_Edit.get_schema(self, resource, context),
+            DBResource_Edit._get_schema(self, resource, context),
             count=PositiveInteger(default=3))
         # News folder
         newsfolder = self._get_news_folder(resource, context)
@@ -189,7 +189,7 @@ class BoxSectionNews_Edit(DBResource_Edit):
 
     def get_widgets(self, resource, context):
         # base widgets
-        widgets = AutomaticEditView.get_widgets(self, resource, context)[:]
+        widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
 
         # News folder
         newsfolder = self._get_news_folder(resource, context)
@@ -215,8 +215,8 @@ class BoxSectionNews(Box):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(Box.class_schema,
-                               count=PositiveInteger(default=3),
-                               tags=TagsList)
+                               count=PositiveInteger(source='metadata', default=3),
+                               tags=TagsList(source='metadata'))
 
     # Configuration
     allow_instanciation = True

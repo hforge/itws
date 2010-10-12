@@ -48,43 +48,6 @@ from views import BarAwareBoxAwareNewInstance
 # Views
 ############################################################
 
-
-
-class NeutralWS_Edit(DBResource_Edit):
-
-    def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           breadcrumb_title=Multilingual,
-                           banner_title=Multilingual,
-                           banner_path=Multilingual,
-                           class_skin=NeutralClassSkin(mandatory=True))
-
-
-    def _get_widgets(self, resource, context):
-        widgets = DBResource_Edit._get_widgets(self, resource, context)[:]
-        # Breadcrumb title
-        widgets.append(
-            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')))
-        # banner_title
-        widgets.append(
-            TextWidget('banner_title', title=MSG(u'Banner title'),
-                       tip=MSG(u'(Use as banner if there is no image banner)')))
-        # banner_path
-        widgets.append(
-            ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
-                                width=640))
-        # class_skin
-        widgets.append(
-            SelectWidget('class_skin', title=MSG(u'Skin'),
-                         has_empty_option=False))
-
-        # ok
-        return widgets
-
-
-
-
-
 class NeutralWS_RSS(BaseRSS):
 
     excluded_formats = freeze(['rssfeeds', 'text/css'])

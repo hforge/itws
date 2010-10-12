@@ -14,7 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from itools.datatypes import String
+
 # Import from ikaaro
+from ikaaro.file import Image
 from ikaaro.folder import Folder
 from ikaaro.registry import register_resource_class
 from ikaaro.tracker import Tracker, Issue

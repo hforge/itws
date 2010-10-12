@@ -130,6 +130,11 @@ class TwitterSideBar(Box, ResourceWithCache):
     class_icon48 = 'bar_items/icons/48x48/twitter.png'
     # Free twitter icon
     #http://www.webdesignerdepot.com/2009/07/50-free-and-exclusive-twitter-icons/
+    class_schema = merge_dicts(Box.class_schema,
+             user_id=TwitterID(source='metadata'),
+             user_name=String(source='metadata'),
+             limit=Integer(source='metadata', default=5),
+             force_update=Boolean)
 
     # Item configuration
 
@@ -146,8 +151,6 @@ class TwitterSideBar(Box, ResourceWithCache):
                     CheckboxWidget('force_update',
                                     title=MSG(u'Force cache update')),
                    ]
-
-    class_schema = merge_dicts(Box.edit_schema, edit_schema)
 
     allow_instanciation = True
 
@@ -281,6 +284,10 @@ class IdenticaSideBar(TwitterSideBar):
     class_description = MSG(u'Identi.ca sidebar feed')
     class_icon16 = 'bar_items/icons/16x16/identica.png'
     class_icon48 = 'bar_items/icons/48x48/identica.png'
+    class_schema = merge_dicts(Box.class_schema,
+             user_name=IndenticaName(source='metadata'),
+             limit=Integer(source='metadata', mandatory=True, default=5, size=3),
+             force_update=Boolean)
     # identica icons source: http://status.net/
 
     # Item configuration

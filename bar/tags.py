@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 
@@ -93,6 +94,12 @@ class BoxTags(Box):
     class_description = MSG(u'Display a tag cloud')
     class_icon16 = 'bar_items/icons/16x16/box_tags.png'
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
+    class_schema = merge_dicts(Box.class_schema,
+                      formats=TagsAwareClassEnumerate(source='metadata', multiple=True),
+                      count=PositiveInteger(source='metadata', default=0),
+                      show_number=Boolean(source='metadata'),
+                      random=Boolean(source='metadata'),
+                      display_title=Boolean(source='metadata'))
 
     # Configuration
     allow_instanciation=  True

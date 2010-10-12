@@ -160,6 +160,8 @@ class MultilingualCatalogTitleAware(object):
     # register_field('m_title', Unicode(is_stored=True, is_indexed=True))
 
     def get_catalog_values(self):
+        # XXX migration
+        return {}
         # Get the languages
         site_root = self.get_site_root()
         languages = site_root.get_property('website_languages')

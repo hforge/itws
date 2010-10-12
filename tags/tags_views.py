@@ -66,7 +66,7 @@ class TagsList(Enumerate):
         tags_folder = cls.site_root.get_resource('tags')
         context = get_context()
         options = [ {'name': brain.name,
-                     'value': brain.m_title or brain.name}
+                     'value': brain.title or brain.name}
                     for brain in tags_folder.get_tag_brains(context) ]
 
         return options
@@ -264,7 +264,7 @@ class TagsFolder_TagCloud(STLView):
             nb_items = len(sub_results)
             if nb_items:
                 d = {}
-                title = brain.m_title or brain.name
+                title = brain.title or brain.name
                 if self.show_number:
                     title = u'%s (%s)' % (title, nb_items)
                 d['title'] = title

@@ -52,7 +52,7 @@ class BoxSectionChildrenTree_View(Box_View):
     template = '/ui/bar_items/SectionChildrenTree_view.xml'
 
     def GET(self, resource, context):
-        from section import Section
+        from itws.section import Section
 
         section = context._bar_aware
         if isinstance(section, Section) is False:
@@ -392,6 +392,8 @@ class BoxSectionChildrenToc(Box):
     class_title = MSG(u'Subsections and Webpages TOC')
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages')
+    class_schema = merge_dicts(Box.class_schema,
+                               hide_if_only_one_item=Boolean(default=True))
 
     # Box comfiguration
     edit_schema = hide_single_schema
@@ -409,6 +411,8 @@ class BoxNewsSiblingsToc(Box):
     class_title = MSG(u'News TOC')
     class_description = MSG(u'Display the list of news.')
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
+    class_schema = merge_dicts(Box.class_schema,
+                               count=PositiveInteger(source='metadata', default=30))
 
     # Box configuration
     allow_instanciation = False
@@ -434,6 +438,8 @@ class ContentBoxSectionChildrenToc(Box):
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages in the central part')
     class_views = ['edit_state', 'backlinks']
+    class_schema = merge_dicts(Box.class_schema,
+                               hide_if_only_one_item=Boolean(default=True))
 
     # Box configuration
     edit_schema = hide_single_schema
@@ -444,4 +450,3 @@ class ContentBoxSectionChildrenToc(Box):
 
     # Views
     view = ContentBoxSectionChildrenToc_View()
-
