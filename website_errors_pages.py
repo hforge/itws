@@ -24,6 +24,7 @@ from itools.stl import stl, set_prefix
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro.registry import register_resource_class
 from ikaaro.webpage import WebPage
 from ikaaro.website import NotFoundView as BaseNotFoundView
 
@@ -64,3 +65,5 @@ class NotFoundPage(WebPage):
 
     class_id = '404'
     class_title = MSG(u'404 page')
+
+register_resource_class(NotFoundPage, format='application/xhtml+xml')

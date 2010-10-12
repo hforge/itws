@@ -216,5 +216,4 @@ class ResourceWithCache(DBResource):
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
-register_resource_class(NotFoundPage, format='application/xhtml+xml')
 register_resource_class(RobotsTxt)

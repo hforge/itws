@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.core import get_abspath
-from itoools.datatypes import String
+from itools.datatypes import String
 from itools.handlers import ro_database
 from itools.relaxng import RelaxNGFile
 from itools.xml import XMLNamespace, register_namespace

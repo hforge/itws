@@ -31,7 +31,7 @@ from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
 from ikaaro.autoform import rte_widget, SelectWidget
 
 # Import from itws
-from base_view import Box_View
+from base_views import Box_View
 from news import SidebarBox_Preview
 from itws.utils import get_path_and_view, is_empty
 from itws.views import AutomaticEditView, EasyNewInstance
@@ -125,6 +125,7 @@ class HTMLContent(WebPage):
     # Configuration
     allow_instanciation = True
     is_content = True
+    is_side = True
 
     # Configuration of box for EditView
     edit_schema = {'title_link': String,

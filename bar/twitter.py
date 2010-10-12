@@ -38,8 +38,8 @@ from ikaaro.autoform import TextWidget, CheckboxWidget
 from ikaaro.registry import register_resource_class
 
 # Import from itws
-from itws.repository import Box
-from itws.repository_views import Box_View
+from base import Box
+from base_views import Box_View
 from itws.resources import ResourceWithCache
 from itws.views import AutomaticEditView
 

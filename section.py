@@ -34,8 +34,8 @@ from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
 
 # Import from itws
-from bar import SideBarAware, ContentBarAware
-from repository import Repository, ContentBoxSectionChildrenToc
+from bar import SideBarAware, ContentBarAware, ContentBoxSectionChildrenToc
+from bar.repository import Repository
 from section_views import Section_ManageContent
 from section_views import Section_Edit, Section_View
 from section_views import Section_AddContent

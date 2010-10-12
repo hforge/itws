@@ -35,8 +35,8 @@ from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from itws.repository import BoxAware
-from itws.repository_views import Box_View
+from base import BoxAware
+from base_views import Box_View
 from itws.views import AdvanceGoToSpecificDocument
 
 

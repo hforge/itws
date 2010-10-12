@@ -24,7 +24,6 @@ from itools.xml import XMLParser
 from ikaaro.autoform import stl_namespaces
 
 # Import from itws
-from bar_aware import ContentBarAware, SideBarAware
 from itws.utils import get_admin_bar
 
 
@@ -230,11 +229,13 @@ class SideBar_View(Bar_View):
 
     @property
     def container_cls(self):
+        from bar_aware import SideBarAware
         return SideBarAware
 
 
     def get_manage_buttons(self, resource, context):
-        from ws_neutral import NeutralWS
+        from bar_aware import SideBarAware
+        from itws.ws_neutral import NeutralWS
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)
         if not allowed:
@@ -273,6 +274,7 @@ class ContentBar_View(Bar_View):
 
     @property
     def container_cls(self):
+        from bar_aware import ContentBarAware
         return ContentBarAware
 
 

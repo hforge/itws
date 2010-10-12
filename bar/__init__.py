@@ -17,15 +17,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import sidebars
-from bar_aware import BoxSectionNews
+from base_views import SideBar_View
+from bar_aware import ContentBarAware, SideBarAware
 from diaporama import Diaporama
 from html import HTMLContent
 from menu import MenuSideBar
-from news import ContentBoxSectionNews, BoxNewsSiblingsToc
+from news import BoxSectionNews, ContentBoxSectionNews
 from registry import register_box
 from repository import Repository
 from tags import BoxTags
-from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc
+from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc, BoxNewsSiblingsToc
 from twitter import IdenticaSideBar, TwitterSideBar
 
 
@@ -42,4 +43,4 @@ register_box(MenuSideBar)
 register_box(TwitterSideBar)
 
 # Silent Pyflakes
-Repository,
+ContentBarAware, Repository, SideBarAware

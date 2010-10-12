@@ -31,7 +31,7 @@ from ikaaro.autoform import stl_namespaces, SelectWidget
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 
 # Import from itws
-from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
+from itws.views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
 
 
 

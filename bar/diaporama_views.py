@@ -33,8 +33,8 @@ from ikaaro.table_views import Table_View
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from itws.repository_views import Box_View
-from itws.sidebar.menu import MenuSideBarTable_AddRecord
+from base_views import Box_View
+from menu import MenuSideBarTable_AddRecord
 
 
 

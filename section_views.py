@@ -33,7 +33,7 @@ from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
-from bar import ContentBar_View
+from bar.base_views import ContentBar_View
 from views import BarAwareBoxAwareNewInstance
 from views import BaseManageContent
 from views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered

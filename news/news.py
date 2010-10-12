@@ -40,11 +40,11 @@ from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
 
 # Import from itws
+from news_views import NewsFolder_View, NewsFolder_RSS
+from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
+from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
 from itws.bar import SideBarAware
 from itws.datatypes import PositiveIntegerNotNull
-from itws.news_views import NewsFolder_View, NewsFolder_RSS
-from itws.news_views import NewsItem_AddImage, NewsFolder_BrowseContent
-from itws.news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
 from itws.tags import TagsAware
 from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView

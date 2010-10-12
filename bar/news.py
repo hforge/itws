@@ -28,7 +28,7 @@ from ikaaro.webpage import WebPage_View
 # Import from itws
 from base import Box
 from base_views import Box_View, Box_Preview
-from toc import ContentBoxSectionNews_View
+#from toc import ContentBoxSectionNews_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsList
 from itws.views import AutomaticEditView
@@ -73,7 +73,7 @@ class BoxSectionNews_View(Box_View):
     thumb_width = thumb_height = 96
 
     def _get_news_item_view(self):
-        from news.news_views import NewsItem_Preview
+        from news.news.news_views import NewsItem_Preview
         return NewsItem_Preview()
 
 
@@ -239,7 +239,8 @@ class ContentBoxSectionNews(BoxSectionNews):
     is_content = True
     is_side = False
 
-    view = ContentBoxSectionNews_View()
+    # XXX migration
+    #view = ContentBoxSectionNews_View()
 
 
 

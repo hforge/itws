@@ -30,7 +30,7 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
-from bar import ContentBar_View, SideBar_View
+from bar.base_views import ContentBar_View, SideBar_View
 from datatypes import NeutralClassSkin
 from rss import BaseRSS
 from section import Section

@@ -24,7 +24,7 @@ from ikaaro.autoform import CheckboxWidget, RadioWidget, TextWidget
 # Import from itws
 from base import Box
 from base_views import Box_Preview, Box_View
-from datatypes import PositiveInteger, TagsAwareClassEnumerate
+from itws.datatypes import PositiveInteger, TagsAwareClassEnumerate
 
 
 class BoxTags_Preview(Box_Preview):

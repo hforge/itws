@@ -28,8 +28,8 @@ def register_box(resource_class):
     is_side = resource_class.is_side
     allow_instanciation = resource_class.allow_instanciation
     if is_content is False and is_side is False:
-        msg = u'Box should be at least content box or side box'
-        raise ValueError, msg
+        msg = u'Box %s should be at least content box or side box'
+        raise ValueError, msg % resource_class.class_id
 
     boxes_registry[resource_class] = {'instanciation': allow_instanciation,
                                       'content': is_content, 'side': is_side}

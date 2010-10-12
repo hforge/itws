@@ -30,7 +30,7 @@ from itools.web import get_context, INFO
 from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces, XHTMLBody
+from ikaaro.autoform import stl_namespaces, SelectWidget, XHTMLBody
 from ikaaro.workflow import WorkflowAware
 
 

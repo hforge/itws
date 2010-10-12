@@ -36,11 +36,11 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import DateWidget, TextWidget
 
 # Import from itws
-from datatypes import TimeWithoutSecond
-from rss import BaseRSS
-from utils import is_navigation_mode
-from utils import set_prefix_with_hostname
-from widgets import DualSelectWidget
+from itws.datatypes import TimeWithoutSecond
+from itws.rss import BaseRSS
+from itws.utils import is_navigation_mode
+from itws.utils import set_prefix_with_hostname
+from itws.widgets import DualSelectWidget
 
 
 class TagsList(Enumerate):

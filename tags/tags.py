@@ -38,11 +38,11 @@ from ikaaro.utils import reduce_string
 from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
-from resources import MultilingualCatalogTitleAware
 from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsFolder_BrowseContent
-from views import EasyNewInstance
-from views import AutomaticEditView
+from itws.resources import MultilingualCatalogTitleAware
+from itws.views import EasyNewInstance
+from itws.views import AutomaticEditView
 
 
 

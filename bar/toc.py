@@ -31,8 +31,8 @@ from ikaaro.autoform import RadioWidget, TextWidget
 # Import from itws
 from base import Box
 from base_views import Box_View
-from datatypes import PositiveInteger
 from news import BoxSectionNews_View, BoxNewsSiblingsToc_Preview
+from itws.datatypes import PositiveInteger
 from itws.news.news_views import NewsFolder_View
 
 

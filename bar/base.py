@@ -35,6 +35,10 @@ class BoxAware(object):
     edit_schema = {}
     edit_widgets = []
 
+    is_side = True
+    is_content = False
+    allow_instanciation = True
+
 
 
 class Box(BoxAware, File):
@@ -48,3 +52,7 @@ class Box(BoxAware, File):
 
     download = None
     externaledit = None
+
+    is_side = True
+    is_content = False
+    allow_instanciation = True

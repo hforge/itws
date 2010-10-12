@@ -54,8 +54,9 @@ from datatypes import MultilingualString, NeutralClassSkin
 from images_folder import ImagesFolder
 from news import NewsFolder
 from OPML import RssFeeds
-from repository import Repository
-from resources import FooterFolder, RobotsTxt, NotFoundPage
+from bar.repository import Repository
+from resources import FooterFolder, RobotsTxt
+from website_errors_pages import NotFoundPage
 from section import Section
 from sitemap import SiteMap
 from slides import SlideShow

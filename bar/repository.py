@@ -247,5 +247,4 @@ class Repository(Folder):
 
 
 # Register skin
-path = get_abspath('ui/bar_items')
-register_skin('bar_items', path)
+register_skin('bar_items', get_abspath('../ui/bar_items'))

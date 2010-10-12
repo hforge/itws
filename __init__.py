@@ -28,8 +28,8 @@ from itools.gettext import register_domain
 # Import from itws
 from root import Root
 import about
+import bar
 import OPML
-import sidebar
 import sitemap
 import skin
 import turning_footer
@@ -49,5 +49,5 @@ __version__ = get_version()
 register_domain('itws', get_abspath('locale'))
 
 # Silent pyflakes
-Root, skin, about, OPML, sidebar, sitemap, turning_footer, ws_neutral, webpage,
+Root, skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
 widgets

@@ -31,13 +31,12 @@ from itools.database import PhraseQuery, AndQuery, NotQuery, RangeQuery
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import ImageSelectorWidget, TextWidget
+from ikaaro.popup import DBResource_AddImage
 from ikaaro.utils import get_base_path_query
 
 # Import from itws
 from itws.rss import BaseRSS
-from itws.tags import Tag_View
-from itws.tags_views import TagView_Viewbox
-from itws.views import ImproveDBResource_AddImage
+from itws.tags.tags_views import Tag_View, TagView_Viewbox
 from itws.webpage_views import WebPage_Edit
 
 
@@ -149,7 +148,7 @@ class NewsItem_View(STLView):
 
 
 
-class NewsItem_AddImage(ImproveDBResource_AddImage):
+class NewsItem_AddImage(DBResource_AddImage):
 
     def get_start(self, resource):
         return resource.get_resource('../images')
