@@ -44,7 +44,6 @@ from ikaaro.future.order import ResourcesOrderedTable_Unordered
 from ikaaro.future.order import ResourcesOrderedTable_View
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.registry import get_resource_class
-from ikaaro.text import CSS
 from ikaaro.text_views import Text_Edit
 from ikaaro.user import User
 from ikaaro.views_new import NewInstance

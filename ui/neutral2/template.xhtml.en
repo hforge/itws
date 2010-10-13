@@ -19,8 +19,7 @@
   <link rel="alternate" stl:repeat="feed rss_feeds" href="${feed/path}"
         title="${feed/title}" type="application/rss+xml" />
   <!-- Icon -->
-  <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}"
-        type="${favicon_type}" />
+  <link rel="shortcut icon" href="${favicon_href}" type="${favicon_type}" />
 </head>
 <body class="${body_css}">
   <div class="${page_css_class}">
@@ -55,11 +54,6 @@
               </div>
             </div>
           </div>
-          <div stl:if="manage_buttons" class="manage">
-            <stl:block stl:repeat="button manage_buttons">
-              <a href="${button/path}">${button/label}</a>
-              <stl:inline stl:if="not repeat/button/end">,</stl:inline>
-            </stl:block>
             ${fo_edit_toolbar}
           </div>
           <div class="bigbox">

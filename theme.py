@@ -69,4 +69,5 @@ class Theme(BaseTheme):
 
 
 
+# Register
 register_resource_class(Theme)

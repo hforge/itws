@@ -12,7 +12,7 @@
         <stl:block stl:repeat="item breadcrumb">
           <stl:block stl:if="not repeat/item/end">
             <a stl:omit-tag="not item/url"
-              href="${item/url}" title="${item/name}" class="XXX Migration {item/class}">${item/short_name}</a>
+              href="${item/url}" title="${item/name}" class="${item/class}">${item/short_name}</a>
             <span>${bc_separator}</span>
           </stl:block>
           <span stl:if="repeat/item/end" title="${item/name}">${item/short_name}</span>

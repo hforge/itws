@@ -1,0 +1,24 @@
+#header {
+/* background: #a11; */
+
+/* Image source: http://www.flickr.com/photos/joebeone/2240389708/ */
+/* Image license: http://creativecommons.org/licenses/by/2.0/deed.en */
+background: url("../images/background-ties/;download") no-repeat scroll 0 0 transparent;
+}
+
+#header .login,
+#header .header-toolbar {
+background: #822;
+}
+
+#header .title a {
+color: #822;
+}
+
+#nav ul li a {
+background: #822;
+}
+
+#nav ul li.in-path a {
+background: #ecc;
+}

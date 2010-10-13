@@ -19,8 +19,7 @@
   <link rel="alternate" stl:repeat="feed rss_feeds" href="${feed/path}"
         title="${feed/title}" type="application/rss+xml" />
   <!-- Icon -->
-  <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}"
-        type="${favicon_type}" />
+  <link rel="shortcut icon" href="${favicon_href}" type="${favicon_type}" />
 </head>
 <body class="${body_css} ${lang}">
   <div class="${page_css_class}">
