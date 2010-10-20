@@ -16,29 +16,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze, merge_dicts
+from itools.core import freeze
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.uri import get_reference
-from itools.web import get_context, BaseView, STLView
+from itools.web import BaseView, STLView
 from itools.database import PhraseQuery, NotQuery, OrQuery, AndQuery
-from itools.xml import XMLParser
-
-# Import from ikaaro
-from ikaaro.autoform import ImageSelectorWidget, SelectWidget, TextWidget
-from ikaaro.datatypes import Multilingual
-from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from bar.base_views import ContentBar_View, SideBar_View
-from datatypes import NeutralClassSkin
 from rss import BaseRSS
 from section import Section
 from tags import TagsAware
 from utils import set_navigation_mode_as_edition
 from utils import set_navigation_mode_as_navigation
 from views import BaseManageContent
-from views import ProxyContainerNewInstance
 from views import BarAwareBoxAwareNewInstance
 
 

@@ -48,9 +48,7 @@ class AboutITWS(Folder):
         return merge_dicts(Folder.get_catalog_values(self),
                            workflow_state='public')
 
-    #########
     # Views
-    #########
     view = AboutITWS_View()
     browse_content = Folder_BrowseContent(access='is_admin')
 
