@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from warnings import warn
+
 # Import from itools
 from itools.gettext import MSG
 from itools.stl import set_prefix, stl

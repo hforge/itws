@@ -105,7 +105,7 @@ class TagsFolder(Folder):
         # Create default tags
         for tag in self.default_tags:
             tag_name, title = tag
-            self._make_resource('tag_name', Tag, title={language: title})
+            self.make_resource(tag_name, Tag, title={language: title})
 
 
     def get_document_types(self):

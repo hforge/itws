@@ -31,7 +31,8 @@ from ikaaro.autoform import HTMLBody, stl_namespaces
 from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
-from ikaaro.tracker import Tracker, Issue
+from ikaaro.tracker import Tracker
+from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
 
 # Special case for the Wiki

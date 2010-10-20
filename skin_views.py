@@ -170,7 +170,7 @@ class LanguagesTemplate(BaseLanguagesTemplate):
         # Website languages
         ws_languages = context.site_root.get_property('website_languages')
         if len(ws_languages) == 1:
-            return {'languages': []}
+            return []
 
         here = context.resource
         ac = here.get_access_control()

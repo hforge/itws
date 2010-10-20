@@ -24,10 +24,13 @@
 from decimal import Decimal
 
 # Import from itools
-from itools.core import freeze
+from itools.core import freeze, get_abspath
+from itools.csv import Property
 from itools.database.ro import ROGitDatabase
 from itools.datatypes import Boolean
 from itools.gettext import MSG
+from itools.handlers import ro_database
+from itools.html import XHTMLFile
 from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery
 
@@ -45,7 +48,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from about import AboutITWS
 from addresses import AddressesFolder
-from bar import ContentBarAware, SideBarAware
+from bar import ContentBarAware, HTMLContent, SideBarAware
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
 from control_panel import CPEdit404, CPEditRobotsTXT
 from images_folder import ImagesFolder
@@ -78,6 +81,7 @@ class WSDataFolder(SideBarAware, ContentBarAware, Folder):
     class_version = '20101012'
     class_title = MSG(u'Website data folder')
     class_views = ['manage_view', 'backlinks', 'commit_log']
+    class_schema = Folder.class_schema
 
 
     __fixed_handlers__ = [SideBarAware.sidebar_name,
@@ -142,8 +146,6 @@ class NeutralWS(WebSite):
     # Configuration
     #################
     class_theme = Theme
-    footers = ('footer',)
-    menus = ('menu',)
     newsfolder_class = NewsFolder
     section_class = Section
     sitemap_class = SiteMap
@@ -151,12 +153,12 @@ class NeutralWS(WebSite):
     wsdatafolder_class = WSDataFolder
     sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
     contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
-
+    first_contenbar = 'data/welcome_on_itws.xhtml'
+    first_sidebar = 'data/first_sidebar.xhtml'
 
 
     def init_resource(self, **kw):
-        # XXX Check if it works
-        kw['website_is_open'] = True
+        kw['website_is_open'] = 'extranet'
         # TODO allow to choose language at website creation
         default_language = 'en'
         # Initialize ikaaro website (Parent class)
@@ -182,80 +184,57 @@ class NeutralWS(WebSite):
         # About
         self.make_resource('about-itws', AboutITWS,
                            title={'en': u'About ITWS'})
-        # Add footers
-        for item in self.footers:
-            self.make_resource(item, FooterFolder)
         # Add 404 page
         self.make_resource('404', NotFoundPage)
 
+        # Add link to news in menu
+        theme = self.get_resource('theme')
+        menu = theme.get_resource('menu/menu')
+        menu.add_new_record({'path': '/news/',
+                             'title': Property(MSG(u'News').gettext(),
+                                               language='en')})
+        # Add footer
+        self.make_resource('footer', FooterFolder)
+        menu = self.get_resource('footer/menu')
+        title = Property(MSG(u'Powered by itws').gettext(),
+                         language=default_language)
+        menu.add_new_record({'title': title, 'path': '/about-itws'})
+        title = Property(MSG(u'Contact us').gettext(),
+                         language=default_language)
+        menu.add_new_record({'title': title, 'path': '/;contact'})
+
+        # Create a 'Welcome' html-content item in ws-data
+        # Order this item in the contentbar
+        path = get_abspath(self.first_contenbar)
+        handler = ro_database.get_handler('%s.%s' % (path, default_language),
+                                          XHTMLFile)
+        ws_data = self.get_resource('ws-data')
+        ws_data.make_resource('welcome', HTMLContent,
+                  title={default_language: MSG(u'Welcome').gettext()},
+                  state='public',
+                  display_title=True,
+                  body=handler.to_str(),
+                  language=default_language)
+        table = ws_data.get_resource('order-contentbar')
+        table.add_new_record({'name': 'welcome'})
+
+        # Create a 'Welcome' html-content item in repository
+        # Order this item in the sidebar
+        path = get_abspath(self.first_sidebar)
+        handler = ro_database.get_handler('%s.%s' % (path, default_language),
+                                          XHTMLFile)
+        repository = self.get_resource('repository')
+        repository.make_resource('first_sidebar', HTMLContent,
+                  title={default_language: MSG(u'My first sidebar').gettext()},
+                  state='public',
+                  display_title=True,
+                  body=handler.to_str(),
+                  language=default_language)
+        table = ws_data.get_resource('order-sidebar')
+        table.add_new_record({'name': 'first_sidebar'})
 
 
 
-        # XXX TODO Initialize website with data
-        ## Preorder specific sidebar boxes
-        #sidebar_table.add_new_record({'name': Repository.news_items_name})
-        #news_item = repository.get_resource(Repository.news_items_name)
-        ## Hook default property
-        #news_item.set_property('count', 4)
-        # ContentBarAware
-        # index
-        #section_class = cls.section_class
-        #section_class._make_resource(section_class, ws_folder, 'index',
-        #                             title={'en': u'Index'})
-        # Add default banner
-        #path = get_abspath('data/k2-banner-ties.jpg')
-        #body = open(path).read()
-        #filename = name2 = 'background-ties.jpg'
-        #name2, extension, language = FileName.decode(name2)
-        #metadata = {'format': 'image/jpeg', 'filename': filename,
-        #            'extension': extension, 'state': 'public',
-        #            'body': body}
-        #cls = Image
-        #cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
-
-        ## Set a default banner
-        #if 'banner_title' not in kw:
-        #    vhosts = website.get_property('vhosts')
-        #    if vhosts:
-        #        banner_title = vhosts[0]
-        #    else:
-        #        banner_title = website.get_title()
-        #    website.set_property('banner_title', banner_title,
-        #                         language=default_language)
-        # Default favicon
-        #favicon_resource = root.get_resource('/ui/k2/default_favicon.ico')
-        #favicon_data = favicon_resource.to_str()
-        #cls = Image
-        #filename = name2 = 'favicon.ico'
-        #name2, extension, language = FileName.decode(name2)
-        #metadata = {'format': 'image/x-icon', 'filename': filename,
-        #            'extension': extension, 'state': 'public',
-        #            'body': favicon_data}
-        #cls._make_resource(cls, ws_folder, 'images/%s' % name2, **metadata)
-        #website.set_property('favicon', 'images/favicon')
-        # Init Website menu with 2 items + news folder
-        #for menu_name in website_class.menus:
-        #    menu = website.get_resource('%s/menu' % menu_name)
-        #    title = Property(MSG(u'Homepage').gettext(),
-        #                     language=default_language)
-        #    menu.add_new_record({'title': title, 'path': '/'})
-        #    title = Property(MSG(u'Contact').gettext(),
-        #                     language=default_language)
-        #    menu.add_new_record({'title': title, 'path': '/;contact'})
-        #    if cls:
-        #        # Add news if newsfolder_class is defined
-        #        title = Property(MSG(u'News').gettext(),
-        #                         language=default_language)
-        #        menu.add_new_record({'title': title, 'path': '/news'})
-        ## Init Website footer with 2 items
-        #for footer_name in website_class.footers:
-        #    menu = website.get_resource('%s/menu' % footer_name)
-        #    title = Property(MSG(u'Powered by itws').gettext(),
-        #                     language=default_language)
-        #    menu.add_new_record({'title': title, 'path': '/about-itws'})
-        #    title = Property(MSG(u'Contact us').gettext(),
-        #                     language=default_language)
-        #    menu.add_new_record({'title': title, 'path': '/;contact'})
 
     @classmethod
     def get_orderable_classes(cls):
