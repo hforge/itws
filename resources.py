@@ -138,37 +138,6 @@ class FooterFolder(MenuFolder):
 
 
 
-############################################################
-# Helper
-############################################################
-class MultilingualCatalogTitleAware(object):
-
-    # multilingual title with language negociation
-    # register_field('m_title', Unicode(is_stored=True, is_indexed=True))
-
-    def get_catalog_values(self):
-        # XXX migration
-        return {}
-        # Get the languages
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-
-        # Titles
-        title = {}
-        for language in languages:
-            value = self._get_multilingual_catalog_title(language)
-            if value:
-                title[language] = value
-        return {'m_title': title}
-
-
-    def _get_multilingual_catalog_title(self, language):
-        return self.get_property('title', language=language)
-
-
-
-
-
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
