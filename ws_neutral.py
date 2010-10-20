@@ -24,7 +24,7 @@
 from decimal import Decimal
 
 # Import from itools
-from itools.core import freeze, get_abspath
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
 from itools.database.ro import ROGitDatabase
 from itools.datatypes import Boolean
@@ -35,6 +35,7 @@ from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
+from ikaaro.datatypes import Multilingual
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
@@ -67,7 +68,7 @@ from turning_footer import TurningFooterFolder
 from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_View
+from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
 from ws_neutral_views import NeutralWS_RSS
 from ws_neutral_views import WSDataFolder_ManageContent
 from website_errors_pages import NotFoundPage_View
@@ -131,6 +132,9 @@ class NeutralWS(WebSite):
     class_version = '20101012'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'edit', 'control_panel', 'new_resource', 'commit_log']
+    class_schema = merge_dicts(WebSite.class_schema,
+                              breadcrumb_title=Multilingual(source='metadata'))
+
 
     class_control_panel = (WebSite.class_control_panel +
                            ['edit_tags', 'edit_footer', 'edit_turning_footer',
@@ -361,6 +365,7 @@ class NeutralWS(WebSite):
 
     # Base views
     view = NeutralWS_View()
+    edit = NeutralWS_Edit()
     fo_switch_mode = NeutralWS_FOSwitchMode()
     not_found = NotFoundPage_View()
     rss = last_news_rss = NeutralWS_RSS()
@@ -452,7 +457,7 @@ class NeutralWS(WebSite):
             if value:
                 theme.set_property(key, value)
             self.del_property(key)
-        for key in ['breadcrumb_title', 'banner_title', 'banner_path']:
+        for key in ['banner_title', 'banner_path']:
             for lang in self.get_property('website_languages'):
                 value = self.get_property(key, language=lang)
                 if value:

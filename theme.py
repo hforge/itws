@@ -38,7 +38,6 @@ class Theme_Edit(DBResource_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            custom_data=String,
-                           breadcrumb_title=Multilingual,
                            banner_title=Multilingual,
                            banner_path=PathDataType(multilingual=True,
                                           parameters_schema={'lang': String}),

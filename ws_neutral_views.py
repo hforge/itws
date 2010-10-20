@@ -16,12 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import BaseView, STLView
 from itools.database import PhraseQuery, NotQuery, OrQuery, AndQuery
+
+# Import from ikaaro
+from ikaaro.autoform import TextWidget
+from ikaaro.datatypes import Multilingual
+from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from bar.base_views import ContentBar_View, SideBar_View
@@ -111,6 +116,17 @@ class NeutralWS_ContentBar_View(ContentBar_View):
     def _get_repository(self, resource, context):
         return resource.get_resource('ws-data')
 
+
+class NeutralWS_Edit(DBResource_Edit):
+
+    def _get_widgets(self, resource, context):
+        return DBResource_Edit._get_widgets(self, resource, context) + [
+            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title'))]
+
+
+    def _get_schema(self, resource, context):
+        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+                           breadcrumb_title=Multilingual)
 
 
 class NeutralWS_View(STLView):
