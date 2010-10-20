@@ -54,7 +54,7 @@ from OPML import RssFeeds
 from bar.repository import Repository
 from footer import FooterFolder
 from robots_txt import RobotsTxt
-from website_errors_pages import NotFoundPage
+from notfoundpage import NotFoundPage
 from section import Section
 from sitemap import SiteMap
 from slides import SlideShow
