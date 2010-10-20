@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
+from datetime import datetime, timedelta
 from functools import partial
 
 # Import from itools
@@ -31,6 +32,7 @@ from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import stl_namespaces, SelectWidget, XHTMLBody
+from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
 
@@ -275,3 +277,43 @@ def set_navigation_mode_as_navigation(context):
 
 def set_navigation_mode_as_edition(context):
     context.set_cookie('itws_fo_edit', '1')
+
+
+############################################################
+# Resource with cache
+############################################################
+
+
+class ResourceWithCache(DBResource):
+    """Resource with cache inside the metadata handler"""
+
+    def __init__(self, metadata):
+        DBResource.__init__(self, metadata)
+        # Add cache API
+        timestamp = getattr(metadata, 'timestamp', None)
+        # If timestamp is None, the metadata handler could not exists on filesystem
+        # -> make_resource, check if the metadata is already loaded before
+        # setting the cache properties
+        if timestamp and getattr(metadata, 'cache_mtime', None) is None:
+            metadata.cache_mtime = None
+            metadata.cache_data = None
+            metadata.cache_errors = None
+
+
+    def _update_data(self):
+        raise NotImplementedError
+
+
+    def get_cached_data(self):
+        # Download or send the cache ??
+        metadata = self.metadata
+        now = datetime.now()
+        cache_mtime = metadata.cache_mtime
+        update_delta = timedelta(minutes=5) # 5 minutes
+        if (cache_mtime is None or
+            now - cache_mtime > update_delta):
+            print u'UPDATE CACHE'
+            self._update_data()
+
+        return metadata.cache_data, metadata.cache_errors
+

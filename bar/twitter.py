@@ -40,7 +40,7 @@ from ikaaro.registry import register_resource_class
 # Import from itws
 from base import Box
 from base_views import Box_View
-from itws.resources import ResourceWithCache
+from itws.utils import ResourceWithCache
 from itws.views import AutomaticEditView
 
 
