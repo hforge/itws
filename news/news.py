@@ -277,9 +277,11 @@ class NewsFolder(SideBarAware, Folder):
                  tags=[], brain_only=False):
         query = self.get_news_query_terms(state, tags)
         if language is None:
-            # XXX Migration
-            language = 'en'
-            #language = self.get_content_language(context)
+            # Get Language
+            site_root = context.site_root
+            ws_languages = site_root.get_property('website_languages')
+            accept = context.accept_language
+            language = accept.select_language(ws_languages)
 
         # size
         size = 0

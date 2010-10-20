@@ -97,9 +97,13 @@ class NewsItem_Preview(STLView):
 
 
     def get_namespace(self, resource, context):
-        language = 'en'
-        # XXX Migration
-        #resource.get_content_language(context)
+        # Get Language
+        site_root = context.site_root
+        ws_languages = site_root.get_property('website_languages')
+        accept = context.accept_language
+        language = accept.select_language(ws_languages)
+
+        # Build namespace
         namespace = {}
 
         here_abspath = context.resource.get_abspath()

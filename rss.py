@@ -204,8 +204,11 @@ class BaseRSS(BaseView):
     def GET(self, resource, context):
         language = context.get_query_value('language')
         if language is None:
-            language = 'en'
-            # XXX migration resource.get_content_language(context)
+            # Get Language
+            site_root = context.site_root
+            ws_languages = site_root.get_property('website_languages')
+            accept = context.accept_language
+            language = accept.select_language(ws_languages)
         if_modified_since = context.get_header('if-modified-since')
         items = self.get_items(resource, context, if_modified_since)
         items = self.sort_and_batch(resource, context, items)

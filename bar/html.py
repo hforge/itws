@@ -106,10 +106,7 @@ class HTMLContent_Edit(DBResource_Edit):
 
     def get_value(self, resource, context, name, datatype):
         if name == 'data':
-            # XXX Migration
-            #language = resource.get_content_language(context)
-            language = 'en'
-            return resource.get_html_data(language=language)
+            return resource.get_html_data()
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
 
@@ -117,9 +114,7 @@ class HTMLContent_Edit(DBResource_Edit):
     def set_value(self, resource, context, name, form):
         if name == 'data':
             new_body = form['data']
-            # XXX Migration
-            # language = resource.get_content_language(context)
-            language = 'en'
+            language = resource.get_edit_languages(context)[0]
             handler = resource.get_handler(language=language)
             handler.set_body(new_body)
             return

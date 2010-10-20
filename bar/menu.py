@@ -18,18 +18,17 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import DateTime, String, Unicode
+from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
 from ikaaro.registry import register_resource_class
-from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.resource_views import EditLanguageMenu
 from ikaaro.table import Table_AddRecord
 from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
@@ -60,38 +59,6 @@ class MenuSideBar_View(Box_View):
             self.set_view_is_empty(True)
         return {'title': resource.get_title(),
                 'menu': menu}
-
-
-
-class MenuProxyBox_Edit(DBResource_Edit):
-
-    title = MSG(u'Edit box title')
-    schema = {'title': Unicode(multilingual=True),
-              'timestamp': DateTime(readonly=True, ignore=True)}
-
-    widgets = [timestamp_widget, title_widget]
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'title':
-            language = resource.get_content_language(context)
-            return resource.parent.get_property(name, language=language)
-        return DBResource_Edit.get_value(self, resource, context, name,
-                                         datatype)
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        title = form['title']
-        language = resource.get_content_language(context)
-        # Set title to menufolder
-        resource.parent.set_property('title', title, language=language)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
 
 
 
@@ -152,10 +119,12 @@ class MenuSideBarTable_View(Menu_View):
 
 class MenuSideBarTable_CompositeView(CompositeForm):
 
+    # XXX Migration
+    # How to edit menu sidebar title ?
+
     access = 'is_allowed_to_edit'
-    subviews = [ MenuProxyBox_Edit(), # menu folder edition view
-                 MenuSideBarTable_AddRecord(),
-                 MenuSideBarTable_View() ]
+    subviews = [MenuSideBarTable_AddRecord(),
+                MenuSideBarTable_View() ]
     context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):

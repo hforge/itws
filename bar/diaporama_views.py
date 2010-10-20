@@ -19,16 +19,14 @@ from copy import deepcopy
 from random import choice
 
 # Import from itools
-from itools.datatypes import DateTime, Unicode, XMLContent
+from itools.datatypes import XMLContent
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro import messages
-from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.future.order import get_resource_preview
-from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.resource_views import EditLanguageMenu
 from ikaaro.table_views import Table_View
 from ikaaro.views import CompositeForm
 
@@ -84,50 +82,15 @@ class DiaporamaTable_View(Table_View):
 
 
 
-class DiaporamaTable_AddRecord(MenuSideBarTable_AddRecord):
-
-    pass
-
-
-
-class DiaporamaProxyBox_Edit(DBResource_Edit):
-
-    schema = {'title': Unicode(multilingual=True),
-              'timestamp': DateTime(readonly=True, ignore=True)}
-
-    widgets = [timestamp_widget, title_widget]
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'title':
-            language = resource.get_content_language(context)
-            return resource.parent.get_property(name, language=language)
-        return DBResource_Edit.get_value(self, resource, context, name,
-                                         datatype)
-
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        # Save changes
-        title = form['title']
-        language = resource.get_content_language(context)
-        # Set title to menufolder
-        resource.parent.set_property('title', title, language=language)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-
-
-
 class DiaporamaTable_CompositeView(CompositeForm):
+
+    # XXX Migration
+    # How to edit title of Diaporama ?
 
     access = 'is_allowed_to_edit'
     title = DiaporamaTable_View.title
     subviews = [ # diaporama folder edition view
-                 DiaporamaProxyBox_Edit(title=MSG(u'Edit diaporama title')),
-                 DiaporamaTable_AddRecord(title=MSG(u'Add new image')),
+                 MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View() ]
     context_menus = [EditLanguageMenu()]
 
