@@ -17,14 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from random import choice
+
 # Import from itools
 from itools.core import merge_dicts
-from itools.csv import Property
-from itools.datatypes import Unicode, Boolean
+from itools.datatypes import Boolean, String
 from itools.gettext import MSG
-from itools.stl import rewrite_uris
-from itools.uri import get_reference, Path, Reference
-from itools.web import get_context
+from itools.stl import set_prefix
+from itools.web import STLView
 
 # Import from ikaaro
 from ikaaro.file import File
@@ -33,22 +34,58 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
 from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
-from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
-from turning_footer_views import TurningFooterFile_EditRecord
-from turning_footer_views import TurningFooterFile_View
-from turning_footer_views import TurningFooterFolder_View
-from utils import get_path_and_view
+from utils import get_admin_bar
 from views import AutomaticEditView
+
+
+
+class TurningFooterFolder_View(STLView):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'View')
+    template = '/ui/common/TurningFooterFolder_view.xml'
+
+    def get_namespace(self, resource, context):
+        namespace = {}
+        # title
+        title = resource.get_title(fallback=False)
+        menu = resource.get_resource(resource.order_path)
+        handler = menu.handler
+
+        is_active = resource.get_property('active')
+        ids = list(handler.get_record_ids_in_order())
+        if not ids or not is_active:
+            return {'content': None,
+                    'title': title,
+                    'display': False,
+                    'admin_bar': None}
+
+        if resource.get_property('random'):
+            id = choice(ids)
+        else:
+            id = ids[0]
+
+        record = handler.get_record(id)
+        data = handler.get_record_value(record, 'data')
+        here = context.resource
+        content = set_prefix(data, prefix='%s/' % here.get_pathto(menu))
+        # admin bar
+        admin_bar = get_admin_bar(resource)
+
+        return {'content': content,
+                'title': title,
+                'display': True,
+                'admin_bar': admin_bar}
 
 
 
 class TurningFooterFile(OrderedTableFile):
 
-    record_properties = {'data': Unicode(mandatory=True,
-                                         # Multilingual
-                                         multilingual=True)}
+    record_properties = {'data': XHTMLBody(mandatory=True,
+                                           multilingual=True,
+                                           parameters_schema={'lang': String})}
 
 
 
@@ -62,95 +99,15 @@ class TurningFooterTable(OrderedTable):
     form = [RTEWidget('data', title=MSG(u"Body"))]
 
     # Views
-    view = TurningFooterFile_View()
-    edit = TurningFooterFile_EditRecord()
     configure = GoToSpecificDocument(specific_document='..',
             specific_view='configure', title=MSG(u'Configure'))
 
 
-    def get_links(self):
-        base = self.get_canonical_path()
-        site_root = self.get_site_root()
-        languages = site_root.get_property('website_languages')
-        handler = self.handler
-
-        links = []
-        for record in handler.get_records():
-            for language in languages:
-                data = handler.get_record_value(record, 'data',
-                                                language=language)
-                events = XHTMLBody.decode(data.encode('utf_8'))
-                links.extend(_get_links(base, events))
-
-        return links
-
-
-    def update_links(self, source, target):
-        # Caution multilingual property
-        site_root = self.get_site_root()
-        base = self.get_canonical_path()
-        resources_new2old = get_context().database.resources_new2old
-        base = str(base)
-        old_base = resources_new2old.get(base, base)
-        old_base = Path(old_base)
-        new_base = Path(base)
-
-        handler = self.handler
-        available_languages = site_root.get_property('website_languages')
-        for record in handler.get_records():
-            for language in available_languages:
-                data = handler.get_record_value(record, 'data',
-                                                language=language)
-                events = XHTMLBody.decode(data.encode('utf_8'))
-                events = _change_link(source, target, old_base, new_base,
-                                      events)
-                events = XHTMLBody.encode(events)
-                events = Unicode.decode(events)
-                property = Property(events, language=language)
-                handler.update_record(record.id, **{'data': property})
-
-        get_context().server.change_resource(self)
-
-
-    def update_relative_links(self, source):
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-
-        def my_func(value):
-            # Absolute URI or path
-            uri = get_reference(value)
-            if uri.scheme or uri.authority or uri.path.is_absolute():
-                return value
-            path = uri.path
-            if not path or path.is_absolute() and path[0] == 'ui':
-                return value
-
-            # Strip the view
-            path, view = get_path_and_view(path)
-
-            # Resolve Path
-            # Calcul the old absolute path
-            old_abs_path = source.resolve2(path)
-            # Get the 'new' absolute parth
-            new_abs_path = resources_old2new.get(old_abs_path, old_abs_path)
-
-            path = str(target.get_pathto(new_abs_path)) + view
-            value = Reference('', '', path, uri.query.copy(), uri.fragment)
-            return str(value)
-
-        handler = self.handler
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-        for record in handler.get_records():
-            for language in available_languages:
-                data = handler.get_record_value(record, 'data',
-                                                language=language)
-                events = XHTMLBody.decode(data.encode('utf_8'))
-                events = rewrite_uris(events, my_func)
-                events = XHTMLBody.encode(events)
-                events = Unicode.decode(events)
-                property = Property(events, language=language)
-                handler.update_record(record.id, **{'data': property})
+    # XXX Migration.
+    # We have to write:
+    #def get_links(self):
+    #def update_links(self, source, target):
+    #def update_relative_links(self, source):
 
 
 
@@ -169,6 +126,7 @@ class TurningFooterFolder(Folder):
 
     order_class = TurningFooterTable
     order_path = 'menu'
+    use_fancybox = False
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
@@ -179,16 +137,6 @@ class TurningFooterFolder(Folder):
     edit_widgets = [
                CheckboxWidget('random', title=MSG(u'Random selection')),
                CheckboxWidget('active', title=MSG(u'Is active'))]
-
-    #############################
-    # Views
-    #############################
-    view = TurningFooterFolder_View()
-    edit = GoToSpecificDocument(specific_document='menu',
-                                title=MSG(u'Edit'))
-    configure = AutomaticEditView(title=MSG(u'Configure'))
-
-    use_fancybox = False
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)
@@ -208,6 +156,16 @@ class TurningFooterFolder(Folder):
     def get_document_types(self):
         """Useful to add images or other types of file"""
         return [File]
+
+
+    #############################
+    # Views
+    #############################
+    view = TurningFooterFolder_View()
+    edit = GoToSpecificDocument(specific_document='menu',
+                                title=MSG(u'Edit'))
+    configure = AutomaticEditView(title=MSG(u'Configure'))
+
 
 
 
