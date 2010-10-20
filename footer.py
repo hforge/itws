@@ -16,8 +16,7 @@
 
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import String, Unicode
+from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -26,38 +25,19 @@ from ikaaro.autoform import SelectWidget, HTMLBody
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class
-from ikaaro.text import Text
 
 # Import from itws
-from views import RobotsTxt_Edit
-from views import FooterMenu_View
 from widgets import XMLTitleWidget
 
 
-############################################################
-# 404
-############################################################
-
-
-
-############################################################
-# Footer
-############################################################
 class FooterMenuFile(MenuFile):
 
     record_properties = {
         'title': Multilingual,
-        # HACK datatype should be HTMLBody
-        'html_content': Multilingual,
+        'html_content': HTMLBody(multilingual=True,
+                            parameters_schema={'lang': String}),
         'path': String,
         'target': Target(mandatory=True, default='_top')}
-
-
-    def get_item_value(self, resource, context, item, column):
-        if column == 'html_content':
-            value = resource.handler.get_record_value(item, column)
-            return HTMLBody.encode(Unicode.encode(value))
-        return MenuFile.get_item_value(self, resource, context, item, column)
 
 
 
@@ -81,7 +61,9 @@ class FooterMenu(Menu):
         return Menu._is_allowed_to_access(self, context, uri)
 
 
-    view = FooterMenu_View()
+    # XXX Migration
+    # Why does there's no get_links / update_links mechanism
+    # fo html_content ?
 
 
 
@@ -89,7 +71,6 @@ class FooterFolder(MenuFolder):
 
     class_id = 'footer-folder'
     class_title = MSG(u'Footer Folder')
-    # Your menu ressource (for overriding the record_properties and form)
     class_menu = FooterMenu
 
     use_fancybox = False

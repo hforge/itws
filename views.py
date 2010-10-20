@@ -578,20 +578,6 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
 
 
-############################################################
-# Footer
-############################################################
-
-class FooterMenu_View(Menu_View):
-
-    access = 'is_allowed_to_edit'
-    table_actions = Menu_View.table_actions[1:]
-
-    def get_item_value(self, resource, context, item, column):
-        if column == 'html_content':
-            value = resource.handler.get_record_value(item, column)
-            return HTMLBody.decode(Unicode.encode(value))
-        return Menu_View.get_item_value(self, resource, context, item, column)
 
 
 
