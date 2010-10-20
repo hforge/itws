@@ -30,8 +30,10 @@ from ikaaro.text_views import Text_View, Text_Edit
 RobotsTxt_body = """
 User-agent: *
 Disallow: /menu
+Disallow: /turning-footer
 Disallow: /footer
 Disallow: /style
+Disallow: /theme
 """
 
 
@@ -69,6 +71,7 @@ class RobotsTxt(Text):
 
     def init_resource(self, **kw):
         kw['extension'] = 'txt'
+        kw['body'] = RobotsTxt_body
         Text.init_resource(self, **kw)
 
 
