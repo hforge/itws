@@ -190,13 +190,13 @@ class Skin(BaseSkin):
 
     def build_nav_namespace(self, context):
         data = self.nav_data
+        menu = self.get_resource(data['src'])
         ns = get_menu_namespace(context,
             data['depth'], data['show_first_child'],
-            flat=data['flat'], src=data['src'])
+            flat=data['flat'], menu=menu)
         if is_navigation_mode(context) is True:
             return ns
         # Add [+] item in menu (To edit)
-        menu = context.site_root.get_resource(data['src'])
         ac = menu.get_access_control()
         if ac.is_allowed_to_edit(context.user, menu):
             ns['items'].append(
