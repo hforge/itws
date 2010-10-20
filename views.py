@@ -450,29 +450,6 @@ class SideBarAwareNewInstance(BarAwareBoxAwareNewInstance):
 
 
 
-############################################################
-# RobotsTxt
-############################################################
-
-class RobotsTxt_Edit(Text_Edit):
-
-    schema = {'timestamp': DateTime(readonly=True), 'data': String}
-    widgets = [
-        timestamp_widget,
-        MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)]
-
-    def action(self, resource, context, form):
-        # Check edit conflict
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-
-        data = form['data']
-        resource.handler.load_state_from_string(data)
-        # Ok
-        context.message = messages.MSG_CHANGES_SAVED
-
-
 
 
 # Override User is_allowed_to_view

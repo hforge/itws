@@ -22,54 +22,16 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
-from ikaaro.file_views import File_Download
 from ikaaro.autoform import SelectWidget, HTMLBody
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class
 from ikaaro.text import Text
-from ikaaro.text_views import Text_View
 
 # Import from itws
 from views import RobotsTxt_Edit
 from views import FooterMenu_View
 from widgets import XMLTitleWidget
-
-
-############################################################
-# Robots.txt
-############################################################
-RobotsTxt_body = """
-User-agent: *
-Disallow: /menu
-Disallow: /footer
-Disallow: /style
-"""
-
-class RobotsTxt(Text):
-
-    class_id = 'robotstxt'
-    class_title = MSG(u'Robots exclusion standard')
-    class_views = ['view', 'edit', 'externaledit', 'download',
-                   'upload', 'edit_state', 'commit_log']
-
-    class_schema = merge_dicts(Text.class_schema,
-                               state=String(source='metadata', default='public'))
-
-
-    def init_resource(self, **kw):
-        kw['extension'] = 'txt'
-        Text.init_resource(self, **kw)
-
-
-    ################
-    ## Views
-    ################
-    download = File_Download(access=True)
-    edit = RobotsTxt_Edit()
-    view = Text_View(access='is_allowed_to_edit')
-
-
 
 
 ############################################################
@@ -141,4 +103,3 @@ class FooterFolder(MenuFolder):
 
 register_resource_class(FooterFolder)
 register_resource_class(FooterMenu)
-register_resource_class(RobotsTxt)

@@ -52,7 +52,8 @@ from images_folder import ImagesFolder
 from news import NewsFolder
 from OPML import RssFeeds
 from bar.repository import Repository
-from resources import FooterFolder, RobotsTxt
+from resources import FooterFolder
+from robots_txt import RobotsTxt
 from website_errors_pages import NotFoundPage
 from section import Section
 from sitemap import SiteMap
