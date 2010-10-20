@@ -24,29 +24,19 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
-from ikaaro.file import File
-from ikaaro.file_views import File_Download, File_ExternalEdit_View
+from ikaaro.file_views import File_Download
 from ikaaro.autoform import SelectWidget, HTMLBody
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_ import DBResource
-from ikaaro.text import Text, encodings
+from ikaaro.text import Text
 from ikaaro.text_views import Text_View
 
 # Import from itws
 from views import RobotsTxt_Edit
 from views import FooterMenu_View
 from widgets import XMLTitleWidget
-
-
-############################################################
-# File (Monky patch)
-############################################################
-File.externaledit = File_ExternalEdit_View(
-        template='/ui/common/externaledit.xml')
-Text.externaledit = File_ExternalEdit_View(
-        template='/ui/common/externaledit.xml', encodings=encodings)
 
 
 ############################################################
