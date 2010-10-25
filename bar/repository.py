@@ -36,9 +36,8 @@ from registry import get_boxes_registry
 from repository_views import BoxesOrderedTable_Ordered
 from repository_views import BoxesOrderedTable_Unordered
 from repository_views import Repository_BrowseContent
-from itws.views import BoxAwareNewInstance
-from itws.views import SideBarAwareNewInstance
-from itws.views import BarAwareBoxAwareNewInstance
+from bar_aware_views import SideBarBox_NewInstance
+from bar_aware_views import ContentBarBox_NewInstance
 
 
 
@@ -121,19 +120,7 @@ class SidebarBoxesOrderedTable(BoxesOrderedTable):
     allow_filter_key = 'side'
 
     # New box (Add a sidebar box)
-    new_box = SideBarAwareNewInstance(title=MSG(u'Create a new Sidebar Box'))
-
-    # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Sidebar Boxes')
-    ordered_view_title_description = MSG(
-            u'This website has a sidebar and a central part. '
-            u'The sidebar can be composed of several kinds of boxes: '
-            u'Tag Cloud, "last News View", HTML Content, Twitter Feeds, '
-            u'Custom Menu... Here you can order these boxes.')
-    unordered_view_title = MSG(u'Available Sidebar Boxes')
-    unordered_view_title_description = MSG(
-            u'These boxes are available, you can make them visible '
-            u'in the sidebar by adding them to the above ordered list.')
+    new_box = SideBarBox_NewInstance(title=MSG(u'Create a new Sidebar Box'))
 
 
 
@@ -146,25 +133,12 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
     allow_filter_key = 'content'
 
     # New box (Add a content bar)
-    new_box = BarAwareBoxAwareNewInstance(
+    new_box = ContentBarBox_NewInstance(
                     title=MSG(u'Create a new ContentBar Box'))
-
-    # Order view title & description configuration
-    ordered_view_title = MSG(u'Order Central Part Boxes')
-    ordered_view_title_description = MSG(
-            u'This website has a sidebar and a central part. '
-            u'The central part can be composed of several kinds of '
-            u'boxes: "Last News View", Slideshow... '
-            u'Here you can order these boxes.')
-    unordered_view_title = MSG(u'Available Central Part Boxes')
-    unordered_view_title_description = MSG(
-            u'These boxes are available, you can make them visible '
-            u'in the central part by adding them to the above ordered list.')
 
 
     def get_order_root(self):
         return self.parent
-        #return self.get_site_root().get_repository()
 
 
     def _get_order_root_path(self):
@@ -238,8 +212,6 @@ class Repository(Folder):
     # Views
     ################
     new_resource = None
-    new_sidebar_resource = BoxAwareNewInstance(title=MSG(u'Create a new Sidebar Box'),
-                                               is_side=True)
     browse_content = Repository_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')

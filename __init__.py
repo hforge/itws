@@ -25,6 +25,9 @@ import sys
 from itools.core import get_abspath, get_version
 from itools.gettext import register_domain
 
+# Import from ikaaro
+from ikaaro.user import User
+
 # Import from itws
 from root import Root
 import about
@@ -48,6 +51,9 @@ __version__ = get_version()
 
 # Register the itws domain
 register_domain('itws', get_abspath('locale'))
+
+# Override User is_allowed_to_view
+User.is_allowed_to_view = User.is_allowed_to_edit
 
 # Silent pyflakes
 Root, skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,

@@ -271,14 +271,6 @@ def is_navigation_mode(context):
     return context.get_cookie('itws_fo_edit', Boolean(default=False)) is False
 
 
-def set_navigation_mode_as_navigation(context):
-    context.set_cookie('itws_fo_edit', '0')
-
-
-def set_navigation_mode_as_edition(context):
-    context.set_cookie('itws_fo_edit', '1')
-
-
 ############################################################
 # Resource with cache
 ############################################################

@@ -308,33 +308,3 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
             return
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
-
-
-
-# XXX Migration
-# Decide if we remove it or not
-#class NewsFolder_NewsNewInstance(ProxyContainerNewInstance):
-#
-#    actions = [Button(access='is_allowed_to_edit',
-#                      name='new_news', title=MSG(u'Add'))]
-#
-#    def _get_resource_cls(self, resource, context):
-#        here = context.resource
-#        return here.news_class
-#
-#
-#    def _get_container(self, resource, context):
-#        return resource
-#
-#
-#    def _get_goto(self, resource, context, form):
-#        name = form['name']
-#        # Assume that the resource already exists
-#        container = self._get_container(resource, context)
-#        child = container.get_resource(name)
-#        return '%s/;edit' % context.get_link(child)
-#
-#
-#    def action_new_news(self, resource, context, form):
-#        return ProxyContainerNewInstance.action_default(self, resource,
-#                context, form)

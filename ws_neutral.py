@@ -36,12 +36,8 @@ from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
-from ikaaro.file import File
-from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
-from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_resource_class, register_document_type
-from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
@@ -49,84 +45,46 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from about import AboutITWS
 from addresses import AddressesFolder
-from bar import ContentBarAware, HTMLContent, SideBarAware
+from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
-from control_panel import CPEdit404, CPEditRobotsTXT
+from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from images_folder import ImagesFolder
 from news import NewsFolder
 from OPML import RssFeeds
-from bar.repository import Repository
 from footer import FooterFolder
 from robots_txt import RobotsTxt
 from notfoundpage import NotFoundPage
-from section import Section
 from sitemap import SiteMap
 from slides import SlideShow
 from tags import TagsFolder
 from theme import Theme
 from turning_footer import TurningFooterFolder
-from views import AdvanceGoToSpecificDocument
 from webpage import WebPage
-from ws_neutral_views import NeutralWS_FOSwitchMode
-from ws_neutral_views import NeutralWS_View, NeutralWS_Edit
-from ws_neutral_views import NeutralWS_RSS
-from ws_neutral_views import WSDataFolder_ManageContent
+from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
 from website_errors_pages import NotFoundPage_View
-
-
-
-
-class WSDataFolder(SideBarAware, ContentBarAware, Folder):
-
-    class_id = 'neutral-ws-data'
-    class_version = '20101012'
-    class_title = MSG(u'Website data folder')
-    class_views = ['manage_view', 'backlinks', 'commit_log']
-    class_schema = Folder.class_schema
-
-
-    __fixed_handlers__ = [SideBarAware.sidebar_name,
-                          'order-resources', # FIXME
-                          ContentBarAware.contentbar_name]
-
-
-    def init_resource(self, **kw):
-        # Initialize ikaaro website (Parent class)
-        Folder.init_resource(self, **kw)
-        # Sidebar Aware
-        SideBarAware.init_resource(self, **kw)
-        # ContentBar Aware
-        ContentBarAware.init_resource(self, **kw)
-
-
-    def get_internal_use_resource_names(self):
-        return freeze(self.__fixed_handlers__)
-
-
-    def get_document_types(self):
-        return [File, Folder]
-
-
-    def get_ordered_names(self, context=None):
-        return self.parent.get_ordered_names(context)
-
-    ##############
-    # Views
-    ##############
-    manage_view = WSDataFolder_ManageContent()
-    order_articles = GoToSpecificDocument(specific_document='order-resources',
-                                          title=MSG(u'Order Webpages'),
-                                          access='is_allowed_to_edit')
-    browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
-    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
-    backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
-
 
 ############################################################
 # Neutral Web Site
 ############################################################
 
-class NeutralWS(WebSite):
+class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
+    """
+    A neutral website is a website...
+    [1] Which allow to:
+       - Configure breadcrumb base title
+    [2] Which contains:
+       - A sitemap.xml
+       - An about itws webpage
+       - A footer
+       - A news folder
+       - A turning footer
+       - A tags folder
+       - A robots.txt
+       - A 404 webpage
+       - A folder with images
+    [3] Which is Website_BarAware (Contains a repository of boxes)
+    [4] With homepage that show 2 bars (HomePage_BarAware)
+    """
 
     class_id = 'neutral'
     class_version = '20101012'
@@ -137,29 +95,28 @@ class NeutralWS(WebSite):
 
 
     class_control_panel = (WebSite.class_control_panel +
-                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
-                            'edit_404', 'edit_robots_txt'])
+                          Website_BarAware.class_control_panel +
+                          HomePage_BarAware.class_control_panel +
+                          ['edit_tags', 'edit_footer', 'edit_turning_footer',
+                           'edit_404', 'edit_robots_txt', 'fo_switch_mode'])
 
-    __fixed_handlers__ = (WebSite.__fixed_handlers__
-                          + ['style', 'menu', 'about-itws',
-                             'footer', 'sitemap.xml', 'robots.txt',
-                             'repository', 'images', 'turning-footer',
-                             'tags', 'ws-data'])
+    __fixed_handlers__ = (WebSite.__fixed_handlers__ +
+                          Website_BarAware.__fixed_handlers__ +
+                          HomePage_BarAware.__fixed_handlers__ +
+                          ['about-itws', 'news', 'footer', 'sitemap.xml',
+                           'robots.txt', 'images', 'turning-footer', '404',
+                           'tags'])
 
-    #################
     # Configuration
-    #################
     class_theme = Theme
+    first_contenbar = 'data/welcome_on_itws.xhtml'
+    first_sidebar = 'data/first_sidebar.xhtml'
+
+    # Classes
     newsfolder_class = NewsFolder
     section_class = Section
     sitemap_class = SiteMap
     tagsfolder_class = TagsFolder
-    wsdatafolder_class = WSDataFolder
-    sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
-    contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
-    first_contenbar = 'data/welcome_on_itws.xhtml'
-    first_sidebar = 'data/first_sidebar.xhtml'
-
 
     def init_resource(self, **kw):
         kw['website_is_open'] = 'extranet'
@@ -167,13 +124,12 @@ class NeutralWS(WebSite):
         default_language = 'en'
         # Initialize ikaaro website (Parent class)
         WebSite.init_resource(self, **kw)
-        # Create repository
-        self.make_resource('repository', Repository)
+        # The website is BarAware
+        Website_BarAware.init_resource(self, **kw)
+        # The homepage is BarAware
+        HomePage_BarAware.init_resource(self, **kw)
         # Add a sitemap
         self.make_resource('sitemap.xml', self.sitemap_class)
-        # Create WsData container
-        self.make_resource('ws-data', self.wsdatafolder_class,
-                title={default_language: MSG(u'Configure Homepage').gettext()})
         # Create Robots.txt
         self.make_resource('robots.txt', RobotsTxt)
         # Add an image folder
@@ -183,11 +139,10 @@ class NeutralWS(WebSite):
         # Tags
         self.make_resource('tags', self.tagsfolder_class, language=default_language)
         # Add default news folder
-        if self.newsfolder_class:
-            self.make_resource('news', self.newsfolder_class)
+        self.make_resource('news', self.newsfolder_class)
         # About
         self.make_resource('about-itws', AboutITWS,
-                           title={'en': u'About ITWS'})
+                       title={default_language: MSG(u'About ITWS').gettext()})
         # Add 404 page
         self.make_resource('404', NotFoundPage)
 
@@ -364,9 +319,7 @@ class NeutralWS(WebSite):
     #######################################################################
 
     # Base views
-    view = NeutralWS_View()
     edit = NeutralWS_Edit()
-    fo_switch_mode = NeutralWS_FOSwitchMode()
     not_found = NotFoundPage_View()
     rss = last_news_rss = NeutralWS_RSS()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
@@ -379,34 +332,8 @@ class NeutralWS(WebSite):
     edit_turning_footer = CPManageTurningFooter()
     edit_404 = CPEdit404()
     edit_robots_txt = CPEditRobotsTXT()
+    fo_switch_mode = CPFOSwitchMode()
 
-    # Sidebar views
-    order_items = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        specific_document='ws-data/order-resources',
-        title=MSG(u'Order Webpages'))
-    order_contentbar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        specific_document=contentbar_name,
-        keep_query=True,
-        title=MSG(u'Order Central Part Boxes'))
-    order_sidebar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        specific_document=sidebar_name,
-        keep_query=True,
-        title=MSG(u'Order Sidebar Boxes'))
-
-    # New sidebar/contenbar resource
-    new_sidebar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-    new_contentbar_resource = AdvanceGoToSpecificDocument(
-            access='is_allowed_to_edit',
-            keep_query=True,
-            specific_document='%s/;add_box' % contentbar_name,
-            title=MSG(u'Add Central Part Box'))
 
 
     ###########################################
@@ -470,5 +397,4 @@ class NeutralWS(WebSite):
 # Register
 ############################################################
 register_resource_class(NeutralWS)
-register_resource_class(WSDataFolder)
 register_document_type(NeutralWS, WebSite.class_id)

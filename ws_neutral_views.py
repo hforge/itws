@@ -17,11 +17,8 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean
+from itools.database import PhraseQuery
 from itools.gettext import MSG
-from itools.uri import get_reference
-from itools.web import BaseView, STLView
-from itools.database import PhraseQuery, NotQuery, OrQuery, AndQuery
 
 # Import from ikaaro
 from ikaaro.autoform import TextWidget
@@ -29,14 +26,9 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
-from bar.base_views import ContentBar_View, SideBar_View
+from bar import Section
 from rss import BaseRSS
-from section import Section
 from tags import TagsAware
-from utils import set_navigation_mode_as_edition
-from utils import set_navigation_mode_as_navigation
-from views import BaseManageContent
-from views import BarAwareBoxAwareNewInstance
 
 
 
@@ -98,25 +90,6 @@ class NeutralWS_RSS(BaseRSS):
 
 
 
-class NeutralWS_BarAwareBoxAwareNewInstance(BarAwareBoxAwareNewInstance):
-
-    is_content = True
-    is_side = None
-
-    def _get_container(self, resource, context):
-        site_root = resource.get_site_root()
-        return site_root.get_resource('ws-data')
-
-
-
-class NeutralWS_ContentBar_View(ContentBar_View):
-
-    order_name = 'ws-data/order-contentbar'
-
-    def _get_repository(self, resource, context):
-        return resource.get_resource('ws-data')
-
-
 class NeutralWS_Edit(DBResource_Edit):
 
     def _get_widgets(self, resource, context):
@@ -127,70 +100,3 @@ class NeutralWS_Edit(DBResource_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            breadcrumb_title=Multilingual)
-
-
-class NeutralWS_View(STLView):
-
-    access = 'is_allowed_to_view'
-    title = MSG(u'Website View')
-    template = '/ui/common/Neutral_view.xml'
-
-    subviews = {'contentbar_view': NeutralWS_ContentBar_View(),
-                'sidebar_view':
-            SideBar_View(order_name='ws-data/order-sidebar')}
-
-    def get_subviews_value(self, resource, context, view_name):
-        view = self.subviews.get(view_name)
-        if view is None:
-            return None
-        return view.GET(resource, context)
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-
-        # Subviews
-        for view_name in self.subviews.keys():
-            namespace[view_name] = self.get_subviews_value(resource,
-                                                           context, view_name)
-
-        return namespace
-
-
-
-class NeutralWS_FOSwitchMode(BaseView):
-
-    access = 'is_allowed_to_edit'
-    query_schema = {'mode': Boolean(default=False)}
-
-    def GET(self, resource, context):
-        edit = context.query['mode']
-        if edit:
-            set_navigation_mode_as_edition(context)
-        else:
-            set_navigation_mode_as_navigation(context)
-
-        referer = context.get_referrer()
-        if referer:
-            # FIXME Check if referer is fo_switch_mode
-            goto = referer
-        else:
-            goto = '/'
-
-        return get_reference(goto)
-
-
-
-
-
-class WSDataFolder_ManageContent(BaseManageContent):
-
-    title = MSG(u'Manage Homepage')
-
-    def get_items(self, resource, context, *args):
-        path = str(resource.get_canonical_path())
-        excluded_names = resource.get_internal_use_resource_names()
-        query = [ PhraseQuery('parent_path', path),
-                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
-                                      for name in excluded_names ]))]
-        return context.root.search(AndQuery(*query))

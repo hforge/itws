@@ -15,10 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import thingy_property
+from itools.datatypes import Boolean
 from itools.gettext import MSG
+from itools.uri import get_reference
+from itools.web import BaseView, get_context
 
 # Import from ikaaro
 from ikaaro.folder_views import GoToSpecificDocument
+
+# Import from itws
+from utils import is_navigation_mode
 
 
 class CPEditTags(GoToSpecificDocument):
@@ -66,3 +73,36 @@ class CPEditRobotsTXT(GoToSpecificDocument):
     description = MSG(u'Edit robots.txt')
     specific_document = 'robots.txt'
     specific_view = 'edit'
+
+
+class CPFOSwitchMode(BaseView):
+
+    access = 'is_allowed_to_edit'
+    query_schema = {'mode': Boolean(default=False)}
+
+    title = MSG(u'Change mode')
+    icon = 'theme.png'
+
+    @thingy_property
+    def description(self):
+        context = get_context()
+        if is_navigation_mode(context):
+            return MSG(u'Go to edition mode')
+        return MSG(u'Go to navigation mode')
+
+
+    def GET(self, resource, context):
+        edit = context.query['mode']
+        if edit:
+            context.set_cookie('itws_fo_edit', '1')
+        else:
+            context.set_cookie('itws_fo_edit', '0')
+
+        referer = context.get_referrer()
+        if referer:
+            # FIXME Check if referer is fo_switch_mode
+            goto = referer
+        else:
+            goto = '/'
+
+        return get_reference(goto)

@@ -22,7 +22,6 @@
 from itools.core import freeze
 from itools.datatypes import String
 from itools.gettext import MSG
-from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.folder import Folder
@@ -34,18 +33,18 @@ from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
 
 # Import from itws
-from bar import SideBarAware, ContentBarAware, ContentBoxSectionChildrenToc
+from bar_aware import SideBarAware, ContentBarAware
 from section_views import Section_ManageContent
-from section_views import Section_Edit, Section_View
+from section_views import Section_View
 from section_views import Section_AddContent
-from views import SmartOrderedTable_View
-from webpage import WebPage
+from toc import ContentBoxSectionChildrenToc
+from itws.webpage import WebPage
 
 
 
 ################
 # Order tables #
-###########################################################################
+################
 
 class SectionOrderedTableFile(OrderedTableFile):
 
@@ -61,30 +60,6 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_views = ['view', 'manage_view']
     class_handler = SectionOrderedTableFile
 
-    view = SmartOrderedTable_View(title=MSG(u'View'))
-
-    # Order view title & description configuration
-    @property
-    def ordered_view_title(self):
-        section = get_context().resource.parent
-        msg = MSG(u'Order Webpages and Sub-sections in "{name}" TOC')
-        return msg.gettext(name=section.get_title())
-
-
-    @property
-    def ordered_view_title_description(self):
-        section = get_context().resource.parent
-        msg = MSG(u'You can select and order these webpages and subsections, '
-                  u'to make them accessible in the "{name}" section '
-                  u'Table Of Content (TOC)')
-        return msg.gettext(name=section.get_title())
-
-
-    unordered_view_title = MSG(u'Available Sections and Webpages')
-    unordered_view_title_description = MSG(
-            u'These Subsections/Webpages are available, '
-            u'you can make them visible in this section '
-            u'by adding them to the section TOC')
 
     def get_orderable_classes(self):
         # Orderable classes should be
@@ -213,7 +188,6 @@ class Section(SideBarAware, ContentBarAware,
 
     # Views
     view = Section_View()
-    edit = Section_Edit()
     manage_content = Section_ManageContent()
     add_content = Section_AddContent()
     order_items = GoToSpecificDocument(specific_document='order-section',

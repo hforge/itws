@@ -37,7 +37,9 @@ class WebPage(BaseWebPage, TagsAware):
       - Allow to configure if we display title or not
     """
 
-    # TODO: When publish webpage add a mechanism to check public pages
+    # XXX Migration: When publish webpage add a mechanism to check public pages
+    # XXX Migration: Add a mechanism in ikaaro that allow to configure RTE WIDGET easily
+    #                Here we have to use the advance RTEWIDGET (widgets/base.py)
     # XXX We override ikaaro class_id
 
     class_id = 'webpage'

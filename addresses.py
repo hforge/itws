@@ -31,7 +31,7 @@ from ikaaro.webpage import WebPage
 # Import from itws
 from addresses_views import AddressItem_Edit
 from addresses_views import Addresses_View
-from datatypes import OpenLayerRender
+from addresses_views import OpenLayerRender
 
 
 

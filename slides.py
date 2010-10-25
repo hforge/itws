@@ -42,7 +42,7 @@ from ikaaro.webpage import WebPage
 # Import from itws
 from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from slides_views import SlideShow_Edit, Slide_Edit, Slide_View
-from slides_views import SlideShow_ManageView, SlideTemplateType
+from slides_views import SlideShow_BrowseContent, SlideTemplateType
 from tags import TagsAware
 from utils import get_path_and_view
 
@@ -197,7 +197,7 @@ class SlideShow(ResourcesOrderedContainer):
     class_description = MSG(u'Slideshow allows to create and organize slides')
     class_icon16 = 'slideshow/icons/16x16/slideshow.png'
     class_icon48 = 'slideshow/icons/48x48/slideshow.png'
-    class_views = ['manage_view', 'view', 'edit', 'order']
+    class_views = ['new_resource', 'manage_view', 'view', 'edit', 'order']
     class_schema = merge_dicts(ResourcesOrderedContainer.class_schema,
                    long_title=Unicode(source='metadata'),
                    image=ImagePathDataType(source='metadata'),
@@ -212,7 +212,7 @@ class SlideShow(ResourcesOrderedContainer):
     slide_class = Slide
 
     # Views
-    manage_view = SlideShow_ManageView()
+    manage_view = SlideShow_BrowseContent()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     view = GoToFirstOrderedResource()

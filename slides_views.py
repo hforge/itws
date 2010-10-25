@@ -28,7 +28,6 @@ from itools.database import PhraseQuery, AndQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.buttons import Button
 from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import ImageSelectorWidget, PathSelectorWidget, TextWidget
@@ -37,7 +36,6 @@ from ikaaro.autoform import stl_namespaces
 from ikaaro.autoform import title_widget, subject_widget
 from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.views import CompositeForm
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
@@ -45,7 +43,6 @@ from datatypes import PositiveIntegerNotNull, ImagePathDataType
 from datatypes import StateEnumerate
 from tags.tags_views import TagsAware_Edit
 from utils import get_warn_referenced_message, state_widget
-from views import ProxyContainerNewInstance
 
 
 
@@ -358,51 +355,3 @@ class SlideShow_BrowseContent(Folder_BrowseContent):
         query = AndQuery(*query)
 
         return context.root.search(query)
-
-
-
-class SlideShow_SlideNewInstance(ProxyContainerNewInstance):
-
-    actions = [Button(access='is_allowed_to_edit',
-                      name='new_slide', title=MSG(u'Add'))]
-
-    def _get_resource_cls(self, resource, context):
-        here = context.resource
-        return here.slide_class
-
-
-    def _get_container(self, resource, context):
-        return resource
-
-
-    def _get_goto(self, resource, context, form):
-        name = form['name']
-        # Assume that the resource already exists
-        container = self._get_container(resource, context)
-        child = container.get_resource(name)
-        return '%s/;edit' % context.get_link(child)
-
-
-    def action_new_slide(self, resource, context, form):
-        return ProxyContainerNewInstance.action_default(self, resource,
-                context, form)
-
-
-
-class SlideShow_ManageView(CompositeForm):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Manage Slideshow')
-
-    subviews = [ SlideShow_SlideNewInstance(),
-                 SlideShow_BrowseContent() ]
-
-
-    def _get_form(self, resource, context):
-        for view in self.subviews:
-            method = getattr(view, context.form_action, None)
-            if method is not None:
-                form_method = getattr(view, '_get_form')
-                return form_method(resource, context)
-        return None
-

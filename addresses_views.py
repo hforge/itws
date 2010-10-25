@@ -19,7 +19,7 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Decimal, Integer, String, Unicode
+from itools.datatypes import Decimal, Enumerate, Integer, String, Unicode
 from itools.gettext import MSG
 from itools.stl import set_prefix
 from itools.web import STLView
@@ -31,10 +31,14 @@ from ikaaro.webpage import HTMLEditView
 from ikaaro.workflow import get_workflow_preview
 
 # Import from packages
-from datatypes import OpenLayerRender
 from widgets import GoogleMapWidget, GoogleGPSWidget
 from widgets import OpenStreetMapWidget, OpenStreetMapGPSWidget
 
+
+class OpenLayerRender(Enumerate):
+
+    options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
+               {'name': 'google', 'value': MSG(u'Google Map')}]
 
 
 class Addresses_View(STLView):

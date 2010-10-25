@@ -29,9 +29,7 @@ from itools.xml import XMLParser
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import stl_namespaces, SelectWidget
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
-
-# Import from itws
-from itws.views import SmartOrderedTable_Ordered, SmartOrderedTable_Unordered
+from ikaaro.future.order import ResourcesOrderedTable_Unordered
 
 
 
@@ -84,7 +82,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
 
 
 
-class BoxesOrderedTable_Ordered(SmartOrderedTable_Ordered):
+class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
     columns = [('checkbox', None),
                ('title', MSG(u'Title'), False)]
@@ -105,7 +103,7 @@ class BoxesOrderedTable_Ordered(SmartOrderedTable_Ordered):
 
 
 
-class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
+class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
     query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
                                batch_size=Integer(default=0),
@@ -117,7 +115,7 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
     def get_items_query(self, resource, context):
-        query = SmartOrderedTable_Unordered.get_items_query(self, resource, context)
+        query = ResourcesOrderedTable_Unordered.get_items_query(self, resource, context)
         # Add format filter
         format = context.query['format']
         if format:
@@ -127,7 +125,7 @@ class BoxesOrderedTable_Unordered(SmartOrderedTable_Unordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = SmartOrderedTable_Unordered.get_table_columns(self, resource,
+        columns = ResourcesOrderedTable_Unordered.get_table_columns(self, resource,
                                                                 context)
 
         columns = list(columns) # create a new list

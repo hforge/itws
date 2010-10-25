@@ -17,15 +17,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Integer, Enumerate, String, PathDataType, Time
-from itools.gettext import MSG
+from itools.datatypes import Integer, Enumerate, PathDataType, Time
 from itools.uri import get_reference
 from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import Image
-from ikaaro.registry import get_document_types
-from ikaaro.workflow import WorkflowAware
 
 
 
@@ -45,33 +42,7 @@ class PositiveIntegerNotNull(Integer):
 
 
 
-class MultilingualString(String):
-
-    @staticmethod
-    def is_empty(value):
-        """This is used by the multilingual code"""
-        return value == ''
-
-
-
-class TagsAwareClassEnumerate(Enumerate):
-
-    @classmethod
-    def get_options(cls):
-        # Import from itws
-        from tags import TagsAware
-
-        options = []
-        _classes = get_document_types(TagsAware.class_id)
-        for _cls in _classes:
-            title = _cls.class_title.gettext()
-            options.append({'name': _cls.class_id,
-                            'value': title.encode('utf-8')})
-        options.sort(lambda x, y: cmp(x['value'], y['value']))
-        return options
-
-
-
+# XXX Should be done automaticaly with a register K2 skin mechanism !
 class NeutralClassSkin(Enumerate):
 
     options = [{'name': '/ui/neutral', 'value': u'Neutral'},
@@ -80,6 +51,7 @@ class NeutralClassSkin(Enumerate):
 
 
 
+# XXX Migration ==> Should be in ikaaro ?
 class StateEnumerate(Enumerate):
 
     default = ''
@@ -112,23 +84,6 @@ class StateEnumerate(Enumerate):
 
 
 
-class StaticStateEnumerate(Enumerate):
-
-    workflow = WorkflowAware.workflow
-
-    def get_options(cls):
-        states = cls.workflow.states
-
-        # Options
-        options = [
-           {'name': x, 'value': states[x].metadata['title'].gettext()}
-           for x in states.keys() ]
-
-        options.sort(key=lambda x: x['value'])
-        return options
-
-
-
 class ImagePathDataType(PathDataType):
 
     @staticmethod
@@ -143,22 +98,6 @@ class ImagePathDataType(PathDataType):
         except Exception, e:
             return False
         return False
-
-
-
-class OrderBoxEnumerate(Enumerate):
-
-    options = [{'name': 'do-not-order',
-                'value': MSG(u"Do not order (won't be displayed)")},
-               {'name': 'order-top', 'value': MSG(u'Order top')},
-               {'name': 'order-bottom', 'value': MSG(u'Order bottom')}]
-
-
-
-class OpenLayerRender(Enumerate):
-
-    options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
-               {'name': 'google', 'value': MSG(u'Google Map')}]
 
 
 
