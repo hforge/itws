@@ -24,7 +24,7 @@ function show_more_news(link) {
 
 /* Admin bar */
 $(document).ready(function() {
-  $(".admin-icons-bar a[rel='fancybox']").click(function(e){
+  $(".fancybox-buttons a[rel='fancybox']").click(function(e){
     $.fancybox(
       {'type': 'iframe',
        'transitionIn': 'none',

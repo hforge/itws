@@ -120,7 +120,7 @@ state_widget = SelectWidget('state', title=MSG(u'State'),
 ############################################################
 
 admin_bar_template = list(XMLParser("""
-  <div class="admin-bar">
+  <div class="fancybox-buttons admin-bar">
     <a href="${link}" title="${title}" rel="${rel}">
       <img src="/ui/icons/16x16/edit.png"/>
       <strong stl:if="workflow" class="wf-${workflow/state}">
@@ -131,7 +131,7 @@ admin_bar_template = list(XMLParser("""
   """, stl_namespaces))
 
 admin_bar_icon_template = list(XMLParser("""
-  <div class="admin-icons-bar" stl:if="buttons">
+  <div class="fancybox-buttons admin-icons-bar" stl:if="buttons">
     <div class="box-content">
       <table>
         <tr>
