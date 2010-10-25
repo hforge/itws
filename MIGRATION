@@ -1,0 +1,61 @@
+TODO
+============================================================
+
+* Search [$ git grep XXX |grep migration]
+* Move old documentation for restedit in ikaaro
+* Move 'detar archive' in ikaaro
+* Move "Add file with state" in ikaro
+* Rewrite "Add file without fill name"
+* Clean utils.py
+* Transform addresses_views into a bar mechasmin (see more details bellow)
+* Migration of slides (see more details bellow)
+* Finish to clean Sidebar/Contenbar (see more details bellow)
+
+
+
+Transform addresses_views into a bar mechasmin
+=============================================================
+
+For me, we should delete addresses and addresses_views.py
+We should replace it by a section with 2 boxes:
+  - 1 html
+  - 1 map box.
+So ===>  1 address = 1 HTML item + 1 widget map.
+The address resource is too specific and it's strange to be allowed
+to add an addresses folder as a basic type of ressource.
+Moreover it's would be more flexible in rendering of widget to do it
+with boxes.
+
+Migration of slides
+==============================================
+
+Slides are too complex.
+We have to simplify and clean it.
+Do not use composite view.
+
+We have to reflex about what is a slideshow ?
+Maybe it's just a section with a TOC.
+For me this object is too specific and complex (as addresses_views)
+
+
+Finish to clean Sidebar/Contenbar
+==============================================================
+
+
+
+
+Documentation
+============================================
+
+Skins
+----------------
+
+Skins has been moved on skins and skins_views (has it's made in ikaaro)
+
+
+Skins templates
+-----------------
+
+-  <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}"
+-        type="${favicon_type}" />
++  <link rel="shortcut icon" href="${favicon_href}" type="${favicon_type}" />
