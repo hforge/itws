@@ -69,7 +69,7 @@ class NewsItem(WebPage):
 
 
     class_schema = merge_dicts(WebPage.class_schema,
-             long_title=Multilingual(source='metatada'),
+             long_title=Multilingual(source='metadata'),
              thumbnail=PathDataType(source='metadata', multilingual=True,
                                     parameters_schema={'lang': String}))
 
