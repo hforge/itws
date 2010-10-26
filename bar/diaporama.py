@@ -32,7 +32,6 @@ from ikaaro.file import Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Target
-from ikaaro.registry import register_resource_class
 from ikaaro.table import Table
 
 # Import from itws
@@ -232,9 +231,3 @@ class Diaporama(BoxAware, Folder):
     view = Diaporama_View()
     edit = GoToSpecificDocument(specific_document='order-banners',
                                 title=MSG(u'Edit'))
-
-
-
-
-register_resource_class(Diaporama)
-register_resource_class(DiaporamaTable)

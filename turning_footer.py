@@ -32,7 +32,6 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
-from ikaaro.registry import register_resource_class
 from ikaaro.table import OrderedTableFile, OrderedTable
 
 # Import from itws
@@ -165,12 +164,3 @@ class TurningFooterFolder(Folder):
     edit = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit'))
     configure = AutomaticEditView(title=MSG(u'Configure'))
-
-
-
-
-###########################################################################
-# Register
-###########################################################################
-register_resource_class(TurningFooterTable)
-register_resource_class(TurningFooterFolder)

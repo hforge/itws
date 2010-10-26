@@ -31,7 +31,6 @@ from base_views import Box_View, Box_Preview
 #from toc import ContentBoxSectionNews_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsList
-from itws.views import AutomaticEditView
 from itws.utils import to_box
 from itws.widgets import DualSelectWidget
 

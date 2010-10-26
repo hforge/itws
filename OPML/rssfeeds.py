@@ -48,7 +48,6 @@ from itools.xml import XMLParser, stream_to_str, XMLError
 # Import from ikaaro
 from ikaaro.buttons import Button
 from ikaaro.autoform import RadioWidget, TextWidget
-from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
 from ikaaro.text import CSV
 from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
@@ -501,7 +500,6 @@ class RssFeeds(CSV):
 
 
 
-register_resource_class(RssFeeds)
 # Register skin
 path = get_abspath('ui/rssfeeds')
 register_skin('rssfeeds', path)

@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from ikaaro
-from ikaaro.registry import register_resource_class
 from ikaaro.root import Root as BaseRoot
 
 
@@ -27,7 +26,3 @@ class Root(BaseRoot):
     """Useful to run icms-update.py -r itws"""
 
     class_id = 'itws'
-
-
-
-register_resource_class(Root)

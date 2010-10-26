@@ -24,7 +24,6 @@ from ikaaro.file_views import File_NewInstance
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.messages import MSG_NEW_RESOURCE
-from ikaaro.registry import register_resource_class
 from ikaaro.views import CompositeForm
 
 
@@ -67,8 +66,3 @@ class ImagesFolder(Folder):
 
     def get_document_types(self):
         return [ File, type(self) ]
-
-
-
-# Register
-register_resource_class(ImagesFolder)

@@ -27,7 +27,6 @@ from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
-from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import EditLanguageMenu
 from ikaaro.table import Table_AddRecord
 from ikaaro.table_views import OrderedTable_View
@@ -178,9 +177,3 @@ class MenuSideBar(BoxAware, MenuFolder):
     edit = AdvanceGoToSpecificDocument(
             specific_document='menu', specific_method='edit',
             title=MenuFolder.edit.title, keep_query=True)
-
-
-
-
-register_resource_class(MenuSideBar)
-register_resource_class(MenuSideBarTable)

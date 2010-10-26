@@ -24,7 +24,6 @@ from itools.gettext import MSG
 # Import from ikaaro
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
 from ikaaro.webpage import WebPage
 
@@ -83,8 +82,6 @@ class AddressesFolder(Folder):
 
 
 
-register_resource_class(AddressItem)
-register_resource_class(AddressesFolder)
 # Register skin
 path = get_abspath('ui/addresses')
 register_skin('addresses', path)

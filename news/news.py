@@ -36,7 +36,6 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.autoform import TextWidget
 from ikaaro.registry import register_document_type
-from ikaaro.registry import register_resource_class
 from ikaaro.skins import register_skin
 
 # Import from itws
@@ -310,8 +309,6 @@ class NewsFolder(SideBarAware, Folder):
 
 
 # Register
-register_resource_class(NewsItem)
-register_resource_class(NewsFolder)
 register_document_type(NewsItem, TagsAware.class_id)
 
 # Register skin

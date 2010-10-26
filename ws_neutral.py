@@ -37,7 +37,7 @@ from itools.database import AndQuery, PhraseQuery
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
-from ikaaro.registry import register_resource_class, register_document_type
+from ikaaro.registry import register_document_type
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
@@ -396,5 +396,4 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 ############################################################
 # Register
 ############################################################
-register_resource_class(NeutralWS)
 register_document_type(NeutralWS, WebSite.class_id)

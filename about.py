@@ -24,7 +24,6 @@ from itools.web import STLView
 from ikaaro.skins import register_skin, Skin
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.registry import register_resource_class
 
 
 
@@ -55,5 +54,4 @@ class AboutITWS(Folder):
 
 
 # Register
-register_resource_class(AboutITWS)
 register_skin('about', Skin(get_abspath('ui/about')))

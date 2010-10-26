@@ -36,7 +36,7 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.future.order import ResourcesOrderedContainer
 from ikaaro.future.order import GoToFirstOrderedResource, GoToOrderedTable
-from ikaaro.registry import register_resource_class, register_document_type
+from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 from ikaaro.webpage import WebPage
 
@@ -288,9 +288,6 @@ class SlideShow(ResourcesOrderedContainer):
 
 
 
-register_resource_class(Slide)
-register_resource_class(SlideShow)
-register_resource_class(Slides_OrderedTable)
 register_document_type(Slide, TagsAware.class_id)
 
 # Register skin

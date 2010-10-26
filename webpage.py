@@ -82,6 +82,5 @@ class WebPage(BaseWebPage, TagsAware):
 
 
 
-register_resource_class(WebPage)
 register_resource_class(WebPage, format='application/xhtml+xml')
 register_document_type(WebPage, TagsAware.class_id)

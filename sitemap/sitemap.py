@@ -25,7 +25,6 @@ from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder
-from ikaaro.registry import register_resource_class
 from ikaaro.utils import get_base_path_query
 
 
@@ -177,6 +176,3 @@ class SiteMap(Folder):
 
     view = SiteMapView()
 
-
-
-register_resource_class(SiteMap)

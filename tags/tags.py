@@ -30,7 +30,6 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.multilingual import Multilingual
-from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import reduce_string
@@ -290,7 +289,3 @@ class TagsAware(object):
 
     def update_relative_links(self, source, target):
         pass
-
-
-register_resource_class(TagsFolder)
-register_resource_class(Tag)

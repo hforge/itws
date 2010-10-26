@@ -25,7 +25,6 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.autoform import SelectWidget, HTMLBody
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
-from ikaaro.registry import register_resource_class
 
 # Import from itws
 from widgets import XMLTitleWidget
@@ -79,9 +78,3 @@ class FooterFolder(MenuFolder):
 
     def get_admin_edit_link(self, context):
         return context.get_link(self.get_resource('menu'))
-
-
-
-
-register_resource_class(FooterFolder)
-register_resource_class(FooterMenu)

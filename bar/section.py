@@ -29,7 +29,6 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
-from ikaaro.registry import register_resource_class
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
 
@@ -196,8 +195,3 @@ class Section(SideBarAware, ContentBarAware,
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
-
-
-
-register_resource_class(Section)
-register_resource_class(SectionOrderedTable)

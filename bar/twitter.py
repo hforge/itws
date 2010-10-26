@@ -35,7 +35,6 @@ from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
 from ikaaro.autoform import TextWidget, CheckboxWidget
-from ikaaro.registry import register_resource_class
 
 # Import from itws
 from base import Box
@@ -328,8 +327,3 @@ class IdenticaSideBar(TwitterSideBar):
 
     def _get_data_from_item(self, item):
         return list(self._transform_links(item['title']))
-
-
-
-register_resource_class(IdenticaSideBar)
-register_resource_class(TwitterSideBar)
