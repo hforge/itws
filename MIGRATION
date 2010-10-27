@@ -10,6 +10,8 @@ TODO
 * Transform addresses_views into a bar mechasmin (see more details bellow)
 * Migration of slides (see more details bellow)
 * Finish to clean Sidebar/Contenbar (see more details bellow)
+* Test all boxes from sidebar/contentbar
+* Implement new AutomaticEditView (see more details bellow)
 
 
 
@@ -41,7 +43,20 @@ For me this object is too specific and complex (as addresses_views)
 Finish to clean Sidebar/Contenbar
 ==============================================================
 
+Clean API Names. There are misunderstood between boxes/bar/...
+Add mechanism to easily add boxes add boxes at the creation of
+homepage / section.
 
+
+Implement new AutomaticEditView (see more details bellow)
+============================================================
+
+Since ikaaro 0.62 edit view has been improved,
+we can implement an easier mechanism in AutomaticeditView with 0.62.
+Fox example:
+
+class_schema = merge_dicts(title=Unicode(source='metadata', editable=True),
+                           description=Unicode(source='metadata', editable=True))
 
 
 Documentation
