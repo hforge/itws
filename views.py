@@ -64,8 +64,7 @@ from ikaaro.workflow import WorkflowAware
 from datatypes import StateEnumerate, StaticStateEnumerate, OrderBoxEnumerate
 from utils import set_prefix_with_hostname, state_widget
 from utils import get_warn_referenced_message
-
-
+from edit_area import EditArea_Edit_View
 
 ############################################################
 # NewInstance
@@ -813,8 +812,8 @@ class CSS_Edit(Text_Edit):
 
 
 
-CSS.edit = CSS_Edit()
-
+#CSS.edit = CSS_Edit()
+CSS.edit = EditArea_Edit_View()
 
 ############################################################
 # Table
