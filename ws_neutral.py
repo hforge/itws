@@ -43,17 +43,18 @@ from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
+from OPML import RssFeeds
 from about import AboutITWS
 from addresses import AddressesFolder
 from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
-from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
+from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
+from footer import FooterFolder
 from images_folder import ImagesFolder
 from news import NewsFolder
-from OPML import RssFeeds
-from footer import FooterFolder
-from robots_txt import RobotsTxt
 from notfoundpage import NotFoundPage
+from notfoundpage import NotFoundPage_View
+from robots_txt import RobotsTxt
 from sitemap import SiteMap
 from slides import SlideShow
 from tags import TagsFolder
@@ -61,7 +62,6 @@ from theme import Theme
 from turning_footer import TurningFooterFolder
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
-from website_errors_pages import NotFoundPage_View
 
 ############################################################
 # Neutral Web Site

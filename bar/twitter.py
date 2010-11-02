@@ -133,7 +133,7 @@ class TwitterSideBar(Box, ResourceWithCache):
              user_id=TwitterID(source='metadata'),
              user_name=String(source='metadata'),
              limit=Integer(source='metadata', default=5),
-             force_update=Boolean)
+             force_update=Boolean(source='metadata'))
 
     # Item configuration
 
@@ -286,7 +286,7 @@ class IdenticaSideBar(TwitterSideBar):
     class_schema = merge_dicts(Box.class_schema,
              user_name=IndenticaName(source='metadata'),
              limit=Integer(source='metadata', mandatory=True, default=5, size=3),
-             force_update=Boolean)
+             force_update=Boolean(source='metadata'))
     # identica icons source: http://status.net/
 
     # Item configuration

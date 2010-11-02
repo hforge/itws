@@ -31,11 +31,12 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
+from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
-from ikaaro.future.order import ResourcesOrderedTable
-from ikaaro.future.order import ResourcesOrderedContainer
 from ikaaro.future.order import GoToFirstOrderedResource, GoToOrderedTable
+from ikaaro.future.order import ResourcesOrderedContainer
+from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 from ikaaro.webpage import WebPage
@@ -60,7 +61,7 @@ class Slide(TagsAware, WebPage):
 
     class_schema = merge_dicts(WebPage.class_schema,
                        TagsAware.class_schema,
-                       long_title=Unicode(source='metadata'),
+                       long_title=Multilingual(source='metadata'),
                        image=ImagePathDataType(source='metadata'),
                        template_type=SlideTemplateType(source='metadata', default=''),
                        href=String(source='metadata'))
@@ -200,7 +201,7 @@ class SlideShow(ResourcesOrderedContainer):
     class_icon48 = 'slideshow/icons/48x48/slideshow.png'
     class_views = ['new_resource', 'manage_view', 'view', 'edit', 'order']
     class_schema = merge_dicts(ResourcesOrderedContainer.class_schema,
-                   long_title=Unicode(source='metadata'),
+                   long_title=Multilingual(source='metadata'),
                    image=ImagePathDataType(source='metadata'),
                    toc_nb_col=PositiveIntegerNotNull(source='metadata', default=2),
                    template_type=SlideTemplateType(source='metadata', default='1'))

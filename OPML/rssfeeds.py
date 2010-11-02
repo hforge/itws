@@ -272,8 +272,8 @@ class RssFeeds(CSV):
     class_views = ['view', 'edit', 'add_row', 'configure']
     class_handler = RssFeedsFile
     class_schema = merge_dicts(CSV.class_schema,
-                               TTL=Integer(default=15),
-                               timeout=Decimal(default=1.0))
+                               TTL=Integer(source='metadata', default=15),
+                               timeout=Decimal(source='metadata', default=1.0))
 
     # Views
     new_instance = NewInstance()
