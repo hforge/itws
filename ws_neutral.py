@@ -52,7 +52,6 @@ from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
 from footer import FooterFolder
 from images_folder import ImagesFolder
 from news import NewsFolder
-from notfoundpage import NotFoundPage
 from notfoundpage import NotFoundPage_View
 from robots_txt import RobotsTxt
 from sitemap import SiteMap
@@ -143,8 +142,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         # About
         self.make_resource('about-itws', AboutITWS,
                        title={default_language: MSG(u'About ITWS').gettext()})
-        # Add 404 page
-        self.make_resource('404', NotFoundPage)
 
         # Add link to news in menu
         theme = self.get_resource('theme')
@@ -339,6 +336,11 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     ###########################################
     # Upgrade to 0.62
     ###########################################
+    def update_20100701(self):
+        # Fix website vhosts
+        WebSite.update_20100430(self)
+
+
     def update_20100702(self):
         # Add theme
         theme = self.get_resource('theme', soft=True)
@@ -350,10 +352,25 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         theme = self.make_resource('theme', class_theme, title={'en': u'Theme'})
 
 
+    # Move old root data inside the theme folder
     def update_20100703(self):
         # Del old menu
         theme = self.get_resource('theme')
         theme.del_resource('menu')
+
+        languages = self.get_property('website_languages')
+        # Move 404 page
+        source = self.get_resource('404', soft=True)
+        if source:
+            target = self.get_resource('theme/404')
+            for language in languages:
+                handler_source = source.get_handler(language)
+                handler_target = target.get_handler(language)
+                handler_target.load_state_from_string(handler_source.to_str())
+                handler_target.set_changed()
+            target._on_move_resource(str(source.get_abspath()))
+        # delete old 404
+        self.del_resource('404', ref_action='force')
 
 
     def update_20100704(self):

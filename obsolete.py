@@ -42,7 +42,6 @@ class Old_NeutralWS(NeutralWS):
     """Hook class_schema"""
     # FIXME To remove during the update
     class_schema = merge_dicts(NeutralWS.class_schema,
-                               {'google-site-verification': String(source='metadata')},
                                banner_path=String(source='metadata', multilingual=True,
                                                   parameters_schema={'lang': String}),
                                class_skin=String(source='metadata'),

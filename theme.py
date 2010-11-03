@@ -31,6 +31,8 @@ from ikaaro.theme import Theme as BaseTheme
 
 # Import from itws
 from datatypes import NeutralClassSkin
+from notfoundpage import NotFoundPage
+
 
 
 class Theme_Edit(DBResource_Edit):
@@ -97,6 +99,8 @@ class Theme(BaseTheme):
         style = self.get_resource('style')
         style.handler.load_state_from_string(body)
         style.handler.set_changed()
+        # Custom 404
+        self.make_resource('404', NotFoundPage)
 
 
     # Views

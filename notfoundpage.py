@@ -31,7 +31,7 @@ from ikaaro.website import NotFoundView as BaseNotFoundView
 
 class NotFoundPage_View(BaseNotFoundView):
 
-    not_found_template = '404'
+    not_found_template = 'theme/404'
 
     def get_template(self, resource, context):
         site_root = resource.get_site_root()

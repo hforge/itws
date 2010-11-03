@@ -62,7 +62,8 @@ class CPEdit404(GoToSpecificDocument):
     title = MSG(u'404')
     icon = 'theme.png'
     description = MSG(u'Edit 404')
-    specific_document = '404'
+    specific_document = 'theme/404'
+    specific_view = 'edit'
 
 
 class CPEditRobotsTXT(GoToSpecificDocument):

@@ -367,14 +367,16 @@ class Skin(BaseSkin):
             namespace['nav'] = stl(nav_template, {'items': nav['items']})
 
         # Footer
-        footer_template = self.footer_data['template']
-        if footer_template is not None:
-            ns_footer = self.build_footer_namespace(context)
-            footer = None
-            if len(ns_footer['items']):
-                footer_template = self.get_resource(footer_template)
-                footer = stl(footer_template, ns_footer)
-            namespace['footer'] = footer
+        # XXX Migration
+        namespace['footer'] = None
+        #footer_template = self.footer_data['template']
+        #if footer_template is not None:
+        #    ns_footer = self.build_footer_namespace(context)
+        #    footer = None
+        #    if len(ns_footer['items']):
+        #        footer_template = self.get_resource(footer_template)
+        #        footer = stl(footer_template, ns_footer)
+        #    namespace['footer'] = footer
 
         # Hide context menus if no user authenticated
         if context.user is None:
