@@ -103,8 +103,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
                           Website_BarAware.__fixed_handlers__ +
                           HomePage_BarAware.__fixed_handlers__ +
                           ['about-itws', 'news', 'footer', 'sitemap.xml',
-                           'robots.txt', 'images', 'turning-footer', '404',
-                           'tags'])
+                           'robots.txt', 'images', 'turning-footer', 'tags'])
 
     # Configuration
     class_theme = Theme
@@ -211,7 +210,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     def get_internal_use_resource_names(self):
         names = list(self.menus) + list(self.footers)
-        names += ['404', 'repository', 'robots.txt', 'sitemap.xml', 'style',
+        names += ['repository', 'robots.txt', 'sitemap.xml',
                   'tags', 'turning-footer', 'ws-data']
         return freeze(names)
 
