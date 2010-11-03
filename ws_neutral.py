@@ -392,6 +392,20 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
             self.del_property(key)
 
 
+    def update_20100706(self):
+        """Fix user property"""
+        from ikaaro.user import User
+        users = self.get_resource('users')
+
+        class_schema_keys = User.class_schema.keys()
+        set_class_schema_keys = set(class_schema_keys)
+        for user in users.search_resources(cls=User):
+            property_keys = user.metadata.properties.keys()
+            diff = set(property_keys).difference(set_class_schema_keys)
+            for key in diff:
+                user.del_property(key)
+
+
 
 ############################################################
 # Register

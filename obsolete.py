@@ -54,6 +54,26 @@ class Old_NeutralWS(NeutralWS):
                                )
 
 
+    def update_20100707(self):
+        """Remove obsolete properties"""
+        # itws.bar.section.SectionOrderedTable
+        from bar.repository import SidebarBoxesOrderedTable
+        from bar.section import SectionOrderedTable
+        from slides import Slides_OrderedTable
+
+        # Remove order property
+        order_cls_ids = [SectionOrderedTable.class_id,
+                         SidebarBoxesOrderedTable.class_id,
+                         Slides_OrderedTable.class_id]
+
+        for resource in self.traverse_resources():
+            # Delete order property
+            if resource.metadata.format in order_cls_ids:
+                resource.del_property('order')
+                continue
+
+
+
 ###########################
 # Bar/Section
 ###########################
@@ -98,8 +118,8 @@ class OldUser(User):
 
 # itws-tracker
 # itws-issue
-# assigned_to_excluded_roles #==> included_roles_assigned_to
-# cc_excluded_roles #===> included_roles_cc
+# assigned_to_excluded_roles #==> ikaaro.Tracker.included_roles
+# cc_excluded_roles #===> ikaaro.Tracker.included_roles
 
 class Old_TrackerCalendar(File):
     """Hook class_schema"""
@@ -117,6 +137,7 @@ class Old_Tracker(Tracker):
     class_schema = merge_dicts(Tracker.class_schema,
                                assigned_to_excluded_roles=String(source='metadata'),
                                cc_excluded_roles=String(source='metadata'))
+
 
     def update_20100429(self):
         # Do parent
@@ -136,20 +157,19 @@ class Old_Tracker(Tracker):
                     included_roles.append(x['name'])
         self.set_property('included_roles', tuple(included_roles))
 
+        # OldIssue -> Issue
+        issue_class = self.issue_class
+
+        for issue in self.search_resources(cls=Old_Issue):
+            metadata = issue.metadata
+            metadata.format = issue_class.class_id
+            metadata.version = issue_class.class_version
+            metadata.set_changed()
 
 
 class Old_Issue(Folder):
     class_id = 'itws-issue'
-    class_version = '20101108'
-
-    def update_20101108(self):
-        metadata = self.metadata
-        metadata.format = 'issue'
-        metadata.set_changed()
-
-class New_Issue(Issue):
-    class_id = 'issue'
-    class_version = '20101108'
+    class_version = '20071216'
 
 
 
@@ -158,12 +178,6 @@ class New_Issue(Issue):
 ################################
 class FavIcon(Image):
     class_id = 'favicon'
-
-    @classmethod
-    def get_metadata_schema(cls):
-        schema = Image.get_metadata_schema()
-        schema['state'] = String(default='public')
-        return schema
 
 
 
@@ -174,5 +188,4 @@ register_resource_class(OldSectionOrderedTable)
 register_resource_class(OldSidebarBoxesOrderedTable)
 register_resource_class(Old_Tracker)
 register_resource_class(Old_Issue)
-register_resource_class(New_Issue)
 register_resource_class(Old_TrackerCalendar)
