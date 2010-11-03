@@ -354,9 +354,10 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     # Move old root data inside the theme folder
     def update_20100703(self):
-        # Del old menu
+        # Del default menu and css
         theme = self.get_resource('theme')
-        theme.del_resource('menu')
+        theme.del_resource('menu', ref_action='force')
+        theme.del_resource('style', ref_action='force')
 
         languages = self.get_property('website_languages')
         # Move 404 page
@@ -374,14 +375,10 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
 
     def update_20100704(self):
+        """Move menu, style inside the theme folder"""
         theme = self.get_resource('theme')
         self.move_resource('menu', 'theme/menu')
-
-        # Import old style
-        css = self.get_resource('style').handler.to_str()
-        self.del_resource('style')
-        style = theme.get_resource('style')
-        style.handler.load_state_from_string(css)
+        self.move_resource('style', 'theme/style')
 
 
     def update_20100705(self):
