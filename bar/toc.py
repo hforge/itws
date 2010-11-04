@@ -52,7 +52,7 @@ class BoxSectionChildrenTree_View(Box_View):
     template = '/ui/bar_items/SectionChildrenTree_view.xml'
 
     def GET(self, resource, context):
-        from itws.section import Section
+        from itws.bar import Section
 
         section = context._bar_aware
         if isinstance(section, Section) is False:
@@ -140,7 +140,9 @@ class BoxSectionChildrenTree_View(Box_View):
 
         # Hide siblings box if the user is not authenticated and
         # submenu is empty
-        min_limit = 1 if resource.get_property('hide_if_only_one_item') else 0
+        # FIXME hide_if_only_one_item is defined on bar_item
+        # But we call GET with resource=section
+        min_limit = 1 #if resource.get_property('hide_if_only_one_item') else 0
         hide_if_not_enough_items = len(items) <= min_limit
         if allowed_to_edit is False and hide_if_not_enough_items:
             self.set_view_is_empty(True)
@@ -393,7 +395,7 @@ class BoxSectionChildrenToc(Box):
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages')
     class_schema = merge_dicts(Box.class_schema,
-                               hide_if_only_one_item=Boolean(default=True))
+            hide_if_only_one_item=Boolean(source='metadata', default=True))
 
     # Box comfiguration
     edit_schema = hide_single_schema
@@ -439,7 +441,7 @@ class ContentBoxSectionChildrenToc(Box):
                             u'subsections and webpages in the central part')
     class_views = ['edit_state', 'backlinks']
     class_schema = merge_dicts(Box.class_schema,
-                               hide_if_only_one_item=Boolean(default=True))
+            hide_if_only_one_item=Boolean(source='metadata', default=True))
 
     # Box configuration
     edit_schema = hide_single_schema
