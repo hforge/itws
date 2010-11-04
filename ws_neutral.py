@@ -371,6 +371,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
 
     def update_20100705(self):
+        website_languages = self.get_property('website_languages')
+
         # Logo
         theme = self.get_resource('theme')
         theme.set_property('logo', None)
@@ -379,19 +381,33 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         favicon = self.get_resource(self.get_property('favicon'), soft=True)
         self.del_property('favicon')
         if favicon:
-            theme.set_property('favicon', self.get_pathto(favicon))
+            theme.set_property('favicon', theme.get_pathto(favicon))
+
+        # Banner path
+        for language in website_languages:
+            banner_path = self.get_property('banner_path', language=language)
+            if banner_path is None:
+                continue
+            banner = self.get_resource(banner_path, soft=True)
+            if banner:
+                theme.set_property('banner_path', theme.get_pathto(banner),
+                                   language=language)
 
         # Other
-        for key in ['custom_data', 'class_skin']:
-            value = self.get_property(key)
-            if value:
-                theme.set_property(key, value)
-            self.del_property(key)
-        for key in ['banner_title', 'banner_path']:
-            for lang in self.get_property('website_languages'):
-                value = self.get_property(key, language=lang)
+        schema = theme.class_schema
+        for key in ['custom_data', 'class_skin', 'banner_title']:
+            datatype = schema[key]
+            # Multilingual property or not
+            if getattr(datatype, 'multilingual', False):
+                languages = website_languages
+            else:
+                languages = [None]
+            # Move property
+            for language in languages:
+                value = self.get_property(key, language=language)
                 if value:
-                    theme.set_property(key, value, language=lang)
+                    theme.set_property(key, value, language=language)
+            # Delete old property
             self.del_property(key)
 
 

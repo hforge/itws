@@ -28,7 +28,7 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
 from ikaaro.registry import register_resource_class
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.theme import Theme as BaseTheme
+from ikaaro.theme import Theme as BaseTheme, Theme_Edit as BaseTheme_Edit
 
 # Import from itws
 from datatypes import NeutralClassSkin
@@ -38,10 +38,10 @@ from turning_footer import TurningFooterFolder
 
 
 
-class Theme_Edit(DBResource_Edit):
+class Theme_Edit(BaseTheme_Edit):
 
     def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+        return merge_dicts(BaseTheme_Edit._get_schema(self, resource, context),
                            custom_data=String,
                            banner_title=Multilingual,
                            banner_path=PathDataType(multilingual=True,
@@ -50,7 +50,8 @@ class Theme_Edit(DBResource_Edit):
 
 
     def _get_widgets(self, resource, context):
-        return (DBResource_Edit._get_widgets(self, resource, context) + [
+        # Remove logo widget
+        return (BaseTheme_Edit._get_widgets(self, resource, context)[:2] + [
             MultilineWidget('custom_data', title=MSG(u"Custom data"), rows=19, cols=69),
             TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')),
             TextWidget('banner_title', title=MSG(u'Banner title'),
@@ -71,7 +72,7 @@ class Theme(BaseTheme):
          banner_title=Multilingual(source='metadata', default=''),
          banner_path=PathDataType(source='metadata', multilingual=True,
                                   parameters_schema={'lang': String}),
-         class_skin=NeutralClassSkin(source='metadata', default='/ui/k2/'))
+         class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
 
     # XXX Migration
     # Add an API in ikaaro that allow to easily change CSS...
