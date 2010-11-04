@@ -49,7 +49,6 @@ from addresses import AddressesFolder
 from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
-from footer import FooterFolder
 from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -58,9 +57,10 @@ from sitemap import SiteMap
 from slides import SlideShow
 from tags import TagsFolder
 from theme import Theme
-from turning_footer import TurningFooterFolder
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
+
+
 
 ############################################################
 # Neutral Web Site
@@ -102,8 +102,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     __fixed_handlers__ = (WebSite.__fixed_handlers__ +
                           Website_BarAware.__fixed_handlers__ +
                           HomePage_BarAware.__fixed_handlers__ +
-                          ['about-itws', 'news', 'footer', 'sitemap.xml',
-                           'robots.txt', 'images', 'turning-footer', 'tags'])
+                          ['about-itws', 'news', 'sitemap.xml', 'robots.txt',
+                           'images', 'tags'])
 
     # Configuration
     class_theme = Theme
@@ -132,8 +132,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         self.make_resource('robots.txt', RobotsTxt)
         # Add an image folder
         self.make_resource('images', ImagesFolder)
-        # Turning footer
-        self.make_resource('turning-footer', TurningFooterFolder)
         # Tags
         self.make_resource('tags', self.tagsfolder_class, language=default_language)
         # Add default news folder
@@ -148,16 +146,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         menu.add_new_record({'path': '/news/',
                              'title': Property(MSG(u'News').gettext(),
                                                language='en')})
-        # Add footer
-        self.make_resource('footer', FooterFolder)
-        menu = self.get_resource('footer/menu')
-        title = Property(MSG(u'Powered by itws').gettext(),
-                         language=default_language)
-        menu.add_new_record({'title': title, 'path': '/about-itws'})
-        title = Property(MSG(u'Contact us').gettext(),
-                         language=default_language)
-        menu.add_new_record({'title': title, 'path': '/;contact'})
-
         # Create a 'Welcome' html-content item in ws-data
         # Order this item in the contentbar
         path = get_abspath(self.first_contenbar)
@@ -187,8 +175,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
                   language=default_language)
         table = ws_data.get_resource('order-sidebar')
         table.add_new_record({'name': 'first_sidebar'})
-
-
 
 
     @classmethod
@@ -353,9 +339,11 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     # Move old root data inside the theme folder
     def update_20100703(self):
-        # Del default menu and css
+        # Del default menu, footer, turning-footer and css
         theme = self.get_resource('theme')
         theme.del_resource('menu', ref_action='force')
+        theme.del_resource('footer', ref_action='force')
+        theme.del_resource('turning-footer', ref_action='force')
         theme.del_resource('style', ref_action='force')
 
         languages = self.get_property('website_languages')
@@ -377,6 +365,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         """Move menu, style inside the theme folder"""
         theme = self.get_resource('theme')
         self.move_resource('menu', 'theme/menu')
+        self.move_resource('footer', 'theme/footer')
+        self.move_resource('turning-footer', 'theme/turning-footer')
         self.move_resource('style', 'theme/style')
 
 

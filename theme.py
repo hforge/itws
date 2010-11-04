@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.csv import Property
 from itools.core import merge_dicts, get_abspath
 from itools.datatypes import PathDataType, String
 from itools.gettext import MSG
@@ -31,7 +32,9 @@ from ikaaro.theme import Theme as BaseTheme
 
 # Import from itws
 from datatypes import NeutralClassSkin
+from footer import FooterFolder
 from notfoundpage import NotFoundPage
+from turning_footer import TurningFooterFolder
 
 
 
@@ -101,6 +104,17 @@ class Theme(BaseTheme):
         style.handler.set_changed()
         # Custom 404
         self.make_resource('404', NotFoundPage)
+        # Add footer
+        self.make_resource('footer', FooterFolder)
+        menu = self.get_resource('footer/menu')
+        title = Property(MSG(u'Powered by itws').gettext(),
+                         language=language)
+        menu.add_new_record({'title': title, 'path': '/about-itws'})
+        title = Property(MSG(u'Contact us').gettext(),
+                         language=language)
+        menu.add_new_record({'title': title, 'path': '/;contact'})
+        # Turning footer
+        self.make_resource('turning-footer', TurningFooterFolder)
 
 
     # Views

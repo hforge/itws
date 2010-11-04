@@ -61,7 +61,7 @@ class Skin(BaseSkin):
     nav_data = {'template': '/ui/neutral/template_nav.xml',
                 'depth': 1,
                 'flat': None,
-                'src': '/theme/menu/',
+                'src': '/theme/menu',
                 'show_first_child': False}
 
     add_common_nav_css = False
@@ -69,7 +69,7 @@ class Skin(BaseSkin):
     footer_data = {
         'template': '/ui/common/template_footer.xml', 'depth': 1,
         'flat': None,
-        'src': 'footer', 'show_first_child': False, 'separator': '|' }
+        'src': '/theme/footer', 'show_first_child': False, 'separator': '|' }
     fo_edit_template = list(XMLParser(
     """
     <td class="fo-edit">
@@ -298,7 +298,7 @@ class Skin(BaseSkin):
         namespace['rss_feeds'] = self.get_rss_feeds(context, site_root)
 
         # Turning footer
-        turning_footer = site_root.get_resource('turning-footer', soft=True)
+        turning_footer = site_root.get_resource('theme/turning-footer', soft=True)
         if turning_footer:
             view = turning_footer.view
             namespace['turning_footer'] = view.GET(turning_footer, context)

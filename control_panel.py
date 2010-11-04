@@ -44,7 +44,7 @@ class CPManageFooter(GoToSpecificDocument):
     title = MSG(u'Footer')
     icon = 'theme.png'
     description = MSG(u'Edit footer')
-    specific_document = 'footer'
+    specific_document = 'theme/footer'
 
 
 class CPManageTurningFooter(GoToSpecificDocument):
@@ -53,7 +53,7 @@ class CPManageTurningFooter(GoToSpecificDocument):
     title = MSG(u'Turning Footer')
     icon = 'theme.png'
     description = MSG(u'Edit turning footer')
-    specific_document = 'turning-footer'
+    specific_document = 'theme/turning-footer'
 
 
 class CPEdit404(GoToSpecificDocument):
