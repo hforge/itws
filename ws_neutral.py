@@ -317,7 +317,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     fo_switch_mode = CPFOSwitchMode()
 
 
-
     ###########################################
     # Upgrade to 0.62
     ###########################################
@@ -423,6 +422,19 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
             diff = set(property_keys).difference(set_class_schema_keys)
             for key in diff:
                 user.del_property(key)
+
+
+    def update_20100708(self):
+        """Fix TagsAware tags property"""
+        from tags import TagsAware
+
+        for resource in self.traverse_resources():
+            if isinstance(resource, TagsAware):
+                old_value = resource.get_property('tags')
+                if not old_value: # empty list
+                    continue
+                new_value = old_value[0].split(' ')
+                resource.set_property('tags', new_value)
 
 
 

@@ -37,7 +37,7 @@ from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
 from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
-from tags_views import TagsFolder_BrowseContent
+from tags_views import TagsList, TagsFolder_BrowseContent
 from itws.views import EasyNewInstance
 from itws.views import AutomaticEditView
 
@@ -167,8 +167,10 @@ class TagsAware(object):
     class_id = 'tags-aware'
 
     class_schema = {# Metadata
-                    'tags': Tokens(source='metadata', indexed=True, stored=True), #FIXME Replace Tokens by TagsList
-                    'pub_datetime': DateTime(source='metadata', indexed=True, stored=True),
+                    'tags': TagsList(source='metadata', multiple=True,
+                                     indexed=True, stored=True),
+                    'pub_datetime': DateTime(source='metadata', indexed=True,
+                                             stored=True),
                     # Catalog
                     'is_tagsaware': Boolean(indexed=True),
                     'preview_content': Unicode(stored=True, indexed=True),
