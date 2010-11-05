@@ -25,3 +25,6 @@ from rssfeeds import RssFeeds
 # Read the Relax NG schema of OPML and register its namespace
 rng_file = ro_database.get_handler(get_abspath('OPML-schema.rng'), RelaxNGFile)
 rng_file.auto_register()
+
+# Silent pyflakes
+RssFeeds

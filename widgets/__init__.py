@@ -17,3 +17,8 @@
 from base import Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
 from google_map import GoogleMapWidget, GoogleGPSWidget
 from osm import OpenStreetMapWidget, OpenStreetMapGPSWidget
+
+# Silent pyflakes
+Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
+GoogleMapWidget, GoogleGPSWidget
+OpenStreetMapWidget, OpenStreetMapGPSWidget

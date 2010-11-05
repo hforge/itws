@@ -25,7 +25,7 @@ from copy import deepcopy
 
 # Import from itools
 from itools.core import get_abspath, merge_dicts
-from itools.datatypes import String, Unicode
+from itools.datatypes import String
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
 from itools.web import get_context

@@ -27,7 +27,6 @@ from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
 from ikaaro.registry import register_resource_class
-from ikaaro.resource_views import DBResource_Edit
 from ikaaro.theme import Theme as BaseTheme, Theme_Edit as BaseTheme_Edit
 
 # Import from itws

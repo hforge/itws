@@ -24,7 +24,6 @@ from ikaaro.file import File, Image
 from ikaaro.folder import Folder
 from ikaaro.registry import register_resource_class
 from ikaaro.tracker import Tracker
-from ikaaro.tracker.issue import Issue
 from ikaaro.user import User
 
 # Import from itws

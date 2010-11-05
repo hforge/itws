@@ -40,3 +40,6 @@ rng_file = ro_database.get_handler(get_abspath('SiteMap-schema.rng'),
 for namespace in rng_file.namespaces.itervalues():
     namespace.prefix = None
 rng_file.auto_register()
+
+# Silent pyflakes
+SiteMap

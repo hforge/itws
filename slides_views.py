@@ -25,7 +25,7 @@ from itools.core import  merge_dicts
 from itools.datatypes import String, Unicode, Enumerate
 from itools.gettext import MSG
 from itools.web import FormError, STLView
-from itools.database import PhraseQuery, AndQuery
+from itools.database import PhraseQuery, AndQuery, TextQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -349,10 +349,7 @@ class SlideShow_BrowseContent(Folder_BrowseContent):
         query = [PhraseQuery('parent_path', str(abspath)),
                  PhraseQuery('format', slide_cls.class_id)]
         if search_term:
-            language = resource.get_content_language(context)
-            terms_query = [ PhraseQuery(field, term)
-                            for term in split_unicode(search_term, language) ]
-            query.append(AndQuery(*terms_query))
+            query.append(TextQuery(field, search_term))
         query = AndQuery(*query)
 
         return context.root.search(query)
