@@ -24,7 +24,6 @@ from itools.web import STLView
 
 # Import from ikaaro
 from ikaaro.autoform import RadioWidget
-from ikaaro.resource_views import DBResource_Edit
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
@@ -32,7 +31,7 @@ from tags.tags_views import TagsAware_Edit
 
 
 
-class WebPage_Edit(TagsAware_Edit, HTMLEditView, DBResource_Edit):
+class WebPage_Edit(TagsAware_Edit, HTMLEditView):
 
     def _get_schema(self, resource, context):
         return merge_dicts(HTMLEditView._get_schema(self, resource, context),
@@ -52,13 +51,13 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView, DBResource_Edit):
 
 
     def get_value(self, resource, context, name, datatype):
-        if name == 'data':
+        if name in ('data', 'file'):
             return HTMLEditView.get_value(self, resource, context, name,
                                           datatype)
         if name in TagsAware_Edit.keys:
             return TagsAware_Edit.get_value(self, resource, context, name,
                                             datatype)
-        return DBResource_Edit.get_value(self, resource, context, name, datatype)
+        return HTMLEditView.get_value(self, resource, context, name, datatype)
 
 
     def set_value(self, resource, context, name, form):
@@ -67,11 +66,11 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView, DBResource_Edit):
         if name in TagsAware_Edit.keys:
             return TagsAware_Edit.set_value(self, resource, context, name,
                                             form)
-        return DBResource_Edit.set_value(self, resource, context, name, form)
+        return HTMLEditView.set_value(self, resource, context, name, form)
 
 
     def action(self, resource, context, form):
-        return DBResource_Edit.action(self, resource, context, form)
+        return HTMLEditView.action(self, resource, context, form)
 
 
 
