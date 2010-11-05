@@ -16,6 +16,7 @@
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.database import AndQuery
 from itools.gettext import MSG
 from itools.uri import encode_query
 from itools.web import BaseView
@@ -28,11 +29,12 @@ from ikaaro.webpage import WebPage_View
 # Import from itws
 from base import Box
 from base_views import Box_View, Box_Preview
-#from toc import ContentBoxSectionNews_View
 from itws.datatypes import PositiveInteger
+from itws.news.news_views import NewsFolder_View
 from itws.tags import TagsList
 from itws.utils import to_box
 from itws.widgets import DualSelectWidget
+
 
 
 class BoxNewsSiblingsToc_Preview(Box_Preview):
@@ -40,6 +42,8 @@ class BoxNewsSiblingsToc_Preview(Box_Preview):
     def get_details(self, resource, context):
         return [u'Useful in a news folder, show a Table of Content '
                 u'with all news.']
+
+
 
 class BoxSectionNews_Preview(Box_Preview):
 
@@ -52,13 +56,12 @@ class BoxSectionNews_Preview(Box_Preview):
 
 
 
-
-
 class SidebarBox_Preview(BaseView):
     title = MSG(u'Preview')
 
     def GET(self, resource, context):
         return to_box(resource, WebPage_View().GET(resource, context))
+
 
 
 class BoxSectionNews_View(Box_View):
@@ -156,6 +159,103 @@ class BoxSectionNews_View(Box_View):
         return namespace
 
 
+
+class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
+
+    access = 'is_allowed_to_view'
+    title = MSG(u'View')
+    template = '/ui/bar_items/ContentBoxSectionNews_view.xml'
+    batch_template = None
+
+
+    def _get_news_folder(self, resource, context):
+        site_root = resource.get_site_root()
+        news_folder = site_root.get_news_folder(context)
+        return news_folder
+
+
+    def get_items(self, resource, context, *args):
+        # Build the query
+        args = list(args)
+        # Filter by tag
+        tags = resource.get_property('tags')
+        news_folder = self._get_news_folder(resource, context)
+        query_terms = news_folder.get_news_query_terms(state='public',
+                                                       tags=tags)
+        args.append(AndQuery(*query_terms))
+
+        if len(args) == 1:
+            query = args[0]
+        else:
+            query = AndQuery(*args)
+
+        # Ok
+        return context.root.search(query)
+
+
+    def sort_and_batch(self, resource, context, results):
+        start = 0
+        size = count = resource.get_property('count')
+        sort_by = 'pub_datetime'
+        reverse = True
+        items = results.get_documents(sort_by=sort_by, reverse=reverse,
+                                      start=start, size=size)
+
+        # Access Control (FIXME this should be done before batch)
+        user = context.user
+        root = context.root
+        allowed_items = []
+        for item in items:
+            resource = root.get_resource(item.abspath)
+            ac = resource.get_access_control()
+            if ac.is_allowed_to_view(user, resource):
+                allowed_items.append((item, resource))
+
+        return allowed_items
+
+
+    def get_tags_namespace(self, resource, context):
+        tags_ns = []
+        news_folder = self._get_news_folder(resource, context)
+        here_link = context.get_link(news_folder)
+        tags_folder = resource.get_site_root().get_resource('tags')
+        tags = resource.get_property('tags')
+
+        for tag_name in tags:
+            query = encode_query({'tag': tag_name})
+            tag = tags_folder.get_resource(tag_name)
+            tags_ns.append({'title': tag.get_title(),
+                            'href': '%s?%s' % (here_link, query)})
+
+        return tags_ns
+
+
+    def get_namespace(self, resource, context):
+        news_folder = self._get_news_folder(resource, context)
+        is_admin = self.is_admin(resource, context)
+
+        if news_folder is None:
+            if is_admin is False:
+                # Hide the box if there is no newsfolder
+                self.set_view_is_empty(True)
+            newfolder_cls = resource.get_site_root().newsfolder_class
+            return {'newsfolder': None,
+                    'newsfolder_cls_title': newfolder_cls.class_title}
+
+        namespace = NewsFolder_View.get_namespace(self, resource, context)
+        namespace['title'] = resource.get_property('title')
+
+        viewboxes = namespace['viewboxes']
+        if len(viewboxes) == 0 and is_admin is False:
+            # Hide the box if there is no news and
+            # if the user cannot edit the box
+            self.set_view_is_empty(True)
+
+        namespace['newsfolder'] = news_folder
+        return namespace
+
+
+
 class BoxSectionNews_Edit(DBResource_Edit):
 
     def _get_news_folder(self, resource, context):
@@ -205,6 +305,7 @@ class BoxSectionNews_Edit(DBResource_Edit):
         return widgets
 
 
+
 class BoxSectionNews(Box):
 
     class_id = 'box-section-news'
@@ -215,7 +316,8 @@ class BoxSectionNews(Box):
 
     class_schema = merge_dicts(Box.class_schema,
                                count=PositiveInteger(source='metadata', default=3),
-                               tags=TagsList(source='metadata'))
+                               tags=TagsList(source='metadata', multiple=True,
+                                             default=[]))
 
     # Configuration
     allow_instanciation = True
@@ -239,7 +341,7 @@ class ContentBoxSectionNews(BoxSectionNews):
     is_side = False
 
     # XXX migration
-    #view = ContentBoxSectionNews_View()
+    view = ContentBoxSectionNews_View()
 
 
 
