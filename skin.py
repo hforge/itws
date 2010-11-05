@@ -27,7 +27,7 @@ from itools.stl import stl, set_prefix
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import HTMLBody, stl_namespaces
+from ikaaro.autoform import stl_namespaces
 from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
@@ -61,7 +61,7 @@ class Skin(BaseSkin):
     nav_data = {'template': '/ui/neutral/template_nav.xml',
                 'depth': 1,
                 'flat': None,
-                'src': '/theme/menu',
+                'src': 'theme/menu',
                 'show_first_child': False}
 
     add_common_nav_css = False
@@ -69,7 +69,7 @@ class Skin(BaseSkin):
     footer_data = {
         'template': '/ui/common/template_footer.xml', 'depth': 1,
         'flat': None,
-        'src': '/theme/footer', 'show_first_child': False, 'separator': '|' }
+        'src': 'theme/footer', 'show_first_child': False, 'separator': '|' }
     fo_edit_template = list(XMLParser(
     """
     <td class="fo-edit">
@@ -190,7 +190,7 @@ class Skin(BaseSkin):
 
     def build_nav_namespace(self, context):
         data = self.nav_data
-        menu = self.get_resource(data['src'])
+        menu = context.site_root.get_resource(data['src'])
         ns = get_menu_namespace(context,
             data['depth'], data['show_first_child'],
             flat=data['flat'], menu=menu)
@@ -220,6 +220,7 @@ class Skin(BaseSkin):
             flat=data['flat'], src=data['src'])
 
         here = context.resource
+        # Manipulate directly the table handler
         footer = context.site_root.get_resource('%s/menu' % data['src'])
         handler = footer.handler
         records = list(handler.get_records_in_order())
@@ -233,8 +234,7 @@ class Skin(BaseSkin):
             html_content = get_value(record, 'html_content')
             item['html'] = None
             if not path and not title and html_content:
-                html = HTMLBody.decode(Unicode.encode(html_content))
-                html = set_prefix(html, prefix)
+                html = set_prefix(html_content, '%s/' % prefix)
                 item['html'] = html
         ns['separator'] = data.get('separator', '|')
 
@@ -369,14 +369,14 @@ class Skin(BaseSkin):
         # Footer
         # XXX Migration
         namespace['footer'] = None
-        #footer_template = self.footer_data['template']
-        #if footer_template is not None:
-        #    ns_footer = self.build_footer_namespace(context)
-        #    footer = None
-        #    if len(ns_footer['items']):
-        #        footer_template = self.get_resource(footer_template)
-        #        footer = stl(footer_template, ns_footer)
-        #    namespace['footer'] = footer
+        footer_template = self.footer_data['template']
+        if footer_template is not None:
+            ns_footer = self.build_footer_namespace(context)
+            footer = None
+            if len(ns_footer['items']):
+                footer_template = self.get_resource(footer_template)
+                footer = stl(footer_template, ns_footer)
+            namespace['footer'] = footer
 
         # Hide context menus if no user authenticated
         if context.user is None:
