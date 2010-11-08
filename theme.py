@@ -118,6 +118,78 @@ class Theme(BaseTheme):
         self.make_resource('turning-footer', TurningFooterFolder)
 
 
+    ##########################
+    # Links API
+    ##########################
+
+    def get_links(self):
+        links = BaseTheme.get_links(self)
+        base = self.get_canonical_path()
+
+        # banner_path
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        for language in available_languages:
+            path = self.get_property('banner_path', language=language)
+            links.add(str(base.resolve2(path)))
+
+        return links
+
+
+    def update_links(self, source, target):
+        # FIXME BaseTheme does not take into account 'child'
+        BaseTheme.update_links(self, source, target)
+        base = self.get_canonical_path()
+        resources_new2old = get_context().database.resources_new2old
+        base = str(base)
+        old_base = resources_new2old.get(base, base)
+        old_base = Path(old_base)
+        new_base = Path(base)
+
+        # banner_path
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        for language in available_languages:
+            value = self.get_property('banner_path', language=language)
+            if not value:
+                continue
+            path = old_base.resolve2(value)
+            if path == source:
+                # Hit the old name
+                # Build the new reference with the right path
+                self.set_property('banner_path', new_base.get_pathto(target),
+                                  language=language)
+
+        get_context().database.change_resource(self)
+
+
+    def update_relative_links(self, source):
+        # FIXME BaseTheme does not take into account 'child'
+        BaseTheme.update_relative_links(self, source)
+        target = self.get_canonical_path()
+        resources_old2new = get_context().database.resources_old2new
+
+        # banner_path
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        for language in available_languages:
+            value = self.get_property('banner_path', language=language)
+            if not value:
+                continue
+
+            # Calcul the old absolute path
+            old_abs_path = source.resolve2(value)
+            # Check if the target path has not been moved
+            new_abs_path = resources_old2new.get(old_abs_path,
+                                                 old_abs_path)
+
+            self.set_property('banner_path', target.get_pathto(new_abs_path),
+                              language=language)
+
+
     # Views
     edit = Theme_Edit()
 
