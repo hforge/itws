@@ -60,7 +60,7 @@ class WebPage(BaseWebPage, TagsAware):
     #########################################################
     def get_links(self):
         links = BaseWebPage.get_links(self)
-        links.extend(TagsAware.get_links(self))
+        links.update(TagsAware.get_links(self))
         return links
 
 

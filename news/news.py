@@ -139,7 +139,7 @@ class NewsItem(WebPage):
             ref = get_reference(path)
             if not ref.scheme:
                 path, view = get_path_and_view(ref.path)
-                links.append(str(base.resolve2(path)))
+                links.add(str(base.resolve2(path)))
 
         return links
 

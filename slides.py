@@ -100,7 +100,7 @@ class Slide(TagsAware, WebPage):
     ##########################################################################
     def get_links(self):
         links = WebPage.get_links(self)
-        links.extend(TagsAware.get_links(self))
+        links.update(TagsAware.get_links(self))
 
         base = self.get_canonical_path()
         for key in ('image', 'href'):
@@ -109,7 +109,7 @@ class Slide(TagsAware, WebPage):
                 uri = get_reference(value)
                 if not uri.scheme:
                     path, view = get_path_and_view(uri.path)
-                    links.append(str(base.resolve2(path)))
+                    links.add(str(base.resolve2(path)))
         return links
 
 
@@ -237,7 +237,7 @@ class SlideShow(ResourcesOrderedContainer):
             uri = get_reference(value)
             if not uri.scheme:
                 path, view = get_path_and_view(uri.path)
-                links.append(str(base.resolve2(path)))
+                links.add(str(base.resolve2(path)))
         return links
 
 

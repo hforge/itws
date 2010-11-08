@@ -267,9 +267,8 @@ class TagsAware(object):
     def get_links(self):
         site_root = self.get_site_root()
         tags_base = site_root.get_abspath().resolve2('tags')
-        links = [ str(tags_base.resolve2(tag))
-                  for tag in self.get_property('tags') ]
-        return links
+        return set([ str(tags_base.resolve2(tag))
+                     for tag in self.get_property('tags') ])
 
 
     def update_links(self, source, target):

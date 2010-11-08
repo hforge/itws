@@ -93,7 +93,7 @@ class DiaporamaTable(Table):
         available_languages = site_root.get_property('website_languages')
         handler = self.handler
         record_properties = handler.record_properties
-        links = []
+        links = set()
 
         get_value = handler.get_record_value
         for record in handler.get_records():
@@ -105,7 +105,7 @@ class DiaporamaTable(Table):
                     ref = get_reference(str(path)) # Unicode -> str
                     if not ref.scheme:
                         path, view = get_path_and_view(ref.path)
-                        links.append(str(base.resolve2(path)))
+                        links.add(str(base.resolve2(path)))
 
         return links
 

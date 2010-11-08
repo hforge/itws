@@ -86,7 +86,7 @@ class FooterMenu(Menu):
                                          language=language)
                 if html_content is None:
                     continue
-                links.extend(_get_links(base, html_content))
+                links.update(_get_links(base, html_content))
 
         return links
 
