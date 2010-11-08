@@ -23,11 +23,12 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.autoform import RadioWidget
+from ikaaro.autoform import RadioWidget, RTEWidget
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
 from tags.tags_views import TagsAware_Edit
+from widgets import Advance_RTEWidget
 
 
 
@@ -47,7 +48,14 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         widgets.insert(2, display_title_widget)
         # Tags
         widgets.extend(TagsAware_Edit._get_widgets(self, resource, context))
-        return widgets
+
+        # XXX Hook RTEWidget
+        new_widgets = []
+        for w in widgets:
+            if issubclass(w, RTEWidget):
+                w = Advance_RTEWidget(w.name, title=w.title)
+            new_widgets.append(w)
+        return new_widgets
 
 
     def get_value(self, resource, context, name, datatype):

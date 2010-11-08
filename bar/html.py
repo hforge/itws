@@ -37,6 +37,7 @@ from news import SidebarBox_Preview
 from itws.utils import get_path_and_view, is_empty
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
+from itws.widgets.base import advance_rte_widget
 
 
 
@@ -101,7 +102,7 @@ class HTMLContent_Edit(DBResource_Edit):
                             title=MSG(u'Display on webpage view')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             SelectWidget('title_link_target', title=MSG(u'Title link target')),
-            rte_widget ]
+            advance_rte_widget ]
 
 
     def get_value(self, resource, context, name, datatype):

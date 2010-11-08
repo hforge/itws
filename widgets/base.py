@@ -15,18 +15,25 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.gettext import MSG
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import RTEWidget, SelectWidget, stl_namespaces
+from ikaaro.autoform import RTEWidget, SelectWidget
+from ikaaro.autoform import rte_widget, stl_namespaces
+
 
 
 class Advance_RTEWidget(RTEWidget):
 
-    extended_valid_elements = "iframe[src|name|id|class|style|frameborder|width|height]"
-
+    extended_valid_elements = (
+            "iframe[src|name|id|class|style|frameborder|width|height],"
+            "div[id|dir|class|align|style]")
     toolbar2 = RTEWidget.toolbar2 + ('|attribs')
-    plugins = RTEWidget.plugins + ('xhtmlxtras')
+    plugins = RTEWidget.plugins + (',xhtmlxtras')
+
+
+advance_rte_widget = Advance_RTEWidget('data', title=rte_widget.title)
 
 
 
