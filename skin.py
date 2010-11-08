@@ -367,7 +367,6 @@ class Skin(BaseSkin):
             namespace['nav'] = stl(nav_template, {'items': nav['items']})
 
         # Footer
-        # XXX Migration
         namespace['footer'] = None
         footer_template = self.footer_data['template']
         if footer_template is not None:
