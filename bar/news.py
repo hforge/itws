@@ -340,7 +340,6 @@ class ContentBoxSectionNews(BoxSectionNews):
     is_content = True
     is_side = False
 
-    # XXX migration
     view = ContentBoxSectionNews_View()
 
 
