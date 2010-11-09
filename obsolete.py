@@ -23,6 +23,7 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.file import File, Image
 from ikaaro.folder import Folder
 from ikaaro.registry import register_resource_class
+from ikaaro.root import Root
 from ikaaro.tracker import Tracker
 from ikaaro.user import User
 
@@ -31,6 +32,25 @@ from bar.repository import SidebarBoxesOrderedTable
 from bar.section import SectionOrderedTable
 from slides import Slides_OrderedTable
 from ws_neutral import NeutralWS
+
+
+###########################
+# ROOT
+###########################
+class ITWSRoot(Root):
+
+    class_id = 'itws'
+    # 0.61 class_version + 1
+    class_version = '20071216'
+
+    def update_20071216(self):
+        parent_method = getattr(Root, 'update_20071216', None)
+        if parent_method:
+            parent_method(self)
+        metadata = self.metadata
+        metadata.set_changed()
+        metadata.version = '20071215' # Restore class version
+        metadata.format = Root.class_id
 
 
 
@@ -179,6 +199,7 @@ class FavIcon(Image):
 
 
 
+register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
 register_resource_class(OldSlides_OrderedTable)
 register_resource_class(Old_NeutralWS)
