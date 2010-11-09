@@ -153,9 +153,6 @@ class MenuSideBarTable_View(Menu_View):
 
 class MenuSideBarTable_CompositeView(CompositeForm):
 
-    # XXX Migration
-    # How to edit menu sidebar title ?
-
     access = 'is_allowed_to_edit'
     subviews = [MenuProxyBox_Edit(),
                 MenuSideBarTable_AddRecord(),
