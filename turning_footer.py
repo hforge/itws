@@ -22,10 +22,12 @@ from random import choice
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.csv import Property
 from itools.datatypes import Boolean, String
 from itools.gettext import MSG
-from itools.stl import set_prefix
-from itools.web import STLView
+from itools.stl import rewrite_uris, set_prefix
+from itools.uri import get_reference, Path, Reference
+from itools.web import get_context, STLView
 
 # Import from ikaaro
 from ikaaro.file import File
@@ -33,9 +35,10 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
 from ikaaro.table import OrderedTableFile, OrderedTable
+from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
-from utils import get_admin_bar
+from utils import get_admin_bar, get_path_and_view
 from views import AutomaticEditView
 
 
@@ -102,11 +105,104 @@ class TurningFooterTable(OrderedTable):
             specific_view='configure', title=MSG(u'Configure'))
 
 
-    # XXX Migration.
-    # We have to write:
-    #def get_links(self):
-    #def update_links(self, source, target):
-    #def update_relative_links(self, source):
+    ##########################
+    # Links API
+    ##########################
+
+    def get_links(self):
+        links = OrderedTable.get_links(self)
+        base = self.get_canonical_path()
+        # languages
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        # Append links contained in data
+        handler = self.handler
+        get_value = handler.get_record_value
+
+        for record in handler.get_records_in_order():
+            for language in available_languages:
+                data = get_value(record, 'data', language=language)
+                if data is None:
+                    continue
+                links.update(_get_links(base, data))
+
+        return links
+
+
+    def update_links(self, source, target):
+        OrderedTable.update_links(self, source, target)
+        base = self.get_canonical_path()
+        resources_new2old = get_context().database.resources_new2old
+        base = str(base)
+        old_base = resources_new2old.get(base, base)
+        old_base = Path(old_base)
+        new_base = Path(base)
+
+        # languages
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        # Append links contained in data
+        handler = self.handler
+        get_value = handler.get_record_value
+
+        for record in handler.get_records_in_order():
+            for language in available_languages:
+                data = get_value(record, 'data', language=language)
+                if data is None:
+                    continue
+                events = _change_link(source, target, old_base, new_base,
+                                      data)
+                events = list(events)
+                p_events = Property(events, language=language)
+                # TODO Update all language in one time
+                self.update_record(record.id, **{'data': p_events})
+        get_context().database.change_resource(self)
+
+
+    def update_relative_links(self, source):
+        target = self.get_canonical_path()
+        # languages
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+        resources_old2new = get_context().database.resources_old2new
+
+        def my_func(value):
+            # Absolute URI or path
+            uri = get_reference(value)
+            if uri.scheme or uri.authority or uri.path.is_absolute():
+                return value
+            path = uri.path
+            if not path or path.is_absolute() and path[0] == 'ui':
+                return value
+
+            # Strip the view
+            path, view = get_path_and_view(path)
+
+            # Resolve Path
+            # Calcul the old absolute path
+            old_abs_path = source.resolve2(path)
+            # Get the 'new' absolute parth
+            new_abs_path = resources_old2new.get(old_abs_path, old_abs_path)
+
+            path = str(target.get_pathto(new_abs_path)) + view
+            value = Reference('', '', path, uri.query.copy(), uri.fragment)
+            return str(value)
+
+        handler = self.handler
+        get_value = handler.get_record_value
+
+        for record in handler.get_records_in_order():
+            for language in available_languages:
+                data = get_value(record, 'data', language=language)
+                if data is None:
+                    continue
+                events = rewrite_uris(data, my_func)
+                events = list(events)
+                p_events = Property(events, language=language)
+                # TODO Update all language in one time
+                self.update_record(record.id, **{'data': p_events})
 
 
 
