@@ -32,7 +32,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import TextWidget
 from ikaaro.autoform import description_widget, subject_widget
 from ikaaro.autoform import title_widget, timestamp_widget
-from ikaaro.resource_views import DBResource_Edit
+from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.registry import get_resource_class
 from ikaaro.views_new import NewInstance
 from ikaaro.workflow import WorkflowAware
@@ -40,6 +40,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from datatypes import StateEnumerate
 from utils import state_widget
+
 
 
 ############################################################
@@ -91,6 +92,7 @@ class EasyNewInstance(NewInstance):
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 
+
 ############################################################
 # GoToSpecificItem
 ############################################################
@@ -120,6 +122,7 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
                 goto = goto.replace(message=message)
 
         return goto
+
 
 
 ############################################################
@@ -215,3 +218,17 @@ class AutomaticEditView(DBResource_Edit):
             return resource.get_workflow_state()
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
+
+
+
+############################################################
+# EditLanguageMenu (Only language selection)
+############################################################
+
+class EditOnlyLanguageMenu(EditLanguageMenu):
+    """Only display form to select language
+    fields selection are not displayed
+    """
+
+    def get_fields(self):
+        return []
