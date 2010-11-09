@@ -27,7 +27,6 @@ from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
-from ikaaro.resource_views import EditLanguageMenu
 from ikaaro.table import Table_AddRecord
 from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
@@ -124,7 +123,6 @@ class MenuSideBarTable_CompositeView(CompositeForm):
     access = 'is_allowed_to_edit'
     subviews = [MenuSideBarTable_AddRecord(),
                 MenuSideBarTable_View() ]
-    context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace

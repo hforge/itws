@@ -27,7 +27,6 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.future.order import get_resource_preview
-from ikaaro.resource_views import EditLanguageMenu
 from ikaaro.table_views import Table_View
 from ikaaro.views import CompositeForm
 
@@ -93,7 +92,6 @@ class DiaporamaTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View() ]
-    context_menus = [EditLanguageMenu()]
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace
