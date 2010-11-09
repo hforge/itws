@@ -18,15 +18,17 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String
+from itools.datatypes import DateTime, String, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro import messages
+from ikaaro.autoform import timestamp_widget, title_widget
 from ikaaro.buttons import Button
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.table import Table_AddRecord
 from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
@@ -34,7 +36,7 @@ from ikaaro.views import CompositeForm
 # Import from itws
 from base import BoxAware
 from base_views import Box_View
-from itws.views import AdvanceGoToSpecificDocument
+from itws.views import AdvanceGoToSpecificDocument, EditOnlyLanguageMenu
 
 
 
@@ -60,10 +62,44 @@ class MenuSideBar_View(Box_View):
 
 
 
+class MenuProxyBox_Edit(DBResource_Edit):
+
+    title = MSG(u'Edit box title')
+    schema = {'title': Unicode(multilingual=True),
+              'timestamp': DateTime(readonly=True, ignore=True)}
+
+    widgets = [timestamp_widget, title_widget]
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'title':
+            return DBResource_Edit.get_value(self, resource.parent,
+                                             context, name, datatype)
+        return DBResource_Edit.get_value(self, resource, context, name,
+                                         datatype)
+
+
+    def set_value(self, resource, context, name, form):
+        """Return True if an error occurs otherwise False
+
+           If an error occurs, the context.message must be an ERROR instance.
+        """
+        if name == 'title':
+            value = form[name]
+            menu = resource.parent
+            if type(value) is dict:
+                for language, data in value.iteritems():
+                    menu.set_property(name, data, language=language)
+            else:
+                menu.set_property(name, value)
+            return False
+
+        return DBResource_Edit.set_value(self, resource, context, name, form)
+
+
+
 class MenuSideBarTable_AddRecord(Table_AddRecord):
 
     title = MSG(u'Add entry')
-    template = '/ui/common/improve_auto_form.xml'
     actions = [Button(access='is_allowed_to_edit',
                       name='add_record', title=MSG(u'Add'))]
 
@@ -121,8 +157,18 @@ class MenuSideBarTable_CompositeView(CompositeForm):
     # How to edit menu sidebar title ?
 
     access = 'is_allowed_to_edit'
-    subviews = [MenuSideBarTable_AddRecord(),
+    subviews = [MenuProxyBox_Edit(),
+                MenuSideBarTable_AddRecord(),
                 MenuSideBarTable_View() ]
+
+    def get_context_menus(self):
+        return [ EditOnlyLanguageMenu(view=self) ]
+
+
+    def _get_query_to_keep(self, resource, context):
+        """Return a list of dict {'name': name, 'value': value}"""
+        return []
+
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace
