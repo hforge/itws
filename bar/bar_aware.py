@@ -50,28 +50,9 @@ class SideBarAware(object):
         specific_document='%s/;add_box' % sidebar_name,
         title=MSG(u'Order Sidebar Boxes'))
 
-    # Sidebar items
-    # (name, cls, ordered)
-    sidebar_items = []
-
 
     def init_resource(self, **kw):
         self.make_resource(self.sidebar_name, SidebarBoxesOrderedTable)
-
-        # XXX Migration TODO
-        ## Preorder specific sidebar items
-        #root = get_context().root
-        #table_name = cls.sidebar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        ## FIXME state should be customizable
-        #state = 'public'
-
-        #for item in cls.sidebar_items:
-        #    name2, cls2, ordered = item
-        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-        #                        state=state)
-        #    if ordered:
-        #        table.add_new_record({'name': name2})
 
 
 

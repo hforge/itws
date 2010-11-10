@@ -105,7 +105,7 @@ class Section(SideBarAware, ContentBarAware,
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
                           + ['order-section', 'children-toc'])
-    # Order Articles
+    # Order Webpage/Section
     order_path = 'order-section'
     order_class = SectionOrderedTable
 
@@ -119,14 +119,12 @@ class Section(SideBarAware, ContentBarAware,
         ContentBarAware.init_resource(self, **kw)
         ResourcesOrderedContainer.init_resource(self, **kw)
 
-        # XXX Migration
-        # Preorder specific sidebar items
-        #table_name = cls.sidebar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        #name2 = Repository.news_items_name
-        #table.add_new_record({'name': name2})
-        #name2 = Repository.section_sidebar_children_toc_view_name
-        #table.add_new_record({'name': name2})
+        # Preorder items
+        repository = self.get_site_root().get_repository()
+        sidebar_table = self.get_resource(self.sidebar_name)
+        # tags cloud/news (created by repository)
+        sidebar_table.add_new_record({'name': repository.tags_box})
+        sidebar_table.add_new_record({'name': repository.news_box})
 
 
     def get_internal_use_resource_names(self):

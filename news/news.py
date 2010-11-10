@@ -39,16 +39,15 @@ from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 
 # Import from itws
-from news_views import NewsFolder_View, NewsFolder_RSS
-from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
-from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
-from itws.bar import SideBarAware
+from itws.bar import BoxNewsSiblingsToc, SideBarAware
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import TagsAware
 from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView
 from itws.webpage import WebPage
-
+from news_views import NewsFolder_View, NewsFolder_RSS
+from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
+from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
 
 
 
@@ -248,11 +247,15 @@ class NewsFolder(SideBarAware, Folder):
         Folder.init_resource(self, **kw)
         # Create images folder
         self.make_resource('images', Folder)
-        # XXX Migration Add siblings item
-        #siblings_item_name = Repository.news_siblings_view_name
-        #table_name = cls.sidebar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        #table.add_new_record({'name': siblings_item_name})
+        # Preorder items
+        repository = self.get_site_root().get_repository()
+        sidebar_table = self.get_resource(self.sidebar_name)
+        # news slibbling
+        cls = BoxNewsSiblingsToc
+        repository.make_resource('news-siblings', cls, state='public',
+                                 title={'en': cls.class_title.gettext()})
+        sidebar_table.add_new_record({'name': 'news-siblings'})
+
 
     def get_document_types(self):
         return [self.news_class, File]
