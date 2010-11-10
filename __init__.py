@@ -30,9 +30,14 @@ from ikaaro.user import User
 
 # Import from itws
 from root import Root
+
+# XXX news must be imported before bar
+# to avoid ImportError
+import news
+
+import OPML
 import about
 import bar
-import OPML
 import sitemap
 import skin
 import theme

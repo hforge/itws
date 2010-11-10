@@ -30,7 +30,7 @@ from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.skins import register_skin
 
-# Import from itws
+# Import from itws.bar
 from base import Box
 from registry import get_boxes_registry
 from repository_views import BoxesOrderedTable_Ordered
@@ -38,7 +38,8 @@ from repository_views import BoxesOrderedTable_Unordered
 from repository_views import Repository_BrowseContent
 from bar_aware_views import SideBarBox_NewInstance
 from bar_aware_views import ContentBarBox_NewInstance
-
+from tags import BoxTags
+from news import BoxSectionNews
 
 
 ###########################################################################
@@ -161,20 +162,21 @@ class Repository(Folder):
     class_icon48 = 'bar_items/icons/48x48/repository.png'
     class_views = ['browse_content', 'new_resource_form',
                    'new_sidebar_resource', 'backlinks', 'commit_log']
+
+    tags_box = 'tags'
+    news_box = 'news'
+
     __fixed_handlers__ = (Folder.__fixed_handlers__
-                          + ['tags', 'website-articles-view',
-                             'articles-view', 'news-siblings',
-                             'sidebar-children-toc', 'news'])
+                          + [tags_box, news_box])
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)
-        # XXX Migration
-        # We initialize repository with some boxes
-        #kw = {'title': {'en': BoxNewsSiblingsToc.class_title.gettext()},
-        #      'state': 'public'}
-        #self.make_resource('news-siblings', BoxNewsSiblingsToc)
-        #self.make_resource('sidebar-children-toc', BoxSectionChildrenToc)
-        #self.make_resource('news', BoxSectionNews)
+        # Tags (sidebar "tag cloud")
+        self.make_resource(self.tags_box, BoxTags, state='public',
+                           title={'en': BoxTags.class_title.gettext()})
+        # News (sidebar "last news")
+        self.make_resource(self.news_box, BoxSectionNews, state='public',
+                           title={'en': BoxSectionNews.class_title.gettext()})
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,
