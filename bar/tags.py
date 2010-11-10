@@ -20,7 +20,7 @@ from itools.datatypes import Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, RadioWidget, TextWidget
+from ikaaro.autoform import CheckboxWidget, TextWidget
 
 # Import from itws
 from base import Box
@@ -83,7 +83,7 @@ class BoxTags_View(Box_View):
             # if the user cannot edit the box
             self.set_view_is_empty(True)
 
-        return {'title': title, 'box': box}
+        return {'title': title, 'box': box, 'has_tags': has_tags}
 
 
 
@@ -120,7 +120,7 @@ class BoxTags(Box):
         CheckboxWidget('show_number',
                         title=MSG(u'Show number of items for each tag')),
         CheckboxWidget('random', title=MSG(u'Randomize tags')),
-        RadioWidget('formats', has_empty_option=False,
+        CheckboxWidget('formats',
                     title=MSG(u'This tag cloud will display only '
                               u'the tags from selected types of content'))
         ]

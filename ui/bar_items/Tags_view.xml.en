@@ -5,8 +5,10 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h3 stl:if="title" class="title">${title}</h3>
-  <div class="content">
+  <div class="content" stl:if="has_tags">
     ${box}
   </div>
-
+  <stl:block stl:if="not has_tags">
+    There is currently no referenced tags.
+  </stl:block>
 </stl:block>
