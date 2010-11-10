@@ -167,14 +167,14 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         handler = ro_database.get_handler('%s.%s' % (path, default_language),
                                           XHTMLFile)
         repository = self.get_resource('repository')
-        repository.make_resource('first_sidebar', HTMLContent,
+        repository.make_resource('first-sidebar', HTMLContent,
                   title={default_language: MSG(u'My first sidebar').gettext()},
                   state='public',
                   display_title=True,
                   body=handler.to_str(),
                   language=default_language)
         table = ws_data.get_resource('order-sidebar')
-        table.add_new_record({'name': 'first_sidebar'})
+        table.add_new_record({'name': 'first-sidebar'})
 
 
     @classmethod
