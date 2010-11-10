@@ -182,10 +182,9 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         return (cls, Section)
 
 
-    def get_class_skin(self):
+    @property
+    def class_skin(self):
         return self.get_resource('theme').get_property('class_skin')
-
-    class_skin = property(get_class_skin, None, None, '')
 
 
     def get_skin(self, context):

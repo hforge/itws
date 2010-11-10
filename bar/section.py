@@ -49,7 +49,7 @@ from itws.webpage import WebPage
 class SectionOrderedTableFile(OrderedTableFile):
 
     record_properties = {
-        'name': String(mandatory=True, unique=True, is_indexed=True)}
+        'name': String(mandatory=True, unique=True)}
 
 
 
@@ -61,13 +61,12 @@ class SectionOrderedTable(ResourcesOrderedTable):
     class_handler = SectionOrderedTableFile
 
 
-    def get_orderable_classes(self):
+    @property
+    def orderable_classes(self):
         # Orderable classes should be
         # 1 - my parent
         # 2 - my_parent.get_article_class
         return (WebPage, Section)
-
-    orderable_classes = property(get_orderable_classes, None, None, '')
 
 
     def get_view(self, name, query=None):

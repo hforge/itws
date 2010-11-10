@@ -73,13 +73,12 @@ class BoxesOrderedTable(ResourcesOrderedTable):
         return self.get_site_root().get_repository()
 
 
-    def _get_order_root_path(self):
+    @property
+    def order_root_path(self):
         root = self.get_order_root()
         if root:
             return self.get_pathto(root)
         return None
-
-    order_root_path = property(_get_order_root_path)
 
 
     def update_relative_links(self, source):
@@ -91,7 +90,8 @@ class BoxesOrderedTable(ResourcesOrderedTable):
         return types
 
 
-    def _orderable_classes(self):
+    @property
+    def orderable_classes(self):
         registry = get_boxes_registry()
         types = [ cls for cls, allow in registry.iteritems()
                   if allow[self.allow_filter_key] ]
@@ -100,7 +100,6 @@ class BoxesOrderedTable(ResourcesOrderedTable):
         types = self._reduce_orderable_classes(types)
         return types
 
-    orderable_classes = property(_orderable_classes)
 
     ############
     # Views
@@ -142,13 +141,12 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
         return self.parent
 
 
-    def _get_order_root_path(self):
+    @property
+    def order_root_path(self):
         root = self.get_order_root()
         if root:
             return self.get_pathto(root)
         return None
-
-    order_root_path = property(_get_order_root_path)
 
 
 
