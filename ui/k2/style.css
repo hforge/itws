@@ -311,6 +311,11 @@ button:hover, button:focus {
   -webkit-box-shadow:0 0 3px #999999;
 }
 
+button.button-selector {
+  /* Do not force padding left to selector button */
+  padding-left: 5px !important;
+}
+
 fieldset{
   background-color: #F9F9F9;
   border: 1px solid #DDDDDD;
