@@ -597,3 +597,34 @@ fieldset legend{
 #page.slide-view #contentbar {
   width: 100%;
 }
+
+/**************************************************************************
+ * POPUP
+ * ***********************************************************************/
+body.popup {
+  background-color: transparent;
+}
+body.popup #body {
+  /* ikaaro default rules */
+  padding: 10px;
+  font-size: 1.4em;
+}
+
+body.popup a,
+body.popup a:link {
+  color: #444;
+}
+
+body.popup a:hover,
+body.popup a:visited {
+  color: #555;
+}
+
+body.popup p.tabme {
+  border-bottom: 1px solid #333;
+}
+
+body.popup p.tabme a.selected {
+  background: #333;
+  color: #fff;
+}
