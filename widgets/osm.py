@@ -31,7 +31,7 @@ class OpenStreetMapWidget(GoogleMapWidget):
 
     template = list(XMLParser(
         """
-        <script type="text/javascript" src="/ui/addresses/osm.js"/>
+        <script type="text/javascript" src="/ui/widgets/osm.js"/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
         <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"/>
@@ -49,7 +49,7 @@ class OpenStreetMapGPSWidget(GoogleGPSWidget):
 
     template = list(XMLParser(
         """
-        <script type="text/javascript" src="/ui/addresses/osm.js"/>
+        <script type="text/javascript" src="/ui/widgets/osm.js"/>
         <p>
           Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
           <input  class="button-ok" type="button" value="${find_gps_coords_label}"

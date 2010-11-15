@@ -14,6 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from itools
+from itools.core import get_abspath
+
+# Import from ikaaro
+from ikaaro.skins import register_skin
+
+# Import from itws
 from base import Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
 from google_map import GoogleMapWidget, GoogleGPSWidget
 from osm import OpenStreetMapWidget, OpenStreetMapGPSWidget
@@ -22,3 +29,8 @@ from osm import OpenStreetMapWidget, OpenStreetMapGPSWidget
 Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
 GoogleMapWidget, GoogleGPSWidget
 OpenStreetMapWidget, OpenStreetMapGPSWidget
+
+
+# Register skin
+path = get_abspath('ui/widgets')
+register_skin('widgets', path)

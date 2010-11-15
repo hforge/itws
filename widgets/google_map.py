@@ -33,7 +33,7 @@ class GoogleMapWidget(Widget):
 
     template = list(XMLParser(
         """
-        <script type="text/javascript" src="/ui/addresses/google_map.js"/>
+        <script type="text/javascript" src="/ui/widgets/google_map.js"/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
         <script language="javascript">
@@ -68,7 +68,7 @@ class GoogleGPSWidget(GoogleMapWidget):
     find_gps_coords_label = MSG(u'Find the GPS coordinates')
     template = list(XMLParser(
         """
-        <script type="text/javascript" src="/ui/addresses/google_map.js"/>
+        <script type="text/javascript" src="/ui/widgets/google_map.js"/>
         <p>
           Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
           <input  class="button-ok" type="button" value="${find_gps_coords_label}"

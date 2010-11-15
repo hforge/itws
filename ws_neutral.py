@@ -45,7 +45,6 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from OPML import RssFeeds
 from about import AboutITWS
-from addresses import AddressesFolder
 from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
@@ -207,7 +206,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
             if self.get_news_folder(get_context()) is None:
                 types.append(self.newsfolder_class)
 
-        return types + [Section, SlideShow, RssFeeds, AddressesFolder]
+        return types + [Section, SlideShow, RssFeeds]
 
 
     def before_traverse(self, context, min=Decimal('0.000001'),
@@ -434,7 +433,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
                     continue
                 new_value = old_value[0].split(' ')
                 resource.set_property('tags', new_value)
-
 
 
 ############################################################

@@ -22,6 +22,7 @@ from bar_aware import ContentBarAware, SideBarAware
 from homepage import Website_BarAware,  HomePage_BarAware
 from diaporama import Diaporama
 from html import HTMLContent
+from map_box import MapBox
 from menu import MenuSideBar
 from news import BoxSectionNews, ContentBoxSectionNews
 from registry import register_box
@@ -41,9 +42,10 @@ register_box(BoxNewsSiblingsToc)
 register_box(ContentBoxSectionChildrenToc)
 register_box(ContentBoxSectionNews)
 register_box(IdenticaSideBar)
+register_box(MapBox)
 register_box(MenuSideBar)
 register_box(TwitterSideBar)
 
 # Silent Pyflakes
 ContentBarAware, Repository, Section, SideBarAware
-SideBar_View, Website_BarAware, HomePage_BarAware
+SideBar_View, Website_BarAware, HomePage_BarAware, MapBox

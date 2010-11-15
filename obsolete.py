@@ -17,6 +17,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import String
+from itools.datatypes import Unicode, Decimal, Integer
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
@@ -26,10 +27,14 @@ from ikaaro.registry import register_resource_class
 from ikaaro.root import Root
 from ikaaro.tracker import Tracker
 from ikaaro.user import User
+from ikaaro.webpage import WebPage
+
 
 # Import from itws
+from bar.map_box import MapBox
+from bar.html import HTMLContent
 from bar.repository import SidebarBoxesOrderedTable
-from bar.section import SectionOrderedTable
+from bar.section import SectionOrderedTable, Section
 from slides import Slides_OrderedTable
 from ws_neutral import NeutralWS
 
@@ -198,6 +203,81 @@ class FavIcon(Image):
     class_id = 'favicon'
 
 
+################################
+# Address Item
+###############################
+class AddressItem(WebPage):
+
+    class_id = 'address'
+    class_version = '20100408'
+
+    # Schema
+    class_schema = merge_dicts(WebPage.class_schema,
+          # Metadata
+          address=Unicode(source='metadata'),
+          latitude=Decimal(source='metadata', default=Decimal.encode('48.8566')),
+          longitude=Decimal(source='metadata', default=Decimal.encode('2.3509')),
+          width=Integer(source='metadata', default=400),
+          height=Integer(source='metadata', default=5),
+          zoom=Integer(source='metadata', default=5),
+          render=String(source='metadata', default='osm'))
+
+
+
+class AddressesFolder(Folder):
+
+    class_id = 'addresses-folder'
+    class_version = '20101115'
+
+    def update_20101115(self):
+        # XXX To test
+        # XXX Check public/private
+        # XXX Check CSS
+        old_name = self.name
+        languages = self.get_site_root().get_property('website_languages')
+        # Get list of addresses of addresses folder
+        addresses = []
+        for address in self.get_resources():
+            if address.class_id == 'address':
+                kw = {'name': address.name}
+                for key in ['address', 'latitude', 'longitude', 'width', 'height',
+                            'zoom', 'render']:
+                    kw[key] = address.get_property(key)
+                kw['html'] = {}
+                for lang in languages:
+                    handler = address.get_handler(language=lang)
+                    html =  handler.get_body().events
+                    kw['html'][lang] = list(html)
+                addresses.append(kw)
+        # Delete addresses folder
+        self.parent.del_resource(old_name)
+        # Create a section
+        section = self.parent.make_resource(old_name, Section, add_boxes=False)
+        # Get order table
+        table = section.get_resource('order-contentbar')
+        # Add addresses into section
+        for i, address in enumerate(addresses):
+            # Add html
+            name_html = 'html_map_%s' % i
+            html = section.make_resource(name_html, HTMLContent,
+                  state='public',
+                  display_title=False)
+            for lang in languages:
+                handler = html.get_handler(language=lang)
+                handler.events = address['html'][lang]
+                handler.set_changed()
+            table.add_new_record({'name': name_html})
+            # Add map
+            name_map = 'map_box_%s' % i
+            amap = section.make_resource(name_map, MapBox,
+                                         state='public')
+            for key in ['address', 'latitude', 'longitude', 'width', 'height',
+                        'zoom', 'render']:
+                amap.set_property(key, address[key])
+            table.add_new_record({'name': name_map})
+
+
+
 
 register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
@@ -208,3 +288,5 @@ register_resource_class(OldSidebarBoxesOrderedTable)
 register_resource_class(Old_Tracker)
 register_resource_class(Old_Issue)
 register_resource_class(Old_TrackerCalendar)
+register_resource_class(AddressesFolder)
+register_resource_class(AddressItem)
