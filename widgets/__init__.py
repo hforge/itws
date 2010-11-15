@@ -32,5 +32,5 @@ OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 
 # Register skin
-path = get_abspath('ui/widgets')
+path = get_abspath('../ui/widgets')
 register_skin('widgets', path)
