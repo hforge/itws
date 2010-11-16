@@ -28,9 +28,6 @@ from itools.gettext import register_domain
 # Import from ikaaro
 from ikaaro.user import User
 
-# Import from itws
-from root import Root
-
 # XXX news must be imported before bar
 # to avoid ImportError
 import news
@@ -61,5 +58,5 @@ register_domain('itws', get_abspath('locale'))
 User.is_allowed_to_view = User.is_allowed_to_edit
 
 # Silent pyflakes
-Root, skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
+skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
 widgets, theme
