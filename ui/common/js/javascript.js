@@ -42,7 +42,7 @@ $(document).ready(function() {
             if (this.reload_parent_window_on_close)
                 window.location.reload();
         },
-       'width': 650,
+       'width': 800,
        'height': 550,
        'centerOnScroll': true});
     return false;
