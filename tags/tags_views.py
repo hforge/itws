@@ -63,7 +63,9 @@ class TagsList(Enumerate):
 
     @classmethod
     def get_options(cls):
-        tags_folder = cls.site_root.get_resource('tags')
+        tags_folder = cls.site_root.get_resource('tags', soft=True)
+        if tags_folder is None:
+            return []
         context = get_context()
         options = [ {'name': brain.name,
                      'value': brain.title or brain.name}
