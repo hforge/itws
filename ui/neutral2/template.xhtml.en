@@ -54,8 +54,7 @@
               </div>
             </div>
           </div>
-            ${fo_edit_toolbar}
-          </div>
+          ${fo_edit_toolbar}
           <div class="bigbox">
             <div class="bigb-hd" /> <div class="bigb-hg" />
             <div class="bigb-bd" /> <div class="bigb-bg" />
