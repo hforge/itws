@@ -48,7 +48,6 @@ from bar import SideBarAware, SideBar_View
 from bar.repository import SidebarBoxesOrderedTable
 from news import NewsItem
 from OPML import RssFeeds
-from slides import SlideShow, Slide
 from skin_views import LocationTemplate, LanguagesTemplate
 from utils import get_admin_bar, is_navigation_mode
 
@@ -90,8 +89,7 @@ class Skin(BaseSkin):
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
                                               'credits', 'license']
 
-    not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class,
-                                        SlideShow, Slide, RssFeeds]
+    not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
 
 
     def get_not_allowed_cls_for_sidebar_view(self):
@@ -115,8 +113,6 @@ class Skin(BaseSkin):
             ac = here.get_access_control()
             if ac.is_allowed_to_edit(context.user, here):
                 bo_class = 'backoffice'
-        elif here.name in ('order-slides',):
-            bo_class = 'backoffice'
 
         return bo_class
 

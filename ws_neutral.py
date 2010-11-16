@@ -53,7 +53,6 @@ from news import NewsFolder
 from notfoundpage import NotFoundPage_View
 from robots_txt import RobotsTxt
 from sitemap import SiteMap
-from slides import SlideShow
 from tags import TagsFolder
 from theme import Theme
 from webpage import WebPage
@@ -206,7 +205,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
             if self.get_news_folder(get_context()) is None:
                 types.append(self.newsfolder_class)
 
-        return types + [Section, SlideShow, RssFeeds]
+        return types + [Section, RssFeeds]
 
 
     def before_traverse(self, context, min=Decimal('0.000001'),

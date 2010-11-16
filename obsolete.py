@@ -16,13 +16,16 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import String
+from itools.datatypes import String, PathDataType
 from itools.datatypes import Unicode, Decimal, Integer
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import File, Image
 from ikaaro.folder import Folder
+from ikaaro.future.order import ResourcesOrderedContainer
+from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_resource_class
 from ikaaro.root import Root
 from ikaaro.tracker import Tracker
@@ -36,6 +39,7 @@ from bar.html import HTMLContent
 from bar.repository import SidebarBoxesOrderedTable
 from bar.section import SectionOrderedTable, Section
 from slides import Slides_OrderedTable
+from tags import TagsAware
 from ws_neutral import NeutralWS
 
 
@@ -250,7 +254,7 @@ class AddressesFolder(Folder):
                     kw['html'][lang] = list(html)
                 addresses.append(kw)
         # Delete addresses folder
-        self.parent.del_resource(old_name)
+        self.parent.del_resource(old_name, ref_action='force')
         # Create a section
         section = self.parent.make_resource(old_name, Section, add_boxes=False)
         # Get order table
@@ -277,6 +281,116 @@ class AddressesFolder(Folder):
             table.add_new_record({'name': name_map})
 
 
+############################
+# Slides
+############################
+
+class Slide(TagsAware, WebPage):
+
+    class_id = 'slide'
+    class_version = '20100618'
+    class_schema = merge_dicts(WebPage.class_schema,
+                       TagsAware.class_schema,
+                       long_title=Multilingual(source='metadata'),
+                       image=PathDataType(source='metadata'),
+                       template_type=Integer(source='metadata', default=''),
+                       href=String(source='metadata'))
+
+
+class Slides_OrderedTable(ResourcesOrderedTable):
+
+    class_id = 'slides-ordered-table'
+    orderable_classes = (Slide,)
+
+class SlideShow(ResourcesOrderedContainer):
+
+    class_id = 'slides'
+    class_version = '20101116'
+
+    class_schema = merge_dicts(ResourcesOrderedContainer.class_schema,
+                   long_title=Multilingual(source='metadata'),
+                   image=PathDataType(source='metadata'),
+                   toc_nb_col=Integer(source='metadata', default=2),
+                   template_type=Integer(source='metadata', default='1'))
+
+    order_path = 'order-slides'
+    order_class = Slides_OrderedTable
+    slide_class = Slide
+
+    def update_20101116(self):
+        languages = self.get_site_root().get_property('website_languages')
+        # Get informations
+        old_name = self.name
+        long_title = self.get_property('long_title')
+        image = self.get_property('image')
+        toc_nb_col = self.get_property('toc_nb_col')
+        template_type = self.get_property('template_type')
+        title = {}
+        for lang in languages:
+            title[lang] = self.get_property('title', language=lang)
+        # Copy resources
+        files = self.parent.make_resource('%s_migration_files' % old_name, Folder)
+        path = files.get_abspath()
+        for resource in self.traverse_resources():
+            if resource.name == self.name:
+                continue
+            if resource.class_id in ('slide', 'slides-ordered-table'):
+                continue
+            resource.parent.copy_resource(resource.name, '%s/%s' % (path, resource.name))
+        # Get slides
+        slides = []
+        for slide in self.get_resources():
+            if slide.class_id != 'slide':
+                continue
+            kw = {'name': slide.name,
+                  'state': slide.get_property('state')}
+            for key in ['long_title', 'image', 'href',
+                        'tags', 'subject', 'template_type']:
+                kw[key] = slide.get_property(key)
+            kw['html'] = {}
+            for lang in languages:
+                handler = slide.get_handler(language=lang)
+                html =  handler.get_body().get_content_elements()
+                kw['html'][lang] = list(html)
+            for key in ['title', 'subject']:
+                kw[key] = {}
+                for lang in languages:
+                    kw[key][lang] = slide.get_property(key, language=lang)
+            slides.append(kw)
+        # Del resource
+        self.parent.del_resource(old_name, ref_action='force')
+        # Create a section
+        section = self.parent.make_resource(old_name, Section, state='public')
+        for lang in languages:
+            section.set_property('title', title[lang],language=lang)
+        table = section.get_resource('order-section')
+        for i, slide in enumerate(slides):
+            # Add html
+            name_html = slide['name']
+            html = section.make_resource(name_html, WebPage,
+                      state=slide['state'],
+                      tags=slide['tags'],
+                      display_title=True)
+            for lang in languages:
+                handler = html.get_handler(language=lang)
+                img = '<img src="%s/;download"/>' % slide['image']
+                if slide['href']:
+                    img = "<a href='%s'>%s</a>" % (slide['href'], img)
+                data = list(XMLParser(img)) + slide['html'][lang]
+                handler.set_body(data)
+                for key in ['title', 'subject']:
+                    html.set_property(key,
+                        slide[key][lang], language=lang)
+            table.add_new_record({'name': name_html})
+        # End
+        for resource in files.traverse_resources():
+            if resource.name == files.name:
+                continue
+            resource.parent.move_resource(resource.name, '../%s/%s' % (self.name, resource.name))
+        # Delete files
+        files = self.parent.del_resource('%s_migration_files' % old_name)
+
+
 
 
 register_resource_class(ITWSRoot)
@@ -290,3 +404,6 @@ register_resource_class(Old_Issue)
 register_resource_class(Old_TrackerCalendar)
 register_resource_class(AddressesFolder)
 register_resource_class(AddressItem)
+register_resource_class(Slide)
+register_resource_class(SlideShow)
+register_resource_class(Slides_OrderedTable)
