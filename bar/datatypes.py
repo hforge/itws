@@ -18,8 +18,6 @@
 from itools.datatypes import Enumerate
 from itools.gettext import MSG
 
-# Import from ikaaro
-from ikaaro.workflow import WorkflowAware
 
 
 class OrderBoxEnumerate(Enumerate):
@@ -53,23 +51,3 @@ class MyAuthorized_Classid(Enumerate):
             options.append({'name': cls.class_id,
                             'value': cls.class_title})
         return options
-
-
-
-class StaticStateEnumerate(Enumerate):
-
-    workflow = WorkflowAware.workflow
-
-    def get_options(cls):
-        states = cls.workflow.states
-
-        # Options
-        options = [
-           {'name': x, 'value': states[x].metadata['title'].gettext()}
-           for x in states.keys() ]
-
-        options.sort(key=lambda x: x['value'])
-        return options
-
-
-

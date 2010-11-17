@@ -25,10 +25,10 @@ from itools.uri import get_reference
 from ikaaro import messages
 from ikaaro.autoform import SelectWidget, RadioWidget
 from ikaaro.registry import get_resource_class
-from ikaaro.workflow import WorkflowAware
+from ikaaro.workflow import StaticStateEnumerate, WorkflowAware
 
 # Import from itws
-from datatypes import MyAuthorized_Classid, OrderBoxEnumerate, StaticStateEnumerate
+from datatypes import MyAuthorized_Classid, OrderBoxEnumerate
 from itws.utils import state_widget
 from itws.views import EasyNewInstance
 
