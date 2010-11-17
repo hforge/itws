@@ -15,11 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.csv import Property
 from itools.core import merge_dicts, get_abspath
+from itools.csv import Property
 from itools.datatypes import PathDataType, String
 from itools.gettext import MSG
 from itools.handlers import ro_database, File as FileHandler
+from itools.uri import Path
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import ImageSelectorWidget, MultilineWidget
