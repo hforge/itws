@@ -46,7 +46,7 @@ from itools.web import get_context, BaseView, INFO, ERROR, STLView
 from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
-from ikaaro.buttons import Button
+from ikaaro.buttons import BrowseButton
 from ikaaro.autoform import RadioWidget, TextWidget
 from ikaaro.skins import register_skin
 from ikaaro.text import CSV
@@ -64,7 +64,7 @@ rss_default_pub_date = datetime(1970, 1, 1)
 ######################################################################
 # Views
 ######################################################################
-class ActivateButton(Button):
+class ActivateButton(BrowseButton):
 
     access = 'is_allowed_to_edit'
     name = 'activate'
@@ -72,7 +72,7 @@ class ActivateButton(Button):
 
 
 
-class DeactivateButton(Button):
+class DeactivateButton(BrowseButton):
 
     access = 'is_allowed_to_edit'
     name = 'deactivate'
@@ -239,6 +239,7 @@ class RssFeeds_Configure(AutomaticEditView):
     def set_value(self, resource, context, name, form):
         if name == 'update_now':
             resource.update_rss()
+            return
         return AutomaticEditView.set_value(self, resource, context, name, form)
 
 
