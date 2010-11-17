@@ -25,6 +25,9 @@ from itools.uri import get_reference
 from itools.web import STLView
 from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
+# Import from ikaaro
+from ikaaro.folder import Folder
+
 # Import from itws
 from base_views import ContentBar_View
 from bar_aware_views import EasyNewInstance_WithOrderer
@@ -110,7 +113,7 @@ class Section_AddContent(EasyNewInstance_WithOrderer):
 
     def get_aware_document_types(self, resource, context):
         from section import Section
-        return [Section, WebPage]
+        return [Folder, Section, WebPage]
 
 
 

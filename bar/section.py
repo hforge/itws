@@ -25,6 +25,7 @@ from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
@@ -135,16 +136,7 @@ class Section(SideBarAware, ContentBarAware,
 
 
     def get_document_types(self):
-        types = Folder.get_document_types(self)[:]
-        # Do not add format twice
-        cls_id_types = [ cls.class_id for cls in types ]
-        subsection_cls = self.get_subsection_class()
-        article_cls = self.get_article_class()
-        if subsection_cls.class_id not in cls_id_types:
-            types.append(subsection_cls)
-        if article_cls.class_id not in cls_id_types:
-            types.append(article_cls)
-        return types
+        return [File]
 
 
     def get_subsection_class(self):
