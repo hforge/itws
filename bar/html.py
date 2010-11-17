@@ -28,7 +28,7 @@ from itools.web import get_context
 from ikaaro.menu import Target
 from ikaaro.webpage import WebPage_View
 from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
-from ikaaro.autoform import rte_widget, SelectWidget
+from ikaaro.autoform import SelectWidget
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
@@ -38,22 +38,6 @@ from itws.utils import get_path_and_view, is_empty
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
 from itws.widgets.base import advance_rte_widget
-
-
-
-class HTMLContent_ViewBoth():
-
-    title = MSG(u'View with preview')
-    template = '/ui/bar_items/HTMLContent_viewboth.xml'
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-        namespace['content'] = resource.view.GET(resource, context)
-        namespace['right_rendered'] = resource.preview.GET(resource, context)
-        return namespace
-
-
 
 
 
@@ -212,7 +196,6 @@ class HTMLContent(WebPage):
     #########
     # Views
     #########
-    view_both = HTMLContent_ViewBoth()
     preview = order_preview = SidebarBox_Preview()
     edit = HTMLContent_Edit()
     view = HTMLContent_View()
