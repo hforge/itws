@@ -51,39 +51,6 @@ class NeutralClassSkin(Enumerate):
 
 
 
-# XXX Migration ==> Should be in ikaaro ?
-class StateEnumerate(Enumerate):
-
-    default = ''
-
-    @classmethod
-    def get_options(cls):
-        context = get_context()
-        resource = context.resource
-        states = resource.workflow.states
-        state = resource.get_state()
-
-        ac = resource.get_access_control()
-        user = context.user
-
-        # Possible states
-        options = [
-            trans.state_to
-            for name, trans in state.transitions.items()
-            if ac.is_allowed_to_trans(user, resource, name) ]
-        options = set(options)
-        options.add(resource.get_statename())
-
-        # Options
-        options = [
-           {'name': x, 'value': states[x].metadata['title'].gettext()}
-           for x in options ]
-
-        options.sort(key=lambda x: x['value'])
-        return options
-
-
-
 class ImagePathDataType(PathDataType):
 
     @staticmethod

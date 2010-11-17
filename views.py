@@ -35,11 +35,6 @@ from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.registry import get_resource_class
 from ikaaro.views_new import NewInstance
-from ikaaro.workflow import WorkflowAware
-
-# Import from itws
-from datatypes import StateEnumerate
-from utils import state_widget
 
 
 
@@ -183,8 +178,6 @@ class AutomaticEditView(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         schema = {}
-        if isinstance(resource, WorkflowAware):
-            schema['state'] = StateEnumerate
         if getattr(resource, 'edit_show_meta', False) is True:
             schema['description'] = Unicode(multilingual=True)
             schema['subject'] = Unicode(multilingual=True)
@@ -200,9 +193,6 @@ class AutomaticEditView(DBResource_Edit):
         if getattr(resource, 'edit_show_meta', False) is True:
             widgets.extend([description_widget, subject_widget])
         widgets = self.base_widgets + widgets + resource.edit_widgets
-        # Add state widget in bottom
-        if isinstance(resource, WorkflowAware):
-            widgets.append(state_widget)
         # Add timestamp_widget
         widgets.append(timestamp_widget)
         # FIXME Hide/Show title
