@@ -6,13 +6,15 @@
 
   <stl:block stl:if="newsfolder">
     <h2 stl:if="title">${title}</h2>
+
+    <!--
     <div class="tags" stl:if="tags">
       ${category_title}
       <stl:block stl:repeat="tag tags">
         <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
         <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
       </stl:block>
-    </div>
+    </div>-->
 
     <div stl:if="viewboxes" class="item" stl:repeat="viewbox viewboxes">
       ${viewbox}

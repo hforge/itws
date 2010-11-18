@@ -135,6 +135,7 @@ class SiteMapView(BaseView):
             newsfolder_format = site_root.newsfolder_class.class_id
             if brain.format == newsfolder_format:
                 # Return last news mtime
+                # XXX get_news do no exist
                 news_folder = resource.get_resource(brain.abspath)
                 news_brains = news_folder.get_news(context, brain_only=True)
                 if news_brains:

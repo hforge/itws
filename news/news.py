@@ -27,7 +27,6 @@ from itools.datatypes import String, PathDataType
 from itools.gettext import MSG
 from itools.uri import encode_query, get_reference, Path
 from itools.web import get_context
-from itools.database import PhraseQuery, AndQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro.file import File
@@ -39,7 +38,7 @@ from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 
 # Import from itws
-from itws.bar import BoxNewsSiblingsToc, SideBarAware
+from itws.bar import SideBarAware
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import TagsAware
 from itws.utils import get_path_and_view
@@ -250,55 +249,11 @@ class NewsFolder(SideBarAware, Folder):
         # Preorder items
         repository = self.get_site_root().get_repository()
         sidebar_table = self.get_resource(self.sidebar_name)
-        # news slibbling
-        cls = BoxNewsSiblingsToc
-        repository.make_resource('news-siblings', cls, state='public',
-                                 title={'en': cls.class_title.gettext()})
-        sidebar_table.add_new_record({'name': 'news-siblings'})
+        # XXX add items
 
 
     def get_document_types(self):
         return [self.news_class, File]
-
-
-    def get_news_query_terms(self, state=None, tags=[]):
-        abspath = self.get_canonical_path()
-        query = [ PhraseQuery('parent_path', str(abspath)),
-                  PhraseQuery('format', self.news_class.class_id) ]
-        if state:
-            query.append(PhraseQuery('workflow_state', state))
-        if tags:
-            tags_query = [ PhraseQuery('tags', tag) for tag in tags ]
-            if len(tags_query):
-                tags_query = OrQuery(*tags_query)
-            query.append(tags_query)
-        return query
-
-
-    def get_news(self, context, state='public', language=None, number=None,
-                 tags=[], brain_only=False):
-        query = self.get_news_query_terms(state, tags)
-        if language is None:
-            # Get Language
-            site_root = context.site_root
-            ws_languages = site_root.get_property('website_languages')
-            accept = context.accept_language
-            language = accept.select_language(ws_languages)
-
-        # size
-        size = 0
-        if number:
-            size = number
-
-        root = context.root
-        results = root.search(AndQuery(*query))
-        documents = results.get_documents(sort_by='pub_datetime',
-                                          reverse=True, size=size)
-        if brain_only:
-            return documents
-
-        return [ root.get_resource(doc.abspath)
-                 for doc in documents ]
 
     ##########################
     # Views

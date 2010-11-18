@@ -7,7 +7,7 @@
   <div class="newsitem ${css}">
     <div class="newsitem-date">${pub_datetime}</div>
     <div class="newsitem-title">
-      <a href="${path}">${long_title}</a>
+      <a href="${link}">${long_title}</a>
     </div>
   </div>
 </stl:block>

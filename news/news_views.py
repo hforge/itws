@@ -44,7 +44,7 @@ from itws.webpage_views import WebPage_Edit
 class NewsItem_Viewbox(TagView_Viewbox):
 
 
-    def _get_namespace(self, resource, context, column):
+    def _get_namespace(self, resource, context, column, current_path):
         if column == 'title':
             # Return title or long_title
             title = resource.get_property('title')
@@ -61,7 +61,8 @@ class NewsItem_Viewbox(TagView_Viewbox):
             if tags:
                 return resource.get_news_tags_namespace(context)
             return []
-        return TagView_Viewbox._get_namespace(self, resource, context, column)
+        return TagView_Viewbox._get_namespace(self, resource, context, column,
+                                              current_path)
 
 
 
@@ -71,7 +72,7 @@ class NewsItem_Preview(STLView):
 
     def get_columns(self):
         return ('title', 'long_title', 'path', 'pub_datetime',
-                'thumbnail', 'css')
+                'thumbnail', 'css', 'tags')
 
 
     def get_value(self, resource, context, column, language, current_path):
@@ -200,11 +201,14 @@ class NewsFolder_View(Tag_View):
 
 
     def get_items(self, resource, context, *args):
+        from itws.tags.utils import get_tagaware_query_terms
+        # XXX
         # Build the query
         args = list(args)
         # Filter by tag
         tags = context.get_query_value('tag', type=String(multiple=True))
-        query_terms = resource.get_news_query_terms(state='public', tags=tags)
+        query_terms = get_tagaware_query_terms(
+            on_current_folder=True, state='public', tags=tags)
         args.append(AndQuery(*query_terms))
 
         if len(args) == 1:

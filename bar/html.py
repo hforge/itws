@@ -33,7 +33,6 @@ from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from base_views import Box_View
-from news import SidebarBox_Preview
 from itws.utils import get_path_and_view, is_empty
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
@@ -196,7 +195,6 @@ class HTMLContent(WebPage):
     #########
     # Views
     #########
-    preview = order_preview = SidebarBox_Preview()
     edit = HTMLContent_Edit()
     view = HTMLContent_View()
     new_instance = EasyNewInstance()

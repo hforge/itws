@@ -34,12 +34,14 @@ from ikaaro.webpage import WebPage
 
 
 # Import from itws
+from bar.base import Box
+from bar.news import BoxFeed
 from bar.map_box import MapBox
 from bar.html import HTMLContent
 from bar.repository import SidebarBoxesOrderedTable
 from bar.section import SectionOrderedTable, Section
 from slides import Slides_OrderedTable
-from tags import TagsAware
+from tags import TagsAware, TagsList
 from ws_neutral import NeutralWS
 
 
@@ -392,6 +394,47 @@ class SlideShow(ResourcesOrderedContainer):
 
 
 
+#######################################
+## Box to feed (replace 3 boxes by one)
+########################################
+class BoxSectionNews(Box):
+    class_id = 'box-section-news'
+    class_version = '20101119'
+    class_schema = merge_dicts(Box.class_schema,
+                               count=Integer(source='metadata', default=3),
+                               tags=TagsList(source='metadata', multiple=True,
+                                             default=[]))
+
+    def update_20101119(self):
+        metadata = self.metadata
+        metadata.set_changed()
+        metadata.version = BoxFeed.class_version
+        metadata.format = BoxFeed.class_id
+        metadata.set_property('feed_template', '2')
+
+class ContentBoxSectionNews(BoxSectionNews):
+    class_id = 'contentbar-box-section-news'
+    class_version = '20101119'
+
+    def update_20101119(self):
+        metadata = self.metadata
+        metadata.set_changed()
+        metadata.version = BoxFeed.class_version
+        metadata.format = BoxFeed.class_id
+        metadata.set_property('feed_template', '3')
+
+
+class BoxNewsSiblingsToc(BoxSectionNews):
+    class_id = 'box-news-siblings-toc'
+    class_version = '20101119'
+
+    def update_20101119(self):
+        metadata = self.metadata
+        metadata.set_changed()
+        metadata.version = BoxFeed.class_version
+        metadata.format = BoxFeed.class_id
+        metadata.set_property('feed_template', '1')
+
 
 register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
@@ -407,3 +450,6 @@ register_resource_class(AddressItem)
 register_resource_class(Slide)
 register_resource_class(SlideShow)
 register_resource_class(Slides_OrderedTable)
+register_resource_class(BoxSectionNews)
+register_resource_class(ContentBoxSectionNews)
+register_resource_class(BoxNewsSiblingsToc)

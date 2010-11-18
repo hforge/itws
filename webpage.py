@@ -55,6 +55,9 @@ class WebPage(BaseWebPage, TagsAware):
                            TagsAware.get_catalog_values(self))
 
 
+    def get_long_title(self, language=None):
+        return self.get_title(language)
+
     #########################################################
     # Links API
     #########################################################

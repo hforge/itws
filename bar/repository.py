@@ -39,7 +39,6 @@ from repository_views import Repository_BrowseContent
 from bar_aware_views import SideBarBox_NewInstance
 from bar_aware_views import ContentBarBox_NewInstance
 from tags import BoxTags
-from news import BoxSectionNews
 
 
 ###########################################################################
@@ -172,9 +171,6 @@ class Repository(Folder):
         # Tags (sidebar "tag cloud")
         self.make_resource(self.tags_box, BoxTags, state='public',
                            title={'en': BoxTags.class_title.gettext()})
-        # News (sidebar "last news")
-        self.make_resource(self.news_box, BoxSectionNews, state='public',
-                           title={'en': BoxSectionNews.class_title.gettext()})
 
 
     def _get_document_types(self, allow_instanciation=None, is_content=None,

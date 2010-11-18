@@ -24,20 +24,18 @@ from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
-from ikaaro.autoform import RadioWidget, TextWidget
+from ikaaro.autoform import RadioWidget
 
 # Import from itws
 from base import Box
 from base_views import Box_View
-from news import BoxSectionNews_View, BoxNewsSiblingsToc_Preview
-from itws.datatypes import PositiveInteger
 
+
+# XXX Why 2 differents views ?
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
 hide_single_widget = RadioWidget('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
-
-
 
 
 
@@ -151,80 +149,6 @@ class BoxSectionChildrenTree_View(Box_View):
 
 
 
-class BoxNewsSiblingsToc_View(BoxSectionNews_View):
-
-    template = '/ui/bar_items/NewsSiblingsToc_view.xml'
-    more_title = MSG(u'Show all')
-
-    def _get_items(self, resource, context, news_folder, brain_only=False):
-        return news_folder.get_news(context, brain_only=brain_only)
-
-
-    def get_namespace(self, resource, context):
-        namespace = {'items': {'displayed': [], 'hidden': []},
-                     'title': resource.get_property('title'),
-                     'class': None}
-        site_root = resource.get_site_root()
-        newsfolder_cls = site_root.newsfolder_class
-        if newsfolder_cls is None:
-            self.set_view_is_empty(True)
-            return namespace
-
-        allowed_to_edit = self.is_admin(resource, context)
-        here = context.resource
-        here_is_newsfolder = isinstance(here, newsfolder_cls)
-        if here_is_newsfolder:
-            news_folder = here
-            news = None
-        else:
-            news_folder = here.parent
-            news = here
-
-        if isinstance(news_folder, newsfolder_cls) is False:
-            self.set_view_is_empty(True)
-            return namespace
-
-        # News (siblings)
-        news_count = resource.get_property('count')
-        title = resource.get_property('title')
-        displayed_items = self._get_items_ns(resource, context, render=True)
-        displayed_items = list(displayed_items)
-        items_number = len(displayed_items)
-        hidden_items = []
-        if news_count:
-            if not here_is_newsfolder:
-                if news:
-                    news_brains = self._get_items(resource, context,
-                                                  news_folder, brain_only=True)
-                    news_abspath = news.get_abspath()
-                    news_index = 0
-                    # Do not hide current news
-                    for index, brain in enumerate(news_brains):
-                        if brain.abspath == news_abspath:
-                            news_index = index + 1
-                            break
-                    news_count = max(news_count, news_index)
-
-                hidden_items = displayed_items[news_count:]
-            displayed_items = displayed_items[:news_count]
-        namespace['items'] = {'displayed': displayed_items,
-                              'hidden': hidden_items}
-        namespace['more_title'] = self.more_title.gettext().encode('utf-8')
-
-        # Hide siblings box if the user is not authenticated and
-        # there is not other items
-        min_limit = 1 if news_count else 0
-        hide_if_not_enough_items = len(displayed_items) <= min_limit
-        if allowed_to_edit is False and hide_if_not_enough_items:
-            self.set_view_is_empty(True)
-
-        namespace['hide_if_not_enough_items'] = hide_if_not_enough_items
-        namespace['limit'] = min_limit
-
-        return namespace
-
-
-
 class ContentBoxSectionChildrenToc_View(Box_View):
 
     template = '/ui/bar_items/ContentBoxSectionChildrenToc_view.xml'
@@ -307,31 +231,6 @@ class BoxSectionChildrenToc(Box):
 
     # Views
     view = BoxSectionChildrenTree_View()
-
-
-class BoxNewsSiblingsToc(Box):
-
-    class_id = 'box-news-siblings-toc'
-    class_title = MSG(u'News TOC')
-    class_description = MSG(u'Display the list of news.')
-    class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
-    class_schema = merge_dicts(Box.class_schema,
-                               count=PositiveInteger(source='metadata', default=30))
-
-    # Box configuration
-    allow_instanciation = False
-    edit_schema = merge_dicts(hide_single_schema,
-                              count=PositiveInteger(default=30))
-
-    edit_widgets = [
-        hide_single_widget,
-        TextWidget('count', size=3,
-                   title=MSG(u'Maximum number of news to display'))
-        ]
-
-    # Views
-    view = BoxNewsSiblingsToc_View()
-    preview = order_preview = BoxNewsSiblingsToc_Preview()
 
 
 

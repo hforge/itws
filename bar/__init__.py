@@ -24,23 +24,21 @@ from diaporama import Diaporama
 from html import HTMLContent
 from map_box import MapBox
 from menu import MenuSideBar
-from news import BoxSectionNews, ContentBoxSectionNews
+from news import BoxFeed
 from registry import register_box
 from repository import Repository
 from section import Section
 from tags import BoxTags
-from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc, BoxNewsSiblingsToc
+from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc
 from twitter import IdenticaSideBar, TwitterSideBar
 
 
 register_box(Diaporama)
 register_box(HTMLContent)
-register_box(BoxSectionNews)
 register_box(BoxTags)
 register_box(BoxSectionChildrenToc)
-register_box(BoxNewsSiblingsToc)
+register_box(BoxFeed)
 register_box(ContentBoxSectionChildrenToc)
-register_box(ContentBoxSectionNews)
 register_box(IdenticaSideBar)
 register_box(MapBox)
 register_box(MenuSideBar)

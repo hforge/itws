@@ -45,7 +45,6 @@ from itws.widgets import DualSelectWidget
 
 class TagsList(Enumerate):
 
-    site_root = None
 
     @staticmethod
     def decode(value):
@@ -63,7 +62,9 @@ class TagsList(Enumerate):
 
     @classmethod
     def get_options(cls):
-        tags_folder = cls.site_root.get_resource('tags', soft=True)
+        context = get_context()
+        site_root = context.site_root
+        tags_folder = site_root.get_resource('tags', soft=True)
         if tags_folder is None:
             return []
         context = get_context()
@@ -129,12 +130,13 @@ class TagView_Viewbox(STLView):
     more_title = MSG(u'Read more')
     thumb_width = thumb_height = 96
 
-
-    def _get_namespace(self, resource, context, column):
+    def _get_namespace(self, resource, context, column, current_path):
         if column == 'pub_datetime':
             return resource.get_pub_datetime_formatted()
         elif column == 'title':
             return resource.get_property('title')
+        elif column == 'long_title':
+            return resource.get_long_title()
         elif column == 'link':
             return context.get_link(resource)
         elif column == 'preview':
@@ -149,13 +151,19 @@ class TagView_Viewbox(STLView):
             if tags:
                 return resource.get_tags_namespace(context)
             return []
+        elif column == 'css':
+            if resource.get_abspath() == current_path:
+                return 'active'
+            return None
 
 
     def get_namespace(self, resource, context):
         namespace = {}
-        for key in ('pub_datetime', 'title', 'link', 'preview', 'tags',
-                    'thumbnail'):
-            namespace[key] = self._get_namespace(resource, context, key)
+        here_abspath = context.resource.get_abspath()
+        for key in ('pub_datetime', 'title', 'long_title',
+                    'link', 'preview', 'tags',
+                    'thumbnail', 'css'):
+            namespace[key] = self._get_namespace(resource, context, key, here_abspath)
         namespace['more_title'] = self.more_title
         namespace['thumb_width'] = self.thumb_width
         namespace['thumb_height'] = self.thumb_height
@@ -200,15 +208,21 @@ class Tag_View(Folder_BrowseContent):
         namespace['title'] = resource.get_property('title')
         # Get viewboxes
         base_viewbox = TagView_Viewbox()
+        base_viewbox.template = self.get_template_viewbox(resource, context)
         items = self.get_items(resource, context)
         items = self.sort_and_batch(resource, context, items)
         namespace['viewboxes'] = []
         for item in items:
             brain, item_resource = item
-            viewbox = getattr(item_resource, 'viewbox', base_viewbox)
+            #viewbox = getattr(item_resource, 'viewbox', base_viewbox) XXX
+            viewbox = base_viewbox
             viewbox.brain = brain
             namespace['viewboxes'].append(viewbox.GET(item_resource, context))
         return namespace
+
+
+    def get_template_viewbox(self, resource, context):
+        return '/ui/common/Tag_item_viewbox.xml'
 
 
 
@@ -317,8 +331,7 @@ class TagsAware_Edit(object):
 
 
     def _get_schema(self, resource, context):
-        site_root = resource.get_site_root()
-        return {'tags': TagsList(site_root=site_root, multiple=True),
+        return {'tags': TagsList(multiple=True),
                 'pub_date': Date, 'pub_time': TimeWithoutSecond}
 
 

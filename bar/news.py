@@ -16,305 +16,88 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.database import AndQuery
+from itools.datatypes import Enumerate
 from itools.gettext import MSG
-from itools.uri import encode_query
-from itools.web import BaseView
-
+from itools.datatypes import String
 # Import from ikaaro
-from ikaaro.autoform import TextWidget
-from ikaaro.resource_views import DBResource_Edit
-from ikaaro.webpage import WebPage_View
+from ikaaro.autoform import SelectWidget, TextWidget
 
 # Import from itws
 from base import Box
-from base_views import Box_View, Box_Preview
+from base_views import Box_View
 from itws.datatypes import PositiveInteger
-from itws.news.news_views import NewsFolder_View
+# XXX API public
 from itws.tags import TagsList
-from itws.utils import to_box
+from itws.tags.tags_views import Tag_View
+from itws.tags.utils import get_tagaware_items
 from itws.widgets import DualSelectWidget
 
 
+class FeedSource(Enumerate):
 
-class BoxNewsSiblingsToc_Preview(Box_Preview):
-
-    def get_details(self, resource, context):
-        return [u'Useful in a news folder, show a Table of Content '
-                u'with all news.']
-
+    # XXX All tagaware should be feedable
+    options = [{'name': 'news', 'value': MSG(u'News')},
+               {'name': 'webpage', 'value': MSG(u'WebPage')}]
 
 
-class BoxSectionNews_Preview(Box_Preview):
+class FeedTemplate(Enumerate):
 
-    def get_details(self, resource, context):
-        details = []
-        for key in ('count', 'tags'):
-            value = resource.get_property(key)
-            details.append(u'%s: %s' % (key, value))
-        return details
+    options = [
+      {'name': '1', 'value': MSG(u'Show only title')},
+      {'name': '2', 'value': MSG(u'Show long title & a picture')},
+      {'name': '3', 'value': MSG(u'Show title & a picture & summary')}]
 
 
-
-class SidebarBox_Preview(BaseView):
-    title = MSG(u'Preview')
-
-    def GET(self, resource, context):
-        return to_box(resource, WebPage_View().GET(resource, context))
-
-
-
-class BoxSectionNews_View(Box_View):
+class BoxSectionNews_View(Box_View, Tag_View):
 
     access = 'is_allowed_to_edit'
-    template = '/ui/bar_items/SectionNews_view.xml'
     title = MSG(u'View')
 
     # Configuration
-    more_title = MSG(u'Show all')
-    thumb_width = thumb_height = 96
-
-    def _get_news_item_view(self):
-        from itws.news.news_views import NewsItem_Preview
-        return NewsItem_Preview()
-
-
-    def _get_news_folder(self, resource, context):
-        site_root = resource.get_site_root()
-        news_folder = site_root.get_news_folder(context)
-        return news_folder
-
-
-    def _get_items(self, resource, context, news_folder):
-        count = resource.get_property('count')
-        tags = resource.get_property('tags')
-        return news_folder.get_news(context, number=count, tags=tags)
-
-
-    def _get_items_ns(self, resource, context, render=True):
-        news_folder = self._get_news_folder(resource, context)
-        items = self._get_items(resource, context, news_folder)
-
-        view = self._get_news_item_view()
-        ns_items = []
-        for item in items:
-            if render:
-                ns_items.append(view.GET(item, context))
-            else:
-                ns_items.append(view.get_namespace(item, context))
-
-        return ns_items
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-
-        # News title and items
-        news_folder = self._get_news_folder(resource, context)
-        # no news folder
-        title = resource.get_property('title')
-        items = []
-        items_number = 0
-        if news_folder:
-            news_count = resource.get_property('count')
-            # if news_count == 0, do not display all news
-            if news_count:
-                items = self._get_items_ns(resource, context, render=False)
-                items_number = len(items)
-                if items:
-                    # Add 'first' and 'last' css classes
-                    for i in xrange(items_number):
-                        items[i]['css'] = ''
-                    items[0]['css'] += ' first'
-                    items[-1]['css'] += ' last'
-
-        if items_number == 0 and self.is_admin(resource, context) is False:
-            # Hide the box if there is no news and
-            # if the user cannot edit the box
-            self.set_view_is_empty(True)
-
-        site_root = resource.get_site_root()
-        namespace['newsfolder'] = news_folder
-        newfolder_cls_title = site_root.newsfolder_class.class_title
-        namespace['newsfolder_cls_title'] = newfolder_cls_title
-        namespace['title'] = title
-        namespace['items'] = items
-        namespace['display'] = items_number != 0
-        # more link
-        more_link = None
-        if news_folder:
-            more_title = self.more_title.gettext().encode('utf-8')
-            tags = resource.get_property('tags')
-            link = context.get_link(news_folder)
-            if tags:
-                # FIXME Do not add tags to query if all tags are selected
-                query =  {'tag': tags}
-                link = '%s?%s' % (link, encode_query(query))
-            more_link = {'href': link, 'title': more_title}
-        namespace['more'] = more_link
-        # Thumbnail configuration
-        namespace['thumb_width'] = self.thumb_width
-        namespace['thumb_height'] = self.thumb_height
-
-        return namespace
-
-
-
-class ContentBoxSectionNews_View(NewsFolder_View, Box_View):
-
-    access = 'is_allowed_to_view'
-    title = MSG(u'View')
-    template = '/ui/bar_items/ContentBoxSectionNews_view.xml'
     batch_template = None
 
-
-    def _get_news_folder(self, resource, context):
-        site_root = resource.get_site_root()
-        news_folder = site_root.get_news_folder(context)
-        return news_folder
+    def get_template_viewbox(self, resource, context):
+        # XXX move on same folder
+        template = resource.get_property('feed_template')
+        if template == '1':
+            return '/ui/news/NewsItem_preview.xml'
+        elif template == '2':
+            return '/ui/bar_items/SectionNews_view.xml'
+        elif template == '3':
+            return '/ui/common/Tag_item_viewbox.xml'
+        return '/ui/common/Tag_item_viewbox.xml'
 
 
     def get_items(self, resource, context, *args):
-        # Build the query
-        args = list(args)
-        # Filter by tag
+        count = resource.get_property('count')
         tags = resource.get_property('tags')
-        news_folder = self._get_news_folder(resource, context)
-        query_terms = news_folder.get_news_query_terms(state='public',
-                                                       tags=tags)
-        args.append(AndQuery(*query_terms))
-
-        if len(args) == 1:
-            query = args[0]
-        else:
-            query = AndQuery(*args)
-
-        # Ok
-        return context.root.search(query)
-
-
-    def sort_and_batch(self, resource, context, results):
-        start = 0
-        size = count = resource.get_property('count')
-        sort_by = 'pub_datetime'
-        reverse = True
-        items = results.get_documents(sort_by=sort_by, reverse=reverse,
-                                      start=start, size=size)
-
-        # Access Control (FIXME this should be done before batch)
-        user = context.user
-        root = context.root
-        allowed_items = []
-        for item in items:
-            resource = root.get_resource(item.abspath)
-            ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource):
-                allowed_items.append((item, resource))
-
-        return allowed_items
-
-
-    def get_tags_namespace(self, resource, context):
-        tags_ns = []
-        news_folder = self._get_news_folder(resource, context)
-        here_link = context.get_link(news_folder)
-        tags_folder = resource.get_site_root().get_resource('tags')
-        tags = resource.get_property('tags')
-
-        for tag_name in tags:
-            query = encode_query({'tag': tag_name})
-            tag = tags_folder.get_resource(tag_name)
-            tags_ns.append({'title': tag.get_title(),
-                            'href': '%s?%s' % (here_link, query)})
-
-        return tags_ns
-
-
-    def get_namespace(self, resource, context):
-        news_folder = self._get_news_folder(resource, context)
-        is_admin = self.is_admin(resource, context)
-
-        if news_folder is None:
-            if is_admin is False:
-                # Hide the box if there is no newsfolder
-                self.set_view_is_empty(True)
-            newfolder_cls = resource.get_site_root().newsfolder_class
-            return {'newsfolder': None,
-                    'newsfolder_cls_title': newfolder_cls.class_title}
-
-        namespace = NewsFolder_View.get_namespace(self, resource, context)
-        namespace['title'] = resource.get_property('title')
-
-        viewboxes = namespace['viewboxes']
-        if len(viewboxes) == 0 and is_admin is False:
-            # Hide the box if there is no news and
-            # if the user cannot edit the box
-            self.set_view_is_empty(True)
-
-        namespace['newsfolder'] = news_folder
-        return namespace
-
-
-
-class BoxSectionNews_Edit(DBResource_Edit):
-
-    def _get_news_folder(self, resource, context):
+        feed_class_id = resource.get_property('feed_class_id')
         site_root = resource.get_site_root()
         news_folder = site_root.get_news_folder(context)
-        return news_folder
-
-
-    def _get_schema(self, resource, context):
-        schema = merge_dicts(
-            DBResource_Edit._get_schema(self, resource, context),
-            count=PositiveInteger(default=3))
-        # News folder
-        newsfolder = self._get_news_folder(resource, context)
-        if newsfolder:
-            # Count is already defined in resource.edit_schema
-            # Do not add it but override 'tags' definition
-            site_root = resource.get_site_root()
-            # tags
-            tags = site_root.get_resource('tags')
-            sub_schema = {}
-            if len(tags.get_tag_brains(context)):
-                tags = TagsList(news_folder=newsfolder, multiple=True,
-                                site_root=site_root)
-                sub_schema['tags'] = tags
-
-            return merge_dicts(schema, sub_schema)
-        return schema
-
-
-    def get_widgets(self, resource, context):
-        # base widgets
-        widgets = DBResource_Edit.get_widgets(self, resource, context)[:]
-
-        # News folder
-        newsfolder = self._get_news_folder(resource, context)
-        if newsfolder:
-            widgets.append(TextWidget('count', title=MSG(u'News to show'),
-                                      size=3))
-            # tags
-            tags = resource.get_site_root().get_resource('tags')
-            if len(tags.get_tag_brains(context)):
-                widget = DualSelectWidget('tags', title=MSG(u'News TAGS'),
-                        is_inline=True, has_empty_option=False)
-                widgets.append(widget)
-
-        return widgets
+        return get_tagaware_items(context, class_id=feed_class_id,
+                  number=count, tags=tags, brain_and_docs=True)
 
 
 
-class BoxSectionNews(Box):
+    def sort_and_batch(self, resource, context, items):
+        return items
 
-    class_id = 'box-section-news'
-    class_title = MSG(u'Last News Box (Sidebar)')
+
+
+
+class BoxFeed(Box):
+
+    class_id = 'box-feed'
+    class_title = MSG(u'Box to feed items')
+    class_version = '20101119'
     class_icon16 = 'bar_items/icons/16x16/box_section_news.png'
-    class_description = MSG(u'Display the last N news filtered by tags')
+    class_description = MSG(u'Display the last N items (Webpage/News) filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(Box.class_schema,
+                               feed_class_id=FeedSource(source='metadata'),
+                               feed_source=String(source='metadata'),#
+                               feed_template=FeedTemplate(source='metadata'),
                                count=PositiveInteger(source='metadata', default=3),
                                tags=TagsList(source='metadata', multiple=True,
                                              default=[]))
@@ -322,25 +105,22 @@ class BoxSectionNews(Box):
     # Configuration
     allow_instanciation = True
     is_side = True
-    is_content = False
+    is_content = True
+
+    # Automatic Edit View
+    edit_schema = {'feed_class_id': FeedSource,
+                   'feed_template': FeedTemplate,
+                   'count': PositiveInteger(default=3),
+                   'tags': TagsList(multiple=True)}
+
+
+    edit_widgets = [SelectWidget('feed_class_id', title=MSG(u'Feed Source'),
+                       has_empty_option=True),
+             SelectWidget('feed_template', title=MSG(u'Feed template')),
+             TextWidget('count', title=MSG(u'News to show'), size=3),
+             DualSelectWidget('tags', title=MSG(u'News TAGS'),
+                        is_inline=True, has_empty_option=False)]
+
 
     # Views
-    preview = order_preview = BoxSectionNews_Preview()
     view = BoxSectionNews_View()
-    edit = BoxSectionNews_Edit()
-
-
-
-class ContentBoxSectionNews(BoxSectionNews):
-
-    class_id = 'contentbar-box-section-news'
-    class_title = MSG(u'Last News Box (Contentbar)')
-
-    allow_instanciation = True
-    is_content = True
-    is_side = False
-
-    view = ContentBoxSectionNews_View()
-
-
-
