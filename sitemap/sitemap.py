@@ -131,16 +131,8 @@ class SiteMapView(BaseView):
             path_to_brain_resource = r_abspath.get_pathto(path_reference)
             return context.uri.resolve('/%s' % path_to_brain_resource)
         elif column == 'lastmod':
-            # FIXME To improve
-            newsfolder_format = site_root.newsfolder_class.class_id
-            if brain.format == newsfolder_format:
-                # Return last news mtime
-                # XXX get_news do no exist
-                news_folder = resource.get_resource(brain.abspath)
-                news_brains = news_folder.get_news(context, brain_only=True)
-                if news_brains:
-                    return news_brains[0].mtime.strftime('%Y-%m-%d')
-
+            # XXX Find a solution for aggregators of views/contents
+            # (Aggregators of news/tags/webpages)
             return brain.mtime.strftime('%Y-%m-%d')
 
 
