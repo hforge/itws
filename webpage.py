@@ -20,10 +20,14 @@ from itools.core import merge_dicts
 from itools.datatypes import Boolean
 
 # Import from ikaaro
+from ikaaro.control_panel import ControlPanel
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.webpage import WebPage as BaseWebPage
 
 # Import from itws
+from control_panel import CPDBResource_CommitLog, CPDBResource_Links
+from control_panel import CPDBResource_Backlinks, CPSubscribe
+from control_panel import CPExternalEdit
 from tags import TagsAware
 from webpage_views import WebPage_Edit, WebPage_View
 
@@ -48,6 +52,11 @@ class WebPage(BaseWebPage, TagsAware):
     class_schema = merge_dicts(BaseWebPage.class_schema,
                                TagsAware.class_schema,
                                display_title=Boolean(source='metadata', default=True))
+
+    class_views = ['view', 'edit', 'control_panel']
+
+    class_control_panel = ['externaledit', 'subscribe',
+                           'links', 'backlinks', 'commit_log']
 
 
     def get_catalog_values(self):
@@ -82,6 +91,14 @@ class WebPage(BaseWebPage, TagsAware):
     ##########################
     edit = WebPage_Edit()
     view = WebPage_View()
+    control_panel = ControlPanel()
+
+    # Control panel
+    commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+    links = CPDBResource_Links()
+    backlinks = CPDBResource_Backlinks()
+    subscribe = CPSubscribe()
+    externaledit = CPExternalEdit()
 
 
 

@@ -81,6 +81,17 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
                                   has_empty_option=False)])
 
 
+    def order_item(self, order, name, form, resource, context):
+        order_table = self._get_order_table(resource, context)
+
+        # Order child
+        record = order_table.add_new_record({'name': name})
+        if order == 'order-top':
+            order_table.handler.order_top([record.id])
+        else:
+            order_table.handler.order_bottom([record.id])
+
+
     def action(self, resource, context, form):
         name = form['name']
         title = form['title']
@@ -94,14 +105,7 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
 
         # We order the resource in table if needed
         if order != 'do-not-order':
-            order_table = self._get_order_table(resource, context)
-
-            # Order child
-            record = order_table.add_new_record({'name': name})
-            if order == 'order-top':
-                order_table.handler.order_top([record.id])
-            else:
-                order_table.handler.order_bottom([record.id])
+            self.order_item(order, name, form, resource, context)
 
         # The metadata
         metadata = child.metadata

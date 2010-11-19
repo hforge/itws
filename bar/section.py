@@ -25,12 +25,12 @@ from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.control_panel import ControlPanel
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
-from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.table import OrderedTableFile
 
 # Import from itws
@@ -39,6 +39,8 @@ from section_views import Section_ManageContent
 from section_views import Section_View
 from section_views import Section_AddContent
 from toc import ContentBoxSectionChildrenToc
+from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
+from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.webpage import WebPage
 
 
@@ -99,9 +101,11 @@ class Section(SideBarAware, ContentBarAware,
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
     class_schema = ResourcesOrderedContainer.class_schema
-    class_views = ['view', 'edit', 'manage_content', 'add_content',
-                   'new_resource', 'order_items',
-                   'links', 'backlinks', 'commit_log']
+    class_views = ['view', 'edit', 'manage_content',
+                   'add_content', 'control_panel']
+
+    class_control_panel = ['order_items', 'links', 'backlinks', 'commit_log']
+
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
@@ -180,8 +184,12 @@ class Section(SideBarAware, ContentBarAware,
     view = Section_View()
     manage_content = Section_ManageContent()
     add_content = Section_AddContent()
-    order_items = GoToSpecificDocument(specific_document='order-section',
-            title=MSG(u'Manage TOC'))
+    order_items = CPOrderItems()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
-    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+    control_panel = ControlPanel()
+
+    # Control panel
+    commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+    links = CPDBResource_Links()
+    backlinks = CPDBResource_Backlinks()

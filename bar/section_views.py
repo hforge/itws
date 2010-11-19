@@ -119,7 +119,7 @@ class Section_AddContent(EasyNewInstance_WithOrderer):
 
 class Section_ManageContent(BaseManageContent):
 
-    title = MSG(u'Browse section')
+    title = MSG(u'Browse')
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())

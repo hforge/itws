@@ -16,8 +16,9 @@
 
 
 # Import from itools
-from itools.web import STLView
+from itools.csv import Property
 from itools.gettext import MSG
+from itools.web import STLView
 
 # Import from ikaaro
 from ikaaro.file import File
@@ -27,7 +28,7 @@ from ikaaro.folder import Folder
 from base_views import ContentBar_View, SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
-from section_views import Section_ManageContent
+from section_views import Section_AddContent, Section_ManageContent
 from itws.views import AdvanceGoToSpecificDocument
 
 
@@ -120,11 +121,29 @@ class NeutralWS_ContentBar_View(ContentBar_View):
 
 
 
+class NeutralWS_AddContent(Section_AddContent):
+
+    order_widget_title = MSG(u'Order content in menu')
+
+    def order_item(self, order, name, form, resource, context):
+        site_root = context.site_root
+        menu = site_root.get_resource('theme/menu/menu')
+        language = resource.get_edit_languages(context)[0]
+        title = Property(form['title'], language=language)
+        new_resource = resource.get_resource(name)
+        path = str(menu.get_pathto(new_resource))
+        record = menu.add_new_record({'path': path, 'title': title})
+        if order == 'order-top':
+            menu.handler.order_top([record.id])
+        else:
+            menu.handler.order_bottom([record.id])
+
+
 
 class NeutralWS_View(STLView):
 
     access = 'is_allowed_to_view'
-    title = MSG(u'Website View')
+    title = MSG(u'View')
     template = '/ui/common/Neutral_view.xml'
 
     subviews = {'contentbar_view': NeutralWS_ContentBar_View(),
@@ -165,4 +184,5 @@ class Website_BarAware(object):
 
 
     view = NeutralWS_View()
+    add_content = NeutralWS_AddContent()
     manage_content = Section_ManageContent()

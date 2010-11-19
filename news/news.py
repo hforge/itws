@@ -30,15 +30,18 @@ from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import File
+from ikaaro.control_panel import ControlPanel
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_PreviewContent
+from ikaaro.folder_views import Folder_PreviewContent, Folder_NewResource
 from ikaaro.autoform import TextWidget
 from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 
 # Import from itws
 from itws.bar import SideBarAware
+from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
+from itws.control_panel import CPDBResource_Backlinks
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import TagsAware
 from itws.utils import get_path_and_view
@@ -62,8 +65,7 @@ class NewsItem(WebPage):
                             u'used by the News Folder, News can be tagged')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = ['view', 'edit', 'edit_state',
-                   'backlinks', 'commit_log']
+    class_views = ['view', 'edit', 'control_panel']
 
 
     class_schema = merge_dicts(WebPage.class_schema,
@@ -220,8 +222,10 @@ class NewsFolder(SideBarAware, Folder):
                             u'by date of writing')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = (['view', 'new_resource?type=news', 'browse_content',
-                    'edit', 'backlinks', 'commit_log'])
+    class_views = (['view', 'edit', 'browse_content',
+                    'new_resource?type=news', 'control_panel'])
+
+    class_control_panel = ['backlinks', 'commit_log']
 
     class_schema = merge_dicts(
           SideBarAware.class_schema,
@@ -261,9 +265,18 @@ class NewsFolder(SideBarAware, Folder):
 
     view = NewsFolder_View()
     edit = AutomaticEditView()
-    browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit')
+    browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit',
+                                              title=MSG(u'Browse'))
+    new_resource = Folder_NewResource(title=MSG(u'Create a news'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     rss = NewsFolder_RSS()
+    control_panel = ControlPanel()
+
+    # Control panel
+    commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+    links = CPDBResource_Links()
+    backlinks = CPDBResource_Backlinks()
+
 
 
 # Register

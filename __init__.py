@@ -26,6 +26,7 @@ from itools.core import get_abspath, get_version
 from itools.gettext import register_domain
 
 # Import from ikaaro
+from ikaaro.skins import register_skin
 from ikaaro.user import User
 
 # XXX news must be imported before bar
@@ -60,3 +61,5 @@ User.is_allowed_to_view = User.is_allowed_to_edit
 # Silent pyflakes
 skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
 widgets, theme, news
+
+register_skin('itws-icons', get_abspath('ui/itws-icons'))

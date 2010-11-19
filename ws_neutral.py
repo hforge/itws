@@ -38,7 +38,6 @@ from itools.database import AndQuery, PhraseQuery
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
-from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
 
@@ -48,6 +47,7 @@ from about import AboutITWS
 from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
+from control_panel import CPDBResource_CommitLog, CP_AdvanceNewResource
 from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -87,7 +87,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     class_version = '20101012'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'edit', 'manage_content',
-                   'control_panel', 'new_resource', 'commit_log']
+                   'add_content', 'control_panel']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'))
 
@@ -96,7 +96,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
                           Website_BarAware.class_control_panel +
                           HomePage_BarAware.class_control_panel +
                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
-                           'edit_404', 'edit_robots_txt', 'fo_switch_mode'])
+                           'edit_404', 'edit_robots_txt', 'commit_log',
+                           'advance_new_resource', 'fo_switch_mode'])
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__ +
                           Website_BarAware.__fixed_handlers__ +
@@ -302,7 +303,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     rss = last_news_rss = NeutralWS_RSS()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
-    commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
+    commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
     # Control panel
     edit_tags = CPEditTags()
@@ -311,6 +312,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     edit_404 = CPEdit404()
     edit_robots_txt = CPEditRobotsTXT()
     fo_switch_mode = CPFOSwitchMode()
+    advance_new_resource = CP_AdvanceNewResource()
 
 
     ###########################################

@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from urllib import quote
+
 # Import from itools
 from itools.core import thingy_property
 from itools.datatypes import Boolean
@@ -22,11 +25,19 @@ from itools.uri import get_reference
 from itools.web import BaseView, get_context
 
 # Import from ikaaro
+from ikaaro.cc import SubscribeForm
+from ikaaro.control_panel import ControlPanelMenu
+from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.registry import get_document_types
+from ikaaro.resource_views import DBResource_Links, DBResource_Backlinks
+from ikaaro.revisions_views import DBResource_CommitLog
+from ikaaro.views import IconsView
 
 # Import from itws
 from utils import is_navigation_mode
 
+context_menus = [ControlPanelMenu()]
 
 class CPEditTags(GoToSpecificDocument):
 
@@ -74,6 +85,78 @@ class CPEditRobotsTXT(GoToSpecificDocument):
     description = MSG(u'Edit robots.txt')
     specific_document = 'robots.txt'
     specific_view = 'edit'
+
+
+class CPDBResource_CommitLog(DBResource_CommitLog):
+
+    description = MSG(u'Commit log')
+    icon = '../../itws-icons/48x48/git.png' # XXX
+    context_menus = context_menus
+
+
+class CPDBResource_Links(DBResource_Links):
+
+    icon = 'links.png'
+    description = MSG(u'List links to this resource')
+    context_menus = context_menus
+
+
+class CPDBResource_Backlinks(DBResource_Backlinks):
+
+    icon = 'backlinks.png'
+    description = MSG(u'List backlinks')
+    context_menus = context_menus
+
+
+class CPOrderItems(GoToSpecificDocument):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Manage TOC')
+    icon = 'theme.png'
+    description = MSG(u'Manage TOC')
+    specific_document = 'order-section'
+    context_menus = context_menus
+
+
+class CPSubscribe(SubscribeForm):
+
+    icon = 'theme.png'
+    description = MSG(u'Subscribe to modifications')
+    context_menus = context_menus
+
+
+class CPExternalEdit(File_ExternalEdit_View):
+
+    icon = 'theme.png'
+    description = MSG(u'Edit file with an external editor')
+    context_menus = context_menus
+
+
+class CP_AdvanceNewResource(IconsView):
+
+    access = 'is_allowed_to_add'
+    title = MSG(u'Add an advance resource')
+    description = MSG(u'Add a complex resource')
+    icon = 'new.png'
+
+    def get_document_types(self):
+        forbidden_class_id = ['file', 'webpage', 'folder', 'section']
+        return [x for x in get_document_types() if
+                    x.class_id not in forbidden_class_id]
+
+
+    def get_namespace(self, resource, context):
+        items = [
+            {'icon': '/ui/' + cls.class_icon48,
+             'title': cls.class_title.gettext(),
+             'description': cls.class_description.gettext(),
+             'url': ';new_resource?type=%s' % quote(cls.class_id)
+            }
+            for cls in self.get_document_types() ]
+
+        return {
+            'batch': None,
+            'items': items}
 
 
 class CPFOSwitchMode(BaseView):
