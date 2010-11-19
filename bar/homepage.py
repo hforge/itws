@@ -22,7 +22,6 @@ from itools.gettext import MSG
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
-from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
 from base_views import ContentBar_View, SideBar_View
@@ -111,16 +110,6 @@ class HomePage_BarAware(object):
 
 
 
-class CP_ManageRepository(GoToSpecificDocument):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Boxes repository')
-    icon = 'theme.png'
-    description = MSG(u'Manage boxes in the repository')
-    specific_document = 'repository'
-    specific_view = 'browse_content'
-
-
 class NeutralWS_ContentBar_View(ContentBar_View):
 
     order_name = 'ws-data/order-contentbar'
@@ -164,7 +153,7 @@ class Website_BarAware(object):
     A website is Website_BarAware so it contain's a repository
     """
 
-    class_control_panel = ['manage_repository']
+    class_control_panel = []
     __fixed_handlers__ = ['repository']
 
     wsdatafolder_class = WSDataFolder
@@ -174,5 +163,4 @@ class Website_BarAware(object):
         self.make_resource('repository', Repository)
 
 
-    manage_repository = CP_ManageRepository()
     view = NeutralWS_View()
