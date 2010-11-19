@@ -6,6 +6,10 @@ p{
   font-size: 11px;
 }
 
+td{
+  vertical-align: top;
+}
+
 .bold{
   font-weight: bold;
 }
