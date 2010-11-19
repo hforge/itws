@@ -40,7 +40,6 @@ from bar.map_box import MapBox
 from bar.html import HTMLContent
 from bar.repository import SidebarBoxesOrderedTable
 from bar.section import SectionOrderedTable, Section
-from slides import Slides_OrderedTable
 from tags import TagsAware, TagsList
 from ws_neutral import NeutralWS
 
@@ -88,12 +87,10 @@ class Old_NeutralWS(NeutralWS):
         # itws.bar.section.SectionOrderedTable
         from bar.repository import SidebarBoxesOrderedTable
         from bar.section import SectionOrderedTable
-        from slides import Slides_OrderedTable
 
         # Remove order property
         order_cls_ids = [SectionOrderedTable.class_id,
-                         SidebarBoxesOrderedTable.class_id,
-                         Slides_OrderedTable.class_id]
+                         SidebarBoxesOrderedTable.class_id]
 
         for resource in self.traverse_resources():
             # Delete order property
@@ -115,16 +112,6 @@ class OldSectionOrderedTable(SectionOrderedTable):
 class OldSidebarBoxesOrderedTable(SidebarBoxesOrderedTable):
     """Hook class_schema"""
     class_schema = merge_dicts(SidebarBoxesOrderedTable.class_schema,
-                               order=String(source='metadata'))
-
-
-
-###########################
-# Slides
-###########################
-class OldSlides_OrderedTable(Slides_OrderedTable):
-    """Hook class_schema"""
-    class_schema = merge_dicts(Slides_OrderedTable.class_schema,
                                order=String(source='metadata'))
 
 
@@ -299,10 +286,15 @@ class Slide(TagsAware, WebPage):
                        href=String(source='metadata'))
 
 
+
 class Slides_OrderedTable(ResourcesOrderedTable):
 
     class_id = 'slides-ordered-table'
+    class_schema = merge_dicts(ResourcesOrderedTable.class_schema,
+                               order=String(source='metadata'))
     orderable_classes = (Slide,)
+
+
 
 class SlideShow(ResourcesOrderedContainer):
 
@@ -438,7 +430,6 @@ class BoxNewsSiblingsToc(BoxSectionNews):
 
 register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
-register_resource_class(OldSlides_OrderedTable)
 register_resource_class(Old_NeutralWS)
 register_resource_class(OldSectionOrderedTable)
 register_resource_class(OldSidebarBoxesOrderedTable)
