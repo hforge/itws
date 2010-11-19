@@ -27,6 +27,7 @@ from ikaaro.folder import Folder
 from base_views import ContentBar_View, SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
+from section_views import Section_ManageContent
 from itws.views import AdvanceGoToSpecificDocument
 
 
@@ -164,3 +165,4 @@ class Website_BarAware(object):
 
 
     view = NeutralWS_View()
+    manage_content = Section_ManageContent()

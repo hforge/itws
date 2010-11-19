@@ -86,7 +86,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     class_id = 'neutral'
     class_version = '20101012'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'edit', 'control_panel', 'new_resource', 'commit_log']
+    class_views = ['view', 'edit', 'manage_content',
+                   'control_panel', 'new_resource', 'commit_log']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'))
 
@@ -192,10 +193,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
 
     def get_internal_use_resource_names(self):
-        names = list(self.menus) + list(self.footers)
-        names += ['repository', 'robots.txt', 'sitemap.xml',
-                  'tags', 'turning-footer', 'ws-data']
-        return freeze(names)
+        return freeze(['repository', 'robots.txt', 'sitemap.xml',
+                       'theme', 'tags', 'turning-footer', 'ws-data'])
 
 
     def get_document_types(self):
