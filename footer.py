@@ -36,6 +36,7 @@ from widgets import XMLTitleWidget
 from utils import get_path_and_view
 
 
+
 class FooterMenuFile(MenuFile):
 
     record_properties = {
@@ -50,6 +51,7 @@ class FooterMenuFile(MenuFile):
 class FooterMenu(Menu):
 
     class_id = 'footer-menu'
+    class_version = '20090123'
     class_title = MSG(u'Footer Menu')
     class_handler = FooterMenuFile
 
@@ -160,6 +162,46 @@ class FooterMenu(Menu):
                 p_events = Property(events, language=language)
                 # TODO Update all language in one time
                 self.update_record(record.id, **{'html_content': p_events})
+
+
+    def update_20090123(self):
+        """html_content Unicode -> XHTMLBody"""
+        from itools.core import merge_dicts
+        from itools.html import HTMLParser
+        from ikaaro.autoform import XHTMLBody
+
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        class FakeHandler(FooterMenuFile):
+            record_properties = merge_dicts(FooterMenuFile.record_properties,
+                                            html_content=String(multilingual=True))
+
+        handler = self.handler
+        try:
+            handler.record_properties = FakeHandler.record_properties
+        except IOError:
+            # metadata handler exists but not the data one
+            return
+
+        old_handler = FakeHandler()
+        old_handler.load_state_from_string(self.handler.to_str())
+        for record_id in old_handler.get_record_ids():
+            old_record = old_handler.get_record(record_id)
+            old_get_value = old_handler.get_record_value
+            trans_content = {}
+            for lang in available_languages:
+                html_content = old_get_value(old_record, 'html_content', lang)
+                if html_content is None:
+                    continue
+                # string -> events
+                events = HTMLParser(html_content)
+                p_value = Property(XHTMLBody.encode(events), language=lang)
+                old_handler.update_record(record_id,
+                                          **{'html_content': p_value})
+
+        handler.load_state_from_string(old_handler.to_str())
+        handler.set_changed()
 
 
 
