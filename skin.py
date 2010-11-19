@@ -34,6 +34,7 @@ from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
 from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
+from ikaaro.website_views import ContactForm
 
 # Special case for the Wiki
 try:
@@ -45,10 +46,15 @@ except ImportError:
 
 # Import from itws
 from bar import SideBarAware, SideBar_View
+from bar.homepage import NeutralWS_View
+from bar.section_views import Section_View
+from webpage_views import WebPage_View
 from bar.repository import SidebarBoxesOrderedTable
 from news import NewsItem
+from news.news_views import NewsFolder_View, NewsItem_View
 from OPML import RssFeeds
 from skin_views import LocationTemplate, LanguagesTemplate
+from tags.tags_views import TagsFolder_TagCloud, Tag_View
 from utils import get_admin_bar, is_navigation_mode
 
 
@@ -90,7 +96,9 @@ class Skin(BaseSkin):
                                               'credits', 'license']
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-
+    allowed_views_for_sidebar_view = (NeutralWS_View, Section_View,
+        NewsFolder_View, NewsItem_View, WebPage_View, ContactForm,
+        TagsFolder_TagCloud, Tag_View)
 
     def get_not_allowed_cls_for_sidebar_view(self):
         types = self.not_allowed_cls_for_sidebar_view[:] # copy
@@ -315,7 +323,9 @@ class Skin(BaseSkin):
         sidebar = None
         not_allowed = isinstance(here, tuple(nacfsv))
         navnfsv = self.not_allowed_view_name_for_sidebar_view
-        if context.view_name not in navnfsv and not not_allowed:
+        is_authorized_view = isinstance(context.view, self.allowed_views_for_sidebar_view)
+        if (context.view_name not in navnfsv and
+            not not_allowed and is_authorized_view):
             sidebar_resource = self.get_sidebar_resource(context)
 
             if sidebar_resource:
