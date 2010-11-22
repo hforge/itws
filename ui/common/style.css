@@ -378,3 +378,10 @@
 #external-edit fieldset legend {
   font-size: 1.5em;
 }
+
+#external-edit .unix, #external-edit .windows {
+  height: auto;
+  min-height: inherit;
+  width: auto;
+  float: none;
+}
