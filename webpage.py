@@ -20,14 +20,13 @@ from itools.core import merge_dicts
 from itools.datatypes import Boolean
 
 # Import from ikaaro
-from ikaaro.control_panel import ControlPanel
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.webpage import WebPage as BaseWebPage
 
 # Import from itws
 from control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from control_panel import CPDBResource_Backlinks, CPSubscribe
-from control_panel import CPExternalEdit
+from control_panel import CPExternalEdit, ITWS_ControlPanel
 from tags import TagsAware
 from webpage_views import WebPage_Edit, WebPage_View
 
@@ -91,7 +90,7 @@ class WebPage(BaseWebPage, TagsAware):
     ##########################
     edit = WebPage_Edit()
     view = WebPage_View()
-    control_panel = ControlPanel()
+    control_panel = ITWS_ControlPanel()
 
     # Control panel
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')

@@ -30,7 +30,6 @@ from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import File
-from ikaaro.control_panel import ControlPanel
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent, Folder_NewResource
@@ -42,6 +41,7 @@ from ikaaro.skins import register_skin
 from itws.bar import SideBarAware
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks
+from itws.control_panel import ITWS_ControlPanel
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import TagsAware
 from itws.utils import get_path_and_view
@@ -270,7 +270,7 @@ class NewsFolder(SideBarAware, Folder):
     new_resource = Folder_NewResource(title=MSG(u'Create a news'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     rss = NewsFolder_RSS()
-    control_panel = ControlPanel()
+    control_panel = ITWS_ControlPanel()
 
     # Control panel
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')

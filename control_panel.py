@@ -26,7 +26,7 @@ from itools.web import BaseView, get_context
 
 # Import from ikaaro
 from ikaaro.cc import SubscribeForm
-from ikaaro.control_panel import ControlPanelMenu
+from ikaaro.control_panel import ControlPanelMenu, ControlPanel
 from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import get_document_types
@@ -89,7 +89,7 @@ class CPEditRobotsTXT(GoToSpecificDocument):
 
 class CPDBResource_CommitLog(DBResource_CommitLog):
 
-    description = MSG(u'Commit log')
+    description = MSG(u'See last modifications')
     icon = '../../itws-icons/48x48/git.png' # XXX
     context_menus = context_menus
 
@@ -97,37 +97,42 @@ class CPDBResource_CommitLog(DBResource_CommitLog):
 class CPDBResource_Links(DBResource_Links):
 
     icon = 'links.png'
-    description = MSG(u'List links to this resource')
+    description = MSG(u'List resources that links to this resource')
+    icon = '../../itws-icons/48x48/links.png'
+
     context_menus = context_menus
 
 
 class CPDBResource_Backlinks(DBResource_Backlinks):
 
     icon = 'backlinks.png'
-    description = MSG(u'List backlinks')
+    description = MSG(u'List backlinks of this resource')
+    icon = '../../itws-icons/48x48/backlinks.png'
+
     context_menus = context_menus
 
 
 class CPOrderItems(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
+    icon = '../../itws-icons/48x48/toc.png'
+
     title = MSG(u'Manage TOC')
-    icon = 'theme.png'
-    description = MSG(u'Manage TOC')
+    description = MSG(u'Order items in TOC of section')
     specific_document = 'order-section'
     context_menus = context_menus
 
 
 class CPSubscribe(SubscribeForm):
 
-    icon = 'theme.png'
-    description = MSG(u'Subscribe to modifications')
+    icon = '../../itws-icons/48x48/subscriptions.png'
+    description = MSG(u'Subscribe to resources modifications')
     context_menus = context_menus
 
 
 class CPExternalEdit(File_ExternalEdit_View):
 
-    icon = 'theme.png'
+    icon = '../../itws-icons/48x48/editor.png'
     description = MSG(u'Edit file with an external editor')
     context_menus = context_menus
 
@@ -137,7 +142,7 @@ class CP_AdvanceNewResource(IconsView):
     access = 'is_allowed_to_add'
     title = MSG(u'Add an advance resource')
     description = MSG(u'Add a complex resource')
-    icon = 'new.png'
+    icon = '../../itws-icons/48x48/new.png'
 
     def get_document_types(self):
         forbidden_class_id = ['file', 'webpage', 'folder', 'section']
@@ -190,3 +195,9 @@ class CPFOSwitchMode(BaseView):
             goto = '/'
 
         return get_reference(goto)
+
+
+
+class ITWS_ControlPanel(ControlPanel):
+
+    title = MSG(u'Advanced')

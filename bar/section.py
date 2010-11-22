@@ -25,7 +25,6 @@ from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.control_panel import ControlPanel
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
@@ -41,6 +40,7 @@ from section_views import Section_AddContent
 from toc import ContentBoxSectionChildrenToc
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
+from itws.control_panel import ITWS_ControlPanel
 from itws.webpage import WebPage
 
 
@@ -187,7 +187,7 @@ class Section(SideBarAware, ContentBarAware,
     order_items = CPOrderItems()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
-    control_panel = ControlPanel()
+    control_panel = ITWS_ControlPanel()
 
     # Control panel
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
