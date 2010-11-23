@@ -20,6 +20,7 @@ from itools.xml import XMLParser
 # Import from ikaaro
 from ikaaro.autoform import RTEWidget, SelectWidget
 from ikaaro.autoform import rte_widget, stl_namespaces
+from ikaaro.registry import get_resource_class
 
 
 
@@ -66,4 +67,37 @@ class DualSelectWidget(SelectWidget):
         """, stl_namespaces))
 
 
+
+class ClassSelectorWidget(SelectWidget):
+
+    template = list(XMLParser("""
+        <table>
+          <tr stl:repeat="item items">
+            <td valign="top">
+              <input id="${item/class_id}" name="class_id" type="radio"
+                value="${item/class_id}" checked="${item/selected}" />
+            </td>
+            <td valign="top">
+              <img border="0" src="${item/icon}" />
+            </td>
+            <td>
+              <label for="${item/class_id}">${item/title}</label><br/>
+              <p><em>${item/description}</em></p>
+            </td>
+          </tr>
+        </table>
+        """, stl_namespaces))
+
+
+    def items(self):
+        items = []
+        for option in self.options():
+            class_id = option['name']
+            cls = get_resource_class(class_id)
+            items.append({'class_id': class_id,
+                          'selected': option['selected'],
+                          'title': option['value'],
+                          'icon': '/ui/' + cls.class_icon16,
+                          'description': cls.class_description})
+        return items
 

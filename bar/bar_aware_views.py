@@ -23,7 +23,7 @@ from itools.uri import get_reference
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.autoform import SelectWidget, RadioWidget
+from ikaaro.autoform import RadioWidget
 from ikaaro.registry import get_resource_class
 from ikaaro.workflow import StaticStateEnumerate, WorkflowAware
 
@@ -31,6 +31,7 @@ from ikaaro.workflow import StaticStateEnumerate, WorkflowAware
 from datatypes import MyAuthorized_Classid, OrderBoxEnumerate
 from itws.utils import state_widget
 from itws.views import EasyNewInstance
+from itws.widgets import ClassSelectorWidget
 
 
 
@@ -75,7 +76,7 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
     def get_widgets(self, resource, context):
         return freeze(EasyNewInstance.get_widgets(self, resource, context) +
                       [ state_widget,
-                       SelectWidget('class_id', title=MSG(u'Class id'),
+                       ClassSelectorWidget('class_id', title=MSG(u'Class id'),
                                     has_empty_option=False),
                        RadioWidget('order', title=self.order_widget_title,
                                   has_empty_option=False)])
