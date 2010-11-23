@@ -107,7 +107,7 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
     query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
                                batch_size=Integer(default=0),
-                               format=String)
+                               format=String, sort_by=String(default='title'))
     search_template = '/ui/bar_items/browse_search.xml'
 
     def get_query_schema(self):
