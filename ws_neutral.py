@@ -46,8 +46,8 @@ from OPML import RssFeeds
 from about import AboutITWS
 from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
-from control_panel import CPEditTags, CPManageFooter, CPManageTurningFooter
-from control_panel import CPDBResource_CommitLog, CP_AdvanceNewResource
+from control_panel import CPEditTags, CPDBResource_CommitLog
+from control_panel import ITWS_ControlPanel, CP_AdvanceNewResource
 from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -306,9 +306,9 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
     # Control panel
+    control_panel = ITWS_ControlPanel()
+
     edit_tags = CPEditTags()
-    edit_footer = CPManageFooter()
-    edit_turning_footer = CPManageTurningFooter()
     edit_404 = CPEdit404()
     edit_robots_txt = CPEditRobotsTXT()
     fo_switch_mode = CPFOSwitchMode()

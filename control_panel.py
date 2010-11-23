@@ -37,41 +37,92 @@ from ikaaro.views import IconsView
 # Import from itws
 from utils import is_navigation_mode
 
-context_menus = [ControlPanelMenu()]
+
+###################################################
+# Control panel Views
+###################################################
+class ITWS_ControlPanelMenu(ControlPanelMenu):
+
+    title = MSG(u'Advanced')
+
+    def get_items(self):
+        resource = self.resource
+        ac = resource.get_access_control()
+        user = self.context.user
+
+        items = []
+        for name in resource.class_control_panel:
+            view = resource.get_view(name)
+            if view is None:
+                continue
+            if not ac.is_access_allowed(user, resource, view):
+                continue
+            if hasattr(view, 'itws_icon'):
+                icon = '/ui/itws-icons/16x16/%s/' % view.itws_icon
+            else:
+                icon = resource.get_method_icon(view, size='16x16')
+            items.append({
+                'title': view.title,
+                'src': icon,
+                'href': ';%s' % name})
+
+        return items
+
+
+class ITWS_ControlPanel(ControlPanel):
+
+    title = MSG(u'Advanced')
+
+    context_menus = [ITWS_ControlPanelMenu()]
+
+    def get_namespace(self, resource, context):
+        # XXX We override get_namespace just to fix problem
+        # with icons uri
+        ac = resource.get_access_control()
+        items = []
+        for name in resource.class_control_panel:
+            view = resource.get_view(name)
+            if view is None:
+                continue
+            if not ac.is_access_allowed(context.user, resource, view):
+                continue
+            if hasattr(view, 'itws_icon'):
+                icon = '/ui/itws-icons/48x48/%s/' % view.itws_icon
+            else:
+                icon = resource.get_method_icon(view, size='48x48')
+            items.append({
+                'icon': icon,
+                'title': view.title,
+                'description': view.description,
+                'url': ';%s' % name})
+
+        return {
+            'title': MSG(u'Control Panel'),
+            'batch': None,
+            'items': items}
+
+
+###############################################
+# Control panel items
+###############################################
+
+context_menus = [ITWS_ControlPanelMenu()]
 
 class CPEditTags(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'Tags')
-    icon = 'theme.png'
     description = MSG(u'Edit tags')
+    itws_icon = 'tags.png'
     specific_document = 'tags'
     specific_view = 'browse_content'
-
-
-class CPManageFooter(GoToSpecificDocument):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Footer')
-    icon = 'theme.png'
-    description = MSG(u'Edit footer')
-    specific_document = 'theme/footer'
-
-
-class CPManageTurningFooter(GoToSpecificDocument):
-
-    access = 'is_allowed_to_edit'
-    title = MSG(u'Turning Footer')
-    icon = 'theme.png'
-    description = MSG(u'Edit turning footer')
-    specific_document = 'theme/turning-footer'
 
 
 class CPEdit404(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'404')
-    icon = 'theme.png'
+    itws_icon = '404.png'
     description = MSG(u'Edit 404')
     specific_document = 'theme/404'
     specific_view = 'edit'
@@ -81,7 +132,7 @@ class CPEditRobotsTXT(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'Robots.txt')
-    icon = 'theme.png'
+    itws_icon = 'robots.png'
     description = MSG(u'Edit robots.txt')
     specific_document = 'robots.txt'
     specific_view = 'edit'
@@ -90,24 +141,22 @@ class CPEditRobotsTXT(GoToSpecificDocument):
 class CPDBResource_CommitLog(DBResource_CommitLog):
 
     description = MSG(u'See last modifications')
-    icon = '../../itws-icons/48x48/git.png' # XXX
+    itws_icon = 'git.png'
     context_menus = context_menus
 
 
 class CPDBResource_Links(DBResource_Links):
 
-    icon = 'links.png'
     description = MSG(u'List resources that links to this resource')
-    icon = '../../itws-icons/48x48/links.png'
+    itws_icon = 'links.png'
 
     context_menus = context_menus
 
 
 class CPDBResource_Backlinks(DBResource_Backlinks):
 
-    icon = 'backlinks.png'
     description = MSG(u'List backlinks of this resource')
-    icon = '../../itws-icons/48x48/backlinks.png'
+    itws_icon = 'backlinks.png'
 
     context_menus = context_menus
 
@@ -115,7 +164,7 @@ class CPDBResource_Backlinks(DBResource_Backlinks):
 class CPOrderItems(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
-    icon = '../../itws-icons/48x48/toc.png'
+    itws_icon = 'toc.png'
 
     title = MSG(u'Manage TOC')
     description = MSG(u'Order items in TOC of section')
@@ -125,14 +174,14 @@ class CPOrderItems(GoToSpecificDocument):
 
 class CPSubscribe(SubscribeForm):
 
-    icon = '../../itws-icons/48x48/subscriptions.png'
+    itws_icon = 'subscriptions.png'
     description = MSG(u'Subscribe to resources modifications')
     context_menus = context_menus
 
 
 class CPExternalEdit(File_ExternalEdit_View):
 
-    icon = '../../itws-icons/48x48/editor.png'
+    itws_icon = 'editor.png'
     description = MSG(u'Edit file with an external editor')
     context_menus = context_menus
 
@@ -142,7 +191,7 @@ class CP_AdvanceNewResource(IconsView):
     access = 'is_allowed_to_add'
     title = MSG(u'Add an advance resource')
     description = MSG(u'Add a complex resource')
-    icon = '../../itws-icons/48x48/new.png'
+    itws_icon = 'new.png'
 
     def get_document_types(self):
         forbidden_class_id = ['file', 'webpage', 'folder', 'section']
@@ -170,7 +219,7 @@ class CPFOSwitchMode(BaseView):
     query_schema = {'mode': Boolean(default=False)}
 
     title = MSG(u'Change mode')
-    icon = 'theme.png'
+    itws_icon = 'switch.png'
 
     @thingy_property
     def description(self):
@@ -181,11 +230,10 @@ class CPFOSwitchMode(BaseView):
 
 
     def GET(self, resource, context):
-        edit = context.query['mode']
-        if edit:
-            context.set_cookie('itws_fo_edit', '1')
-        else:
+        if context.get_cookie('itws_fo_edit', Boolean):
             context.set_cookie('itws_fo_edit', '0')
+        else:
+            context.set_cookie('itws_fo_edit', '1')
 
         referer = context.get_referrer()
         if referer:
@@ -195,9 +243,3 @@ class CPFOSwitchMode(BaseView):
             goto = '/'
 
         return get_reference(goto)
-
-
-
-class ITWS_ControlPanel(ControlPanel):
-
-    title = MSG(u'Advanced')
