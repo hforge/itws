@@ -20,16 +20,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import STLView
 from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
+# Import from ikaaro
+from ikaaro.autoform import MultilineWidget, TextWidget
+from ikaaro.resource_views import DBResource_Edit
+from ikaaro.workflow import state_widget, StaticStateEnumerate
+
 # Import from itws
 from base_views import ContentBar_View
 from bar_aware_views import EasyNewInstance_WithOrderer
+from itws.tags.tags_views import TagsAware_Edit
 from itws.views import BaseManageContent
 from itws.webpage import WebPage
+
 
 
 ###########################################################################
@@ -42,6 +50,41 @@ class Section_ContentBar_View(ContentBar_View):
     def _get_repository(self, resource, context):
         # current section
         return resource
+
+
+class Section_Edit(DBResource_Edit, TagsAware_Edit):
+
+
+    def _get_schema(self, resource, context):
+        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+                           TagsAware_Edit._get_schema(self, resource, context),
+                           state=StaticStateEnumerate)
+
+
+    def _get_widgets(self, resource, context):
+        default_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        default_widgets[2] = MultilineWidget('description',
+                                        title=MSG(u'Description (use by RSS and TAGS)'))
+        return (default_widgets +
+                [state_widget] +
+                TagsAware_Edit._get_widgets(self, resource, context))
+
+
+    def get_value(self, resource, context, name, datatype):
+        if name in ('tags', 'pub_date', 'pub_time'):
+              return TagsAware_Edit.get_value(self, resource, context, name,
+                        datatype)
+        return DBResource_Edit.get_value(self, resource, context, name,
+                  datatype)
+
+
+    def set_value(self, resource, context, name, form):
+        if name in ('tags', 'pub_date', 'pub_time'):
+              return TagsAware_Edit.set_value(self, resource, context, name,
+                        form)
+        return DBResource_Edit.set_value(self, resource, context, name,
+                  form)
+
 
 
 class Section_View(STLView):

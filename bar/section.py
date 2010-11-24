@@ -20,7 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze
+from itools.core import freeze, merge_dicts
 from itools.datatypes import String
 from itools.gettext import MSG
 
@@ -31,16 +31,18 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
 from ikaaro.table import OrderedTableFile
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar_aware import SideBarAware, ContentBarAware
 from section_views import Section_ManageContent
-from section_views import Section_View
+from section_views import Section_View, Section_Edit
 from section_views import Section_AddContent
 from toc import ContentBoxSectionChildrenToc
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
+from itws.tags import TagsAware
 from itws.webpage import WebPage
 
 
@@ -90,17 +92,21 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
 
 
-class Section(SideBarAware, ContentBarAware,
+class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
-    class_version = '20100624'
+    class_version = '20101124'
     class_title = MSG(u'Section')
     class_description = MSG(u'Section allows to customize the central part '
                             u'and the sidebar. Section can contain subsections')
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
-    class_schema = ResourcesOrderedContainer.class_schema
+    class_schema = merge_dicts(WorkflowAware.class_schema,
+                               TagsAware.class_schema,
+                               ResourcesOrderedContainer.class_schema)
+
+
     class_views = ['view', 'edit', 'manage_content',
                    'add_content', 'control_panel']
 
@@ -131,6 +137,11 @@ class Section(SideBarAware, ContentBarAware,
             # tags cloud/news (created by repository)
             sidebar_table.add_new_record({'name': repository.tags_box})
             sidebar_table.add_new_record({'name': repository.news_box})
+
+
+    def get_catalog_values(self):
+        return merge_dicts(ResourcesOrderedContainer.get_catalog_values(self),
+                           TagsAware.get_catalog_values(self))
 
 
     def get_internal_use_resource_names(self):
@@ -180,8 +191,16 @@ class Section(SideBarAware, ContentBarAware,
         return states
 
 
+    def to_text(self):
+        return TagsAware.to_text(self)
+
+
+    def update_20101124(self):
+        self.set_property('state', 'public')
+
     # Views
     view = Section_View()
+    edit = Section_Edit()
     manage_content = Section_ManageContent()
     add_content = Section_AddContent()
     order_items = CPOrderItems()

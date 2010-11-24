@@ -205,6 +205,10 @@ class TagsAware(object):
         return self.get_property('pub_datetime')
 
 
+    def get_long_title(self, language=None):
+        return self.get_title(language)
+
+
     def get_pub_datetime_formatted(self, language=None):
         pub_datetime = self.get_pub_datetime()
         if pub_datetime is None:
@@ -259,6 +263,15 @@ class TagsAware(object):
             Method to be overriden by sub-classes.
         """
         return None
+
+
+    def to_text(self):
+        result = {}
+        languages = self.get_site_root().get_property('website_languages')
+        for language in languages:
+            result[language] = self.get_property('description',
+                                                 language=language)
+        return result
 
 
     ##########################################################################

@@ -62,10 +62,6 @@ class WebPage(BaseWebPage, TagsAware):
         return merge_dicts(BaseWebPage.get_catalog_values(self),
                            TagsAware.get_catalog_values(self))
 
-
-    def get_long_title(self, language=None):
-        return self.get_title(language)
-
     #########################################################
     # Links API
     #########################################################
