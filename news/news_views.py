@@ -207,8 +207,9 @@ class NewsFolder_View(Tag_View):
         args = list(args)
         # Filter by tag
         tags = context.get_query_value('tag', type=String(multiple=True))
-        query_terms = get_tagaware_query_terms(
-            on_current_folder=True, state='public', tags=tags)
+        query_terms = get_tagaware_query_terms(context,
+            on_current_folder=True, state='public', tags=tags,
+            class_id=resource.news_class.class_id)
         args.append(AndQuery(*query_terms))
 
         if len(args) == 1:

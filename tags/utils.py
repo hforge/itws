@@ -17,13 +17,23 @@
 # Import from itools
 from itools.database import PhraseQuery, OrQuery, AndQuery
 
+# Import from ikaaro
+from ikaaro.utils import get_base_path_query
+
+
+
 ##########################################################################
 # API To get items
 ##########################################################################
 
-def get_tagaware_query_terms(on_current_folder=False,
+def get_tagaware_query_terms(context, on_current_folder=False,
                              class_id=None, state=None, tags=[]):
     query = []
+    # Current website
+    site_root = context.resource.get_site_root()
+    abspath = site_root.get_abspath()
+    query.append(get_base_path_query(str(abspath)))
+
     # XXX
     #if on_current_folder is True:
     #    abspath = self.get_canonical_path()
@@ -43,7 +53,8 @@ def get_tagaware_query_terms(on_current_folder=False,
 def get_tagaware_items(context, state='public', on_current_folder=False,
              class_id=None, language=None,
              number=None, tags=[], brain_only=False, brain_and_docs=False):
-    query = get_tagaware_query_terms(on_current_folder, class_id, state, tags)
+    query = get_tagaware_query_terms(context, on_current_folder, class_id,
+                                     state, tags)
     if language is None:
         # Get Language
         site_root = context.site_root
