@@ -110,10 +110,11 @@ class BoxFeed(Box):
 
     edit_widgets = [SelectWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
-             SelectWidget('feed_template', title=MSG(u'Feed template')),
-             TextWidget('count', title=MSG(u'News to show'), size=3),
-             DualSelectWidget('tags', title=MSG(u'News TAGS'),
-                        is_inline=True, has_empty_option=False)]
+        SelectWidget('feed_template', title=MSG(u'Feed template')),
+        TextWidget('count',
+                   title=MSG(u'Number of items to show (0 = All)'), size=3),
+        DualSelectWidget('tags', title=MSG(u'Show only items with this TAGS'),
+                         is_inline=True, has_empty_option=False)]
 
 
     # Views
