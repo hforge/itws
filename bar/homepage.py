@@ -123,7 +123,7 @@ class NeutralWS_ContentBar_View(ContentBar_View):
 
 class NeutralWS_AddContent(Section_AddContent):
 
-    order_widget_title = MSG(u'Order content in menu')
+    order_widget_title = MSG(u'Order content in website menu')
 
     def order_item(self, order, name, form, resource, context):
         site_root = context.site_root
