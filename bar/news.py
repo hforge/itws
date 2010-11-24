@@ -28,16 +28,10 @@ from base_views import Box_View
 from itws.datatypes import PositiveInteger
 # XXX API public
 from itws.tags import TagsList
+from itws.tags.datatypes import TagsAwareClassEnumerate
 from itws.tags.tags_views import Tag_View
 from itws.tags.utils import get_tagaware_items
 from itws.widgets import DualSelectWidget
-
-
-class FeedSource(Enumerate):
-
-    # XXX All tagaware should be feedable
-    options = [{'name': 'news', 'value': MSG(u'News')},
-               {'name': 'webpage', 'value': MSG(u'WebPage')}]
 
 
 class FeedTemplate(Enumerate):
@@ -95,8 +89,8 @@ class BoxFeed(Box):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(Box.class_schema,
-                               feed_class_id=FeedSource(source='metadata'),
-                               feed_source=String(source='metadata'),#
+                               feed_class_id=TagsAwareClassEnumerate(source='metadata'),
+                               feed_source=String(source='metadata'),
                                feed_template=FeedTemplate(source='metadata'),
                                count=PositiveInteger(source='metadata', default=3),
                                tags=TagsList(source='metadata', multiple=True,
@@ -108,7 +102,7 @@ class BoxFeed(Box):
     is_content = True
 
     # Automatic Edit View
-    edit_schema = {'feed_class_id': FeedSource,
+    edit_schema = {'feed_class_id': TagsAwareClassEnumerate,
                    'feed_template': FeedTemplate,
                    'count': PositiveInteger(default=3),
                    'tags': TagsList(multiple=True)}

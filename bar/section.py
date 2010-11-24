@@ -30,6 +30,7 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
 from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
+from ikaaro.registry import register_document_type
 from ikaaro.table import OrderedTableFile
 from ikaaro.workflow import WorkflowAware
 
@@ -212,3 +213,6 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
     links = CPDBResource_Links()
     backlinks = CPDBResource_Backlinks()
+
+
+register_document_type(Section, TagsAware.class_id)
