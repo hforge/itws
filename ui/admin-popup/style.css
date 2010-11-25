@@ -57,6 +57,11 @@ button, .button{
   text-decoration: none;
 }
 
+button.button-selector {
+  /* Do not force padding left to selector button */
+  padding-left: 5px !important;
+}
+
 button:hover, button:focus {
   -moz-box-shadow:0 0 3px #999999;
   -webkit-box-shadow:0 0 3px #999999;
