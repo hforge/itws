@@ -334,7 +334,7 @@ class Diaporama(BoxAware, Folder):
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)
-        self.make_resource(self.order_path, self.order_class)
+        self.make_resource(self.order_path, self.order_table)
 
 
     def get_document_types(self):
