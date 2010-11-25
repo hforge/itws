@@ -176,6 +176,15 @@ class AutomaticEditView(DBResource_Edit):
     base_widgets = [title_widget]
 
 
+    def _get_query_to_keep(self, resource, context):
+        """Forward is_admin_popup if defined"""
+        to_keep = DBResource_Edit._get_query_to_keep(self, resource, context)
+        is_admin_popup = context.get_query_value('is_admin_popup')
+        if is_admin_popup:
+            to_keep.append({'name': 'is_admin_popup', 'value': '1'})
+        return to_keep
+
+
     def _get_schema(self, resource, context):
         schema = {}
         if getattr(resource, 'edit_show_meta', False) is True:
