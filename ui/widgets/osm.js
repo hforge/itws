@@ -91,4 +91,5 @@ function selectGPS(name){
   } else {
     alert('Geocode not available');
   }
+  return false;
 }

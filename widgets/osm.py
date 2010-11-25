@@ -52,8 +52,9 @@ class OpenStreetMapGPSWidget(GoogleGPSWidget):
         <script type="text/javascript" src="/ui/widgets/osm.js"/>
         <p>
           Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
-          <input  class="button-ok" type="button" value="${find_gps_coords_label}"
-              onclick="selectGPS('map_${name}');"/><br/>
+          <button class="button-ok" onclick="selectGPS('map_${name}');">
+            ${find_gps_coords_label}
+          </button><br/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
           <label for="latitude">Latitude</label>
           <input type="text" id="latitude" name="latitude" value="${latitude}"/>

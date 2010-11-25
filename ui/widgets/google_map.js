@@ -70,4 +70,5 @@ function selectGPS(name){
       }
     });
   }
+  return false;
 }
