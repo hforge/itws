@@ -22,7 +22,9 @@ from itools.gettext import MSG
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.autoform import timestamp_widget, MultilineWidget
+from ikaaro.control_panel import ControlPanel
 from ikaaro.file_views import File_Download
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.text import Text
 from ikaaro.text_views import Text_View, Text_Edit
 
@@ -63,7 +65,7 @@ class RobotsTxt(Text):
     class_id = 'robotstxt'
     class_title = MSG(u'Robots exclusion standard')
     class_views = ['view', 'edit', 'externaledit', 'download',
-                   'upload', 'edit_state', 'commit_log']
+                   'upload', 'edit_state', 'commit_log', 'control_panel']
 
     class_schema = merge_dicts(Text.class_schema,
                                state=String(source='metadata', default='public'))
@@ -76,6 +78,9 @@ class RobotsTxt(Text):
 
 
     # Views
+    control_panel = GoToSpecificDocument(specific_document='../',
+                                         specific_view='control_panel',
+                                         title=ControlPanel.title)
     download = File_Download(access=True)
     edit = RobotsTxt_Edit()
     view = Text_View(access='is_allowed_to_edit')

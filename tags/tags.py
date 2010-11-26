@@ -26,6 +26,7 @@ from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
 
 # Import from ikaaro
+from ikaaro.control_panel import ControlPanel
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
@@ -84,13 +85,17 @@ class TagsFolder(Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
-    class_views = ['tag_cloud', 'browse_content', 'new_resource?type=tag']
+    class_views = ['tag_cloud', 'browse_content', 'new_resource?type=tag',
+                   'control_panel']
     class_version = '20100118'
 
     tag_class = Tag
 
     tag_cloud = TagsFolder_TagCloud()
     browse_content = TagsFolder_BrowseContent()
+    control_panel = GoToSpecificDocument(specific_document='../',
+                                         specific_view='control_panel',
+                                         title=ControlPanel.title)
 
     # Tags to create when creating the tags folder
     default_tags = [('odf', u'ODF'), ('python', u'Python'),

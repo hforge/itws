@@ -24,9 +24,12 @@ from itools.stl import stl, set_prefix
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro.control_panel import ControlPanel
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_resource_class
 from ikaaro.webpage import WebPage
 from ikaaro.website import NotFoundView as BaseNotFoundView
+
 
 
 class NotFoundPage_View(BaseNotFoundView):
@@ -65,5 +68,13 @@ class NotFoundPage(WebPage):
 
     class_id = '404'
     class_title = MSG(u'404 page')
+
+    class_views = WebPage.class_views + ['control_panel']
+
+    control_panel = GoToSpecificDocument(specific_document='../../',
+                                         specific_view='control_panel',
+                                         title=ControlPanel.title)
+
+
 
 register_resource_class(NotFoundPage, format='application/xhtml+xml')
