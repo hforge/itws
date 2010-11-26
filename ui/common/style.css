@@ -95,37 +95,37 @@
 /*
  * TAG VIEW
  */
-#tag-view .item {
+.tag-view .item {
   border-bottom: 1px dotted #999;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
-#tag-view .item .pub-datetime {
+.tag-view .item .pub-datetime {
   float: left;
   padding-right: 8px;
 }
 
-#tag-view .item .tag {
+.tag-view .item .tag {
   float: left;
 }
 
-#tag-view .item .image-link {
+.tag-view .item .image-link {
   float: left;
   padding: 0 5px 5px 0;
 }
 
-#tag-view .item h3.title {
+.tag-view .item h3.title {
   clear: both;
   border: none;
   margin-right: 0;
 }
 
-#tag-view .item h3.title a {
+.tag-view .item h3.title a {
   text-decoration: none;
 }
 
-#tag-view .item .more {
+.tag-view .item .more {
   float: right;
   margin-top: 10px;
 }

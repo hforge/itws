@@ -4,8 +4,8 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div id="tag-view">
-    <h1 id="tag-title">${title}</h1>
+  <div class="tag-view">
+    <h1 class="tag-title" stl:if="title">${title}</h1>
 
     <div stl:if="viewboxes" class="item" stl:repeat="viewbox viewboxes">
       ${viewbox}
