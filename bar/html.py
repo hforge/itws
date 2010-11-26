@@ -67,6 +67,7 @@ class HTMLContent_View(Box_View, WebPage_View):
             'content': content}
 
 
+
 class HTMLContent_Edit(DBResource_Edit):
 
 
@@ -80,15 +81,24 @@ class HTMLContent_Edit(DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           title_link=String,
-                           title_link_target=Target,
-                           data=HTMLBody,
-                           display_title=Boolean)
+        schema = merge_dicts(
+                DBResource_Edit._get_schema(self, resource, context),
+                title_link=String,
+                title_link_target=Target,
+                data=HTMLBody,
+                display_title=Boolean)
+        # Delete unused description/subject(keywords)
+        del schema['description']
+        del schema['subject']
+
+        return schema
 
 
     def _get_widgets(self, resource, context):
-        widgets = DBResource_Edit._get_widgets(self, resource, context)
+        base_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        # Delete unused description/subject(keywords)
+        widgets = [ widget for widget in base_widgets
+                    if widget.name not in ('description', 'subject') ]
         return widgets + [
             CheckboxWidget('display_title',
                             title=MSG(u'Display on webpage view')),
@@ -113,7 +123,6 @@ class HTMLContent_Edit(DBResource_Edit):
             return
         return DBResource_Edit.set_value(self, resource, context, name,
                                          form)
-
 
 
 
