@@ -85,13 +85,12 @@ class Theme(BaseTheme):
         # Get language
         website = self.parent
         language = website.get_default_language()
-        # Banner
+        # Banner (background set with CSS)
         path = get_abspath('data/k2-banner-ties.jpg')
         image = ro_database.get_handler(path, FileHandler)
         self.make_resource('banner-itws', Image, body=image.to_str(),
                            extension='jpg', filename='banner-itws.jpg',
                            format='image/jpeg', state='public')
-        self.set_property('banner_path', '/theme/banner-itws/', language=language)
         # Set banner title
         vhosts = website.get_property('vhosts')
         if vhosts:

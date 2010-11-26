@@ -3,22 +3,27 @@
 
 /* Image source: http://www.flickr.com/photos/joebeone/2240389708/ */
 /* Image license: http://creativecommons.org/licenses/by/2.0/deed.en */
-background: url("../images/background-ties/;download") no-repeat scroll 0 0 transparent;
+  background: url("../banner-itws/;download") no-repeat scroll 0 0 transparent;
 }
 
 #header .login,
 #header .header-toolbar {
-background: #822;
+  background: #822;
+}
+
+#header .title {
+  text-align: right;
+  padding-right: 10px;
 }
 
 #header .title a {
-color: #822;
+  color: #822;
 }
 
 #nav ul li a {
-background: #822;
+  background: #822;
 }
 
 #nav ul li.in-path a {
-background: #ecc;
+  background: #ecc;
 }
