@@ -401,7 +401,7 @@ fieldset legend{
 
 .sidebar-box ul {
   padding-left: 0;
-  margin-left: 16px;
+  margin: 0 0 0 16px;
 }
 
 .sidebar-box ul li.active > a,
