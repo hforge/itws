@@ -287,7 +287,7 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
     table_columns = [
         ('checkbox', None),
         ('icon', None),
-        ('name', MSG(u'Name')),
+        ('abspath', MSG(u'Path')),
         ('title', MSG(u'Title')),
         ('pub_datetime', MSG(u'Date of writing')),
         ('mtime', MSG(u'Last Modified')),
