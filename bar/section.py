@@ -63,7 +63,7 @@ class SectionOrderedTable(ResourcesOrderedTable):
 
     class_id = 'section-ordered-table'
     class_title = MSG(u'Order section')
-    class_views = ['view', 'manage_view']
+    class_views = ['view', 'goto_parent']
     class_handler = SectionOrderedTableFile
 
 
@@ -75,21 +75,9 @@ class SectionOrderedTable(ResourcesOrderedTable):
         return (WebPage, Section)
 
 
-    def get_view(self, name, query=None):
-        # Add helper for manage view
-        view = ResourcesOrderedTable.get_view(self, name, query)
-        if view:
-            return view
-        if name == 'manage_view':
-            parent_view = self.parent.get_view('manage_view')
-            if parent_view is None:
-                # not found
-                return None
-            return GoToSpecificDocument(specific_document='..',
-                    access = parent_view.access,
-                    specific_view='manage_view',
-                    title=MSG(u'Manage section'))
-        return None
+    # views
+    goto_parent = GoToSpecificDocument(specific_document='..',
+            title=MSG(u'Back to parent section'))
 
 
 
