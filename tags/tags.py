@@ -37,10 +37,9 @@ from ikaaro.utils import reduce_string
 from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
-from tags_views import Tag_View, Tag_RSS, TagsFolder_TagCloud
+from tags_views import Tag_View, Tag_Edit, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsList, TagsFolder_BrowseContent
 from itws.views import EasyNewInstance
-from itws.views import AutomaticEditView
 
 
 
@@ -52,7 +51,7 @@ class Tag(File):
     class_views = ['view', 'edit', 'commit_log', 'backlinks']
 
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
-    edit = AutomaticEditView()
+    edit = Tag_Edit()
     edit_state = GoToSpecificDocument(specific_document='.',
                                       specific_view='edit')
     externaledit = None
@@ -60,12 +59,6 @@ class Tag(File):
     new_instance = EasyNewInstance()
     view = Tag_View()
     rss = Tag_RSS()
-
-    # Configuration of automatic edit view
-    edit_show_meta = True
-    edit_schema = {}
-    edit_widgets = []
-
 
     def get_title(self, language=None, fallback=True):
         title = self.get_property('title', language=language)

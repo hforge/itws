@@ -32,8 +32,12 @@ from itools.web import STLView, get_context
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
+from ikaaro.file_views import File_Edit
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import DateWidget, TextWidget
+from ikaaro.autoform import title_widget, description_widget, subject_widget
+from ikaaro.autoform import timestamp_widget
+from ikaaro.workflow import state_widget
 
 # Import from itws
 from itws.datatypes import TimeWithoutSecond
@@ -74,6 +78,13 @@ class TagsList(Enumerate):
 
         return options
 
+
+
+class Tag_Edit(File_Edit):
+
+    widgets = [
+        timestamp_widget, title_widget, state_widget,
+        description_widget, subject_widget]
 
 
 ############################################################
