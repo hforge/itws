@@ -64,25 +64,37 @@ class GoogleGPSWidget(GoogleMapWidget):
     latitude = None
     longitude = None
     zoom = 5
+    scripts = ['/ui/widgets/google_map.js',
+               'http://maps.google.com/maps/api/js?sensor=false']
 
     find_gps_coords_label = MSG(u'Find the GPS coordinates')
     template = list(XMLParser(
         """
-        <script type="text/javascript" src="/ui/widgets/google_map.js"/>
-        <p>
-          Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
-          <button class="button-ok" onclick="selectGPS('map_${name}');">
+        <script type="text/javascript" src="${script}"
+          stl:repeat="script scripts"/>
+        <label for="address">Address</label><br/>
+        <p class="widget">
+          <input type="text" name="address" id="address" value="${address}" style="width:50%"/>
+          <a href="#" class="button button-ok" onclick="selectGPS('map_${name}');return;">
             ${find_gps_coords_label}
-          </button><br/>
-        <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
-          <label for="latitude">Latitude</label>
+          </a>
+        </p>
+        <label for="map-${name}">Map:</label><br/>
+        <p class="widget">
+          <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
+        </p>
+        <label for="latitude" class="title">Latitude</label><br/>
+        <p class="widget">
           <input type="text" id="latitude" name="latitude" value="${latitude}"/>
-          <label for="longitude">Longitude</label>
+        </p>
+        <label for="longitude" class="title">Longitude</label><br/>
+        <p class="widget">
           <input type="text" id="longitude" name="longitude" value="${longitude}"/>
-          <label for="zoom">Zoom</label>
+        </p>
+        <label for="zoom" class="title">Zoom</label><br/>
+        <p class="widget">
           <input type="text" id="zoom" name="zoom" value="${zoom}" size="4"/><br/>
         </p>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
         <script language="javascript">
           $(document).ready(function(){
             initialize_gps_map('map-${name}', ${latitude}, ${longitude}, ${zoom});

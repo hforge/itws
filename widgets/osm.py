@@ -47,29 +47,6 @@ class OpenStreetMapWidget(GoogleMapWidget):
 
 class OpenStreetMapGPSWidget(GoogleGPSWidget):
 
-    template = list(XMLParser(
-        """
-        <script type="text/javascript" src="/ui/widgets/osm.js"/>
-        <p>
-          Address: <input type="text" name="address" id="address" value="${address}" size="50"/>
-          <button class="button-ok" onclick="selectGPS('map_${name}');">
-            ${find_gps_coords_label}
-          </button><br/>
-        <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
-          <label for="latitude">Latitude</label>
-          <input type="text" id="latitude" name="latitude" value="${latitude}"/>
-          <label for="longitude">Longitude</label>
-          <input type="text" id="longitude" name="longitude" value="${longitude}"/>
-          <label for="zoom">Zoom</label>
-          <input type="text" id="zoom" name="zoom" value="${zoom}" size="4"/><br/>
-        </p>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
-        <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"/>
-        <script language="javascript">
-          $(document).ready(function(){
-            initialize_gps_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
-          });
-        </script>
-        """,
-        stl_namespaces))
-
+    scripts = ['/ui/widgets/osm.js',
+               'http://maps.google.com/maps/api/js?sensor=false',
+               'http://www.openlayers.org/api/OpenLayers.js']
