@@ -15,6 +15,8 @@
         </ul>
       </li>
     </ul>
+    <a class="admin-link" stl:if="admin_link" href="${admin_link/href}"
+       title="${admin_link/title}">${admin_link/title}</a>
   </div>
 
   <div class="content" stl:if="not items">
@@ -25,6 +27,8 @@
       There is not enough ordered webpages/subsections to display the box.<br/>
       Minimum limit: <i>${limit}</i>
     </stl:block>
+    <a class="admin-link" stl:if="admin_link" href="${admin_link/href}"
+       title="${admin_link/title}">${admin_link/title}</a>
   </div>
 
 </stl:block>

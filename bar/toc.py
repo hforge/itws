@@ -29,6 +29,7 @@ from ikaaro.autoform import RadioWidget
 # Import from itws
 from base import Box
 from base_views import Box_View
+from itws.utils import is_navigation_mode
 
 
 # XXX Why 2 differents views ?
@@ -144,6 +145,14 @@ class BoxSectionChildrenTree_View(Box_View):
 
         namespace['hide_if_not_enough_items'] = hide_if_not_enough_items
         namespace['limit'] = min_limit
+
+        # Admin link
+        admin_link = None
+        if allowed_to_edit and is_navigation_mode(context) is False:
+            section_path = context.get_link(resource)
+            admin_link = {'href': '%s/;order_items' % section_path,
+                          'title': MSG(u'Select & Order')}
+        namespace['admin_link'] = admin_link
 
         return namespace
 

@@ -463,6 +463,11 @@ fieldset legend{
   text-decoration: none;
 }
 
+/* tree */
+.box-section-children-toc .admin-link {
+  float: right;
+}
+
 /**************************************************************************
  * NEWS FOLDER
  * ***********************************************************************/
