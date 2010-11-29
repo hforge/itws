@@ -581,6 +581,7 @@ fieldset legend{
 #page.itws-tracker-add-issue #contentbar,
 #page.itws-issue-edit #contentbar,
 #page.wikipage-edit #contentbar,
+#page.news-edit #contentbar,
 #page.repository-browse-content #contentbar,
 #page.text-slash-css-edit #contentbar {
   width: auto;
