@@ -77,8 +77,8 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
     def get_widgets(self, resource, context):
         return freeze(EasyNewInstance.get_widgets(self, resource, context) +
                       [ state_widget,
-                       ClassSelectorWidget('class_id', title=MSG(u'Class id'),
-                                    has_empty_option=False),
+                       ClassSelectorWidget('class_id',
+                           title=MSG(u'Resource type'), has_empty_option=False),
                        RadioWidget('order', title=self.order_widget_title,
                                   has_empty_option=False)])
 
