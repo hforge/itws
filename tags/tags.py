@@ -299,5 +299,5 @@ class TagsAware(object):
         get_context().database.change_resource(self)
 
 
-    def update_relative_links(self, source, target):
+    def update_relative_links(self, source):
         pass
