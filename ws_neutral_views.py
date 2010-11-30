@@ -18,18 +18,20 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.database import PhraseQuery
+from itools.database import PhraseQuery, AndQuery, OrQuery, TextQuery
+from itools.datatypes import Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
+from ikaaro.utils import get_base_path_query
 
 # Import from itws
 from bar import Section
 from rss import BaseRSS
-from tags import TagsAware
+from tags import TagsAware, Tag_View
 
 
 
@@ -37,6 +39,29 @@ from tags import TagsAware
 ############################################################
 # Views
 ############################################################
+class NeutralWS_Search(Tag_View):
+
+    query_schema = merge_dicts(Tag_View.query_schema,
+                               site_search_text=Unicode)
+
+    def get_items(self, resource, context, *args):
+        # Base Query
+        abspath = resource.get_canonical_path()
+        query = [get_base_path_query(str(abspath)),
+                 PhraseQuery('is_tagsaware', True)]
+        # Search text
+        search_text = context.query['site_search_text'].strip()
+        if search_text:
+            # Search Query
+            query.append(
+                OrQuery(TextQuery('title', search_text),
+                        TextQuery('text', search_text),
+                        TextQuery('tags', search_text),
+                        PhraseQuery('name', search_text)))
+        # Search
+        return context.root.search(AndQuery(*query))
+
+
 
 class NeutralWS_RSS(BaseRSS):
 

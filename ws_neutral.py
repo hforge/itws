@@ -56,7 +56,7 @@ from sitemap import SiteMap
 from tags import TagsFolder
 from theme import Theme
 from webpage import WebPage
-from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
+from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS, NeutralWS_Search
 
 
 
@@ -304,6 +304,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+    site_search = NeutralWS_Search()
 
     # Control panel
     control_panel = ITWS_ControlPanel()
