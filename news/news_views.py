@@ -167,7 +167,7 @@ class NewsItem_Edit(WebPage_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(WebPage_Edit._get_schema(self, resource, context),
                            long_title=Multilingual,
-                           thumbnail=PathDataType)
+                           thumbnail=PathDataType(multilingual=True))
 
 
     def _get_widgets(self, resource, context):
@@ -176,7 +176,6 @@ class NewsItem_Edit(WebPage_Edit):
         widgets.append(
             ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')))
         return widgets
-
 
 
 
