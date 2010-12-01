@@ -25,11 +25,12 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.menu import Target
-from ikaaro.webpage import WebPage_View
 from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
 from ikaaro.autoform import SelectWidget
+from ikaaro.menu import Target
 from ikaaro.resource_views import DBResource_Edit
+from ikaaro.webpage import WebPage_View
+from ikaaro.workflow import StateEnumerate, state_widget
 
 # Import from itws
 from base_views import Box_View
@@ -83,6 +84,7 @@ class HTMLContent_Edit(DBResource_Edit):
     def _get_schema(self, resource, context):
         schema = merge_dicts(
                 DBResource_Edit._get_schema(self, resource, context),
+                state=StateEnumerate(resource=resource, context=context),
                 title_link=String,
                 title_link_target=Target,
                 data=HTMLBody,
@@ -104,7 +106,7 @@ class HTMLContent_Edit(DBResource_Edit):
                             title=MSG(u'Display on webpage view')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             SelectWidget('title_link_target', title=MSG(u'Title link target')),
-            advance_rte_widget ]
+            advance_rte_widget, state_widget ]
 
 
     def get_value(self, resource, context, name, datatype):
