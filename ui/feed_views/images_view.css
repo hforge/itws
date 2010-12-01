@@ -1,0 +1,17 @@
+.thumbnail{
+  float: left;
+  margin: 10px;
+  width: 128px;
+  height: 128px;
+}
+
+.thumbnail a{
+  width: 128px;
+  height: 128px;
+  display: block;
+  border: 1px solid #ccc;
+  padding: 3px;
+  background: #fff;
+  text-align: center;
+  overflow: hidden;
+}

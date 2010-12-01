@@ -17,11 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from copy import deepcopy
+
 # Import from itools
-from itools.datatypes import Boolean, DateTime, Unicode
+from itools.datatypes import Boolean, DateTime, PathDataType, String, Unicode
 from itools.gettext import MSG
 from itools.i18n import format_datetime
-from itools.uri import Path, encode_query
+from itools.uri import Path, encode_query, get_reference
 from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
 
@@ -169,8 +172,10 @@ class TagsAware(object):
                                      indexed=True, stored=True),
                     'pub_datetime': DateTime(source='metadata', indexed=True,
                                              stored=True),
+                    'thumbnail': PathDataType(source='metadata', multilingual=True,
+                                    parameters_schema={'lang': String}),
                     # Catalog
-                    'is_tagsaware': Boolean(indexed=True),
+                    'is_tagsaware': Boolean(indexed=True, stored=True),
                     'preview_content': Unicode(stored=True, indexed=True),
                     }
 
@@ -183,6 +188,9 @@ class TagsAware(object):
         indexes['preview_content'] = self.get_preview_content()
         return indexes
 
+    ##########################################################################
+    # TagsAware API
+    ##########################################################################
 
     def get_tags_namespace(self, context):
         tags_folder = self.get_site_root().get_resource('tags')
@@ -229,6 +237,7 @@ class TagsAware(object):
             content = {}
             get_handler = self.get_handler
             if isinstance(self, ResourceWithHTML):
+                # XXX ?
                 get_handler = self.get_html_document
 
             for language in languages:
@@ -256,12 +265,6 @@ class TagsAware(object):
         return content
 
 
-    def get_preview_thumbnail(self):
-        """"Return the preview thumbnail used in the tag view
-            Method to be overriden by sub-classes.
-        """
-        return None
-
 
     def to_text(self):
         result = {}
@@ -270,6 +273,16 @@ class TagsAware(object):
             result[language] = self.get_property('description',
                                                  language=language)
         return result
+
+
+    def get_preview_thumbnail(self):
+        path = self.get_property('thumbnail')
+        if not path:
+            return None
+        ref = get_reference(path)
+        if ref.scheme:
+            return None
+        return self.get_resource(path, soft=True)
 
 
     ##########################################################################

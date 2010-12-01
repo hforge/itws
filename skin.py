@@ -47,15 +47,15 @@ except ImportError:
 # Import from itws
 from bar import SideBarAware, SideBar_View
 from bar.homepage import NeutralWS_View
-from bar.section_views import Section_View
 from webpage_views import WebPage_View
 from bar.repository import SidebarBoxesOrderedTable
 from news import NewsItem
 from news.news_views import NewsFolder_View, NewsItem_View
 from OPML import RssFeeds
 from skin_views import LocationTemplate, LanguagesTemplate
-from tags.tags_views import TagsFolder_TagCloud, Tag_View
+from tags.tags_views import TagsFolder_TagCloud
 from utils import get_admin_bar, is_navigation_mode
+from feed_views import Feed_View
 
 
 ############################################################
@@ -96,9 +96,9 @@ class Skin(BaseSkin):
                                               'credits', 'license']
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-    allowed_views_for_sidebar_view = (NeutralWS_View, Section_View,
+    allowed_views_for_sidebar_view = (NeutralWS_View, Feed_View,
         NewsFolder_View, NewsItem_View, WebPage_View, ContactForm,
-        TagsFolder_TagCloud, Tag_View)
+        TagsFolder_TagCloud)
 
     def get_not_allowed_cls_for_sidebar_view(self):
         types = self.not_allowed_cls_for_sidebar_view[:] # copy
@@ -271,7 +271,7 @@ class Skin(BaseSkin):
         namespace['banner'] = banner_ns
 
         # Site search
-        text = context.get_form_value('site_search_text', type=Unicode)
+        text = context.get_form_value('search_text', type=Unicode)
         namespace['text'] = text.strip()
 
         # Specific class based on the current resource format

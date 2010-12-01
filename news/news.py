@@ -23,9 +23,8 @@ from copy import deepcopy
 
 # Import from itools
 from itools.core import get_abspath, merge_dicts
-from itools.datatypes import String, PathDataType
 from itools.gettext import MSG
-from itools.uri import encode_query, get_reference, Path
+from itools.uri import Path, get_reference
 from itools.web import get_context
 
 # Import from ikaaro
@@ -49,7 +48,7 @@ from itws.views import AutomaticEditView
 from itws.webpage import WebPage
 from news_views import NewsFolder_View, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
-from news_views import NewsItem_Edit, NewsItem_View, NewsItem_Viewbox
+from news_views import NewsItem_Edit, NewsItem_View
 
 
 
@@ -69,13 +68,8 @@ class NewsItem(WebPage):
 
 
     class_schema = merge_dicts(WebPage.class_schema,
-             long_title=Multilingual(source='metadata'),
-             thumbnail=PathDataType(source='metadata', multilingual=True,
-                                    parameters_schema={'lang': String}))
+             long_title=Multilingual(source='metadata'))
 
-
-    # Configuration
-    viewbox = NewsItem_Viewbox()
 
     ##############
     # API
@@ -91,35 +85,6 @@ class NewsItem(WebPage):
 
     def can_paste_into(self, target):
         return isinstance(target, NewsFolder)
-
-
-    ##########################################################################
-    # TagsAware API
-    ##########################################################################
-    def get_preview_thumbnail(self):
-        path = self.get_property('thumbnail')
-        if not path:
-            return None
-        ref = get_reference(path)
-        if ref.scheme:
-            return None
-        return self.get_resource(path, soft=True)
-
-
-    def get_news_tags_namespace(self, context):
-        tags_folder = self.get_site_root().get_resource('tags')
-        news_folder_link = context.get_link(self.parent)
-        # query
-        base_query = deepcopy(context.uri.query)
-
-        tags = []
-        for tag_name in self.get_property('tags'):
-            tag = tags_folder.get_resource(tag_name)
-            base_query['tag'] = tag_name
-            query = encode_query(base_query)
-            href = '%s?%s' % (news_folder_link, query)
-            tags.append({'title': tag.get_title(), 'href': href})
-        return tags
 
 
     ##########################################################################

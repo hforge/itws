@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <div stl:repeat="item items" class="item">
+    <div class="content">
+      <div class="pub-datetime">${item/pub_datetime}</div>
+      <div class="tag" stl:if="item/tags">
+        <stl:block stl:repeat="tag item/tags">
+          <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
+          <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+        </stl:block>
+      </div>
+      <h3 class="title">
+        <a href="${item/link}" title="${item/title}">${item/title}</a>
+      </h3>
+      <a class="image-link" stl:if="item/image" href="${item/link}">
+        <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"/>
+      </a>
+      <div class="preview">
+        ${item/preview} <a href="${item/link}" class="more" title="${more_title}">${more_title}</a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+</stl:block>

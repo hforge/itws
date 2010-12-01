@@ -1,0 +1,11 @@
+.result{
+  margin: 3px 3px 6px;
+  }
+
+.result-url, .result-type, .result-size {
+  font-size: 0.9em;
+  }
+
+.result-url {
+  color: #008000;
+}

@@ -51,14 +51,15 @@ class BoxSectionNews_View(Box_View, Tag_View):
     batch_template = None
 
     def get_template_viewbox(self, resource, context):
+        # XXX To fix
         # XXX move on same folder
         template = resource.get_property('feed_template')
         if template == '1':
-            return '/ui/news/NewsItem_preview.xml'
+            return '/ui/feed_views/NewsItem_preview.xml'
         elif template == '2':
-            return '/ui/bar_items/SectionNews_view.xml'
+            return '/ui/news/SectionNews_view.xml'
         elif template == '3':
-            return '/ui/common/Tag_item_viewbox.xml'
+            return '/ui/news/Tag_item_viewbox.xml'
         return '/ui/common/Tag_item_viewbox.xml'
 
 

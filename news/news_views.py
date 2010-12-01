@@ -20,100 +20,23 @@
 from datetime import date
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import String, Boolean, Integer, PathDataType
+from itools.core import merge_dicts, thingy_property
+from itools.datatypes import String, Boolean
 from itools.gettext import MSG
-from itools.uri import encode_query
 from itools.web import get_context, STLView
 from itools.database import PhraseQuery, AndQuery, NotQuery, RangeQuery
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import ImageSelectorWidget, TextWidget
+from ikaaro.autoform import TextWidget
 from ikaaro.popup import DBResource_AddImage
 from ikaaro.utils import get_base_path_query
 
 # Import from itws
+from itws.feed_views import Details_View, Feed_View
 from itws.rss import BaseRSS
-from itws.tags.tags_views import Tag_View, TagView_Viewbox
 from itws.webpage_views import WebPage_Edit
-
-
-
-class NewsItem_Viewbox(TagView_Viewbox):
-
-
-    def _get_namespace(self, resource, context, column, current_path):
-        if column == 'title':
-            # Return title or long_title
-            title = resource.get_property('title')
-            if title:
-                return title
-            # long title
-            long_title = resource.get_property('long_title')
-            if long_title:
-                return long_title
-            # Fallback
-            return resource.get_title()
-        elif column == 'tags':
-            tags = self.brain.tags
-            if tags:
-                return resource.get_news_tags_namespace(context)
-            return []
-        return TagView_Viewbox._get_namespace(self, resource, context, column,
-                                              current_path)
-
-
-
-class NewsItem_Preview(STLView):
-
-    template = '/ui/news/NewsItem_preview.xml'
-
-    def get_columns(self):
-        return ('title', 'long_title', 'path', 'pub_datetime',
-                'thumbnail', 'css', 'tags')
-
-
-    def get_value(self, resource, context, column, language, current_path):
-        if column == 'title':
-            return resource.get_title()
-        elif column == 'long_title':
-            return resource.get_long_title(language=language)
-        elif column == 'path':
-            return context.get_link(resource)
-        elif column == 'pub_datetime':
-            return resource.get_pub_datetime_formatted()
-        elif column == 'thumbnail':
-            path = resource.get_property('thumbnail')
-            if path:
-                image = resource.get_resource(path, soft=True)
-                if image:
-                    return context.get_link(image)
-            return None
-        elif column == 'css':
-            if resource.get_abspath() == current_path:
-                return 'active'
-            return None
-
-
-    def get_namespace(self, resource, context):
-        # Get Language
-        site_root = context.site_root
-        ws_languages = site_root.get_property('website_languages')
-        accept = context.accept_language
-        language = accept.select_language(ws_languages)
-
-        # Build namespace
-        namespace = {}
-
-        here_abspath = context.resource.get_abspath()
-        for col in self.get_columns():
-            namespace[col] = self.get_value(resource, context, col, language,
-                                            here_abspath)
-
-        return namespace
-
 
 
 class NewsItem_View(STLView):
@@ -129,7 +52,6 @@ class NewsItem_View(STLView):
     title_link = None
 
     def get_namespace(self, resource, context):
-        news_folder = resource.parent
         dow = resource.get_pub_datetime_formatted()
         # title
         title = resource.get_long_title()
@@ -166,91 +88,55 @@ class NewsItem_Edit(WebPage_Edit):
 
     def _get_schema(self, resource, context):
         return merge_dicts(WebPage_Edit._get_schema(self, resource, context),
-                           long_title=Multilingual,
-                           thumbnail=PathDataType(multilingual=True))
+                           long_title=Multilingual)
 
 
     def _get_widgets(self, resource, context):
         widgets = WebPage_Edit._get_widgets(self, resource, context)[:]
         widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
-        widgets.append(
-            ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')))
         return widgets
 
 
 
-class NewsFolder_View(Tag_View):
+class NewsFolder_View(Details_View):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
-    template = '/ui/news/NewsFolder_view.xml'
     styles = ['/ui/news/style.css']
-    query_schema = merge_dicts(Tag_View.query_schema,
-                               batch_size=Integer(default=5),
-                               tag=String(multiple=True))
-    category_title = MSG(u"Category:") # FIXME Use plural forms
-    category_title2 = MSG(u"Categories:")
 
-    def get_query_schema(self):
+    view_name = 'news-folder-view'
+    view_title = MSG(u'News folder view')
+
+    search_template = None
+    sort_by = 'pub_datetime'
+    reverse = True
+
+
+    @thingy_property
+    def batch_size(self):
         here = get_context().resource
-        # FIXME May failed
-        batch_size = here.get_property('batch_size')
-        return merge_dicts(Tag_View.get_query_schema(self),
-                           batch_size=Integer(default=batch_size))
+        return here.get_property('batch_size')
 
 
     def get_items(self, resource, context, *args):
-        from itws.tags.utils import get_tagaware_query_terms
-        # XXX
-        # Build the query
-        args = list(args)
-        # Filter by tag
-        tags = context.get_query_value('tag', type=String(multiple=True))
-        query_terms = get_tagaware_query_terms(context,
-            on_current_folder=True, state='public', tags=tags,
-            class_id=resource.news_class.class_id)
-        args.append(AndQuery(*query_terms))
-
-        if len(args) == 1:
-            query = args[0]
-        else:
-            query = AndQuery(*args)
-
-        # Ok
-        return context.root.search(query)
+        args = [PhraseQuery('format', 'news')]
+        return Feed_View.get_items(self, resource, context, *args)
 
 
-    def get_tags_namespace(self, resource, context):
-        tags_ns = []
-        here_link = context.get_link(resource)
-        tags_folder = resource.get_site_root().get_resource('tags')
-        tags = context.get_query_value('tag', type=String(multiple=True))
-
-        for tag_name in tags:
-            query = encode_query({'tag': tag_name})
-            tag = tags_folder.get_resource(tag_name, soft=True)
-            if tag is None:
-                continue
-            tags_ns.append({'title': tag.get_title(),
-                            'href': '%s?%s' % (here_link, query)})
-
-        return tags_ns
-
-
-    def get_namespace(self, resource, context):
-        namespace = Tag_View.get_namespace(self, resource, context)
-
-        # Tags
-        tags = context.get_query_value('tag', type=String(multiple=True))
-        if len(tags) > 1:
-            category_title = self.category_title2
-        else:
-            category_title = self.category_title
-
-        namespace['tags'] = self.get_tags_namespace(resource, context)
-        namespace['category_title'] = category_title
-
-        return namespace
+    def _get_namespace(self, brain, resource, context, column, current_path):
+        if column == 'title':
+            # Return title or long_title
+            title = resource.get_property('title')
+            if title:
+                return title
+            # long title
+            long_title = resource.get_property('long_title')
+            if long_title:
+                return long_title
+            # Fallback
+            return resource.get_title()
+        return Feed_View._get_namespace(self, brain, resource, context, column,
+                                        current_path)
 
 
 

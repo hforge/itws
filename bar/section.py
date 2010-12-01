@@ -20,9 +20,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze, merge_dicts
+from itools.core import freeze, merge_dicts, thingy_property
 from itools.datatypes import String
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import File
@@ -37,7 +38,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from bar_aware import SideBarAware, ContentBarAware
 from section_views import Section_ManageContent
-from section_views import Section_View, Section_Edit
+from section_views import Section_Edit
 from section_views import Section_AddContent
 from toc import ContentBoxSectionChildrenToc
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
@@ -45,7 +46,7 @@ from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
 from itws.tags import TagsAware
 from itws.webpage import WebPage
-
+from itws.feed_views import FeedViews_Enumerate, views_registry
 
 
 ################
@@ -91,9 +92,12 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
                             u'and the sidebar. Section can contain subsections')
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
-    class_schema = merge_dicts(WorkflowAware.class_schema,
-                               TagsAware.class_schema,
-                               ResourcesOrderedContainer.class_schema)
+    class_schema = merge_dicts(
+        WorkflowAware.class_schema,
+        TagsAware.class_schema,
+        ResourcesOrderedContainer.class_schema,
+        view=FeedViews_Enumerate(source='metadata',
+                                 default='composite-view'))
 
 
     class_views = ['view', 'edit', 'manage_content',
@@ -187,8 +191,20 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     def update_20101124(self):
         self.set_property('state', 'public')
 
+
+
+    @thingy_property
+    def view(self):
+        context = get_context()
+        resource = context.resource
+        if not isinstance(context.resource, Section):
+            return None
+        name = resource.get_property('view')
+        view = views_registry[name]
+        return view()
+
+
     # Views
-    view = Section_View()
     edit = Section_Edit()
     manage_content = Section_ManageContent()
     add_content = Section_AddContent()

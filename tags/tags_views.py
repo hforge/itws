@@ -23,8 +23,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import Boolean, Date, Enumerate, Integer, String
+from itools.datatypes import PathDataType, Date, Enumerate, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.uri import encode_query
@@ -34,13 +33,14 @@ from itools.database import AndQuery, PhraseQuery
 # Import from ikaaro
 from ikaaro.file_views import File_Edit
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import DateWidget, TextWidget
+from ikaaro.autoform import DateWidget, TextWidget, ImageSelectorWidget
 from ikaaro.autoform import title_widget, description_widget, subject_widget
 from ikaaro.autoform import timestamp_widget
 from ikaaro.workflow import state_widget
 
 # Import from itws
 from itws.datatypes import TimeWithoutSecond
+from itws.feed_views import Details_View
 from itws.rss import BaseRSS
 from itws.utils import is_navigation_mode
 from itws.utils import set_prefix_with_hostname
@@ -131,71 +131,16 @@ class Tag_RSS(BaseRSS):
                                       column, site_root)
 
 
-class TagView_Viewbox(STLView):
 
-    template = '/ui/common/Tag_item_viewbox.xml'
-
-    brain = None
+class Tag_View(Details_View):
 
     # Configuration
-    more_title = MSG(u'Read more')
-    thumb_width = thumb_height = 96
-
-    def _get_namespace(self, resource, context, column, current_path):
-        if column == 'pub_datetime':
-            return resource.get_pub_datetime_formatted()
-        elif column == 'title':
-            return resource.get_property('title')
-        elif column == 'long_title':
-            return resource.get_long_title()
-        elif column == 'link':
-            return context.get_link(resource)
-        elif column == 'preview':
-            return self.brain.preview_content
-        elif column == 'thumbnail':
-            thumbnail = resource.get_preview_thumbnail()
-            if thumbnail:
-                return context.get_link(thumbnail)
-            return None
-        elif column == 'tags':
-            tags = self.brain.tags
-            if tags:
-                return resource.get_tags_namespace(context)
-            return []
-        elif column == 'css':
-            if resource.get_abspath() == current_path:
-                return 'active'
-            return None
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-        here_abspath = context.resource.get_abspath()
-        for key in ('pub_datetime', 'title', 'long_title',
-                    'link', 'preview', 'tags',
-                    'thumbnail', 'css'):
-            namespace[key] = self._get_namespace(resource, context, key, here_abspath)
-        namespace['more_title'] = self.more_title
-        namespace['thumb_width'] = self.thumb_width
-        namespace['thumb_height'] = self.thumb_height
-        return namespace
-
-
-
-class Tag_View(Folder_BrowseContent):
-
-    title = MSG(u'View')
-    access = 'is_allowed_to_view'
-    template = '/ui/common/Tag_view.xml'
-    context_menus = []
-    styles = []
-    query_schema = merge_dicts(Folder_BrowseContent.query_schema,
-                               batch_size=Integer(default=20),
-                               sort_by=String(default='pub_datetime'),
-                               reverse=Boolean(default=True))
+    view_name = 'tag-view'
+    batch_size = 20
+    sort_by = 'pub_datetime'
+    reverse = True
+    search_on_current_folder = False
     search_template = None
-    table_template = None
-    max_middle_pages = 5
 
 
     def get_items(self, resource, context, *args):
@@ -208,32 +153,8 @@ class Tag_View(Folder_BrowseContent):
         query = resource.parent.get_tags_query_terms(state='public',
                 tags=[tag], formats=formats)
         args.append(AndQuery(*query))
+        return Details_View.get_items(self, resource, context, *args)
 
-        # Ok
-        return context.root.search(AndQuery(*args))
-
-
-
-    def get_namespace(self, resource, context):
-        namespace = Folder_BrowseContent.get_namespace(self, resource, context)
-        namespace['title'] = resource.get_property('title')
-        # Get viewboxes
-        base_viewbox = TagView_Viewbox()
-        base_viewbox.template = self.get_template_viewbox(resource, context)
-        items = self.get_items(resource, context)
-        items = self.sort_and_batch(resource, context, items)
-        namespace['viewboxes'] = []
-        for item in items:
-            brain, item_resource = item
-            #viewbox = getattr(item_resource, 'viewbox', base_viewbox) XXX
-            viewbox = base_viewbox
-            viewbox.brain = brain
-            namespace['viewboxes'].append(viewbox.GET(item_resource, context))
-        return namespace
-
-
-    def get_template_viewbox(self, resource, context):
-        return '/ui/common/Tag_item_viewbox.xml'
 
 
 
@@ -258,7 +179,6 @@ class TagsFolder_TagCloud(STLView):
 
 
     def get_namespace(self, resource, context):
-        namespace = {}
         tags_folder = self._get_tags_folder(resource, context)
 
         # description (help text)
@@ -343,12 +263,15 @@ class TagsAware_Edit(object):
 
     def _get_schema(self, resource, context):
         return {'tags': TagsList(multiple=True),
-                'pub_date': Date, 'pub_time': TimeWithoutSecond}
+                'pub_date': Date,
+                'pub_time': TimeWithoutSecond,
+                'thumbnail': PathDataType(multilingual=True)}
 
 
     def _get_widgets(self, resource, context):
         return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
             has_empty_option=False),
+            ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')),
             DateWidget('pub_date',
                        title=MSG(u'Publication date (use by RSS and TAGS)')),
             TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5, maxlength=5,

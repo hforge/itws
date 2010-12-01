@@ -44,7 +44,7 @@
           ${fo_edit_toolbar}
           <td class="recherche">
             <form action="/;site_search" method="get">
-              <input name="site_search_text" type="text" value="${text}" size="15"/>
+              <input name="search_text" type="text" value="${text}" size="15"/>
               <button class="button-search" type="submit">
                 <span>Search</span>
               </button>

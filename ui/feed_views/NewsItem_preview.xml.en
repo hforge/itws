@@ -4,10 +4,10 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div class="newsitem ${css}">
-    <div class="newsitem-date">${pub_datetime}</div>
+  <div class="sitem ${item/css}" stl:repeat="item items">
+    <div class="newsitem-date">${item/pub_datetime}</div>
     <div class="newsitem-title">
-      <a href="${link}">${long_title}</a>
+      <a href="${item/link}">${item/long_title}</a>
     </div>
   </div>
 </stl:block>

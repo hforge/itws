@@ -48,6 +48,7 @@ from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
 from control_panel import ITWS_ControlPanel, CP_AdvanceNewResource
+from feed_views import Search_View
 from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -56,7 +57,7 @@ from sitemap import SiteMap
 from tags import TagsFolder
 from theme import Theme
 from webpage import WebPage
-from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS, NeutralWS_Search
+from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
 
 
 
@@ -304,7 +305,7 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
-    site_search = NeutralWS_Search()
+    site_search = Search_View()
 
     # Control panel
     control_panel = ITWS_ControlPanel()

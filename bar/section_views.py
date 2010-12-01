@@ -23,11 +23,10 @@
 from itools.core import merge_dicts
 from itools.gettext import MSG
 from itools.uri import get_reference
-from itools.web import STLView
 from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
 # Import from ikaaro
-from ikaaro.autoform import MultilineWidget, TextWidget
+from ikaaro.autoform import MultilineWidget, SelectWidget
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
@@ -37,13 +36,20 @@ from bar_aware_views import EasyNewInstance_WithOrderer
 from itws.tags.tags_views import TagsAware_Edit
 from itws.views import BaseManageContent
 from itws.webpage import WebPage
+from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
 
 
 
 ###########################################################################
 # Section view
 ###########################################################################
-class Section_ContentBar_View(ContentBar_View):
+class Section_ContentBar_View(ContentBar_View, Feed_View):
+
+    title = MSG(u'View')
+    access = 'is_allowed_to_view'
+
+    view_name = 'composite-view'
+    view_title = MSG(u'Composite view')
 
     order_name = 'order-contentbar'
 
@@ -58,7 +64,8 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            TagsAware_Edit._get_schema(self, resource, context),
-                           state=StaticStateEnumerate)
+                           state=StaticStateEnumerate,
+                           view=FeedViews_Enumerate)
 
 
     def _get_widgets(self, resource, context):
@@ -67,6 +74,7 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                                         title=MSG(u'Description (use by RSS and TAGS)'))
         return (default_widgets +
                 [state_widget] +
+                [SelectWidget('view', title=MSG(u'View'))] +
                 TagsAware_Edit._get_widgets(self, resource, context))
 
 
@@ -84,52 +92,6 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                         form)
         return DBResource_Edit.set_value(self, resource, context, name,
                   form)
-
-
-
-class Section_View(STLView):
-
-    title = MSG(u'View')
-    access = 'is_allowed_to_view'
-    template = '/ui/common/Section_view.xml'
-    order_path = 'order-section'
-    # subviews = {view_name: view} OR {view_name: None}
-    # The view can be dynamically generated and rendered inside
-    # the method get_subviews_value.
-    subviews = {'contentbar_view': Section_ContentBar_View()}
-
-    def _get_real_section(self, resource, context):
-        return resource
-
-
-    def get_subviews_value(self, resource, context, section, view_name):
-        """resource must be the real section"""
-        view = self.subviews.get(view_name)
-        if view is None:
-            return None
-        return view.GET(section, context)
-
-
-    def get_section_id(self, resource, context):
-        section = self._get_real_section(resource, context)
-        return 'section-%s' % section.name
-
-
-    def get_namespace(self, resource, context):
-        # Get the real section resource
-        section = self._get_real_section(resource, context)
-        user = context.user
-        namespace = {}
-
-        # Add section id
-        namespace['section_id'] = self.get_section_id(resource, context)
-
-        # Subviews
-        for view_name in self.subviews.keys():
-            namespace[view_name] = self.get_subviews_value(resource, context,
-                    section, view_name)
-        return namespace
-
 
 
 class Section_AddContent(EasyNewInstance_WithOrderer):
@@ -168,3 +130,6 @@ class Section_ManageContent(BaseManageContent):
                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
+
+
+register_view(Section_ContentBar_View)
