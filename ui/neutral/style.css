@@ -220,10 +220,6 @@ body {
   margin: 1em 1em .5em 0em;
 }
 
-#wrapper h1.title {
-  font-size: 1.6em;
-}
-
 #wrapper h1 > a,
 #turning-footer h1 > a {
   text-decoration: none;
