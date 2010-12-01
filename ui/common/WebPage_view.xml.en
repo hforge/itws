@@ -5,7 +5,7 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
   <a name="${name}" />
   <div id="${name}">
-    <h3 stl:if="title" class="title">${title}</h3>
+    <h1 stl:if="title" class="title">${title}</h1>
     <div class="content">${content}</div>
   </div>
 </stl:block>

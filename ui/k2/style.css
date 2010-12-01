@@ -236,6 +236,11 @@ body {
   margin: 1em 1em .5em 0em;
 }
 
+#content h1.title {
+  /* Webpage title (outside of the content) */
+  font-size: 1.6em;
+}
+
 #content h2 {
   font-size: 1.3em;
   margin: 0.95em 0.95em 0.5em 0em;
