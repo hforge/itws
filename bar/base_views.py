@@ -109,12 +109,16 @@ class Bar_View(STLView):
         site_root = resource.get_site_root()
         repository = site_root.get_repository()
         section_path = context.get_link(resource)
-        path = context.get_link(repository)
-        buttons.append({'path': '%s/;%s' % (section_path, self.order_method),
-                        'icon': '/ui/common/icons/16x16/sort.png',
-                        'rel': 'fancybox',
-                        'label': self.order_label,
-                        'target': None})
+        # Order table empty ?
+        order_table = resource.get_resource(self.order_name)
+        if len(list(order_table.handler.get_record_ids())):
+            path = context.get_link(repository)
+            buttons.append(
+                    {'path': '%s/;%s' % (section_path, self.order_method),
+                     'icon': '/ui/common/icons/16x16/sort.png',
+                     'rel': 'fancybox',
+                     'label': self.order_label,
+                     'target': None})
 
         return buttons
 
