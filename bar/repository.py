@@ -127,6 +127,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'contentbar-boxes-ordered-table'
     class_title = MSG(u'Order Central Part Boxes')
+    class_description = None
 
     # _orderable_classes configuration
     allow_filter_key = 'content'
