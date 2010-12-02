@@ -125,7 +125,7 @@ class MapBox(Box):
           longitude=Decimal(source='metadata', default=Decimal.encode('2.3509')),
           width=Integer(source='metadata', default=400),
           height=Integer(source='metadata', default=300),
-          zoom=Integer(source='metadata', default=5),
+          zoom=Integer(source='metadata', default=15),
           render=OpenLayerRender(source='metadata', default='osm'))
 
     # Configuration
