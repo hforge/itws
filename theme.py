@@ -68,6 +68,9 @@ class Theme(BaseTheme):
 
     class_id = 'itws-theme'
 
+    __fixed_handlers__ = (BaseTheme.__fixed_handlers__
+                          + ['404', 'turning-footer', 'footer'])
+
     class_schema = merge_dicts(BaseTheme.class_schema,
          custom_data=String(source='metadata', default=''),
          breadcrumb_title=Multilingual(source='metadata'),
