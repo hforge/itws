@@ -27,7 +27,7 @@ from ikaaro.utils import get_base_path_query
 ##########################################################################
 
 def get_tagaware_query_terms(context, on_current_folder=False,
-                             class_id=None, state=None, tags=[]):
+                             formats=[], state=None, tags=[]):
     query = []
     # Current website
     site_root = context.resource.get_site_root()
@@ -38,8 +38,12 @@ def get_tagaware_query_terms(context, on_current_folder=False,
     #if on_current_folder is True:
     #    abspath = self.get_canonical_path()
     #    query.append(PhraseQuery('parent_path', str(abspath)))
-    if class_id:
-        query.append(PhraseQuery('format', class_id))
+    if formats:
+        q = [PhraseQuery('format', x) for x in formats]
+        if len(q) > 1:
+            query.append(OrQuery(*q))
+        else:
+            query.append(q[0])
     if state:
         query.append(PhraseQuery('workflow_state', state))
     if tags:
@@ -51,9 +55,9 @@ def get_tagaware_query_terms(context, on_current_folder=False,
 
 
 def get_tagaware_items(context, state='public', on_current_folder=False,
-             class_id=None, language=None,
+             formats=[], language=None,
              number=None, tags=[], brain_only=False, brain_and_docs=False):
-    query = get_tagaware_query_terms(context, on_current_folder, class_id,
+    query = get_tagaware_query_terms(context, on_current_folder, formats,
                                      state, tags)
     if language is None:
         # Get Language

@@ -21,10 +21,10 @@ from base_views import SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
 from homepage import Website_BarAware,  HomePage_BarAware
 from diaporama import Diaporama
+from feed_box import BoxFeed
 from html import HTMLContent
 from map_box import MapBox
 from menu import MenuSideBar
-from news import BoxFeed
 from registry import register_box
 from repository import Repository
 from section import Section

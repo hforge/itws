@@ -16,11 +16,10 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Enumerate
 from itools.gettext import MSG
 from itools.datatypes import String
 # Import from ikaaro
-from ikaaro.autoform import SelectWidget, TextWidget
+from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
 
 # Import from itws
 from base import Box
@@ -29,47 +28,44 @@ from itws.datatypes import PositiveInteger
 # XXX API public
 from itws.tags import TagsList
 from itws.tags.datatypes import TagsAwareClassEnumerate
-from itws.tags.tags_views import Tag_View
+from itws.feed_views import Feed_View
 from itws.tags.utils import get_tagaware_items
 from itws.widgets import DualSelectWidget
 
 
-class FeedTemplate(Enumerate):
-
-    options = [
-      {'name': '1', 'value': MSG(u'Show only title')},
-      {'name': '2', 'value': MSG(u'Show long title & a picture')},
-      {'name': '3', 'value': MSG(u'Show title & a picture & summary')}]
 
 
-class BoxSectionNews_View(Box_View, Tag_View):
+from itws.feed_views import Details_View
+from itws.feed_views import FeedViews_Enumerate
+class BoxFeed_View(Box_View, Details_View):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'View')
 
+    view_name = 'feed-box'
+    more_title = None
+
     # Configuration
     batch_template = None
 
-    def get_template_viewbox(self, resource, context):
-        # XXX To fix
-        # XXX move on same folder
-        template = resource.get_property('feed_template')
-        if template == '1':
-            return '/ui/feed_views/NewsItem_preview.xml'
-        elif template == '2':
-            return '/ui/news/SectionNews_view.xml'
-        elif template == '3':
-            return '/ui/news/Tag_item_viewbox.xml'
-        return '/ui/common/Tag_item_viewbox.xml'
+#    def get_template_viewbox(self, resource, context):
+#        # XXX To fix
+#        # XXX move on same folder
+#        template = resource.get_property('view')
+#        if template == '1':
+#            return '/ui/feed_views/NewsItem_preview.xml'
+#        elif template == '2':
+#            return '/ui/news/SectionNews_view.xml'
+#        elif template == '3':
+#            return '/ui/news/Tag_item_viewbox.xml'
+#        return '/ui/common/Tag_item_viewbox.xml'
 
 
     def get_items(self, resource, context, *args):
         count = resource.get_property('count')
         tags = resource.get_property('tags')
         feed_class_id = resource.get_property('feed_class_id')
-        site_root = resource.get_site_root()
-        news_folder = site_root.get_news_folder(context)
-        return get_tagaware_items(context, class_id=feed_class_id,
+        return get_tagaware_items(context, formats=feed_class_id,
                   number=count, tags=tags, brain_and_docs=True)
 
 
@@ -90,9 +86,9 @@ class BoxFeed(Box):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(Box.class_schema,
-                               feed_class_id=TagsAwareClassEnumerate(source='metadata'),
-                               feed_source=String(source='metadata'),
-                               feed_template=FeedTemplate(source='metadata'),
+                               feed_class_id=TagsAwareClassEnumerate(source='metadata', multiple=True),
+                               feed_source=String(source='metadata', multiple=True),
+                               view=FeedViews_Enumerate(source='metadata'),
                                count=PositiveInteger(source='metadata', default=3),
                                tags=TagsList(source='metadata', multiple=True,
                                              default=[]))
@@ -103,15 +99,15 @@ class BoxFeed(Box):
     is_content = True
 
     # Automatic Edit View
-    edit_schema = {'feed_class_id': TagsAwareClassEnumerate,
-                   'feed_template': FeedTemplate,
+    edit_schema = {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
+                   'view': FeedViews_Enumerate,
                    'count': PositiveInteger(default=3),
                    'tags': TagsList(multiple=True)}
 
 
-    edit_widgets = [SelectWidget('feed_class_id', title=MSG(u'Feed Source'),
+    edit_widgets = [CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
-        SelectWidget('feed_template', title=MSG(u'Feed template')),
+        SelectWidget('view', title=MSG(u'Feed template')),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
         DualSelectWidget('tags', title=MSG(u'Show only items with this TAGS'),
@@ -119,4 +115,4 @@ class BoxFeed(Box):
 
 
     # Views
-    view = BoxSectionNews_View()
+    view = BoxFeed_View()

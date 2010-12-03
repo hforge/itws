@@ -25,7 +25,8 @@ from base import Feed_View
 class Details_View(Feed_View):
 
     view_name = 'details-view'
-    view_title = MSG(u'Show tags aware elements')
+    view_title = MSG(u'Feed TagAware elements')
+    search_template = None
     content_template = '/ui/feed_views/Tag_item_viewbox.xml'
 
     def get_items(self, resource, context, *args):
