@@ -422,6 +422,8 @@ class Skin(BaseSkin):
 
 class NeutralSkin(Skin):
 
+    title = MSG(u'Neutral Skin 1')
+
     add_common_nav_css = True
 
     fo_edit_template = list(XMLParser(
@@ -437,6 +439,7 @@ class NeutralSkin(Skin):
 
 class NeutralSkin2(NeutralSkin):
 
+    title = MSG(u'Neutral Skin 2')
     add_common_nav_css = False
 
 

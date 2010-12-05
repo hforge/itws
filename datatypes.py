@@ -23,6 +23,9 @@ from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.file import Image
+from ikaaro.skins import skin_registry
+
+# Import from itws
 
 
 
@@ -42,12 +45,17 @@ class PositiveIntegerNotNull(Integer):
 
 
 
-# XXX Should be done automaticaly with a register K2 skin mechanism !
 class NeutralClassSkin(Enumerate):
 
-    options = [{'name': '/ui/neutral', 'value': u'Neutral'},
-               #{'name': '/ui/neutral2', 'value': u"Neutral 2"},
-               {'name': '/ui/k2', 'value': u"K2"}]
+    @classmethod
+    def get_options(cls):
+        from skin import NeutralSkin
+        options = []
+        for key, skin in skin_registry.items():
+            if isinstance(skin, NeutralSkin):
+                options.append({'name': '/ui/%s' % key,
+                                'value': skin.title})
+        return options
 
 
 
