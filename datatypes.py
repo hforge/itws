@@ -25,8 +25,6 @@ from itools.web import get_context
 from ikaaro.file import Image
 from ikaaro.skins import skin_registry
 
-# Import from itws
-
 
 
 class PositiveInteger(Integer):
@@ -49,10 +47,10 @@ class NeutralClassSkin(Enumerate):
 
     @classmethod
     def get_options(cls):
-        from skin import NeutralSkin
+        from skin import Skin
         options = []
         for key, skin in skin_registry.items():
-            if isinstance(skin, NeutralSkin):
+            if isinstance(skin, Skin):
                 options.append({'name': '/ui/%s' % key,
                                 'value': skin.title})
         return options

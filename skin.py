@@ -63,6 +63,8 @@ from feed_views import Feed_View
 ###########################################################
 class Skin(BaseSkin):
 
+    title = MSG(u'ITWS skin')
+
     nav_data = {'template': '/ui/neutral/template_nav.xml',
                 'depth': 1,
                 'flat': None,
@@ -127,7 +129,6 @@ class Skin(BaseSkin):
 
     def get_rss_feeds(self, context, site_root):
         rss = []
-        site_root_abspath = site_root.get_abspath()
         # Global RSS
         ws_title = site_root.get_title()
         rss_title = MSG(u'{ws_title} -- RSS Feeds').gettext(ws_title=ws_title)
@@ -444,23 +445,23 @@ class NeutralSkin2(NeutralSkin):
 
 
 
-class AdminPopupSkin(Skin):
+class AdminPopupSkin(BaseSkin):
 
     def get_styles(self, context):
-        styles = Skin.get_styles(self, context)
+        styles = BaseSkin.get_styles(self, context)
         styles.append('/ui/common/js/jquery.multiselect2side/css/jquery.multiselect2side.css')
         styles.remove('/theme/style/;download')
         return styles
 
 
     def get_scripts(self, context):
-        scripts = Skin.get_scripts(self, context)
+        scripts = BaseSkin.get_scripts(self, context)
         scripts.append('/ui/common/js/jquery.multiselect2side/js/jquery.multiselect2side.js')
         return scripts
 
 
     def build_namespace(self, context):
-        return merge_dicts(Skin.build_namespace(self, context),
+        return merge_dicts(BaseSkin.build_namespace(self, context),
                   title=context.resource.class_title,
                   description=context.resource.class_description,
                   context_menus=list(self._get_context_menus(context)))
