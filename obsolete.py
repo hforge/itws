@@ -32,7 +32,6 @@ from ikaaro.tracker import Tracker
 from ikaaro.user import User
 from ikaaro.webpage import WebPage
 
-
 # Import from itws
 from bar.base import Box
 from bar.news import BoxFeed
@@ -42,6 +41,7 @@ from bar.repository import SidebarBoxesOrderedTable
 from bar.section import SectionOrderedTable, Section
 from tags import TagsAware, TagsList
 from ws_neutral import NeutralWS
+
 
 
 ###########################
@@ -426,6 +426,26 @@ class BoxNewsSiblingsToc(BoxSectionNews):
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
         metadata.set_property('feed_template', '1')
+
+
+
+############################
+# Diaporama
+############################
+#class DiaporamaTableFile(TableFile):
+#
+#    record_properties = {
+#        'title': Unicode(multiple=True),
+#        'description': Unicode(multiple=True),
+#        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True), # multilingual
+#        'img_link': String,
+#        'target': Target(mandatory=True, default='_top')}
+#
+#class DiaporamaTable(Table):
+#
+#    class_id = 'diaporama-table'
+#    class_handler = DiaporamaTableFile
+
 
 
 register_resource_class(ITWSRoot)

@@ -42,8 +42,12 @@ from ikaaro.views import CompositeForm
 # Import from itws
 from base import BoxAware
 from base_views import Box_View
+from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
 from menu import MenuSideBarTable_AddRecord
+from itws.views import EditOnlyLanguageMenu
+
+
 
 ###########################################################################
 # Views
@@ -101,6 +105,15 @@ class DiaporamaTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View() ]
+
+    def get_context_menus(self):
+        return [ EditOnlyLanguageMenu(view=self) ]
+
+
+    def _get_query_to_keep(self, resource, context):
+        """Return a list of dict {'name': name, 'value': value}"""
+        return []
+
 
     def get_namespace(self, resource, context):
         # XXX Force GET to avoid problem in STLForm.get_namespace
@@ -170,30 +183,13 @@ class Diaporama_View(Box_View):
 ###########################################################################
 # Resources
 ###########################################################################
-class DiaporamaImagePathDatatype(Unicode):
-
-    @staticmethod
-    def is_valid(value):
-        here = get_context().resource
-        try:
-            ref = get_reference(str(value)) # multilingual -> unicode, multiple
-            if not ref.scheme:
-                resource = here.get_resource(ref.path, soft=True)
-                if resource and isinstance(resource, Image):
-                    return True
-        except Exception, e:
-            return False
-        return False
-
-
-
 class DiaporamaTableFile(TableFile):
 
     record_properties = {
-        'title': Unicode(multiple=True),
-        'description': Unicode(multiple=True),
-        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True), # multilingual
-        'img_link': String,
+        'title': Unicode(multilingual=True),
+        'description': Unicode(multilingual=True),
+        'img_path': ImagePathDataType(multilingual=True, mandatory=True),
+        'img_link': String, # XXX
         'target': Target(mandatory=True, default='_top')}
 
 
@@ -227,7 +223,7 @@ class DiaporamaTable(Table):
                     path = get_value(record, key, lang)
                     if not path:
                         continue
-                    ref = get_reference(str(path)) # Unicode -> str
+                    ref = get_reference(path)
                     if not ref.scheme:
                         path, view = get_path_and_view(ref.path)
                         links.add(str(base.resolve2(path)))
@@ -257,7 +253,7 @@ class DiaporamaTable(Table):
                     path = get_value(record, key, lang)
                     if not path:
                         continue
-                    ref = get_reference(str(path)) # Unicode -> str
+                    ref = get_reference(path)
                     if ref.scheme:
                         continue
                     path, view = get_path_and_view(ref.path)
@@ -272,7 +268,7 @@ class DiaporamaTable(Table):
                                             language=lang)
                         handler.update_record(record.id, **{key: new_path})
 
-        get_context().server.change_resource(self)
+        get_context().database.change_resource(self)
 
 
     def update_relative_links(self, source):
