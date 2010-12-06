@@ -186,7 +186,7 @@ class HTMLContent(WebPage):
                     new_ref.path = str(new_base.get_pathto(target)) + view
                     self.set_property('title_link', str(new_ref))
 
-        get_context().server.change_resource(self)
+        get_context().database.change_resource(self)
 
 
     def update_relative_links(self, source):

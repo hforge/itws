@@ -138,7 +138,7 @@ class NewsItem(WebPage):
                 new_ref.path = str(new_base.get_pathto(target)) + view
                 self.set_property('thumbnail', str(new_ref), language=lang)
 
-        get_context().server.change_resource(self)
+        get_context().database.change_resource(self)
 
 
     def update_relative_links(self, source):
