@@ -194,7 +194,7 @@ class CP_AdvanceNewResource(IconsView):
     itws_icon = 'new.png'
 
     def get_document_types(self):
-        forbidden_class_id = ['file', 'webpage', 'section']
+        forbidden_class_id = ['webpage', 'section']
         return [x for x in get_document_types() if
                     x.class_id not in forbidden_class_id]
 
