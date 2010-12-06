@@ -17,7 +17,6 @@
 
 # Import from the Standard Library
 from copy import deepcopy
-from random import choice
 
 # Import from itools
 from itools.csv import Table as TableFile, Property
@@ -133,49 +132,48 @@ class Diaporama_View(Box_View):
     template = '/ui/bar_items/Diaporama_view.xml'
 
     def get_namespace(self, resource, context):
+        # XXX Images should be ordornable
+        width, height = 0, 0
+        namespace = {'title': resource.get_title(fallback=False)}
+        banners = []
         table = resource.get_resource(resource.order_path)
         handler = table.handler
-
-        # title
-        title = resource.get_title(fallback=False)
-        ids = list(handler.get_record_ids())
-        if not ids:
-            return {'banner': {},
-                    'title': title}
-
-        record = handler.get_record(choice(ids))
         get_value = handler.get_record_value
-
-        # TODO Check ACL
-        banner_ns = {}
-        banner_ns['title'] = get_value(record, 'title')
-        banner_ns['description'] = get_value(record, 'description')
-        banner_ns['target'] = get_value(record, 'target')
-        # img path
-        img_path = get_value(record, 'img_path')
-        img_path_resource = table.get_resource(str(img_path), soft=True)
-        img_path = None
-        if img_path_resource:
-            img_path = context.get_link(img_path_resource)
-            img_path = '%s/;download' % img_path
-        banner_ns['img_path'] = img_path
-        # img link
-        img_link = get_value(record, 'img_link')
-        if img_link:
-            reference = get_reference(img_link)
-            if reference.scheme:
-                img_link = reference
-            else:
-                item_link_resource = resource.get_resource(reference.path,
-                                                           soft=True)
-                if not item_link_resource:
+        for i, record in enumerate(handler.get_records()):
+            # TODO Check ACL
+            banner_ns = {}
+            banner_ns['title'] = get_value(record, 'title')
+            banner_ns['description'] = get_value(record, 'description')
+            banner_ns['target'] = get_value(record, 'target')
+            # img path
+            img_path = get_value(record, 'img_path')
+            img_path_resource = table.get_resource(str(img_path), soft=True)
+            img_path = None
+            if img_path_resource:
+                if i == 0:
+                    width, height = img_path_resource.handler.get_size()
+                img_path = context.get_link(img_path_resource)
+                img_path = '%s/;download' % img_path
+            banner_ns['img_path'] = img_path
+            # img link
+            img_link = get_value(record, 'img_link')
+            if img_link:
+                reference = get_reference(img_link)
+                if reference.scheme:
                     img_link = reference
                 else:
-                    img_link = context.get_link(item_link_resource)
-        banner_ns['img_link'] = img_link
-
-        return {'banner': banner_ns,
-                'title': title}
+                    item_link_resource = resource.get_resource(reference.path,
+                                                               soft=True)
+                    if not item_link_resource:
+                        img_link = reference
+                    else:
+                        img_link = context.get_link(item_link_resource)
+            banner_ns['img_link'] = img_link
+            banners.append(banner_ns)
+        namespace['banners'] = banners
+        namespace['width'] = width
+        namespace['height'] = height
+        return namespace
 
 
 
@@ -316,6 +314,9 @@ class Diaporama(BoxAware, Folder):
     class_description = MSG(u'Diaporama')
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
+
+    styles = ['/ui/common/js/slider/style.css']
+    scripts = ['/ui/common/js/slider/slider.js']
 
     # Configuration
     use_fancybox = False

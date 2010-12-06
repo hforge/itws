@@ -5,15 +5,35 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h3 stl:if="title" class="title">${title}</h3>
-  <div class="content" stl:if="banner">
-    <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
-      target="${banner/target}">
-      <img src="${banner/img_path}" alt="${banner/description}" />
-    </a>
+
+  <div stl:if="not banners">
+    No banner to show, please configure it.
   </div>
 
-  <div class="content" stl:if="not banner">
-    No banner to show
+  <div class="slider-itws" style="width:${width}px;height:${height}px" stl:if="banners">
+    <a class="slider-link" href="http://www.google.fr" style="width:${width}px;height:${height}px;">
+    <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
+      target="${banner/target}" rel="itws-slide" stl:repeat="banner banners">
+      <img src="${banner/img_path}" alt="${banner/description}" title="${banner/title}"/>
+    </a>
+    <div class="slider-itws-nav">
+      <a class="slider-itws-nav-previous previous"></a>
+      <a class="slider-itws-nav-next next"></a>
+    </div>
+    </a>
+    <div class="slider-itws-caption">
+      <span>Title</span>
+      <p></p>
+    </div>
   </div>
+
+  <link type="text/css" rel="stylesheet" href="/ui/common/js/slider/style.css" />
+  <script type="text/javascript" src="/ui/common/js/slider/slider.js"></script>
+
+  <script type="text/javascript">
+  $(window).load(function() {
+      $('.slider-itws').SliderITWS({width: ${width}, height: ${height}});
+  });
+  </script>
 
 </stl:block>
