@@ -42,7 +42,7 @@ from itools.log import log_warning
 from itools.rss import RSSFile
 from itools.stl import stl
 from itools.uri import get_reference
-from itools.web import get_context, BaseView, INFO, ERROR, STLView
+from itools.web import BaseView, INFO, ERROR, STLView
 from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
@@ -309,8 +309,6 @@ class RssFeeds(CSV):
         errors_str = []
         articles = []
         feeds_summary = {}
-        context = get_context()
-        server = context.server
         # backup the default timeout
         default_timeout = socket.getdefaulttimeout()
         socket.setdefaulttimeout(self.get_property('timeout'))

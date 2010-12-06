@@ -75,7 +75,6 @@ class BoxSectionChildrenTree_View(Box_View):
 
     def _get_items(self, section, context, here_abspath):
         user = context.user
-        section_link = context.get_link(section)
         section_class = section.get_subsection_class()
         items = []
 
@@ -119,7 +118,6 @@ class BoxSectionChildrenTree_View(Box_View):
     def get_items(self, resource, context):
         here = context.resource
         # resource is the base section
-        section_class = resource.get_subsection_class()
         items = self._get_items(resource, context, here.get_abspath())
 
         return items
@@ -183,8 +181,6 @@ class ContentBoxSectionChildrenToc_View(Box_View):
 
     def get_namespace(self, resource, context):
         namespace = {}
-        # Items
-        user = context.user
         # Only display on a section view
         section = context.resource
         items = list(self.get_items(resource, context))

@@ -76,7 +76,6 @@ class FooterMenu(Menu):
     def get_links(self):
         base = self.get_canonical_path()
         site_root = self.get_site_root()
-        site_root_abspath = site_root.get_abspath()
         available_languages = site_root.get_property('website_languages')
         links = Menu.get_links(self)
         handler = self.handler
@@ -189,7 +188,6 @@ class FooterMenu(Menu):
         for record_id in old_handler.get_record_ids():
             old_record = old_handler.get_record(record_id)
             old_get_value = old_handler.get_record_value
-            trans_content = {}
             for lang in available_languages:
                 html_content = old_get_value(old_record, 'html_content', lang)
                 if html_content is None:

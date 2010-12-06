@@ -17,9 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from copy import deepcopy
-
 # Import from itools
 from itools.datatypes import Boolean, DateTime, PathDataType, String, Unicode
 from itools.gettext import MSG

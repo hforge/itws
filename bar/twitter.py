@@ -52,7 +52,7 @@ def http_head(hostname, path):
         conn.close()
         return res.status == 200
     except (socket.error, socket.gaierror, Exception,
-            httplib.HTTPException), e:
+            httplib.HTTPException):
         return False
     return False
 

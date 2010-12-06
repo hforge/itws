@@ -315,10 +315,10 @@ class SlideShow(ResourcesOrderedContainer):
         languages = self.get_site_root().get_property('website_languages')
         # Get informations
         old_name = self.name
-        long_title = self.get_property('long_title')
-        image = self.get_property('image')
-        toc_nb_col = self.get_property('toc_nb_col')
-        template_type = self.get_property('template_type')
+        #long_title = self.get_property('long_title')
+        #image = self.get_property('image')
+        #toc_nb_col = self.get_property('toc_nb_col')
+        #template_type = self.get_property('template_type')
         title = {}
         for lang in languages:
             title[lang] = self.get_property('title', language=lang)

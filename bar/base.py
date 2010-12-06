@@ -22,7 +22,6 @@ from itools.gettext import MSG
 from ikaaro.file import File
 
 # Import from itws
-from base_views import Box_Preview
 from itws.views import AutomaticEditView , EasyNewInstance
 
 
@@ -30,7 +29,6 @@ class BoxAware(object):
 
     edit = AutomaticEditView()
     new_instance = EasyNewInstance()
-    preview = order_preview = Box_Preview()
 
     edit_schema = {}
     edit_widgets = []

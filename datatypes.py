@@ -68,7 +68,7 @@ class ImagePathDataType(PathDataType):
                 resource = here.get_resource(ref.path, soft=True)
                 if resource and isinstance(resource, Image):
                     return True
-        except Exception, e:
+        except Exception:
             return False
         return False
 

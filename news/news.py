@@ -216,9 +216,9 @@ class NewsFolder(SideBarAware, Folder):
         # Create images folder
         self.make_resource('images', Folder)
         # Preorder items
+        # XXX add items
         repository = self.get_site_root().get_repository()
         sidebar_table = self.get_resource(self.sidebar_name)
-        # XXX add items
 
 
     def get_document_types(self):

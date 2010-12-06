@@ -24,26 +24,9 @@ from ikaaro.autoform import CheckboxWidget, TextWidget
 
 # Import from itws
 from base import Box
-from base_views import Box_Preview, Box_View
+from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsAwareClassEnumerate
-
-
-class BoxTags_Preview(Box_Preview):
-
-    def get_details(self, resource, context):
-        count = resource.get_property('count')
-        show_number = resource.get_property('show_number')
-        random = resource.get_property('random')
-        formats = resource.get_property('formats')
-        details = []
-        details.append(u'Tags to show (0 for all tags): %s' % count)
-        details.append(u'Show number of items for each tag: %s' % show_number)
-        details.append(u'This tag cloud will display only the tags '
-                       u'from: %s' % ', '.join(formats))
-
-        return details
-
 
 
 class BoxTags_View(Box_View):
@@ -127,4 +110,3 @@ class BoxTags(Box):
 
     # Views
     view = BoxTags_View()
-    preview = order_preview = BoxTags_Preview()

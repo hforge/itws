@@ -362,7 +362,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     def update_20100704(self):
         """Move menu, style inside the theme folder"""
-        theme = self.get_resource('theme')
         self.move_resource('menu', 'theme/menu')
         self.move_resource('footer', 'theme/footer')
         self.move_resource('turning-footer', 'theme/turning-footer')

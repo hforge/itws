@@ -75,7 +75,6 @@ class LocationTemplate(BaseLocationTemplate):
 
         # Complete the breadcrumb
         resource = site_root
-        user = context.user
         for name in context.uri.path:
             path = path + ('%s/' % name)
             resource = resource.get_resource(name, soft=True)
@@ -171,10 +170,6 @@ class LanguagesTemplate(BaseLanguagesTemplate):
         ws_languages = context.site_root.get_property('website_languages')
         if len(ws_languages) == 1:
             return []
-
-        here = context.resource
-        ac = here.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, here)
 
         # Select language
         accept = context.accept_language

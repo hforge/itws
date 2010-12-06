@@ -21,12 +21,8 @@ from warnings import warn
 
 # Import from itools
 from itools.gettext import MSG
-from itools.stl import set_prefix, stl
+from itools.stl import set_prefix
 from itools.web import STLView
-from itools.xml import XMLParser
-
-# Import from ikaaro
-from ikaaro.autoform import stl_namespaces
 
 # Import from itws
 from itws.utils import get_admin_bar
@@ -45,35 +41,6 @@ class Box_View(STLView):
     def is_admin(self, resource, context):
         ac = resource.get_access_control()
         return ac.is_allowed_to_edit(context.user, resource)
-
-
-class Box_Preview(STLView):
-
-    template = list(XMLParser(
-        """
-        <p>${title}</p>
-        <ul stl:if="details">
-            <li stl:repeat="detail details">${detail}</li>
-        </ul>
-        """, stl_namespaces))
-
-
-    def get_template(self):
-        return self.template
-
-
-    def get_details(self, resource, context):
-        return []
-
-
-    def GET(self, resource, context):
-        title = resource.class_description
-        details = self.get_details(resource, context)
-        template = self.get_template()
-        namespace = {'title': title,
-                     'details': details}
-        return stl(events=template, namespace=namespace)
-
 
 
 class BarBox_View(STLView):
@@ -106,13 +73,10 @@ class Bar_View(STLView):
             return []
 
         buttons = []
-        site_root = resource.get_site_root()
-        repository = site_root.get_repository()
         section_path = context.get_link(resource)
         # Order table empty ?
         order_table = resource.get_resource(self.order_name)
         if len(list(order_table.handler.get_record_ids())):
-            path = context.get_link(repository)
             buttons.append(
                     {'path': '%s/;%s' % (section_path, self.order_method),
                      'icon': '/ui/common/icons/16x16/sort.png',
@@ -148,7 +112,6 @@ class Bar_View(STLView):
             user = context.user
             repository = self._get_repository(resource, context)
             order = orderfile.get_records_in_order()
-            items = []
 
             for record in order:
                 name = orderfile.get_record_value(record, 'name')
@@ -250,7 +213,6 @@ class SideBar_View(Bar_View):
         if not allowed:
             return []
 
-        site_root = resource.get_site_root()
         if isinstance(context.resource, (NeutralWS, SideBarAware)):
             buttons = Bar_View.get_manage_buttons(self, resource, context)
             section_path = context.get_link(resource)
@@ -293,7 +255,6 @@ class ContentBar_View(Bar_View):
         if not allowed:
             return []
 
-        site_root = resource.get_site_root()
         buttons = Bar_View.get_manage_buttons(self, resource, context)
         section_path = context.get_link(resource)
         buttons.append({'path': '%s/;new_contentbar_resource' % section_path,

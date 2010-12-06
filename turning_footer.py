@@ -50,7 +50,6 @@ class TurningFooterFolder_View(STLView):
     template = '/ui/common/TurningFooterFolder_view.xml'
 
     def get_namespace(self, resource, context):
-        namespace = {}
         # title
         title = resource.get_title(fallback=False)
         menu = resource.get_resource(resource.order_path)

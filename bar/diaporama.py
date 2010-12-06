@@ -133,7 +133,6 @@ class Diaporama_View(Box_View):
     template = '/ui/bar_items/Diaporama_view.xml'
 
     def get_namespace(self, resource, context):
-        namespace = {}
         table = resource.get_resource(resource.order_path)
         handler = table.handler
 
@@ -213,7 +212,6 @@ class DiaporamaTable(Table):
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
         handler = self.handler
-        record_properties = handler.record_properties
         links = set()
 
         get_value = handler.get_record_value
