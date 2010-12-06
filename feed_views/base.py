@@ -144,8 +144,10 @@ class Feed_View(Folder_BrowseContent):
 
 
     def get_item_value(self, resource, context, item, column):
+        from ikaaro.file import Image
+        from itws.tags import TagsAware
         item_brain, item_resource = item
-        is_tags_aware = False# brain.is_tagsaware
+        is_tags_aware = isinstance(item_resource, TagsAware)
         if column == 'class_icon16':
             return item_resource.get_class_icon()
         elif column == 'class_icon48':
@@ -176,7 +178,7 @@ class Feed_View(Folder_BrowseContent):
                 thumbnail = item_resource.get_preview_thumbnail()
                 if thumbnail:
                     return context.get_link(thumbnail)
-            elif False:#item_brain.is_image: #XXX
+            elif isinstance(resource, Image):
                 return context.get_link(item_resource)
             return None
         elif column == 'tags':
