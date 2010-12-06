@@ -60,6 +60,12 @@ class Tag(File):
     view = Tag_View()
     rss = Tag_RSS()
 
+
+    def init_resource(self, **kw):
+        kw.setdefault('state', 'public')
+        File.init_resource(self, **kw)
+
+
     def get_title(self, language=None, fallback=True):
         title = self.get_property('title', language=language)
         if title:
