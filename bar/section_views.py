@@ -65,7 +65,7 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            TagsAware_Edit._get_schema(self, resource, context),
                            state=StaticStateEnumerate,
-                           view=FeedViews_Enumerate)
+                           view=FeedViews_Enumerate(mandatory=True))
 
 
     def _get_widgets(self, resource, context):
