@@ -29,7 +29,7 @@ class Advance_RTEWidget(RTEWidget):
     extended_valid_elements = (
             "iframe[src|name|id|class|style|frameborder|width|height],"
             "div[id|dir|class|align|style]")
-    toolbar2 = RTEWidget.toolbar2 + ('|attribs')
+    toolbar2 = RTEWidget.toolbar2 + (',|attribs')
     plugins = RTEWidget.plugins + (',xhtmlxtras')
 
 
