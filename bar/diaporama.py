@@ -44,7 +44,7 @@ from base_views import Box_View
 from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
 from menu import MenuSideBarTable_AddRecord
-from itws.views import EditOnlyLanguageMenu
+from itws.views import AutomaticEditView, EditOnlyLanguageMenu
 
 
 
@@ -96,9 +96,6 @@ class DiaporamaTable_View(OrderedTable_View):
 
 class DiaporamaTable_CompositeView(CompositeForm):
 
-    # XXX Migration
-    # How to edit title of Diaporama ?
-
     access = 'is_allowed_to_edit'
     title = DiaporamaTable_View.title
     subviews = [ # diaporama folder edition view
@@ -135,9 +132,8 @@ class Diaporama_View(Box_View):
     scripts = ['/ui/common/js/slider/slider.js']
 
     def get_namespace(self, resource, context):
-        # XXX Images should be ordornable
         width, height = 0, 0
-        namespace = {'title': resource.get_title(fallback=False),
+        namespace = {'title': resource.get_title(),
                      'first_img': {'link': None}}
         banners = []
         table = resource.get_resource(resource.order_path)
@@ -203,8 +199,10 @@ class DiaporamaTable(OrderedTable):
 
     class_id = 'diaporama-table'
     class_handler = DiaporamaTableFile
-    class_views = ['view', 'commit_log']
+    class_views = ['view', 'configure', 'commit_log']
     view = DiaporamaTable_CompositeView()
+    configure = GoToSpecificDocument(specific_document='..',
+            specific_view='configure', title=MSG(u'Configure'))
 
     form = [ImageSelectorWidget('img_path', title=MSG(u'Image path')),
             PathSelectorWidget('img_link', title=MSG(u'Image link')),
@@ -317,8 +315,7 @@ class Diaporama(BoxAware, Folder):
     class_id = 'diaporama'
     class_version = '20100616'
     class_title = MSG(u'Diaporama')
-    class_views = ['view', 'edit', 'browse_content', 'preview_content',
-                   'backlinks', 'commit_log']
+    class_views = ['configure', 'edit', 'browse_content']
     class_description = MSG(u'Diaporama')
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
@@ -341,18 +338,10 @@ class Diaporama(BoxAware, Folder):
         return [Image]
 
 
-    def get_title(self, language=None, fallback=True):
-        title = self.get_property('title', language=language)
-        if title:
-            return title
-        if fallback:
-            # Fallback to the resource's name
-            return Folder.get_title(self, language)
-        return u''
-
     ##############
     # Views
     ##############
     view = Diaporama_View()
     edit = GoToSpecificDocument(specific_document='order-banners',
                                 title=MSG(u'Edit'))
+    configure = AutomaticEditView(title=MSG(u'Configure'))
