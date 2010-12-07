@@ -30,6 +30,9 @@ from itws.utils import get_admin_bar
 
 class Box_View(STLView):
 
+    styles = []
+    scripts = []
+
     def get_view_is_empty(self):
         return getattr(self, '_view_is_empty', False)
 
@@ -41,6 +44,14 @@ class Box_View(STLView):
     def is_admin(self, resource, context):
         ac = resource.get_access_control()
         return ac.is_allowed_to_edit(context.user, resource)
+
+
+    def get_styles(self, context):
+        return self.styles
+
+
+    def get_scripts(self, context):
+        return self.scripts
 
 
 class BarBox_View(STLView):
@@ -65,6 +76,7 @@ class Bar_View(STLView):
     boxes_css_class = None
     box_view = BarBox_View
     container_cls = None
+    views = []
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -143,6 +155,7 @@ class Bar_View(STLView):
 
         for item in self._get_items(resource, context, check_acl=True):
             view = item.view
+            self.views.append(view)
             view.set_view_is_empty(False)
             stream = view.GET(item, context)
             if view.get_view_is_empty() or stream is None:
@@ -186,6 +199,20 @@ class Bar_View(STLView):
         namespace['display'] = display
 
         return namespace
+
+
+    def get_styles(self, context):
+        styles = []
+        for view in self.views:
+            styles.extend(view.get_styles(context))
+        return styles
+
+
+    def get_scripts(self, context):
+        scripts = []
+        for view in self.views:
+            scripts.extend(view.get_scripts(context))
+        return scripts
 
 
 

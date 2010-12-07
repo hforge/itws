@@ -27,9 +27,6 @@
     </div>
   </div>
 
-  <link type="text/css" rel="stylesheet" href="/ui/common/js/slider/style.css" />
-  <script type="text/javascript" src="/ui/common/js/slider/slider.js"></script>
-
   <script type="text/javascript">
   $(window).load(function() {
       $('.slider-itws').SliderITWS({width: ${width}, height: ${height}});

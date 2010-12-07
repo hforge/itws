@@ -131,6 +131,9 @@ class Diaporama_View(Box_View):
     title = MSG(u'View')
     template = '/ui/bar_items/Diaporama_view.xml'
 
+    styles = ['/ui/common/js/slider/style.css']
+    scripts = ['/ui/common/js/slider/slider.js']
+
     def get_namespace(self, resource, context):
         # XXX Images should be ordornable
         width, height = 0, 0
@@ -314,9 +317,6 @@ class Diaporama(BoxAware, Folder):
     class_description = MSG(u'Diaporama')
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
-
-    styles = ['/ui/common/js/slider/style.css']
-    scripts = ['/ui/common/js/slider/slider.js']
 
     # Configuration
     use_fancybox = False
