@@ -16,7 +16,6 @@
      var vars = $.extend({}, default_vars, options);
      // Init slider
      var slider = $(element);
-     slider.css('position','relative');
      slider.data('vars', vars);
      // Get kids
      var kids = $('a[rel="itws-slide"]');

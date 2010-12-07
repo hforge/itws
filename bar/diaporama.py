@@ -137,7 +137,8 @@ class Diaporama_View(Box_View):
     def get_namespace(self, resource, context):
         # XXX Images should be ordornable
         width, height = 0, 0
-        namespace = {'title': resource.get_title(fallback=False)}
+        namespace = {'title': resource.get_title(fallback=False),
+                     'first_img': {}}
         banners = []
         table = resource.get_resource(resource.order_path)
         handler = table.handler
@@ -145,18 +146,20 @@ class Diaporama_View(Box_View):
         for i, record in enumerate(handler.get_records()):
             # TODO Check ACL
             banner_ns = {}
-            banner_ns['title'] = get_value(record, 'title')
-            banner_ns['description'] = get_value(record, 'description')
-            banner_ns['target'] = get_value(record, 'target')
+            for key in ('title', 'description', 'target',):
+                banner_ns[key] = get_value(record, key)
             # img path
             img_path = get_value(record, 'img_path')
             img_path_resource = table.get_resource(str(img_path), soft=True)
             img_path = None
             if img_path_resource:
-                if i == 0:
-                    width, height = img_path_resource.handler.get_size()
                 img_path = context.get_link(img_path_resource)
                 img_path = '%s/;download' % img_path
+                if i == 0:
+                    width, height = img_path_resource.handler.get_size()
+                    namespace['first_img']['path'] = img_path
+                    for key in ('title', 'description', 'target',):
+                        namespace['first_img'][key] = get_value(record, key)
             banner_ns['img_path'] = img_path
             # img link
             img_link = get_value(record, 'img_link')
@@ -171,6 +174,8 @@ class Diaporama_View(Box_View):
                         img_link = reference
                     else:
                         img_link = context.get_link(item_link_resource)
+                if i == 0:
+                    namespace['first_img']['link'] = img_link
             banner_ns['img_link'] = img_link
             banners.append(banner_ns)
         namespace['banners'] = banners

@@ -10,10 +10,12 @@
     No banner to show, please configure it.
   </div>
 
-  <div class="slider-itws" style="width:${width}px;height:${height}px" stl:if="banners">
-    <a class="slider-link" href="http://www.google.fr" style="width:${width}px;height:${height}px;">
+  <div class="slider-itws"
+    style="width:${width}px;height:${height}px;background:url('${first_img/path}') no-repeat;" stl:if="banners">
+    <a class="slider-link" href="${first_img/link}" style="width:${width}px;height:${height}px;"
+      target="${first_img/target}">
     <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
-      target="${banner/target}" rel="itws-slide" stl:repeat="banner banners">
+      target="${banner/target}" class="slider-elt" rel="itws-slide" stl:repeat="banner banners">
       <img src="${banner/img_path}" alt="${banner/description}" title="${banner/title}"/>
     </a>
     <div class="slider-itws-nav">
@@ -22,8 +24,8 @@
     </div>
     </a>
     <div class="slider-itws-caption">
-      <span>Title</span>
-      <p></p>
+      <span>${first_img/title}</span>
+      <p>${first_img/description}</p>
     </div>
   </div>
 

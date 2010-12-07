@@ -1,3 +1,6 @@
+.slider-itws{
+  position: relative;
+}
 .slider-itws-caption{
   position:absolute;
   left:0px;
@@ -14,6 +17,9 @@
 .slider-itws-caption{
   margin:0;
 }
+.slider-elt{
+  display: none;
+}
 .slider-itws-caption span{
   display: block;
   padding: 2px 5px;
@@ -29,7 +35,6 @@
   height:30px;
   background:url(/ui/common/js/slider/arrows.png) no-repeat;
   border: 0;
-  top:100px;
 }
 a.slider-itws-nav-previous {
   position: absolute;
