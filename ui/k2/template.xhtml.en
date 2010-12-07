@@ -63,7 +63,8 @@
     <div id="content" class="${resource_class}">
       ${location}
       ${message}
-      <div id="contentbar">${body}</div>
+      <div stl:if="sidebar" id="contentbar">${body}</div>
+      <div stl:if="not sidebar" id="contentbar" class="large">${body}</div>
       <div id="sidebar" stl:if="sidebar">
         <stl:block stl:repeat="menu context_menus">
           ${menu}<br/>
