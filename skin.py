@@ -441,12 +441,6 @@ class NeutralSkin(Skin):
     """, stl_namespaces))
 
 
-class NeutralSkin2(NeutralSkin):
-
-    title = MSG(u'Neutral Skin 2')
-    add_common_nav_css = False
-
-
 
 class AdminPopupSkin(BaseSkin):
 
@@ -484,4 +478,3 @@ register_skin('k2', Skin(get_abspath('ui/k2')))
 
 # Old skins
 register_skin('neutral', NeutralSkin(get_abspath('ui/neutral')))
-register_skin('neutral2', NeutralSkin2(get_abspath('ui/neutral2')))
