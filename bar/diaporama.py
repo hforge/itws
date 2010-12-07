@@ -135,12 +135,12 @@ class Diaporama_View(Box_View):
         width, height = 0, 0
         namespace = {'title': resource.get_title(),
                      'first_img': {'link': None}}
+        user = context.user
         banners = []
         table = resource.get_resource(resource.order_path)
         handler = table.handler
         get_value = handler.get_record_value
         for i, record in enumerate(handler.get_records_in_order()):
-            # TODO Check ACL
             banner_ns = {}
             for key in ('title', 'description', 'target',):
                 banner_ns[key] = get_value(record, key)
@@ -149,6 +149,10 @@ class Diaporama_View(Box_View):
             img_path_resource = table.get_resource(str(img_path), soft=True)
             img_path = None
             if img_path_resource:
+                # ACL
+                ac = img_path_resource.get_access_control()
+                if ac.is_allowed_to_view(user, img_path_resource) is False:
+                    continue
                 img_path = context.get_link(img_path_resource)
                 img_path = '%s/;download' % img_path
                 if i == 0:
