@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.gettext import MSG
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -52,10 +53,19 @@ class XMLTitleWidget(RTEWidget):
 class DualSelectWidget(SelectWidget):
 
     css = 'dual-select'
+    selected_label = MSG(u'Selected')
+    available_label = MSG(u'Available')
+
     template = list(XMLParser("""
         <script type="text/javascript">
             $(document).ready(function() {
-                $("#${id}.${css}").multiselect2side({selectedPosition: 'right', moveOptions: false});
+                $("#${id}.${css}").multiselect2side(
+                    {
+                        selectedPosition: 'right',
+                        moveOptions: false,
+                        labelsx: '${available_label}',
+                        labeldx: '${selected_label}'
+                    });
             });
         </script>
         <select id="${id}" name="${name}" multiple="${multiple}" size="${size}"

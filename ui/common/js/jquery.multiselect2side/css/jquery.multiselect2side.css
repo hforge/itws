@@ -6,6 +6,13 @@
 	background : url('') repeat-x; // HACK FOR CHROME
 }
 
+.ms2side__select {
+	float: left;
+}
+
+.ms2side__header {
+}
+
 .ms2side__options, .ms2side__updown {
 	float: left;
 	font-size: 10pt;
@@ -48,7 +55,7 @@
 
 
 /* ikaaro CSS */
-.ms2side__div div {
+.ms2side__div div.ms2side__select {
   float: left;
 }
 
