@@ -19,7 +19,7 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.csv import Table as TableFile, Property
+from itools.csv import Property
 from itools.datatypes import String, Unicode, XMLContent
 from itools.xml import XMLParser
 from itools.gettext import MSG
@@ -34,8 +34,8 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.future.order import get_resource_preview
 from ikaaro.menu import Target
-from ikaaro.table import Table
-from ikaaro.table_views import Table_View
+from ikaaro.table import OrderedTableFile, OrderedTable
+from ikaaro.table_views import OrderedTable_View
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -51,7 +51,7 @@ from itws.views import EditOnlyLanguageMenu
 ###########################################################################
 # Views
 ###########################################################################
-class DiaporamaTable_View(Table_View):
+class DiaporamaTable_View(OrderedTable_View):
 
     def get_item_value(self, resource, context, item, column):
         if column == 'img_path':
@@ -90,7 +90,7 @@ class DiaporamaTable_View(Table_View):
             # Reference2 : the reference used for href attribute
             reference2 = XMLContent.encode(str(reference2))
             return XMLParser('<a href="%s">%s</a>' % (reference2, reference))
-        return Table_View.get_item_value(self, resource, context, item, column)
+        return OrderedTable_View.get_item_value(self, resource, context, item, column)
 
 
 
@@ -138,12 +138,12 @@ class Diaporama_View(Box_View):
         # XXX Images should be ordornable
         width, height = 0, 0
         namespace = {'title': resource.get_title(fallback=False),
-                     'first_img': {}}
+                     'first_img': {'link': None}}
         banners = []
         table = resource.get_resource(resource.order_path)
         handler = table.handler
         get_value = handler.get_record_value
-        for i, record in enumerate(handler.get_records()):
+        for i, record in enumerate(handler.get_records_in_order()):
             # TODO Check ACL
             banner_ns = {}
             for key in ('title', 'description', 'target',):
@@ -188,7 +188,7 @@ class Diaporama_View(Box_View):
 ###########################################################################
 # Resources
 ###########################################################################
-class DiaporamaTableFile(TableFile):
+class DiaporamaTableFile(OrderedTableFile):
 
     record_properties = {
         'title': Unicode(multilingual=True),
@@ -199,7 +199,7 @@ class DiaporamaTableFile(TableFile):
 
 
 
-class DiaporamaTable(Table):
+class DiaporamaTable(OrderedTable):
 
     class_id = 'diaporama-table'
     class_handler = DiaporamaTableFile
