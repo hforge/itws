@@ -34,7 +34,7 @@ from ikaaro.webpage import WebPage
 
 # Import from itws
 from bar.base import Box
-from bar.news import BoxFeed
+from bar.feed_box import BoxFeed
 from bar.map_box import MapBox
 from bar.html import HTMLContent
 from bar.repository import SidebarBoxesOrderedTable
@@ -372,6 +372,7 @@ class SlideShow(ResourcesOrderedContainer):
                       tags=slide['tags'],
                       display_title=True)
             for lang in languages:
+                html.set_property('thumbnail', slide['image'], language=lang)
                 handler = html.get_handler(language=lang)
                 img = '<img src="%s/;download"/>' % slide['image']
                 if slide['href']:
@@ -409,7 +410,7 @@ class BoxSectionNews(Box):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('feed_template', '2')
+        metadata.set_property('view', '2')
 
 class ContentBoxSectionNews(BoxSectionNews):
     class_id = 'contentbar-box-section-news'
@@ -420,7 +421,7 @@ class ContentBoxSectionNews(BoxSectionNews):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('feed_template', '3')
+        metadata.set_property('view', '3')
 
 
 class BoxNewsSiblingsToc(BoxSectionNews):
@@ -432,7 +433,7 @@ class BoxNewsSiblingsToc(BoxSectionNews):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('feed_template', '1')
+        metadata.set_property('view', '1')
 
 
 
