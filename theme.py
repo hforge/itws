@@ -54,13 +54,15 @@ class Theme_Edit(BaseTheme_Edit):
     def _get_widgets(self, resource, context):
         # Remove logo widget
         return (BaseTheme_Edit._get_widgets(self, resource, context)[:2] + [
-            MultilineWidget('custom_data', title=MSG(u"Custom data"), rows=19, cols=69),
+            MultilineWidget('custom_data', title=MSG(u"Custom data"),
+                            rows=19, cols=69),
             TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')),
             TextWidget('banner_title', title=MSG(u'Banner title'),
                        tip=MSG(u'(Use as banner if there is no image banner)')),
             ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
                                 width=640),
-            SelectWidget('class_skin', title=MSG(u'Skin'), has_empty_option=False)])
+            SelectWidget('class_skin', title=MSG(u'Skin'),
+                         has_empty_option=False)])
 
 
 

@@ -115,7 +115,8 @@ class Skin(BaseSkin):
         bo_class = None
         current_view = context.view_name
         if current_view in ('edit', 'browse_content', 'preview_content',
-                            'login', 'new_resource', 'backlinks', 'edit_state'):
+                            'login', 'new_resource', 'backlinks',
+                            'edit_state'):
             bo_class = 'backoffice'
         elif isinstance(here, (Tracker, Issue, CSS, MenuFolder, Menu)):
             bo_class = 'backoffice'
@@ -303,7 +304,8 @@ class Skin(BaseSkin):
         namespace['rss_feeds'] = self.get_rss_feeds(context, site_root)
 
         # Turning footer
-        turning_footer = site_root.get_resource('theme/turning-footer', soft=True)
+        turning_footer = site_root.get_resource('theme/turning-footer',
+                                                soft=True)
         if turning_footer:
             view = turning_footer.view
             namespace['turning_footer'] = view.GET(turning_footer, context)
@@ -324,7 +326,8 @@ class Skin(BaseSkin):
         sidebar = None
         not_allowed = isinstance(here, tuple(nacfsv))
         navnfsv = self.not_allowed_view_name_for_sidebar_view
-        is_authorized_view = isinstance(context.view, self.allowed_views_for_sidebar_view)
+        is_authorized_view = isinstance(context.view,
+                                        self.allowed_views_for_sidebar_view)
         if (context.view_name not in navnfsv and
             not not_allowed and is_authorized_view):
             sidebar_resource = self.get_sidebar_resource(context)

@@ -38,6 +38,8 @@ from itools.database import AndQuery, PhraseQuery
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
+from ikaaro.user import User
+from ikaaro.utils import get_base_path_query
 from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
 
@@ -54,7 +56,7 @@ from news import NewsFolder
 from notfoundpage import NotFoundPage_View
 from robots_txt import RobotsTxt
 from sitemap import SiteMap
-from tags import TagsFolder
+from tags import TagsAware, TagsFolder
 from theme import Theme
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
@@ -134,7 +136,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         # Add an image folder
         self.make_resource('images', ImagesFolder)
         # Tags
-        self.make_resource('tags', self.tagsfolder_class, language=default_language)
+        self.make_resource('tags', self.tagsfolder_class,
+                           language=default_language)
         # Add default news folder
         self.make_resource('news', self.newsfolder_class)
         # About
@@ -240,7 +243,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     def get_news_folder(self, context):
         # News folder MUST be in root '/xxx'
-        from ikaaro.utils import get_base_path_query
         abspath = self.get_canonical_path()
         query = [get_base_path_query(str(abspath)),
                   PhraseQuery('format', self.newsfolder_class.class_id)]
@@ -262,9 +264,9 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         return WebPage
 
 
-    ############################################################################
+    ###########################################################################
     # ACL
-    ############################################################################
+    ###########################################################################
     def is_allowed_to_view(self, user, resource):
         # Get the variables to resolve the formula
         # Intranet or Extranet
@@ -333,7 +335,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
             raise RuntimeError, 'A resource named theme already exists'
 
         # Create theme
-        theme = self.make_resource('theme', class_theme, title={'en': u'Theme'})
+        theme = self.make_resource('theme', class_theme,
+                                   title={'en': u'Theme'})
 
 
     # Move old root data inside the theme folder
@@ -411,7 +414,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     def update_20100706(self):
         """Fix user property"""
-        from ikaaro.user import User
         users = self.get_resource('users')
 
         class_schema_keys = User.class_schema.keys()
@@ -425,7 +427,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
 
     def update_20100708(self):
         """Fix TagsAware tags property"""
-        from tags import TagsAware
 
         for resource in self.traverse_resources():
             if isinstance(resource, TagsAware):

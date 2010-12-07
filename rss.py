@@ -19,7 +19,8 @@ from datetime import datetime
 
 # Import from itools
 from itools.core import freeze
-from itools.database import AndQuery, RangeQuery, NotQuery, PhraseQuery, OrQuery
+from itools.database import AndQuery, NotQuery, OrQuery, PhraseQuery
+from itools.database import RangeQuery
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile

@@ -174,7 +174,7 @@ class FooterMenu(Menu):
 
         class FakeHandler(FooterMenuFile):
             record_properties = merge_dicts(FooterMenuFile.record_properties,
-                                            html_content=String(multilingual=True))
+                    html_content=String(multilingual=True))
 
         handler = self.handler
         try:

@@ -70,16 +70,16 @@ class ITWSRoot(Root):
 class Old_NeutralWS(NeutralWS):
     """Hook class_schema"""
     # FIXME To remove during the update
-    class_schema = merge_dicts(NeutralWS.class_schema,
-                               banner_path=String(source='metadata', multilingual=True,
-                                                  parameters_schema={'lang': String}),
-                               class_skin=String(source='metadata'),
-                               favicon=String(source='metadata'),
-                               banner_title=Multilingual(source='metadata'),
-                               date_of_writing_format=String(source='metadata'),
-                               custom_data=String(source='metadata'),
-                               order=String(source='metadata'),
-                               )
+    class_schema = merge_dicts(
+            NeutralWS.class_schema,
+            banner_path=String(source='metadata', multilingual=True,
+                               parameters_schema={'lang': String}),
+            class_skin=String(source='metadata'),
+            favicon=String(source='metadata'),
+            banner_title=Multilingual(source='metadata'),
+            date_of_writing_format=String(source='metadata'),
+            custom_data=String(source='metadata'),
+            order=String(source='metadata'))
 
 
     def update_20100707(self):
@@ -150,9 +150,10 @@ class Old_Tracker(Tracker):
     class_id = 'itws-tracker'
     class_version = '20100429'
 
-    class_schema = merge_dicts(Tracker.class_schema,
-                               assigned_to_excluded_roles=String(source='metadata'),
-                               cc_excluded_roles=String(source='metadata'))
+    class_schema = merge_dicts(
+            Tracker.class_schema,
+            assigned_to_excluded_roles=String(source='metadata'),
+            cc_excluded_roles=String(source='metadata'))
 
 
     def update_20100429(self):
@@ -205,15 +206,18 @@ class AddressItem(WebPage):
     class_version = '20100408'
 
     # Schema
-    class_schema = merge_dicts(WebPage.class_schema,
-          # Metadata
-          address=Unicode(source='metadata'),
-          latitude=Decimal(source='metadata', default=Decimal.encode('48.8566')),
-          longitude=Decimal(source='metadata', default=Decimal.encode('2.3509')),
-          width=Integer(source='metadata', default=400),
-          height=Integer(source='metadata', default=5),
-          zoom=Integer(source='metadata', default=5),
-          render=String(source='metadata', default='osm'))
+    class_schema = merge_dicts(
+            WebPage.class_schema,
+            # Metadata
+            address=Unicode(source='metadata'),
+            latitude=Decimal(source='metadata',
+                             default=Decimal.encode('48.8566')),
+            longitude=Decimal(source='metadata',
+                              default=Decimal.encode('2.3509')),
+            width=Integer(source='metadata', default=400),
+            height=Integer(source='metadata', default=5),
+            zoom=Integer(source='metadata', default=5),
+            render=String(source='metadata', default='osm'))
 
 
 
@@ -233,8 +237,8 @@ class AddressesFolder(Folder):
         for address in self.get_resources():
             if address.class_id == 'address':
                 kw = {'name': address.name}
-                for key in ['address', 'latitude', 'longitude', 'width', 'height',
-                            'zoom', 'render']:
+                for key in ['address', 'latitude', 'longitude', 'width',
+                            'height', 'zoom', 'render']:
                     kw[key] = address.get_property(key)
                 kw['html'] = {}
                 for lang in languages:
@@ -323,14 +327,16 @@ class SlideShow(ResourcesOrderedContainer):
         for lang in languages:
             title[lang] = self.get_property('title', language=lang)
         # Copy resources
-        files = self.parent.make_resource('%s_migration_files' % old_name, Folder)
+        files = self.parent.make_resource('%s_migration_files' % old_name,
+                                          Folder)
         path = files.get_abspath()
         for resource in self.traverse_resources():
             if resource.name == self.name:
                 continue
             if resource.class_id in ('slide', 'slides-ordered-table'):
                 continue
-            resource.parent.copy_resource(resource.name, '%s/%s' % (path, resource.name))
+            resource.parent.copy_resource(resource.name,
+                                          '%s/%s' % (path, resource.name))
         # Get slides
         slides = []
         for slide in self.get_resources():
@@ -380,7 +386,8 @@ class SlideShow(ResourcesOrderedContainer):
         for resource in files.traverse_resources():
             if resource.name == files.name:
                 continue
-            resource.parent.move_resource(resource.name, '../%s/%s' % (self.name, resource.name))
+            new_name = '../%s/%s' % (self.name, resource.name)
+            resource.parent.move_resource(resource.name, new_name)
         # Delete files
         files = self.parent.del_resource('%s_migration_files' % old_name)
 
@@ -437,7 +444,7 @@ class BoxNewsSiblingsToc(BoxSectionNews):
 #    record_properties = {
 #        'title': Unicode(multiple=True),
 #        'description': Unicode(multiple=True),
-#        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True), # multilingual
+#        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True),
 #        'img_link': String,
 #        'target': Target(mandatory=True, default='_top')}
 #

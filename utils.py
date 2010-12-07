@@ -283,7 +283,8 @@ class ResourceWithCache(DBResource):
         DBResource.__init__(self, metadata)
         # Add cache API
         timestamp = getattr(metadata, 'timestamp', None)
-        # If timestamp is None, the metadata handler could not exists on filesystem
+        # If timestamp is None, the metadata handler could not exists on
+        # filesystem
         # -> make_resource, check if the metadata is already loaded before
         # setting the cache properties
         if timestamp and getattr(metadata, 'cache_mtime', None) is None:

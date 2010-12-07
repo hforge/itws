@@ -67,8 +67,9 @@ class RobotsTxt(Text):
     class_views = ['view', 'edit', 'externaledit', 'download',
                    'upload', 'edit_state', 'commit_log', 'control_panel']
 
-    class_schema = merge_dicts(Text.class_schema,
-                               state=String(source='metadata', default='public'))
+    class_schema = merge_dicts(
+            Text.class_schema,
+            state=String(source='metadata', default='public'))
 
 
     def init_resource(self, **kw):
