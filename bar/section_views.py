@@ -74,7 +74,8 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                                         title=MSG(u'Description (use by RSS and TAGS)'))
         return (default_widgets +
                 [state_widget] +
-                [SelectWidget('view', title=MSG(u'View'))] +
+                [SelectWidget('view', title=MSG(u'View'),
+                              has_empty_option=False)] +
                 TagsAware_Edit._get_widgets(self, resource, context))
 
 
