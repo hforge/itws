@@ -35,6 +35,9 @@ class OpenLayerRender(Enumerate):
     options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
                {'name': 'google', 'value': MSG(u'Google Map')}]
 
+    map_widget_cls = {'google': GoogleMapWidget,
+                      'osm': OpenStreetMapWidget}
+
 
 class MapBox_View(Box_View):
 
@@ -42,20 +45,14 @@ class MapBox_View(Box_View):
 
 
     def get_namespace(self, resource, context):
-        # XXX
-        index = '1'
         kw = {}
         for key in ['latitude', 'longitude', 'zoom', 'width', 'height']:
             kw[key] = resource.get_property(key)
-        # FIXME To improve, render
         render = resource.get_property('render')
-        if render == 'google':
-            map_widget_cls = GoogleMapWidget
-        else:
-            map_widget_cls = OpenStreetMapWidget
-        map = map_widget_cls('map_%s' % index, **kw)
+        map_widget_cls = OpenLayerRender.map_widget_cls[render]
+        the_map = map_widget_cls('map_%s' % resource.name, **kw)
         return {'title': resource.get_title(),
-                'map': map.render()}
+                'map': the_map.render()}
 
 
 
