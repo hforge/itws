@@ -1,7 +1,6 @@
 TODO
 ============================================================
 
-* Search [$ git grep XXX |grep migration]
 * Move old documentation for restedit in ikaaro
 * Move 'detar archive' in ikaaro
 * Move "Add file with state" in ikaro
@@ -31,7 +30,6 @@ Feed Box
 
   - Write CSS sed on UPGRADE file
   - use a better name
-  - see XXX
 
 
 
