@@ -19,9 +19,9 @@
 # Import sidebars
 from base_views import SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
-from homepage import Website_BarAware,  HomePage_BarAware
 from diaporama import Diaporama
 from feed_box import BoxFeed
+from homepage import Website_BarAware
 from html import HTMLContent
 from map_box import MapBox
 from menu import MenuSideBar
@@ -46,4 +46,4 @@ register_box(TwitterSideBar)
 
 # Silent Pyflakes
 ContentBarAware, Repository, Section, SideBarAware
-SideBar_View, Website_BarAware, HomePage_BarAware, MapBox
+SideBar_View, MapBox, Website_BarAware

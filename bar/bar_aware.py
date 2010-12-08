@@ -17,12 +17,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import form itools
+from itools.core import thingy_property
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from itws
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
 from itws.views import AdvanceGoToSpecificDocument
+from itws.feed_views import views_registry
 
 
 
@@ -36,23 +39,36 @@ class SideBarAware(object):
     class_schema = {}
 
     sidebar_name = 'order-sidebar'
+    repository = None
+
     __fixed_handlers__ = [sidebar_name]
 
-    order_sidebar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document=sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-
-    new_sidebar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-
-
     def init_resource(self, **kw):
-        self.make_resource(self.sidebar_name, SidebarBoxesOrderedTable)
+        if self.repository:
+            path = '%s/%s' % (self.repository, self.sidebar_name)
+        else:
+            path = self.sidebar_name
+        self.make_resource(path, SidebarBoxesOrderedTable)
+
+
+    @thingy_property
+    def order_sidebar(self):
+        specific_document = '%s/%s' % (self.repository, self.sidebar_name)
+        return AdvanceGoToSpecificDocument(
+            access='is_allowed_to_edit',
+            keep_query=True,
+            specific_document=specific_document,
+            title=MSG(u'Order Sidebar Boxes'))
+
+
+    @thingy_property
+    def new_sidebar_resource(self):
+        specific_document = '%s/%s/;add_box' % (self.repository, self.sidebar_name)
+        return AdvanceGoToSpecificDocument(
+            access='is_allowed_to_edit',
+            keep_query=True,
+            specific_document=specific_document,
+            title=MSG(u'Add sidebar box'))
 
 
 
@@ -60,27 +76,23 @@ class ContentBarAware(object):
 
     class_version = '20100622'
     class_views = ['order_contentbar']
-    contentbar_name = 'order-contentbar'
-    __fixed_handlers__ = [contentbar_name]
 
-    order_contentbar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document=contentbar_name,
-        title=MSG(u'Order Central Part Boxes'))
-    new_contentbar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % contentbar_name,
-        title=MSG(u'Order Central Part Boxes'))
+    contentbar_name = 'order-contentbar'
+    repository = None
+
+    __fixed_handlers__ = [contentbar_name]
 
     # Contentbar items
     # (name, cls, ordered)
     contentbar_items = []
 
     def init_resource(self, **kw):
-        self.make_resource(self.contentbar_name, ContentbarBoxesOrderedTable)
-
+        if self.repository:
+            path = '%s/%s' % (self.repository, self.contentbar_name)
+        else:
+            path = self.contentbar_name
+        self.make_resource(path, ContentbarBoxesOrderedTable)
+        # XXX
         ## Preorder specific contentbar items
         #root = get_context().root
         #table_name = cls.contentbar_name
@@ -94,3 +106,36 @@ class ContentBarAware(object):
         #                        state=state)
         #    if ordered:
         #        table.add_new_record({'name': name2})
+
+
+    @thingy_property
+    def view(self):
+        """ The main view is customizable
+        """
+        context = get_context()
+        resource = context.resource
+        if not isinstance(resource, ContentBarAware):
+            return None
+        name = resource.get_property('view')
+        view = views_registry[name]
+        return view(access=True)
+
+
+    @thingy_property
+    def order_contentbar(self):
+        specific_document = '%s/%s' % (self.repository, self.contentbar_name)
+        return AdvanceGoToSpecificDocument(
+            access='is_allowed_to_edit',
+            keep_query=True,
+            specific_document=specific_document,
+            title=MSG(u'Order Central Part Boxes'))
+
+
+    @thingy_property
+    def new_contentbar_resource(self):
+        specific_document = '%s/%s/;add_box' % (self.repository, self.contentbar_name)
+        return AdvanceGoToSpecificDocument(
+            access='is_allowed_to_edit',
+            keep_query=True,
+            specific_document=specific_document,
+            title=MSG(u'Order Central Part Boxes'))

@@ -73,7 +73,6 @@ class Bar_View(STLView):
     order_method = None
     order_label = None
     admin_bar_prefix_name = None
-    repository = '.'
     boxes_css_class = None
     box_view = BarBox_View
     container_cls = None
@@ -88,7 +87,7 @@ class Bar_View(STLView):
         buttons = []
         section_path = context.get_link(resource)
         # Order table empty ?
-        order_path = self.get_order_path()
+        order_path = self.get_order_path(resource)
         order_table = resource.get_resource(order_path)
         if len(list(order_table.handler.get_record_ids())):
             buttons.append(
@@ -100,8 +99,12 @@ class Bar_View(STLView):
 
         return buttons
 
-    def get_order_path(self):
-        return '%s/%s' % (self.repository, self.order_name)
+
+    def get_order_path(self, resource):
+        if resource.repository is None:
+            return self.order_name
+        return '%s/%s' % (resource.repository, self.order_name)
+
 
     def is_empty(self, resource, context):
         ac = resource.get_access_control()
@@ -122,7 +125,7 @@ class Bar_View(STLView):
 
 
     def _get_items(self, resource, context, check_acl=True):
-        order_path = self.get_order_path()
+        order_path = self.get_order_path(resource)
         order = resource.get_resource(order_path)
         orderfile = order.handler
         user = context.user
@@ -131,7 +134,7 @@ class Bar_View(STLView):
 
         for record in order:
             name = orderfile.get_record_value(record, 'name')
-            item = repository.get_resource(name, soft=True)
+            item = repository.get_resource(name)
             if item is None:
                 path = resource.get_abspath()
                 warn('%s > bar item not found: %s' % (path, name))
@@ -261,48 +264,3 @@ class SideBar_View(Bar_View):
                         'rel': None,
                         'target': None}]
         return buttons
-
-
-
-class ContentBar_View(Bar_View):
-
-    id = 'contentbar-items'
-    order_name = 'order-contentbar'
-    order_method = 'order_contentbar'
-    order_label = MSG(u'Order Central Part Boxes')
-    admin_bar_prefix_name = 'contentbar-box'
-    boxes_css_class = 'contentbar-box'
-
-
-    @property
-    def container_cls(self):
-        from bar_aware import ContentBarAware
-        return ContentBarAware
-
-
-    def get_manage_buttons(self, resource, context):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = Bar_View.get_manage_buttons(self, resource, context)
-        section_path = context.get_link(resource)
-        buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
-                        'icon': '/ui/common/icons/16x16/new.png',
-                        'rel': 'fancybox',
-                        'label': MSG(u'Add Central Part Box'),
-                        'target': None})
-
-        return buttons
-
-
-    def _get_repository(self, resource, context):
-        return resource.get_site_root().get_repository()
-
-
-    def _get_item_id(self, item, context):
-        return '%s-%s-%s' % (item.class_id, context._bar_aware.name, item.name)
-
-
-

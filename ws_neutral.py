@@ -46,11 +46,11 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from OPML import RssFeeds
 from about import AboutITWS
-from bar import HTMLContent, Website_BarAware, HomePage_BarAware, Section
+from bar import HTMLContent, Website_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
 from control_panel import ITWS_ControlPanel, CP_AdvanceNewResource
-from feed_views import Search_View
+from feed_views import Search_View, FeedViews_Enumerate
 from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -67,7 +67,7 @@ from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
 # Neutral Web Site
 ############################################################
 
-class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
+class NeutralWS(Website_BarAware, WebSite):
     """
     A neutral website is a website...
     [1] Which allow to:
@@ -83,7 +83,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
        - A 404 webpage
        - A folder with images
     [3] Which is Website_BarAware (Contains a repository of boxes)
-    [4] With homepage that show 2 bars (HomePage_BarAware)
     """
 
     class_id = 'neutral'
@@ -92,19 +91,18 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
     class_views = ['view', 'edit', 'manage_content',
                    'add_content', 'control_panel']
     class_schema = merge_dicts(WebSite.class_schema,
-                              breadcrumb_title=Multilingual(source='metadata'))
+                              breadcrumb_title=Multilingual(source='metadata'),
+                              view=FeedViews_Enumerate(source='metadata', default='composite-view'))
 
 
     class_control_panel = (WebSite.class_control_panel +
                           Website_BarAware.class_control_panel +
-                          HomePage_BarAware.class_control_panel +
                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
                            'edit_404', 'edit_robots_txt', 'commit_log',
                            'advance_new_resource', 'fo_switch_mode'])
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__ +
                           Website_BarAware.__fixed_handlers__ +
-                          HomePage_BarAware.__fixed_handlers__ +
                           ['about-itws', 'news', 'sitemap.xml', 'robots.txt',
                            'images', 'tags'])
 
@@ -125,10 +123,8 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
         default_language = 'en'
         # Initialize ikaaro website (Parent class)
         WebSite.init_resource(self, **kw)
-        # The website is BarAware
+        # Init bars
         Website_BarAware.init_resource(self, **kw)
-        # The homepage is BarAware
-        HomePage_BarAware.init_resource(self, **kw)
         # Add a sitemap
         self.make_resource('sitemap.xml', self.sitemap_class)
         # Create Robots.txt
@@ -179,11 +175,6 @@ class NeutralWS(Website_BarAware, HomePage_BarAware, WebSite):
                   language=default_language)
         table = ws_data.get_resource('order-sidebar')
         table.add_new_record({'name': 'first-sidebar'})
-
-
-    @classmethod
-    def get_orderable_classes(cls):
-        return (cls, Section)
 
 
     @property

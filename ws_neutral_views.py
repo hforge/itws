@@ -22,12 +22,13 @@ from itools.database import PhraseQuery
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import TextWidget
+from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from bar import Section
+from feed_views import FeedViews_Enumerate
 from rss import BaseRSS
 from tags import TagsAware
 
@@ -89,9 +90,11 @@ class NeutralWS_Edit(DBResource_Edit):
 
     def _get_widgets(self, resource, context):
         return DBResource_Edit._get_widgets(self, resource, context) + [
-            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title'))]
+            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')),
+            SelectWidget('view', title=MSG(u'View'), has_empty_option=False)]
 
 
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           breadcrumb_title=Multilingual)
+                           breadcrumb_title=Multilingual,
+                           view=FeedViews_Enumerate)

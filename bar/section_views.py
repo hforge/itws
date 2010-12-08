@@ -31,8 +31,8 @@ from ikaaro.resource_views import DBResource_Edit
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base_views import ContentBar_View
 from bar_aware_views import EasyNewInstance_WithOrderer
+from base_views import Bar_View
 from itws.tags.tags_views import TagsAware_Edit
 from itws.views import BaseManageContent
 from itws.webpage import WebPage
@@ -43,7 +43,7 @@ from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
 ###########################################################################
 # Section view
 ###########################################################################
-class Section_ContentBar_View(ContentBar_View, Feed_View):
+class Section_ContentBar_View(Bar_View, Feed_View):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
@@ -54,8 +54,45 @@ class Section_ContentBar_View(ContentBar_View, Feed_View):
     order_name = 'order-contentbar'
     repository = '.'
 
+    id = 'contentbar-items'
+    order_name = 'order-contentbar'
+    order_method = 'order_contentbar'
+    order_label = MSG(u'Order Central Part Boxes')
+    admin_bar_prefix_name = 'contentbar-box'
+    boxes_css_class = 'contentbar-box'
+
+
+    @property
+    def container_cls(self):
+        from bar_aware import ContentBarAware
+        return ContentBarAware
+
+
+    def get_manage_buttons(self, resource, context):
+        ac = resource.get_access_control()
+        allowed = ac.is_allowed_to_edit(context.user, resource)
+        if not allowed:
+            return []
+
+        buttons = Bar_View.get_manage_buttons(self, resource, context)
+        section_path = context.get_link(resource)
+        buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
+                        'icon': '/ui/common/icons/16x16/new.png',
+                        'rel': 'fancybox',
+                        'label': MSG(u'Add Central Part Box'),
+                        'target': None})
+
+        return buttons
+
+
+    def _get_item_id(self, item, context):
+        return '%s-%s-%s' % (item.class_id, context._bar_aware.name, item.name)
+
+
     def _get_repository(self, resource, context):
-        return resource.get_resource(self.repository)
+        if resource.repository:
+            return resource.get_resource(resource.repository)
+        return resource
 
 
 class Section_Edit(DBResource_Edit, TagsAware_Edit):

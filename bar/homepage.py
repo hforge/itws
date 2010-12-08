@@ -27,11 +27,9 @@ from ikaaro.folder import Folder
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
 from section_views import Section_AddContent, Section_ManageContent
-from section_views import Section_ContentBar_View
-from itws.views import AdvanceGoToSpecificDocument
 
 
-class WSDataFolder(SideBarAware, ContentBarAware, Folder):
+class WSDataFolder(Folder):
 
     class_id = 'neutral-ws-data'
     class_version = '20101012'
@@ -41,75 +39,10 @@ class WSDataFolder(SideBarAware, ContentBarAware, Folder):
 
 
     __fixed_handlers__ = [SideBarAware.sidebar_name,
-                          'order-resources', # FIXME
                           ContentBarAware.contentbar_name]
-
-
-    def init_resource(self, **kw):
-        # Initialize ikaaro website (Parent class)
-        Folder.init_resource(self, **kw)
-        # Sidebar Aware
-        SideBarAware.init_resource(self, **kw)
-        # ContentBar Aware
-        ContentBarAware.init_resource(self, **kw)
-
 
     def get_document_types(self):
         return [File, Folder]
-
-
-    def get_ordered_names(self, context=None):
-        return self.parent.get_ordered_names(context)
-
-
-
-
-class HomePage_BarAware(object):
-    """
-    All websites that contains homePage_BarAware
-    contains a folder 'ws-data' that allow to sort
-    sidebar and contenbar of homepage
-    """
-
-    __fixed_handlers__ = ['ws-data']
-    class_control_panel = []
-
-    sidebar_name = 'ws-data/%s' % SideBarAware.sidebar_name
-    contentbar_name = 'ws-data/%s' % ContentBarAware.contentbar_name
-
-    ####################################
-    ## Views
-    ####################################
-
-    # Sidebar views
-    order_contentbar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        specific_document=contentbar_name,
-        keep_query=True,
-        title=MSG(u'Order Central Part Boxes'))
-    order_sidebar = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        specific_document=sidebar_name,
-        keep_query=True,
-        title=MSG(u'Order Sidebar Boxes'))
-
-    # New sidebar/contenbar resource
-    new_sidebar_resource = AdvanceGoToSpecificDocument(
-        access='is_allowed_to_edit',
-        keep_query=True,
-        specific_document='%s/;add_box' % sidebar_name,
-        title=MSG(u'Order Sidebar Boxes'))
-    new_contentbar_resource = AdvanceGoToSpecificDocument(
-            access='is_allowed_to_edit',
-            keep_query=True,
-            specific_document='%s/;add_box' % contentbar_name,
-            title=MSG(u'Add Central Part Box'))
-
-
-    def init_resource(self, **kw):
-        self.make_resource('ws-data', self.wsdatafolder_class)
-
-
 
 
 class NeutralWS_AddContent(Section_AddContent):
@@ -131,22 +64,28 @@ class NeutralWS_AddContent(Section_AddContent):
 
 
 
-
-class Website_BarAware(object):
+class Website_BarAware(ContentBarAware, SideBarAware):
     """
-    A website is Website_BarAware so it contain's a repository
+    All websites that contains homePage_BarAware
+    contains a folder 'ws-data' that allow to sort
+    sidebar and contenbar of homepage
     """
 
+    __fixed_handlers__ = ['ws-data', 'repository']
     class_control_panel = []
-    __fixed_handlers__ = ['repository']
+    repository = 'ws-data'
 
-    wsdatafolder_class = WSDataFolder
 
     def init_resource(self, **kw):
-        # Create repository
+        self.make_resource('ws-data', WSDataFolder)
         self.make_resource('repository', Repository)
+        # Sidebar Aware
+        SideBarAware.init_resource(self, **kw)
+        # ContentBar Aware
+        ContentBarAware.init_resource(self, **kw)
 
-
-    view = Section_ContentBar_View(repository='ws-data')
+    ####################################
+    ## Views
+    ####################################
     add_content = NeutralWS_AddContent()
     manage_content = Section_ManageContent()
