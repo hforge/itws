@@ -25,18 +25,15 @@ from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
 from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
-# XXX API public
-from itws.tags import TagsList
-from itws.tags.datatypes import TagsAwareClassEnumerate
-from itws.feed_views import Feed_View
+from itws.tags import TagsList, TagsAwareClassEnumerate
+from itws.feed_views import FeedViews_Enumerate
 from itws.tags.utils import get_tagaware_items
 from itws.widgets import DualSelectWidget
 
 
+# XXX We have to refactor BoxFeed_View
+from itws.feed_views import Feed_View, Details_View
 
-
-from itws.feed_views import Details_View
-from itws.feed_views import FeedViews_Enumerate
 class BoxFeed_View(Box_View, Details_View):
 
     access = 'is_allowed_to_edit'
@@ -49,8 +46,6 @@ class BoxFeed_View(Box_View, Details_View):
     batch_template = None
 
 #    def get_template_viewbox(self, resource, context):
-#        # XXX To fix
-#        # XXX move on same folder
 #        template = resource.get_property('view')
 #        if template == '1':
 #            return '/ui/feed_views/NewsItem_preview.xml'
