@@ -84,6 +84,8 @@ class Repository_BrowseContent(Folder_BrowseContent):
 
 class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
+    title = MSG(u'Order boxes')
+
     columns = [('checkbox', None),
                ('title', MSG(u'Title'), False)]
 
@@ -104,6 +106,8 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
 
 class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
+
+    title = MSG(u'Add a box')
 
     query_schema = merge_dicts(ResourcesOrderedTable_Ordered.query_schema,
                                batch_size=Integer(default=0),

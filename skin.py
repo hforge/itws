@@ -459,7 +459,7 @@ class AdminPopupSkin(BaseSkin):
 
     def build_namespace(self, context):
         return merge_dicts(BaseSkin.build_namespace(self, context),
-                  title=context.resource.class_title,
+                  title=context.view.get_title(context),
                   description=context.resource.class_description,
                   context_menus=list(self._get_context_menus(context)))
 
