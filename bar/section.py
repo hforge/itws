@@ -39,7 +39,6 @@ from bar_aware import SideBarAware, ContentBarAware
 from section_views import Section_ManageContent
 from section_views import Section_Edit
 from section_views import Section_AddContent
-from toc import ContentBoxSectionChildrenToc
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
@@ -111,10 +110,6 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     # Order Webpage/Section
     order_path = 'order-section'
     order_class = SectionOrderedTable
-
-    # Contentbar items
-    # (name, cls, ordered)
-    contentbar_items = [('children-toc', ContentBoxSectionChildrenToc, True)]
 
 
     def init_resource(self, **kw):

@@ -99,9 +99,6 @@ class ContentBarAware(object):
 
     __fixed_handlers__ = [contentbar_name]
 
-    # Contentbar items
-    # (name, cls, ordered)
-    contentbar_items = []
 
     def init_resource(self, **kw):
         if self.repository:
@@ -109,20 +106,7 @@ class ContentBarAware(object):
         else:
             path = self.contentbar_name
         self.make_resource(path, ContentbarBoxesOrderedTable)
-        # XXX
-        ## Preorder specific contentbar items
-        #root = get_context().root
-        #table_name = cls.contentbar_name
-        #table = root.get_resource('%s/%s/%s' % (folder.key, name, table_name))
-        ## FIXME state should be customizable
-        #state = 'public'
 
-        #for item in cls.contentbar_items:
-        #    name2, cls2, ordered = item
-        #    cls2._make_resource(cls2, folder, '%s/%s' % (name, name2),
-        #                        state=state)
-        #    if ordered:
-        #        table.add_new_record({'name': name2})
 
     def get_content_folder(self):
         if self.repository:
