@@ -46,7 +46,6 @@ except ImportError:
 
 # Import from itws
 from bar import SideBarAware, SideBar_View
-from bar.homepage import NeutralWS_View
 from webpage_views import WebPage_View
 from bar.repository import SidebarBoxesOrderedTable
 from news import NewsItem
@@ -98,7 +97,7 @@ class Skin(BaseSkin):
                                               'credits', 'license']
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-    allowed_views_for_sidebar_view = (NeutralWS_View, Feed_View,
+    allowed_views_for_sidebar_view = (Feed_View,
         NewsFolder_View, NewsItem_View, WebPage_View, ContactForm,
         TagsFolder_TagCloud)
 

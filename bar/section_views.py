@@ -52,10 +52,10 @@ class Section_ContentBar_View(ContentBar_View, Feed_View):
     view_title = MSG(u'Composite view')
 
     order_name = 'order-contentbar'
+    repository = '.'
 
     def _get_repository(self, resource, context):
-        # current section
-        return resource
+        return resource.get_resource(self.repository)
 
 
 class Section_Edit(DBResource_Edit, TagsAware_Edit):

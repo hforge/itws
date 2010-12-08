@@ -73,6 +73,7 @@ class Bar_View(STLView):
     order_method = None
     order_label = None
     admin_bar_prefix_name = None
+    repository = '.'
     boxes_css_class = None
     box_view = BarBox_View
     container_cls = None
@@ -87,7 +88,8 @@ class Bar_View(STLView):
         buttons = []
         section_path = context.get_link(resource)
         # Order table empty ?
-        order_table = resource.get_resource(self.order_name)
+        order_path = self.get_order_path()
+        order_table = resource.get_resource(order_path)
         if len(list(order_table.handler.get_record_ids())):
             buttons.append(
                     {'path': '%s/;%s' % (section_path, self.order_method),
@@ -98,6 +100,8 @@ class Bar_View(STLView):
 
         return buttons
 
+    def get_order_path(self):
+        return '%s/%s' % (self.repository, self.order_name)
 
     def is_empty(self, resource, context):
         ac = resource.get_access_control()
@@ -118,26 +122,26 @@ class Bar_View(STLView):
 
 
     def _get_items(self, resource, context, check_acl=True):
-        order = resource.get_resource(self.order_name, soft=True)
-        if order:
-            orderfile = order.handler
-            user = context.user
-            repository = self._get_repository(resource, context)
-            order = orderfile.get_records_in_order()
+        order_path = self.get_order_path()
+        order = resource.get_resource(order_path)
+        orderfile = order.handler
+        user = context.user
+        repository = self._get_repository(resource, context)
+        order = orderfile.get_records_in_order()
 
-            for record in order:
-                name = orderfile.get_record_value(record, 'name')
-                item = repository.get_resource(name, soft=True)
-                if item is None:
-                    path = resource.get_abspath()
-                    warn('%s > bar item not found: %s' % (path, name))
+        for record in order:
+            name = orderfile.get_record_value(record, 'name')
+            item = repository.get_resource(name, soft=True)
+            if item is None:
+                path = resource.get_abspath()
+                warn('%s > bar item not found: %s' % (path, name))
+                continue
+            if check_acl:
+                ac = item.get_access_control()
+                if ac.is_allowed_to_view(user, item) is False:
                     continue
-                if check_acl:
-                    ac = item.get_access_control()
-                    if ac.is_allowed_to_view(user, item) is False:
-                        continue
 
-                yield item
+            yield item
 
 
     def get_items(self, resource, context):

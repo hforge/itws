@@ -18,17 +18,16 @@
 # Import from itools
 from itools.csv import Property
 from itools.gettext import MSG
-from itools.web import STLView
 
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
 
 # Import from itws
-from base_views import ContentBar_View, SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
 from section_views import Section_AddContent, Section_ManageContent
+from section_views import Section_ContentBar_View
 from itws.views import AdvanceGoToSpecificDocument
 
 
@@ -112,14 +111,6 @@ class HomePage_BarAware(object):
 
 
 
-class NeutralWS_ContentBar_View(ContentBar_View):
-
-    order_name = 'ws-data/order-contentbar'
-
-    def _get_repository(self, resource, context):
-        return resource.get_resource('ws-data')
-
-
 
 class NeutralWS_AddContent(Section_AddContent):
 
@@ -140,33 +131,6 @@ class NeutralWS_AddContent(Section_AddContent):
 
 
 
-class NeutralWS_View(STLView):
-
-    access = 'is_allowed_to_view'
-    title = MSG(u'View')
-    template = '/ui/common/Neutral_view.xml'
-
-    subviews = {'contentbar_view': NeutralWS_ContentBar_View(),
-                'sidebar_view': SideBar_View(order_name='ws-data/order-sidebar')}
-
-    def get_subviews_value(self, resource, context, view_name):
-        view = self.subviews.get(view_name)
-        if view is None:
-            return None
-        return view.GET(resource, context)
-
-
-    def get_namespace(self, resource, context):
-        namespace = {}
-
-        # Subviews
-        for view_name in self.subviews.keys():
-            namespace[view_name] = self.get_subviews_value(resource,
-                                                           context, view_name)
-
-        return namespace
-
-
 
 class Website_BarAware(object):
     """
@@ -183,6 +147,6 @@ class Website_BarAware(object):
         self.make_resource('repository', Repository)
 
 
-    view = NeutralWS_View()
+    view = Section_ContentBar_View(repository='ws-data')
     add_content = NeutralWS_AddContent()
     manage_content = Section_ManageContent()
