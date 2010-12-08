@@ -180,7 +180,8 @@ class Old_Tracker(Tracker):
         for issue in self.search_resources(cls=Old_Issue):
             metadata = issue.metadata
             metadata.format = issue_class.class_id
-            metadata.version = issue_class.class_version
+            # There is an update in ikaaro to fix issue between 0.61 and 0.62
+            metadata.version = '20100506'
             metadata.set_changed()
 
 
