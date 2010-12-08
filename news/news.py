@@ -211,14 +211,11 @@ class NewsFolder(SideBarAware, Folder):
 
 
     def init_resource(self, **kw):
-        SideBarAware.init_resource(self, **kw)
         Folder.init_resource(self, **kw)
+        # Sidebar
+        SideBarAware.init_resource(self, **kw)
         # Create images folder
         self.make_resource('images', Folder)
-        # Preorder items
-        # XXX add items
-        repository = self.get_site_root().get_repository()
-        sidebar_table = self.get_resource(self.sidebar_name)
 
 
     def get_document_types(self):
