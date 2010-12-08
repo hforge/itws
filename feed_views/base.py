@@ -178,7 +178,7 @@ class Feed_View(Folder_BrowseContent):
                 thumbnail = item_resource.get_preview_thumbnail()
                 if thumbnail:
                     return context.get_link(thumbnail)
-            elif isinstance(resource, Image):
+            elif isinstance(item_resource, Image):
                 return context.get_link(item_resource)
             return None
         elif column == 'tags':
