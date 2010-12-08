@@ -78,7 +78,3 @@ class Title_View(Feed_View):
     view_name = 'view_title-view'
     view_title = MSG(u'Title view')
     content_template = '/ui/feed_views/NewsItem_preview.xml'
-
-
-# XXX remove DetailsWithoutPicture_View
-# XXX remove  Title_View
