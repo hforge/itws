@@ -34,10 +34,9 @@ def get_tagaware_query_terms(context, on_current_folder=False,
     abspath = site_root.get_abspath()
     query.append(get_base_path_query(str(abspath)))
 
-    # XXX
-    #if on_current_folder is True:
-    #    abspath = self.get_canonical_path()
-    #    query.append(PhraseQuery('parent_path', str(abspath)))
+    if on_current_folder is True:
+        abspath = context.resource.get_canonical_path()
+        query.append(PhraseQuery('parent_path', str(abspath)))
     if formats:
         q = [PhraseQuery('format', x) for x in formats]
         if len(q) > 1:
