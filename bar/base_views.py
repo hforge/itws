@@ -256,7 +256,6 @@ class SideBar_View(Bar_View):
                             'rel': 'fancybox',
                             'target': None})
         else:
-            # XXX What text and what icon ?
             section_path = context.get_link(resource)
             buttons = [{'path': section_path,
                         'icon': '/ui/icons/16x16/search.png',
