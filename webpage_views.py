@@ -49,7 +49,7 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         # Tags
         widgets.extend(TagsAware_Edit._get_widgets(self, resource, context))
 
-        # XXX Hook RTEWidget
+        # TODO: Add a mechanism in ikaaro that allow to configure RTE
         new_widgets = []
         for w in widgets:
             if issubclass(w, RTEWidget):

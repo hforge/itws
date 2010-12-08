@@ -81,8 +81,6 @@ class Theme(BaseTheme):
                                   parameters_schema={'lang': String}),
          class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
 
-    # XXX Migration
-    # Add an API in ikaaro that allow to easily change CSS...
 
     def init_resource(self, **kw):
         # Init resource
@@ -104,6 +102,7 @@ class Theme(BaseTheme):
             banner_title = website.get_title()
         self.set_property('banner_title', banner_title, language=language)
         # CSS file
+        # TODO Add an API in ikaaro that allow to easily change CSS...
         path = get_abspath('ui/themes/style.css')
         body = open(path).read()
         style = self.get_resource('style')

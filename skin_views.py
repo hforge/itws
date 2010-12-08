@@ -41,7 +41,7 @@ class LocationTemplate(BaseLocationTemplate):
     # tabs comfiguration
     tabs_hidden_roles = None
     tabs_hide_if_only_one_item = True
-    display = True # XXX When do not display ?
+    display = True
 
 
     def get_breadcrumb_short_name(self, resource):

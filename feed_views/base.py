@@ -27,6 +27,8 @@ from ikaaro.utils import get_base_path_query
 ###########################################
 # See bug:
 # http://bugs.hforge.org/show_bug.cgi?id=1100
+# Add in ikaaro:
+#   > self.search_on_current_folder
 ###########################################
 
 class Feed_View(Folder_BrowseContent):
@@ -66,7 +68,6 @@ class Feed_View(Folder_BrowseContent):
         return self.content_template
 
 
-    # XXX to do in ikaaro
     def get_items(self, resource, context, *args):
         """ Same that Folder_BrowseContent but we allow to
             define var 'search_on_current_folder'"""
@@ -186,9 +187,7 @@ class Feed_View(Folder_BrowseContent):
                 return item_resource.get_tags_namespace(context)
             return []
         elif column == 'css':
-            # XXX performances (Use Lazy ?)
-            current_path = resource.get_abspath()
-            if item_resource.get_abspath() == current_path:
+            if item_brain.abspath == resource.abspath:
                 return 'active'
             return None
         return Folder_BrowseContent.get_item_value(self, resource, context,

@@ -131,7 +131,7 @@ class SiteMapView(BaseView):
             path_to_brain_resource = r_abspath.get_pathto(path_reference)
             return context.uri.resolve('/%s' % path_to_brain_resource)
         elif column == 'lastmod':
-            # XXX Find a solution for aggregators of views/contents
+            # TODO Find a solution for aggregators of views/contents
             # (Aggregators of news/tags/webpages)
             return brain.mtime.strftime('%Y-%m-%d')
 
