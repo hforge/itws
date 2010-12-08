@@ -53,7 +53,10 @@ class SideBarAware(object):
 
     @thingy_property
     def order_sidebar(self):
-        specific_document = '%s/%s' % (self.repository, self.sidebar_name)
+        if self.repository:
+            specific_document = '%s/%s' % (self.repository, self.sidebar_name)
+        else:
+            specific_document = self.sidebar_name
         return AdvanceGoToSpecificDocument(
             access='is_allowed_to_edit',
             keep_query=True,
@@ -63,12 +66,26 @@ class SideBarAware(object):
 
     @thingy_property
     def new_sidebar_resource(self):
-        specific_document = '%s/%s/;add_box' % (self.repository, self.sidebar_name)
+        if self.repository:
+            specific_document = '%s/%s/;add_box' % (self.repository, self.sidebar_name)
+        else:
+            specific_document = './%s/;add_box' % self.sidebar_name
         return AdvanceGoToSpecificDocument(
             access='is_allowed_to_edit',
             keep_query=True,
             specific_document=specific_document,
             title=MSG(u'Add sidebar box'))
+
+
+    def get_content_folder(self):
+        if self.repository:
+            return self.get_resource(self.repository)
+        return self
+
+
+    def get_order_table_sidebar(self):
+        content_folder = self.get_content_folder()
+        return content_folder.get_resource(self.sidebar_name)
 
 
 
@@ -107,6 +124,16 @@ class ContentBarAware(object):
         #    if ordered:
         #        table.add_new_record({'name': name2})
 
+    def get_content_folder(self):
+        if self.repository:
+            return self.get_resource(self.repository)
+        return self
+
+
+    def get_order_table_contentbar(self):
+        content_folder = self.get_content_folder()
+        return content_folder.get_resource(self.contentbar_name)
+
 
     @thingy_property
     def view(self):
@@ -123,7 +150,10 @@ class ContentBarAware(object):
 
     @thingy_property
     def order_contentbar(self):
-        specific_document = '%s/%s' % (self.repository, self.contentbar_name)
+        if self.repository:
+            specific_document = '%s/%s' % (self.repository, self.contentbar_name)
+        else:
+            specific_document = self.contentbar_name
         return AdvanceGoToSpecificDocument(
             access='is_allowed_to_edit',
             keep_query=True,
@@ -133,7 +163,10 @@ class ContentBarAware(object):
 
     @thingy_property
     def new_contentbar_resource(self):
-        specific_document = '%s/%s/;add_box' % (self.repository, self.contentbar_name)
+        if self.repository:
+            specific_document = '%s/%s/;add_box' % (self.repository, self.contentbar_name)
+        else:
+            specific_document ='./%s/;add_box' % self.contentbar_name
         return AdvanceGoToSpecificDocument(
             access='is_allowed_to_edit',
             keep_query=True,

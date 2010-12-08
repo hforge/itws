@@ -129,19 +129,21 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
 class SideBarBox_NewInstance(EasyNewInstance_WithOrderer):
 
 
+    def get_sidebaraware_resource(self, resource):
+        from bar_aware import SideBarAware
+        while not isinstance(resource, SideBarAware):
+            resource = resource.parent
+        return resource
+
+
     def _get_container(self, resource, context):
         site_root = resource.get_site_root()
         return site_root.get_repository()
 
 
     def _get_order_table(self, resource, context):
-        if resource.parent.name == 'ws-data':
-            bar_aware_resource = resource.parent.parent
-        else:
-            bar_aware_resource = resource.parent
-        bar_name = bar_aware_resource.sidebar_name
-        order_table = bar_aware_resource.get_resource(bar_name)
-        return order_table
+        sidebaraware_resource = self.get_sidebaraware_resource(resource)
+        return sidebaraware_resource.get_order_table_sidebar()
 
 
     def get_aware_document_types(self, resource, context):
@@ -155,20 +157,20 @@ class SideBarBox_NewInstance(EasyNewInstance_WithOrderer):
 
 class ContentBarBox_NewInstance(EasyNewInstance_WithOrderer):
 
+    def get_contentbaraware_resource(self, resource):
+        from bar_aware import ContentBarAware
+        while not isinstance(resource, ContentBarAware):
+            resource = resource.parent
+        return resource
+
+
     def _get_container(self, resource, context):
-        if resource.name == 'ws-data':
-            return resource
         return resource.parent
 
 
     def _get_order_table(self, resource, context):
-        if resource.parent.name == 'ws-data':
-            bar_aware_resource = resource.parent.parent
-        else:
-            bar_aware_resource = resource.parent
-        bar_name = bar_aware_resource.contentbar_name
-        order_table = bar_aware_resource.get_resource(bar_name)
-        return order_table
+        contentbaraware_resource = self.get_contentbaraware_resource(resource)
+        return contentbaraware_resource.get_order_table_contentbar()
 
 
     def get_aware_document_types(self, resource, context):
