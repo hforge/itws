@@ -38,15 +38,6 @@ class MyAuthorized_Classid(Enumerate):
     @classmethod
     def get_options(cls):
         options = []
-        # XXX migration (Use a beautiful widget to show classid)
-        #selected = context.get_form_value('class_id')
-        #items = [
-        #    {'title': cls.class_title,
-        #     'description': cls.class_description,
-        #     'class_id': cls.class_id,
-        #     'selected': cls.class_id == selected,
-        #     'icon': '/ui/' + cls.class_icon16}
-        #    for cls in self.get_aware_document_types(resource, context) ]
         for cls in cls.view.get_aware_document_types(cls.resource, cls.context):
             options.append({'name': cls.class_id,
                             'value': cls.class_title})
