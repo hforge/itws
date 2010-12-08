@@ -29,14 +29,11 @@ from itools.gettext import register_domain
 from ikaaro.skins import register_skin
 from ikaaro.user import User
 
-# XXX news must be imported before bar
-# to avoid ImportError
-import news
-
-import OPML
 import about
 import bar
+import news
 import feed_views
+import OPML
 import sitemap
 import skin
 import theme
