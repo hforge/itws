@@ -20,7 +20,7 @@ from copy import deepcopy
 
 # Import from itools
 from itools.csv import Property
-from itools.datatypes import String, Unicode, XMLContent
+from itools.datatypes import URI, String, Unicode, XMLContent
 from itools.xml import XMLParser
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
@@ -52,6 +52,8 @@ from itws.views import AutomaticEditView, EditOnlyLanguageMenu
 # Views
 ###########################################################################
 class DiaporamaTable_View(OrderedTable_View):
+
+    search_template = None
 
     def get_item_value(self, resource, context, item, column):
         if column == 'img_path':
@@ -194,7 +196,7 @@ class DiaporamaTableFile(OrderedTableFile):
         'title': Unicode(multilingual=True),
         'description': Unicode(multilingual=True),
         'img_path': ImagePathDataType(multilingual=True, mandatory=True),
-        'img_link': String, # XXX
+        'img_link': URI,
         'target': Target(mandatory=True, default='_top')}
 
 
