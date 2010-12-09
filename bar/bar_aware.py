@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import form itools
-from itools.core import thingy_property
+from itools.core import lazy
 from itools.gettext import MSG
 from itools.web import get_context
 
@@ -51,7 +51,7 @@ class SideBarAware(object):
         self.make_resource(path, SidebarBoxesOrderedTable)
 
 
-    @thingy_property
+    @lazy
     def order_sidebar(self):
         if self.repository:
             specific_document = '%s/%s' % (self.repository, self.sidebar_name)
@@ -64,7 +64,7 @@ class SideBarAware(object):
             title=MSG(u'Order Sidebar Boxes'))
 
 
-    @thingy_property
+    @lazy
     def new_sidebar_resource(self):
         if self.repository:
             specific_document = '%s/%s/;add_box' % (self.repository,
@@ -120,7 +120,7 @@ class ContentBarAware(object):
         return content_folder.get_resource(self.contentbar_name)
 
 
-    @thingy_property
+    @lazy
     def view(self):
         """ The main view is customizable
         """
@@ -133,7 +133,7 @@ class ContentBarAware(object):
         return view(access=True)
 
 
-    @thingy_property
+    @lazy
     def order_contentbar(self):
         if self.repository:
             specific_document = '%s/%s' % (self.repository,
@@ -147,7 +147,7 @@ class ContentBarAware(object):
             title=MSG(u'Order Central Part Boxes'))
 
 
-    @thingy_property
+    @lazy
     def new_contentbar_resource(self):
         if self.repository:
             specific_document = '%s/%s/;add_box' % (self.repository,
