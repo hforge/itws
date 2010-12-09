@@ -119,7 +119,8 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
 
     def get_items_query(self, resource, context):
-        query = ResourcesOrderedTable_Unordered.get_items_query(self, resource, context)
+        proxy = super(BoxesOrderedTable_Unordered, self)
+        query = proxy.get_items_query(resource, context)
         # Add format filter
         format = context.query['format']
         if format:
@@ -129,8 +130,8 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
 
 
     def get_table_columns(self, resource, context):
-        columns = ResourcesOrderedTable_Unordered.get_table_columns(self, resource,
-                                                                context)
+        proxy = super(BoxesOrderedTable_Unordered, self)
+        columns = proxy.get_table_columns(resource, context)
 
         columns = list(columns) # create a new list
         column = ('format', MSG(u'Type'), False)

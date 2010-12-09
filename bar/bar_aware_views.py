@@ -69,7 +69,8 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
     def get_schema(self, resource, context):
         return merge_dicts(EasyNewInstance.get_schema(self, resource, context),
                            class_id=MyAuthorized_Classid(view=self,
-                               resource=resource, context=context, mandatory=True),
+                               resource=resource, context=context,
+                               mandatory=True),
                            order=OrderBoxEnumerate(default='order-bottom'),
                            state=StaticStateEnumerate(default='public'))
 

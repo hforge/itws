@@ -27,6 +27,7 @@ from ikaaro.skins_views import LanguagesTemplate as BaseLanguagesTemplate
 from ikaaro.utils import reduce_string
 
 
+
 class LocationTemplate(BaseLocationTemplate):
 
     template = '/ui/common/location.xml'

@@ -67,7 +67,8 @@ class SideBarAware(object):
     @thingy_property
     def new_sidebar_resource(self):
         if self.repository:
-            specific_document = '%s/%s/;add_box' % (self.repository, self.sidebar_name)
+            specific_document = '%s/%s/;add_box' % (self.repository,
+                                                    self.sidebar_name)
         else:
             specific_document = './%s/;add_box' % self.sidebar_name
         return AdvanceGoToSpecificDocument(
@@ -135,7 +136,8 @@ class ContentBarAware(object):
     @thingy_property
     def order_contentbar(self):
         if self.repository:
-            specific_document = '%s/%s' % (self.repository, self.contentbar_name)
+            specific_document = '%s/%s' % (self.repository,
+                                           self.contentbar_name)
         else:
             specific_document = self.contentbar_name
         return AdvanceGoToSpecificDocument(
@@ -148,7 +150,8 @@ class ContentBarAware(object):
     @thingy_property
     def new_contentbar_resource(self):
         if self.repository:
-            specific_document = '%s/%s/;add_box' % (self.repository, self.contentbar_name)
+            specific_document = '%s/%s/;add_box' % (self.repository,
+                                                    self.contentbar_name)
         else:
             specific_document ='./%s/;add_box' % self.contentbar_name
         return AdvanceGoToSpecificDocument(

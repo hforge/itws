@@ -57,6 +57,7 @@ from utils import get_admin_bar, is_navigation_mode
 from feed_views import Feed_View
 
 
+
 ############################################################
 # Skin
 ###########################################################
@@ -182,8 +183,6 @@ class Skin(BaseSkin):
                 isinstance(here.parent, site_root.section_class):
             sidebar_resource = here.parent
         return sidebar_resource
-
-
 
 
     def build_nav_namespace(self, context):

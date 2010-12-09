@@ -18,6 +18,7 @@
 from itools.core import freeze
 
 
+
 ##############################
 # Registry
 ##############################

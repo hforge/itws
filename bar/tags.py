@@ -29,6 +29,7 @@ from itws.datatypes import PositiveInteger
 from itws.tags import TagsAwareClassEnumerate
 
 
+
 class BoxTags_View(Box_View):
 
     access = 'is_allowed_to_view'
@@ -79,7 +80,8 @@ class BoxTags(Box):
     class_icon16 = 'bar_items/icons/16x16/box_tags.png'
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
     class_schema = merge_dicts(Box.class_schema,
-                      formats=TagsAwareClassEnumerate(source='metadata', multiple=True),
+                      formats=TagsAwareClassEnumerate(source='metadata',
+                                                      multiple=True),
                       count=PositiveInteger(source='metadata', default=0),
                       show_number=Boolean(source='metadata'),
                       random=Boolean(source='metadata'),

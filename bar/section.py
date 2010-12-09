@@ -47,6 +47,7 @@ from itws.webpage import WebPage
 from itws.feed_views import FeedViews_Enumerate
 
 
+
 ################
 # Order tables #
 ################
@@ -184,8 +185,6 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
     def update_20101124(self):
         self.set_property('state', 'public')
-
-
 
 
     # Views

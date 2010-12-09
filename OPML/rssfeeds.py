@@ -498,7 +498,6 @@ class RssFeeds(CSV):
 
 
 
-
 # Register skin
 path = get_abspath('../ui/rssfeeds')
 register_skin('rssfeeds', path)

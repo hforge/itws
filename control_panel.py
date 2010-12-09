@@ -38,6 +38,7 @@ from ikaaro.views import IconsView
 from utils import is_navigation_mode
 
 
+
 ###################################################
 # Control panel Views
 ###################################################
@@ -67,6 +68,7 @@ class ITWS_ControlPanelMenu(ControlPanelMenu):
                 'href': ';%s' % name})
 
         return items
+
 
 
 class ITWS_ControlPanel(ControlPanel):
@@ -102,6 +104,7 @@ class ITWS_ControlPanel(ControlPanel):
             'items': items}
 
 
+
 ###############################################
 # Control panel items
 ###############################################
@@ -118,6 +121,7 @@ class CPEditTags(GoToSpecificDocument):
     specific_view = 'browse_content'
 
 
+
 class CPEdit404(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
@@ -126,6 +130,7 @@ class CPEdit404(GoToSpecificDocument):
     description = MSG(u'Edit 404')
     specific_document = 'theme/404'
     specific_view = 'edit'
+
 
 
 class CPEditRobotsTXT(GoToSpecificDocument):
@@ -138,11 +143,13 @@ class CPEditRobotsTXT(GoToSpecificDocument):
     specific_view = 'edit'
 
 
+
 class CPDBResource_CommitLog(DBResource_CommitLog):
 
     description = MSG(u'See last modifications')
     itws_icon = 'git.png'
     context_menus = context_menus
+
 
 
 class CPDBResource_Links(DBResource_Links):
@@ -153,12 +160,14 @@ class CPDBResource_Links(DBResource_Links):
     context_menus = context_menus
 
 
+
 class CPDBResource_Backlinks(DBResource_Backlinks):
 
     description = MSG(u'List backlinks of this resource')
     itws_icon = 'backlinks.png'
 
     context_menus = context_menus
+
 
 
 class CPOrderItems(GoToSpecificDocument):
@@ -172,6 +181,7 @@ class CPOrderItems(GoToSpecificDocument):
     context_menus = context_menus
 
 
+
 class CPSubscribe(SubscribeForm):
 
     itws_icon = 'subscriptions.png'
@@ -179,11 +189,13 @@ class CPSubscribe(SubscribeForm):
     context_menus = context_menus
 
 
+
 class CPExternalEdit(File_ExternalEdit_View):
 
     itws_icon = 'editor.png'
     description = MSG(u'Edit file with an external editor')
     context_menus = context_menus
+
 
 
 class CP_AdvanceNewResource(IconsView):
@@ -211,6 +223,7 @@ class CP_AdvanceNewResource(IconsView):
         return {
             'batch': None,
             'items': items}
+
 
 
 class CPFOSwitchMode(BaseView):

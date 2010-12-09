@@ -53,5 +53,6 @@ class AboutITWS(Folder):
     browse_content = Folder_BrowseContent(access='is_admin')
 
 
+
 # Register
 register_skin('about', Skin(get_abspath('ui/about')))

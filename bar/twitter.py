@@ -168,8 +168,8 @@ class TwitterSideBar(Box, ResourceWithCache):
         item = re.sub(r'(\A|\s)@(\w+)',
                       r'\1@<a href="http://www.twitter.com/\2">\2</a>', item)
         item = re.sub(r'(\A|\s)#(\w+)',
-                   r'\1#<a href="http://search.twitter.com/search?q=%23\2">\2</a>',
-                   item)
+               r'\1#<a href="http://search.twitter.com/search?q=%23\2">\2</a>',
+               item)
         item = re.sub(r'(\A|\s)(http://(\w|\.|/|;|\?|=|%|&|-)+)',
                       r'\1<a href="\2"> \2</a>', item)
         item = re.sub('&', '&amp;', item)

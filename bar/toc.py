@@ -32,12 +32,10 @@ from base_views import Box_View
 from itws.utils import is_navigation_mode
 
 
-# XXX Why 2 differents views ?
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
 hide_single_widget = RadioWidget('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
-
 
 
 ################################################################################
@@ -217,7 +215,6 @@ class ContentBoxSectionChildrenToc_View(Box_View):
 ################################################################################
 # Boxes
 ################################################################################
-
 
 class BoxSectionChildrenToc(Box):
 

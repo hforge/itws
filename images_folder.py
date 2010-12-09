@@ -27,6 +27,7 @@ from ikaaro.messages import MSG_NEW_RESOURCE
 from ikaaro.views import CompositeForm
 
 
+
 class ImagesFolder_FileNewInstance(File_NewInstance):
 
     def action(self, resource, context, form):

@@ -92,7 +92,8 @@ class NeutralWS(Website_BarAware, WebSite):
                    'add_content', 'control_panel']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'),
-                              view=FeedViews_Enumerate(source='metadata', default='composite-view'))
+                              view=FeedViews_Enumerate(source='metadata',
+                                  default='composite-view'))
 
 
     class_control_panel = (WebSite.class_control_panel +

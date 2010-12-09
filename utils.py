@@ -275,7 +275,6 @@ def is_navigation_mode(context):
 # Resource with cache
 ############################################################
 
-
 class ResourceWithCache(DBResource):
     """Resource with cache inside the metadata handler"""
 

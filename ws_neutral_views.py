@@ -33,6 +33,7 @@ from rss import BaseRSS
 from tags import TagsAware
 
 
+
 class NeutralWS_RSS(BaseRSS):
 
     excluded_formats = freeze(['rssfeeds', 'text/css'])
@@ -82,7 +83,6 @@ class NeutralWS_RSS(BaseRSS):
 
         return BaseRSS.get_item_value(self, resource, context, item,
                                       column, site_root)
-
 
 
 

@@ -30,6 +30,7 @@ from itws.widgets import GoogleMapWidget, GoogleGPSWidget
 from itws.widgets import OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 
+
 class OpenLayerRender(Enumerate):
 
     options = [{'name': 'osm', 'value': MSG(u'Open Street Map')},
@@ -37,6 +38,7 @@ class OpenLayerRender(Enumerate):
 
     map_widget_cls = {'google': GoogleMapWidget,
                       'osm': OpenStreetMapWidget}
+
 
 
 class MapBox_View(Box_View):
@@ -64,7 +66,8 @@ class MapBox_Edit(DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+        base_schema = DBResource_Edit._get_schema(self, resource, context)
+        return merge_dicts(base_schema,
                            render=OpenLayerRender(mandatory=True),
                            width=Integer, height=Integer, address=Unicode,
                            latitude=Decimal, longitude=Decimal, zoom=Integer,
@@ -118,8 +121,10 @@ class MapBox(Box):
     class_schema = merge_dicts(Box.class_schema,
           # Metadata
           address=Unicode(source='metadata'),
-          latitude=Decimal(source='metadata', default=Decimal.encode('48.8566')),
-          longitude=Decimal(source='metadata', default=Decimal.encode('2.3509')),
+          latitude=Decimal(source='metadata',
+                           default=Decimal.encode('48.8566')),
+          longitude=Decimal(source='metadata',
+                            default=Decimal.encode('2.3509')),
           width=Integer(source='metadata', default=400),
           height=Integer(source='metadata', default=300),
           zoom=Integer(source='metadata', default=15),

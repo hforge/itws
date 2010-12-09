@@ -29,8 +29,6 @@ class OrderBoxEnumerate(Enumerate):
 
 
 
-
-
 class MyAuthorized_Classid(Enumerate):
 
     site_root = None

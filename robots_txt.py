@@ -29,15 +29,12 @@ from ikaaro.text import Text
 from ikaaro.text_views import Text_View, Text_Edit
 
 
+
 RobotsTxt_body = """
 User-agent: *
-Disallow: /menu
-Disallow: /turning-footer
-Disallow: /footer
-Disallow: /style
 Disallow: /theme
+Disallow: /repository
 """
-
 
 
 class RobotsTxt_Edit(Text_Edit):

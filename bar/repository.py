@@ -41,6 +41,7 @@ from bar_aware_views import ContentBarBox_NewInstance
 from tags import BoxTags
 
 
+
 ###########################################################################
 # Repository
 ###########################################################################

@@ -28,6 +28,7 @@ from itools.web import STLView
 from itws.utils import get_admin_bar
 
 
+
 class Box_View(STLView):
 
     styles = []
@@ -52,6 +53,7 @@ class Box_View(STLView):
 
     def get_scripts(self, context):
         return self.scripts
+
 
 
 class BarBox_View(STLView):

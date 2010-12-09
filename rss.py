@@ -34,6 +34,7 @@ from ikaaro.webpage import WebPage
 from utils import set_prefix_with_hostname
 
 
+
 class BaseRSS(BaseView):
 
     access = True

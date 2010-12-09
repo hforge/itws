@@ -25,6 +25,7 @@ from ikaaro.file import File
 from itws.views import AutomaticEditView , EasyNewInstance
 
 
+
 class BoxAware(object):
 
     edit = AutomaticEditView()

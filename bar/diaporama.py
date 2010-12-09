@@ -58,7 +58,6 @@ class DiaporamaTable_View(OrderedTable_View):
     def get_item_value(self, resource, context, item, column):
         if column == 'img_path':
             img_path = resource.handler.get_record_value(item, column)
-            # NOTE img_path is unicode multiple -> multilingual
             image = resource.get_resource(str(img_path), soft=True)
             if not image:
                 return None
@@ -92,7 +91,8 @@ class DiaporamaTable_View(OrderedTable_View):
             # Reference2 : the reference used for href attribute
             reference2 = XMLContent.encode(str(reference2))
             return XMLParser('<a href="%s">%s</a>' % (reference2, reference))
-        return OrderedTable_View.get_item_value(self, resource, context, item, column)
+        return OrderedTable_View.get_item_value(self, resource, context, item,
+                                                column)
 
 
 

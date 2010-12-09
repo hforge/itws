@@ -29,6 +29,7 @@ from repository import Repository
 from section_views import Section_AddContent, Section_ManageContent
 
 
+
 class WSDataFolder(Folder):
 
     class_id = 'neutral-ws-data'
@@ -43,6 +44,7 @@ class WSDataFolder(Folder):
 
     def get_document_types(self):
         return [File, Folder]
+
 
 
 class NeutralWS_AddContent(Section_AddContent):

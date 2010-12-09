@@ -21,9 +21,9 @@
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.gettext import MSG
 from itools.uri import get_reference
-from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 
 # Import from ikaaro
 from ikaaro.autoform import MultilineWidget, SelectWidget
@@ -33,10 +33,10 @@ from ikaaro.workflow import state_widget, StaticStateEnumerate
 # Import from itws
 from bar_aware_views import EasyNewInstance_WithOrderer
 from base_views import Bar_View
+from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
 from itws.tags.tags_views import TagsAware_Edit
 from itws.views import BaseManageContent
 from itws.webpage import WebPage
-from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
 
 
 
@@ -95,6 +95,7 @@ class Section_ContentBar_View(Bar_View, Feed_View):
         return resource
 
 
+
 class Section_Edit(DBResource_Edit, TagsAware_Edit):
 
 
@@ -108,7 +109,8 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
     def _get_widgets(self, resource, context):
         default_widgets = DBResource_Edit._get_widgets(self, resource, context)
         default_widgets[2] = MultilineWidget('description',
-                                        title=MSG(u'Description (use by RSS and TAGS)'))
+                title=MSG(u'Description (use by RSS and TAGS)'))
+
         return (default_widgets +
                 [state_widget] +
                 [SelectWidget('view', title=MSG(u'View'),
@@ -130,6 +132,7 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                         form)
         return DBResource_Edit.set_value(self, resource, context, name,
                   form)
+
 
 
 class Section_AddContent(EasyNewInstance_WithOrderer):
@@ -168,6 +171,7 @@ class Section_ManageContent(BaseManageContent):
                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
+
 
 
 register_view(Section_ContentBar_View)
