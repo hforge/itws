@@ -175,8 +175,8 @@ class TagsAware(object):
                                      indexed=True, stored=True),
                     'pub_datetime': DateTime(source='metadata', indexed=True,
                                              stored=True),
-                    'thumbnail': PathDataType(source='metadata', multilingual=True,
-                                    parameters_schema={'lang': String}),
+                    'thumbnail': PathDataType(source='metadata',
+                        multilingual=True, parameters_schema={'lang': String}),
                     # Catalog
                     'is_tagsaware': Boolean(indexed=True, stored=True),
                     'preview_content': Unicode(stored=True, indexed=True),
