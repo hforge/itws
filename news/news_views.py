@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
-from datetime import date
+from datetime import datetime
 
 # Import from itools
 from itools.core import merge_dicts, thingy_property
@@ -143,8 +143,8 @@ class NewsFolder_View(Details_View):
 class NewsFolder_RSS(BaseRSS):
 
     def get_base_query(self, resource, context):
-        today = date.today()
-        min_date = date(1900, 1, 1)
+        today = datetime.now()
+        min_date = datetime(1900, 1, 1)
         # Filter by news folder
         abspath = resource.get_canonical_path()
         return [ get_base_path_query(str(abspath)),
