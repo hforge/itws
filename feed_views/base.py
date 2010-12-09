@@ -148,19 +148,18 @@ class Feed_View(Folder_BrowseContent):
         from ikaaro.file import Image
 
         item_brain, item_resource = item
-        is_tags_aware = item_brain.is_tagsaware
         if column == 'class_icon16':
             return item_resource.get_class_icon()
         elif column == 'class_icon48':
             return item_resource.get_class_icon(size='48')
         elif column == 'pub_datetime':
-            if is_tags_aware:
+            if item_brain.is_tagsaware:
                 return item_resource.get_pub_datetime_formatted()
             return None
         elif column == 'title':
             return item_resource.get_title()
         elif column == 'long_title':
-            if is_tags_aware:
+            if item_brain.is_tagsaware:
                 return item_resource.get_long_title()
             return item_resource.get_title()
         elif column == 'link':
@@ -171,11 +170,11 @@ class Feed_View(Folder_BrowseContent):
         elif column == 'type':
             return item_resource.class_title.gettext()
         elif column == 'preview':
-            if is_tags_aware:
+            if item_brain.is_tagsaware:
                 return item_brain.preview_content
             return item_resource.get_property('description')
         elif column == 'image':
-            if is_tags_aware:
+            if item_brain.is_tagsaware:
                 thumbnail = item_resource.get_preview_thumbnail()
                 if thumbnail:
                     return context.get_link(thumbnail)
@@ -183,7 +182,7 @@ class Feed_View(Folder_BrowseContent):
                 return context.get_link(item_resource)
             return None
         elif column == 'tags':
-            if is_tags_aware:
+            if item_brain.is_tagsaware:
                 return item_resource.get_tags_namespace(context)
             return []
         elif column == 'css':
