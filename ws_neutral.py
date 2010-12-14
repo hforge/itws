@@ -432,4 +432,4 @@ class NeutralWS(Website_BarAware, WebSite):
 ############################################################
 # Register
 ############################################################
-register_document_type(NeutralWS, WebSite.class_id)
+register_document_type(NeutralWS)

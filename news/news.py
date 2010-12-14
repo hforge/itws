@@ -242,7 +242,7 @@ class NewsFolder(SideBarAware, Folder):
 
 
 # Register
-register_document_type(NewsItem, TagsAware.class_id)
+register_document_type(NewsItem)
 
 # Register skin
 register_skin('news', get_abspath('../ui/news'))

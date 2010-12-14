@@ -202,4 +202,4 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     backlinks = CPDBResource_Backlinks()
 
 
-register_document_type(Section, TagsAware.class_id)
+register_document_type(Section)

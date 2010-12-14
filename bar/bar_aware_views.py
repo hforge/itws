@@ -84,6 +84,16 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
                                   has_empty_option=False)])
 
 
+    def get_value(self, resource, context, name, datatype):
+        if name == 'cls_description':
+            return u''
+        elif name == 'class_id':
+            value = context.query['type']
+            return value or ''
+        return EasyNewInstance.get_value(self, resource, context, name,
+                                         datatype)
+
+
     def order_item(self, order, name, form, resource, context):
         order_table = self._get_order_table(resource, context)
 
