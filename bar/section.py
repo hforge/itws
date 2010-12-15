@@ -139,7 +139,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
     def get_document_types(self):
-        return [File]
+        return [ self.get_article_class(), self.get_subsection_class(), File ]
 
 
     def get_subsection_class(self):

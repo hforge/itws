@@ -17,23 +17,26 @@
 # Import from itools
 from itools.datatypes import Enumerate
 
-# Import from ikaaro
-from ikaaro.registry import get_document_types
 
 
 class TagsAwareClassEnumerate(Enumerate):
 
-    @classmethod
-    def get_options(cls):
-        # Import from itws
-        from tags import TagsAware
+    # XXX We have to use a new register
+    # since ikaaro register has been deleted
+    pass
+    #@classmethod
+    #def get_options(cls):
+    #    # Import from itws
+    #    from tags import TagsAware
 
-        options = []
-        _classes = get_document_types(TagsAware.class_id)
-        for _cls in _classes:
-            title = _cls.class_title.gettext()
-            options.append({'name': _cls.class_id,
-                            'value': title.encode('utf-8')})
-        options.sort(lambda x, y: cmp(x['value'], y['value']))
-        return options
+    #    options = []
+    #    # FIXME should not be context.resource
+    #    resource = get_context().resource
+    #    _classes = get_document_types(TagsAware.class_id)
+    #    for _cls in _classes:
+    #        title = _cls.class_title.gettext()
+    #        options.append({'name': _cls.class_id,
+    #                        'value': title.encode('utf-8')})
+    #    options.sort(lambda x, y: cmp(x['value'], y['value']))
+    #    return options
 

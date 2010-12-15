@@ -29,7 +29,6 @@ from ikaaro.cc import SubscribeForm
 from ikaaro.control_panel import ControlPanelMenu, ControlPanel
 from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.registry import get_document_types
 from ikaaro.resource_views import DBResource_Links, DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.views import IconsView
@@ -207,7 +206,8 @@ class CP_AdvanceNewResource(IconsView):
 
     def get_document_types(self):
         forbidden_class_id = ['webpage', 'section']
-        return [x for x in get_document_types() if
+        resource = get_context().resource
+        return [x for x in resource.get_document_types() if
                     x.class_id not in forbidden_class_id]
 
 

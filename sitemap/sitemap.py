@@ -169,3 +169,6 @@ class SiteMap(Folder):
 
     view = SiteMapView()
 
+
+    def get_document_types(self):
+        return []
