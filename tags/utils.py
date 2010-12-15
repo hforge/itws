@@ -18,8 +18,27 @@
 from itools.database import PhraseQuery, OrQuery, AndQuery
 
 # Import from ikaaro
+from ikaaro.registry import get_resource_class
 from ikaaro.utils import get_base_path_query
 
+
+
+##########################################################################
+# Registry
+##########################################################################
+
+tags_aware_registry = []
+def register_tags_aware(resource_class):
+    class_id = resource_class.class_id
+    if class_id in tags_aware_registry:
+        # Already registered
+        return
+    tags_aware_registry.append(class_id)
+
+
+def get_registered_tags_aware_classes():
+    return [ get_resource_class(class_id)
+             for class_id in tags_aware_registry ]
 
 
 ##########################################################################

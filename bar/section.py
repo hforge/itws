@@ -42,7 +42,7 @@ from section_views import Section_AddContent
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
-from itws.tags import TagsAware
+from itws.tags import TagsAware, register_tags_aware
 from itws.webpage import WebPage
 from itws.feed_views import FeedViews_Enumerate
 
@@ -203,3 +203,4 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
 register_document_type(Section)
+register_tags_aware(Section)

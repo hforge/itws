@@ -47,7 +47,6 @@ except ImportError:
 # Import from itws
 from bar import SideBarAware, SideBar_View
 from webpage_views import WebPage_View
-from bar.repository import SidebarBoxesOrderedTable
 from news import NewsItem
 from news.news_views import NewsFolder_View, NewsItem_View
 from OPML import RssFeeds

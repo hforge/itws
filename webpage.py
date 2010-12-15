@@ -27,7 +27,7 @@ from ikaaro.webpage import WebPage as BaseWebPage
 from control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from control_panel import CPDBResource_Backlinks, CPSubscribe
 from control_panel import CPExternalEdit, ITWS_ControlPanel
-from tags import TagsAware
+from tags import TagsAware, register_tags_aware
 from webpage_views import WebPage_Edit, WebPage_View
 
 
@@ -98,3 +98,4 @@ class WebPage(BaseWebPage, TagsAware):
 
 register_resource_class(WebPage, format='application/xhtml+xml')
 register_document_type(WebPage)
+register_tags_aware(WebPage)

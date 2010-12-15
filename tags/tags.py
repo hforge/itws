@@ -167,9 +167,6 @@ class TagsFolder(Folder):
 
 class TagsAware(object):
 
-    # Only useful for the registry
-    class_id = 'tags-aware'
-
     class_schema = {# Metadata
                     'tags': TagsList(source='metadata', multiple=True,
                                      indexed=True, stored=True),

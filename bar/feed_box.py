@@ -32,7 +32,7 @@ from itws.widgets import DualSelectWidget
 
 
 # XXX We have to refactor BoxFeed_View
-from itws.feed_views import Feed_View, Details_View
+from itws.feed_views import Details_View
 
 class BoxFeed_View(Box_View, Details_View):
 

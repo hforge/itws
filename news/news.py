@@ -42,7 +42,7 @@ from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks
 from itws.control_panel import ITWS_ControlPanel
 from itws.datatypes import PositiveIntegerNotNull
-from itws.tags import TagsAware
+from itws.tags import register_tags_aware
 from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView
 from itws.webpage import WebPage
@@ -243,6 +243,7 @@ class NewsFolder(SideBarAware, Folder):
 
 # Register
 register_document_type(NewsItem)
+register_tags_aware(NewsItem)
 
 # Register skin
 register_skin('news', get_abspath('../ui/news'))

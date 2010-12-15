@@ -17,6 +17,8 @@
 from datatypes import TagsAwareClassEnumerate
 from tags import TagsFolder, Tag, TagsAware
 from tags_views import TagsList, Tag_View
+from utils import register_tags_aware
 
 # Silent pyflakaes
 TagsAwareClassEnumerate, TagsFolder, Tag, TagsAware, TagsList, Tag_View
+register_tags_aware
