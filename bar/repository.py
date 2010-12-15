@@ -193,8 +193,7 @@ class Repository(Folder):
 
 
     def get_document_types(self):
-        return self._get_document_types(allow_instanciation=True,
-                                        is_side=True)
+        return []
 
 
     def can_paste(self, source):
@@ -202,7 +201,8 @@ class Repository(Folder):
         Allow RightItem and Box
         but Box cannot be directly instanciated
         """
-        allowed_types = self.get_document_types() + [Box]
+        side_types = self._get_document_types(is_side=True)
+        allowed_types = side_types + [Box]
         return isinstance(source, tuple(allowed_types))
 
 
