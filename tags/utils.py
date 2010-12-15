@@ -66,8 +66,10 @@ def get_tagaware_query_terms(context, on_current_folder=False,
         query.append(PhraseQuery('workflow_state', state))
     if tags:
         tags_query = [ PhraseQuery('tags', tag) for tag in tags ]
-        if len(tags_query):
+        if len(tags_query) > 1:
             tags_query = OrQuery(*tags_query)
+        else:
+            tags_query = tags_query[0]
         query.append(tags_query)
     return query
 
@@ -85,9 +87,7 @@ def get_tagaware_items(context, state='public', on_current_folder=False,
         language = accept.select_language(ws_languages)
 
     # size
-    size = 0
-    if number:
-        size = number
+    size= number if number else 0
 
     root = context.root
     results = root.search(AndQuery(*query))
@@ -97,8 +97,8 @@ def get_tagaware_items(context, state='public', on_current_folder=False,
         return documents
 
     if brain_and_docs:
-        return [(doc, root.get_resource(doc.abspath))
-                         for doc in documents ]
+        return [ (doc, root.get_resource(doc.abspath))
+                 for doc in documents ]
 
     return [ root.get_resource(doc.abspath)
              for doc in documents ]
