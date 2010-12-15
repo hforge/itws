@@ -34,12 +34,12 @@ from ikaaro.multilingual import Multilingual
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import reduce_string
+from ikaaro.views_new import NewInstance
 from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
 from tags_views import Tag_View, Tag_Edit, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsList, TagsFolder_BrowseContent
-from itws.views import EasyNewInstance
 
 
 
@@ -56,7 +56,7 @@ class Tag(File):
                                       specific_view='edit')
     externaledit = None
     commit_log = DBResource_CommitLog(access='is_allowed_to_edit')
-    new_instance = EasyNewInstance()
+    new_instance = NewInstance()
     view = Tag_View()
     rss = Tag_RSS()
 
