@@ -242,7 +242,7 @@ class NewsFolder(SideBarAware, Folder):
 
 
 # Register
-register_document_type(NewsItem)
+register_document_type(NewsItem, NewsFolder.class_id)
 register_tags_aware(NewsItem)
 
 # Register skin
