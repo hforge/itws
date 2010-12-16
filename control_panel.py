@@ -14,9 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from urllib import quote
-
 # Import from itools
 from itools.core import thingy_property
 from itools.datatypes import Boolean
@@ -31,7 +28,6 @@ from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.resource_views import DBResource_Links, DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
-from ikaaro.views import IconsView
 
 # Import from itws
 from utils import is_navigation_mode
