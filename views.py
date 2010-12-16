@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from urllib import quote
+
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, DateTime, String, Unicode
@@ -24,16 +27,19 @@ from itools.uri import get_reference
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
-from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
-from ikaaro.datatypes import Multilingual
-from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import TextWidget
 from ikaaro.autoform import description_widget, subject_widget
 from ikaaro.autoform import title_widget, timestamp_widget
-from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
+from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
+from ikaaro.datatypes import Multilingual
+from ikaaro.file import File
+from ikaaro.folder import Folder
+from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
+from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class
+from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
 
@@ -231,3 +237,58 @@ class EditOnlyLanguageMenu(EditLanguageMenu):
 
     def get_fields(self):
         return []
+
+
+
+############################################################
+# NEW RESOURCE VIEWS
+############################################################
+
+class Folder_NewResource(BaseFolder_NewResource):
+
+    def get_document_types(self, resource, context):
+        from webpage import WebPage
+        from bar import Section
+
+        return [ WebPage, Section, File ]
+
+
+    def get_namespace(self, resource, context):
+        # 1. Find out the resource classes we can add
+        document_types = self.get_document_types(resource, context)
+
+        # 2. Build the namespace
+        items = [
+            {'icon': '/ui/' + cls.class_icon48,
+             'title': cls.class_title.gettext(),
+             'description': cls.class_description.gettext(),
+             'url': ';new_resource?type=%s' % quote(cls.class_id)}
+            for cls in document_types ]
+
+        return {
+            'batch': None,
+            'items': items}
+
+
+
+class Folder_AdvanceNewResource(Folder_NewResource):
+
+    def get_document_types(self, resource, context):
+        base_type = Folder.new_resource.get_document_types(resource, context)
+
+        document_types = []
+        skip_formats = set()
+        for resource in get_content_containers(context, skip_formats):
+            skip_formats.add(resource.class_id)
+            for cls in resource.get_document_types():
+                if cls in base_type:
+                    continue
+                if cls not in document_types:
+                    document_types.append(cls)
+        return document_types
+
+
+
+# Monkey patch
+Folder.new_resource = Folder_NewResource()
+Folder.advance_new_resource = Folder_AdvanceNewResource()
