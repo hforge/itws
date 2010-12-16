@@ -23,7 +23,6 @@
 from itools.core import merge_dicts
 from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.gettext import MSG
-from itools.uri import get_reference
 
 # Import from ikaaro
 from ikaaro.autoform import MultilineWidget, SelectWidget
@@ -31,12 +30,10 @@ from ikaaro.resource_views import DBResource_Edit
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from bar_aware_views import EasyNewInstance_WithOrderer
 from base_views import Bar_View
 from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
 from itws.tags.tags_views import TagsAware_Edit
 from itws.views import BaseManageContent
-from itws.webpage import WebPage
 
 
 
@@ -132,31 +129,6 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                         form)
         return DBResource_Edit.set_value(self, resource, context, name,
                   form)
-
-
-
-class Section_AddContent(EasyNewInstance_WithOrderer):
-
-    title=  MSG(u'Add content')
-
-    order_widget_title = MSG(u'Order content in the TOC ?')
-
-
-    def _get_container(self, resource, context):
-        return resource
-
-    def _get_order_table(self, resource, context):
-        return resource.get_resource(resource.order_path)
-
-
-    def _get_box_goto(self, child, context):
-        link_child = '%s/;edit' % context.get_link(child)
-        return get_reference(link_child)
-
-
-    def get_aware_document_types(self, resource, context):
-        from section import Section
-        return [Section, WebPage]
 
 
 

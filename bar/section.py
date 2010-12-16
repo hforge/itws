@@ -38,7 +38,6 @@ from ikaaro.workflow import WorkflowAware
 from bar_aware import SideBarAware, ContentBarAware
 from section_views import Section_ManageContent
 from section_views import Section_Edit
-from section_views import Section_AddContent
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
@@ -100,7 +99,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
     class_views = ['view', 'edit', 'manage_content',
-                   'add_content', 'control_panel']
+                   'control_panel']
 
     class_control_panel = ['order_items', 'links', 'backlinks', 'commit_log']
 
@@ -190,7 +189,6 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     # Views
     edit = Section_Edit()
     manage_content = Section_ManageContent()
-    add_content = Section_AddContent()
     order_items = CPOrderItems()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')

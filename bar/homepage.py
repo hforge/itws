@@ -16,7 +16,6 @@
 
 
 # Import from itools
-from itools.csv import Property
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -26,7 +25,7 @@ from ikaaro.folder import Folder
 # Import from itws
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
-from section_views import Section_AddContent, Section_ManageContent
+from section_views import Section_ManageContent
 
 
 
@@ -44,25 +43,6 @@ class WSDataFolder(Folder):
 
     def get_document_types(self):
         return [File, Folder]
-
-
-
-class NeutralWS_AddContent(Section_AddContent):
-
-    order_widget_title = MSG(u'Order content in website menu')
-
-    def order_item(self, order, name, form, resource, context):
-        site_root = context.site_root
-        menu = site_root.get_resource('theme/menu/menu')
-        language = resource.get_edit_languages(context)[0]
-        title = Property(form['title'], language=language)
-        new_resource = resource.get_resource(name)
-        path = str(menu.get_pathto(new_resource))
-        record = menu.add_new_record({'path': path, 'title': title})
-        if order == 'order-top':
-            menu.handler.order_top([record.id])
-        else:
-            menu.handler.order_bottom([record.id])
 
 
 
@@ -89,5 +69,4 @@ class Website_BarAware(ContentBarAware, SideBarAware):
     ####################################
     ## Views
     ####################################
-    add_content = NeutralWS_AddContent()
     manage_content = Section_ManageContent()
