@@ -33,7 +33,6 @@
             </a>
             <div id="right-wrapper">
               ${languages}
-              ${fo_edit_toolbar}
               <div class="clear" />
               <div id="search-form">
                 <form action="/;site_search" method="get">

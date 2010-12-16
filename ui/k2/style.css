@@ -148,10 +148,6 @@ body {
   text-decoration: underline;
 }
 
-#header .header-toolbar .fo-edit {
-  margin-right: 5px;
-}
-
 
 /**************************************************************************
  * MENU
@@ -272,6 +268,11 @@ body {
 #tabs .menu a:hover {
   background-color: #333;
   color: #fff;
+}
+
+#backoffice-views {
+  float: right;
+  padding: 2px 4px 2px 0;
 }
 
 /**************************************************************************

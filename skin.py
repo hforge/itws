@@ -27,7 +27,6 @@ from itools.stl import stl, set_prefix
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces
 from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
@@ -76,15 +75,6 @@ class Skin(BaseSkin):
         'template': '/ui/common/template_footer.xml', 'depth': 1,
         'flat': None,
         'src': 'theme/footer', 'show_first_child': False, 'separator': '|' }
-    fo_edit_template = list(XMLParser(
-    """
-    <td class="fo-edit">
-      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="${edition_title}">${edition_title}</a>
-      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="${navigation_title}">${navigation_title}</a>
-    </td>
-    """, stl_namespaces))
 
     location_template = LocationTemplate
     languages_template = LanguagesTemplate
@@ -333,18 +323,6 @@ class Skin(BaseSkin):
         namespace['sidebar_view'] = sidebar
         namespace['sidebar'] = sidebar or namespace['context_menus']
 
-        # FO edit/no edit
-        ac = here.get_access_control()
-        events = None
-        if ac.is_allowed_to_edit(context.user, here):
-            edit_mode = is_navigation_mode(context) is False
-            events = stl(events=self.fo_edit_template,
-                         namespace={
-                             'edit_mode': edit_mode,
-                             'edition_title': MSG(u'Go to editing mode'),
-                             'navigation_title': MSG(u'Back to navigation')})
-        namespace['fo_edit_toolbar'] = events
-
         # Language
         ws_languages = site_root.get_property('website_languages')
         accept = context.accept_language
@@ -419,16 +397,6 @@ class NeutralSkin(Skin):
     title = MSG(u'Neutral Skin 1')
 
     add_common_nav_css = True
-
-    fo_edit_template = list(XMLParser(
-    """
-    <div class="fo-edit">
-      <a stl:if="not edit_mode" href="/;fo_switch_mode?mode=1"
-         title="${edition_title}">${edition_title}</a>
-      <a stl:if="edit_mode" href="/;fo_switch_mode?mode=0"
-         title="${navigation_title">${navigation_title}</a>
-    </div>
-    """, stl_namespaces))
 
 
 

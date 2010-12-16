@@ -16,15 +16,19 @@
 
 # Import from itools
 from itools.core import thingy_lazy_property
-from itools.gettext import get_domain
+from itools.gettext import get_domain, MSG
 from itools.i18n import get_language_name
 from itools.uri import decode_query
 
 # Import from ikaaro
+from ikaaro.folder import Folder
 from ikaaro.resource_ import DBResource
 from ikaaro.skins_views import LocationTemplate as BaseLocationTemplate
 from ikaaro.skins_views import LanguagesTemplate as BaseLanguagesTemplate
 from ikaaro.utils import reduce_string
+
+# Import form itws
+from utils import is_navigation_mode
 
 
 
@@ -152,6 +156,51 @@ class LocationTemplate(BaseLocationTemplate):
         if self.tabs_hide_if_only_one_item and len(tabs) == 1:
             return []
         return tabs
+
+
+    @thingy_lazy_property
+    def backoffice_views(self):
+        context = self.context
+        user = context.user
+        here = context.resource
+        views = []
+
+        # FO edit/no edit
+        ac = here.get_access_control()
+        if ac.is_allowed_to_edit(user, here):
+            if is_navigation_mode(context) is False:
+                # edit mode
+                views.append({'name': '/;fo_switch_mode?mode=0',
+                              'label': MSG(u'Back to navigation'),
+                              'active': False,
+                              'class': None})
+            else:
+                # navigation mode
+                views.append({'name': '/;fo_switch_mode?mode=1',
+                              'label': MSG(u'Go to editing mode'),
+                              'active': False,
+                              'class': None})
+
+        # Add new resource and add advance resource
+        container = here
+        if isinstance(here, Folder) is False:
+            container = here.parent
+        view = container.get_view('new_resource')
+        ac = container.get_access_control()
+        if ac.is_access_allowed(user, container, view):
+            container_uri = context.get_link(container)
+            active = context.view_name == 'new_resource'
+            views.append({'name': '%s/;new_resource' % container_uri,
+                          'label': MSG(u'Add content'),
+                          'active': active,
+                          'class': active and 'active' or None})
+            active = context.view_name == 'advance_new_resource'
+            views.append({'name': '%s/;advance_new_resource' % container_uri,
+                          'label': MSG(u'Add advance content'),
+                          'active': active,
+                          'class': active and 'active' or None})
+
+        return views
 
 
 

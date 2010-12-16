@@ -280,6 +280,8 @@ class Folder_NewResource(BaseFolder_NewResource):
 
 class Folder_AdvanceNewResource(Folder_NewResource):
 
+    title = MSG(u'Add advance resource')
+
     def get_document_types(self, resource, context):
         base_type = Folder.new_resource.get_document_types(resource, context)
 

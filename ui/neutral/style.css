@@ -15,6 +15,11 @@
   background-color: transparent;
 }
 
+#backoffice-views {
+  float: right;
+  padding: 5px 0; /* same padding as #tabs */
+}
+
 /**************************************************************************
  * BODY
  * ***********************************************************************/
@@ -132,17 +137,6 @@ body {
 
 #languages a.end {
   border-right: 1px solid #fff;
-}
-
-#banner-wrapper .fo-edit {
-  float: right;
-  margin-right: 20px;
-  padding-top: 4px;
-}
-
-#banner-wrapper .fo-edit a {
-  text-decoration: none;
-  color: #444444;
 }
 
 #banner-wrapper #search-form {
