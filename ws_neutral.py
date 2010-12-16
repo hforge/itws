@@ -49,7 +49,7 @@ from about import AboutITWS
 from bar import HTMLContent, Website_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
-from control_panel import ITWS_ControlPanel, CP_AdvanceNewResource
+from control_panel import ITWS_ControlPanel
 from feed_views import Search_View, FeedViews_Enumerate
 from images_folder import ImagesFolder
 from news import NewsFolder
@@ -308,7 +308,6 @@ class NeutralWS(Website_BarAware, WebSite):
     edit_404 = CPEdit404()
     edit_robots_txt = CPEditRobotsTXT()
     fo_switch_mode = CPFOSwitchMode()
-    advance_new_resource = CP_AdvanceNewResource()
 
 
     ###########################################

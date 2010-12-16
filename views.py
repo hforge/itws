@@ -250,7 +250,14 @@ class Folder_NewResource(BaseFolder_NewResource):
         from webpage import WebPage
         from bar import Section
 
-        return [ WebPage, Section, File ]
+        document_types = [ WebPage, Section, File ]
+        # Special case for News Folder
+        site_root = resource.get_site_root()
+        if site_root.newsfolder_class:
+            if site_root.get_news_folder(context):
+                document_types.append(site_root.newsfolder_class.news_class)
+
+        return document_types
 
 
     def get_namespace(self, resource, context):

@@ -197,35 +197,6 @@ class CPExternalEdit(File_ExternalEdit_View):
 
 
 
-class CP_AdvanceNewResource(IconsView):
-
-    access = 'is_allowed_to_add'
-    title = MSG(u'Add an advance resource')
-    description = MSG(u'Add a complex resource')
-    itws_icon = 'new.png'
-
-    def get_document_types(self):
-        forbidden_class_id = ['webpage', 'section']
-        resource = get_context().resource
-        return [x for x in resource.get_document_types() if
-                    x.class_id not in forbidden_class_id]
-
-
-    def get_namespace(self, resource, context):
-        items = [
-            {'icon': '/ui/' + cls.class_icon48,
-             'title': cls.class_title.gettext(),
-             'description': cls.class_description.gettext(),
-             'url': ';new_resource?type=%s' % quote(cls.class_id)
-            }
-            for cls in self.get_document_types() ]
-
-        return {
-            'batch': None,
-            'items': items}
-
-
-
 class CPFOSwitchMode(BaseView):
 
     access = 'is_allowed_to_edit'
