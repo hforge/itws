@@ -51,7 +51,6 @@ from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
 from control_panel import ITWS_ControlPanel
 from feed_views import Search_View, FeedViews_Enumerate
-from images_folder import ImagesFolder
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
 from robots_txt import RobotsTxt
@@ -86,7 +85,7 @@ class NeutralWS(Website_BarAware, WebSite):
     """
 
     class_id = 'neutral'
-    class_version = '20101012'
+    class_version = '20101013'
     class_title = MSG(u'ITWS website')
     class_views = ['view', 'edit', 'manage_content', 'control_panel']
     class_schema = merge_dicts(WebSite.class_schema,
@@ -130,7 +129,7 @@ class NeutralWS(Website_BarAware, WebSite):
         # Create Robots.txt
         self.make_resource('robots.txt', RobotsTxt)
         # Add an image folder
-        self.make_resource('images', ImagesFolder)
+        self.make_resource('images', Folder)
         # Tags
         self.make_resource('tags', self.tagsfolder_class,
                            language=default_language)
@@ -425,6 +424,20 @@ class NeutralWS(Website_BarAware, WebSite):
                     continue
                 new_value = old_value[0].split(' ')
                 resource.set_property('tags', new_value)
+
+
+    def update_20101013(self):
+        """Transform images folder into normal Folder"""
+        from ikaaro.folder import Folder
+        from obsolete import ImagesFolder
+
+        for resource in self.traverse_resources():
+            if isinstance(resource, ImagesFolder):
+                metadata = resource.metadata
+                metadata.set_changed()
+                metadata.format = Folder.class_id
+                metadata.version= Folder.class_version
+
 
 
 ############################################################

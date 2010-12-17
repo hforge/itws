@@ -457,6 +457,14 @@ class BoxNewsSiblingsToc(BoxSectionNews):
 
 
 
+############################
+# ImagesFolder
+############################
+class ImagesFolder(Folder):
+    class_id = 'images-folder'
+
+
+
 register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
 register_resource_class(Old_NeutralWS)
@@ -473,3 +481,4 @@ register_resource_class(Slides_OrderedTable)
 register_resource_class(BoxSectionNews)
 register_resource_class(ContentBoxSectionNews)
 register_resource_class(BoxNewsSiblingsToc)
+register_resource_class(ImagesFolder)
