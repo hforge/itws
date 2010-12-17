@@ -330,6 +330,7 @@ class Skin(BaseSkin):
 
         # Manage view acl
         view = site_root.get_view('manage_view')
+        ac = self.get_access_control()
         manage_view_allowed = ac.is_access_allowed(context.user, site_root,
                                                    view)
         namespace['manage_view_allowed'] = manage_view_allowed
