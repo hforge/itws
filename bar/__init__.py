@@ -31,14 +31,16 @@ from section import Section
 from tags import BoxTags
 from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc
 from twitter import IdenticaSideBar, TwitterSideBar
+from contact import BoxContact
 
 
+register_box(BoxContact)
+register_box(BoxFeed)
+register_box(BoxSectionChildrenToc)
+register_box(BoxTags)
+register_box(ContentBoxSectionChildrenToc)
 register_box(Diaporama)
 register_box(HTMLContent)
-register_box(BoxTags)
-register_box(BoxSectionChildrenToc)
-register_box(BoxFeed)
-register_box(ContentBoxSectionChildrenToc)
 register_box(IdenticaSideBar)
 register_box(MapBox)
 register_box(MenuSideBar)
