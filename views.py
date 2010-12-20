@@ -39,6 +39,7 @@ from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
+from ikaaro.root import Root
 from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
@@ -253,7 +254,12 @@ class Folder_NewResource(BaseFolder_NewResource):
         document_types = [ WebPage, Section, File ]
         # Special case for News Folder
         site_root = resource.get_site_root()
-        if site_root.newsfolder_class:
+        # Using getattr allow to don't failed if site_root is an iKaaro Root
+        # and not an ITWS website
+        # It would be better to add this API to iKaaro website but since iKaaro
+        # does not import by default Blog, I don't know how to do that.
+        newsfolder_class = getattr(site_root, 'newsfolder_class', None)
+        if newsfolder_class:
             if site_root.get_news_folder(context):
                 document_types.append(site_root.newsfolder_class.news_class)
 
@@ -299,5 +305,7 @@ class Folder_AdvanceNewResource(Folder_NewResource):
 
 
 # Monkey patch
+# Keep Root.new_resource intact
+Root.new_resource = Folder.new_resource.__class__()
 Folder.new_resource = Folder_NewResource()
 Folder.advance_new_resource = Folder_AdvanceNewResource()
