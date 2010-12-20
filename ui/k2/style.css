@@ -734,3 +734,41 @@ body.popup p.tabme a.selected {
   -moz-border-radius: 0 5px 5px 0;
   -webkit-border-radius: 0 5px 5px 0;
 }
+
+/*
+ * Details view
+ */
+.details-view .item {
+  border-bottom: 1px dotted #999;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.details-view .item .pub-datetime {
+  float: left;
+  padding-right: 8px;
+}
+
+.details-view .item .tag {
+  float: left;
+}
+
+.details-view .item .image-link {
+  float: left;
+  padding: 0 5px 5px 0;
+}
+
+.details-view .item h3.title {
+  clear: both;
+  border: none;
+  margin-right: 0;
+}
+
+.details-view .item h3.title a {
+  text-decoration: none;
+}
+
+.details-view .item .more {
+  float: right;
+  margin-top: 10px;
+}
