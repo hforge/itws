@@ -130,6 +130,8 @@ class HTMLContent_Edit(DBResource_Edit):
 
 class HTMLContent(WebPage):
 
+    # XXX WebPage is tagsaaware but not HTMLContent
+
     class_id = 'html-content'
     class_version = '20100621'
     class_title = MSG(u'HTML Content')
@@ -146,6 +148,10 @@ class HTMLContent(WebPage):
     is_content = True
     is_side = True
 
+    def get_catalog_values(self):
+        values = WebPage.get_catalog_values(self)
+        values['is_tagsaware'] = False
+        return values
 
     ###########################
     ## Links API
