@@ -304,8 +304,12 @@ class Folder_AdvanceNewResource(Folder_NewResource):
 
 
 
-# Monkey patch
+# Monkey patchs
+# NEW RESOURCE
 # Keep Root.new_resource intact
 Root.new_resource = Folder.new_resource.__class__()
 Folder.new_resource = Folder_NewResource()
 Folder.advance_new_resource = Folder_AdvanceNewResource()
+# NEW INSTANCE
+# Note: This monkey patch does not affect Blog, Tracker, Event, File
+NewInstance.goto_view = 'edit'
