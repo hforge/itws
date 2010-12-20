@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.uri import Path
+from itools.uri import get_reference, Path, Reference
 
 # Import from ikaaro
 from ikaaro.control_panel import CPEditContactOptions
@@ -52,25 +52,28 @@ class BoxContact_View(ContactForm):
 
 
     def get_schema(self, resource, context):
-        resource = context.resource.get_site_root()
-        return ContactForm.get_schema(self, resource, context)
+        site_root = resource.get_site_root()
+        return ContactForm.get_schema(self, site_root, context)
 
 
     def get_widgets(self, resource, context):
-        resource = context.resource.get_site_root()
-        return ContactForm.get_widgets(self, resource, context)
+        site_root = resource.get_site_root()
+        return ContactForm.get_widgets(self, site_root, context)
 
 
     def get_value(self, resource, context, name, datatype):
-        resource = context.resource.get_site_root()
-        return ContactForm.get_value(self, resource, context, name, datatype)
+        site_root = resource.get_site_root()
+        return ContactForm.get_value(self, site_root, context, name, datatype)
 
 
     def get_namespace(self, resource, context):
         # Hook action, action must be set to contact box uri
         site_root = context.resource.get_site_root()
         namespace = ContactForm.get_namespace(self, site_root, context)
-        uri = context.uri
+        current_uri = context.uri
+        uri = Reference(current_uri.scheme, current_uri.authority,
+                        current_uri.path, current_uri.query,
+                        current_uri.fragment)
         uri.path = Path(context.get_link(resource))
         namespace['action'] = uri
         return namespace
