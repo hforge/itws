@@ -20,7 +20,6 @@ from itools.uri import Path
 
 # Import from ikaaro
 from ikaaro.control_panel import CPEditContactOptions
-from ikaaro.registry import register_resource_class
 from ikaaro.website_views import ContactForm
 
 # Import from itws

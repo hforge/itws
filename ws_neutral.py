@@ -36,6 +36,7 @@ from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
+from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
 from ikaaro.user import User
