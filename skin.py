@@ -49,7 +49,7 @@ from webpage_views import WebPage_View
 from news import NewsItem
 from news.news_views import NewsFolder_View, NewsItem_View
 from OPML import RssFeeds
-from skin_views import LocationTemplate, LanguagesTemplate
+from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
 from tags.tags_views import TagsFolder_TagCloud
 from utils import get_admin_bar, is_navigation_mode
 from feed_views import Feed_View
@@ -236,7 +236,7 @@ class Skin(BaseSkin):
         here = context.resource
         site_root = context.site_root
         theme = site_root.get_resource('theme')
-
+        ac = self.get_access_control()
         # banner namespace
         banner_ns = {}
         banner_ns['title'] = theme.get_property('banner_title')
@@ -328,13 +328,6 @@ class Skin(BaseSkin):
         accept = context.accept_language
         namespace['lang'] = accept.select_language(ws_languages)
 
-        # Manage view acl
-        view = site_root.get_view('manage_view')
-        ac = self.get_access_control()
-        manage_view_allowed = ac.is_access_allowed(context.user, site_root,
-                                                   view)
-        namespace['manage_view_allowed'] = manage_view_allowed
-
         # Nav
         # If there is no template specify we simply return the namespace
         nav = self.build_nav_namespace(context)
@@ -362,6 +355,12 @@ class Skin(BaseSkin):
 
         # Allow to hide the menu if there is only one item
         namespace['display_menu'] = (namespace['nav_length'] > 1)
+
+        # Admin bar
+        if ac.is_allowed_to_edit(context.user, context.site_root):
+            namespace['admin_bar'] = AdminBarTemplate(context=context)
+        else:
+            namespace['admin_bar'] = None
         return namespace
 
 

@@ -14,12 +14,6 @@
 #breadcrumbs a:hover {
   background-color: transparent;
 }
-
-#backoffice-views {
-  float: right;
-  padding: 5px 0; /* same padding as #tabs */
-}
-
 /**************************************************************************
  * BODY
  * ***********************************************************************/

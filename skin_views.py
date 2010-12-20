@@ -25,11 +25,90 @@ from ikaaro.folder import Folder
 from ikaaro.resource_ import DBResource
 from ikaaro.skins_views import LocationTemplate as BaseLocationTemplate
 from ikaaro.skins_views import LanguagesTemplate as BaseLanguagesTemplate
-from ikaaro.utils import reduce_string
+from ikaaro.utils import CMSTemplate, reduce_string
 
 # Import form itws
 from utils import is_navigation_mode
 
+
+class AdminBarTemplate(CMSTemplate):
+
+    template = '/ui/common/admin_bar.xml'
+
+    @thingy_lazy_property
+    def tabs(self):
+        context = self.context
+        user = context.user
+        if user is None:
+            return []
+
+        # Build tabs (Same that upper class)
+        # Get resource & access control
+        context = self.context
+        here = context.resource
+        here_link = context.get_link(here)
+
+        # Tabs
+        tabs = []
+        for link, view in here.get_views():
+            active = False
+
+            # From method?param1=value1&param2=value2&...
+            # we separate method and arguments, then we get a dict with
+            # the arguments and the subview active state
+            if '?' in link:
+                name, args = link.split('?')
+                args = decode_query(args)
+            else:
+                name, args = link, {}
+
+            # Active
+            if context.view == here.get_view(name, args):
+                active = True
+
+            # Add the menu
+            tabs.append({
+                'name': '%s/;%s' % (here_link, link),
+                'icon': None,
+                'label': view.get_title(context),
+                'active': active,
+                'class': active and 'active' or None})
+        # New resources
+        if isinstance(here, Folder) is True:
+            active = context.view_name == 'new_resource'
+            tabs.append({'name': './;new_resource',
+                          'label': MSG(u'Add content'),
+                          'icon': '/ui/icons/16x16/new.png',
+                          'class': active and 'active' or None})
+        return tabs
+
+
+    @thingy_lazy_property
+    def edition_tabs(self):
+        views = []
+        context = self.context
+        navigation_mode = is_navigation_mode(context)
+        # edit mode
+        views.append({'name': '/;fo_switch_mode?mode=0',
+                      'label': MSG(u'On'),
+                      'class': 'active' if not navigation_mode else None})
+        views.append({'name': '/;fo_switch_mode?mode=1',
+                      'label': MSG(u'Off'),
+                      'class': 'active' if navigation_mode else None})
+        return views
+
+
+
+    @thingy_lazy_property
+    def backoffice_tabs(self):
+        context = self.context
+        tabs = []
+        active = context.view_name == 'control_panel'
+        tabs.append({'name': '/;control_panel',
+                     'label': MSG(u'Control panel'),
+                     'icon': '/ui/icons/16x16/external.png',
+                     'class': active and 'active' or None})
+        return tabs
 
 
 class LocationTemplate(BaseLocationTemplate):
@@ -132,6 +211,9 @@ class LocationTemplate(BaseLocationTemplate):
         tabs = []
         for link, view in here.get_views():
             active = False
+            # ACL
+            if view.access != 'is_allowed_to_view':
+                continue
 
             # From method?param1=value1&param2=value2&...
             # we separate method and arguments, then we get a dict with
@@ -156,51 +238,6 @@ class LocationTemplate(BaseLocationTemplate):
         if self.tabs_hide_if_only_one_item and len(tabs) == 1:
             return []
         return tabs
-
-
-    @thingy_lazy_property
-    def backoffice_views(self):
-        context = self.context
-        user = context.user
-        here = context.resource
-        views = []
-
-        # FO edit/no edit
-        ac = here.get_access_control()
-        if ac.is_allowed_to_edit(user, here):
-            if is_navigation_mode(context) is False:
-                # edit mode
-                views.append({'name': '/;fo_switch_mode?mode=0',
-                              'label': MSG(u'Back to navigation'),
-                              'active': False,
-                              'class': None})
-            else:
-                # navigation mode
-                views.append({'name': '/;fo_switch_mode?mode=1',
-                              'label': MSG(u'Go to editing mode'),
-                              'active': False,
-                              'class': None})
-
-        # Add new resource and add advance resource
-        container = here
-        if isinstance(here, Folder) is False:
-            container = here.parent
-        view = container.get_view('new_resource')
-        ac = container.get_access_control()
-        if ac.is_access_allowed(user, container, view):
-            container_uri = context.get_link(container)
-            active = context.view_name == 'new_resource'
-            views.append({'name': '%s/;new_resource' % container_uri,
-                          'label': MSG(u'Add content'),
-                          'active': active,
-                          'class': active and 'active' or None})
-            active = context.view_name == 'advance_new_resource'
-            views.append({'name': '%s/;advance_new_resource' % container_uri,
-                          'label': MSG(u'Add advance content'),
-                          'active': active,
-                          'class': active and 'active' or None})
-
-        return views
 
 
 

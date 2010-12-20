@@ -18,15 +18,6 @@
           <span stl:if="repeat/item/end" title="${item/name}">${item/short_name}</span>
         </stl:block>
       </div>
-      <!-- New resource view, bo-fo-edit -->
-      <div id="backoffice-views" stl:if="backoffice_views">
-        {
-        <span class="menu ${menu/class}" stl:repeat="menu backoffice_views">
-          <a href="${menu/name}">${menu/label}</a>
-          <stl:inline stl:if="not repeat/menu/end">${tabs_separator}</stl:inline>
-        </span>
-        }
-      </div>
       <!-- Tabs -->
       <div id="tabs" stl:if="tabs">
         [

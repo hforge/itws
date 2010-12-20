@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <div id="admin">
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <ul stl:if="tabs">
+            <li><a href="/;view">Actions</a></li>
+            <li stl:repeat="tab tabs">
+              <a href="${tab/name}" class="${tab/class}">
+                <stl:block stl:if="not tab/icon">
+                  ${tab/label}
+                </stl:block>
+                <img src="${tab/icon}" title="${tab/label}"
+                 stl:if="tab/icon"/>
+              </a>
+            </li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li><a href="">Admin</a></li>
+            <li stl:repeat="tab backoffice_tabs">
+              <a href="${tab/name}" class="${tab/class}">
+                <img src="${tab/icon}" title="${tab/label}"/>
+              </a>
+            </li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>
+              <a href="#">Edit mode</a>
+            </li>
+            <li stl:repeat="tab edition_tabs">
+              <a href="${tab/name}" class="${tab/class}">
+                ${tab/label}
+              </a>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</stl:block>

@@ -88,7 +88,7 @@ class NeutralWS(Website_BarAware, WebSite):
     class_id = 'neutral'
     class_version = '20101013'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'edit', 'manage_content', 'control_panel']
+    class_views = ['view', 'edit', 'manage_content']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'),
                               view=FeedViews_Enumerate(source='metadata',

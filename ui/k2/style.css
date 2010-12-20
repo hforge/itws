@@ -269,12 +269,6 @@ body {
   background-color: #333;
   color: #fff;
 }
-
-#backoffice-views {
-  float: right;
-  padding: 2px 4px 2px 0;
-}
-
 /**************************************************************************
  * Input, buttons, fieldset
  * ***********************************************************************/
@@ -654,4 +648,73 @@ body.popup p.tabme a.selected {
   background: none;
   border: 0;
   padding: 2px !important;
+}
+
+/************************************
+ * Administration bar
+ ************************************/
+#admin{
+  width: 100%;
+  border-bottom: 1px solid gray;
+  padding: 5px;
+  float: middle;
+  height: 25px;
+  background: url('/ui/k2/admin-background.png') repeat-x;
+}
+
+#admin table{
+  margin: 0 auto;
+}
+#admin ul{
+  margin: 0;
+  padding: 0 40px 0 0;
+}
+
+#admin ul li {
+  display: inline;
+}
+
+#admin ul li a{
+  float: left;
+  border: 1px solid #333;
+  border-right: 0;
+  border-left: 1px solid #333333;
+  height: 15px;
+  line-height: 15px;
+  color: #000;
+  padding: 3px 10px;
+  margin: 0px;
+  background-color: #FFF;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: rgba(64, 64, 64, 0.1) 0 2px 5px;
+  -moz-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
+  -webkit-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
+  font-size: 10px;
+}
+#admin ul li:first-child a,
+#admin ul li:first-child a:hover {
+  background-color: #333;
+  color: #FFF;
+}
+#admin ul li a:hover {
+  background-color: #D8D8D8;
+  color: #000;
+}
+#admin ul li a.active{
+  background-color: #D8D8D8;
+  font-weight: bold;
+  color: #000;
+}
+#admin ul li:first-child a{
+  border-radius: 5px 0 0 5px;
+  -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+}
+
+#admin ul li:last-child a{
+  border-right: 1px solid #333;
+  border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
 }
