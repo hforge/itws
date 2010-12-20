@@ -30,7 +30,7 @@ $(document).ready(function() {
        'transitionIn': 'none',
        'transitionOut': 'none',
        'href': this.href + '?is_admin_popup=1',
-       'overlayColor': '#729FCF',
+       'overlayColor': '#333',
        'overlayOpacity': 0.8,
        'onCleanup': function () {
             var fancy_iframe = $("#fancybox-frame");
