@@ -108,9 +108,25 @@ class DiaporamaTable_CompositeView(CompositeForm):
         return [ EditOnlyLanguageMenu(view=self) ]
 
 
+    def _get_edit_view(self):
+        return self.subviews[0]
+
+
+    # EditLanguageMenu API
     def _get_query_to_keep(self, resource, context):
-        """Return a list of dict {'name': name, 'value': value}"""
-        return []
+        return self._get_edit_view()._get_query_to_keep(resource, context)
+
+
+    def _get_query_fields(self, resource, context):
+        return self._get_edit_view()._get_query_fields(resource, context)
+
+
+    def _get_schema(self, resource, context):
+        return self._get_edit_view()._get_schema(resource, context)
+
+
+    def _get_widgets(self, resource, context):
+        return self._get_edit_view()._get_widgets(resource, context)
 
 
     def get_namespace(self, resource, context):
