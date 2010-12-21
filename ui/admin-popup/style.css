@@ -1,20 +1,20 @@
-.clear{
+.clear {
   clear: both;
 }
 
-p{
+p {
   font-size: 11px;
 }
 
-td{
+td {
   vertical-align: top;
 }
 
-.bold{
+.bold {
   font-weight: bold;
 }
 
-h1{
+h1 {
   float: left;
   text-decoration: none;
   padding: 5px;
@@ -33,13 +33,22 @@ h1{
   -webkit-box-shadow:0 0 3px #CCCCCC;
 }
 
+a {
+  color: #333;
+}
+
+#browse-list td a {
+    color: #333333;
+    text-decoration: underline;
+}
+
 /* Forms look */
-input, textarea, select{
+input, textarea, select {
   border: 1px solid gray;
   padding: 2px;
 }
 
-button, .button{
+button, .button {
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
   border-radius:3px;
@@ -67,12 +76,12 @@ button:hover, button:focus {
   -webkit-box-shadow:0 0 3px #999999;
 }
 
-fieldset{
+fieldset {
   background-color: #F9F9F9;
   border: 1px solid #DDDDDD;
 }
 
-fieldset legend{
+fieldset legend {
   padding: 3px 0px;
   color: #333333;
 }
