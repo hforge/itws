@@ -149,35 +149,6 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
         return WebPage
 
 
-    def is_empty(self):
-        # XXX And the ACLs ???
-        if self.get_ordered_names():
-            return False
-        return True
-
-
-    def get_sub_sections(self, not_empty=False):
-        section_cls = self.get_subsection_class()
-        for name in self.get_ordered_names():
-            item = self.get_resource(name)
-            if not isinstance(item, section_cls):
-                continue
-            if not_empty is True and item.is_empty():
-                continue
-            yield item
-
-
-    def get_n_articles_by_state(self):
-        article_cls = self.get_article_class()
-        states = {'public': 0, 'pending': 0, 'private': 0}
-        for name in self.get_ordered_names():
-            item = self.get_resource(name)
-            if not isinstance(item, article_cls):
-                continue
-            states[item.get_statename()] += 1
-        return states
-
-
     def to_text(self):
         return TagsAware.to_text(self)
 
