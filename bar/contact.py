@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.uri import get_reference, Path, Reference
+from itools.uri import Path, Reference
 
 # Import from ikaaro
 from ikaaro.control_panel import CPEditContactOptions
@@ -24,6 +24,7 @@ from ikaaro.website_views import ContactForm
 
 # Import from itws
 from base import Box
+from homepage import WSDataFolder
 
 
 
@@ -83,7 +84,12 @@ class BoxContact_View(ContactForm):
         site_root = context.resource.get_site_root()
         ret = ContactForm.action(self, site_root, context, form)
         # Hook goto
-        goto = context.get_link(resource.parent)
+        if isinstance(resource.parent, WSDataFolder):
+            # goto on website
+            goto = context.get_link(site_root)
+        else:
+            # goto parent section
+            goto = context.get_link(resource.parent)
         return context.come_back(context.message, goto=goto)
 
 
