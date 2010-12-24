@@ -38,6 +38,7 @@ register_namespace(xsi_namespace)
 rng_file = ro_database.get_handler(get_abspath('SiteMap-schema.rng'),
                                    RelaxNGFile)
 for namespace in rng_file.namespaces.itervalues():
+    # Remove sitemap prefix
     namespace.prefix = None
 rng_file.auto_register()
 
