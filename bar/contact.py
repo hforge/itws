@@ -80,16 +80,28 @@ class BoxContact_View(ContactForm):
         return namespace
 
 
+    def _get_parent_view_container(self, resource):
+        if isinstance(resource.parent, WSDataFolder):
+            return resource.get_site_root()
+        else:
+            return resource.parent
+
+
+    def on_form_error(self, resource, context):
+        # FIXME on_form_error should not return a GET
+        # side-effect: error informations are lost
+        context.message = context.form_error.get_message()
+        parent_view_container = self._get_parent_view_container(resource)
+        goto = context.get_link(parent_view_container)
+        return context.come_back(context.message, goto=goto)
+
+
     def action(self, resource, context, form):
         site_root = context.resource.get_site_root()
         ret = ContactForm.action(self, site_root, context, form)
         # Hook goto
-        if isinstance(resource.parent, WSDataFolder):
-            # goto on website
-            goto = context.get_link(site_root)
-        else:
-            # goto parent section
-            goto = context.get_link(resource.parent)
+        parent_view_container = self._get_parent_view_container(resource)
+        goto = context.get_link(parent_view_container)
         return context.come_back(context.message, goto=goto)
 
 
