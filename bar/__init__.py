@@ -17,25 +17,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import sidebars
-from base_views import SideBar_View
 from bar_aware import ContentBarAware, SideBarAware
+from base_views import SideBar_View
+from contact import BoxContact
 from diaporama import Diaporama
 from feed_box import BoxFeed
 from homepage import Website_BarAware
 from html import HTMLContent
 from map_box import MapBox
 from menu import MenuSideBar
+from navigation import BoxNavigation
 from registry import register_box
 from repository import Repository
 from section import Section
 from tags import BoxTags
 from toc import BoxSectionChildrenToc, ContentBoxSectionChildrenToc
 from twitter import IdenticaSideBar, TwitterSideBar
-from contact import BoxContact
 
 
 register_box(BoxContact)
 register_box(BoxFeed)
+register_box(BoxNavigation)
 register_box(BoxSectionChildrenToc)
 register_box(BoxTags)
 register_box(ContentBoxSectionChildrenToc)
