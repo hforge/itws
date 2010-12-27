@@ -133,12 +133,12 @@ class RssFeeds_View(STLView):
                     title = u'%s…' % title[:45]
                 title = title.encode('utf-8')
                 feeds.append({'title': title, 'uri': uri,
-                               'nb_articles': data['nb_articles'],
-                               'selected': feed_filter == uri})
+                              'nb_articles': data['nb_articles'],
+                              'selected': feed_filter == uri})
                 total_nb_articles += nb_articles
 
         # sort by title
-        nb_articles_format = '%%%sd' % len(str(total_nb_articles))
+        nb_articles_format = '%{0}d'.format(len(str(total_nb_articles)))
         feeds.sort(key=lambda x: x['title'])
         feeds.insert(0, {'uri': 'all',
                          'title': MSG(u'All feeds').gettext('utf-8'),
@@ -151,9 +151,9 @@ class RssFeeds_View(STLView):
             feed['nb_articles'] = nb
 
         ns = {'articles': articles,
-                'errors': errors,
-                'see_errors': see_errors,
-                'feeds': feeds}
+              'errors': errors,
+              'see_errors': see_errors,
+              'feeds': feeds}
 
         return ns
 
@@ -198,30 +198,24 @@ class CSV_View(BaseCSV_View):
                      [ ActivateButton, DeactivateButton ])
 
 
-    def action_activate(self, resource, context, form):
+    def _action_activate_deactivate(self, resource, context, form, active):
         ids = form['ids']
         handler = resource.handler
         for id in ids:
-            row = handler.get_row(id)
-            new_row = {'uri': row.get_value('uri'),
-                       'keywords': row.get_value('keywords'),
-                       'active': True}
-            handler.update_row(id, **new_row)
+            handler.update_row(id, **{'active': active})
+
+
+    def action_activate(self, resource, context, form):
+        self._action_activate_deactivate(resource, context, form, True)
 
         # Ok
         context.message = INFO(u'Feeds activated.')
 
 
     def action_deactivate(self, resource, context, form):
-        ids = form['ids']
-        handler = resource.handler
-        for id in ids:
-            row = handler.get_row(id)
-            new_row = {'uri': row.get_value('uri'),
-                       'keywords': row.get_value('keywords'),
-                       'active': False}
-            handler.update_row(id, **new_row)
+        self._action_activate_deactivate(resource, context, form, False)
 
+        context.database.change_resource(resource)
         # Ok
         context.message = INFO(u'Feeds deactivated.')
 
@@ -295,8 +289,6 @@ class RssFeeds(CSV):
                     RadioWidget('update_now', title=MSG(u"Update RSS now"))]
 
 
-
-
     def get_columns(self):
         return [('uri', MSG(u'URL')),
                 ('keywords', MSG(u'Keywords (Separated by comma)')),
@@ -357,6 +349,10 @@ class RssFeeds(CSV):
             # Check
             feed_articles = []
             for item in feed.items:
+                # Check if description is available
+                if item.get('description') is None:
+                    # Invalid item (not well formed)
+                    continue
                 item['pubDate_valid'] = True
                 if not item.has_key('pubDate'):
                     item['pubDate'] = rss_default_pub_date
@@ -366,7 +362,6 @@ class RssFeeds(CSV):
                 for keyword in keywords:
                     if (re.search(keyword, item['title'].lower()) or
                         re.search(keyword, item['description'].lower())):
-                        #articles.append(item)
                         feed_articles.append(item)
                         break
 
@@ -424,18 +419,10 @@ class RssFeeds(CSV):
         handler.last_articles = articles
         list_errors = []
         for index, x in enumerate(errors):
-            # FIXME if we simply append x (a generator)
-            # this cause a segfault in the xml parser
-            # Currently I don't know why
-            # To avoid this critical error we transform the generator
-            # into a list
-            try:
-                list_errors.append(list(x))
-            except XMLError:
-                # Default We show the string error
-                list_errors.append(errors_str[index])
-                continue
-            #list_errors.append(x)
+            # FIXME (old comment 2010-12-27, the problem did not occurred since)
+            # if we simply append x (a generator) this cause a segfault in the
+            # xml parser
+            list_errors.append(x)
 
         handler.errors = list_errors
         handler.feeds_summary = feeds_summary
@@ -462,6 +449,7 @@ class RssFeeds(CSV):
         if (last_download_time is None or
             now - last_download_time > update_feeds_delta):
             self.update_rss()
+
         return handler.feeds_summary
 
 
