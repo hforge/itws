@@ -66,8 +66,14 @@ class BoxNavigation_View(Box_View):
         current_level_in_path = here_abspath.resolve2('/'.join(prefix))
 
         items = []
+        user = context.user
         # FIXME sort_by should not be case sensitive
         for doc in results.get_documents(sort_by='title'):
+            item = root.get_resource(doc.abspath)
+            # ACL
+            ac = item.get_access_control()
+            if ac.is_allowed_to_view(user, item) is False:
+                continue
             d = {'href': context.get_link(doc),
                  'title': doc.title or doc.name,
                  'format': doc.format,
