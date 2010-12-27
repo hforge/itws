@@ -42,25 +42,15 @@ class ITWS_ControlPanelMenu(ControlPanelMenu):
     title = MSG(u'Advanced')
 
     def get_items(self):
+        items = super(ITWS_ControlPanelMenu, self).get_items()
+        # Hook icons
         resource = self.resource
-        ac = resource.get_access_control()
-        user = self.context.user
-
-        items = []
-        for name in resource.class_control_panel:
+        for item in items:
+            name = item['href'][1:] # remove ';'
             view = resource.get_view(name)
-            if view is None:
-                continue
-            if not ac.is_access_allowed(user, resource, view):
-                continue
             if hasattr(view, 'itws_icon'):
                 icon = '/ui/itws-icons/16x16/%s/' % view.itws_icon
-            else:
-                icon = resource.get_method_icon(view, size='16x16')
-            items.append({
-                'title': view.title,
-                'src': icon,
-                'href': ';%s' % name})
+                item['src'] = icon
 
         return items
 
