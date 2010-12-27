@@ -653,28 +653,39 @@ body.popup p.tabme a.selected {
 /************************************
  * Administration bar
  ************************************/
-#admin{
+#admin {
   width: 100%;
   border-bottom: 1px solid gray;
-  padding: 5px;
+  padding: 5px 0;
   float: middle;
   height: 25px;
   background: url('/ui/k2/admin-background.png') repeat-x;
 }
 
-#admin table{
+#admin table {
   margin: 0 auto;
+  padding: 0 5px;
 }
-#admin ul{
+
+#admin table td {
+  padding-right: 40px;
+  vertical-align: top;
+}
+
+#admin table td:last-child {
+  padding-right: 0;
+}
+
+#admin ul {
   margin: 0;
-  padding: 0 40px 0 0;
+  padding: 0;
 }
 
 #admin ul li {
   display: inline;
 }
 
-#admin ul li a{
+#admin ul li a {
   float: left;
   border: 1px solid #333;
   border-right: 0;
@@ -692,27 +703,31 @@ body.popup p.tabme a.selected {
   -webkit-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
   font-size: 10px;
 }
+
 #admin ul li:first-child a,
 #admin ul li:first-child a:hover {
   background-color: #333;
   color: #FFF;
 }
+
 #admin ul li a:hover {
   background-color: #D8D8D8;
   color: #000;
 }
-#admin ul li a.active{
+
+#admin ul li a.active {
   background-color: #D8D8D8;
   font-weight: bold;
   color: #000;
 }
-#admin ul li:first-child a{
+
+#admin ul li:first-child a {
   border-radius: 5px 0 0 5px;
   -moz-border-radius: 5px 0 0 5px;
   -webkit-border-radius: 5px 0 0 5px;
 }
 
-#admin ul li:last-child a{
+#admin ul li:last-child a {
   border-right: 1px solid #333;
   border-radius: 0 5px 5px 0;
   -moz-border-radius: 0 5px 5px 0;
