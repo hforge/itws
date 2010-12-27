@@ -15,9 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.database import AndQuery, OrQuery, PhraseQuery
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.stl import stl
+
+# Import from ikaaro
+from ikaaro.autoform import CheckboxWidget
 
 # Import from itws
 from base import Box
@@ -61,6 +66,7 @@ class BoxNavigation_View(Box_View):
         current_level_in_path = here_abspath.resolve2('/'.join(prefix))
 
         items = []
+        # FIXME sort_by should not be case sensitive
         for doc in results.get_documents(sort_by='title'):
             d = {'href': context.get_link(doc),
                  'title': doc.title or doc.name,
@@ -74,10 +80,10 @@ class BoxNavigation_View(Box_View):
                              PhraseQuery('is_folder', True))
                 if len(root.search(q)) == 1:
                     sub_items = self.get_items(doc, context, level+1)
-                    if doc.abspath == context.resource.get_abspath():
-                        css = 'active'
-                    else:
-                        css = 'in-path'
+                if doc.abspath == here_abspath:
+                    css = 'active'
+                else:
+                    css = 'in-path'
             d['items'] = sub_items
             d['css'] = css
             items.append(d)
@@ -92,7 +98,11 @@ class BoxNavigation_View(Box_View):
         items = self.get_items(site_root, context)
 
         # TODO Allow to add title box
-        return {'tree': items}
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+
+        return {'tree': items, 'title': title}
 
 
 
@@ -104,6 +114,14 @@ class BoxNavigation(Box):
     class_description = MSG(u'Navigation Tree which display full tree from '
                             u'root')
 
+    class_schema = merge_dicts(Box.class_schema,
+                               display_title=Boolean(source='metadata',
+                                                     default=True))
+    edit_schema = {'display_title': Boolean}
+    edit_widgets = [
+        CheckboxWidget('display_title',
+                        title=MSG(u'Display above the tree'))
+        ]
     is_content = False
 
     # Views
