@@ -65,28 +65,20 @@ class ITWS_ControlPanel(ControlPanel):
     def get_namespace(self, resource, context):
         # XXX We override get_namespace just to fix problem
         # with icons uri
-        ac = resource.get_access_control()
-        items = []
-        for name in resource.class_control_panel:
+        proxy = super(ITWS_ControlPanel, self)
+        namespace = proxy.get_namespace(resource, context)
+        items = namespace['items']
+        # Hook icons
+        for item in items:
+            name = item['url'][1:] # remove ';'
             view = resource.get_view(name)
-            if view is None:
-                continue
-            if not ac.is_access_allowed(context.user, resource, view):
-                continue
             if hasattr(view, 'itws_icon'):
                 icon = '/ui/itws-icons/48x48/%s/' % view.itws_icon
-            else:
-                icon = resource.get_method_icon(view, size='48x48')
-            items.append({
-                'icon': icon,
-                'title': view.title,
-                'description': view.description,
-                'url': ';%s' % name})
+                item['icon'] = icon
 
-        return {
-            'title': MSG(u'Control Panel'),
-            'batch': None,
-            'items': items}
+        namespace['batch'] = None
+        namespace['title'] = MSG(u'Control Panel')
+        return namespace
 
 
 
