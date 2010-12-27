@@ -19,12 +19,14 @@
 from copy import deepcopy
 
 # Import from itools
+from itools.core import is_thingy
 from itools.csv import Property
 from itools.datatypes import URI, String, Unicode, XMLContent
-from itools.xml import XMLParser
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
+from itools.uri.generic import EmptyReference
 from itools.web import get_context
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import ImageSelectorWidget, SelectWidget
@@ -35,7 +37,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.future.order import get_resource_preview
 from ikaaro.menu import Target
 from ikaaro.table import OrderedTableFile, OrderedTable
-from ikaaro.table_views import OrderedTable_View
+from ikaaro.table_views import OrderedTable_View, AddRecordButton
 from ikaaro.views import CompositeForm
 
 # Import from itws
@@ -43,8 +45,8 @@ from base import BoxAware
 from base_views import Box_View
 from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
-from menu import MenuSideBarTable_AddRecord
 from itws.views import AutomaticEditView, EditOnlyLanguageMenu
+from menu import MenuSideBarTable_AddRecord
 
 
 
@@ -54,6 +56,15 @@ from itws.views import AutomaticEditView, EditOnlyLanguageMenu
 class DiaporamaTable_View(OrderedTable_View):
 
     search_template = None
+    # Delete add_record schema/action
+    # because, DiaporamaTable_View and MenuSideBarTable_AddRecord cannot
+    # implement the same 'actions' since they are part of the same composit
+    # form
+    action_add_record_schema = None
+    action_add_record = None
+    # Hook actions, remove add_record shortcut
+    table_actions = [ action for action in OrderedTable_View.table_actions
+                      if is_thingy(action, AddRecordButton) is False ]
 
     def get_item_value(self, resource, context, item, column):
         if column == 'img_path':
@@ -65,15 +76,14 @@ class DiaporamaTable_View(OrderedTable_View):
         elif column == 'img_link':
             img_link = resource.handler.get_record_value(item, column)
             reference = get_reference(img_link)
+            if isinstance(reference, EmptyReference):
+                return None
             if reference.scheme:
                 # Encode the reference '&' to avoid XMLError
                 reference = XMLContent.encode(str(reference))
                 return XMLParser('<a href="%s">%s</a>' % (reference, reference))
             # Split path/view
-            reference_path = str(reference.path)
-            view = None
-            if reference_path.count(';'):
-                reference_path, view = reference_path.split('/;' ,1)
+            reference_path, view = get_path_and_view(reference.path)
             item_resource = resource.get_resource(reference_path, soft=True)
             if not item_resource:
                 # Not found, just return the reference
@@ -130,13 +140,30 @@ class DiaporamaTable_CompositeView(CompositeForm):
 
 
     def get_namespace(self, resource, context):
-        # XXX Force GET to avoid problem in STLForm.get_namespace
-        # side effect unknown
-        real_method = context.method
-        context.method = 'GET'
-        views = [ view.GET(resource, context) for view in self.subviews ]
-        context.method = real_method
-        return {'views': views}
+        if context.method == 'POST':
+            # When context.method is POST, render subviews
+            # as if context.method equals GET if the POST does not cause by
+            # this view
+            action = context.form_action
+            # Hook method
+            real_method = context.method
+            context.method = 'GET'
+            views = []
+            for view in self.subviews:
+                method = getattr(view, action, None)
+                if method is None:
+                    views.append(view.GET(resource, context))
+                    continue
+                else:
+                    context.method = real_method
+                    views.append(view.GET(resource, context))
+                    context.method = 'GET'
+            # Restore context.method
+            context.method = real_method
+            return {'views': views}
+        else:
+            proxy = super(DiaporamaTable_CompositeView, self)
+            return proxy.get_namespace(resource, context)
 
 
 

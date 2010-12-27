@@ -29,8 +29,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.table import Table_AddRecord
-from ikaaro.table_views import OrderedTable_View
+from ikaaro.table_views import OrderedTable_View, Table_AddRecord
 from ikaaro.views import CompositeForm
 
 # Import from itws
