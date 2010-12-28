@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-09-16 17:09+CET\n"
+"POT-Creation-Date: 2010-12-28 11:12+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "+"
 msgstr ""
 
-#: ../repository.py:718
+#: ../repository.py:717
 msgid "-->"
 msgstr ""
 
@@ -61,10 +61,10 @@ msgstr ""
 msgid "A customizable tracker to manage issues"
 msgstr ""
 
-#: ../ws_neutral.py:733
-#: ../ws_neutral.py:1087
-#: ../ws_neutral.py:1098
-#: ../ws_neutral.py:1113
+#: ../ws_neutral.py:767
+#: ../ws_neutral.py:1122
+#: ../ws_neutral.py:1133
+#: ../ws_neutral.py:1148
 #: ../about.py:41
 msgid "About ITWS"
 msgstr ""
@@ -77,19 +77,19 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: ../tags_views.py:421
+#: ../tags_views.py:423
 #: ../slides_views.py:367
-#: ../views.py:79
+#: ../views.py:78
 #: ../sidebar/menu.py:103
 #: ../news_views.py:359
 #: ../section_views.py:196
 msgid "Add"
 msgstr ""
 
-#: ../bar.py:243
-#: ../bar.py:319
+#: ../bar.py:250
+#: ../bar.py:329
 #: ../ws_neutral_views.py:438
-#: ../ws_neutral.py:1137
+#: ../ws_neutral.py:1172
 #: ../section_views.py:350
 msgid "Add Central Part Box"
 msgstr ""
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Add Resource: Subsection, File, PDF, ODT..."
 msgstr ""
 
-#: ../bar.py:204
-#: ../bar.py:270
+#: ../bar.py:211
+#: ../bar.py:280
 #: ../ws_neutral_views.py:446
 #: ../section_views.py:358
-#: ../repository.py:537
+#: ../repository.py:536
 msgid "Add Sidebar Box"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Add Webpages in the Section"
 msgstr ""
 
-#: ../ws_neutral.py:339
+#: ../ws_neutral.py:349
 msgid "Add a section"
 msgstr ""
 
@@ -142,8 +142,8 @@ msgstr ""
 msgid "Add new {cls}"
 msgstr ""
 
-#: ../views.py:206
-#: ../views.py:326
+#: ../views.py:205
+#: ../views.py:325
 msgid "Add {class_title}"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 msgid "Available Central Part Boxes"
 msgstr ""
 
-#: ../section.py:83
+#: ../section.py:84
 msgid "Available Sections and Webpages"
 msgstr ""
 
@@ -175,11 +175,11 @@ msgstr ""
 msgid "Back to Addresses Folder"
 msgstr ""
 
-#: ../ws_neutral.py:295
+#: ../ws_neutral.py:305
 msgid "Back to navigation"
 msgstr ""
 
-#: ../views.py:600
+#: ../views.py:599
 msgid "Backlinks"
 msgstr ""
 
@@ -196,6 +196,7 @@ msgid "Batch size"
 msgstr ""
 
 #: ../webpage_views.py:56
+#: ../edit_area.py:88
 #: ../turning_footer.py:63
 msgid "Body"
 msgstr ""
@@ -235,20 +236,20 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: ../ws_neutral.py:470
-#: ../ws_neutral.py:642
+#: ../ws_neutral.py:480
+#: ../ws_neutral.py:676
 msgid "Configure Homepage"
 msgstr ""
 
-#: ../ws_neutral.py:713
+#: ../ws_neutral.py:747
 msgid "Contact"
 msgstr ""
 
-#: ../ws_neutral.py:727
+#: ../ws_neutral.py:761
 msgid "Contact us"
 msgstr ""
 
-#: ../views.py:538
+#: ../views.py:537
 msgid "Content"
 msgstr ""
 
@@ -348,7 +349,7 @@ msgstr ""
 msgid "Edit diaporama title"
 msgstr ""
 
-#: ../ws_neutral.py:340
+#: ../ws_neutral.py:350
 msgid "Edit languages"
 msgstr ""
 
@@ -360,7 +361,7 @@ msgstr ""
 msgid "Edit robots.txt"
 msgstr ""
 
-#: ../ws_neutral.py:1160
+#: ../ws_neutral.py:1193
 msgid "Edit tags"
 msgstr ""
 
@@ -388,7 +389,7 @@ msgstr ""
 msgid "Feeds deactivated."
 msgstr ""
 
-#: ../views.py:502
+#: ../views.py:501
 msgid "File"
 msgstr ""
 
@@ -396,11 +397,11 @@ msgstr ""
 msgid "Find the GPS coordinates"
 msgstr ""
 
-#: ../ws_neutral.py:948
+#: ../ws_neutral.py:982
 msgid "Fix %s"
 msgstr ""
 
-#: ../ws_neutral.py:1129
+#: ../ws_neutral.py:1164
 msgid "Footer"
 msgstr ""
 
@@ -413,7 +414,7 @@ msgid "Footer Menu"
 msgstr ""
 
 #: ../sidebar/twitter.py:147
-#: ../sidebar/twitter.py:284
+#: ../sidebar/twitter.py:298
 msgid "Force cache update"
 msgstr ""
 
@@ -429,11 +430,11 @@ msgstr ""
 msgid "GPS"
 msgstr ""
 
-#: ../bar.py:211
+#: ../bar.py:218
 msgid "Go there to edit sidebar"
 msgstr ""
 
-#: ../ws_neutral.py:294
+#: ../ws_neutral.py:304
 msgid "Go to editing mode"
 msgstr ""
 
@@ -458,7 +459,7 @@ msgstr ""
 msgid "Hide if there is only one item"
 msgstr ""
 
-#: ../ws_neutral.py:710
+#: ../ws_neutral.py:744
 msgid "Homepage"
 msgstr ""
 
@@ -466,19 +467,19 @@ msgstr ""
 msgid "Hyperlink"
 msgstr ""
 
-#: ../ws_neutral.py:574
+#: ../ws_neutral.py:608
 msgid "ITWS website"
 msgstr ""
 
-#: ../sidebar/twitter.py:268
+#: ../sidebar/twitter.py:282
 msgid "Identi.ca SideBar"
 msgstr ""
 
-#: ../sidebar/twitter.py:281
+#: ../sidebar/twitter.py:295
 msgid "Identi.ca account name"
 msgstr ""
 
-#: ../sidebar/twitter.py:269
+#: ../sidebar/twitter.py:283
 msgid "Identi.ca sidebar feed"
 msgstr ""
 
@@ -499,7 +500,7 @@ msgstr ""
 msgid "Images folder"
 msgstr ""
 
-#: ../ws_neutral.py:657
+#: ../ws_neutral.py:691
 msgid "Index"
 msgstr ""
 
@@ -510,7 +511,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: ../views.py:712
+#: ../views.py:711
 msgid "Invalid title."
 msgstr ""
 
@@ -522,7 +523,7 @@ msgstr ""
 msgid "Issue"
 msgstr ""
 
-#: ../tags_views.py:376
+#: ../tags_views.py:378
 msgid "Items number"
 msgstr ""
 
@@ -534,20 +535,20 @@ msgstr ""
 msgid "Keywords (Separated by comma)"
 msgstr ""
 
-#: ../tags_views.py:378
+#: ../tags_views.py:380
 #: ../news_views.py:329
 #: ../slides_views.py:340
 msgid "Last Author"
 msgstr ""
 
 #: ../views.py:1007
-#: ../tags_views.py:377
+#: ../tags_views.py:379
 #: ../news_views.py:328
 #: ../slides_views.py:339
 msgid "Last Modified"
 msgstr ""
 
-#: ../views.py:1318
+#: ../views.py:1319
 msgid "Last News"
 msgstr ""
 
@@ -559,11 +560,11 @@ msgstr ""
 msgid "Last News Box (Sidebar)"
 msgstr ""
 
-#: ../views.py:562
+#: ../views.py:561
 msgid "Links"
 msgstr ""
 
-#: ../views.py:620
+#: ../views.py:619
 msgid "Links/Backlinks"
 msgstr ""
 
@@ -579,7 +580,7 @@ msgstr ""
 
 #: ../ws_neutral_views.py:426
 #: ../ws_neutral_views.py:473
-#: ../ws_neutral.py:1119
+#: ../ws_neutral.py:1154
 msgid "Manage Homepage Content"
 msgstr ""
 
@@ -615,7 +616,7 @@ msgstr ""
 msgid "Manage repository"
 msgstr ""
 
-#: ../section.py:111
+#: ../section.py:112
 #: ../section_views.py:371
 msgid "Manage section"
 msgstr ""
@@ -633,7 +634,7 @@ msgid "Manage turning footer"
 msgstr ""
 
 #: ../views.py:964
-#: ../tags_views.py:449
+#: ../tags_views.py:451
 #: ../images_folder_views.py:41
 msgid "Manage view"
 msgstr ""
@@ -654,12 +655,12 @@ msgstr ""
 msgid "Maximum number of news to display"
 msgstr ""
 
-#: ../ws_neutral.py:1123
+#: ../ws_neutral.py:1158
 msgid "Menu"
 msgstr ""
 
 #: ../views.py:1004
-#: ../tags_views.py:374
+#: ../tags_views.py:376
 #: ../news_views.py:325
 #: ../slides_views.py:337
 msgid "Name"
@@ -669,7 +670,7 @@ msgstr ""
 msgid "Neutral"
 msgstr ""
 
-#: ../ws_neutral.py:718
+#: ../ws_neutral.py:752
 #: ../news.py:76
 msgid "News"
 msgstr ""
@@ -702,7 +703,7 @@ msgstr ""
 msgid "Not visible, please %s at least one webpage"
 msgstr ""
 
-#: ../sidebar/twitter.py:282
+#: ../sidebar/twitter.py:296
 msgid "Number of message"
 msgstr ""
 
@@ -726,32 +727,32 @@ msgstr ""
 msgid "Open Street Map"
 msgstr ""
 
-#: ../bar.py:222
-#: ../bar.py:317
+#: ../bar.py:229
+#: ../bar.py:327
 #: ../ws_neutral_views.py:442
-#: ../ws_neutral.py:1150
+#: ../ws_neutral.py:1183
 #: ../section_views.py:354
 #: ../repository.py:479
 #: ../repository.py:485
 msgid "Order Central Part Boxes"
 msgstr ""
 
-#: ../bar.py:182
-#: ../bar.py:268
+#: ../bar.py:189
+#: ../bar.py:278
 #: ../ws_neutral_views.py:450
-#: ../ws_neutral.py:1154
+#: ../ws_neutral.py:1187
 #: ../section_views.py:362
 #: ../repository.py:457
 #: ../repository.py:463
 msgid "Order Sidebar Boxes"
 msgstr ""
 
-#: ../ws_neutral.py:439
-#: ../ws_neutral.py:1146
+#: ../ws_neutral.py:449
+#: ../ws_neutral.py:1179
 msgid "Order Webpages"
 msgstr ""
 
-#: ../section.py:70
+#: ../section.py:71
 msgid "Order Webpages and Sub-sections in \"{name}\" TOC"
 msgstr ""
 
@@ -759,7 +760,7 @@ msgstr ""
 msgid "Order Webpages and Subsections in section TOC"
 msgstr ""
 
-#: ../section.py:349
+#: ../section.py:387
 msgid "Order Webpages/Sections"
 msgstr ""
 
@@ -767,15 +768,15 @@ msgstr ""
 msgid "Order bottom"
 msgstr ""
 
-#: ../views.py:437
+#: ../views.py:436
 msgid "Order box"
 msgstr ""
 
-#: ../ws_neutral.py:337
+#: ../ws_neutral.py:347
 msgid "Order menu"
 msgstr ""
 
-#: ../section.py:60
+#: ../section.py:61
 msgid "Order section"
 msgstr ""
 
@@ -791,7 +792,7 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: ../ws_neutral.py:724
+#: ../ws_neutral.py:758
 msgid "Powered by itws"
 msgstr ""
 
@@ -855,16 +856,16 @@ msgstr ""
 msgid "Robots exclusion standard"
 msgstr ""
 
-#: ../section.py:121
+#: ../section.py:122
 msgid "Section"
 msgstr ""
 
-#: ../section.py:122
+#: ../section.py:123
 msgid "Section allows to customize the central part and the sidebar. Section can contain subsections"
 msgstr ""
 
-#: ../repository_views.py:400
-#: ../repository_views.py:665
+#: ../repository_views.py:402
+#: ../repository_views.py:671
 msgid "Show all"
 msgstr ""
 
@@ -918,7 +919,7 @@ msgid "Slideshow allows to create and organize slides"
 msgstr ""
 
 #: ../views.py:1008
-#: ../tags_views.py:379
+#: ../tags_views.py:381
 #: ../news_views.py:331
 #: ../utils.py:112
 #: ../slides_views.py:341
@@ -995,7 +996,7 @@ msgstr ""
 msgid "The file doesn't exists"
 msgstr ""
 
-#: ../views.py:657
+#: ../views.py:656
 msgid "The given file is not of the expected type."
 msgstr ""
 
@@ -1008,7 +1009,7 @@ msgstr ""
 msgid "There is no items for this feed."
 msgstr ""
 
-#: ../section.py:85
+#: ../section.py:86
 msgid "These Subsections/Webpages are available, you can make them visible in this section by adding them to the section TOC"
 msgstr ""
 
@@ -1048,9 +1049,9 @@ msgstr ""
 msgid "Timeout in seconds"
 msgstr ""
 
-#: ../views.py:83
+#: ../views.py:82
 #: ../views.py:1005
-#: ../tags_views.py:375
+#: ../tags_views.py:377
 #: ../news_views.py:326
 #: ../resources.py:144
 #: ../slides_views.py:338
@@ -1081,7 +1082,7 @@ msgstr ""
 msgid "Tracker"
 msgstr ""
 
-#: ../ws_neutral.py:1126
+#: ../ws_neutral.py:1161
 msgid "Turning Footer"
 msgstr ""
 
@@ -1161,10 +1162,10 @@ msgstr ""
 #: ../slides_views.py:227
 #: ../about.py:33
 #: ../views.py:914
-#: ../section.py:64
+#: ../section.py:65
 #: ../repository_views.py:399
-#: ../repository_views.py:519
-#: ../repository_views.py:803
+#: ../repository_views.py:525
+#: ../repository_views.py:809
 #: ../news_views.py:117
 #: ../news_views.py:226
 #: ../section_views.py:276
@@ -1185,7 +1186,7 @@ msgstr ""
 msgid "Website View"
 msgstr ""
 
-#: ../ws_neutral.py:426
+#: ../ws_neutral.py:436
 msgid "Website data folder"
 msgstr ""
 
@@ -1197,7 +1198,7 @@ msgstr ""
 msgid "You are linking to {n} unpublished resources, some users may not be able to see them.<br/>See <a href=\"{path}/;backlinks\">links interface</a>."
 msgstr ""
 
-#: ../section.py:77
+#: ../section.py:78
 msgid "You can select and order these webpages and subsections, to make them accessible in the \"{name}\" section Table Of Content (TOC)"
 msgstr ""
 
@@ -1205,7 +1206,7 @@ msgstr ""
 msgid "You can use this to insert e.g. Google Analytics {snippet}"
 msgstr ""
 
-#: ../repository.py:715
+#: ../repository.py:714
 msgid "box %s is referenced by"
 msgstr ""
 
@@ -1234,7 +1235,7 @@ msgstr ""
 msgid "id"
 msgstr ""
 
-#: ../repository_views.py:597
+#: ../repository_views.py:603
 msgid "resource \"%s\" not found"
 msgstr ""
 
@@ -1246,15 +1247,15 @@ msgstr ""
 msgid "{root_title} - {here_title}"
 msgstr ""
 
-#: ../ws_neutral.py:148
+#: ../ws_neutral.py:149
 msgid "{ws_title} -- RSS Feeds"
 msgstr ""
 
-#: ../ws_neutral.py:155
+#: ../ws_neutral.py:156
 msgid "{ws_title} {title} -- RSS Feeds"
 msgstr ""
 
-#: ../views.py:1116
+#: ../views.py:1117
 msgid "…"
 msgstr ""
 
@@ -1268,7 +1269,7 @@ msgctxt "abbr"
 msgid "<g id='12'>${item/short_title}</g><x id='13'/>  <g id='14'> Select </g>"
 msgstr ""
 
-#: ../ui/common/externaledit.xml.en:63
+#: ../ui/common/externaledit.xml.en:56
 msgctxt "button"
 msgid "External Editor..."
 msgstr ""
@@ -1482,11 +1483,6 @@ msgctxt "label"
 msgid "<g id='39'>State</g><x id='40'/> ${state_widget}"
 msgstr ""
 
-#: ../ui/common/externaledit.xml.en:56
-msgctxt "label"
-msgid "Character encoding"
-msgstr ""
-
 #: ../ui/common/addimage.xml.en:106
 #: ../ui/common/addlink.xml.en:155
 #: ../ui/common/addmedia.xml.en:126
@@ -1599,7 +1595,7 @@ msgstr ""
 
 #: ../ui/common/externaledit.xml.en:20
 msgctxt "li"
-msgid "Unpack the tarball <g id='3'>restedit-1.0.0.tar.gz</g>"
+msgid "Unpack the tarball <g id='3'>restedit-last.tar.gz</g>"
 msgstr ""
 
 #: ../ui/common/Tags_tagcloud.xml.en:12
@@ -1769,6 +1765,16 @@ msgstr ""
 #: ../ui/common/browse_batch.xml.en:17
 msgctxt "link"
 msgid "« Previous"
+msgstr ""
+
+#: ../ui/edit_area/ea.xml.en:22
+msgctxt "noscript"
+msgid "(Javascript is deactivated or missing:"
+msgstr ""
+
+#: ../ui/edit_area/ea.xml.en:22
+msgctxt "noscript"
+msgid "the EditArea Editor is unavailable.)"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:24
