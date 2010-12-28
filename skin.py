@@ -372,7 +372,7 @@ class Skin(BaseSkin):
         is_admin = ac.is_admin(context.user, context.site_root)
         if edit_mode is True or is_admin:
             styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
-        return styles
+        return list(set(styles))
 
 
     def get_scripts(self, context):
@@ -385,7 +385,7 @@ class Skin(BaseSkin):
             scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
-        return scripts
+        return list(set(scripts))
 
 
 
