@@ -14,13 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from itools
-from itools.database import PhraseQuery, OrQuery, AndQuery
-
 # Import from ikaaro
 from ikaaro.registry import get_resource_class
-from ikaaro.utils import get_base_path_query
-
 
 
 ##########################################################################
@@ -39,66 +34,3 @@ def register_tags_aware(resource_class):
 def get_registered_tags_aware_classes():
     return [ get_resource_class(class_id)
              for class_id in tags_aware_registry ]
-
-
-##########################################################################
-# API To get items
-##########################################################################
-
-def get_tagaware_query_terms(context, on_current_folder=False,
-                             formats=[], state=None, tags=[]):
-    query = []
-    # Current website
-    site_root = context.resource.get_site_root()
-    abspath = site_root.get_abspath()
-    query.append(get_base_path_query(str(abspath)))
-
-    if on_current_folder is True:
-        abspath = context.resource.get_canonical_path()
-        query.append(PhraseQuery('parent_path', str(abspath)))
-    if formats:
-        q = [PhraseQuery('format', x) for x in formats]
-        if len(q) > 1:
-            query.append(OrQuery(*q))
-        else:
-            query.append(q[0])
-    if state:
-        query.append(PhraseQuery('workflow_state', state))
-    if tags:
-        tags_query = [ PhraseQuery('tags', tag) for tag in tags ]
-        if len(tags_query) > 1:
-            tags_query = OrQuery(*tags_query)
-        else:
-            tags_query = tags_query[0]
-        query.append(tags_query)
-    return query
-
-
-def get_tagaware_items(context, state='public', on_current_folder=False,
-             formats=[], language=None,
-             number=None, tags=[], brain_only=False, brain_and_docs=False):
-    query = get_tagaware_query_terms(context, on_current_folder, formats,
-                                     state, tags)
-    if language is None:
-        # Get Language
-        site_root = context.site_root
-        ws_languages = site_root.get_property('website_languages')
-        accept = context.accept_language
-        language = accept.select_language(ws_languages)
-
-    # size
-    size= number if number else 0
-
-    root = context.root
-    results = root.search(AndQuery(*query))
-    documents = results.get_documents(sort_by='pub_datetime',
-                                      reverse=True, size=size)
-    if brain_only:
-        return documents
-
-    if brain_and_docs:
-        return [ (doc, root.get_resource(doc.abspath))
-                 for doc in documents ]
-
-    return [ root.get_resource(doc.abspath)
-             for doc in documents ]

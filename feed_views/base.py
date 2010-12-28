@@ -75,9 +75,14 @@ class Feed_View(Folder_BrowseContent):
             define var 'search_on_current_folder'"""
         # Query
         args = list(args)
-        abspath = resource.get_canonical_path()
+
+        # Current website
+        site_root = context.resource.get_site_root()
+        abspath = site_root.get_abspath()
+        args.append(get_base_path_query(str(abspath)))
 
         # Current
+        abspath = resource.get_canonical_path()
         if self.search_on_current_folder is True:
             args.append(PhraseQuery('parent_path', str(abspath)))
 
