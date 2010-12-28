@@ -14,10 +14,10 @@
       <ol>
         <li>
           Download
-          <a href="http://download.hforge.org/restedit/1.0/restedit-1.0.0.tar.gz">restedit</a>
+          <a href="http://download.hforge.org/restedit/restedit-last.tar.gz">restedit</a>
         </li>
         <li>
-          Unpack the tarball <tt>restedit-1.0.0.tar.gz</tt>
+          Unpack the tarball <tt>restedit-last.tar.gz</tt>
         </li>
         <li>
           Copy the <tt>restedit.py</tt> script somewhere
@@ -33,7 +33,7 @@
       <ol>
         <li>
           Download
-          <a href="http://download.hforge.org/restedit/1.0/RestEdit-win32-setup.exe">restedit</a>
+          <a href="http://download.hforge.org/restedit/RestEdit-x86-setup.exe">restedit</a>
         </li>
         <li>
           Follow this
