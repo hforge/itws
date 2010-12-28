@@ -39,45 +39,13 @@ from ikaaro.autoform import timestamp_widget
 from ikaaro.workflow import state_widget
 
 # Import from itws
+from datatypes import TagsList
 from itws.datatypes import TimeWithoutSecond
 from itws.feed_views import Details_View
 from itws.rss import BaseRSS
 from itws.utils import is_navigation_mode
 from itws.utils import set_prefix_with_hostname
 from itws.widgets import DualSelectWidget
-
-
-class TagsList(Enumerate):
-
-
-    @staticmethod
-    def decode(value):
-        if not value:
-            return None
-        return str(value)
-
-
-    @staticmethod
-    def encode(value):
-        if value is None:
-            return ''
-        return str(value)
-
-
-    @classmethod
-    def get_options(cls):
-        context = get_context()
-        site_root = context.site_root
-        tags_folder = site_root.get_resource('tags', soft=True)
-        if tags_folder is None:
-            return []
-        context = get_context()
-        options = [ {'name': brain.name,
-                     'value': brain.title or brain.name}
-                    for brain in tags_folder.get_tag_brains(context) ]
-
-        return options
-
 
 
 class Tag_Edit(File_Edit):

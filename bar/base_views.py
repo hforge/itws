@@ -20,9 +20,10 @@
 from warnings import warn
 
 # Import from itools
+from itools.core import lazy
 from itools.gettext import MSG
 from itools.stl import set_prefix
-from itools.web import STLView
+from itools.web import get_context, STLView
 
 # Import from itws
 from itws.utils import get_admin_bar
@@ -78,7 +79,6 @@ class Bar_View(STLView):
     boxes_css_class = None
     box_view = BarBox_View
     container_cls = None
-    views = []
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -113,7 +113,7 @@ class Bar_View(STLView):
         allowed = ac.is_allowed_to_edit(context.user, resource)
         if allowed:
             return False
-        for item in self._get_items(resource, context):
+        for item in self.items:
             return False
         return True
 
@@ -126,7 +126,13 @@ class Bar_View(STLView):
         return '%s-%s' % (item.class_id, item.name)
 
 
-    def _get_items(self, resource, context, check_acl=True):
+    @lazy
+    def items(self):
+        # XXX Always True ?
+        check_acl = True
+        items = []
+        context = get_context()
+        resource = context.resource
         order_path = self.get_order_path(resource)
         order = resource.get_resource(order_path)
         orderfile = order.handler
@@ -145,8 +151,8 @@ class Bar_View(STLView):
                 ac = item.get_access_control()
                 if ac.is_allowed_to_view(user, item) is False:
                     continue
-
-            yield item
+            items.append(item)
+        return items
 
 
     def get_items(self, resource, context):
@@ -162,9 +168,8 @@ class Bar_View(STLView):
             _bar_aware = _bar_aware.parent
         context._bar_aware = _bar_aware
 
-        for item in self._get_items(resource, context, check_acl=True):
+        for item in self.items:
             view = item.view
-            self.views.append(view)
             view.set_view_is_empty(False)
             stream = view.GET(item, context)
             if view.get_view_is_empty() or stream is None:
@@ -210,17 +215,30 @@ class Bar_View(STLView):
         return namespace
 
 
+    ###########################################
+    # XXX Maybe it's should be composite view
+    ###########################################
+
+    def get_query_schema(self):
+        context = get_context()
+        resource = context.resource
+        schema = {}
+        for item in self.items:
+            schema.update(item.view.get_query_schema())
+        return schema
+
+
     def get_styles(self, context):
         styles = []
-        for view in self.views:
-            styles.extend(view.get_styles(context))
+        for item in self.items:
+            styles.extend(item.view.get_styles(context))
         return styles
 
 
     def get_scripts(self, context):
         scripts = []
-        for view in self.views:
-            scripts.extend(view.get_scripts(context))
+        for item in self.items:
+            scripts.extend(item.view.get_scripts(context))
         return scripts
 
 

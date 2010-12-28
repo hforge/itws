@@ -16,9 +16,43 @@
 
 # Import from itools
 from itools.datatypes import Enumerate
+from itools.web import get_context
 
 # Import from itws
 from utils import get_registered_tags_aware_classes
+
+class TagsList(Enumerate):
+
+
+    @staticmethod
+    def decode(value):
+        if not value:
+            return None
+        return str(value)
+
+
+    @staticmethod
+    def encode(value):
+        if value is None:
+            return ''
+        return str(value)
+
+
+    @classmethod
+    def get_options(cls):
+        context = get_context()
+        site_root = context.site_root
+        tags_folder = site_root.get_resource('tags', soft=True)
+        if tags_folder is None:
+            return []
+        context = get_context()
+        options = [ {'name': brain.name,
+                     'value': brain.title or brain.name}
+                    for brain in tags_folder.get_tag_brains(context) ]
+
+        return options
+
+
 
 
 

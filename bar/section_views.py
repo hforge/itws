@@ -30,66 +30,43 @@ from ikaaro.resource_views import DBResource_Edit
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base_views import Bar_View
-from itws.feed_views import Feed_View, FeedViews_Enumerate, register_view
+from itws.section_views import SectionViews_Enumerate
 from itws.tags.tags_views import TagsAware_Edit
+from itws.section_views import section_views_registry
 from itws.views import BaseManageContent
 
 
+class Section_EditView(DBResource_Edit):
 
-###########################################################################
-# Section view
-###########################################################################
-class Section_ContentBar_View(Bar_View, Feed_View):
+    title = MSG(u'Edit View')
 
-    title = MSG(u'View')
-    access = 'is_allowed_to_view'
-
-    view_name = 'composite-view'
-    view_title = MSG(u'Composite view')
-
-    order_name = 'order-contentbar'
-    repository = '.'
-
-    id = 'contentbar-items'
-    order_name = 'order-contentbar'
-    order_method = 'order_contentbar'
-    order_label = MSG(u'Order Central Part Boxes')
-    admin_bar_prefix_name = 'contentbar-box'
-    boxes_css_class = 'contentbar-box'
+    adminbar_rel = 'fancybox'
+    adminbar_icon = '/ui/icons/16x16/select_all.png'
 
 
-    @property
-    def container_cls(self):
-        from bar_aware import ContentBarAware
-        return ContentBarAware
+    def _get_schema(self, resource, context):
+        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
+                           view=SectionViews_Enumerate(mandatory=True))
 
 
-    def get_manage_buttons(self, resource, context):
-        ac = resource.get_access_control()
-        allowed = ac.is_allowed_to_edit(context.user, resource)
-        if not allowed:
-            return []
-
-        buttons = Bar_View.get_manage_buttons(self, resource, context)
-        section_path = context.get_link(resource)
-        buttons.append({'path': '%s/;new_contentbar_resource' % section_path,
-                        'icon': '/ui/common/icons/16x16/new.png',
-                        'rel': 'fancybox',
-                        'label': MSG(u'Add Central Part Box'),
-                        'target': None})
-
-        return buttons
+    def _get_widgets(self, resource, context):
+        return [
+            DBResource_Edit._get_widgets(self, resource, context)[0],
+            SelectWidget('view', title=MSG(u'View'), has_empty_option=False)]
 
 
-    def _get_item_id(self, item, context):
-        return '%s-%s-%s' % (item.class_id, context._bar_aware.name, item.name)
+    def action(self, resource, context, form):
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+        if form ['view'] != resource.get_property('view'):
+            resource.del_resource('section_view', soft=True)
+            view = section_views_registry[form['view']]
+            cls = view.view_configuration_cls
+            if cls:
+                resource.make_resource('section_view', view.view_configuration_cls)
+        return DBResource_Edit.action(self, resource, context, form)
 
-
-    def _get_repository(self, resource, context):
-        if resource.repository:
-            return resource.get_resource(resource.repository)
-        return resource
 
 
 
@@ -99,8 +76,7 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            TagsAware_Edit._get_schema(self, resource, context),
-                           state=StaticStateEnumerate,
-                           view=FeedViews_Enumerate(mandatory=True))
+                           state=StaticStateEnumerate)
 
 
     def _get_widgets(self, resource, context):
@@ -110,8 +86,6 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
 
         return (default_widgets +
                 [state_widget] +
-                [SelectWidget('view', title=MSG(u'View'),
-                              has_empty_option=False)] +
                 TagsAware_Edit._get_widgets(self, resource, context))
 
 
@@ -146,4 +120,3 @@ class Section_ManageContent(BaseManageContent):
 
 
 
-register_view(Section_ContentBar_View)

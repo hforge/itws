@@ -17,7 +17,9 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.gettext import MSG
-from itools.datatypes import String
+from itools.database import OrQuery, PhraseQuery
+from itools.datatypes import Enumerate, String
+
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
 
@@ -26,13 +28,19 @@ from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsList, TagsAwareClassEnumerate
-from itws.feed_views import FeedViews_Enumerate
-from itws.tags.utils import get_tagaware_items
 from itws.widgets import DualSelectWidget
-
 
 # XXX We have to refactor BoxFeed_View
 from itws.feed_views import Details_View
+
+
+class BoxFeed_Enumerate(Enumerate):
+
+    options = [
+      {'name': '/ui/feed_views/Tag_item_viewbox.xml', 'value': MSG(u'V3')},
+#      {'name': '/ui/news/SectionNews_view.xml', 'value': MSG(u'V2')},
+      {'name': '/ui/feed_views/NewsItem_preview.xml', 'value': MSG(u'V1')}]
+
 
 class BoxFeed_View(Box_View, Details_View):
 
@@ -40,33 +48,35 @@ class BoxFeed_View(Box_View, Details_View):
     title = MSG(u'View')
 
     view_name = 'feed-box'
-    more_title = None
 
     # Configuration
     batch_template = None
 
-#    def get_template_viewbox(self, resource, context):
-#        template = resource.get_property('view')
-#        if template == '1':
-#            return '/ui/feed_views/NewsItem_preview.xml'
-#        elif template == '2':
-#            return '/ui/news/SectionNews_view.xml'
-#        elif template == '3':
-#            return '/ui/news/Tag_item_viewbox.xml'
-#        return '/ui/common/Tag_item_viewbox.xml'
+    search_on_current_folder = False
+    search_on_current_folder_recursif = False
+
+
+    def get_query_schema(self):
+        return merge_dicts(Box_View.get_query_schema(self),
+                           Details_View.get_query_schema(self))
+
+
+    @property
+    def table_template(self):
+        view_resource = self.view_resource
+        return view_resource.get_property('view')
 
 
     def get_items(self, resource, context, *args):
-        count = resource.get_property('count')
+        args = list(args)
         tags = resource.get_property('tags')
-        feed_class_id = resource.get_property('feed_class_id')
-        return get_tagaware_items(context, formats=feed_class_id,
-                  number=count, tags=tags, brain_and_docs=True)
+        if tags:
+            args.append(OrQuery(*[PhraseQuery('tags', x) for x in tags]))
+        formats = resource.get_property('feed_class_id')
+        if formats:
+            args.append(OrQuery(*[PhraseQuery('format', x) for x in formats]))
+        return Details_View.get_items(self, resource, context, *args)
 
-
-
-    def sort_and_batch(self, resource, context, items):
-        return items
 
 
 
@@ -83,7 +93,7 @@ class BoxFeed(Box):
     class_schema = merge_dicts(Box.class_schema,
                                feed_class_id=TagsAwareClassEnumerate(source='metadata', multiple=True),
                                feed_source=String(source='metadata', multiple=True),
-                               view=FeedViews_Enumerate(source='metadata'),
+                               view=BoxFeed_Enumerate(source='metadata'),
                                count=PositiveInteger(source='metadata', default=3),
                                tags=TagsList(source='metadata', multiple=True,
                                              default=[]))
@@ -95,14 +105,15 @@ class BoxFeed(Box):
 
     # Automatic Edit View
     edit_schema = {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
-                   'view': FeedViews_Enumerate,
+                   'view': BoxFeed_Enumerate,
                    'count': PositiveInteger(default=3),
                    'tags': TagsList(multiple=True)}
 
 
     edit_widgets = [CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
-        SelectWidget('view', title=MSG(u'Feed template')),
+        SelectWidget('view', title=MSG(u'Feed template'),
+                     has_empty_option=False),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
         DualSelectWidget('tags', title=MSG(u'Show only items with this TAGS'),

@@ -28,8 +28,8 @@ from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from bar import Section
-from feed_views import FeedViews_Enumerate
 from rss import BaseRSS
+from section_views import SectionViews_Enumerate
 from tags import TagsAware
 
 
@@ -97,4 +97,4 @@ class NeutralWS_Edit(DBResource_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            breadcrumb_title=Multilingual,
-                           view=FeedViews_Enumerate)
+                           view=SectionViews_Enumerate)

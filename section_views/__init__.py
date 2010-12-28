@@ -14,23 +14,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from itools
-from itools.core import get_abspath
-
-# Import from ikaaro
-from ikaaro.skins import register_skin
-
-# Import from itws
-from base import Feed_View
-from collection import Search_View, Details_View
-from collection import DetailsWithoutPicture_View, Title_View
+import base # XXX
+from composite import Section_Composite_View
 from images import ImagesView_View
+from registry import get_section_view_from_registry, register_section_view
+from registry import SectionViews_Enumerate, section_views_registry
+from tagsaware import TagsAwareView_View
 
-
-
-# Register skin
-register_skin('feed_views', get_abspath('../ui/feed_views/'))
+for view in [ImagesView_View,
+             Section_Composite_View,
+             TagsAwareView_View]:
+    register_section_view(view)
 
 # Silent pyflakes
-Feed_View,
-Search_View, DetailsWithoutPicture_View, Title_View
+get_section_view_from_registry, SectionViews_Enumerate, section_views_registry

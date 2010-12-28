@@ -69,9 +69,10 @@ class AdminBarTemplate(CMSTemplate):
             # Add the menu
             tabs.append({
                 'name': '%s/;%s' % (here_link, link),
-                'icon': None,
+                'icon': getattr(view, 'adminbar_icon', None),
                 'label': view.get_title(context),
                 'active': active,
+                'rel': getattr(view, 'adminbar_rel', None),
                 'class': active and 'active' or None})
         # New resources
         if isinstance(here, Folder) is True:
@@ -79,6 +80,7 @@ class AdminBarTemplate(CMSTemplate):
             tabs.append({'name': './;new_resource',
                           'label': MSG(u'Add content'),
                           'icon': '/ui/icons/16x16/new.png',
+                          'rel': None,
                           'class': active and 'active' or None})
         return tabs
 
@@ -107,6 +109,11 @@ class AdminBarTemplate(CMSTemplate):
         tabs.append({'name': '/;control_panel',
                      'label': MSG(u'Control panel'),
                      'icon': '/ui/icons/16x16/external.png',
+                     'class': active and 'active' or None})
+        active = context.view_name == 'new_resource'
+        tabs.append({'name': '/;new_resource',
+                     'label': MSG(u'Create a new resource'),
+                     'icon': '/ui/icons/16x16/new.png',
                      'class': active and 'active' or None})
         return tabs
 

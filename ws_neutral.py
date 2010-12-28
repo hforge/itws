@@ -51,7 +51,8 @@ from bar import HTMLContent, Website_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
 from control_panel import ITWS_ControlPanel
-from feed_views import Search_View, FeedViews_Enumerate
+from feed_views import Search_View
+from section_views import SectionViews_Enumerate
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
 from robots_txt import RobotsTxt
@@ -88,10 +89,11 @@ class NeutralWS(Website_BarAware, WebSite):
     class_id = 'neutral'
     class_version = '20101013'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'edit', 'manage_content']
+    class_views = ['view', 'edit', 'edit_view',
+                   'configure_view', 'manage_content']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'),
-                              view=FeedViews_Enumerate(source='metadata',
+                              view=SectionViews_Enumerate(source='metadata',
                                   default='composite-view'))
 
 

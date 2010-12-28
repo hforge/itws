@@ -18,6 +18,7 @@
 
 # Import from itools
 from itools.datatypes import Integer, Enumerate, PathDataType, Time
+from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import get_context
 
@@ -82,3 +83,12 @@ class TimeWithoutSecond(Time):
         if value is None:
             return ''
         return value.strftime('%H:%M')
+
+
+
+class SortBy_Enumerate(Enumerate):
+
+    options = [
+      {'name': 'title', 'value': MSG(u'Title')},
+      {'name': 'mtime', 'value': MSG(u'Modification Date')},
+      {'name': 'ctime', 'value': MSG(u'Creation Date')}]

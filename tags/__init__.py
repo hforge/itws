@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from datatypes import TagsAwareClassEnumerate
+from datatypes import TagsAwareClassEnumerate, TagsList
 from tags import TagsFolder, Tag, TagsAware
-from tags_views import TagsList, Tag_View
+from tags_views import Tag_View
 from utils import register_tags_aware
 
 # Silent pyflakaes

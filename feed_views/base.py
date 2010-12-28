@@ -38,6 +38,7 @@ class Feed_View(Folder_BrowseContent):
     table_template = None
 
     # View configuration
+    view_resource = None
     template = '/ui/feed_views/base_feed_view_div.xml'
     search_template = '/ui/folder/browse_search.xml'
     content_template = '/ui/feed_views/Tag_item_viewbox.xml'
@@ -52,7 +53,7 @@ class Feed_View(Folder_BrowseContent):
     search_on_current_folder = True
     search_on_current_folder_recursif = False
     content_keys = ('pub_datetime', 'title', 'long_title',
-                    'link', 'preview', 'tags',
+                    'link', 'is_image', 'preview', 'tags',
                     'image', 'css', 'class_icon16', 'type', 'abspath')
 
 
@@ -64,7 +65,7 @@ class Feed_View(Folder_BrowseContent):
                 reverse=Boolean(default=self.reverse))
 
 
-    @thingy_property
+    @property
     def table_template(self):
         return self.content_template
 
@@ -121,6 +122,7 @@ class Feed_View(Folder_BrowseContent):
     ###############################################
 
     def get_namespace(self, resource, context):
+        self.view_resource = resource
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
         namespace['id'] = 'section-%s' % resource.name
         namespace['css'] = self.view_name
@@ -178,6 +180,8 @@ class Feed_View(Folder_BrowseContent):
             if item_brain.is_tagsaware:
                 return item_brain.preview_content
             return item_resource.get_property('description')
+        elif column == 'is_image':
+            return isinstance(item_resource, Image)
         elif column == 'image':
             if item_brain.is_tagsaware:
                 thumbnail = item_resource.get_preview_thumbnail()

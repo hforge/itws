@@ -32,6 +32,7 @@ class Details_View(Feed_View):
     def get_items(self, resource, context, *args):
         args = list(args)
         args.append(PhraseQuery('is_tagsaware', True))
+        args.append(PhraseQuery('workflow_state', 'public'))
         return Feed_View.get_items(self, resource, context, *args)
 
 
@@ -50,20 +51,6 @@ class Search_View(Feed_View):
 
     styles = ['/ui/feed_views/search_view.css']
     content_template = '/ui/feed_views/search_view.xml'
-
-
-class Images_View(Feed_View):
-
-    view_name = 'images-view'
-    view_title = MSG(u'Images view')
-
-    styles = ['/ui/feed_views/images_view.css']
-    content_template = '/ui/feed_views/images_view.xml'
-    search_template = None
-
-    def get_items(self, resource, context, *args):
-        args = [PhraseQuery('is_image', True)]
-        return Feed_View.get_items(self, resource, context, *args)
 
 
 class DetailsWithoutPicture_View(Feed_View):

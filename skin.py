@@ -375,20 +375,24 @@ class Skin(BaseSkin):
         styles.append('/ui/common/js/jquery.multiselect2side/style.css')
         # In edition mode we add fancybox css
         edit_mode = is_navigation_mode(context) is False
-        if edit_mode is True:
+        ac = context.site_root.get_access_control()
+        is_admin = ac.is_admin(context.user, context.site_root)
+        if edit_mode is True or is_admin:
             styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
-        return styles
+        return set(styles)
 
 
     def get_scripts(self, context):
         scripts = BaseSkin.get_scripts(self, context)
         # In edition mode we add fancybox script
         edit_mode = is_navigation_mode(context) is False
-        if edit_mode is True:
+        ac = context.site_root.get_access_control()
+        is_admin = ac.is_admin(context.user, context.site_root)
+        if edit_mode is True or is_admin:
             scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
-        return scripts
+        return set(scripts)
 
 
 

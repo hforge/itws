@@ -19,13 +19,15 @@
 # Import form itools
 from itools.core import lazy
 from itools.gettext import MSG
-from itools.web import get_context
+from itools.web import BaseView, get_context
 
 # Import from itws
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
+from section_views import Section_EditView
+from itws.section_views import get_section_view_from_registry
+from itws.section_views import section_views_registry
 from itws.views import AdvanceGoToSpecificDocument
-from itws.feed_views import views_registry
 
 
 
@@ -127,10 +129,29 @@ class ContentBarAware(object):
         context = get_context()
         resource = context.resource
         if not isinstance(resource, ContentBarAware):
+            return BaseView(title=MSG(u'View'),
+                            access='is_allowed_to_view')
+        # Get view
+        view_name = resource.get_property('view')
+        if section_views_registry.has_key(view_name):
+            return get_section_view_from_registry(view_name)
+        return None
+
+
+
+    @lazy
+    def configure_view(self):
+        context = get_context()
+        resource = context.resource
+        if not isinstance(resource, ContentBarAware):
             return None
-        name = resource.get_property('view')
-        view = views_registry[name]
-        return view(access=True)
+        if resource.get_resource('section_view', soft=True):
+            return AdvanceGoToSpecificDocument(
+                      access='is_allowed_to_edit',
+                      adminbar_rel='fancybox',
+                      title=MSG(u'Configure View'),
+                      specific_document='./section_view',
+                      keep_query=True)
 
 
     @lazy
@@ -159,3 +180,5 @@ class ContentBarAware(object):
             keep_query=True,
             specific_document=specific_document,
             title=MSG(u'Order Central Part Boxes'))
+
+    edit_view = Section_EditView()

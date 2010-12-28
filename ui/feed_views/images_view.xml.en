@@ -5,10 +5,28 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div class="item thumbnail" stl:repeat="item items">
-      <a href="${item/abspath}" title="${item/title}">
-        <img src="${item/image}/;thumb?width=128&amp;height=128&amp;strict=1"
-          title="${item/title}"/>
-      </a>
+    <a href="${item/abspath}/;download" title="${item/title}" rel="fancybox-thumbnail"
+      stl:if="item/is_image">
+      <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"
+        title="${item/title}"/>
+    </a>
+    <a href="${item/abspath}" title="${item/title}"
+      stl:if="not item/is_image">
+      <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"
+        title="${item/title}"/>
+    </a>
   </div>
+
+  <script>
+  $(document).ready(function() {
+    $("a[rel=fancybox-thumbnail]").fancybox({
+        'transitionIn'    : 'none',
+        'transitionOut'   : 'none',
+        'titlePosition'   : 'over',
+        'titleFormat'       : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' +  (currentIndex + 1) + ' / ' + currentArray.length + ' ' + title + '</span>';
+        }});
+    });
+  </script>
 
 </stl:block>
