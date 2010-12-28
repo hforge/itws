@@ -9,7 +9,7 @@
       <tr>
         <td>
           <ul stl:if="tabs">
-            <li><a href="">Actions</a></li>
+            <li><span>Actions</span></li>
             <li stl:repeat="tab tabs" class="fancybox-buttons">
               <a href="${tab/name}" class="${tab/class}" rel="${tab/rel}">
                 <stl:block stl:if="not tab/icon">
@@ -23,7 +23,7 @@
         </td>
         <td>
           <ul>
-            <li><a href="">Admin</a></li>
+            <li><span>Admin</span></li>
             <li stl:repeat="tab backoffice_tabs">
               <a href="${tab/name}" class="${tab/class}">
                 <img src="${tab/icon}" title="${tab/label}"/>
@@ -33,9 +33,7 @@
         </td>
         <td>
           <ul>
-            <li>
-              <a href="#">Edit mode</a>
-            </li>
+            <li><span>Edit mode</span></li>
             <li stl:repeat="tab edition_tabs">
               <a href="${tab/name}" class="${tab/class}">
                 ${tab/label}

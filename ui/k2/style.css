@@ -689,28 +689,31 @@ body.popup p.tabme a.selected {
   display: inline;
 }
 
-#admin ul li a {
-  float: left;
-  border: 1px solid #333;
-  border-right: 0;
-  border-left: 1px solid #333333;
-  height: 15px;
-  line-height: 15px;
-  color: #000;
-  padding: 3px 10px;
-  margin: 0px;
-  background-color: #FFF;
-  text-decoration: none;
-  text-align: center;
-  box-shadow: rgba(64, 64, 64, 0.1) 0 2px 5px;
+#admin ul li a,
+#admin ul li span {
   -moz-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
   -webkit-box-shadow: rgba(64, 64, 64, 0.5) 0 2px 5px;
+  background-color: #FFF;
+  border-left: 1px solid #333333;
+  border: 1px solid #333;
+  border-right: 0;
+  box-shadow: rgba(64, 64, 64, 0.1) 0 2px 5px;
+  color: #000;
+  float: left;
   font-size: 10px;
+  height: 15px;
+  line-height: 15px;
+  margin: 0px;
+  padding: 3px 10px;
+  text-align: center;
+  text-decoration: none;
 }
 
-#admin ul li:first-child a,
-#admin ul li:first-child a:hover {
+#admin ul li span {
+   -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
   background-color: #333;
+  border-radius: 5px 0 0 5px;
   color: #FFF;
 }
 
@@ -723,12 +726,6 @@ body.popup p.tabme a.selected {
   background-color: #D8D8D8;
   font-weight: bold;
   color: #000;
-}
-
-#admin ul li:first-child a {
-  border-radius: 5px 0 0 5px;
-  -moz-border-radius: 5px 0 0 5px;
-  -webkit-border-radius: 5px 0 0 5px;
 }
 
 #admin ul li:last-child a {
