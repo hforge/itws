@@ -70,8 +70,6 @@ class Bar_View(CompositeView):
     admin_bar_prefix_name = None
     boxes_css_class = None
     container_cls = None
-    resource = None
-    base_items = []
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()

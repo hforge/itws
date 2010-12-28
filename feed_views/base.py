@@ -122,42 +122,6 @@ class Feed_View(Folder_BrowseContent):
     ###############################################
     ## Namespace
     ###############################################
-    def sort_and_batch(self, resource, context, results):
-        user = context.user
-        root = context.root
-
-        start = context.query.get('batch_start', 0)
-        size = context.query.get('batch_size', 0)
-        sort_by = context.query.get('sort_by', 'title')
-        reverse = context.query.get('reverse', False)
-
-        if sort_by is None:
-            get_key = None
-        else:
-            get_key = getattr(self, 'get_key_sorted_by_' + sort_by, None)
-        if get_key:
-            # Custom but slower sort algorithm
-            items = results.get_documents()
-            items.sort(key=get_key(), reverse=reverse)
-            if size:
-                items = items[start:start+size]
-            elif start:
-                items = items[start:]
-        else:
-            # Faster Xapian sort algorithm
-            items = results.get_documents(sort_by=sort_by, reverse=reverse,
-                                          start=start, size=size)
-
-        # Access Control (FIXME this should be done before batch)
-        allowed_items = []
-        for item in items:
-            resource = root.get_resource(item.abspath)
-            ac = resource.get_access_control()
-            if ac.is_allowed_to_view(user, resource):
-                allowed_items.append((item, resource))
-        return allowed_items
-
-
 
     def get_namespace(self, resource, context):
         self.view_resource = resource

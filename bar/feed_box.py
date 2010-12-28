@@ -78,6 +78,21 @@ class BoxFeed_View(Box_View, Details_View):
         return Details_View.get_items(self, resource, context, *args)
 
 
+    def sort_and_batch(self, resource, context, results):
+        root = context.root
+        user = context.user
+        items = results.get_documents(sort_by='pub_datetime',
+                                      reverse=True,
+                                      start=0,
+                                      size=resource.get_property('count'))
+        # Access Control (FIXME this should be done before batch)
+        allowed_items = []
+        for item in items:
+            resource = root.get_resource(item.abspath)
+            ac = resource.get_access_control()
+            if ac.is_allowed_to_view(user, resource):
+                allowed_items.append((item, resource))
+        return allowed_items
 
 
 
