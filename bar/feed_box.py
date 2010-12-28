@@ -85,7 +85,7 @@ class BoxFeed(Box):
 
     class_id = 'box-feed'
     class_title = MSG(u'Box to feed items')
-    class_version = '20101119'
+    class_version = '20101228'
     class_icon16 = 'bar_items/icons/16x16/box_section_news.png'
     class_description = MSG(u'Display the last N items (Webpage/News) filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
@@ -122,3 +122,8 @@ class BoxFeed(Box):
 
     # Views
     view = BoxFeed_View()
+
+
+    def update_20101228(self):
+        # XXX Update for developers
+        self.set_property('view', '/ui/feed_views/Tag_item_viewbox.xml')
