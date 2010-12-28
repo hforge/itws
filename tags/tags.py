@@ -237,7 +237,7 @@ class TagsAware(object):
             content = {}
             get_handler = self.get_handler
             if isinstance(self, ResourceWithHTML):
-                # XXX ?
+                # Use ResourceWithHTML API
                 get_handler = self.get_html_document
 
             for language in languages:
