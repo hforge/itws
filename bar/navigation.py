@@ -36,7 +36,6 @@ class BoxNavigation_View(Box_View):
     tree_template = '/ui/bar_items/NavigationBox_tree.xml'
 
     def get_classes(self):
-        # XXX Should be customizable
         from itws.webpage import WebPage
         from itws.bar import Section
 
@@ -103,7 +102,6 @@ class BoxNavigation_View(Box_View):
         site_root = resource.get_site_root()
         items = self.get_items(site_root, context)
 
-        # TODO Allow to add title box
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
@@ -125,8 +123,7 @@ class BoxNavigation(Box):
                                                      default=True))
     edit_schema = {'display_title': Boolean}
     edit_widgets = [
-        CheckboxWidget('display_title',
-                        title=MSG(u'Display above the tree'))
+        CheckboxWidget('display_title', title=MSG(u'Display above the tree'))
         ]
     is_content = False
 
