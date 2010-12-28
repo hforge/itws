@@ -29,7 +29,7 @@ from ikaaro.forms import TextWidget, PathSelectorWidget
 from ikaaro.future.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.registry import register_resource_class, register_field
 from ikaaro.resource_ import DBResource
-from ikaaro.text import Text, encodings
+from ikaaro.text import Text
 from ikaaro.text_views import Text_View
 from ikaaro.webpage import WebPage
 
@@ -63,7 +63,7 @@ File.new_instance = File_NewInstance()
 File.externaledit = File_ExternalEdit_View(
         template='/ui/common/externaledit.xml')
 Text.externaledit = File_ExternalEdit_View(
-        template='/ui/common/externaledit.xml', encodings=encodings)
+        template='/ui/common/externaledit.xml')
 
 
 ############################################################
