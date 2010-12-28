@@ -392,7 +392,7 @@ class Skin(BaseSkin):
             scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
-        return set(scripts)
+        return scripts
 
 
 
