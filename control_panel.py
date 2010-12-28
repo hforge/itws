@@ -199,8 +199,12 @@ class CPFOSwitchMode(BaseView):
 
         referer = context.get_referrer()
         if referer:
-            # FIXME Check if referer is fo_switch_mode
-            goto = referer
+            ref = get_reference(referer)
+            if ref.path == '/;fo_switch_mode':
+                # Do no loop
+                goto = '/'
+            else:
+                goto = referer
         else:
             goto = '/'
 
