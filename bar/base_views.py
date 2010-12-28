@@ -25,6 +25,9 @@ from itools.gettext import MSG
 from itools.stl import set_prefix
 from itools.web import get_context, STLView
 
+# Import from ikaaro
+from ikaaro.views import CompositeView
+
 # Import from itws
 from itws.utils import get_admin_bar
 
@@ -57,18 +60,7 @@ class Box_View(STLView):
 
 
 
-class BarBox_View(STLView):
-
-    template = '/ui/common/BarBox_view.xml'
-    # Namespace should be set at the view instanciation
-    namespace = {}
-
-    def get_namespace(self, resource, context):
-        return self.namespace
-
-
-
-class Bar_View(STLView):
+class Bar_View(CompositeView):
 
     template = '/ui/common/Bar_view.xml'
     id = None
@@ -77,8 +69,9 @@ class Bar_View(STLView):
     order_label = None
     admin_bar_prefix_name = None
     boxes_css_class = None
-    box_view = BarBox_View
     container_cls = None
+    resource = None
+    base_items = []
 
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
@@ -113,7 +106,7 @@ class Bar_View(STLView):
         allowed = ac.is_allowed_to_edit(context.user, resource)
         if allowed:
             return False
-        for item in self.items:
+        for item in self.subviews:
             return False
         return True
 
@@ -123,78 +116,56 @@ class Bar_View(STLView):
 
 
     def _get_item_id(self, item, context):
-        return '%s-%s' % (item.class_id, item.name)
+        item_id = '%s-%s' % (item.class_id, item.name)
+        item_id = item_id.replace('.', '-dot-')
+        return item_id
 
 
-    @lazy
-    def items(self):
-        # XXX Always True ?
-        check_acl = True
-        items = []
-        context = get_context()
-        resource = context.resource
-        order_path = self.get_order_path(resource)
-        order = resource.get_resource(order_path)
-        orderfile = order.handler
-        user = context.user
-        repository = self._get_repository(resource, context)
-        order = orderfile.get_records_in_order()
-
-        for record in order:
-            name = orderfile.get_record_value(record, 'name')
-            item = repository.get_resource(name)
-            if item is None:
-                path = resource.get_abspath()
-                warn('%s > bar item not found: %s' % (path, name))
-                continue
-            if check_acl:
-                ac = item.get_access_control()
-                if ac.is_allowed_to_view(user, item) is False:
-                    continue
-            items.append(item)
-        return items
-
-
-    def get_items(self, resource, context):
-        here = context.resource
-        items = []
-
-        # FIXME Add the BarAware resource to the context
-        # It is used by section TOC views
+    def get_bar_aware(self, resource, context):
         _bar_aware = resource
         while isinstance(_bar_aware, self.container_cls) is False:
             if _bar_aware.parent is None:
                 break
             _bar_aware = _bar_aware.parent
         context._bar_aware = _bar_aware
+        return _bar_aware
 
-        for item in self.items:
-            view = item.view
-            view.set_view_is_empty(False)
-            stream = view.GET(item, context)
-            if view.get_view_is_empty() or stream is None:
+
+    @lazy
+    def subviews(self):
+        all_items = []
+        context = get_context()
+        resource = context.resource
+        bar_aware_resource = self.get_bar_aware(resource, context)
+        order_path = self.get_order_path(bar_aware_resource)
+        order = bar_aware_resource.get_resource(order_path)
+        orderfile = order.handler
+        user = context.user
+        repository = self._get_repository(bar_aware_resource, context)
+        order = orderfile.get_records_in_order()
+
+        for record in order:
+            name = orderfile.get_record_value(record, 'name')
+            item = repository.get_resource(name)
+            if item is None:
+                path = item.get_abspath()
+                warn('%s > bar item not found: %s' % (path, name))
                 continue
-            prefix = here.get_pathto(item)
-            stream = set_prefix(stream, '%s/' % prefix)
-            item_id = self._get_item_id(item, context)
-            # replace '.' by -dot- because '.' is interpreted as a class in CSS
-            item_id = item_id.replace('.', '-dot-')
-            namespace = {
-                'id': item_id,
-                'format': item.class_id,
-                'admin_bar': get_admin_bar(item),
-                'content': stream,
-                'css_class': self.boxes_css_class}
-            render_view = self.box_view(namespace=namespace)
-            items.append(render_view.GET(resource, context))
+            ac = item.get_access_control()
+            if ac.is_allowed_to_view(user, item) is False:
+                continue
+            view = item.view
+            view.item = item
+            all_items.append(view)
+        return all_items
 
-        # FIXME Remove the section from the context for section TOC views
-        del context._bar_aware
 
-        return items
+
 
 
     def get_namespace(self, resource, context):
+        here = context.resource
+        # Build namespace
         namespace = {'id': self.id}
 
         # Manage buttons
@@ -203,43 +174,31 @@ class Bar_View(STLView):
         namespace['admin_bar'] = get_admin_bar(resource, manage_buttons)
 
         # Bar items
-        items = self.get_items(resource, context)
-        namespace['items'] = items
+        views = []
+        for view in self.subviews:
+            item = view.item
+            if view.get_view_is_empty():
+                continue
+            stream = view.GET(item, context)
+            prefix = here.get_pathto(item)
+            stream = set_prefix(stream, '%s/' % prefix)
+            views.append(
+              {'id': self._get_item_id(item, context),
+               'css_class': self.boxes_css_class,
+               'format': item.class_id,
+               'admin_bar': get_admin_bar(item),
+               'content': stream})
 
+        namespace['views'] = views
         # Do not display the box if there is no items
         display = True
-        if allowed_to_edit is False and len(items) == 0:
+        if allowed_to_edit is False and len(views) == 0:
             display = False
         namespace['display'] = display
+        # Del context._bar_aware
+        del context._bar_aware
 
         return namespace
-
-
-    ###########################################
-    # XXX Maybe it's should be composite view
-    ###########################################
-
-    def get_query_schema(self):
-        context = get_context()
-        resource = context.resource
-        schema = {}
-        for item in self.items:
-            schema.update(item.view.get_query_schema())
-        return schema
-
-
-    def get_styles(self, context):
-        styles = []
-        for item in self.items:
-            styles.extend(item.view.get_styles(context))
-        return styles
-
-
-    def get_scripts(self, context):
-        scripts = []
-        for item in self.items:
-            scripts.extend(item.view.get_scripts(context))
-        return scripts
 
 
 

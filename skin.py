@@ -33,7 +33,6 @@ from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
 from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
-from ikaaro.website_views import ContactForm
 
 # Special case for the Wiki
 try:
@@ -87,9 +86,6 @@ class Skin(BaseSkin):
                                               'credits', 'license']
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-    allowed_views_for_sidebar_view = (Feed_View,
-        NewsFolder_View, NewsItem_View, WebPage_View, ContactForm,
-        TagsFolder_TagCloud)
 
     def get_not_allowed_cls_for_sidebar_view(self):
         types = self.not_allowed_cls_for_sidebar_view[:] # copy
@@ -306,10 +302,7 @@ class Skin(BaseSkin):
         sidebar = None
         not_allowed = isinstance(here, tuple(nacfsv))
         navnfsv = self.not_allowed_view_name_for_sidebar_view
-        is_authorized_view = isinstance(context.view,
-                                        self.allowed_views_for_sidebar_view)
-        if (context.view_name not in navnfsv and
-            not not_allowed and is_authorized_view):
+        if (context.view_name not in navnfsv and not not_allowed):
             sidebar_resource = self.get_sidebar_resource(context)
 
             if sidebar_resource:
@@ -392,7 +385,7 @@ class Skin(BaseSkin):
             scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
-        return set(scripts)
+        return scripts
 
 
 

@@ -3,12 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
-
   <div id="${id}" stl:if="display">
     ${admin_bar}
-    <stl:block stl:repeat="item items">
-      ${item}
-    </stl:block>
+    <div class="${view/css_class} ${view/format}" id="${view/id}"
+      stl:repeat="view views">
+      ${view/admin_bar}
+      ${view/content}
+    </div>
     <div class="clear" />
   </div>
 </stl:block>
