@@ -15,16 +15,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.datatypes import String
 from itools.gettext import MSG
 from itools.uri import Path, Reference
 
 # Import from ikaaro
-from ikaaro.control_panel import CPEditContactOptions
+from ikaaro.autoform import ReadOnlyWidget, XHTMLBody
 from ikaaro.website_views import ContactForm
 
 # Import from itws
 from base import Box
 from homepage import WSDataFolder
+from itws.views import AutomaticEditView
 
 
 
@@ -106,6 +108,17 @@ class BoxContact_View(ContactForm):
 
 
 
+class BoxContact_Edit(AutomaticEditView):
+
+    def get_value(self, resource, context, name, datatype):
+        if name == 'configuration_shortcut':
+            html = '<a href="/;edit_contact_options">configuration</a>'
+            return XHTMLBody.decode(html)
+        proxy = super(BoxContact_Edit, self)
+        return proxy.get_value(resource, context, name, datatype)
+
+
+
 class BoxContact(Box):
 
     class_id = 'box-contact'
@@ -114,9 +127,14 @@ class BoxContact(Box):
     class_description = MSG(u'Put the Contact Form in a Box that can be '
                             'displayed in a central sidebar')
 
+    edit_schema = {'configuration_shortcut': String(readonly=True)}
+    edit_widgets = [
+        ReadOnlyWidget('configuration_shortcut',
+                       title=MSG(u'To configure the website email options, '
+                                 u'please follow the link below'))]
+
     is_content = True
 
     # Views
     view = BoxContact_View()
-    # XXX edit contact options view should be available from edit view
-    edit_contact_options = CPEditContactOptions()
+    edit = BoxContact_Edit()
