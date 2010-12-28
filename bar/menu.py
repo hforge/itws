@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import is_thingy, merge_dicts
 from itools.datatypes import DateTime, String, Unicode
 from itools.gettext import MSG
 
@@ -29,13 +29,14 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.menu import Menu, MenuFile, Menu_View
 from ikaaro.menu import MenuFolder, get_menu_namespace
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.table_views import OrderedTable_View, Table_AddRecord
+from ikaaro.table_views import AddRecordButton, Table_AddRecord
 from ikaaro.views import CompositeForm
 
 # Import from itws
 from base import BoxAware
 from base_views import Box_View
 from itws.views import AdvanceGoToSpecificDocument, EditOnlyLanguageMenu
+from itws.views import TableViewWithoutAddRecordButton
 
 
 
@@ -66,6 +67,10 @@ class MenuProxyBox_Edit(DBResource_Edit):
     title = MSG(u'Edit box title')
     schema = {'title': Unicode(multilingual=True),
               'timestamp': DateTime(readonly=True, ignore=True)}
+    actions = [Button(access=True, css='button-ok', name='menu_edit',
+                      title=MSG(u'Save'))]
+    # Do not implement default action (compositeform)
+    action = None
 
     widgets = [timestamp_widget, title_widget]
 
@@ -75,6 +80,40 @@ class MenuProxyBox_Edit(DBResource_Edit):
                                              context, name, datatype)
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
+
+    def get_namespace(self, resource, context):
+        proxy = super(MenuProxyBox_Edit, self)
+        namespace = proxy.get_namespace(resource, context)
+        # Hook action, since autoform does not set 'value' to button if there
+        # is only one button
+        namespace['action'] = None
+        namespace['actions'] = proxy._get_action_namespace(resource, context)
+
+        return namespace
+
+
+    def action_menu_edit(self, resource, context, form):
+        # FIXME copy/paste from DBResource_Edit.action
+        # because def action() could not be defined here (compositeform)
+
+        # Check edit conflict
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+
+        # Get submit field names
+        schema = self._get_schema(resource, context)
+        fields, to_keep = self._get_query_fields(resource, context)
+
+        # Save changes
+        for key in fields | to_keep:
+            datatype = schema[key]
+            if getattr(datatype, 'readonly', False):
+                continue
+            if self.set_value(resource, context, key, form):
+                return
+        # Ok
+        context.message = messages.MSG_CHANGES_SAVED
 
 
     def set_value(self, resource, context, name, form):
@@ -140,9 +179,11 @@ class MenuSideBarTable_AddRecord(Table_AddRecord):
 
 
 
-class MenuSideBarTable_View(Menu_View):
+class MenuSideBarTable_View(TableViewWithoutAddRecordButton, Menu_View):
 
-    table_actions = OrderedTable_View.table_actions
+    # Hook actions, remove add_record shortcut
+    table_actions = [ action for action in Menu_View.table_actions
+                      if is_thingy(action, AddRecordButton) is False ]
 
     def get_table_columns(self, resource, context):
         base_columns = Menu_View.get_table_columns(self, resource, context)
@@ -161,19 +202,26 @@ class MenuSideBarTable_CompositeView(CompositeForm):
         return [ EditOnlyLanguageMenu(view=self) ]
 
 
+    def _get_edit_view(self):
+        # FIXME there is two edit view in this compositeform
+        return self.subviews[0]
+
+
+    # EditLanguageMenu API
     def _get_query_to_keep(self, resource, context):
-        """Return a list of dict {'name': name, 'value': value}"""
-        return []
+        return self._get_edit_view()._get_query_to_keep(resource, context)
 
 
-    def get_namespace(self, resource, context):
-        # XXX Force GET to avoid problem in STLForm.get_namespace
-        # side effect unknown
-        real_method = context.method
-        context.method = 'GET'
-        views = [ view.GET(resource, context) for view in self.subviews ]
-        context.method = real_method
-        return {'views': views}
+    def _get_query_fields(self, resource, context):
+        return self._get_edit_view()._get_query_fields(resource, context)
+
+
+    def _get_schema(self, resource, context):
+        return self._get_edit_view()._get_schema(resource, context)
+
+
+    def _get_widgets(self, resource, context):
+        return self._get_edit_view()._get_widgets(resource, context)
 
 
 

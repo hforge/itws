@@ -313,3 +313,14 @@ Folder.advance_new_resource = Folder_AdvanceNewResource()
 # NEW INSTANCE
 # Note: This monkey patch does not affect Blog, Tracker, Event, File
 NewInstance.goto_view = 'edit'
+
+
+############################################################
+# TABLE VIEW WITHOUT ADD_RECORD BUTTON
+############################################################
+class TableViewWithoutAddRecordButton(object):
+
+    # Delete add_record schema/action to be able to use
+    # TableView inside a compositeform
+    action_add_record_schema = None
+    action_add_record = None

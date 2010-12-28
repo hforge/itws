@@ -46,6 +46,7 @@ from base_views import Box_View
 from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView, EditOnlyLanguageMenu
+from itws.views import TableViewWithoutAddRecordButton
 from menu import MenuSideBarTable_AddRecord
 
 
@@ -53,15 +54,9 @@ from menu import MenuSideBarTable_AddRecord
 ###########################################################################
 # Views
 ###########################################################################
-class DiaporamaTable_View(OrderedTable_View):
+class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
 
     search_template = None
-    # Delete add_record schema/action
-    # because, DiaporamaTable_View and MenuSideBarTable_AddRecord cannot
-    # implement the same 'actions' since they are part of the same composit
-    # form
-    action_add_record_schema = None
-    action_add_record = None
     # Hook actions, remove add_record shortcut
     table_actions = [ action for action in OrderedTable_View.table_actions
                       if is_thingy(action, AddRecordButton) is False ]
@@ -137,33 +132,6 @@ class DiaporamaTable_CompositeView(CompositeForm):
 
     def _get_widgets(self, resource, context):
         return self._get_edit_view()._get_widgets(resource, context)
-
-
-    def get_namespace(self, resource, context):
-        if context.method == 'POST':
-            # When context.method is POST, render subviews
-            # as if context.method equals GET if the POST does not cause by
-            # this view
-            action = context.form_action
-            # Hook method
-            real_method = context.method
-            context.method = 'GET'
-            views = []
-            for view in self.subviews:
-                method = getattr(view, action, None)
-                if method is None:
-                    views.append(view.GET(resource, context))
-                    continue
-                else:
-                    context.method = real_method
-                    views.append(view.GET(resource, context))
-                    context.method = 'GET'
-            # Restore context.method
-            context.method = real_method
-            return {'views': views}
-        else:
-            proxy = super(DiaporamaTable_CompositeView, self)
-            return proxy.get_namespace(resource, context)
 
 
 
