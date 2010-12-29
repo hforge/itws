@@ -15,41 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.datatypes import Boolean, Integer
 from itools.database import PhraseQuery
 from itools.gettext import MSG
 from itools.web import get_context
 
-# Import from ikaaro
-from ikaaro.autoform import SelectWidget, TextWidget, RadioWidget
-from ikaaro.folder import Folder
-
 # Import from itws
-from base import BaseSectionView_Configuration
+from base import BaseFeedView_Configuration
 from itws.feed_views import Feed_View
-from itws.datatypes import SortBy_Enumerate
 
 
-class TagsAwareView_Configuration(BaseSectionView_Configuration):
+class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
     class_id = 'tagsaware_view_configuration'
     class_title = MSG(u'Tags Aware View configure')
-    class_schema = merge_dicts(
-        Folder.class_schema,
-        view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
-        view_reverse=Boolean(source='metadata'),
-        view_batch_size=Integer(source='metadata', default=20))
-
-
-    edit_schema = {'view_batch_size': Integer,
-                   'view_sort_by': SortBy_Enumerate,
-                   'view_reverse': Boolean}
-
-    edit_widgets = [
-        TextWidget('view_batch_size', title=MSG(u'Batch size')),
-        SelectWidget('view_sort_by', title=MSG(u'Sort by ?'), has_empty_option=False),
-        RadioWidget('view_reverse', title=MSG(u'Reverse'))]
 
 
 

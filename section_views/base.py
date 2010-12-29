@@ -15,14 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
+from itools.datatypes import Integer, Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.autoform import SelectWidget, TextWidget, RadioWidget
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
+from itws.datatypes import SortBy_Enumerate
 from itws.views import AutomaticEditView
+
 
 
 class BaseSectionView_Configuration(Folder):
@@ -43,3 +48,22 @@ class BaseSectionView_Configuration(Folder):
               title=MSG(u'Back to section'),
               adminbar_icon='/ui/icons/16x16/next.png',
               specific_document='../')
+
+
+class BaseFeedView_Configuration(BaseSectionView_Configuration):
+
+    class_schema = merge_dicts(
+        BaseSectionView_Configuration.class_schema,
+        view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
+        view_reverse=Boolean(source='metadata'),
+        view_batch_size=Integer(source='metadata', default=20))
+
+
+    edit_schema = {'view_batch_size': Integer,
+                   'view_sort_by': SortBy_Enumerate,
+                   'view_reverse': Boolean}
+
+    edit_widgets = [
+        TextWidget('view_batch_size', title=MSG(u'Batch size')),
+        SelectWidget('view_sort_by', title=MSG(u'Sort by ?'), has_empty_option=False),
+        RadioWidget('view_reverse', title=MSG(u'Reverse'))]

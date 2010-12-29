@@ -17,47 +17,35 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.database import PhraseQuery
-from itools.datatypes import Boolean, Integer
+from itools.datatypes import Integer
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import RadioWidget, SelectWidget, TextWidget
-from ikaaro.folder import Folder
+from ikaaro.autoform import TextWidget
 
 # Import from itws
-from base import BaseSectionView_Configuration
-from itws.datatypes import SortBy_Enumerate
+from base import BaseFeedView_Configuration
 from itws.feed_views.base import Feed_View
 
 
-class ImagesView_Configuration(BaseSectionView_Configuration):
+class ImagesView_Configuration(BaseFeedView_Configuration):
 
     class_id = 'images_view_configuration'
     class_title = MSG(u'Images view')
     class_schema = merge_dicts(
-        Folder.class_schema,
-        # View properties
-        view_sort_by=SortBy_Enumerate(source='metadata'),
-        view_reverse=Boolean(source='metadata'),
-        view_batch_size=Integer(source='metadata', default=20),
+        BaseFeedView_Configuration.class_schema,
         # Thumb size
         thumb_width=Integer(default=128, source='metadata'),
         thumb_height=Integer(default=128, source='metadata'))
 
-    edit_schema = {
-        'view_sort_by': SortBy_Enumerate,
-        'view_reverse': Boolean,
-        'view_batch_size': Integer,
-        'thumb_width': Integer,
-        'thumb_height': Integer}
+    edit_schema = merge_dicts(
+        BaseFeedView_Configuration.edit_schema,
+        thumb_width=Integer,
+        thumb_height=Integer)
 
-    edit_widgets = [
-        SelectWidget('view_sort_by', title=MSG(u'View sort by'),
-                     has_empty_option=False),
-        RadioWidget('view_reverse', title=MSG(u'View reverse')),
-        TextWidget('view_batch_size', title=MSG(u'View batch size')),
+    edit_widgets = (BaseFeedView_Configuration.edit_widgets + [
         TextWidget('thumb_width', title=MSG(u'Thumb width')),
-        TextWidget('thumb_height', title=MSG(u'Thumb height'))]
+        TextWidget('thumb_height', title=MSG(u'Thumb height'))])
 
 
 
