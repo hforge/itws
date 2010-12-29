@@ -120,15 +120,21 @@ class AdminBarTemplate(CMSTemplate):
     def backoffice_tabs(self):
         context = self.context
         tabs = []
-        active = context.view_name == 'control_panel'
-        tabs.append({'name': '/;control_panel',
-                     'label': MSG(u'Control panel'),
-                     'icon': '/ui/icons/16x16/external.png',
+        is_site_root = context.site_root == context.resource
+        active = is_site_root and context.view_name == 'browse_content'
+        tabs.append({'name': '/;browse_content',
+                     'label': MSG(u'Browse Content'),
+                     'icon': '/ui/icons/16x16/folder.png',
                      'class': active and 'active' or None})
-        active = context.view_name == 'new_resource'
+        active = is_site_root and context.view_name == 'new_resource'
         tabs.append({'name': '/;new_resource',
                      'label': MSG(u'Create a new resource'),
                      'icon': '/ui/icons/16x16/new.png',
+                     'class': active and 'active' or None})
+        active = is_site_root and context.view_name == 'control_panel'
+        tabs.append({'name': '/;control_panel',
+                     'label': MSG(u'Control panel'),
+                     'icon': '/ui/icons/16x16/external.png',
                      'class': active and 'active' or None})
         return tabs
 
