@@ -42,7 +42,6 @@ class Browse_Navigator(Feed_View):
     table_columns = [
         ('checkbox', None),
         ('icon', None),
-        ('abspath', MSG(u'Path')),
         ('title', MSG(u'Title')),
         ('format', MSG(u'Type')),
         ('mtime', MSG(u'Last Modified')),
@@ -84,7 +83,7 @@ class Browse_Navigator(Feed_View):
 
     def get_item_value(self, resource, context, item, column):
         item_brain, item_resource = item
-        if column == 'abspath':
+        if column == 'title':
             title = item_resource.get_title()
             if not isinstance(item_resource, Folder):
                 link = context.get_link(item_resource)
