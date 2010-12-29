@@ -26,7 +26,6 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins_views import LocationTemplate as BaseLocationTemplate
 from ikaaro.skins_views import LanguagesTemplate as BaseLanguagesTemplate
 from ikaaro.utils import CMSTemplate, reduce_string
-from ikaaro.website_views import ContactForm
 from ikaaro.workflow import WorkflowAware
 
 # Import form itws
@@ -51,8 +50,9 @@ class AdminBarTemplate(CMSTemplate):
         user = context.user
         if user is None:
             return []
-        # Do not show tabs on contact form
-        if isinstance(context.view, ContactForm):
+        # Do not show tabs on some site root views
+        if (context.site_root == context.resource and
+            context.view_name in ['control_panel', 'contact', 'site_search']):
             return []
 
         # Build tabs (Same that upper class)
