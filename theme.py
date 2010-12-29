@@ -44,7 +44,6 @@ class Theme_Edit(BaseTheme_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(BaseTheme_Edit._get_schema(self, resource, context),
                            custom_data=String,
-                           breadcrumb_title=Multilingual,
                            banner_title=Multilingual,
                            banner_path=PathDataType(multilingual=True,
                                           parameters_schema={'lang': String}),
@@ -56,7 +55,6 @@ class Theme_Edit(BaseTheme_Edit):
         return (BaseTheme_Edit._get_widgets(self, resource, context)[:2] + [
             MultilineWidget('custom_data', title=MSG(u"Custom data"),
                             rows=19, cols=69),
-            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title')),
             TextWidget('banner_title', title=MSG(u'Banner title'),
                        tip=MSG(u'(Use as banner if there is no image banner)')),
             ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
@@ -75,7 +73,6 @@ class Theme(BaseTheme):
 
     class_schema = merge_dicts(BaseTheme.class_schema,
          custom_data=String(source='metadata', default=''),
-         breadcrumb_title=Multilingual(source='metadata'),
          banner_title=Multilingual(source='metadata', default=''),
          banner_path=PathDataType(source='metadata', multilingual=True,
                                   parameters_schema={'lang': String}),
