@@ -142,8 +142,8 @@ class AdminBarTemplate(CMSTemplate):
                      'icon': '/ui/icons/16x16/folder.png',
                      'class': active and 'active' or None})
         # New resource
-        active = is_site_root and context.view_name == 'new_resource'
-        tabs.append({'name': '/;new_resource',
+        active = is_site_root and context.view_name == 'website_new_resource'
+        tabs.append({'name': '/;website_new_resource',
                      'label': MSG(u'Create a new resource'),
                      'icon': '/ui/icons/16x16/new.png',
                      'class': active and 'active' or None})

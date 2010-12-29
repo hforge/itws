@@ -59,6 +59,7 @@ from robots_txt import RobotsTxt
 from sitemap import SiteMap
 from tags import TagsAware, TagsFolder
 from theme import Theme
+from views import Website_NewResource
 from webpage import WebPage
 from ws_neutral_views import NeutralWS_Edit, NeutralWS_RSS
 
@@ -302,6 +303,7 @@ class NeutralWS(Website_BarAware, WebSite):
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
     navigation = Browse_Navigator(access='is_allowed_to_edit')
     site_search = Search_View()
+    website_new_resource = Website_NewResource()
 
     # Control panel
     control_panel = ITWS_ControlPanel()

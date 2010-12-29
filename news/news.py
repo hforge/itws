@@ -28,10 +28,9 @@ from itools.uri import Path, get_reference
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.file import File
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_PreviewContent, Folder_NewResource
+from ikaaro.folder_views import Folder_PreviewContent
 from ikaaro.autoform import TextWidget
 from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
@@ -187,8 +186,7 @@ class NewsFolder(SideBarAware, Folder):
                             u'by date of writing')
     class_icon16 = 'news/icons/16x16/news_folder.png'
     class_icon48 = 'news/icons/48x48/news_folder.png'
-    class_views = (['view', 'edit', 'browse_content',
-                    'new_resource?type=news', 'control_panel'])
+    class_views = ['view', 'edit', 'browse_content', 'control_panel']
 
     class_control_panel = ['backlinks', 'commit_log']
 
@@ -219,7 +217,7 @@ class NewsFolder(SideBarAware, Folder):
 
 
     def get_document_types(self):
-        return [self.news_class, File]
+        return [self.news_class]
 
     ##########################
     # Views
@@ -229,7 +227,6 @@ class NewsFolder(SideBarAware, Folder):
     edit = AutomaticEditView()
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit',
                                               title=MSG(u'Browse'))
-    new_resource = Folder_NewResource(title=MSG(u'Create a news'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     rss = NewsFolder_RSS()
     control_panel = ITWS_ControlPanel()

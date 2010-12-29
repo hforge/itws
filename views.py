@@ -249,15 +249,33 @@ class EditOnlyLanguageMenu(EditLanguageMenu):
 
 class Folder_NewResource(BaseFolder_NewResource):
 
+    template = '/ui/common/itws_new_resource_view.xml'
+
+    query_schema = {'advanced': Boolean}
+
     def get_document_types(self, resource, context):
-        document_types = get_registered_tags_aware_classes()
-        document_types.append(File)
-        return document_types
+        return resource.get_document_types()
+
+
+    def get_not_advanced_types(self):
+        return get_registered_tags_aware_classes()
 
 
     def get_namespace(self, resource, context):
         # 1. Find out the resource classes we can add
         document_types = self.get_document_types(resource, context)
+
+        # Query
+        if context.query['advanced'] is False:
+            not_advanced_types = self.get_not_advanced_types()
+            final_document_types = []
+            for x in document_types:
+                if x in not_advanced_types:
+                    final_document_types.append(x)
+            has_advanced = len(document_types) != len(final_document_types)
+        else:
+            final_document_types = document_types
+            has_advanced = True
 
         # 2. Build the namespace
         items = [
@@ -265,32 +283,25 @@ class Folder_NewResource(BaseFolder_NewResource):
              'title': cls.class_title.gettext(),
              'description': cls.class_description.gettext(),
              'url': ';new_resource?type=%s' % quote(cls.class_id)}
-            for cls in document_types ]
+            for cls in final_document_types ]
 
-        return {
-            'batch': None,
-            'items': items}
+        return {'has_advanced': has_advanced,
+                'advanced': context.query['advanced'],
+                'items': items}
 
 
-
-class Folder_AdvanceNewResource(Folder_NewResource):
-
-    title = MSG(u'Add advance resource')
+class Website_NewResource(Folder_NewResource):
 
     def get_document_types(self, resource, context):
-        base_type = Folder.new_resource.get_document_types(resource, context)
-
+        # On website we return all document_type
         document_types = []
         skip_formats = set()
         for resource in get_content_containers(context, skip_formats):
             skip_formats.add(resource.class_id)
             for cls in resource.get_document_types():
-                if cls in base_type:
-                    continue
                 if cls not in document_types:
                     document_types.append(cls)
         return document_types
-
 
 
 # Monkey patchs
@@ -298,7 +309,6 @@ class Folder_AdvanceNewResource(Folder_NewResource):
 # Keep Root.new_resource intact
 Root.new_resource = Folder.new_resource.__class__()
 Folder.new_resource = Folder_NewResource()
-Folder.advance_new_resource = Folder_AdvanceNewResource()
 # NEW INSTANCE
 # Note: This monkey patch does not affect Blog, Tracker, Event, File
 NewInstance.goto_view = 'edit'
