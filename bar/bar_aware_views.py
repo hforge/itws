@@ -19,13 +19,16 @@
 from itools.core import freeze, merge_dicts
 from itools.csv import Property
 from itools.gettext import MSG
+from itools.handlers import checkid
 from itools.uri import get_reference
+from itools.web import ERROR, FormError
 
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.autoform import RadioWidget
 from ikaaro.registry import get_resource_class
 from ikaaro.workflow import StaticStateEnumerate, WorkflowAware
+from ikaaro.views_new import NewInstance
 
 # Import from itws
 from datatypes import MyAuthorized_Classid, OrderBoxEnumerate
@@ -103,6 +106,43 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
             order_table.handler.order_top([record.id])
         else:
             order_table.handler.order_bottom([record.id])
+
+
+    def _get_form(self, resource, context):
+        # We cannot call direct parent NewInstance, because we override the
+        # container
+        proxy = super(NewInstance, self)
+        form = proxy._get_form(resource, context)
+
+        # 1. The container
+        container = self._get_container(resource, context)
+        ac = container.get_access_control()
+        if not ac.is_allowed_to_add(context.user, container):
+            path = context.get_link(container)
+            path = '/' if path == '.' else '/%s/' % path
+            msg = ERROR(u'Adding resources to {path} is not allowed.')
+            raise FormError, msg.gettext(path=path)
+
+        # 2. Strip the title
+        form['title'] = form['title'].strip()
+
+        # 3. The name
+        name = self.get_new_resource_name(form)
+        if not name:
+            raise FormError, messages.MSG_NAME_MISSING
+        try:
+            name = checkid(name)
+        except UnicodeEncodeError:
+            name = None
+        if name is None:
+            raise FormError, messages.MSG_BAD_NAME
+        # Check the name is free
+        if container.get_resource(name, soft=True) is not None:
+            raise FormError, messages.MSG_NAME_CLASH
+        form['name'] = name
+
+        # Ok
+        return form
 
 
     def action(self, resource, context, form):
