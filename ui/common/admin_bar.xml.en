@@ -8,6 +8,16 @@
     <table cellpadding="0" cellspacing="0">
       <tr>
         <td>
+          <ul>
+            <li><span>Admin</span></li>
+            <li stl:repeat="tab backoffice_tabs">
+              <a href="${tab/name}" class="${tab/class}">
+                <img src="${tab/icon}" title="${tab/label}"/>
+              </a>
+            </li>
+          </ul>
+        </td>
+        <td>
           <ul stl:if="tabs">
             <li>
               <span class="${workflow}" title="${resource_type/description}">
@@ -21,16 +31,6 @@
                 </stl:block>
                 <img src="${tab/icon}" title="${tab/label}"
                  stl:if="tab/icon"/>
-              </a>
-            </li>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <li><span>Admin</span></li>
-            <li stl:repeat="tab backoffice_tabs">
-              <a href="${tab/name}" class="${tab/class}">
-                <img src="${tab/icon}" title="${tab/label}"/>
               </a>
             </li>
           </ul>
