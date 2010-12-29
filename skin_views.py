@@ -51,8 +51,10 @@ class AdminBarTemplate(CMSTemplate):
         if user is None:
             return []
         # Do not show tabs on some site root views
+        nav = (context.site_root.class_control_panel +
+                ['control_panel', 'contact', 'site_search'])
         if (context.site_root == context.resource and
-            context.view_name in ['control_panel', 'contact', 'site_search']):
+            context.view_name in nav):
             return []
 
         # Build tabs (Same that upper class)
