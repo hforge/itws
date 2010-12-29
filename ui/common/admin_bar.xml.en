@@ -10,7 +10,9 @@
         <td>
           <ul stl:if="tabs">
             <li>
-              <span class="${workflow}">Actions</span>
+              <span class="${workflow}" title="${resource_type/description}">
+                ${resource_type/title}
+              </span>
             </li>
             <li stl:repeat="tab tabs" class="fancybox-buttons">
               <a href="${tab/name}" class="${tab/class}" rel="${tab/rel}">

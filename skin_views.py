@@ -45,6 +45,13 @@ class AdminBarTemplate(CMSTemplate):
 
 
     @thingy_lazy_property
+    def resource_type(self):
+        resource = self.context.resource
+        return {'title': resource.class_title,
+                'description': resource.class_description}
+
+
+    @thingy_lazy_property
     def tabs(self):
         context = self.context
         user = context.user
