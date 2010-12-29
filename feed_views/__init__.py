@@ -22,14 +22,14 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from base import Feed_View
+from browse_navigator import Browse_Navigator
 from collection import Search_View, Details_View
 from collection import DetailsWithoutPicture_View, Title_View
-
 
 
 # Register skin
 register_skin('feed_views', get_abspath('../ui/feed_views/'))
 
 # Silent pyflakes
-Feed_View,
-Details_View, DetailsWithoutPicture_View, Search_View, Title_View
+Feed_View, Details_View, DetailsWithoutPicture_View,
+Browse_Navigator, Search_View, Title_View

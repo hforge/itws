@@ -51,7 +51,7 @@ from bar import HTMLContent, Website_BarAware, Section
 from control_panel import CPEdit404, CPEditRobotsTXT, CPFOSwitchMode
 from control_panel import CPEditTags, CPDBResource_CommitLog
 from control_panel import ITWS_ControlPanel
-from feed_views import Search_View
+from feed_views import Search_View, Browse_Navigator
 from section_views import SectionViews_Enumerate
 from news import NewsFolder
 from notfoundpage import NotFoundPage_View
@@ -301,6 +301,7 @@ class NeutralWS(Website_BarAware, WebSite):
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
     site_search = Search_View()
+    navigation = Browse_Navigator()
 
     # Control panel
     control_panel = ITWS_ControlPanel()

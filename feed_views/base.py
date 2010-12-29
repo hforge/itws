@@ -38,6 +38,7 @@ class Feed_View(Folder_BrowseContent):
     table_template = None
 
     # View configuration
+    view_name = None
     view_resource = None
     template = '/ui/feed_views/base_feed_view_div.xml'
     search_template = '/ui/folder/browse_search.xml'
@@ -50,6 +51,7 @@ class Feed_View(Folder_BrowseContent):
     batch_size = 25
     sort_by = 'title'
     reverse = False
+    ignore_internal_resources = False
     search_on_current_folder = True
     search_on_current_folder_recursif = False
     content_keys = ('pub_datetime', 'title', 'long_title',
@@ -115,6 +117,18 @@ class Feed_View(Folder_BrowseContent):
                 args.append(OrQuery(TextQuery('title', search_text),
                                     TextQuery('text', search_text),
                                     PhraseQuery('name', search_text)))
+        if self.ignore_internal_resources:
+            # Exclude internal use resources
+            method = getattr(resource, 'get_internal_use_resource_names', None)
+            if method:
+                exclude_query = []
+                resource_abspath = resource.get_abspath()
+                for name in method():
+                    abspath = resource_abspath.resolve2(name)
+                    q = get_base_path_query(str(abspath), include_container=True)
+                    exclude_query.append(q)
+
+                args.append(NotQuery(OrQuery(*exclude_query)))
 
         # Ok
         if len(args) == 1:
