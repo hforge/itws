@@ -43,6 +43,8 @@ from ikaaro.root import Root
 from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
+# Import from itws
+from itws.tags import get_registered_tags_aware_classes
 
 
 ############################################################
@@ -248,21 +250,8 @@ class EditOnlyLanguageMenu(EditLanguageMenu):
 class Folder_NewResource(BaseFolder_NewResource):
 
     def get_document_types(self, resource, context):
-        from webpage import WebPage
-        from bar import Section
-
-        document_types = [ WebPage, Section, File ]
-        # Special case for News Folder
-        site_root = resource.get_site_root()
-        # Using getattr allow to don't failed if site_root is an iKaaro Root
-        # and not an ITWS website
-        # It would be better to add this API to iKaaro website but since iKaaro
-        # does not import by default Blog, I don't know how to do that.
-        newsfolder_class = getattr(site_root, 'newsfolder_class', None)
-        if newsfolder_class:
-            if site_root.get_news_folder(context):
-                document_types.append(site_root.newsfolder_class.news_class)
-
+        document_types = get_registered_tags_aware_classes()
+        document_types.append(File)
         return document_types
 
 
