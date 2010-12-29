@@ -54,6 +54,9 @@ class TagsAwareView_Configuration(Folder):
         RadioWidget('view_reverse', title=MSG(u'Reverse'))]
 
 
+    def get_document_types(self):
+        return []
+
 
 class TagsAwareView_View(Feed_View):
 

@@ -98,12 +98,13 @@ class AdminBarTemplate(CMSTemplate):
                 'class': active and 'active' or None})
         # New resources
         if isinstance(here, Folder) is True:
-            active = context.view_name == 'new_resource'
-            tabs.append({'name': './;new_resource',
-                          'label': MSG(u'Add content'),
-                          'icon': '/ui/icons/16x16/new.png',
-                          'rel': None,
-                          'class': active and 'active' or None})
+            if len(here.get_document_types()) > 0:
+                active = context.view_name == 'new_resource'
+                tabs.append({'name': './;new_resource',
+                              'label': MSG(u'Add content'),
+                              'icon': '/ui/icons/16x16/new.png',
+                              'rel': None,
+                              'class': active and 'active' or None})
         return tabs
 
 

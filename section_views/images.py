@@ -43,6 +43,9 @@ class ImagesView_Configuration(Folder):
         thumb_height=Integer(default=128, source='metadata'))
 
 
+    def get_document_types(self):
+        return []
+
 
 
 class ImagesView_View(Feed_View):

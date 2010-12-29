@@ -72,3 +72,7 @@ class Section_Composite_View(Bar_View):
         if resource.repository:
             return resource.get_resource(resource.repository)
         return resource
+
+
+    def get_document_types(self):
+        return []
