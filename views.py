@@ -33,7 +33,7 @@ from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
 from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
 from ikaaro.datatypes import Multilingual
-from ikaaro.file import File
+from ikaaro.file import File, Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
@@ -44,6 +44,9 @@ from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
 # Import from itws
+from itws.control_panel import ITWS_ControlPanel
+from itws.control_panel import CPExternalEdit, CPDBResource_Links
+from itws.control_panel import CPDBResource_Backlinks, CPDBResource_CommitLog
 from itws.tags import Tag, get_registered_tags_aware_classes
 
 
@@ -312,6 +315,24 @@ Folder.new_resource = Folder_NewResource()
 # NEW INSTANCE
 # Note: This monkey patch does not affect Blog, Tracker, Event, File
 NewInstance.goto_view = 'edit'
+
+# Add ITWS_ControlPanel for Images resources
+Image.class_views = ['view', 'download', 'edit', 'control_panel']
+Image.control_panel = ITWS_ControlPanel()
+Image.class_control_panel = ['externaledit', 'links',
+                             'backlinks', 'commit_log']
+Image.externaledit = CPExternalEdit()
+Image.links = CPDBResource_Links()
+Image.backlinks = CPDBResource_Backlinks()
+Image.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+
+# Add ITWS_ControlPanel for File resources
+File.class_views = ['view', 'edit', 'control_panel']
+File.control_panel = ITWS_ControlPanel()
+File.class_control_panel = ['links', 'backlinks', 'commit_log']
+File.links = CPDBResource_Links()
+File.backlinks = CPDBResource_Backlinks()
+File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
 
 ############################################################
