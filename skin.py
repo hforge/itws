@@ -372,7 +372,13 @@ class Skin(BaseSkin):
         is_admin = ac.is_admin(context.user, context.site_root)
         if edit_mode is True or is_admin:
             styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
-        return list(set(styles))
+        # Do not had a style several times
+        # Do not tweak cascading by calling reversed before and after
+        single_styles = []
+        for style in reversed(styles):
+            if style not in single_styles:
+                single_styles.append(style)
+        return list(reversed(single_styles))
 
 
     def get_scripts(self, context):
@@ -385,7 +391,12 @@ class Skin(BaseSkin):
             scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
-        return list(set(scripts))
+        # Do not had a scritp several times
+        single_sripts = []
+        for script in scripts:
+            if script not in single_sripts:
+                single_sripts.append(script)
+        return single_sripts
 
 
 
