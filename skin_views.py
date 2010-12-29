@@ -129,16 +129,25 @@ class AdminBarTemplate(CMSTemplate):
         context = self.context
         tabs = []
         is_site_root = context.site_root == context.resource
+        # Go home
+        active = is_site_root and context.view_name in (None, 'view')
+        tabs.append({'name': '/',
+                     'label': MSG(u'Go home'),
+                     'icon': '/ui/icons/16x16/action_home.png',
+                     'class': active and 'active' or None})
+        # Navigation
         active = is_site_root and context.view_name == 'navigation'
         tabs.append({'name': '/;navigation',
                      'label': MSG(u'Navigation'),
                      'icon': '/ui/icons/16x16/folder.png',
                      'class': active and 'active' or None})
+        # New resource
         active = is_site_root and context.view_name == 'new_resource'
         tabs.append({'name': '/;new_resource',
                      'label': MSG(u'Create a new resource'),
                      'icon': '/ui/icons/16x16/new.png',
                      'class': active and 'active' or None})
+        # Control panel
         active = is_site_root and context.view_name == 'control_panel'
         tabs.append({'name': '/;control_panel',
                      'label': MSG(u'Control panel'),
