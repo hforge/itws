@@ -71,7 +71,8 @@ class Browse_Navigator(Feed_View):
                 title = resource.get_property('breadcrumb_title')
             else:
                 title = node.get_title()
-            link = context.uri.replace(abspath=str(node.get_abspath()))
+            link = context.uri.replace(abspath=str(node.get_abspath()),
+                                       batch_start=0)
             breadcrumb.insert(0, {'name': node.name,
                                   'title': title,
                                   'url':  link})
