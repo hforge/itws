@@ -73,6 +73,7 @@ class Browse_Navigator(Feed_View):
                 title = node.get_title()
             link = context.uri.replace(abspath=str(node.get_abspath()),
                                        batch_start=0)
+            link.fragment = 'top-browse-navigator'
             breadcrumb.insert(0, {'name': node.name,
                                   'title': title,
                                   'url':  link})
@@ -88,7 +89,9 @@ class Browse_Navigator(Feed_View):
             if not isinstance(item_resource, Folder):
                 link = context.get_link(item_resource)
             else:
-                link = context.uri.replace(abspath=item_brain.abspath)
+                link = context.uri.replace(abspath=item_brain.abspath,
+                                           batch_start=0)
+                link.fragment = 'top-browse-navigator'
             return (title, link)
         return Feed_View.get_item_value(self, resource, context, item, column)
 

@@ -4,6 +4,8 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
+  <a name="top-browse-navigator"/>
+
   <div id="breadcrumbs">
     <label>Location:</label>
     <span stl:repeat="x breadcrumb">
