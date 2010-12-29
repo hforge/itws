@@ -121,9 +121,8 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
         if kw.get('add_boxes', True) is True:
             repository = self.get_site_root().get_repository()
             sidebar_table = self.get_resource(self.sidebar_name)
-            # tags cloud/news (created by repository)
+            # tags cloud (created by repository)
             sidebar_table.add_new_record({'name': repository.tags_box})
-            sidebar_table.add_new_record({'name': repository.news_box})
 
 
     def get_catalog_values(self):

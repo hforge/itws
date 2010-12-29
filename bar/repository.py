@@ -163,10 +163,8 @@ class Repository(Folder):
                    'new_sidebar_resource', 'backlinks', 'commit_log']
 
     tags_box = 'tags'
-    news_box = 'news'
 
-    __fixed_handlers__ = (Folder.__fixed_handlers__
-                          + [tags_box, news_box])
+    __fixed_handlers__ = (Folder.__fixed_handlers__ + [tags_box])
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)
