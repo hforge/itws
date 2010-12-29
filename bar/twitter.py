@@ -19,15 +19,15 @@
 # Import from standard library
 from datetime import datetime
 from traceback import format_exc
+import glib
 import httplib
 import re
 import socket
-import urllib2
 
 # Import from itools
-from itools import __version__ as itools_version
 from itools.core import merge_dicts
 from itools.datatypes import Integer, String, XMLContent, Boolean
+from itools.fs import vfs
 from itools.gettext import MSG
 from itools.log import log_warning
 from itools.rss import RSSFile
@@ -192,14 +192,9 @@ class TwitterSideBar(Box, ResourceWithCache):
         default_timeout = socket.getdefaulttimeout()
         socket.setdefaulttimeout(3) # timeout in seconds
 
-        # TODO Use itools.vfs instead of urllib2
         try:
-            req = urllib2.Request(uri)
-            req.add_header('User-Agent', 'itools/%s' % itools_version)
-            response = urllib2.urlopen(req)
-            data = response.read()
-        except (socket.error, socket.gaierror, Exception,
-                urllib2.HTTPError, urllib2.URLError), e:
+            data = vfs.open(uri).read()
+        except (glib.GError, Exception), e:
             msg = '%s -- Network error: "%s"'
             msg = msg % (XMLContent.encode(str(uri)), e)
             msg = msg.encode('utf-8')
