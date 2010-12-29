@@ -29,7 +29,6 @@ from ikaaro.resource_views import DBResource_Edit
 # Import from itws
 from bar import Section
 from rss import BaseRSS
-from section_views import SectionViews_Enumerate
 from tags import TagsAware
 
 

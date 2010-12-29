@@ -23,11 +23,11 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.datatypes import PathDataType, Date, Enumerate, String
+from itools.datatypes import PathDataType, Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.uri import encode_query
-from itools.web import STLView, get_context
+from itools.web import STLView
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro

@@ -32,4 +32,4 @@ register_skin('feed_views', get_abspath('../ui/feed_views/'))
 
 # Silent pyflakes
 Feed_View,
-Search_View, DetailsWithoutPicture_View, Title_View
+Details_View, DetailsWithoutPicture_View, Search_View, Title_View

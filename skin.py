@@ -44,14 +44,10 @@ except ImportError:
 
 # Import from itws
 from bar import SideBarAware, SideBar_View
-from webpage_views import WebPage_View
 from news import NewsItem
-from news.news_views import NewsFolder_View, NewsItem_View
 from OPML import RssFeeds
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
-from tags.tags_views import TagsFolder_TagCloud
 from utils import get_admin_bar, is_navigation_mode
-from feed_views import Feed_View
 
 
 

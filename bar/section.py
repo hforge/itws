@@ -36,8 +36,7 @@ from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar_aware import SideBarAware, ContentBarAware
-from section_views import Section_ManageContent
-from section_views import Section_Edit, Section_EditView
+from section_views import Section_Edit, Section_ManageContent
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
