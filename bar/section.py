@@ -42,7 +42,6 @@ from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
 from itws.section_views import SectionViews_Enumerate
 from itws.tags import TagsAware, register_tags_aware
-from itws.tags import get_registered_tags_aware_classes
 from itws.webpage import WebPage
 
 
@@ -137,7 +136,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
     def get_document_types(self):
-        return get_registered_tags_aware_classes() + [File]
+        return [ self.get_article_class(), self.get_subsection_class(), File ]
 
 
     def get_subsection_class(self):
