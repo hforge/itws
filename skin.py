@@ -111,19 +111,30 @@ class Skin(BaseSkin):
 
     def get_rss_feeds(self, context, site_root):
         rss = []
-        # Global RSS
-        ws_title = site_root.get_title()
-        rss_title = MSG(u'{ws_title} -- RSS Feeds').gettext(ws_title=ws_title)
-        rss.append({'path': '/;rss', 'title': rss_title})
+        user = context.user
+        # messages
+        site_root_rss_title = MSG(u'{ws_title} -- RSS Feeds')
+        rss_title = MSG(u'{ws_title} {title} -- RSS Feeds')
 
-        # News RSS
+        already_done = []
+        ws_title = site_root.get_title()
         news_folder = site_root.get_news_folder(context)
-        if news_folder:
-            title = news_folder.get_title()
-            rss_title = MSG(u'{ws_title} {title} -- RSS Feeds')
-            rss_title = rss_title.gettext(title=title, ws_title=ws_title)
-            rss.append({'path': '%s/;rss' % context.get_link(news_folder),
-                        'title': rss_title})
+
+        for resource, template in ((site_root, site_root_rss_title),
+                                   (news_folder, rss_title),
+                                   (context.resource, rss_title)):
+            if resource is None or isinstance(resource, tuple(already_done)):
+                # news_folder can be None
+                # Do not compute rss link twice
+                continue
+
+            ac = resource.get_access_control()
+            view = resource.get_view('rss')
+            if view and ac.is_access_allowed(user, resource, view):
+                title = template.gettext(ws_title=ws_title,
+                                         title=resource.get_title())
+                rss.append({'path': '/;rss', 'title': title})
+                already_done.append(type(resource))
 
         return rss
 
