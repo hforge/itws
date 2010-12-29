@@ -300,8 +300,8 @@ class NeutralWS(Website_BarAware, WebSite):
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+    navigation = Browse_Navigator(access='is_allowed_to_edit')
     site_search = Search_View()
-    navigation = Browse_Navigator()
 
     # Control panel
     control_panel = ITWS_ControlPanel()
