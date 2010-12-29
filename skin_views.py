@@ -60,7 +60,7 @@ class AdminBarTemplate(CMSTemplate):
         # Do not show tabs on some site root views
         nav = (context.site_root.class_control_panel +
                 ['control_panel', 'contact', 'navigation',
-                 'site_search'])
+                 'site_search', 'website_new_resource'])
         if (context.site_root == context.resource and
             context.view_name in nav):
             return []
