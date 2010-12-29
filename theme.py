@@ -32,6 +32,7 @@ from ikaaro.registry import register_resource_class
 from ikaaro.theme import Theme as BaseTheme, Theme_Edit as BaseTheme_Edit
 
 # Import from itws
+from control_panel import ITWS_ControlPanel
 from datatypes import NeutralClassSkin
 from footer import FooterFolder
 from notfoundpage import NotFoundPage
@@ -40,6 +41,8 @@ from turning_footer import TurningFooterFolder
 
 
 class Theme_Edit(BaseTheme_Edit):
+
+    title = MSG(u'Edit theme')
 
     def _get_schema(self, resource, context):
         return merge_dicts(BaseTheme_Edit._get_schema(self, resource, context),
@@ -77,6 +80,10 @@ class Theme(BaseTheme):
          banner_path=PathDataType(source='metadata', multilingual=True,
                                   parameters_schema={'lang': String}),
          class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
+
+    class_views = ['edit', 'edit_css', 'edit_menu', 'browse_content',
+                   'control_panel']
+    class_control_panel = ['links', 'backlinks', 'commit_log']
 
 
     def init_resource(self, **kw):
@@ -194,6 +201,7 @@ class Theme(BaseTheme):
 
     # Views
     edit = Theme_Edit()
+    control_panel = ITWS_ControlPanel()
 
 
 
