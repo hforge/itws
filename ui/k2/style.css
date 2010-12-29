@@ -655,7 +655,7 @@ body.popup p.tabme a.selected {
 }
 
 /************************************
- * Administration bar
+ * Administration bar (XXX Move on bo.css)
  ************************************/
 #admin {
   width: 100%;
@@ -716,6 +716,7 @@ body.popup p.tabme a.selected {
   border-radius: 5px 0 0 5px;
   color: #FFF;
 }
+
 
 #admin ul li a:hover {
   background-color: #D8D8D8;

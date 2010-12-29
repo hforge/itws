@@ -26,6 +26,7 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins_views import LocationTemplate as BaseLocationTemplate
 from ikaaro.skins_views import LanguagesTemplate as BaseLanguagesTemplate
 from ikaaro.utils import CMSTemplate, reduce_string
+from ikaaro.workflow import WorkflowAware
 
 # Import form itws
 from utils import is_navigation_mode
@@ -34,6 +35,14 @@ from utils import is_navigation_mode
 class AdminBarTemplate(CMSTemplate):
 
     template = '/ui/common/admin_bar.xml'
+
+    @thingy_lazy_property
+    def workflow(self):
+        resource = self.context.resource
+        if isinstance(resource, WorkflowAware):
+            return 'wf-%s' % resource.get_property('state')
+        return None
+
 
     @thingy_lazy_property
     def tabs(self):
