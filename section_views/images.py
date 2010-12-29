@@ -21,14 +21,16 @@ from itools.datatypes import Boolean, Integer
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.autoform import RadioWidget, SelectWidget, TextWidget
 from ikaaro.folder import Folder
 
 # Import from itws
+from base import BaseSectionView_Configuration
 from itws.datatypes import SortBy_Enumerate
 from itws.feed_views.base import Feed_View
 
 
-class ImagesView_Configuration(Folder):
+class ImagesView_Configuration(BaseSectionView_Configuration):
 
     class_id = 'images_view_configuration'
     class_title = MSG(u'Images view')
@@ -37,14 +39,25 @@ class ImagesView_Configuration(Folder):
         # View properties
         view_sort_by=SortBy_Enumerate(source='metadata'),
         view_reverse=Boolean(source='metadata'),
-        view_batch_size=Integer(source='metadata'),
+        view_batch_size=Integer(source='metadata', default=20),
         # Thumb size
         thumb_width=Integer(default=128, source='metadata'),
         thumb_height=Integer(default=128, source='metadata'))
 
+    edit_schema = {
+        'view_sort_by': SortBy_Enumerate,
+        'view_reverse': Boolean,
+        'view_batch_size': Integer,
+        'thumb_width': Integer,
+        'thumb_height': Integer}
 
-    def get_document_types(self):
-        return []
+    edit_widgets = [
+        SelectWidget('view_sort_by', title=MSG(u'View sort by'),
+                     has_empty_option=False),
+        RadioWidget('view_reverse', title=MSG(u'View reverse')),
+        TextWidget('view_batch_size', title=MSG(u'View batch size')),
+        TextWidget('thumb_width', title=MSG(u'Thumb width')),
+        TextWidget('thumb_height', title=MSG(u'Thumb height'))]
 
 
 
