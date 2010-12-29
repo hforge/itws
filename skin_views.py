@@ -92,7 +92,7 @@ class AdminBarTemplate(CMSTemplate):
             # Add the menu
             tabs.append({
                 'name': '%s/;%s' % (here_link, link),
-                'icon': None,
+                'icon': getattr(view, 'adminbar_icon', None),
                 'label': view.get_title(context),
                 'active': active,
                 'class': active and 'active' or None})

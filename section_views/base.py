@@ -14,5 +14,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from itools
+from itools.gettext import MSG
+
+# Import from ikaaro
+from ikaaro.folder import Folder
+from ikaaro.folder_views import GoToSpecificDocument
+
+# Import from itws
+from itws.views import AutomaticEditView
 
 
+class BaseSectionView_Configuration(Folder):
+
+    class_views = ['edit', 'back']
+
+    edit_schema = {}
+    edit_widgets = []
+    display_title = False
+
+    def get_document_types(self):
+        return []
+
+
+    # Views
+    edit = AutomaticEditView(title=MSG(u'Configure view'))
+    back = GoToSpecificDocument(
+              title=MSG(u'Back to section'),
+              adminbar_icon='/ui/icons/16x16/next.png',
+              specific_document='../')

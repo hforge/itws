@@ -19,30 +19,28 @@ from itools.core import merge_dicts
 from itools.datatypes import Boolean, Integer
 from itools.database import PhraseQuery
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import SelectWidget, TextWidget, RadioWidget
 from ikaaro.folder import Folder
 
 # Import from itws
+from base import BaseSectionView_Configuration
 from itws.feed_views import Feed_View
 from itws.datatypes import SortBy_Enumerate
-from itws.views import AutomaticEditView
-from itools.web import get_context
 
 
-class TagsAwareView_Configuration(Folder):
+class TagsAwareView_Configuration(BaseSectionView_Configuration):
 
     class_id = 'tagsaware_view_configuration'
     class_title = MSG(u'Tags Aware View configure')
-    class_views = ['edit']
     class_schema = merge_dicts(
         Folder.class_schema,
         view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
         view_reverse=Boolean(source='metadata'),
         view_batch_size=Integer(source='metadata', default=20))
 
-    edit = AutomaticEditView(title=MSG(u'Configure'))
 
     edit_schema = {'view_batch_size': Integer,
                    'view_sort_by': SortBy_Enumerate,
@@ -53,9 +51,6 @@ class TagsAwareView_Configuration(Folder):
         SelectWidget('view_sort_by', title=MSG(u'Sort by ?'), has_empty_option=False),
         RadioWidget('view_reverse', title=MSG(u'Reverse'))]
 
-
-    def get_document_types(self):
-        return []
 
 
 class TagsAwareView_View(Feed_View):
