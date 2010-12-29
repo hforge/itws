@@ -24,7 +24,6 @@ from ikaaro.skins import register_skin
 from base import Feed_View
 from collection import Search_View, Details_View
 from collection import DetailsWithoutPicture_View, Title_View
-from images import ImagesView_View
 
 
 
