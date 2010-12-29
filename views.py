@@ -44,7 +44,7 @@ from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from itws.tags import get_registered_tags_aware_classes
+from itws.tags import Tag, get_registered_tags_aware_classes
 
 
 ############################################################
@@ -258,7 +258,7 @@ class Folder_NewResource(BaseFolder_NewResource):
 
 
     def get_not_advanced_types(self):
-        return get_registered_tags_aware_classes()
+        return [File, Tag] + get_registered_tags_aware_classes()
 
 
     def get_namespace(self, resource, context):
