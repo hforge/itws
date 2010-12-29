@@ -92,10 +92,9 @@ class AdminBarTemplate(CMSTemplate):
             # Add the menu
             tabs.append({
                 'name': '%s/;%s' % (here_link, link),
-                'icon': getattr(view, 'adminbar_icon', None),
+                'icon': None,
                 'label': view.get_title(context),
                 'active': active,
-                'rel': getattr(view, 'adminbar_rel', None),
                 'class': active and 'active' or None})
         # New resources
         if isinstance(here, Folder) is True:

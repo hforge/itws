@@ -24,7 +24,6 @@ from itools.web import BaseView, get_context
 # Import from itws
 from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
-from section_views import Section_EditView
 from itws.section_views import get_section_view_from_registry
 from itws.section_views import section_views_registry
 from itws.views import AdvanceGoToSpecificDocument
@@ -148,7 +147,6 @@ class ContentBarAware(object):
         if resource.get_resource('section_view', soft=True):
             return AdvanceGoToSpecificDocument(
                       access='is_allowed_to_edit',
-                      adminbar_rel='fancybox',
                       title=MSG(u'Configure View'),
                       specific_document='./section_view',
                       keep_query=True)
@@ -180,5 +178,3 @@ class ContentBarAware(object):
             keep_query=True,
             specific_document=specific_document,
             title=MSG(u'Order Central Part Boxes'))
-
-    edit_view = Section_EditView()

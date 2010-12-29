@@ -36,39 +36,6 @@ from itws.section_views import section_views_registry
 from itws.views import BaseManageContent
 
 
-class Section_EditView(DBResource_Edit):
-
-    title = MSG(u'Edit View')
-
-    adminbar_rel = 'fancybox'
-    adminbar_icon = '/ui/icons/16x16/select_all.png'
-
-
-    def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           view=SectionViews_Enumerate(mandatory=True))
-
-
-    def _get_widgets(self, resource, context):
-        return [
-            DBResource_Edit._get_widgets(self, resource, context)[0],
-            SelectWidget('view', title=MSG(u'View'), has_empty_option=False)]
-
-
-    def action(self, resource, context, form):
-        self.check_edit_conflict(resource, context, form)
-        if context.edit_conflict:
-            return
-        if form ['view'] != resource.get_property('view'):
-            resource.del_resource('section_view', soft=True)
-            view = section_views_registry[form['view']]
-            cls = view.view_configuration_cls
-            if cls:
-                resource.make_resource('section_view', view.view_configuration_cls)
-        return DBResource_Edit.action(self, resource, context, form)
-
-
-
 
 class Section_Edit(DBResource_Edit, TagsAware_Edit):
 
@@ -76,6 +43,7 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
     def _get_schema(self, resource, context):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            TagsAware_Edit._get_schema(self, resource, context),
+                           view=SectionViews_Enumerate,
                            state=StaticStateEnumerate)
 
 
@@ -86,6 +54,8 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
 
         return (default_widgets +
                 [state_widget] +
+                [SelectWidget('view', title=MSG(u'View'),
+                              has_empty_option=False)] +
                 TagsAware_Edit._get_widgets(self, resource, context))
 
 
@@ -105,6 +75,20 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
                   form)
 
 
+    def action(self, resource, context, form):
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+        if form['view'] != resource.get_property('view'):
+            resource.del_resource('section_view', soft=True)
+            view = section_views_registry[form['view']]
+            cls = view.view_configuration_cls
+            if cls:
+                resource.make_resource('section_view', view.view_configuration_cls)
+        return DBResource_Edit.action(self, resource, context, form)
+
+
+
 
 class Section_ManageContent(BaseManageContent):
 
@@ -117,6 +101,3 @@ class Section_ManageContent(BaseManageContent):
                  NotQuery(OrQuery(*[ PhraseQuery('name', name)
                                      for name in excluded_names ]))]
         return context.root.search(AndQuery(*query))
-
-
-

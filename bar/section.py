@@ -97,7 +97,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
                                     default='composite-view'))
 
 
-    class_views = ['view', 'edit', 'edit_view', 'configure_view',
+    class_views = ['view', 'edit', 'configure_view',
                    'manage_content', 'control_panel']
 
     class_control_panel = ['order_items', 'links', 'backlinks', 'commit_log']
