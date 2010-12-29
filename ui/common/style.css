@@ -131,45 +131,6 @@
 }
 
 /**************************************************************************
- * ADMIN BAR
- **************************************************************************/
-.admin-icons-bar {
-  background-image: url('/ui/common/images/empty-background.png');
-  padding: 6px 12px;
-}
-
-.admin-icons-bar table td {
-  text-align: left;
-  width: 150px;
-  font-weight: bold;
-  vertical-align: top;
-}
-
-.admin-icons-bar img {
-  float: left;
-}
-
-.admin-icons-bar a {
-  text-decoration: none;
-}
-
-.admin-bar {
-  -moz-border-radius: 0 0 7px 0;
-  -webkit-border-radius: 0 0 7px 0;
-  border-radius: 0 0 7px 0;
-
-  position: absolute;
-  background-color: #D3D7CF;
-  opacity: 0.9;
-  padding: 0 3px 3px 0;
-  z-index: 1000;
-}
-
-.admin-bar a {
-  text-decoration: none;
-}
-
-/**************************************************************************
  * NUMERIC BATCH
  **************************************************************************/
 #content .batch-numerotation {

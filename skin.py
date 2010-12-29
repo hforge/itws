@@ -368,6 +368,7 @@ class Skin(BaseSkin):
         is_admin = ac.is_admin(context.user, context.site_root)
         if edit_mode is True or is_admin:
             styles.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.css')
+            styles.append('/ui/common/bo.css')
         # Do not had a style several times
         # Do not tweak cascading by calling reversed before and after
         single_styles = []
