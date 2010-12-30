@@ -21,7 +21,7 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import SelectWidget, TextWidget, RadioWidget
-from ikaaro.folder import Folder
+from ikaaro.file import File
 from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
@@ -30,7 +30,7 @@ from itws.views import AutomaticEditView
 
 
 
-class BaseSectionView_Configuration(Folder):
+class BaseSectionView_Configuration(File):
 
     class_views = ['edit', 'back']
 
