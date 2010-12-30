@@ -4,7 +4,8 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div class="item thumbnail" stl:repeat="item items">
+  <div class="item thumbnail" stl:repeat="item items"
+    style="width:${thumb_width};height:${thumb_height}">
     <a href="${item/abspath}/;download" title="${item/title}" rel="fancybox-thumbnail"
       stl:if="item/is_image">
       <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"
