@@ -25,7 +25,6 @@ from ikaaro.folder import Folder
 # Import from itws
 from bar_aware import ContentBarAware, SideBarAware
 from repository import Repository
-from section_views import Section_ManageContent
 
 
 
@@ -65,8 +64,3 @@ class Website_BarAware(ContentBarAware, SideBarAware):
         SideBarAware.init_resource(self, **kw)
         # ContentBar Aware
         ContentBarAware.init_resource(self, **kw)
-
-    ####################################
-    ## Views
-    ####################################
-    manage_content = Section_ManageContent()

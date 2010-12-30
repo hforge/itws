@@ -9,7 +9,7 @@
   <div id="breadcrumbs">
     <label>Location:</label>
     <span stl:repeat="x breadcrumb">
-      <a href="${x/url}"
+      <a href="${x/url}/;manage_content"
         title="${x/title}">${x/title}</a> /
     </span>
   </div>

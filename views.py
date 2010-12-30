@@ -30,12 +30,10 @@ from ikaaro import messages
 from ikaaro.autoform import TextWidget
 from ikaaro.autoform import description_widget, subject_widget
 from ikaaro.autoform import title_widget, timestamp_widget
-from ikaaro.buttons import RemoveButton, RenameButton, PublishButton
-from ikaaro.buttons import RetireButton, CopyButton, CutButton, PasteButton
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import File, Image
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
@@ -130,48 +128,6 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
         return goto
 
-
-
-############################################################
-# Manage Content
-############################################################
-
-class BaseManageContent(Folder_BrowseContent):
-
-    access = 'is_allowed_to_edit'
-
-    search_template = None
-
-    table_actions = [
-        RemoveButton, RenameButton, CopyButton, CutButton, PasteButton,
-        PublishButton, RetireButton]
-
-    table_columns = [
-        ('checkbox', None),
-        ('icon', None),
-        ('name', MSG(u'Name')),
-        ('title', MSG(u'Title')),
-        ('format', MSG(u'Format')),
-        ('mtime', MSG(u'Last Modified')),
-        ('workflow_state', MSG(u'State')),
-        ]
-
-    def get_query_schema(self):
-        return merge_dicts(Folder_BrowseContent.get_query_schema(self),
-                           sort_by=String(default='mtime'),
-                           reverse=Boolean(default=True))
-
-
-    def get_items(self, resource, context, *args):
-        return Folder_BrowseContent.get_items(self, resource, context, *args)
-
-
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'name':
-            return brain.name, context.get_link(item_resource)
-        return Folder_BrowseContent.get_item_value(self, resource,
-                  context, item, column)
 
 
 
@@ -334,6 +290,12 @@ File.links = CPDBResource_Links()
 File.backlinks = CPDBResource_Backlinks()
 File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
+# Add navigator to all resources
+from ikaaro.registry import resources_registry
+from feed_views import Browse_Navigator
+for cls in resources_registry.values():
+    if issubclass(cls, Folder):
+        cls.manage_content = Browse_Navigator()
 
 ############################################################
 # TABLE VIEW WITHOUT ADD_RECORD BUTTON

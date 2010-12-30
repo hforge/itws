@@ -21,7 +21,6 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -33,7 +32,6 @@ from ikaaro.workflow import state_widget, StaticStateEnumerate
 from itws.section_views import SectionViews_Enumerate
 from itws.tags.tags_views import TagsAware_Edit
 from itws.section_views import section_views_registry
-from itws.views import BaseManageContent
 
 
 
@@ -86,18 +84,3 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
             if cls:
                 resource.make_resource('section_view', view.view_configuration_cls)
         return DBResource_Edit.action(self, resource, context, form)
-
-
-
-
-class Section_ManageContent(BaseManageContent):
-
-    title = MSG(u'Browse')
-
-    def get_items(self, resource, context, *args):
-        path = str(resource.get_canonical_path())
-        excluded_names = resource.get_internal_use_resource_names()
-        query = [ PhraseQuery('parent_path', path),
-                 NotQuery(OrQuery(*[ PhraseQuery('name', name)
-                                     for name in excluded_names ]))]
-        return context.root.search(AndQuery(*query))

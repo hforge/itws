@@ -15,9 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
-from itools.database import PhraseQuery
-from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -30,13 +27,15 @@ from base import Feed_View
 
 class Browse_Navigator(Feed_View):
 
+    access = 'is_allowed_to_edit'
     search_template = None
     batch_size = 25
+    sort_by = 'mtime'
 
     template = '/ui/feed_views/base_feed_view_div.xml'
     content_template = '/ui/feed_views/browse_navigator.xml'
 
-    search_on_current_folder = False
+    search_on_current_folder = True
     ignore_internal_resources = True
 
     table_columns = [
@@ -49,30 +48,19 @@ class Browse_Navigator(Feed_View):
         ('workflow_state', MSG(u'State'))]
 
 
-    def get_query_schema(self):
-        return merge_dicts(Feed_View.get_query_schema(self),
-                           abspath=String)
-
-
     def get_content_namespace(self, resource, context, items):
         # Get namespace
         namespace = Folder_BrowseContent.get_table_namespace(self,
                         resource, context, items)
         # The breadcrumb
         breadcrumb = []
-        abspath = context.query['abspath']
-        if abspath:
-            node = context.root.get_resource(abspath)
-        else:
-            node = resource
+        node = resource
         while node != context.root:
             if node.has_property('breadcrumb_title'):
-                title = resource.get_property('breadcrumb_title')
+                title = node.get_property('breadcrumb_title')
             else:
                 title = node.get_title()
-            link = context.uri.replace(abspath=str(node.get_abspath()),
-                                       batch_start=0)
-            link.fragment = 'top-browse-navigator'
+            link = context.get_link(node)
             breadcrumb.insert(0, {'name': node.name,
                                   'title': title,
                                   'url':  link})
@@ -85,21 +73,8 @@ class Browse_Navigator(Feed_View):
         item_brain, item_resource = item
         if column == 'title':
             title = item_resource.get_title()
-            if not isinstance(item_resource, Folder):
-                link = context.get_link(item_resource)
-            else:
-                link = context.uri.replace(abspath=item_brain.abspath,
-                                           batch_start=0)
-                link.fragment = 'top-browse-navigator'
+            link = context.get_link(item_resource)
+            if isinstance(item_resource, Folder):
+                link += '/;manage_content'
             return (title, link)
         return Feed_View.get_item_value(self, resource, context, item, column)
-
-
-    def get_items(self, resource, context, *args):
-        # Query
-        args = list(args)
-        abspath = context.query['abspath']
-        if not abspath:
-            abspath = context.site_root.get_abspath()
-        args.append(PhraseQuery('parent_path', str(abspath)))
-        return Feed_View.get_items(self, resource, context, *args)

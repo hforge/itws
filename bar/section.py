@@ -36,10 +36,11 @@ from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar_aware import SideBarAware, ContentBarAware
-from section_views import Section_Edit, Section_ManageContent
+from section_views import Section_Edit
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import ITWS_ControlPanel
+from itws.feed_views import Browse_Navigator
 from itws.section_views import SectionViews_Enumerate
 from itws.tags import TagsAware, register_tags_aware
 from itws.webpage import WebPage
@@ -97,8 +98,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
                                     default='composite-view'))
 
 
-    class_views = ['view', 'edit', 'configure_view',
-                   'manage_content', 'control_panel']
+    class_views = ['view', 'edit', 'configure_view', 'control_panel']
 
     class_control_panel = ['order_items', 'links', 'backlinks', 'commit_log']
 
@@ -157,7 +157,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
     # Views
     edit = Section_Edit()
-    manage_content = Section_ManageContent()
+    manage_content = Browse_Navigator()
     order_items = CPOrderItems()
     browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')

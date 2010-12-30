@@ -58,7 +58,7 @@ class AdminBarTemplate(CMSTemplate):
             return []
         # Do not show tabs on some site root views
         nav = (context.site_root.class_control_panel +
-                ['control_panel', 'contact', 'navigation',
+                ['control_panel', 'contact',
                  'site_search', 'website_new_resource'])
         if (context.site_root == context.resource and
             context.view_name in nav):
@@ -136,12 +136,14 @@ class AdminBarTemplate(CMSTemplate):
                      'icon': '/ui/icons/16x16/action_home.png',
                      'class': active and 'active' or None})
         # Navigation
-        active = is_site_root and context.view_name == 'navigation'
+        active = context.view_name == 'manage_content'
         if isinstance(here, Folder) is True:
             icon = '/ui/icons/16x16/folder.png'
+            name = './;manage_content'
         else:
             icon = '/ui/common/icons/16x16/parent_folder.png'
-        tabs.append({'name': '/;navigation',
+            name = '../;manage_content'
+        tabs.append({'name': name,
                      'label': MSG(u'Navigation'),
                      'icon': icon,
                      'class': active and 'active' or None})
