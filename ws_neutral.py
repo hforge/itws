@@ -90,7 +90,7 @@ class NeutralWS(Website_BarAware, WebSite):
     class_id = 'neutral'
     class_version = '20101013'
     class_title = MSG(u'ITWS website')
-    class_views = ['view', 'edit', 'configure_view', 'manage_content']
+    class_views = ['view', 'edit', 'configure_view']
     class_schema = merge_dicts(WebSite.class_schema,
                               breadcrumb_title=Multilingual(source='metadata'),
                               view=SectionViews_Enumerate(source='metadata',
