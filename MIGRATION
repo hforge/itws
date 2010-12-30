@@ -12,6 +12,13 @@ TODO
 * Test all boxes from sidebar/contentbar
 * Implement new AutomaticEditView (see more details bellow)
 
+* Add a search view on Navigation view
+* Hide sidebar when it's not needed
+* Test look&feel of wiki in new ITWS
+* Reflection: News Folder is maybe just a section with a specific view
+* Map box do not works (click on Find GPS ...)
+* Does TagsAware Feed Views has to show private resources ?
+
 
 
 Transform addresses_views into a bar mechasmin
