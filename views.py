@@ -35,13 +35,14 @@ from ikaaro.file import File, Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
-from ikaaro.registry import get_resource_class
+from ikaaro.registry import get_resource_class, resources_registry
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.root import Root
 from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
 # Import from itws
+from feed_views import Browse_Navigator
 from itws.control_panel import ITWS_ControlPanel
 from itws.control_panel import CPExternalEdit, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPDBResource_CommitLog
@@ -272,6 +273,13 @@ Folder.new_resource = Folder_NewResource()
 # Note: This monkey patch does not affect Blog, Tracker, Event, File
 NewInstance.goto_view = 'edit'
 
+# Add ITWS_ControlPanel for Folder resources
+Folder.class_views = ['edit', 'control_panel']
+Folder.class_control_panel = ['links', 'backlinks', 'commit_log']
+Folder.links = CPDBResource_Links()
+Folder.backlinks = CPDBResource_Backlinks()
+Folder.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+
 # Add ITWS_ControlPanel for Images resources
 Image.class_views = ['view', 'download', 'edit', 'control_panel']
 Image.control_panel = ITWS_ControlPanel()
@@ -291,8 +299,6 @@ File.backlinks = CPDBResource_Backlinks()
 File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
 # Add navigator to all resources
-from ikaaro.registry import resources_registry
-from feed_views import Browse_Navigator
 for cls in resources_registry.values():
     if issubclass(cls, Folder):
         cls.manage_content = Browse_Navigator()
