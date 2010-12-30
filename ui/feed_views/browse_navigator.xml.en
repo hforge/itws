@@ -5,6 +5,7 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <a name="top-browse-navigator"/>
+  <h1>Navigator</h1>
 
   <div id="breadcrumbs">
     <label>Location:</label>
