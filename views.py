@@ -274,7 +274,7 @@ Folder.new_resource = Folder_NewResource()
 NewInstance.goto_view = 'edit'
 
 # Add ITWS_ControlPanel for Folder resources
-Folder.class_views = ['edit', 'control_panel']
+Folder.class_views = ['view', 'edit', 'control_panel']
 Folder.class_control_panel = ['links', 'backlinks', 'commit_log']
 Folder.links = CPDBResource_Links()
 Folder.backlinks = CPDBResource_Backlinks()

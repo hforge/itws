@@ -130,8 +130,8 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
     def get_internal_use_resource_names(self):
-        return freeze(SideBarAware.__fixed_handlers__ +
-                      ContentBarAware.__fixed_handlers__ +
+        return freeze(SideBarAware.get_internal_use_resource_names(self) +
+                      ContentBarAware.get_internal_use_resource_names(self) +
                       ['order-section', 'children-toc'])
 
 

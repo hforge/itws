@@ -44,12 +44,17 @@ class SideBarAware(object):
 
     __fixed_handlers__ = [sidebar_name]
 
+
     def init_resource(self, **kw):
         if self.repository:
             path = '%s/%s' % (self.repository, self.sidebar_name)
         else:
             path = self.sidebar_name
         self.make_resource(path, SidebarBoxesOrderedTable)
+
+
+    def get_internal_use_resource_names(self):
+        return self.__fixed_handlers__
 
 
     @lazy
@@ -99,7 +104,7 @@ class ContentBarAware(object):
     contentbar_name = 'order-contentbar'
     repository = None
 
-    __fixed_handlers__ = [contentbar_name]
+    __fixed_handlers__ = [contentbar_name, 'section_view']
 
 
     def init_resource(self, **kw):
@@ -119,6 +124,10 @@ class ContentBarAware(object):
     def get_order_table_contentbar(self):
         content_folder = self.get_content_folder()
         return content_folder.get_resource(self.contentbar_name)
+
+
+    def get_internal_use_resource_names(self):
+        return self.__fixed_handlers__
 
 
     @lazy

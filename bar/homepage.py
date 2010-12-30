@@ -16,6 +16,7 @@
 
 
 # Import from itools
+from itools.core import freeze
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -52,7 +53,10 @@ class Website_BarAware(ContentBarAware, SideBarAware):
     sidebar and contenbar of homepage
     """
 
-    __fixed_handlers__ = ['ws-data', 'repository']
+    __fixed_handlers__ = (ContentBarAware.__fixed_handlers__ +
+                          SideBarAware.__fixed_handlers__ +
+                          ['ws-data', 'repository'])
+
     class_control_panel = []
     repository = 'ws-data'
 
@@ -64,3 +68,9 @@ class Website_BarAware(ContentBarAware, SideBarAware):
         SideBarAware.init_resource(self, **kw)
         # ContentBar Aware
         ContentBarAware.init_resource(self, **kw)
+
+
+    def get_internal_use_resource_names(self):
+        return freeze(SideBarAware.get_internal_use_resource_names(self) +
+                      ContentBarAware.get_internal_use_resource_names(self) +
+                      self.__fixed_handlers__)
