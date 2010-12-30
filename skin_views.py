@@ -126,6 +126,7 @@ class AdminBarTemplate(CMSTemplate):
     @thingy_lazy_property
     def backoffice_tabs(self):
         context = self.context
+        here = context.resource
         tabs = []
         is_site_root = context.site_root == context.resource
         # Go home
@@ -136,9 +137,13 @@ class AdminBarTemplate(CMSTemplate):
                      'class': active and 'active' or None})
         # Navigation
         active = is_site_root and context.view_name == 'navigation'
+        if isinstance(here, Folder) is True:
+            icon = '/ui/icons/16x16/folder.png'
+        else:
+            icon = '/ui/common/icons/16x16/parent_folder.png'
         tabs.append({'name': '/;navigation',
                      'label': MSG(u'Navigation'),
-                     'icon': '/ui/icons/16x16/folder.png',
+                     'icon': icon,
                      'class': active and 'active' or None})
         # New resource
         active = is_site_root and context.view_name == 'website_new_resource'
