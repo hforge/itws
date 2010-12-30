@@ -20,8 +20,8 @@
         <td>
           <ul stl:if="tabs">
             <li>
-              <span class="${workflow}" title="${resource_type/description}">
-                ${resource_type/title}
+              <span class="${workflow}">
+                ${resource_type}
               </span>
             </li>
             <li stl:repeat="tab tabs">
