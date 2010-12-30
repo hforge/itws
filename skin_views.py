@@ -69,6 +69,7 @@ class AdminBarTemplate(CMSTemplate):
         context = self.context
         here = context.resource
         here_link = context.get_link(here)
+        is_folder = isinstance(here, Folder)
 
         # Tabs
         tabs = []
@@ -95,8 +96,20 @@ class AdminBarTemplate(CMSTemplate):
                 'label': view.get_title(context),
                 'active': active,
                 'class': active and 'active' or None})
+        # Manage content
+        active = context.view_name == 'manage_content'
+        if is_folder:
+            icon = '/ui/icons/16x16/folder.png'
+            name = './;manage_content'
+        else:
+            icon = '/ui/common/icons/16x16/parent_folder.png'
+            name = '../;manage_content'
+        tabs.append({'name': name,
+                     'label': MSG(u'Navigation'),
+                     'icon': icon,
+                     'class': active and 'active' or None})
         # New resources
-        if isinstance(here, Folder) is True:
+        if is_folder:
             if len(here.get_document_types()) > 0:
                 active = context.view_name == 'new_resource'
                 tabs.append({'name': './;new_resource',
@@ -126,7 +139,6 @@ class AdminBarTemplate(CMSTemplate):
     @thingy_lazy_property
     def backoffice_tabs(self):
         context = self.context
-        here = context.resource
         tabs = []
         is_site_root = context.site_root == context.resource
         # Go home
@@ -134,18 +146,6 @@ class AdminBarTemplate(CMSTemplate):
         tabs.append({'name': '/',
                      'label': MSG(u'Go home'),
                      'icon': '/ui/icons/16x16/action_home.png',
-                     'class': active and 'active' or None})
-        # Navigation
-        active = context.view_name == 'manage_content'
-        if isinstance(here, Folder) is True:
-            icon = '/ui/icons/16x16/folder.png'
-            name = './;manage_content'
-        else:
-            icon = '/ui/common/icons/16x16/parent_folder.png'
-            name = '../;manage_content'
-        tabs.append({'name': name,
-                     'label': MSG(u'Navigation'),
-                     'icon': icon,
                      'class': active and 'active' or None})
         # New resource
         active = is_site_root and context.view_name == 'website_new_resource'
