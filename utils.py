@@ -36,17 +36,6 @@ from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
 
-
-# Only use one time in ITWS
-def to_box(resource, stream, template=None, css=None):
-    """ Decorate stream with a box. """
-    if template is None:
-        template = '/ui/common/box.xml'
-    template = resource.get_resource(template)
-    namespace = {'content': stream, 'class': css}
-    return stl(template, namespace)
-
-
 def is_empty(events):
     """Return true if the events contains data"""
     # FIXME copy/paste from itools.html XHTMLFile.is_empty
