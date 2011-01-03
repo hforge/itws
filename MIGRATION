@@ -6,39 +6,38 @@ TODO
 * Move "Add file with state" in ikaro
 * Rewrite "Add file without fill name"
 * Clean utils.py
-* Transform addresses_views into a bar mechasmin (see more details bellow)
 * Migration of slides (see more details bellow)
 * Finish to clean Sidebar/Contenbar (see more details bellow)
 * Test all boxes from sidebar/contentbar
 * Implement new AutomaticEditView (see more details bellow)
-
-* Add a search view on Navigation view
+* EasyNewInstance_WithOrderer not used ?
+* Add a search view on Navigation view ?
 * Hide sidebar when it's not needed
 * Test look&feel of wiki in new ITWS
-* Reflection: News Folder is maybe just a section with a specific view
+* Reflection: News Folder is maybe just a section with a specific view ?
 * Map box do not works (click on Find GPS ...)
 * Does TagsAware Feed Views has to show private resources ?
-
-
-
-Transform addresses_views into a bar mechasmin
-=============================================================
-
-Fix update method for contact (also copy images in folder)
-
-
-Migration of slides
-==============================================
-
-To test
-
-Feed Box
-==============================================
-
-  - Write CSS sed on UPGRADE file
-  - use a better name
-
-
+* Automaticaly order on MENU
+* Bug section_view on Homepage
+* ImageAdd Popup is ugly (we show all resources)
+* Bug Apache cache of header images and other ?
+* Do not create tags at begining or ask for task to create ?
+* AddImage popup is too slim
+* Sidebar should be local or global ?
+* There's a bug with AddImage POPUP on IE8 (Action_Importer do not exist)
+* Improve editing of menu: link to edit item is on number not on title
+* Fix update method of old addresses_views mechanism for contact (also copy images in folder)
+* Test migration of slides
+* Test migration of CSS for feed boxes
+* is_empty on boxes is maybe a bad idea ?
+* Remove state_widget (used ikaaro state_widget)
+* Add SectionView that only show the content of a WebPage (Maybe should be the first view of section)
+* Maybe /;rss should be a resource /feed/
+* For future /;contact should be a resource /contact/
+* We have to be able to add ImagesFeedView into a CompositeView
+* Do not show "Configuration > Languages" if there's only one language
+* Website: Allow to select language at creation, because it's confusing
+* Remove change mode on control panel
 
 Finish to clean Sidebar/Contenbar
 ==============================================================
@@ -74,3 +73,15 @@ Skins templates
 -  <link stl:if="favicon" rel="shortcut icon" href="${favicon_href}"
 -        type="${favicon_type}" />
 +  <link rel="shortcut icon" href="${favicon_href}" type="${favicon_type}" />
+
+
+We have to open bugs on ikaaro
+============================================================
+
+Move all that on ikaaro:
+
+ - RSS
+ - Sitemap.xml
+ - 404 webpage
+ - Robots.txt
+ - Tags folder
