@@ -16,8 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import form Standard Library
+from copy import deepcopy
+
 # Import from itools
 from itools.gettext import MSG
+from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -45,17 +49,6 @@ class GoogleMapWidget(Widget):
         stl_namespaces))
 
 
-    def get_namespace(self, datatype, value):
-        # Build namespace
-        namespace = {}
-        namespace.update(Widget.get_namespace(self, datatype, value))
-        for key in ['latitude', 'longitude', 'zoom']:
-            namespace[key] = value[key]
-        for key in ['width', 'height']:
-            namespace[key] = getattr(self, key)
-        return namespace
-
-
 
 class GoogleGPSWidget(GoogleMapWidget):
 
@@ -74,8 +67,10 @@ class GoogleGPSWidget(GoogleMapWidget):
           stl:repeat="script scripts"/>
         <label for="address">Address</label><br/>
         <p class="widget">
-          <input type="text" name="address" id="address" value="${address}" style="width:50%"/>
-          <a href="#" class="button button-ok" onclick="selectGPS('map_${name}');return;">
+          <input type="text" name="address" id="address" value="${address}"
+                 style="width:50%"/>
+          <a href="${uri}#" class="button button-ok"
+             onclick="selectGPS('map_${name}');return;">
             ${find_gps_coords_label}
           </a>
         </p>
@@ -100,5 +95,25 @@ class GoogleGPSWidget(GoogleMapWidget):
             initialize_gps_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
           });
         </script>
+        <script language="javascript">
+          //<!--
+          var address_button = $("#address");
+          var action = address_button.parents('form')[0].action;
+          var exp = new RegExp("[\?&]{1}is_admin=1","g");
+          if (action.search(exp)) {
+            // Inside admin popup add rel="fancybox"
+            var address_link = address_button.siblings("a");
+            if (address_link.length) {
+                $(address_link[0]).attr('rel', 'fancybox');
+            }
+          }
+          //-->
+        </script>
         """,
         stl_namespaces))
+
+
+    def uri(self):
+        uri = deepcopy(get_context().uri)
+        uri.fragment = None
+        return str(uri)
