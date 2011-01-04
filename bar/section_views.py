@@ -32,10 +32,11 @@ from ikaaro.workflow import state_widget, StaticStateEnumerate
 from itws.section_views import SectionViews_Enumerate
 from itws.tags.tags_views import TagsAware_Edit
 from itws.section_views import section_views_registry
+from itws.views import EditView
 
 
 
-class Section_Edit(DBResource_Edit, TagsAware_Edit):
+class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
 
 
     def _get_schema(self, resource, context):
@@ -77,10 +78,5 @@ class Section_Edit(DBResource_Edit, TagsAware_Edit):
         self.check_edit_conflict(resource, context, form)
         if context.edit_conflict:
             return
-        if form['view'] != resource.get_property('view'):
-            resource.del_resource('section_view', soft=True)
-            view = section_views_registry[form['view']]
-            cls = view.view_configuration_cls
-            if cls:
-                resource.make_resource('section_view', view.view_configuration_cls)
+        EditView.action(self, resource, context, form)
         return DBResource_Edit.action(self, resource, context, form)

@@ -31,6 +31,7 @@ from bar import Section
 from rss import BaseRSS
 from section_views import SectionViews_Enumerate
 from tags import TagsAware
+from views import EditView
 
 
 
@@ -86,7 +87,7 @@ class NeutralWS_RSS(BaseRSS):
 
 
 
-class NeutralWS_Edit(DBResource_Edit):
+class NeutralWS_Edit(EditView, DBResource_Edit):
 
     def _get_widgets(self, resource, context):
         return DBResource_Edit._get_widgets(self, resource, context) + [
@@ -98,3 +99,11 @@ class NeutralWS_Edit(DBResource_Edit):
         return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
                            view=SectionViews_Enumerate,
                            breadcrumb_title=Multilingual)
+
+
+    def action(self, resource, context, form):
+        self.check_edit_conflict(resource, context, form)
+        if context.edit_conflict:
+            return
+        EditView.action(self, resource, context, form)
+        return DBResource_Edit.action(self, resource, context, form)

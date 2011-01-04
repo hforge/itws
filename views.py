@@ -312,3 +312,21 @@ class TableViewWithoutAddRecordButton(object):
     # TableView inside a compositeform
     action_add_record_schema = None
     action_add_record = None
+
+
+
+############################################################
+# ContentBarAware edit view helper
+############################################################
+class EditView(object):
+
+    def action(self, resource, context, form):
+        from itws.section_views import section_views_registry
+
+        if form['view'] != resource.get_property('view'):
+            resource.del_resource('section_view', soft=True)
+            view = section_views_registry[form['view']]
+            cls = view.view_configuration_cls
+            if cls:
+                resource.make_resource('section_view',
+                                       view.view_configuration_cls)
