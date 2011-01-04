@@ -1355,7 +1355,7 @@ msgstr "Remplacer le favicon (ICO seulement)"
 
 #: ../resources.py:82
 msgid "Robots exclusion standard"
-msgstr "Fichier d'exclusion des robot"
+msgstr "Fichier d'exclusion des robots"
 
 #: ../ui/neutral/template.xhtml.en:45 ../ui/neutral2/template.xhtml.en:41
 #: ../ui/k2/template.xhtml.en:50
