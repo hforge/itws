@@ -34,7 +34,7 @@ from ikaaro.workflow import StateEnumerate, state_widget
 
 # Import from itws
 from base_views import Box_View
-from itws.utils import get_path_and_view, is_empty
+from itws.utils import get_path_and_view
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
 from itws.widgets.base import advance_rte_widget
@@ -53,19 +53,12 @@ class HTMLContent_View(Box_View, WebPage_View):
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
-        content = list(WebPage_View.GET(self, resource, context))
-        if is_empty(content):
-            content = None
-        if content is None and self.is_admin(resource, context) is False:
-            # Hide the box if the content is empty
-            self.set_view_is_empty(True)
-
         return {
             'name': resource.name,
             'title':title,
             'title_link': resource.get_property('title_link'),
             'title_link_target': resource.get_property('title_link_target'),
-            'content': content}
+            'content': WebPage_View.GET(self, resource, context)}
 
 
 

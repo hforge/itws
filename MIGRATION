@@ -16,7 +16,6 @@ TODO
 * ImageAdd Popup is ugly (we show all resources)
 * AddImage popup is too slim and text is too huge
 * Ikaaro: There's a bug with AddImage POPUP on IE (Action_Importer do not exist)
-* is_empty on HTML boxes is maybe a bad idea ?
 * Remove state_widget (used ikaaro state_widget)
 * Remove change mode on control panel
 * Bug Apache cache of header images and other (To test with last patch on itools)
