@@ -34,6 +34,7 @@ Later
 * Rewrite "Add file without fill name"
 * Fix type of bar packages
 * Implement new AutomaticEditView (merge_dicts(title=Unicode(source='metadata', editable=True))
+* Add in ikaaro our POPUP mecanism (rel=popup) & get_skin (is_popup)
 
 
 Documentation

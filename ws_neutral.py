@@ -188,7 +188,9 @@ class NeutralWS(Website_BarAware, WebSite):
 
 
     def get_skin(self, context):
-        if context.get_query_value('is_admin_popup', type=Boolean) is True:
+        # TODO It's an interesting mechanism (add in ikaaro)
+        if (context.get_query_value('is_admin_popup', type=Boolean) is True
+              or getattr(context.view, 'is_popup', False)):
             return self.get_resource('/ui/admin-popup/')
         return WebSite.get_skin(self, context)
 

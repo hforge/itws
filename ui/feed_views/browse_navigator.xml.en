@@ -4,9 +4,6 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <a name="top-browse-navigator"/>
-  <h1>Navigator</h1>
-
   <div id="breadcrumbs">
     <label>Location:</label>
     <span stl:repeat="x breadcrumb">
@@ -14,6 +11,29 @@
         title="${x/title}">${x/title}</a> /
     </span>
   </div>
+
+  <div class="clear"/>
+
+  <form id="form-sort-by" method="GET" style="float:right;display:none;">
+    <table>
+      <tr>
+        <td>
+          <label for="show-search">Show search form</label>
+        </td>
+        <td>
+          <img src="/ui/icons/16x16/search.png" id="show-search"/><br/>
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="sort-by">Sort by</label>
+        </td>
+        <td>
+          ${sort_by}
+        </td>
+      </tr>
+    </table>
+  </form>
 
   <div class="clear"/>
 
@@ -70,5 +90,23 @@
     </stl:block>
   </p>
   </form>
+
+  <script>
+    <![CDATA[
+    $(document).ready(function(){
+      if($("#search-type").val()=='' && $("#search_text").val()==''){
+        $(".search").hide();
+      }
+      // Only show sort by if javascript is activated
+      $("#form-sort-by").show();
+      $("#sort-by").change(function(){
+        document.location.href = $(this).val();
+      });
+      $("#show-search").click(function(){
+        $(".search").toggle();
+      });
+    });
+    ]]>
+  </script>
 
 </stl:block>

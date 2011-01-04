@@ -22,8 +22,13 @@ function show_more_news(link) {
     return false;
 }
 
-/* Admin bar */
 $(document).ready(function() {
+  /* Rel = popup */
+  $("a[rel='popup']").click(function(e){
+     popup($(this).attr('href'), 800, 600);
+     return false;
+  });
+  /* Admin bar */
   $(".fancybox-buttons a[rel='fancybox']").click(function(e){
     $.fancybox(
       {'type': 'iframe',

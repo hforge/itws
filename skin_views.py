@@ -93,6 +93,7 @@ class AdminBarTemplate(CMSTemplate):
             tabs.append({
                 'name': '%s/;%s' % (here_link, link),
                 'icon': getattr(view, 'adminbar_icon', None),
+                'rel': getattr(view, 'adminbar_rel', None),
                 'label': view.get_title(context),
                 'active': active,
                 'class': active and 'active' or None})
@@ -106,6 +107,7 @@ class AdminBarTemplate(CMSTemplate):
             name = '../;manage_content'
         tabs.append({'name': name,
                      'label': MSG(u'Navigation'),
+                     'rel': 'popup',
                      'icon': icon,
                      'class': active and 'active' or None})
         # New resources

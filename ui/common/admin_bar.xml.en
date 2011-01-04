@@ -25,7 +25,7 @@
               </span>
             </li>
             <li stl:repeat="tab tabs">
-              <a href="${tab/name}" class="${tab/class}">
+              <a href="${tab/name}" class="${tab/class}" rel="${tab/rel}">
                 <stl:block stl:if="not tab/icon">
                   ${tab/label}
                 </stl:block>
