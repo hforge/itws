@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard library
+from copy import copy
 from warnings import warn
 
 # Import from itools
@@ -152,13 +153,10 @@ class Bar_View(CompositeView):
             ac = item.get_access_control()
             if ac.is_allowed_to_view(user, item) is False:
                 continue
-            view = item.view
+            view = copy(item.view)
             view.item = item
             all_items.append(view)
         return all_items
-
-
-
 
 
     def get_namespace(self, resource, context):
