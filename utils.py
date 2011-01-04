@@ -31,7 +31,7 @@ from itools.web import get_context, INFO
 from itools.xml import TEXT, START_ELEMENT, XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces, SelectWidget, XHTMLBody
+from ikaaro.autoform import stl_namespaces, XHTMLBody
 from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
@@ -94,14 +94,6 @@ def resolve_pointer_with_hostname(offset, ref, fix_absolute_path, value):
     value = Reference(ref.scheme, ref.authority, path,
                       uri.query.copy(), uri.fragment)
     return str(value)
-
-
-############################################################
-# Forms
-############################################################
-
-state_widget = SelectWidget('state', title=MSG(u'State'),
-                            has_empty_option=False)
 
 
 ############################################################

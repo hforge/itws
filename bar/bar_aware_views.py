@@ -27,12 +27,11 @@ from itools.web import ERROR, FormError
 from ikaaro import messages
 from ikaaro.autoform import RadioWidget
 from ikaaro.registry import get_resource_class
-from ikaaro.workflow import StaticStateEnumerate, WorkflowAware
+from ikaaro.workflow import StaticStateEnumerate, WorkflowAware, state_widget
 from ikaaro.views_new import NewInstance
 
 # Import from itws
 from datatypes import MyAuthorized_Classid, OrderBoxEnumerate
-from itws.utils import state_widget
 from itws.views import EasyNewInstance
 from itws.widgets import ClassSelectorWidget
 
