@@ -1,61 +1,45 @@
 TODO
 ============================================================
 
-* Move old documentation for restedit in ikaaro
-* Move 'detar archive' in ikaaro
-* Move "Add file with state" in ikaro
-* Rewrite "Add file without fill name"
-* Clean utils.py
+* Bug when adding sidebar
 * Migration of slides (see more details bellow)
-* Finish to clean Sidebar/Contenbar (see more details bellow)
-* Test all boxes from sidebar/contentbar
-* Implement new AutomaticEditView (see more details bellow)
+* We have to be able to add ImagesFeedView into a CompositeView
+* Test migration of slides
+* Test migration of CSS for feed boxes
+* Fix update method of old addresses_views mechanism for contact (also copy images in folder)
+* Does TagsAware Feed Views has to show private resources ? No hide private resources
 * EasyNewInstance_WithOrderer not used ?
 * Add a search view on Navigation view ?
 * Hide sidebar when it's not needed
 * Test look&feel of wiki in new ITWS
-* Reflection: News Folder is maybe just a section with a specific view ?
 * Map box do not works (click on Find GPS ...)
-* Does TagsAware Feed Views has to show private resources ?
-* Automaticaly order on MENU
 * Bug section_view on Homepage
 * ImageAdd Popup is ugly (we show all resources)
-* Bug Apache cache of header images and other ?
-* Do not create tags at begining or ask for task to create ?
-* AddImage popup is too slim
-* Sidebar should be local or global ?
-* There's a bug with AddImage POPUP on IE8 (Action_Importer do not exist)
-* Improve editing of menu: link to edit item is on number not on title
-* Fix update method of old addresses_views mechanism for contact (also copy images in folder)
-* Test migration of slides
-* Test migration of CSS for feed boxes
-* is_empty on boxes is maybe a bad idea ?
+* AddImage popup is too slim and text is too huge
+* Ikaaro: There's a bug with AddImage POPUP on IE (Action_Importer do not exist)
+* is_empty on HTML boxes is maybe a bad idea ?
 * Remove state_widget (used ikaaro state_widget)
+* Remove change mode on control panel
+* Bug Apache cache of header images and other (To test with last patch on itools)
+
+
+Later
+=============================
+
 * Add SectionView that only show the content of a WebPage (Maybe should be the first view of section)
+* Reflection: News Folder is maybe just a section with a specific view ?
+* Automaticaly order on MENU
+* Do not create tags at begining or ask for task to create ?
+* Sidebar should be local or global ?
+* Improve editing of menu: link to edit item is on number not on title
+* Website: Allow to select language at creation, because it's confusing
+* Ikaaro: Do not show "Configuration > Languages" if there's only one language
 * Maybe /;rss should be a resource /feed/
 * For future /;contact should be a resource /contact/
-* We have to be able to add ImagesFeedView into a CompositeView
-* Do not show "Configuration > Languages" if there's only one language
-* Website: Allow to select language at creation, because it's confusing
-* Remove change mode on control panel
-
-Finish to clean Sidebar/Contenbar
-==============================================================
-
-Clean API Names. There are misunderstood between boxes/bar/...
-Add mechanism to easily add boxes add boxes at the creation of
-homepage / section.
-
-
-Implement new AutomaticEditView (see more details bellow)
-============================================================
-
-Since ikaaro 0.62 edit view has been improved,
-we can implement an easier mechanism in AutomaticeditView with 0.62.
-Fox example:
-
-class_schema = merge_dicts(title=Unicode(source='metadata', editable=True),
-                           description=Unicode(source='metadata', editable=True))
+* Move "Add file with state" in ikaaro
+* Rewrite "Add file without fill name"
+* Fix type of bar packages
+* Implement new AutomaticEditView (merge_dicts(title=Unicode(source='metadata', editable=True))
 
 
 Documentation
