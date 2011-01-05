@@ -103,8 +103,7 @@ class NeutralWS(Website_BarAware, WebSite):
     class_control_panel = (WebSite.class_control_panel +
                           Website_BarAware.class_control_panel +
                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
-                           'edit_404', 'edit_robots_txt', 'commit_log',
-                           'fo_switch_mode'])
+                           'edit_404', 'edit_robots_txt', 'commit_log'])
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__ +
                           Website_BarAware.__fixed_handlers__ +
