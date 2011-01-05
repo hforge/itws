@@ -13,7 +13,6 @@ TODO
 * Test look&feel of wiki in new ITWS
 * ImageAdd Popup is ugly (we show all resources)
 * AddImage popup is too slim and text is too huge
-* Ikaaro: There's a bug with AddImage POPUP on IE (Action_Importer do not exist)
 * Remove change mode on control panel
 * Bug Apache cache of header images and other (To test with last patch on itools)
 
