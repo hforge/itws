@@ -73,4 +73,4 @@ class Website_BarAware(ContentBarAware, SideBarAware):
     def get_internal_use_resource_names(self):
         return freeze(SideBarAware.get_internal_use_resource_names(self) +
                       ContentBarAware.get_internal_use_resource_names(self) +
-                      self.__fixed_handlers__)
+                      ['ws-data', 'repository'])

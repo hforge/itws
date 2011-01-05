@@ -92,3 +92,10 @@ class SortBy_Enumerate(Enumerate):
       {'name': 'title', 'value': MSG(u'Title')},
       {'name': 'mtime', 'value': MSG(u'Modification Date')},
       {'name': 'ctime', 'value': MSG(u'Creation Date')}]
+
+
+class Reverse_Enumerate(Enumerate):
+
+    options = [
+      {'name': '0', 'value': MSG(u'First  to last')},
+      {'name': '1', 'value': MSG(u'Last to first')}]

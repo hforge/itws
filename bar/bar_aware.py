@@ -54,7 +54,7 @@ class SideBarAware(object):
 
 
     def get_internal_use_resource_names(self):
-        return self.__fixed_handlers__
+        return [self.sidebar_name]
 
 
     @lazy
@@ -127,7 +127,7 @@ class ContentBarAware(object):
 
 
     def get_internal_use_resource_names(self):
-        return self.__fixed_handlers__
+        return [self.contentbar_name, 'section_view']
 
 
     @lazy

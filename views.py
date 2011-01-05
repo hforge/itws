@@ -36,6 +36,7 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class, resources_registry
+from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.root import Root
 from ikaaro.utils import get_content_containers
@@ -43,6 +44,8 @@ from ikaaro.views_new import NewInstance
 
 # Import from itws
 from feed_views import Browse_Navigator
+from popup import ITWS_DBResource_AddImage, ITWS_DBResource_AddLink
+from popup import ITWS_DBResource_AddMedia
 from itws.control_panel import ITWS_ControlPanel
 from itws.control_panel import CPExternalEdit, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPDBResource_CommitLog
@@ -302,6 +305,12 @@ File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 for cls in resources_registry.values():
     if issubclass(cls, Folder):
         cls.manage_content = Browse_Navigator()
+    cls.add_image = ITWS_DBResource_AddImage()
+    cls.add_link = ITWS_DBResource_AddLink()
+    cls.add_media = ITWS_DBResource_AddMedia()
+
+
+
 
 ############################################################
 # TABLE VIEW WITHOUT ADD_RECORD BUTTON

@@ -55,8 +55,10 @@ class Feed_View(Folder_BrowseContent):
     search_on_current_folder = True
     search_on_current_folder_recursif = False
     content_keys = ('pub_datetime', 'title', 'long_title',
-                    'link', 'is_image', 'preview', 'tags',
-                    'image', 'css', 'class_icon16', 'type', 'abspath')
+                    'link', 'is_image', 'preview',
+                    'tags', 'workflow_state',
+                    'image', 'css', 'class_icon16', 'class_icon48',
+                    'type', 'abspath')
 
 
     def get_query_schema(self):
@@ -215,6 +217,8 @@ class Feed_View(Folder_BrowseContent):
             if item_brain.is_tagsaware:
                 return item_resource.get_tags_namespace(context)
             return []
+        elif column == 'workflow_state':
+            return item_brain.workflow_state
         elif column == 'css':
             if item_brain.abspath == resource.abspath:
                 return 'active'
