@@ -72,10 +72,11 @@
           <tr>
             <td class="ligne2">
               <a href="${item/link}" stl:omit-tag="not item/link">
-                <span class="wf-${item/workflow_state}" title="${item/title}">
+                <span title="${item/title}">
                   ${item/title}
                 </span>
               </a>
+              ${item/workflow_state}
             </td>
           </tr>
         </table>
