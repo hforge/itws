@@ -54,9 +54,8 @@ def itws_get_item_value(self, resource, context, item, column):
     elif column == 'is_selectable':
         return isinstance(item_resource, self.get_item_classes())
     elif column == 'link':
-        target = self.target
         if self.is_folder(item_resource):
-            path_to_item = target.get_pathto(item_resource)
+            path_to_item = context.site_root.get_pathto(item_resource)
             url_dic = {'target': str(path_to_item),
                        # Avoid search conservation
                        'search_text': None,
