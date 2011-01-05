@@ -15,11 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import thingy_property
-from itools.datatypes import Boolean
 from itools.gettext import MSG
-from itools.uri import get_reference
-from itools.web import BaseView, get_context
 
 # Import from ikaaro
 from ikaaro.cc import SubscribeForm
@@ -28,9 +24,6 @@ from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.resource_views import DBResource_Links, DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
-
-# Import from itws
-from utils import is_navigation_mode
 
 
 
@@ -172,40 +165,3 @@ class CPExternalEdit(File_ExternalEdit_View):
     itws_icon = 'editor.png'
     description = MSG(u'Edit file with an external editor')
     context_menus = context_menus
-
-
-
-class CPFOSwitchMode(BaseView):
-
-    access = 'is_allowed_to_edit'
-    query_schema = {'mode': Boolean(default=False)}
-
-    title = MSG(u'Change mode')
-    itws_icon = 'switch.png'
-
-    @thingy_property
-    def description(self):
-        context = get_context()
-        if is_navigation_mode(context):
-            return MSG(u'Go to edition mode')
-        return MSG(u'Go to navigation mode')
-
-
-    def GET(self, resource, context):
-        if context.get_cookie('itws_fo_edit', Boolean):
-            context.set_cookie('itws_fo_edit', '0')
-        else:
-            context.set_cookie('itws_fo_edit', '1')
-
-        referer = context.get_referrer()
-        if referer:
-            ref = get_reference(referer)
-            if ref.path == '/;fo_switch_mode':
-                # Do no loop
-                goto = '/'
-            else:
-                goto = referer
-        else:
-            goto = '/'
-
-        return get_reference(goto)

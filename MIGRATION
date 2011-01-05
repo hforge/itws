@@ -11,7 +11,6 @@ TODO
 * Add a search view on Navigation view ?
 * Hide sidebar when it's not needed
 * Test look&feel of wiki in new ITWS
-* Remove change mode on control panel
 * Bug Apache cache of header images and other (To test with last patch on itools)
 
 
