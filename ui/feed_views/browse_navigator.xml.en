@@ -4,94 +4,71 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <style>
-  .box{
-   width: 128px;
-   height: 128px;
-   float: left;
-   text-align: center;
-   border-top: 1px dashed gray;
-   margin: 0 0 2px 0;
-  }
+  <a name="top-browse-navigator"/>
+  <div class="clear"/>
 
-  .box table{
-   width: 128px;
-   height: 128px;
-  }
-  .ligne1{
-   width: 56px;
-   height: 56px;
-   vertical-align: middle;
-  }
-  .ligne2 span{
-    display: block;
-    width: 128px;
-    overflow: hidden;
-  }
-  .box table td{
-    text-align: center;
-    font-size: 9px;
-  }
-  </style>
+  <div id="breadcrumbs">
+    <label>Location:</label>
+    <span stl:repeat="x breadcrumb">
+      <a href="${x/url}/;manage_content"
+        title="${x/title}">${x/title}</a> /
+    </span>
+  </div>
 
   <div class="clear"/>
 
-  <form id="form-sort-by" method="GET">
-    <input value="${target}" name="target" type="hidden" />
-    <input id="mode" type="hidden" name="mode" value="${mode}" />
-    ${sort_by}
-    ${reverse}
-    <button value="filter" name="filter" class="button-ok">Ok</button>
+  <form action="" method="post" name="browse_list" id="form-table"
+    stl:omit-tag="not actions">
+  <table id="browse-list" class="${css}">
+    <thead stl:if="columns">
+      <tr>
+        <stl:block stl:repeat="column columns">
+          <!-- checkbox -->
+          <th stl:if="column/is_checkbox" class="checkbox">
+            <input type="checkbox" title="Click to select/unselect all rows"
+              onclick="select_checkboxes(this, this.checked);" />
+          </th>
+          <!-- checkbox -->
+          <th stl:if="not column/is_checkbox">
+            ${column/title}
+            <stl:block stl:if="column/sortable">
+              <br/>
+              <a stl:if="not column/sort_up_active" href="${column/href_up}"
+                class="sort sort-up"/>
+              <a stl:if="column/sort_up_active" href="${column/href}"
+                class="sort sort-up-active"/>
+              <a stl:if="not column/sort_down_active" href="${column/href_down}"
+                class="sort sort-down"/>
+              <a stl:if="column/sort_down_active" href="${column/href}"
+                class="sort sort-down-active"/>
+            </stl:block>
+          </th>
+        </stl:block>
+      </tr>
+    </thead>
+    <tbody>
+      <tr stl:repeat="row rows" class="${repeat/row/even}">
+        <td stl:repeat="column row/columns">
+          <!-- checkbox -->
+          <input stl:if="column/is_checkbox" type="checkbox" name="ids"
+            value="${column/value}" checked="${column/checked}" class="checkbox"
+            />
+          <!-- icon -->
+          <img stl:if="column/is_icon" src="${column/src}" border="0" />
+          <!-- link -->
+          <a stl:if="column/is_link" stl:omit-tag="not column/href"
+            href="${column/href}">${column/value}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p stl:if="actions">
+    <stl:block stl:repeat="action actions">
+      <button type="submit" name="action" value="${action/value}"
+        class="${action/class}" onclick="${action/onclick}"
+        >${action/title}</button>
+    </stl:block>
+  </p>
   </form>
-
-  <div class="clear"/>
-
-  <form action="" method="post" name="browse_list" id="form-table">
-
-    <div stl:repeat="item items" class="box">
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="ligne1">
-              <a href="${item/link}" stl:omit-tag="not item/link">
-                <img src="${item/image}/;thumb?width=64&amp;height=64"
-                  title="${item/title}" stl:if="item/is_image"/>
-                <img src="${item/class_icon48}"
-                  title="${item/title}" stl:if="not item/is_image"/>
-                <br/>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a onclick="javascript:select_element('image', '${item/js_link}','')"
-                stl:if="item/is_selectable">
-                <img src="/ui/icons/16x16/add.png"/>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="ligne2">
-              <a href="${item/link}" stl:omit-tag="not item/link">
-                <span class="wf-${item/workflow_state}" title="${item/title}">
-                  ${item/title}
-                </span>
-              </a>
-            </td>
-          </tr>
-        </table>
-    </div>
-
-  </form>
-
-  <script>
-    <![CDATA[
-    $(document).ready(function(){
-      $(".search").hide();
-      $("#show-search").click(function(){
-        $(".search").toggle();
-      });
-    });
-    ]]>
-  </script>
 
 </stl:block>

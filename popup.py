@@ -44,6 +44,7 @@ def get_itws_namespace(cls, self, resource, context):
     namespace['breadcrumb'] = breadcrumb
     return namespace
 
+
 def itws_get_item_value(self, resource, context, item, column):
     brain, item_resource = item
     if column == 'js_link':
@@ -127,7 +128,7 @@ class ITWS_AddBase_BrowseContent(Feed_View, AddBase_BrowseContent):
 
 class ITWS_AddMedia_BrowseContent(Feed_View, AddMedia_BrowseContent):
 
-    table_template = '/ui/feed_views/browse_navigator.xml'
+    table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
 
     def get_items(self, resource, context, *args):
@@ -147,10 +148,9 @@ class ITWS_AddMedia_BrowseContent(Feed_View, AddMedia_BrowseContent):
 
 class ITWS_AddImage_BrowseContent(Feed_View, AddImage_BrowseContent):
 
-    table_template = '/ui/feed_views/browse_navigator.xml'
-
-    item_classes = (Image,)
+    table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
+    item_classes = (Image,)
 
     def get_items(self, resource, context, *args):
         args = list(args)

@@ -2,6 +2,10 @@
   clear: both;
 }
 
+body{
+  padding: 10px;
+}
+
 p {
   font-size: 11px;
 }

@@ -217,8 +217,6 @@ class Feed_View(Folder_BrowseContent):
             if item_brain.is_tagsaware:
                 return item_resource.get_tags_namespace(context)
             return []
-        elif column == 'workflow_state':
-            return item_brain.workflow_state
         elif column == 'css':
             if item_brain.abspath == resource.abspath:
                 return 'active'
