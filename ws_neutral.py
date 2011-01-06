@@ -239,11 +239,10 @@ class NeutralWS(Website_BarAware, WebSite):
 
 
     def get_news_folder(self, context):
-        # News folder MUST be in root '/xxx'
+        # News folder MUST be in root '/foo'
         abspath = self.get_canonical_path()
-        query = [get_base_path_query(str(abspath)),
-                  PhraseQuery('format', self.newsfolder_class.class_id)]
-        #query = get_base_path_query(str(abspath))
+        query = [PhraseQuery('parent_path', str(abspath)),
+                 PhraseQuery('format', self.newsfolder_class.class_id)]
         # Search
         results = context.root.search(AndQuery(*query), sort_by='name')
         if len(results):
