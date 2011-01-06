@@ -18,6 +18,7 @@
 from itools.core import merge_dicts
 from itools.datatypes import String, PathDataType
 from itools.datatypes import Unicode, Decimal, Integer
+from itools.html import stream_is_empty
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -229,7 +230,6 @@ class AddressesFolder(Folder):
 
     def update_20101115(self):
         # XXX To test
-        # XXX Check public/private
         # XXX Check CSS
         old_name = self.name
         languages = self.get_site_root().get_property('website_languages')
@@ -241,6 +241,8 @@ class AddressesFolder(Folder):
                 for key in ['address', 'latitude', 'longitude', 'width',
                             'height', 'zoom', 'render']:
                     kw[key] = address.get_property(key)
+                # state
+                kw['state'] = address.get_workflow_state()
                 kw['html'] = {}
                 for lang in languages:
                     handler = address.get_handler(language=lang)
@@ -251,28 +253,42 @@ class AddressesFolder(Folder):
         self.parent.del_resource(old_name, ref_action='force')
         # Create a section
         section = self.parent.make_resource(old_name, Section, add_boxes=False)
-        # Get order table
+        # AddressFolder was not workflow aware, to not break acl
+        # make section public
+        section.set_workflow_state('public')
+        # Content bar: Get order table
         table = section.get_resource('order-contentbar')
         # Add addresses into section
         for i, address in enumerate(addresses):
             # Add html
-            name_html = 'html_map_%s' % i
+            name_html = 'html-map-%s' % i
             html = section.make_resource(name_html, HTMLContent,
-                  state='public',
-                  display_title=False)
+                                         state='public', display_title=False)
             for lang in languages:
+                if stream_is_empty(address['html'][lang]):
+                    continue
                 handler = html.get_handler(language=lang)
                 handler.events = address['html'][lang]
                 handler.set_changed()
             table.add_new_record({'name': name_html})
             # Add map
-            name_map = 'map_box_%s' % i
-            amap = section.make_resource(name_map, MapBox,
-                                         state='public')
+            name_map = 'map-box-%s' % i
+            amap = section.make_resource(name_map, MapBox, state='public')
             for key in ['address', 'latitude', 'longitude', 'width', 'height',
-                        'zoom', 'render']:
+                        'zoom', 'render', 'state']:
                 amap.set_property(key, address[key])
+            # Do not display the title on section view
+            amap.set_property('display_title', False)
             table.add_new_record({'name': name_map})
+        # Side bar: Restore boxes (take them from site root)
+        # because AdresseFolder could not customized the sidebar
+        table = section.get_site_root().get_resource('ws-data/order-sidebar')
+        handler = table.handler
+        section_table = section.get_resource('order-sidebar')
+        for record in handler.get_records_in_order():
+            name = handler.get_record_value(record, 'name')
+            section_table.add_new_record({'name': record.name})
+
 
 
 ############################

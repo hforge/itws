@@ -16,11 +16,12 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Unicode, Decimal, Enumerate, Integer, String
+from itools.datatypes import Boolean, Decimal, Enumerate, Integer, String
+from itools.datatypes import Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import SelectWidget, TextWidget
+from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
@@ -53,8 +54,10 @@ class MapBox_View(Box_View):
         render = resource.get_property('render')
         map_widget_cls = OpenLayerRender.map_widget_cls[render]
         the_map = map_widget_cls('map_%s' % resource.name, **kw)
-        return {'title': resource.get_title(),
-                'map': the_map.render()}
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+        return {'title': title, 'map': the_map.render()}
 
 
 
@@ -68,6 +71,7 @@ class MapBox_Edit(DBResource_Edit):
     def _get_schema(self, resource, context):
         base_schema = DBResource_Edit._get_schema(self, resource, context)
         return merge_dicts(base_schema,
+                           display_title=Boolean,
                            render=OpenLayerRender(mandatory=True),
                            width=Integer, height=Integer, address=Unicode,
                            latitude=Decimal, longitude=Decimal, zoom=Integer,
@@ -90,6 +94,8 @@ class MapBox_Edit(DBResource_Edit):
                       'zoom': resource.get_property('zoom')}
         # Return widgets
         return DBResource_Edit._get_widgets(self, resource, context) + [
+                CheckboxWidget('display_title',
+                               title=MSG(u'Display on section view')),
                 SelectWidget('render', title=MSG(u'Render map with')),
                 TextWidget('width', title=MSG(u'Map width'), size=6),
                 TextWidget('height', title=MSG(u'Map height'), size=6),
@@ -120,6 +126,7 @@ class MapBox(Box):
 
     class_schema = merge_dicts(Box.class_schema,
           # Metadata
+          display_title=Boolean(source='metadata', default=True),
           address=Unicode(source='metadata'),
           latitude=Decimal(source='metadata',
                            default=Decimal.encode('48.8566')),
