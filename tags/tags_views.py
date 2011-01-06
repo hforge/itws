@@ -306,6 +306,8 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
             # Search
             results = context.root.search(query)
             return len(results), './%s' % brain.name
+        elif column == 'name':
+            return brain.name
 
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
