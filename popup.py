@@ -80,7 +80,7 @@ def itws_get_table_namespace(self, resource, context, items):
                           value=str(int(context.query['reverse'])),
                           has_empty_option=False)
     namespace['reverse'] = widget.render()
-    for key in ['target', 'mode']:
+    for key in ['target', 'target_id', 'mode']:
         namespace[key] = context.get_form_value(key)
     return namespace
 

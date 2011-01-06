@@ -38,6 +38,7 @@
 
   <form id="form-sort-by" method="GET">
     <input value="${target}" name="target" type="hidden" />
+    <input value="${target_id}" name="target_id" type="hidden" />
     <input id="mode" type="hidden" name="mode" value="${mode}" />
     ${sort_by}
     ${reverse}
