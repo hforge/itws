@@ -83,11 +83,12 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         resource.set_property('display_title', display_title)
         resource.set_workflow_state(form['state'])
 
+        messages = [ context.message ]
         # Publish referenced resources which are not public/pending
         message2 = get_warn_referenced_message(resource, context, form['state'])
         if message2:
             # Add custom message
-            context.message = [ context.message, message2 ]
+             messages.append(message2)
 
         # Customize message for webpage which can be ordered
         site_root = resource.get_site_root()
@@ -116,7 +117,8 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
                                     path=path).encode('utf8')
         message2 = XHTMLBody.decode(message2)
         # Add custom message
-        context.message = [ context.message, message2 ]
+        messages.append(message2)
+        context.message = messages
 
 
 
