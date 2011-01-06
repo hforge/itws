@@ -352,6 +352,8 @@ class Diaporama(BoxAware, Folder):
 
 
     def get_document_types(self):
+        # FIXME The side effect is that new_resource allow to add Image
+        # only inside Diaporama folder without using the Diaporama view.
         return [Image]
 
 
