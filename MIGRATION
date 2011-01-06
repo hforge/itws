@@ -63,3 +63,17 @@ Move all that on ikaaro:
  - 404 webpage
  - Robots.txt
  - Tags folder
+
+
+Before the upgrade
+==================
+
+Update the config.conf file.
+Update modules list by adding 'wiki, ikaaro.tracker, ikaaro.calendar'
+
+
+After the update
+================
+
+AddressFolder custom css is obsolete since it has been replaced by a Section
+with HTMLContent and MapBox
