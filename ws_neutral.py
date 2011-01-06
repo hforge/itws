@@ -363,6 +363,25 @@ class NeutralWS(Website_BarAware, WebSite):
     def update_20100704(self):
         """Move menu, style inside the theme folder"""
         self.move_resource('menu', 'theme/menu')
+        # Fix submenu, delete them and tweak child property
+        parent = self.get_resource('theme/menu')
+        menu = parent.get_resource('menu')
+        if parent.allow_submenu is False:
+            # delete all submenus
+            for name in parent._get_names():
+                if name.startswith('menu-'):
+                    parent.del_resource(name, ref_action='force')
+        # Fix child property
+        handler = menu.handler
+        for record in handler.get_records():
+            if parent.allow_submenu is False:
+                handler.update_record(record.id, **{'child': ''})
+            else:
+                # check if child exists
+                child = handler.get_record_value(record, 'child')
+                if child and menu.get_resource(child, soft=True) is None:
+                    handler.update_record(record.id, **{'child': ''})
+
         self.move_resource('footer', 'theme/footer')
         self.move_resource('turning-footer', 'theme/turning-footer')
         self.move_resource('style', 'theme/style')
