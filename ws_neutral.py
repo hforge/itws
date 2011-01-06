@@ -20,9 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from decimal import Decimal
-
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
@@ -40,7 +37,6 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
 from ikaaro.user import User
-from ikaaro.utils import get_base_path_query
 from ikaaro.website import WebSite
 from ikaaro.workflow import WorkflowAware
 
@@ -207,27 +203,6 @@ class NeutralWS(Website_BarAware, WebSite):
                 types.append(self.newsfolder_class)
 
         return types + [Section, RssFeeds]
-
-
-    def before_traverse(self, context, min=Decimal('0.000001'),
-                        zero=Decimal('0.0')):
-        # The default language
-        accept = context.accept_language
-        default = self.get_default_language()
-        if accept.get(default, zero) < min:
-            accept.set(default, min)
-        # The Query
-        language = context.get_form_value('language')
-        if language is not None:
-            context.set_cookie('language', language)
-        # Language negotiation
-        user = context.user
-        language = context.get_cookie('language')
-        if language is not None:
-            accept.set(language, 3.0)
-        if user:
-            language = user.get_property('user_language')
-            accept.set(language, 2.0)
 
 
     def get_repository(self, soft=False):
