@@ -123,9 +123,8 @@ class BoxContact(Box):
 
     class_id = 'box-contact'
     class_version = '20100923'
-    class_title = MSG(u'Contact Box')
-    class_description = MSG(u'Put the Contact Form in a Box that can be '
-                            'displayed in a central sidebar')
+    class_title = MSG(u'Contact box')
+    class_description = MSG(u'Contact form to collect messages from users.')
 
     edit_schema = {'configuration_shortcut': String(readonly=True)}
     edit_widgets = [

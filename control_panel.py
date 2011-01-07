@@ -155,7 +155,8 @@ class CPOrderItems(GoToSpecificDocument):
     itws_icon = 'toc.png'
 
     title = MSG(u'Manage TOC')
-    description = MSG(u'Order items in TOC of section')
+    description = MSG(u'Select and order items of the table of contents of '
+                      u'this section.')
     specific_document = 'order-section'
     context_menus = context_menus
 
@@ -172,7 +173,7 @@ class CPSubscribe(SubscribeForm):
 class CPExternalEdit(File_ExternalEdit_View):
 
     itws_icon = 'editor.png'
-    description = MSG(u'Edit file with an external editor')
+    description = MSG(u'Edit with an external editor')
     context_menus = context_menus
 
 
@@ -182,15 +183,15 @@ class CPFOSwitchMode(BaseView):
     access = 'is_allowed_to_edit'
     query_schema = {'mode': Boolean(default=False)}
 
-    title = MSG(u'Change mode')
+    title = MSG(u'Change mode edition/navigation')
     itws_icon = 'switch.png'
 
     @thingy_property
     def description(self):
         context = get_context()
         if is_navigation_mode(context):
-            return MSG(u'Go to edition mode')
-        return MSG(u'Go to navigation mode')
+            return MSG(u'Change to edition mode')
+        return MSG(u'Change to navigation mode')
 
 
     def GET(self, resource, context):

@@ -51,7 +51,7 @@ class FooterMenu(Menu):
 
     class_id = 'footer-menu'
     class_version = '20090123'
-    class_title = MSG(u'Footer Menu')
+    class_title = MSG(u'Footer menu')
     class_handler = FooterMenuFile
 
     form = [TextWidget('title', title=MSG(u'Title')),
@@ -205,7 +205,7 @@ class FooterMenu(Menu):
 class FooterFolder(MenuFolder):
 
     class_id = 'footer-folder'
-    class_title = MSG(u'Footer Folder')
+    class_title = MSG(u'Footer folder')
     class_menu = FooterMenu
 
     use_fancybox = False

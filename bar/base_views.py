@@ -203,7 +203,7 @@ class SideBar_View(Bar_View):
     id = 'sidebar-items'
     order_name = 'order-sidebar'
     order_method = 'order_sidebar'
-    order_label = MSG(u'Order Sidebar Boxes')
+    order_label = MSG(u'Order sidebar boxes')
     admin_bar_prefix_name = 'sidebar-box'
     boxes_css_class = 'sidebar-box'
 
@@ -227,7 +227,7 @@ class SideBar_View(Bar_View):
             section_path = context.get_link(resource)
             buttons.append({'path': '%s/;new_sidebar_resource' % section_path,
                             'icon': '/ui/common/icons/16x16/new.png',
-                            'label': MSG(u'Add Sidebar Box'),
+                            'label': MSG(u'Add a sidebar box'),
                             'rel': 'fancybox',
                             'target': None})
         else:

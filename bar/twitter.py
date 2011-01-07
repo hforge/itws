@@ -123,8 +123,8 @@ class Microblogging_Edit(AutomaticEditView):
 class TwitterSideBar(Box, ResourceWithCache):
 
     class_id = 'box-twitter'
-    class_title = MSG(u'Twitter SideBar')
-    class_description = MSG(u'Twitter sidebar feed')
+    class_title = MSG(u'Twitter')
+    class_description = MSG(u'Twitter feed (micro-blogging service).')
     class_icon16 = 'bar_items/icons/16x16/twitter.png'
     class_icon48 = 'bar_items/icons/48x48/twitter.png'
     # Free twitter icon
@@ -146,7 +146,7 @@ class TwitterSideBar(Box, ResourceWithCache):
     edit_widgets = [TextWidget('user_name',
                               title=MSG(u"Twitter account name")),
                     TextWidget('user_id', title=MSG(u"User Id")),
-                    TextWidget('limit', title=MSG(u'Number of tweet')),
+                    TextWidget('limit', title=MSG(u'Number of tweets')),
                     CheckboxWidget('force_update',
                                     title=MSG(u'Force cache update')),
                    ]
@@ -279,8 +279,8 @@ class TwitterSideBar(Box, ResourceWithCache):
 class IdenticaSideBar(TwitterSideBar):
 
     class_id = 'box-identica'
-    class_title = MSG(u'Identi.ca SideBar')
-    class_description = MSG(u'Identi.ca sidebar feed')
+    class_title = MSG(u'Identi.ca')
+    class_description = MSG(u'Identi.ca feed (open micro-blogging service).')
     class_icon16 = 'bar_items/icons/16x16/identica.png'
     class_icon48 = 'bar_items/icons/48x48/identica.png'
     class_schema = merge_dicts(Box.class_schema,

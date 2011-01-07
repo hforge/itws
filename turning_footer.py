@@ -209,7 +209,7 @@ class TurningFooterFolder(Folder):
 
     class_id = 'turning-footer-folder'
     class_version = '20100616'
-    class_title = MSG(u'Turning Footer Folder')
+    class_title = MSG(u'Turning footer folder')
     class_views = ['configure', 'edit', 'browse_content',
                    'backlinks', 'commit_log']
 

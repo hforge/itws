@@ -113,21 +113,21 @@ class BoxesOrderedTable(ResourcesOrderedTable):
 class SidebarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'sidebar-boxes-ordered-table'
-    class_title = MSG(u'Manage sidebar Boxes')
+    class_title = MSG(u'Manage sidebar boxes')
     class_description = None
 
     # _orderable_classes configuration
     allow_filter_key = 'side'
 
     # New box (Add a sidebar box)
-    new_box = SideBarBox_NewInstance(title=MSG(u'Create a new Sidebar Box'))
+    new_box = SideBarBox_NewInstance(title=MSG(u'Create a new sidebar box'))
 
 
 
 class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
     class_id = 'contentbar-boxes-ordered-table'
-    class_title = MSG(u'Order Central Part Boxes')
+    class_title = MSG(u'Order central boxes')
     class_description = None
 
     # _orderable_classes configuration
@@ -135,7 +135,7 @@ class ContentbarBoxesOrderedTable(BoxesOrderedTable):
 
     # New box (Add a content bar)
     new_box = ContentBarBox_NewInstance(
-                    title=MSG(u'Create a new ContentBar Box'))
+                    title=MSG(u'Create a new central box'))
 
 
     def get_order_root(self):
@@ -155,7 +155,7 @@ class Repository(Folder):
 
     class_id = 'repository'
     class_version = '20100625'
-    class_title = MSG(u'Sidebar Boxes Repository')
+    class_title = MSG(u'Sidebar boxes repository')
     class_description = MSG(u'Sidebar boxes repository')
     class_icon16 = 'bar_items/icons/16x16/repository.png'
     class_icon48 = 'bar_items/icons/48x48/repository.png'

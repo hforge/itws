@@ -165,7 +165,7 @@ def get_admin_bar(resource, buttons=[]):
 MSG_UNPUBLISHED_RESOURCES_LINKED = INFO(
     u'You are linking to {n} unpublished resources, '
     u'some users may not be able to see them.<br/>'
-    u'See <a href="{path}/;backlinks">links interface</a>.')
+    u'See <a href="{path}/;backlinks">backlinks interface</a>.')
 
 def build_warn_referenced_msg(resource, context, total):
     path = context.get_link(resource)
@@ -233,7 +233,7 @@ def get_linked_resources_message(resource, context, state='public'):
 
     message = MSG(u'This {title} uses pending/private resources '
                   u'please go to '
-                  u'<a href="{path}/;backlinks">links interface</a>')
+                  u'<a href="{path}/;backlinks">backlinks interface</a>.')
     path = context.get_link(resource)
     path = XMLContent.encode(path)
     class_title = resource.class_title.gettext()

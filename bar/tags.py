@@ -75,8 +75,8 @@ class BoxTags(Box):
 
     class_id = 'box-tags'
     class_version = '20100527'
-    class_title = MSG(u'Tag Cloud')
-    class_description = MSG(u'Display a tag cloud')
+    class_title = MSG(u'Tag cloud')
+    class_description = MSG(u'Display a cloud with defined tags.')
     class_icon16 = 'bar_items/icons/16x16/box_tags.png'
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
     class_schema = merge_dicts(Box.class_schema,
@@ -99,7 +99,7 @@ class BoxTags(Box):
 
     edit_widgets = [
         CheckboxWidget('display_title',
-                        title=MSG(u'Display on tagcloud view')),
+                        title=MSG(u'Display on tag cloud view')),
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         CheckboxWidget('show_number',

@@ -87,8 +87,8 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     class_id = 'section'
     class_version = '20101124'
     class_title = MSG(u'Section')
-    class_description = MSG(u'Section allows to customize the central part '
-                            u'and the sidebar. Section can contain subsections')
+    class_description = MSG(u'Sections allow to customize the central part '
+                            u'and the sidebar. Sections can contain subsections.')
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
     class_schema = merge_dicts(

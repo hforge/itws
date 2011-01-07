@@ -67,7 +67,7 @@ class SideBarAware(object):
             access='is_allowed_to_edit',
             keep_query=True,
             specific_document=specific_document,
-            title=MSG(u'Order Sidebar Boxes'))
+            title=MSG(u'Order sidebar boxes'))
 
 
     @lazy
@@ -156,7 +156,7 @@ class ContentBarAware(object):
         if resource.get_resource('section_view', soft=True):
             return AdvanceGoToSpecificDocument(
                       access='is_allowed_to_edit',
-                      title=MSG(u'Configure View'),
+                      title=MSG(u'Configuration view'),
                       specific_document='./section_view',
                       keep_query=True)
 
@@ -172,7 +172,7 @@ class ContentBarAware(object):
             access='is_allowed_to_edit',
             keep_query=True,
             specific_document=specific_document,
-            title=MSG(u'Order Central Part Boxes'))
+            title=MSG(u'Order central boxes'))
 
 
     @lazy
@@ -186,4 +186,4 @@ class ContentBarAware(object):
             access='is_allowed_to_edit',
             keep_query=True,
             specific_document=specific_document,
-            title=MSG(u'Order Central Part Boxes'))
+            title=MSG(u'Order central boxes'))

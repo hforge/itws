@@ -127,9 +127,8 @@ class HTMLContent(WebPage):
 
     class_id = 'html-content'
     class_version = '20100621'
-    class_title = MSG(u'HTML Content')
-    class_description = MSG(u'HTML snippet which can be displayed in the '
-                             'central and/or the sidebar')
+    class_title = MSG(u'HTML')
+    class_description = MSG(u'HTML snippet (free content).')
 
     class_schema = merge_dicts(WebPage.class_schema,
          # Metadata

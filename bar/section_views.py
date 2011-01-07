@@ -50,7 +50,7 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
         base_widgets = DBResource_Edit._get_widgets(self, resource, context)
         default_widgets = [ widget for widget in base_widgets ]
         default_widgets[2] = MultilineWidget('description',
-                title=MSG(u'Description (use by RSS and TAGS)'))
+                title=MSG(u'Description (used by RSS and TAGS)'))
 
         widgets =  (default_widgets +
                 [state_widget, SelectWidget('view', title=MSG(u'View'),

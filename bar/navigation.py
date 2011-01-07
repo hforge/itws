@@ -147,9 +147,9 @@ class BoxNavigation(Box):
 
     class_id = 'box-navigation'
     class_version = '20100923'
-    class_title = MSG(u'Navigation Box')
-    class_description = MSG(u'Navigation Tree which display full tree from '
-                            u'root')
+    class_title = MSG(u'Navigation box')
+    class_description = MSG(u'Navigation tree which displays a full tree from '
+                            u'root.')
 
     class_schema = merge_dicts(
             Box.class_schema,

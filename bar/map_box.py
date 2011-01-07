@@ -121,8 +121,8 @@ class MapBox_Edit(DBResource_Edit):
 class MapBox(Box):
 
     class_id = 'box-map'
-    class_title = MSG(u'Map box')
-    class_description = MSG(u'Add a google map or a openstreet map')
+    class_title = MSG(u'Map')
+    class_description = MSG(u'Add a google map or an openstreet map')
 
     class_schema = merge_dicts(Box.class_schema,
           # Metadata
