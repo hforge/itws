@@ -82,6 +82,12 @@ def itws_get_table_namespace(self, resource, context, items):
     namespace['reverse'] = widget.render()
     for key in ['target', 'target_id', 'mode']:
         namespace[key] = context.get_form_value(key)
+    # If target is no defined in the query (when we open the popup)
+    # Get the target value from attributes
+    if namespace['target'] is None:
+        popup_root_abspath = self.popup_root.get_abspath()
+        target = popup_root_abspath.get_pathto(self.target.get_abspath())
+        namespace['target'] = target
     return namespace
 
 

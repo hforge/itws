@@ -5,33 +5,36 @@
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <style>
-  .box{
-   width: 128px;
-   height: 128px;
-   float: left;
-   text-align: center;
-   border-top: 1px dashed gray;
-   margin: 0 0 2px 0;
-  }
+    .box {
+      width: 128px;
+      height: 128px;
+      float: left;
+      text-align: center;
+      border-top: 1px dashed gray;
+      margin: 0 0 2px 0;
+    }
 
-  .box table{
-   width: 128px;
-   height: 128px;
-  }
-  .ligne1{
-   width: 56px;
-   height: 56px;
-   vertical-align: middle;
-  }
-  .ligne2 span{
-    display: block;
-    width: 128px;
-    overflow: hidden;
-  }
-  .box table td{
-    text-align: center;
-    font-size: 9px;
-  }
+    .box table {
+      width: 128px;
+      height: 128px;
+    }
+    .ligne1 {
+      width: 56px;
+      height: 56px;
+      vertical-align: middle;
+    }
+    .ligne1 a {
+      text-decoration: none;
+    }
+    .ligne2 span {
+      display: block;
+      width: 128px;
+      overflow: hidden;
+    }
+    .box table td {
+      text-align: center;
+      font-size: 9px;
+    }
   </style>
 
   <div class="clear"/>
