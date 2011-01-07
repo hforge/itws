@@ -25,8 +25,10 @@ from itools.stl import stl
 from ikaaro.autoform import CheckboxWidget
 
 # Import from itws
+from bar_aware import SideBarAware
 from base import Box
 from base_views import Box_View
+from section import Section
 
 
 
@@ -37,12 +39,12 @@ class BoxNavigation_View(Box_View):
 
     def get_classes(self):
         from itws.webpage import WebPage
-        from itws.bar import Section
 
         return [WebPage, Section]
 
 
-    def get_items(self, container, context, level=1):
+    def get_items(self, container, context, level=1, only_ordered=False):
+        root = context.root
         here_abspath = context.resource.abspath
         here_level = len(list(here_abspath))
 
@@ -50,15 +52,39 @@ class BoxNavigation_View(Box_View):
         if here_level < level:
             return None
 
-        root = context.root
-        query = PhraseQuery('parent_path', str(container.abspath))
+        container_resource = root.get_resource(container.abspath)
+        # XXX Site root should use menu as ordered resources
+        if only_ordered is True and isinstance(container_resource, Section):
+            # Only ordered resources are allowed
+            container_abspath = container_resource.get_abspath()
+            allowed = [ container_abspath.resolve2(name)
+                        for name in container_resource.get_ordered_names() ]
+            query = OrQuery(*[ PhraseQuery('abspath', str(abspath))
+                               for abspath in allowed ])
+            results = root.search(query)
+            # Same API as below
+            items_docs = []
+            for path in allowed:
+                item = container_resource.get_resource(name)
+                sub_result = results.search(PhraseQuery('name',
+                                                        path.get_name()))
+                doc = sub_result.get_documents()[0]
+                items_docs.append((item, doc))
+        else:
+            # Compute the query and get the documents
+            query = PhraseQuery('parent_path', str(container.abspath))
+            # format
+            format_query = [ PhraseQuery('format', cls.class_id)
+                             for cls in self.get_classes() ]
+            format_query = OrQuery(*format_query)
 
-        # format
-        format_query = [ PhraseQuery('format', cls.class_id)
-                         for cls in self.get_classes() ]
-        format_query = OrQuery(*format_query)
-        query = AndQuery(query, format_query)
-        results = root.search(query)
+            query = AndQuery(query, format_query)
+            results = root.search(query)
+            # Sort documents by title.lower
+            docs = results.get_documents()
+            docs.sort(key=lambda x: x.title.lower())
+            items_docs = [ (root.get_resource(doc.abspath), doc)
+                           for doc in docs ]
 
         # Compute 'in path' path for the current level
         prefix = ['..' for x in range(here_level-(level+1))]
@@ -66,9 +92,8 @@ class BoxNavigation_View(Box_View):
 
         items = []
         user = context.user
-        # FIXME sort_by should not be case sensitive
-        for doc in results.get_documents(sort_by='title'):
-            item = root.get_resource(doc.abspath)
+
+        for item, doc in items_docs:
             # ACL
             ac = item.get_access_control()
             if ac.is_allowed_to_view(user, item) is False:
@@ -84,7 +109,8 @@ class BoxNavigation_View(Box_View):
                 q = AndQuery(PhraseQuery('abspath', str(doc.abspath)),
                              PhraseQuery('is_folder', True))
                 if len(root.search(q)) == 1:
-                    sub_items = self.get_items(doc, context, level+1)
+                    sub_items = self.get_items(doc, context, level+1,
+                                               only_ordered)
                 if doc.abspath == here_abspath:
                     css = 'active'
                 else:
@@ -99,9 +125,16 @@ class BoxNavigation_View(Box_View):
 
 
     def get_namespace(self, resource, context):
-        site_root = resource.get_site_root()
-        items = self.get_items(site_root, context)
+        ltcf = resource.get_property('limit_to_current_folder')
+        ltor = resource.get_property('limit_to_ordered_resources')
+        if ltcf:
+            container = context.resource
+            if isinstance(container, SideBarAware) is False:
+                container = container.parent
+        else:
+            container = resource.get_site_root()
 
+        items = self.get_items(container, context, only_ordered=ltor)
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
@@ -118,12 +151,22 @@ class BoxNavigation(Box):
     class_description = MSG(u'Navigation Tree which display full tree from '
                             u'root')
 
-    class_schema = merge_dicts(Box.class_schema,
-                               display_title=Boolean(source='metadata',
-                                                     default=True))
-    edit_schema = {'display_title': Boolean}
+    class_schema = merge_dicts(
+            Box.class_schema,
+            display_title=Boolean(source='metadata', default=True),
+            limit_to_current_folder=Boolean(source='metadata', default=False),
+            limit_to_ordered_resources=Boolean(source='metadata',
+                                               default=False))
+
+    edit_schema = {'display_title': Boolean,
+                   'limit_to_current_folder': Boolean,
+                   'limit_to_ordered_resources': Boolean}
     edit_widgets = [
-        CheckboxWidget('display_title', title=MSG(u'Display above the tree'))
+        CheckboxWidget('display_title', title=MSG(u'Display above the tree')),
+        CheckboxWidget('limit_to_current_folder',
+                       title=MSG(u'Use current section as tree root')),
+        CheckboxWidget('limit_to_ordered_resources',
+                       title=MSG(u'Display ordered resources only.'))
         ]
     is_content = False
 
