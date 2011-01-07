@@ -20,7 +20,7 @@
 from datetime import datetime
 
 # Import from itools
-from itools.core import merge_dicts, thingy_property
+from itools.core import freeze, merge_dicts, thingy_property
 from itools.datatypes import String, Boolean
 from itools.gettext import MSG
 from itools.web import get_context, STLView
@@ -94,7 +94,7 @@ class NewsItem_Edit(WebPage_Edit):
     def _get_widgets(self, resource, context):
         widgets = WebPage_Edit._get_widgets(self, resource, context)[:]
         widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
-        return widgets
+        return freeze(widgets)
 
 
 

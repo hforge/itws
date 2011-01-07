@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts, get_abspath
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
 from itools.datatypes import PathDataType, String
 from itools.gettext import MSG
@@ -55,15 +55,16 @@ class Theme_Edit(BaseTheme_Edit):
 
     def _get_widgets(self, resource, context):
         # Remove logo widget
-        return (BaseTheme_Edit._get_widgets(self, resource, context)[:2] + [
-            MultilineWidget('custom_data', title=MSG(u"Custom data"),
-                            rows=19, cols=69),
-            TextWidget('banner_title', title=MSG(u'Banner title'),
-                       tip=MSG(u'(Use as banner if there is no image banner)')),
-            ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
-                                width=640),
-            SelectWidget('class_skin', title=MSG(u'Skin'),
-                         has_empty_option=False)])
+        return freeze(
+            BaseTheme_Edit._get_widgets(self, resource, context)[:2]
+            + [MultilineWidget('custom_data', title=MSG(u"Custom data"),
+                               rows=19, cols=69),
+               TextWidget('banner_title', title=MSG(u'Banner title'),
+                      tip=MSG(u'(Use as banner if there is no image banner)')),
+               ImageSelectorWidget('banner_path', title=MSG(u'Banner path'),
+                                   width=640),
+               SelectWidget('class_skin', title=MSG(u'Skin'),
+                            has_empty_option=False)])
 
 
 

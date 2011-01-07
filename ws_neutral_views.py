@@ -90,9 +90,10 @@ class NeutralWS_RSS(BaseRSS):
 class NeutralWS_Edit(EditView, DBResource_Edit):
 
     def _get_widgets(self, resource, context):
-        return DBResource_Edit._get_widgets(self, resource, context) + [
-            SelectWidget('view', title=MSG(u'View'), has_empty_option=False),
-            TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title'))]
+        return freeze(DBResource_Edit._get_widgets(self, resource, context)
+            + [SelectWidget('view', title=MSG(u'View'),
+                            has_empty_option=False),
+               TextWidget('breadcrumb_title', title=MSG(u'Breadcrumb title'))])
 
 
     def _get_schema(self, resource, context):

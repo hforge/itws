@@ -181,7 +181,7 @@ class AutomaticEditView(DBResource_Edit):
             to_remove = [ w for w in widgets if w.name == 'title' ]
             if to_remove:
                 widgets.remove(to_remove[0])
-        return widgets
+        return freeze(widgets)
 
 
     def get_value(self, resource, context, name, datatype):

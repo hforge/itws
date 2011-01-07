@@ -20,7 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -47,15 +47,16 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
 
 
     def _get_widgets(self, resource, context):
-        default_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        base_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        default_widgets = [ widget for widget in base_widgets ]
         default_widgets[2] = MultilineWidget('description',
                 title=MSG(u'Description (use by RSS and TAGS)'))
 
-        return (default_widgets +
-                [state_widget] +
-                [SelectWidget('view', title=MSG(u'View'),
-                              has_empty_option=False)] +
+        widgets =  (default_widgets +
+                [state_widget, SelectWidget('view', title=MSG(u'View'),
+                                            has_empty_option=False)] +
                 TagsAware_Edit._get_widgets(self, resource, context))
+        return freeze(widgets)
 
 
     def get_value(self, resource, context, name, datatype):

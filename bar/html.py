@@ -18,7 +18,7 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
@@ -94,12 +94,12 @@ class HTMLContent_Edit(DBResource_Edit):
         # Delete unused description/subject(keywords)
         widgets = [ widget for widget in base_widgets
                     if widget.name not in ('description', 'subject') ]
-        return widgets + [
+        return freeze(widgets + [
             CheckboxWidget('display_title',
                             title=MSG(u'Display on webpage view')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             SelectWidget('title_link_target', title=MSG(u'Title link target')),
-            advance_rte_widget, state_widget ]
+            advance_rte_widget, state_widget ])
 
 
     def get_value(self, resource, context, name, datatype):

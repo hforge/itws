@@ -23,6 +23,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
+from itools.core import freeze
 from itools.datatypes import PathDataType, Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
@@ -236,13 +237,14 @@ class TagsAware_Edit(object):
 
 
     def _get_widgets(self, resource, context):
-        return [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
-            has_empty_option=False),
-            ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')),
-            DateWidget('pub_date',
-                       title=MSG(u'Publication date (use by RSS and TAGS)')),
-            TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5, maxlength=5,
-                       title=MSG(u'Publication time (use by RSS and TAGS)'))]
+        return freeze(
+            [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
+                              has_empty_option=False),
+             ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')),
+             DateWidget('pub_date',
+                        title=MSG(u'Publication date (use by RSS and TAGS)')),
+             TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5, maxlength=5,
+                        title=MSG(u'Publication time (use by RSS and TAGS)'))])
 
 
     def get_value(self, resource, context, name, datatype):

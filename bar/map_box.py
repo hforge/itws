@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, Decimal, Enumerate, Integer, String
 from itools.datatypes import Unicode
 from itools.gettext import MSG
@@ -93,14 +93,14 @@ class MapBox_Edit(DBResource_Edit):
                       'longitude': resource.get_property('longitude'),
                       'zoom': resource.get_property('zoom')}
         # Return widgets
-        return DBResource_Edit._get_widgets(self, resource, context) + [
-                CheckboxWidget('display_title',
-                               title=MSG(u'Display on section view')),
-                SelectWidget('render', title=MSG(u'Render map with')),
-                TextWidget('width', title=MSG(u'Map width'), size=6),
-                TextWidget('height', title=MSG(u'Map height'), size=6),
-                gps_widget_cls('gps', title=MSG(u'GPS'), resource=resource,
-                              **config_map)]
+        return freeze(DBResource_Edit._get_widgets(self, resource, context)
+                + [CheckboxWidget('display_title',
+                                  title=MSG(u'Display on section view')),
+                   SelectWidget('render', title=MSG(u'Render map with')),
+                   TextWidget('width', title=MSG(u'Map width'), size=6),
+                   TextWidget('height', title=MSG(u'Map height'), size=6),
+                   gps_widget_cls('gps', title=MSG(u'GPS'), resource=resource,
+                                  **config_map)])
 
 
     def get_value(self, resource, context, name, datatype):

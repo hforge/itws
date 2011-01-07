@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.web import STLView
@@ -55,7 +55,7 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
             if issubclass(w, RTEWidget):
                 w = Advance_RTEWidget(w.name, title=w.title)
             new_widgets.append(w)
-        return new_widgets
+        return freeze(new_widgets)
 
 
     def get_value(self, resource, context, name, datatype):
