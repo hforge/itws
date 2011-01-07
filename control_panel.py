@@ -86,6 +86,8 @@ class ITWS_ControlPanel(ControlPanel):
 # Control panel items
 ###############################################
 
+# XXX ikaaro base control panel views do not display
+# itws customized context_menus
 context_menus = [ITWS_ControlPanelMenu()]
 
 class CPEditTags(GoToSpecificDocument):
