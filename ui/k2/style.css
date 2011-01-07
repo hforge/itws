@@ -118,7 +118,7 @@ body {
   background-position: 50% 50%;
   width: 30px; /* IEx left-padding:24px + right-padding: 6px */
   height: 22px;
-  margin-left: 5px;
+  margin: 0 0 0 5px;
   padding: 1px 6px 1px 16px;
 }
 
