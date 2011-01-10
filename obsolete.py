@@ -333,7 +333,10 @@ class SlideShow(ResourcesOrderedContainer):
     slide_class = Slide
 
     def update_20101116(self):
-        languages = self.get_site_root().get_property('website_languages')
+        from itws.bar import BoxNavigation
+
+        site_root = self.get_site_root()
+        languages = site_root.get_property('website_languages')
         # Get informations
         old_name = self.name
         #long_title = self.get_property('long_title')
@@ -354,6 +357,7 @@ class SlideShow(ResourcesOrderedContainer):
                 continue
             resource.parent.copy_resource(resource.name,
                                           '%s/%s' % (path, resource.name))
+        ordered_slides = list(self.get_ordered_names())
         # Get slides
         slides = []
         for slide in self.get_resources():
@@ -377,29 +381,44 @@ class SlideShow(ResourcesOrderedContainer):
         # Del resource
         self.parent.del_resource(old_name, ref_action='force')
         # Create a section
-        section = self.parent.make_resource(old_name, Section, state='public')
+        section = self.parent.make_resource(old_name, Section, state='public',
+                                            add_boxes=False)
         for lang in languages:
-            section.set_property('title', title[lang],language=lang)
-        table = section.get_resource('order-section')
+            section.set_property('title', title[lang], language=lang)
         for i, slide in enumerate(slides):
             # Add html
-            name_html = slide['name']
-            html = section.make_resource(name_html, WebPage,
+            html = section.make_resource(slide['name'], WebPage,
                       state=slide['state'],
                       tags=slide['tags'],
                       display_title=True)
+
+            at_least_one_lang = False
+            for lang in languages:
+                if stream_is_empty(slide['html'][lang]) is False:
+                    at_least_one_lang = True
+
             for lang in languages:
                 html.set_property('thumbnail', slide['image'], language=lang)
                 handler = html.get_handler(language=lang)
                 img = '<img src="%s/;download"/>' % slide['image']
                 if slide['href']:
                     img = "<a href='%s'>%s</a>" % (slide['href'], img)
-                data = list(XMLParser(img)) + slide['html'][lang]
-                handler.set_body(data)
+                data = None
+                if at_least_one_lang:
+                    # Do not erase ...
+                    if stream_is_empty(slide['html'][lang]) is False:
+                        data = list(XMLParser(img)) + slide['html'][lang]
+                else:
+                    data = list(XMLParser(img))
+                if data:
+                    handler.set_body(data)
                 for key in ['title', 'subject']:
                     html.set_property(key,
                         slide[key][lang], language=lang)
-            table.add_new_record({'name': name_html})
+        # Order slides
+        table = section.get_resource('order-section')
+        for name in ordered_slides:
+            table.add_new_record({'name': name})
         # End
         for resource in files.traverse_resources():
             if resource.name == files.name:
@@ -408,6 +427,15 @@ class SlideShow(ResourcesOrderedContainer):
             resource.parent.move_resource(resource.name, new_name)
         # Delete files
         files = self.parent.del_resource('%s_migration_files' % old_name)
+        # Add specific NavigationBox which display only ordered resources
+        repository = site_root.get_repository()
+        box = repository.make_resource('%s-slideshow-tree' % section.name,
+                                       BoxNavigation)
+        box.set_property('limit_to_current_folder', True)
+        box.set_property('limit_to_ordered_resources', True)
+        box.set_workflow_state('public')
+        table = section.get_order_table_sidebar()
+        table.add_new_record({'name': '%s-slideshow-tree' % section.name})
 
 
 
