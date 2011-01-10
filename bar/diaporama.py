@@ -19,9 +19,9 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import is_thingy
+from itools.core import is_thingy, merge_dicts
 from itools.csv import Property
-from itools.datatypes import URI, String, Unicode, XMLContent
+from itools.datatypes import Boolean, URI, String, Unicode, XMLContent
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
 from itools.uri.generic import EmptyReference
@@ -29,7 +29,7 @@ from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import ImageSelectorWidget, SelectWidget
+from ikaaro.autoform import CheckboxWidget, ImageSelectorWidget, SelectWidget
 from ikaaro.autoform import TextWidget, MultilineWidget, PathSelectorWidget
 from ikaaro.file import Image
 from ikaaro.folder import Folder
@@ -146,8 +146,10 @@ class Diaporama_View(Box_View):
 
     def get_namespace(self, resource, context):
         width, height = 0, 0
-        namespace = {'title': resource.get_title(),
-                     'first_img': {'link': None}}
+        title = resource.get_property('display_title')
+        if title:
+            title = resource.get_title()
+        namespace = {'title': title, 'first_img': {'link': None}}
         user = context.user
         banners = []
         table = resource.get_resource(resource.order_path)
@@ -337,11 +339,19 @@ class Diaporama(BoxAware, Folder):
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
 
+    class_schema = merge_dicts(Folder.class_schema,
+                               display_title=Boolean(source='metadata',
+                                                     default=True))
+
     # Configuration
     use_fancybox = False
     allow_instanciation = True
     is_content = True
     is_side = False
+
+    edit_schema = {'display_title': Boolean}
+    edit_widgets = [CheckboxWidget('display_title',
+                                   title=MSG(u'Display on section view'))]
 
     order_path = 'order-banners'
     order_table = DiaporamaTable
