@@ -11,17 +11,17 @@
   </div>
 
   <div class="slider-itws"
-    style="width:${width}px;height:${height}px;background:url('${first_img/path}') no-repeat;" stl:if="banners">
+       style="width:${width}px;height:${height}px;background:url('${first_img/path}') no-repeat;" stl:if="banners">
     <a class="slider-link" href="${first_img/link}" style="width:${width}px;height:${height}px;"
-      target="${first_img/target}">
-    <a href="${banner/img_link}" title="${banner/title}"
-      target="${banner/target}" class="slider-elt" rel="itws-slide" stl:repeat="banner banners">
-      <img src="${banner/img_path}" alt="${banner/description}" title="${banner/title}"/>
-    </a>
-    <div class="slider-itws-nav">
-      <a class="slider-itws-nav-previous previous"></a>
-      <a class="slider-itws-nav-next next"></a>
-    </div>
+       target="${first_img/target}">
+      <a stl:omit-tag="not banner/img_link" href="${banner/img_link}" title="${banner/title}"
+         target="${banner/target}" class="slider-elt" rel="itws-slide" stl:repeat="banner banners">
+        <img src="${banner/img_path}" alt="${banner/description}" title="${banner/title}"/>
+      </a>
+      <div class="slider-itws-nav">
+        <a class="slider-itws-nav-previous previous"></a>
+        <a class="slider-itws-nav-next next"></a>
+      </div>
     </a>
     <div class="slider-itws-caption">
       <span>${first_img/title}</span>

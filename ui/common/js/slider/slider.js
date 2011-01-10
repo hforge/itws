@@ -27,7 +27,11 @@
       vars.nbSlides++;
     });
     // Set position of buttons
-    $('.slider-itws-nav a').css('top', (vars.height-30)/2 + 'px');
+    if (vars.images.length > 1) {
+      $('.slider-itws-nav a').css('top', (vars.height-30)/2 + 'px');
+    } else {
+      $('.slider-itws-nav').hide();
+    }
     // Set first iteration background
     run(slider);
     // Bouton next
