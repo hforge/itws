@@ -36,6 +36,7 @@ from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from bar_aware import SideBarAware, ContentBarAware
+from registry import get_boxes_registry
 from section_views import Section_Edit
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
@@ -149,6 +150,18 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
     def to_text(self):
         return TagsAware.to_text(self)
+
+
+    def can_paste(self, source):
+        """Is the source resource can be pasted into myself.
+        """
+        allowed_types = self.get_document_types()
+        # extend allowed type with content boxes
+        registry = get_boxes_registry()
+        boxe_cls = [ cls for cls, allow in registry.iteritems()
+                     if allow['content'] ]
+        allowed_types.extend(boxe_cls)
+        return isinstance(source, tuple(allowed_types))
 
 
     def update_20101124(self):
