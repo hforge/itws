@@ -6,3 +6,11 @@
 .cut { background-position: -10px -140px; }
 .private { background-position: -10px -166px; }
 .public { background-position: -10px -192px; }
+.css { background-position: -10px -218px; }
+.error { background-position: -10px -244px; }
+.edit { background-position: -10px -270px; }
+.search { background-position: -10px -296px; }
+.select_all { background-position: -10px -322px; }
+.text { background-position: -10px -348px; }
+.sort { background-position: -10px -374px; }
+.sort_disable { background-position: -10px -400px; }
