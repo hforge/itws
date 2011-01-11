@@ -191,6 +191,8 @@ class Diaporama_View(Box_View):
                         img_link = context.get_link(item_link_resource)
                 if i == 0:
                     namespace['first_img']['link'] = img_link
+            else:
+                img_link = None
             banner_ns['img_link'] = img_link
             banners.append(banner_ns)
         namespace['banners'] = banners
