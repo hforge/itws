@@ -257,14 +257,17 @@
 /* buttons */
 .button-add,
 .button-copy,
-.button-cut,
-.button-delete,
 .button-paste,
+.button-rename,
+.button-delete,
+.button-cut,
 .button-retire,
 .button-publish,
-.button-rename
+.button-ok
 {
-  background: url(/ui/common/icons/16x16/sprites.png) no-repeat top left;
+  background-image: url(/ui/common/icons/16x16/sprites.png);
+  background-repeat: no-repeat;
+  background-position: top left;
 }
 
 /* buttons */
@@ -276,6 +279,7 @@
 .button-cut { background-position: -15px -175px; }
 .button-retire { background-position: -15px -211px; }
 .button-publish { background-position: -15px -247px; }
+.button-ok { background-position: -10px -571px; }
 
 /* browse list sort up/down */
 #browse-list th a.sort-up,
