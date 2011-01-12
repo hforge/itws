@@ -79,7 +79,7 @@ class Skin(BaseSkin):
 
 
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
-                                              'credits', 'license']
+            'credits', 'license', 'control_panel']
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
 
