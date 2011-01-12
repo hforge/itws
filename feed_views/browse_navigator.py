@@ -86,11 +86,10 @@ class Browse_Navigator(Feed_View):
         item_brain, item_resource = item
         if column == 'title':
             title = item_resource.get_title()
-            link = context.get_link(item_resource)
             if isinstance(item_resource, Folder):
-                link += '/;manage_content'
+                link = '%s/;manage_content' % context.get_link(item_resource)
                 return (title, link)
-            return (title, self.javascript % link)
+            return title
         elif column == 'actions':
             link = context.get_link(item_resource)
             actions = []
