@@ -53,7 +53,7 @@ class BoxFeed_View(Box_View, Details_View):
     batch_template = None
 
     search_on_current_folder = False
-    search_on_current_folder_recursif = False
+    search_on_current_folder_recursive = False
 
 
     def get_query_schema(self):

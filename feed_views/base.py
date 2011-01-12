@@ -53,7 +53,7 @@ class Feed_View(Folder_BrowseContent):
     reverse = False
     ignore_internal_resources = False
     search_on_current_folder = True
-    search_on_current_folder_recursif = False
+    search_on_current_folder_recursive = False
     content_keys = ('pub_datetime', 'title', 'long_title',
                     'link', 'is_image', 'preview',
                     'tags', 'workflow_state',
@@ -91,7 +91,7 @@ class Feed_View(Folder_BrowseContent):
             args.append(PhraseQuery('parent_path', str(abspath)))
 
         # Search only on current folder ?
-        if self.search_on_current_folder_recursif is True:
+        if self.search_on_current_folder_recursive is True:
             query = get_base_path_query(str(abspath))
             args.append(query)
             # Exclude '/theme/'
