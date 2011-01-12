@@ -33,7 +33,7 @@ from ikaaro.autoform import title_widget, timestamp_widget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import File, Image
 from ikaaro.folder import Folder
-from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.folder_views import GoToSpecificDocument, Folder_Rename
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class, resources_registry
 from ikaaro.resource_ import DBResource
@@ -305,6 +305,7 @@ File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 for cls in resources_registry.values():
     if issubclass(cls, Folder):
         cls.manage_content = Browse_Navigator()
+        cls.rename = Folder_Rename(is_popup=True, goto_after=';manage_content')
     cls.add_image = ITWS_DBResource_AddImage()
     cls.add_link = ITWS_DBResource_AddLink()
     cls.add_media = ITWS_DBResource_AddMedia()
