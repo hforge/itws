@@ -284,7 +284,7 @@
 .button-cut { background-position: -15px -175px; }
 .button-retire { background-position: -15px -211px; }
 .button-publish { background-position: -15px -247px; }
-.button-ok { background-position: -10px -571px; }
+.button-ok { background-position: -15px -571px; }
 
 /* browse list sort up/down */
 #browse-list th a.sort-up,
