@@ -104,6 +104,7 @@ class FooterMenu(Menu):
         get_value = handler.get_record_value
 
         for record in handler.get_records_in_order():
+            properties = []
             for language in available_languages:
                 html_content = get_value(record, 'html_content',
                                          language=language)
@@ -112,9 +113,8 @@ class FooterMenu(Menu):
                 events = _change_link(source, target, old_base, new_base,
                                       html_content)
                 events = list(events)
-                p_events = Property(events, language=language)
-                # TODO Update all language in one time
-                self.update_record(record.id, **{'html_content': p_events})
+                properties.append(Property(events, language=language))
+            self.update_record(record.id, **{'html_content': properties})
         get_context().database.change_resource(self)
 
 
@@ -150,6 +150,7 @@ class FooterMenu(Menu):
         get_value = handler.get_record_value
 
         for record in handler.get_records_in_order():
+            properties = []
             for language in available_languages:
                 html_content = get_value(record, 'html_content',
                                          language=language)
@@ -157,9 +158,8 @@ class FooterMenu(Menu):
                     continue
                 events = rewrite_uris(html_content, my_func)
                 events = list(events)
-                p_events = Property(events, language=language)
-                # TODO Update all language in one time
-                self.update_record(record.id, **{'html_content': p_events})
+                properties.append(Property(events, language=language))
+            self.update_record(record.id, **{'html_content': properties})
 
 
     def update_20090123(self):
