@@ -32,6 +32,7 @@ from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
+from ikaaro.control_panel import ControlPanel
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
@@ -282,7 +283,7 @@ class NeutralWS(Website_BarAware, WebSite):
     website_new_resource = Website_NewResource()
 
     # Control panel
-    control_panel = ITWS_ControlPanel()
+    control_panel = ITWS_ControlPanel(title=ControlPanel.title)
 
     edit_tags = CPEditTags()
     edit_404 = CPEdit404()
