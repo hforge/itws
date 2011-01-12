@@ -28,8 +28,10 @@ from ikaaro.autoform import ImageSelectorWidget, MultilineWidget
 from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import register_resource_class
-from ikaaro.theme import Theme as BaseTheme, Theme_Edit as BaseTheme_Edit
+from ikaaro.theme import Theme as BaseTheme
+from ikaaro.theme_views import Theme_Edit as BaseTheme_Edit
 
 # Import from itws
 from control_panel import ITWS_ControlPanel
@@ -82,8 +84,8 @@ class Theme(BaseTheme):
                                   parameters_schema={'lang': String}),
          class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
 
-    class_views = ['edit', 'edit_css', 'edit_menu', 'browse_content',
-                   'control_panel']
+    class_views = ['edit', 'edit_css', 'edit_menu', 'edit_turning_footer',
+                   'browse_content', 'control_panel']
     class_control_panel = ['links', 'backlinks', 'commit_log']
 
 
@@ -203,6 +205,9 @@ class Theme(BaseTheme):
     # Views
     edit = Theme_Edit()
     control_panel = ITWS_ControlPanel()
+    edit_turning_footer = GoToSpecificDocument(
+            specific_document='turning-footer/menu',
+            title=MSG(u'Edit Turning footer'))
 
 
 
