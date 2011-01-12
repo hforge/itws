@@ -79,7 +79,8 @@ class Skin(BaseSkin):
 
 
     not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
-            'credits', 'license', 'control_panel']
+            'credits', 'license']
+    disable_sidebar_on_control_panel = True
 
     not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
 
@@ -88,6 +89,15 @@ class Skin(BaseSkin):
         if wiki_is_install:
             types.append(WikiFolder)
         return types
+
+
+    def is_allowed_sidebar_on_current_view(self, context):
+        """Helper for not_allowed_view_name_for_sidebar_view"""
+        views = self.not_allowed_view_name_for_sidebar_view[:]
+        if self.disable_sidebar_on_control_panel:
+            site_root = context.site_root
+            views.extend(site_root.class_control_panel)
+        return context.view_name not in views
 
 
     def get_backoffice_class(self, context):
@@ -305,11 +315,11 @@ class Skin(BaseSkin):
         namespace['body_css'] = body_css
 
         # Sidebar
-        nacfsv = self.get_not_allowed_cls_for_sidebar_view()
         sidebar = None
+        nacfsv = self.get_not_allowed_cls_for_sidebar_view()
+        iasocv = self.is_allowed_sidebar_on_current_view(context)
         not_allowed = isinstance(here, tuple(nacfsv))
-        navnfsv = self.not_allowed_view_name_for_sidebar_view
-        if (context.view_name not in navnfsv and not not_allowed):
+        if (iasocv and not not_allowed):
             sidebar_resource = self.get_sidebar_resource(context)
 
             if sidebar_resource:
