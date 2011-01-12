@@ -56,6 +56,9 @@ class Search_View(Feed_View):
     content_template = '/ui/feed_views/search_view.xml'
 
     ignore_internal_resources = True
+    search_on_current_folder = False
+    search_on_current_folder_recursive = True
+
 
 
 class DetailsWithoutPicture_View(Feed_View):
