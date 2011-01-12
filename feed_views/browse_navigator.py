@@ -16,6 +16,7 @@
 
 # Import from itools
 from itools.gettext import MSG
+from itools.web import INFO
 
 # Import from ikaaro
 from ikaaro.folder import Folder
@@ -46,11 +47,19 @@ class Browse_Navigator(Feed_View):
         ('checkbox', None),
         ('icon', None),
         ('title', MSG(u'Title')),
+        ('actions', MSG(u'Actions'), False),
         ('format', MSG(u'Type')),
         ('mtime', MSG(u'Last Modified')),
         ('last_author', MSG(u'Last Author')),
         ('workflow_state', MSG(u'State'))]
 
+    javascript = "javascript:window.opener.location.href='%s';window.close();"
+    actions_template = """
+    <stl:block stl:repeat="action actions">
+        <a href="${action/href}" title="${action/title}">${action/title}</a>
+        <stl:inline stl:if="not repeat/action/end">,</stl:inline>
+    </stl:block>"""
+    actions_views = [(None, MSG(u'View')), ('edit', MSG(u'Edit'))]
 
     def get_content_namespace(self, resource, context, items):
         # Get namespace
@@ -81,6 +90,15 @@ class Browse_Navigator(Feed_View):
             if isinstance(item_resource, Folder):
                 link += '/;manage_content'
                 return (title, link)
-            l = "javascript:window.opener.location.href='%s';window.close();"
-            return (title, l % link)
+            return (title, self.javascript % link)
+        elif column == 'actions':
+            link = context.get_link(item_resource)
+            actions = []
+            for view_name, title in self.actions_views:
+                if item_resource.get_view(view_name):
+                    href = '%s/;%s' % (link, view_name)
+                else:
+                    href = link
+                actions.append({'href': self.javascript % href, 'title': title})
+            return INFO(self.actions_template, format='stl', actions=actions)
         return Feed_View.get_item_value(self, resource, context, item, column)
