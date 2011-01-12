@@ -113,6 +113,12 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
 
     def init_resource(self, **kw):
+        if 'add_boxes' in kw:
+            add_boxes = kw.get('add_boxes')
+            del kw['add_boxes']
+        else:
+            add_boxes = True
+
         SideBarAware.init_resource(self, **kw)
         ContentBarAware.init_resource(self, **kw)
         ResourcesOrderedContainer.init_resource(self, **kw)
