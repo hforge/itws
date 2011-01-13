@@ -22,6 +22,7 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.folder_views import Folder_BrowseContent
+from ikaaro.registry import get_resource_class
 from ikaaro.utils import get_base_path_query
 
 ###########################################
@@ -72,6 +73,51 @@ class Feed_View(Folder_BrowseContent):
     @property
     def table_template(self):
         return self.content_template
+
+
+    def get_search_types(self, resource, context):
+        # 1. Build the query of all objects to search
+        path = resource.get_canonical_path()
+        if self.search_on_current_folder_recursive:
+            query = get_base_path_query(str(path))
+        else:
+            query = PhraseQuery('parent_path', str(path))
+
+        if resource.get_abspath() == '/':
+            theme_path = path.resolve_name('theme')
+            theme = get_base_path_query(str(theme_path), True)
+            query = AndQuery(query, NotQuery(theme))
+
+        if self.ignore_internal_resources:
+            method = getattr(resource, 'get_internal_use_resource_names', None)
+            if method:
+                sub_query = []
+                resource_abspath = resource.get_abspath()
+                for name in method():
+                    abspath = path.resolve2(name)
+                    sub_query.append(PhraseQuery('abspath', str(abspath)))
+                query = AndQuery(query, NotQuery(OrQuery(*sub_query)))
+
+        # 2. Compute children_formats
+        children_formats = set()
+        for child in context.root.search(query).get_documents():
+            children_formats.add(child.format)
+
+        # 3. Do not show two options with the same title
+        formats = {}
+        for type in children_formats:
+            cls = get_resource_class(type)
+            title = cls.class_title.gettext()
+            formats.setdefault(title, []).append(type)
+
+        # 4. Build the namespace
+        types = []
+        for title, type in formats.items():
+            type = ','.join(type)
+            types.append({'name': type, 'value': title})
+        types.sort(key=lambda x: x['value'].lower())
+
+        return types
 
 
     def get_items(self, resource, context, *args):
