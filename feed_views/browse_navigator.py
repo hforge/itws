@@ -94,7 +94,7 @@ class Browse_Navigator(Feed_View):
             link = context.get_link(item_resource)
             actions = []
             for view_name, title in self.actions_views:
-                if item_resource.get_view(view_name):
+                if view_name and item_resource.get_view(view_name):
                     href = '%s/;%s' % (link, view_name)
                 else:
                     href = link
