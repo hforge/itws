@@ -127,14 +127,17 @@ class BoxNavigation_View(Box_View):
     def get_namespace(self, resource, context):
         ltcf = resource.get_property('limit_to_current_folder')
         ltor = resource.get_property('limit_to_ordered_resources')
+        level = 1
         if ltcf:
             container = context.resource
             if isinstance(container, SideBarAware) is False:
                 container = container.parent
+            level = len(list(container.abspath))
         else:
             container = resource.get_site_root()
 
-        items = self.get_items(container, context, only_ordered=ltor)
+        items = self.get_items(container, context, only_ordered=ltor,
+                               level=level)
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
