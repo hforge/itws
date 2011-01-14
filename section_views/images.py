@@ -25,6 +25,7 @@ from ikaaro.autoform import TextWidget
 
 # Import from itws
 from base import BaseFeedView_Configuration
+from itws.datatypes import PositiveIntegerNotNull
 from itws.feed_views.base import Feed_View
 
 
@@ -35,13 +36,13 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
     class_schema = merge_dicts(
         BaseFeedView_Configuration.class_schema,
         # Thumb size
-        thumb_width=Integer(default=128, source='metadata'),
-        thumb_height=Integer(default=128, source='metadata'))
+        thumb_width=PositiveIntegerNotNull(default=128, source='metadata'),
+        thumb_height=PositiveIntegerNotNull(default=128, source='metadata'))
 
     edit_schema = merge_dicts(
         BaseFeedView_Configuration.edit_schema,
-        thumb_width=Integer,
-        thumb_height=Integer)
+        thumb_width=PositiveIntegerNotNull,
+        thumb_height=PositiveIntegerNotNull)
 
     edit_widgets = (BaseFeedView_Configuration.edit_widgets + [
         TextWidget('thumb_width', title=MSG(u'Thumb width')),
