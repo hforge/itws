@@ -34,12 +34,6 @@ from ikaaro.tracker import Tracker
 from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
 
-# Special case for the Wiki
-try:
-    from ikaaro.wiki import WikiFolder
-    wiki_is_install = True
-except ImportError:
-    wiki_is_install = False
 
 
 # Import from itws
@@ -49,6 +43,29 @@ from OPML import RssFeeds
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
 from utils import get_admin_bar, is_navigation_mode
 
+
+not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
+# Special case for the Wiki
+try:
+    from wiki import WikiFolder
+except ImportError:
+    pass
+else:
+    not_allowed_cls_for_sidebar_view.append(WikiFolder)
+
+def register_not_allowed_cls_for_sidebar_view(cls):
+    if cls in not_allowed_cls_for_sidebar_view:
+        return
+    not_allowed_cls_for_sidebar_view.append(cls)
+
+
+not_allowed_view_name_for_sidebar_view = ['not_found', 'about', 'credits',
+    'license']
+
+def register_not_allowed_view_name_for_sidebar_view(view):
+    if view in not_allowed_view_name_for_sidebar_view:
+        return
+    not_allowed_view_name_for_sidebar_view.append(view)
 
 
 ############################################################
@@ -78,25 +95,15 @@ class Skin(BaseSkin):
     template_title_base = MSG(u"{root_title} - {here_title}")
 
 
-    not_allowed_view_name_for_sidebar_view = ['not_found', 'about',
-            'credits', 'license']
     disable_sidebar_on_control_panel = True
-
-    not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-
-    def get_not_allowed_cls_for_sidebar_view(self):
-        types = self.not_allowed_cls_for_sidebar_view[:] # copy
-        if wiki_is_install:
-            types.append(WikiFolder)
-        return types
 
 
     def is_allowed_sidebar_on_current_view(self, context):
         """Helper for not_allowed_view_name_for_sidebar_view"""
-        views = self.not_allowed_view_name_for_sidebar_view[:]
+        views = not_allowed_view_name_for_sidebar_view
         if self.disable_sidebar_on_control_panel:
             site_root = context.site_root
-            views.extend(site_root.class_control_panel)
+            views = views + site_root.class_control_panel
         return context.view_name not in views
 
 
@@ -316,7 +323,7 @@ class Skin(BaseSkin):
 
         # Sidebar
         sidebar = None
-        nacfsv = self.get_not_allowed_cls_for_sidebar_view()
+        nacfsv = not_allowed_view_name_for_sidebar_view
         iasocv = self.is_allowed_sidebar_on_current_view(context)
         not_allowed = isinstance(here, tuple(nacfsv))
         if (iasocv and not not_allowed):
