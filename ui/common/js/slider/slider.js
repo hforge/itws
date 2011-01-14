@@ -50,7 +50,9 @@
       $('.slider-itws-nav').hide();
     });
     // Run
-    vars.timer = setInterval(function() { run(slider); }, 3000);
+    if (vars.images.length > 1) {
+        vars.timer = setInterval(function() { run(slider); }, 3000);
+    }
   }
 
   // == Go Next ==
