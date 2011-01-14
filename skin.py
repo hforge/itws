@@ -323,19 +323,19 @@ class Skin(BaseSkin):
 
         # Sidebar
         sidebar = None
-        iasocv = self.is_allowed_sidebar_on_current_view(context)
         nacfsv = tuple(not_allowed_cls_for_sidebar_view)
-        allowed = not isinstance(here, nacfsv)
-        if (iasocv and allowed):
-            sidebar_resource = self.get_sidebar_resource(context)
-
-            if sidebar_resource:
-                order_name = sidebar_resource.sidebar_name
-                sidebar_view = SideBar_View(order_name=order_name)
-                if not sidebar_view.is_empty(sidebar_resource, context):
-                    # Heuristic, do not compute sidebar view
-                    # if there is no items
-                    sidebar = sidebar_view.GET(sidebar_resource, context)
+        is_allowed_cls = not isinstance(here, nacfsv)
+        if is_allowed_cls:
+            iasocv = self.is_allowed_sidebar_on_current_view(context)
+            if iasocv:
+                sidebar_resource = self.get_sidebar_resource(context)
+                if sidebar_resource:
+                    order_name = sidebar_resource.sidebar_name
+                    sidebar_view = SideBar_View(order_name=order_name)
+                    if not sidebar_view.is_empty(sidebar_resource, context):
+                        # Heuristic, do not compute sidebar view
+                        # if there is no items
+                        sidebar = sidebar_view.GET(sidebar_resource, context)
 
         namespace['sidebar_view'] = sidebar
         namespace['sidebar'] = sidebar or namespace['context_menus']
