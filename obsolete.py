@@ -16,6 +16,7 @@
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.csv import UniqueError
 from itools.datatypes import String, PathDataType
 from itools.datatypes import Unicode, Decimal, Integer
 from itools.html import stream_is_empty
@@ -110,6 +111,7 @@ class OldSectionOrderedTable(SectionOrderedTable):
                                order=String(source='metadata'))
 
 
+
 class OldSidebarBoxesOrderedTable(SidebarBoxesOrderedTable):
     """Hook class_schema"""
     class_schema = merge_dicts(SidebarBoxesOrderedTable.class_schema,
@@ -145,6 +147,8 @@ class Old_TrackerCalendar(File):
 
     class_schema = merge_dicts(File.class_schema,
                                state=String(source='metadata'))
+
+
 
 class Old_Tracker(Tracker):
     """Hook class_schema"""
@@ -186,6 +190,7 @@ class Old_Tracker(Tracker):
             metadata.set_changed()
 
 
+
 class Old_Issue(Folder):
     class_id = 'itws-issue'
     class_version = '20071216'
@@ -197,6 +202,7 @@ class Old_Issue(Folder):
 ################################
 class FavIcon(Image):
     class_id = 'favicon'
+
 
 
 ################################
@@ -287,7 +293,10 @@ class AddressesFolder(Folder):
         section_table = section.get_resource('order-sidebar')
         for record in handler.get_records_in_order():
             name = handler.get_record_value(record, 'name')
-            section_table.add_new_record({'name': record.name})
+            try:
+                section_table.add_new_record({'name': record.name})
+            except UniqueError:
+                pass
 
 
 
@@ -457,6 +466,8 @@ class BoxSectionNews(Box):
         metadata.format = BoxFeed.class_id
         metadata.set_property('view', '2')
 
+
+
 class ContentBoxSectionNews(BoxSectionNews):
     class_id = 'contentbar-box-section-news'
     class_version = '20101119'
@@ -469,6 +480,7 @@ class ContentBoxSectionNews(BoxSectionNews):
         metadata.set_property('view', '3')
 
 
+
 class BoxNewsSiblingsToc(BoxSectionNews):
     class_id = 'box-news-siblings-toc'
     class_version = '20101119'
@@ -479,25 +491,6 @@ class BoxNewsSiblingsToc(BoxSectionNews):
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
         metadata.set_property('view', '1')
-
-
-
-############################
-# Diaporama
-############################
-#class DiaporamaTableFile(TableFile):
-#
-#    record_properties = {
-#        'title': Unicode(multiple=True),
-#        'description': Unicode(multiple=True),
-#        'img_path': DiaporamaImagePathDatatype(multiple=True, mandatory=True),
-#        'img_link': String,
-#        'target': Target(mandatory=True, default='_top')}
-#
-#class DiaporamaTable(Table):
-#
-#    class_id = 'diaporama-table'
-#    class_handler = DiaporamaTableFile
 
 
 
