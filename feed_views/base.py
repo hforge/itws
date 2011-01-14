@@ -120,21 +120,26 @@ class Feed_View(Folder_BrowseContent):
         return types
 
 
+    def _get_container(self, resource, context):
+        return resource
+
+
     def get_items(self, resource, context, *args):
         """ Same that Folder_BrowseContent but we allow to
             define var 'search_on_current_folder'"""
         # Query
         args = list(args)
 
-        # Current website
-        site_root = context.resource.get_site_root()
-        abspath = site_root.get_abspath()
-        args.append(get_base_path_query(str(abspath)))
-
-        # Current
-        abspath = resource.get_canonical_path()
+        # Current container
         if self.search_on_current_folder is True:
+            container = self._get_container(resource, context)
+            abspath = container.get_canonical_path()
             args.append(PhraseQuery('parent_path', str(abspath)))
+        else:
+            # Current website
+            site_root = context.resource.get_site_root()
+            abspath = site_root.get_abspath()
+            args.append(get_base_path_query(str(abspath)))
 
         # Search only on current folder ?
         if self.search_on_current_folder_recursive is True:
@@ -185,6 +190,7 @@ class Feed_View(Folder_BrowseContent):
             query = AndQuery(*args)
 
         return context.root.search(query)
+
 
     ###############################################
     ## Namespace
