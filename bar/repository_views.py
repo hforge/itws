@@ -159,6 +159,12 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         widget = SelectWidget('format', datatype=enum, value=format)
         namespace = {}
         namespace['format_widget'] = widget.render()
-        namespace['is_admin_popup'] = context.get_form_value('is_admin_popup')
+        # is admin popup
+        if context.method == 'POST' and context.form_action == 'action':
+            # filter by type only forward is_admin_popup
+            is_admin_popup = context.get_form_value('is_admin_popup')
+        else:
+            is_admin_popup = context.get_query_value('is_admin_popup')
+        namespace['is_admin_popup'] = is_admin_popup
 
         return namespace
