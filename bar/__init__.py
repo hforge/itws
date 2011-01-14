@@ -22,6 +22,7 @@ from base_views import SideBar_View
 from contact import BoxContact
 from diaporama import Diaporama
 from feed_box import BoxFeed
+from gallery import BoxGallery
 from homepage import Website_BarAware
 from html import HTMLContent
 from map_box import MapBox
@@ -37,6 +38,7 @@ from twitter import IdenticaSideBar, TwitterSideBar
 
 register_box(BoxContact)
 register_box(BoxFeed)
+register_box(BoxGallery)
 register_box(BoxNavigation)
 register_box(BoxSectionChildrenToc)
 register_box(BoxTags)
@@ -49,5 +51,10 @@ register_box(MenuSideBar)
 register_box(TwitterSideBar)
 
 # Silent Pyflakes
-ContentBarAware, Repository, Section, SideBarAware
-SideBar_View, MapBox, Website_BarAware
+# other
+ContentBarAware, Repository, Section, SideBarAware, SideBar_View
+Website_BarAware
+# boxes
+BoxContact, BoxFeed, BoxGallery, BoxNavigation, BoxSectionChildrenToc, BoxTags
+ContentBoxSectionChildrenToc, Diaporama, HTMLContent, IdenticaSideBar, MapBox
+MenuSideBar, TwitterSideBar

@@ -77,9 +77,13 @@ class ImagesView_View(Feed_View):
     view_title = MSG(u'Gallery view')
     view_configuration_cls = ImagesView_Configuration
 
+    def _get_configuration_file(self, resource):
+        return resource.get_resource('section_view')
+
+
     def get_items(self, resource, context, *args):
         args = list(args)
-        conf_resource = resource.get_resource('section_view')
+        conf_resource = self._get_configuration_file(resource)
         filtered_class = conf_resource.get_property('filtered_class')
         if filtered_class == 'image':
             args.append(PhraseQuery('is_image', True))
@@ -95,7 +99,7 @@ class ImagesView_View(Feed_View):
 
 
     def get_content_namespace(self, resource, context, items):
-        conf_resource = resource.get_resource('section_view')
+        conf_resource = self._get_configuration_file(resource)
         namespace = Feed_View.get_content_namespace(self, resource, context, items)
         for key in ['thumb_width', 'thumb_height']:
             namespace[key] = conf_resource.get_property(key)

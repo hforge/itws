@@ -50,6 +50,7 @@ class BaseSectionView_Configuration(File):
               specific_document='../')
 
 
+
 class BaseFeedView_Configuration(BaseSectionView_Configuration):
 
     class_schema = merge_dicts(
