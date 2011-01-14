@@ -120,3 +120,27 @@
   text-decoration: none;
 }
 
+/************************************
+ * Popup
+ ************************************/
+body.popup {
+  padding: 10px;
+}
+
+body.popup p.tabme a {
+  color: #3465A4;
+}
+
+body.popup p.tabme a.selected,
+body.popup p.tabme a:hover {
+  background: #3465A4;
+  color: #FFFFFF;
+}
+
+body.popup #breadcrumbs a {
+  color: #3465A4;
+}
+
+body.popup .box table td a {
+  color: #3465A4;
+}
