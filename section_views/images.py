@@ -16,35 +16,49 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.database import PhraseQuery
-from itools.datatypes import Integer
+from itools.database import OrQuery, PhraseQuery
+from itools.datatypes import Enumerate
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import TextWidget
+from ikaaro.autoform import SelectWidget, TextWidget
 
 # Import from itws
 from base import BaseFeedView_Configuration
 from itws.datatypes import PositiveIntegerNotNull
 from itws.feed_views.base import Feed_View
+from itws.tags import get_registered_tags_aware_classes
+
+
+
+class GalleryClassesEnumerate(Enumerate):
+
+    options = [{'name': 'image', 'value': MSG(u'Image')},
+               {'name': 'tagsaware', 'value': MSG(u'TagsAware')}]
+
 
 
 class ImagesView_Configuration(BaseFeedView_Configuration):
 
     class_id = 'images_view_configuration'
-    class_title = MSG(u'Images view')
+    class_title = MSG(u'Gallery view')
     class_schema = merge_dicts(
         BaseFeedView_Configuration.class_schema,
+        # Filter
+        filtered_class=GalleryClassesEnumerate(default='image',
+                                               source='metadata'),
         # Thumb size
         thumb_width=PositiveIntegerNotNull(default=128, source='metadata'),
         thumb_height=PositiveIntegerNotNull(default=128, source='metadata'))
 
     edit_schema = merge_dicts(
         BaseFeedView_Configuration.edit_schema,
+        filtered_class=GalleryClassesEnumerate(mandatory=True),
         thumb_width=PositiveIntegerNotNull,
         thumb_height=PositiveIntegerNotNull)
 
     edit_widgets = (BaseFeedView_Configuration.edit_widgets + [
+        SelectWidget('filtered_class', title=MSG(u'Type of content to display')),
         TextWidget('thumb_width', title=MSG(u'Thumb width')),
         TextWidget('thumb_height', title=MSG(u'Thumb height'))])
 
@@ -60,12 +74,23 @@ class ImagesView_View(Feed_View):
 
     # Section view properties
     view_name = 'images-view'
-    view_title = MSG(u'Images view')
+    view_title = MSG(u'Gallery view')
     view_configuration_cls = ImagesView_Configuration
 
     def get_items(self, resource, context, *args):
         args = list(args)
-        args.append(PhraseQuery('is_image', True))
+        conf_resource = resource.get_resource('section_view')
+        filtered_class = conf_resource.get_property('filtered_class')
+        if filtered_class == 'image':
+            args.append(PhraseQuery('is_image', True))
+        else:
+            # tagsaware
+            query = []
+            _classes = get_registered_tags_aware_classes()
+            for _cls in _classes:
+                query.append(PhraseQuery('format', _cls.class_id))
+            args.append(OrQuery(*query))
+
         return Feed_View.get_items(self, resource, context, *args)
 
 
