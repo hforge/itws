@@ -323,10 +323,10 @@ class Skin(BaseSkin):
 
         # Sidebar
         sidebar = None
-        nacfsv = not_allowed_view_name_for_sidebar_view
         iasocv = self.is_allowed_sidebar_on_current_view(context)
-        not_allowed = isinstance(here, tuple(nacfsv))
-        if (iasocv and not not_allowed):
+        nacfsv = tuple(not_allowed_cls_for_sidebar_view)
+        allowed = not isinstance(here, nacfsv)
+        if (iasocv and allowed):
             sidebar_resource = self.get_sidebar_resource(context)
 
             if sidebar_resource:
