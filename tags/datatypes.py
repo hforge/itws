@@ -21,8 +21,8 @@ from itools.web import get_context
 # Import from itws
 from utils import get_registered_tags_aware_classes
 
-class TagsList(Enumerate):
 
+class TagsList(Enumerate):
 
     @staticmethod
     def decode(value):
@@ -51,8 +51,6 @@ class TagsList(Enumerate):
                     for brain in tags_folder.get_tag_brains(context) ]
 
         return options
-
-
 
 
 
