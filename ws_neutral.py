@@ -85,7 +85,7 @@ class NeutralWS(Website_BarAware, WebSite):
     """
 
     class_id = 'neutral'
-    class_version = '20101013'
+    class_version = '20101014'
     class_title = MSG(u'ITWS Web Site')
     class_description = MSG(u'Create a new ITWS Web Site')
     class_icon16 = 'common/icons/16x16/itws-website.png'
@@ -439,6 +439,14 @@ class NeutralWS(Website_BarAware, WebSite):
                 metadata.set_changed()
                 metadata.format = Folder.class_id
                 metadata.version= Folder.class_version
+
+
+    def update_20101014(self):
+        """Fix security policy"""
+        value = self.get_security_policy()
+        if value == 'community':
+            value = 'extranet'
+        self.set_property('website_is_open', value)
 
 
 
