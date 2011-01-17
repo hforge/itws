@@ -9,8 +9,7 @@
       <div class="pub-datetime">${item/pub_datetime}</div>
       <div class="tag" stl:if="item/tags">
         <stl:block stl:repeat="tag item/tags">
-          <a href="${tag/href}" title="${tag/title}">${tag/title}</a>
-          <stl:inline stl:if="not repeat/tag/end">,</stl:inline>
+          <a href="${tag/href}" title="${tag/title}">${tag/title}</a><stl:inline stl:if="not repeat/tag/end">,</stl:inline>
         </stl:block>
       </div>
       <h3 class="title">
