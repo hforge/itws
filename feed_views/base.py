@@ -60,6 +60,8 @@ class Feed_View(Folder_BrowseContent):
                     'tags', 'workflow_state',
                     'image', 'css', 'class_icon16', 'class_icon48',
                     'type', 'abspath')
+    # Add an id to a wrapper div based on resource name
+    specific_id_wrapper = True
 
 
     def get_query_schema(self):
@@ -199,7 +201,10 @@ class Feed_View(Folder_BrowseContent):
     def get_namespace(self, resource, context):
         self.view_resource = resource
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
-        namespace['id'] = 'section-%s' % resource.name
+        id = None
+        if self.specific_id_wrapper:
+            id = 'section-%s' % resource.name
+        namespace['id'] = id
         namespace['css'] = self.view_name
         namespace['title'] = resource.get_property('title')
         namespace['show_title'] = self.show_title

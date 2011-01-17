@@ -55,6 +55,8 @@ class BoxFeed_View(Box_View, Details_View):
     search_on_current_folder = False
     search_on_current_folder_recursive = False
 
+    specific_id_wrapper = False
+
 
     def get_query_schema(self):
         return merge_dicts(Box_View.get_query_schema(self),
