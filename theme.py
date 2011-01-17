@@ -84,8 +84,8 @@ class Theme(BaseTheme):
                                   parameters_schema={'lang': String}),
          class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
 
-    class_views = ['edit', 'edit_css', 'edit_menu', 'edit_turning_footer',
-                   'browse_content', 'control_panel']
+    class_views = ['edit', 'edit_css', 'edit_menu', 'edit_footer',
+                   'edit_turning_footer', 'browse_content', 'control_panel']
     class_control_panel = ['links', 'backlinks', 'commit_log']
 
 
@@ -205,7 +205,12 @@ class Theme(BaseTheme):
     # Views
     edit = Theme_Edit()
     control_panel = ITWS_ControlPanel()
+    edit_footer = GoToSpecificDocument(
+            access='is_allowed_to_edit',
+            specific_document='footer/menu',
+            title=MSG(u'Edit footer'))
     edit_turning_footer = GoToSpecificDocument(
+            access='is_allowed_to_edit',
             specific_document='turning-footer/menu',
             title=MSG(u'Edit Turning footer'))
 

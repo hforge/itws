@@ -6,8 +6,8 @@
   border-bottom: 1px solid gray;
   padding: 5px 0;
   float: middle;
-  height: 25px;
-  background: url('/ui/k2/admin-background.png') repeat-x;
+  min-height: 25px;
+  background: url('/ui/common/images/admin-background.png') top left repeat-x #b8b8b8;
 }
 
 #admin table {
@@ -52,6 +52,7 @@
   padding: 3px 10px;
   text-align: center;
   text-decoration: none;
+  margin-bottom: 2px;
 }
 
 #admin ul li span {
