@@ -337,31 +337,31 @@ body {
 }
 
 /* section news */
-.box-section-news .newsitem {
+.box-feed .item {
   border-bottom: 1px dotted;
   padding-bottom: 10px;
   padding-top: 5px;
 }
 
-.box-section-news .newsitem.first {
+.box-feed .item.first {
   padding-top: 0;
 }
 
-.box-section-news .newsitem.last {
+.box-feed .item.last {
   border-bottom: none;
 }
 
-.box-section-news .newsitem .image-link {
+.box-feed .item .image-link {
   float: left;
   padding-right: 10px;
   padding-bottom: 5px;
 }
 
-.box-section-news .newsitem .newsitem-date {
+.box-feed .item .pub-datetime {
   /* padding-bottom: 5px; */
 }
 
-.box-section-news .more {
+.box-feed .more {
   float: right;
 }
 
