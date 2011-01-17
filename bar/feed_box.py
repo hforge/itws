@@ -46,6 +46,7 @@ class BoxFeed_View(Box_View, Details_View):
 
     access = 'is_allowed_to_edit'
     title = MSG(u'View')
+    template = '/ui/bar_items/BoxFeed_view.xml'
 
     view_name = 'feed-box'
 
