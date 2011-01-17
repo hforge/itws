@@ -101,3 +101,6 @@ body#admin-popup .ms2side__div select {
   margin: 0;
 }
 
+.context-menu {
+  width: 270px;
+}
