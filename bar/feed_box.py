@@ -60,8 +60,7 @@ class BoxFeed_View(Box_View, Details_View):
 
 
     def get_query_schema(self):
-        return merge_dicts(Box_View.get_query_schema(self),
-                           Details_View.get_query_schema(self))
+        return {}
 
 
     @property

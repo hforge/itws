@@ -39,6 +39,10 @@ class Box_View(STLView):
     styles = []
     scripts = []
 
+    def get_query_schema(self):
+        return {}
+
+
     def get_view_is_empty(self):
         return getattr(self, '_view_is_empty', False)
 
