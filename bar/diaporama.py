@@ -61,6 +61,7 @@ class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
     table_actions = [ action for action in OrderedTable_View.table_actions
                       if is_thingy(action, AddRecordButton) is False ]
 
+
     def get_item_value(self, resource, context, item, column):
         if column == 'img_path':
             img_path = resource.handler.get_record_value(item, column)
@@ -75,8 +76,8 @@ class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
                 return None
             if reference.scheme:
                 # Encode the reference '&' to avoid XMLError
-                reference = XMLContent.encode(str(reference))
-                return XMLParser('<a href="%s">%s</a>' % (reference, reference))
+                ref = XMLContent.encode(str(reference))
+                return XMLParser('<a href="{ref}">{ref}</a>'.format(ref=ref))
             # Split path/view
             reference_path, view = get_path_and_view(reference.path)
             item_resource = resource.get_resource(reference_path, soft=True)
@@ -108,6 +109,7 @@ class DiaporamaTable_CompositeView(CompositeForm):
     subviews = [ # diaporama folder edition view
                  MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
                  DiaporamaTable_View() ]
+
 
     def get_context_menus(self):
         return [ EditOnlyLanguageMenu(view=self) ]
@@ -143,6 +145,7 @@ class Diaporama_View(Box_View):
 
     styles = ['/ui/common/js/slider/style.css']
     scripts = ['/ui/common/js/slider/slider.js']
+
 
     def get_namespace(self, resource, context):
         width, height = 0, 0
@@ -231,6 +234,7 @@ class DiaporamaTable(OrderedTable):
             TextWidget('title', title=MSG(u'Title (Link tip)')),
             MultilineWidget('description',
                             title=MSG(u'Description (Alternative text)'))]
+
 
     def get_links(self):
         base = self.get_canonical_path()
@@ -357,6 +361,7 @@ class Diaporama(BoxAware, Folder):
 
     order_path = 'order-banners'
     order_table = DiaporamaTable
+
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)

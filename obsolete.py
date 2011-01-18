@@ -71,6 +71,7 @@ class ITWSRoot(Root):
 ###########################
 class Old_NeutralWS(NeutralWS):
     """Hook class_schema"""
+
     # FIXME To remove during the update
     class_schema = merge_dicts(
             NeutralWS.class_schema,
@@ -107,6 +108,7 @@ class Old_NeutralWS(NeutralWS):
 ###########################
 class OldSectionOrderedTable(SectionOrderedTable):
     """Hook class_schema"""
+
     class_schema = merge_dicts(SectionOrderedTable.class_schema,
                                order=String(source='metadata'))
 
@@ -114,6 +116,7 @@ class OldSectionOrderedTable(SectionOrderedTable):
 
 class OldSidebarBoxesOrderedTable(SidebarBoxesOrderedTable):
     """Hook class_schema"""
+
     class_schema = merge_dicts(SidebarBoxesOrderedTable.class_schema,
                                order=String(source='metadata'))
 
@@ -124,6 +127,7 @@ class OldSidebarBoxesOrderedTable(SidebarBoxesOrderedTable):
 ###########################
 class OldUser(User):
     """Hook class_schema"""
+
     class_schema = merge_dicts(User.class_schema,
                                gender=String(source='metadata'),
                                phone1=String(source='metadata'),
@@ -142,6 +146,7 @@ class OldUser(User):
 
 class Old_TrackerCalendar(File):
     """Hook class_schema"""
+
     class_id = 'tracker_calendar'
     class_version = '20090122'
 
@@ -152,6 +157,7 @@ class Old_TrackerCalendar(File):
 
 class Old_Tracker(Tracker):
     """Hook class_schema"""
+
     class_id = 'itws-tracker'
     class_version = '20100429'
 
@@ -192,6 +198,7 @@ class Old_Tracker(Tracker):
 
 
 class Old_Issue(Folder):
+
     class_id = 'itws-issue'
     class_version = '20071216'
 
@@ -201,6 +208,7 @@ class Old_Issue(Folder):
 # Favicon
 ################################
 class FavIcon(Image):
+
     class_id = 'favicon'
 
 
@@ -303,7 +311,6 @@ class AddressesFolder(Folder):
 ############################
 # Slides
 ############################
-
 class Slide(TagsAware, WebPage):
 
     class_id = 'slide'
@@ -340,6 +347,7 @@ class SlideShow(ResourcesOrderedContainer):
     order_path = 'order-slides'
     order_class = Slides_OrderedTable
     slide_class = Slide
+
 
     def update_20101116(self):
         from itws.bar import BoxNavigation
@@ -452,12 +460,14 @@ class SlideShow(ResourcesOrderedContainer):
 ## Box to feed (replace 3 boxes by one)
 ########################################
 class BoxSectionNews(Box):
+
     class_id = 'box-section-news'
     class_version = '20101119'
     class_schema = merge_dicts(Box.class_schema,
                                count=Integer(source='metadata', default=3),
                                tags=TagsList(source='metadata', multiple=True,
                                              default=[]))
+
 
     def update_20101119(self):
         metadata = self.metadata
@@ -469,8 +479,10 @@ class BoxSectionNews(Box):
 
 
 class ContentBoxSectionNews(BoxSectionNews):
+
     class_id = 'contentbar-box-section-news'
     class_version = '20101119'
+
 
     def update_20101119(self):
         metadata = self.metadata
@@ -482,6 +494,7 @@ class ContentBoxSectionNews(BoxSectionNews):
 
 
 class BoxNewsSiblingsToc(BoxSectionNews):
+
     class_id = 'box-news-siblings-toc'
     class_version = '20101119'
 

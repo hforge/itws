@@ -44,6 +44,7 @@ class RobotsTxt_Edit(Text_Edit):
         timestamp_widget,
         MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)])
 
+
     def action(self, resource, context, form):
         # Check edit conflict
         self.check_edit_conflict(resource, context, form)

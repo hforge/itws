@@ -41,6 +41,7 @@ class ITWS_ControlPanelMenu(ControlPanelMenu):
 
     title = MSG(u'Advanced')
 
+
     def get_items(self):
         items = super(ITWS_ControlPanelMenu, self).get_items()
         # Hook icons
@@ -59,8 +60,8 @@ class ITWS_ControlPanelMenu(ControlPanelMenu):
 class ITWS_ControlPanel(ControlPanel):
 
     title = MSG(u'Advanced')
-
     context_menus = [ITWS_ControlPanelMenu()]
+
 
     def get_namespace(self, resource, context):
         # XXX We override get_namespace just to fix problem
@@ -85,7 +86,6 @@ class ITWS_ControlPanel(ControlPanel):
 ###############################################
 # Control panel items
 ###############################################
-
 # XXX ikaaro base control panel views do not display
 # itws customized context_menus
 context_menus = [ITWS_ControlPanelMenu()]
@@ -135,7 +135,6 @@ class CPDBResource_Links(DBResource_Links):
 
     description = MSG(u'List resources that links to this resource')
     itws_icon = 'links.png'
-
     context_menus = context_menus
 
 
@@ -144,7 +143,6 @@ class CPDBResource_Backlinks(DBResource_Backlinks):
 
     description = MSG(u'List backlinks of this resource')
     itws_icon = 'backlinks.png'
-
     context_menus = context_menus
 
 
@@ -153,7 +151,6 @@ class CPOrderItems(GoToSpecificDocument):
 
     access = 'is_allowed_to_edit'
     itws_icon = 'toc.png'
-
     title = MSG(u'Manage TOC')
     description = MSG(u'Select and order items of the table of contents of '
                       u'this section.')
@@ -181,10 +178,10 @@ class CPExternalEdit(File_ExternalEdit_View):
 class CPFOSwitchMode(BaseView):
 
     access = 'is_allowed_to_edit'
-    query_schema = {'mode': Boolean(default=False)}
-
     title = MSG(u'Change mode edition/navigation')
     itws_icon = 'switch.png'
+    query_schema = {'mode': Boolean(default=False)}
+
 
     @thingy_property
     def description(self):

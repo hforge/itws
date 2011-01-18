@@ -36,6 +36,7 @@ class NotFoundPage_View(BaseNotFoundView):
 
     not_found_template = 'theme/404'
 
+
     def get_template(self, resource, context):
         site_root = resource.get_site_root()
         template = site_root.get_resource(self.not_found_template, soft=True)

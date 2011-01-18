@@ -32,9 +32,11 @@ from ikaaro.workflow import WorkflowAware
 from utils import is_navigation_mode
 
 
+
 class AdminBarTemplate(CMSTemplate):
 
     template = '/ui/common/admin_bar.xml'
+
 
     @thingy_lazy_property
     def workflow(self):
@@ -137,7 +139,6 @@ class AdminBarTemplate(CMSTemplate):
         return views
 
 
-
     @thingy_lazy_property
     def backoffice_tabs(self):
         context = self.context
@@ -162,6 +163,7 @@ class AdminBarTemplate(CMSTemplate):
                      'icon': '/ui/icons/16x16/external.png',
                      'class': active and 'active' or None})
         return tabs
+
 
 
 class LocationTemplate(BaseLocationTemplate):
@@ -297,11 +299,11 @@ class LocationTemplate(BaseLocationTemplate):
 class LanguagesTemplate(BaseLanguagesTemplate):
     """
     """
-
     template = '/ui/common/languages.xml'
 
     # Configuration
     show_language_title = False
+
 
     @thingy_lazy_property
     def languages(self):

@@ -21,8 +21,8 @@ from itools.database import NotQuery, OrQuery, PhraseQuery
 from ikaaro.autoform import SelectWidget
 from ikaaro.file import Image
 from ikaaro.popup import AddMedia_BrowseContent, AddImage_BrowseContent
-from ikaaro.popup import DBResource_AddLink, DBResource_AddMedia, DBResource_AddImage
-from ikaaro.popup import AddBase_BrowseContent
+from ikaaro.popup import DBResource_AddLink, DBResource_AddMedia
+from ikaaro.popup import DBResource_AddImage, AddBase_BrowseContent
 from ikaaro.utils import get_base_path_query
 
 # Import from itws
@@ -30,10 +30,10 @@ from itws.datatypes import SortBy_Enumerate, Reverse_Enumerate
 from itws.feed_views import Feed_View
 
 
+
 ##################################################
 # Some methods
 ##################################################
-
 def get_itws_namespace(cls, self, resource, context):
     namespace = cls.get_namespace(self, resource, context)
     # XXX Hack breadcrumb
@@ -116,6 +116,7 @@ class ITWS_AddBase_BrowseContent(Feed_View, AddBase_BrowseContent):
     table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
 
+
     def get_items(self, resource, context, *args):
         args = list(args)
         args.extend(itws_get_additional_args(self.target))
@@ -135,6 +136,7 @@ class ITWS_AddMedia_BrowseContent(Feed_View, AddMedia_BrowseContent):
 
     table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
+
 
     def get_items(self, resource, context, *args):
         args = list(args)
@@ -157,6 +159,7 @@ class ITWS_AddImage_BrowseContent(Feed_View, AddImage_BrowseContent):
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
     item_classes = (Image,)
 
+
     def get_items(self, resource, context, *args):
         args = list(args)
         args.extend(itws_get_additional_args(self.target))
@@ -176,6 +179,7 @@ class ITWS_DBResource_AddLink(DBResource_AddLink):
 
     browse_content_class = ITWS_AddBase_BrowseContent
 
+
     def get_namespace(self, resource, context):
         return get_itws_namespace(DBResource_AddLink, self, resource, context)
 
@@ -185,6 +189,7 @@ class ITWS_DBResource_AddImage(DBResource_AddImage):
 
     browse_content_class = ITWS_AddImage_BrowseContent
 
+
     def get_namespace(self, resource, context):
         return get_itws_namespace(DBResource_AddImage, self, resource, context)
 
@@ -193,6 +198,7 @@ class ITWS_DBResource_AddImage(DBResource_AddImage):
 class ITWS_DBResource_AddMedia(DBResource_AddMedia):
 
     browse_content_class = ITWS_AddMedia_BrowseContent
+
 
     def get_namespace(self, resource, context):
         return get_itws_namespace(DBResource_AddMedia, self, resource, context)

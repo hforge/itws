@@ -30,6 +30,7 @@ class Details_View(Feed_View):
     search_template = None
     content_template = '/ui/feed_views/Tag_item_viewbox.xml'
 
+
     def get_items(self, resource, context, *args):
         args = list(args)
         args.append(PhraseQuery('is_tagsaware', True))

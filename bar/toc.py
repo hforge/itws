@@ -38,12 +38,13 @@ hide_single_widget = RadioWidget('hide_if_only_one_item',
         title=MSG(u'Hide if there is only one item'))
 
 
-################################################################################
+###############################################################################
 # View
-################################################################################
+###############################################################################
 class BoxSectionChildrenTree_View(Box_View):
 
     template = '/ui/bar_items/SectionChildrenTree_view.xml'
+
 
     def GET(self, resource, context):
         from itws.bar import Section
@@ -212,10 +213,9 @@ class ContentBoxSectionChildrenToc_View(Box_View):
 
 
 
-################################################################################
+###############################################################################
 # Boxes
-################################################################################
-
+###############################################################################
 class BoxSectionChildrenToc(Box):
 
     class_id = 'box-section-children-toc'

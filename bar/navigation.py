@@ -28,6 +28,7 @@ from ikaaro.autoform import CheckboxWidget
 from bar_aware import SideBarAware
 from base import Box
 from base_views import Box_View
+from itws.webpage import WebPage
 from section import Section
 
 
@@ -37,9 +38,8 @@ class BoxNavigation_View(Box_View):
     template = '/ui/bar_items/NavigationBox_view.xml'
     tree_template = '/ui/bar_items/NavigationBox_tree.xml'
 
-    def get_classes(self):
-        from itws.webpage import WebPage
 
+    def get_classes(self):
         return [WebPage, Section]
 
 
@@ -161,6 +161,7 @@ class BoxNavigation(Box):
             limit_to_ordered_resources=Boolean(source='metadata',
                                                default=False))
 
+    # Configuration of automatic edit view
     edit_schema = freeze({'display_title': Boolean,
                           'limit_to_current_folder': Boolean,
                           'limit_to_ordered_resources': Boolean})

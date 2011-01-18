@@ -26,6 +26,7 @@ from ikaaro.folder_views import Folder_BrowseContent
 from base import Feed_View
 
 
+
 class Browse_Navigator(Feed_View):
 
     access = 'is_allowed_to_edit'
@@ -60,6 +61,7 @@ class Browse_Navigator(Feed_View):
         <stl:inline stl:if="not repeat/action/end">,</stl:inline>
     </stl:block>"""
     actions_views = [(None, MSG(u'View')), ('edit', MSG(u'Edit'))]
+
 
     def get_content_namespace(self, resource, context, items):
         # Get namespace
@@ -98,6 +100,7 @@ class Browse_Navigator(Feed_View):
                     href = '%s/;%s' % (link, view_name)
                 else:
                     href = link
-                actions.append({'href': self.javascript % href, 'title': title})
+                actions.append({'href': self.javascript % href,
+                                'title': title})
             return INFO(self.actions_template, format='stl', actions=actions)
         return Feed_View.get_item_value(self, resource, context, item, column)

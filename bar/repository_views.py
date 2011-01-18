@@ -33,10 +33,9 @@ from ikaaro.future.order import ResourcesOrderedTable_Unordered
 
 
 
-################################################################################
+###############################################################################
 # Repository views
-################################################################################
-
+###############################################################################
 class Repository_BrowseContent(Folder_BrowseContent):
 
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
@@ -48,6 +47,7 @@ class Repository_BrowseContent(Folder_BrowseContent):
             <span stl:if="not repeat/item/end">,</span>
         </stl:block>
         """, stl_namespaces))
+
 
     def get_table_columns(self, resource, context):
         columns = Folder_BrowseContent.get_table_columns(self, resource,
@@ -89,6 +89,7 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
     columns = [('checkbox', None),
                ('title', MSG(u'Title'), False)]
 
+
     def sort_and_batch(self, resource, context, items):
         # Sort by order regardless query
         reverse = False
@@ -113,6 +114,7 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
                                batch_size=Integer(default=0),
                                format=String, sort_by=String(default='title'))
     search_template = '/ui/bar_items/browse_search.xml'
+
 
     def get_query_schema(self):
         return self.query_schema

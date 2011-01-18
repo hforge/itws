@@ -45,6 +45,7 @@ class HTMLContent_View(Box_View, WebPage_View):
 
     template = '/ui/bar_items/HTMLContent_view.xml'
 
+
     def GET(self, resource, context):
         return Box_View.GET(self, resource, context)
 
@@ -140,10 +141,12 @@ class HTMLContent(WebPage):
     is_content = True
     is_side = True
 
+
     def get_catalog_values(self):
         values = WebPage.get_catalog_values(self)
         values['is_tagsaware'] = False
         return values
+
 
     ###########################
     ## Links API

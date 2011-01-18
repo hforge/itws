@@ -14,16 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 # Import from itools
 from itools.core import freeze
 from itools.datatypes import Enumerate
 
 
+
 ##############################
 # Registry
 ##############################
-
 section_views_registry = {}
 
 def register_section_view(view_class):

@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 # Import from itools
 from itools.core import freeze
 from itools.gettext import MSG
@@ -37,9 +36,9 @@ class WSDataFolder(Folder):
     class_views = ['commit_log']
     class_schema = Folder.class_schema
 
-
     __fixed_handlers__ = [SideBarAware.sidebar_name,
                           ContentBarAware.contentbar_name]
+
 
     def get_document_types(self):
         return [File, Folder]

@@ -167,22 +167,22 @@ class TagsFolder(Folder):
 
 class TagsAware(object):
 
-    class_schema = {# Metadata
-                    'tags': TagsList(source='metadata', multiple=True,
-                                     indexed=True, stored=True),
-                    'pub_datetime': DateTime(source='metadata', indexed=True,
-                                             stored=True),
-                    'thumbnail': PathDataType(source='metadata',
-                        multilingual=True, parameters_schema={'lang': String}),
-                    # Catalog
-                    'is_tagsaware': Boolean(indexed=True, stored=True),
-                    'preview_content': Unicode(stored=True, indexed=True),
-                    }
+    class_schema = {
+            # Metadata
+            'tags': TagsList(source='metadata', multiple=True, indexed=True,
+                             stored=True),
+            'pub_datetime': DateTime(source='metadata', indexed=True,
+                                     stored=True),
+            'thumbnail': PathDataType(source='metadata', multilingual=True,
+                                      parameters_schema={'lang': String}),
+            # Catalog
+            'is_tagsaware': Boolean(indexed=True, stored=True),
+            'preview_content': Unicode(stored=True, indexed=True),
+            }
 
 
     def get_catalog_values(self):
-        indexes = {}
-        indexes['tags'] = self.get_property('tags')
+        indexes = {'tags': self.get_property('tags')}
         indexes['pub_datetime'] = self.get_property('pub_datetime')
         indexes['is_tagsaware'] = True
         indexes['preview_content'] = self.get_preview_content()
@@ -263,7 +263,6 @@ class TagsAware(object):
             content = reduce_string(content)
 
         return content
-
 
 
     def to_text(self):

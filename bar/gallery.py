@@ -32,6 +32,7 @@ from itws.bar.base_views import Box_View
 
 class BoxGallery_View(ImagesView_View, Box_View):
 
+
     def _get_configuration_file(self, resource):
         return resource
 
@@ -63,6 +64,7 @@ class BoxGallery(ImagesView_Configuration, Box):
         ImagesView_Configuration.class_schema,
         display_title=Boolean(source='metadata', default=True)))
 
+    # Configuration of automatic edit view
     display_title = True
     edit_schema = freeze(merge_dicts(
         ImagesView_Configuration.edit_schema,

@@ -49,11 +49,13 @@ from itws.utils import set_prefix_with_hostname
 from itws.widgets import DualSelectWidget
 
 
+
 class Tag_Edit(File_Edit):
 
     widgets = freeze([
         timestamp_widget, title_widget, state_widget,
         description_widget, subject_widget])
+
 
 
 ############################################################
@@ -122,7 +124,6 @@ class Tag_View(Details_View):
                 tags=[tag], formats=formats)
         args.append(AndQuery(*query))
         return Details_View.get_items(self, resource, context, *args)
-
 
 
 
@@ -243,7 +244,8 @@ class TagsAware_Edit(object):
              ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')),
              DateWidget('pub_date',
                         title=MSG(u'Publication date (use by RSS and TAGS)')),
-             TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5, maxlength=5,
+             TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5,
+                        maxlength=5,
                         title=MSG(u'Publication time (use by RSS and TAGS)'))])
 
 

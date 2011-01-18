@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 # Import from itools
 from itools.core import get_abspath
 from itools.gettext import MSG
@@ -45,7 +44,6 @@ from tags import BoxTags
 ###########################################################################
 # Repository
 ###########################################################################
-
 class BoxesOrderedTable(ResourcesOrderedTable):
 
     class_views = ['view', 'add_box', 'new_box', 'commit_log']
@@ -165,6 +163,7 @@ class Repository(Folder):
     tags_box = 'tags'
 
     __fixed_handlers__ = (Folder.__fixed_handlers__ + [tags_box])
+
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)

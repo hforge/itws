@@ -135,13 +135,11 @@ class TwitterSideBar(Box, ResourceWithCache):
              limit=Integer(source='metadata', default=5),
              force_update=Boolean(source='metadata'))
 
-    # Item configuration
-
+    # Configuration of automatic edit view
     edit_schema = freeze({'user_id': TwitterID(mandatory=True),
                           'user_name': String(mandatory=True),
                           'limit': Integer(mandatory=True, default=5, size=3),
                           'force_update': Boolean})
-
 
     edit_widgets = freeze([
         TextWidget('user_name', title=MSG(u"Twitter account name")),
@@ -284,7 +282,8 @@ class IdenticaSideBar(TwitterSideBar):
     class_icon48 = 'bar_items/icons/48x48/identica.png'
     class_schema = merge_dicts(Box.class_schema,
              user_name=IndenticaName(source='metadata'),
-             limit=Integer(source='metadata', mandatory=True, default=5, size=3),
+             limit=Integer(source='metadata', mandatory=True, default=5,
+                           size=3),
              force_update=Boolean(source='metadata'))
     # identica icons source: http://status.net/
 

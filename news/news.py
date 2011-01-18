@@ -73,7 +73,6 @@ class NewsItem(WebPage):
     ##############
     # API
     ###############
-
     def get_long_title(self, language=None):
         """Return the long_title or the title"""
         long_title = self.get_property('long_title', language=language)

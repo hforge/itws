@@ -22,6 +22,7 @@ from itools.web import get_context
 from utils import get_registered_tags_aware_classes
 
 
+
 class TagsList(Enumerate):
 
     @staticmethod

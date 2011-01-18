@@ -21,6 +21,7 @@ from itools.gettext import MSG
 from itws.bar.base_views import Bar_View
 
 
+
 class Section_Composite_View(Bar_View):
 
     title = MSG(u'View')

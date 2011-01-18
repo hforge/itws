@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.csv import Property
@@ -69,21 +68,23 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
 
 
     def get_schema(self, resource, context):
-        return merge_dicts(EasyNewInstance.get_schema(self, resource, context),
-                           class_id=MyAuthorized_Classid(view=self,
-                               resource=resource, context=context,
-                               mandatory=True),
-                           order=OrderBoxEnumerate(default='order-bottom'),
-                           state=StaticStateEnumerate(default='public'))
+        proxy = super(EasyNewInstance_WithOrderer, self)
+        class_id = MyAuthorized_Classid(view=self, resource=resource,
+                                        context=context, mandatory=True)
+        return merge_dicts(proxy.get_schema(resource, context),
+                class_id=class_id,
+                order=OrderBoxEnumerate(default='order-bottom'),
+                state=StaticStateEnumerate(default='public'))
 
 
     def get_widgets(self, resource, context):
-        return freeze(EasyNewInstance.get_widgets(self, resource, context) +
-                      [ state_widget,
-                       ClassSelectorWidget('class_id',
-                           title=MSG(u'Resource type'), has_empty_option=False),
-                       RadioWidget('order', title=self.order_widget_title,
-                                  has_empty_option=False)])
+        proxy = super(EasyNewInstance_WithOrderer, self)
+        addons = [ state_widget,
+                   ClassSelectorWidget('class_id', title=MSG(u'Resource type'),
+                                       has_empty_option=False),
+                   RadioWidget('order', title=self.order_widget_title,
+                               has_empty_option=False) ]
+        return freeze(proxy.get_widgets(resource, context), addons)
 
 
     def get_value(self, resource, context, name, datatype):
@@ -110,8 +111,7 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
     def _get_form(self, resource, context):
         # We cannot call direct parent NewInstance, because we override the
         # container
-        proxy = super(NewInstance, self)
-        form = proxy._get_form(resource, context)
+        form = super(NewInstance, self)._get_form(resource, context)
 
         # 1. The container
         container = self._get_container(resource, context)
@@ -206,6 +206,7 @@ class SideBarBox_NewInstance(EasyNewInstance_WithOrderer):
 
 
 class ContentBarBox_NewInstance(EasyNewInstance_WithOrderer):
+
 
     def get_contentbaraware_resource(self, resource):
         from bar_aware import ContentBarAware

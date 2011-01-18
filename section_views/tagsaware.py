@@ -24,6 +24,7 @@ from base import BaseFeedView_Configuration
 from itws.feed_views import Feed_View
 
 
+
 class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
     class_id = 'tagsaware_view_configuration'
@@ -40,6 +41,7 @@ class TagsAwareView_View(Feed_View):
     search_template = None
     content_template = '/ui/feed_views/Tag_item_viewbox.xml'
 
+
     def __init__(self, **kw):
         for key in kw:
             setattr(self, key, kw[key])
@@ -52,7 +54,6 @@ class TagsAwareView_View(Feed_View):
         self.batch_size = conf_resource.get_property('view_batch_size')
 
 
-
     def get_items(self, resource, context, *args):
         # Get configuration
         args = list(args)
@@ -61,7 +62,8 @@ class TagsAwareView_View(Feed_View):
 
 
     def get_content_namespace(self, resource, items, context):
-        namespace = Feed_View.get_content_namespace(self, resource, items, context)
+        proxy = super(TagsAwareView_View, self)
+        namespace = proxy.get_content_namespace(resource, items, context)
         namespace['thumb_width'] = 90
         namespace['thumb_height'] = 90
         namespace['more_title'] = MSG(u'Read more')

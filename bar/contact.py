@@ -127,6 +127,7 @@ class BoxContact(Box):
     class_title = MSG(u'Contact box')
     class_description = MSG(u'Contact form to collect messages from users.')
 
+    # Configuration of automatic edit view
     edit_schema = freeze({'configuration_shortcut': String(readonly=True)})
     edit_widgets = freeze([
         ReadOnlyWidget('configuration_shortcut',

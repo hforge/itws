@@ -18,10 +18,10 @@
 from ikaaro.registry import get_resource_class
 
 
+
 ##########################################################################
 # Registry
 ##########################################################################
-
 tags_aware_registry = []
 def register_tags_aware(resource_class):
     class_id = resource_class.class_id

@@ -281,14 +281,14 @@ class RssFeeds(CSV):
 
     # Configuration of automatic edit view
     edit_show_meta = True
-    edit_schema = freeze(
-            {'TTL': Integer(mandatory=True),
-             'update_now': Boolean(ignore=True),
-             'timeout': Decimal(mandatory=True)})
-    edit_widgets = freeze(
-            [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
-             TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-             RadioWidget('update_now', title=MSG(u"Update RSS now"))])
+    edit_schema = freeze({
+        'TTL': Integer(mandatory=True),
+        'update_now': Boolean(ignore=True),
+        'timeout': Decimal(mandatory=True)})
+    edit_widgets = freeze([
+        TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
+        TextWidget('timeout', title=MSG(u"Timeout in seconds")),
+        RadioWidget('update_now', title=MSG(u"Update RSS now"))])
 
 
     def get_columns(self):
@@ -421,7 +421,8 @@ class RssFeeds(CSV):
         handler.last_articles = articles
         list_errors = []
         for index, x in enumerate(errors):
-            # FIXME (old comment 2010-12-27, the problem did not occurred since)
+            # FIXME (old comment 2010-12-27,
+            # the problem did not occurred since)
             # if we simply append x (a generator) this cause a segfault in the
             # xml parser
             list_errors.append(x)

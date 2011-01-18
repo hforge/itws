@@ -43,10 +43,10 @@ from itws.views import TableViewWithoutAddRecordButton
 ##############################################################################
 # VIEWS
 ##############################################################################
-
 class MenuSideBar_View(Box_View):
 
     template = '/ui/bar_items/menu.xml'
+
 
     def get_namespace(self, resource, context):
         depth = 1
@@ -73,6 +73,7 @@ class MenuProxyBox_Edit(DBResource_Edit):
     action = None
 
     widgets = freeze([timestamp_widget, title_widget])
+
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':
@@ -141,6 +142,7 @@ class MenuSideBarTable_AddRecord(Table_AddRecord):
     actions = [Button(access='is_allowed_to_edit',
                       name='add_record', title=MSG(u'Add'))]
 
+
     def get_actions(self, resource, context):
         return self.actions
 
@@ -185,6 +187,7 @@ class MenuSideBarTable_View(TableViewWithoutAddRecordButton, Menu_View):
     table_actions = [ action for action in Menu_View.table_actions
                       if is_thingy(action, AddRecordButton) is False ]
 
+
     def get_table_columns(self, resource, context):
         base_columns = Menu_View.get_table_columns(self, resource, context)
         return [ column for column in base_columns if column[0] != 'child' ]
@@ -197,6 +200,7 @@ class MenuSideBarTable_CompositeView(CompositeForm):
     subviews = [MenuProxyBox_Edit(),
                 MenuSideBarTable_AddRecord(),
                 MenuSideBarTable_View() ]
+
 
     def get_context_menus(self):
         return [ EditOnlyLanguageMenu(view=self) ]
@@ -228,7 +232,6 @@ class MenuSideBarTable_CompositeView(CompositeForm):
 ##############################################################################
 # RESOURCES
 ##############################################################################
-
 class MenuSideBarTableFile(MenuFile):
 
     record_properties = merge_dicts(MenuFile.record_properties,

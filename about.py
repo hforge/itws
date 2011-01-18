@@ -44,6 +44,7 @@ class AboutITWS(Folder):
     class_title = MSG(u'About ITWS')
     class_views = ['view', 'edit', 'browse_content']
 
+
     def get_catalog_values(self):
         return merge_dicts(Folder.get_catalog_values(self),
                            workflow_state='public')

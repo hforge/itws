@@ -29,7 +29,8 @@ from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.folder_views import Folder_PreviewContent, GoToSpecificDocument
-from ikaaro.future.order import ResourcesOrderedTable, ResourcesOrderedContainer
+from ikaaro.future.order import ResourcesOrderedContainer
+from ikaaro.future.order import ResourcesOrderedTable
 from ikaaro.registry import register_document_type
 from ikaaro.table import OrderedTableFile
 from ikaaro.workflow import WorkflowAware
@@ -51,7 +52,6 @@ from itws.webpage import WebPage
 ################
 # Order tables #
 ################
-
 class SectionOrderedTableFile(OrderedTableFile):
 
     record_properties = {
@@ -88,7 +88,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     class_version = '20101124'
     class_title = MSG(u'Section')
     class_description = MSG(u'Sections allow to customize the central part '
-                            u'and the sidebar. Sections can contain subsections.')
+            u'and the sidebar. Sections can contain subsections.')
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
     class_schema = merge_dicts(
@@ -186,6 +186,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
     links = CPDBResource_Links()
     backlinks = CPDBResource_Backlinks()
+
 
 
 register_document_type(Section, 'neutral')

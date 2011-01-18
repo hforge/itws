@@ -36,7 +36,8 @@ class MyAuthorized_Classid(Enumerate):
     @classmethod
     def get_options(cls):
         options = []
-        for cls in cls.view.get_aware_document_types(cls.resource, cls.context):
+        view = cls.view
+        for cls in view.get_aware_document_types(cls.resource, cls.context):
             options.append({'name': cls.class_id,
                             'value': cls.class_title})
         return options

@@ -66,5 +66,6 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
 
     edit_widgets = freeze([
         TextWidget('view_batch_size', title=MSG(u'Batch size')),
-        SelectWidget('view_sort_by', title=MSG(u'Sort by ?'), has_empty_option=False),
+        SelectWidget('view_sort_by', title=MSG(u'Sort by ?'),
+                     has_empty_option=False),
         RadioWidget('view_reverse', title=MSG(u'Reverse'))])

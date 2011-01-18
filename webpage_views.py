@@ -34,6 +34,7 @@ from widgets import Advance_RTEWidget
 
 class WebPage_Edit(TagsAware_Edit, HTMLEditView):
 
+
     def _get_schema(self, resource, context):
         return merge_dicts(HTMLEditView._get_schema(self, resource, context),
                            TagsAware_Edit._get_schema(self, resource, context),
@@ -87,7 +88,6 @@ class WebPage_View(STLView):
     access = 'is_allowed_to_view'
     title = MSG(u'View')
     icon = 'view.png'
-
     template = '/ui/common/WebPage_view.xml'
 
 

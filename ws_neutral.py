@@ -96,7 +96,6 @@ class NeutralWS(Website_BarAware, WebSite):
                               view=SectionViews_Enumerate(source='metadata',
                                   default='composite-view'))
 
-
     class_control_panel = (WebSite.class_control_panel +
                           Website_BarAware.class_control_panel +
                           ['edit_tags', 'edit_footer', 'edit_turning_footer',
@@ -117,6 +116,7 @@ class NeutralWS(Website_BarAware, WebSite):
     section_class = Section
     sitemap_class = SiteMap
     tagsfolder_class = TagsFolder
+
 
     def init_resource(self, **kw):
         kw['website_is_open'] = 'extranet'

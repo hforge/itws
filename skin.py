@@ -34,8 +34,6 @@ from ikaaro.tracker import Tracker
 from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
 
-
-
 # Import from itws
 from bar import SideBarAware, SideBar_View
 from news import NewsItem
@@ -414,7 +412,8 @@ class Skin(BaseSkin):
         ac = context.resource.get_access_control()
         is_admin = ac.is_allowed_to_edit(context.user, context.resource)
         if edit_mode is True or is_admin:
-            scripts.append('/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
+            scripts.append(
+                    '/ui/common/js/fancybox/jquery.fancybox-1.3.1.pack.js')
         scripts.append('/ui/common/js/javascript.js')
         scripts.append('/ui/common/js/jquery.multiselect2side/javascript.js')
         # Do not had a scritp several times

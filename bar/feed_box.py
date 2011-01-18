@@ -34,12 +34,15 @@ from itws.widgets import DualSelectWidget
 from itws.feed_views import Details_View
 
 
+
 class BoxFeed_Enumerate(Enumerate):
 
+    # XXX Why V2 is commented ???
     options = [
       {'name': '/ui/feed_views/Tag_item_viewbox.xml', 'value': MSG(u'V3')},
 #      {'name': '/ui/news/SectionNews_view.xml', 'value': MSG(u'V2')},
       {'name': '/ui/feed_views/NewsItem_preview.xml', 'value': MSG(u'V1')}]
+
 
 
 class BoxFeed_View(Box_View, Details_View):
@@ -104,16 +107,18 @@ class BoxFeed(Box):
     class_title = MSG(u'Box to feed items')
     class_version = '20101228'
     class_icon16 = 'bar_items/icons/16x16/box_section_news.png'
-    class_description = MSG(u'Display the last N items (Webpage/News) filtered by tags')
+    class_description = MSG(u'Display the last N items (Webpage/News) '
+                            u'filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
-    class_schema = merge_dicts(Box.class_schema,
-                               feed_class_id=TagsAwareClassEnumerate(source='metadata', multiple=True),
-                               feed_source=String(source='metadata', multiple=True),
-                               view=BoxFeed_Enumerate(source='metadata'),
-                               count=PositiveInteger(source='metadata', default=3),
-                               tags=TagsList(source='metadata', multiple=True,
-                                             default=[]))
+    class_schema = merge_dicts(
+            Box.class_schema,
+            feed_class_id=TagsAwareClassEnumerate(source='metadata',
+                                                  multiple=True),
+            feed_source=String(source='metadata', multiple=True),
+            view=BoxFeed_Enumerate(source='metadata'),
+            count=PositiveInteger(source='metadata', default=3),
+            tags=TagsList(source='metadata', multiple=True, default=[]))
 
     # Configuration
     allow_instanciation = True

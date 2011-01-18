@@ -25,6 +25,8 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.registry import get_resource_class
 from ikaaro.utils import get_base_path_query
 
+
+
 ###########################################
 # See bug:
 # http://bugs.hforge.org/show_bug.cgi?id=1100
@@ -180,7 +182,8 @@ class Feed_View(Folder_BrowseContent):
                 resource_abspath = resource.get_abspath()
                 for name in method():
                     abspath = resource_abspath.resolve2(name)
-                    q = get_base_path_query(str(abspath), include_container=True)
+                    q = get_base_path_query(str(abspath),
+                                            include_container=True)
                     exclude_query.append(q)
 
                 args.append(NotQuery(OrQuery(*exclude_query)))

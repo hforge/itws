@@ -39,6 +39,7 @@ from itws.rss import BaseRSS
 from itws.webpage_views import WebPage_Edit
 
 
+
 class NewsItem_View(STLView):
 
     access = 'is_allowed_to_view'
@@ -50,6 +51,7 @@ class NewsItem_View(STLView):
     # customization (obsolete)
     id = 'news'
     title_link = None
+
 
     def get_namespace(self, resource, context):
         dow = resource.get_pub_datetime_formatted()
@@ -161,7 +163,6 @@ class NewsFolder_RSS(BaseRSS):
 ############################################################
 # Manage view
 ############################################################
-
 class NewsFolder_BrowseContent(Folder_BrowseContent):
 
     access = 'is_allowed_to_edit'
@@ -180,6 +181,7 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
         ('last_author', MSG(u'Last Author')),
         ('format', MSG(u'Type')),
         ('workflow_state', MSG(u'State'))]
+
 
     def get_items(self, resource, context, *args):
         path = str(resource.get_canonical_path())

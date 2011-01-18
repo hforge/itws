@@ -89,6 +89,7 @@ class NeutralWS_RSS(BaseRSS):
 
 class NeutralWS_Edit(EditView, DBResource_Edit):
 
+
     def _get_widgets(self, resource, context):
         return freeze(DBResource_Edit._get_widgets(self, resource, context)
             + [SelectWidget('view', title=MSG(u'View'),

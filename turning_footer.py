@@ -49,6 +49,7 @@ class TurningFooterFolder_View(STLView):
     title = MSG(u'View')
     template = '/ui/common/TurningFooterFolder_view.xml'
 
+
     def get_namespace(self, resource, context):
         # title
         title = resource.get_title(fallback=False)
@@ -107,7 +108,6 @@ class TurningFooterTable(OrderedTable):
     ##########################
     # Links API
     ##########################
-
     def get_links(self):
         links = OrderedTable.get_links(self)
         base = self.get_canonical_path()
@@ -230,6 +230,7 @@ class TurningFooterFolder(Folder):
     edit_widgets = freeze([
                CheckboxWidget('random', title=MSG(u'Random selection')),
                CheckboxWidget('active', title=MSG(u'Is active'))])
+
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)

@@ -22,7 +22,6 @@ from itools.core import freeze
 ##############################
 # Registry
 ##############################
-
 boxes_registry = {}
 def register_box(resource_class):
     is_content = resource_class.is_content

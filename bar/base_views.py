@@ -76,6 +76,7 @@ class Bar_View(CompositeView):
     boxes_css_class = None
     container_cls = None
 
+
     def get_manage_buttons(self, resource, context):
         ac = resource.get_access_control()
         allowed = ac.is_allowed_to_edit(context.user, resource)

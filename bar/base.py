@@ -45,6 +45,7 @@ class Box(BoxAware, File):
     class_version = '20100622'
     class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
+    # Configuration of automatic edit view
     edit_schema = freeze({})
     class_schema = freeze(merge_dicts(
         File.class_schema, edit_schema))

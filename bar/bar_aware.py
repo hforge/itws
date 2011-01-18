@@ -30,9 +30,9 @@ from itws.views import AdvanceGoToSpecificDocument
 
 
 
-################################################################################
+###############################################################################
 # Resources
-################################################################################
+###############################################################################
 class SideBarAware(object):
 
     class_version = '20100621'
@@ -144,7 +144,6 @@ class ContentBarAware(object):
         if section_views_registry.has_key(view_name):
             return get_section_view_from_registry(view_name)
         return None
-
 
 
     @lazy

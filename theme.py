@@ -46,6 +46,7 @@ class Theme_Edit(BaseTheme_Edit):
 
     title = MSG(u'Edit theme')
 
+
     def _get_schema(self, resource, context):
         return merge_dicts(BaseTheme_Edit._get_schema(self, resource, context),
                            custom_data=String,
@@ -133,7 +134,6 @@ class Theme(BaseTheme):
     ##########################
     # Links API
     ##########################
-
     def get_links(self):
         links = BaseTheme.get_links(self)
         base = self.get_canonical_path()

@@ -36,6 +36,7 @@ class BoxTags_View(Box_View):
     title = MSG(u'View')
     template = '/ui/bar_items/Tags_view.xml'
 
+
     def _get_tags_folder(self, resource, context):
         site_root = resource.get_site_root()
         return site_root.get_resource('tags')
@@ -80,12 +81,11 @@ class BoxTags(Box):
     class_icon16 = 'bar_items/icons/16x16/box_tags.png'
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
     class_schema = merge_dicts(Box.class_schema,
-                      formats=TagsAwareClassEnumerate(source='metadata',
-                                                      multiple=True),
-                      count=PositiveInteger(source='metadata', default=0),
-                      show_number=Boolean(source='metadata'),
-                      random=Boolean(source='metadata'),
-                      display_title=Boolean(source='metadata'))
+            formats=TagsAwareClassEnumerate(source='metadata', multiple=True),
+            count=PositiveInteger(source='metadata', default=0),
+            show_number=Boolean(source='metadata'),
+            random=Boolean(source='metadata'),
+            display_title=Boolean(source='metadata'))
 
     # Configuration
     allow_instanciation = True

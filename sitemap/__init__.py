@@ -24,6 +24,7 @@ from itools.xml import XMLNamespace, register_namespace
 # Import from itws
 from sitemap import SiteMap
 
+
 #############################################################################
 # SITEMAP
 #############################################################################

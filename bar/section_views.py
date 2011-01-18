@@ -39,10 +39,11 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           TagsAware_Edit._get_schema(self, resource, context),
-                           view=SectionViews_Enumerate,
-                           state=StaticStateEnumerate)
+        return merge_dicts(
+                DBResource_Edit._get_schema(self, resource, context),
+                TagsAware_Edit._get_schema(self, resource, context),
+                view=SectionViews_Enumerate,
+                state=StaticStateEnumerate)
 
 
     def _get_widgets(self, resource, context):
@@ -60,16 +61,16 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
 
     def get_value(self, resource, context, name, datatype):
         if name in ('tags', 'pub_date', 'pub_time'):
-              return TagsAware_Edit.get_value(self, resource, context, name,
-                        datatype)
+            return TagsAware_Edit.get_value(self, resource, context, name,
+                    datatype)
         return DBResource_Edit.get_value(self, resource, context, name,
                   datatype)
 
 
     def set_value(self, resource, context, name, form):
         if name in ('tags', 'pub_date', 'pub_time'):
-              return TagsAware_Edit.set_value(self, resource, context, name,
-                        form)
+            return TagsAware_Edit.set_value(self, resource, context, name,
+                    form)
         return DBResource_Edit.set_value(self, resource, context, name,
                   form)
 

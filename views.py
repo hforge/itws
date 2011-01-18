@@ -51,19 +51,19 @@ from itws.control_panel import CPDBResource_Backlinks, CPDBResource_CommitLog
 from itws.tags import Tag, get_registered_tags_aware_classes
 
 
+
 ############################################################
 # NewInstance
 ############################################################
-
 class EasyNewInstance(NewInstance):
     """ ikaaro.views_new.NewInstance without field name.
     """
-
     query_schema = freeze({'type': String, 'title': Unicode})
     widgets = freeze([
         TextWidget('title', title=MSG(u'Title', mandatory=True))])
 
     goto_method = None
+
 
     def get_new_resource_name(self, form):
         # As we have no name, always return the title
@@ -104,12 +104,12 @@ class EasyNewInstance(NewInstance):
 ############################################################
 # GoToSpecificItem
 ############################################################
-
 class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
     title = MSG(u'View')
     keep_query = False
     keep_message = False
+
 
     def GET(self, resource, context):
         specific_document = self.get_specific_document(resource, context)
@@ -133,11 +133,9 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
 
 
-
 ############################################################
 # AutomaticEditView
 ############################################################
-
 class AutomaticEditView(DBResource_Edit):
 
     base_schema = freeze({'title': Multilingual,
@@ -196,7 +194,6 @@ class AutomaticEditView(DBResource_Edit):
 ############################################################
 # EditLanguageMenu (Only language selection)
 ############################################################
-
 class EditOnlyLanguageMenu(EditLanguageMenu):
     """Only display form to select language
     fields selection are not displayed
@@ -210,12 +207,11 @@ class EditOnlyLanguageMenu(EditLanguageMenu):
 ############################################################
 # NEW RESOURCE VIEWS
 ############################################################
-
 class Folder_NewResource(BaseFolder_NewResource):
 
     template = '/ui/common/itws_new_resource_view.xml'
-
     query_schema = {'advanced': Boolean}
+
 
     def get_document_types(self, resource, context):
         return resource.get_document_types()
@@ -254,7 +250,9 @@ class Folder_NewResource(BaseFolder_NewResource):
                 'items': items}
 
 
+
 class Website_NewResource(Folder_NewResource):
+
 
     def get_document_types(self, resource, context):
         # On website we return all document_type
@@ -266,6 +264,7 @@ class Website_NewResource(Folder_NewResource):
                 if cls not in document_types:
                     document_types.append(cls)
         return document_types
+
 
 
 # Monkey patchs
@@ -313,7 +312,6 @@ for cls in resources_registry.values():
 
 
 
-
 ############################################################
 # TABLE VIEW WITHOUT ADD_RECORD BUTTON
 ############################################################
@@ -330,6 +328,7 @@ class TableViewWithoutAddRecordButton(object):
 # ContentBarAware edit view helper
 ############################################################
 class EditView(object):
+
 
     def action(self, resource, context, form):
         from itws.section_views import section_views_registry

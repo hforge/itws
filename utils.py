@@ -36,6 +36,7 @@ from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
 
+
 def is_empty(events):
     """Return true if the events contains data"""
     # FIXME copy/paste from itools.html XHTMLFile.is_empty
@@ -161,7 +162,6 @@ def get_admin_bar(resource, buttons=[]):
 ############################################################
 # Links
 ############################################################
-
 MSG_UNPUBLISHED_RESOURCES_LINKED = INFO(
     u'You are linking to {n} unpublished resources, '
     u'some users may not be able to see them.<br/>'
@@ -247,7 +247,6 @@ def get_linked_resources_message(resource, context, state='public'):
 ############################################################
 # Navigation modes
 ############################################################
-
 def is_navigation_mode(context):
     return context.get_cookie('itws_fo_edit', Boolean(default=False)) is False
 
@@ -255,9 +254,9 @@ def is_navigation_mode(context):
 ############################################################
 # Resource with cache
 ############################################################
-
 class ResourceWithCache(DBResource):
     """Resource with cache inside the metadata handler"""
+
 
     def __init__(self, metadata):
         DBResource.__init__(self, metadata)

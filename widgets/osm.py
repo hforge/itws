@@ -29,19 +29,18 @@ from google_map import GoogleMapWidget, GoogleGPSWidget
 
 class OpenStreetMapWidget(GoogleMapWidget):
 
-    template = list(XMLParser(
-        """
-        <script type="text/javascript" src="/ui/widgets/osm.js"/>
-        <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"/>
-        <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"/>
-        <script language="javascript">
-          $(document).ready(function(){
-            initialize_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
-          });
-        </script>
-        """,
-        stl_namespaces))
+    template = list(XMLParser("""
+    <script type="text/javascript" src="/ui/widgets/osm.js"/>
+    <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
+    <script type="text/javascript"
+            src="http://maps.google.com/maps/api/js?sensor=false"/>
+    <script type="text/javascript"
+            src="http://www.openlayers.org/api/OpenLayers.js"/>
+    <script language="javascript">
+      $(document).ready(function(){
+        initialize_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
+      });
+    </script>""", stl_namespaces))
 
 
 
