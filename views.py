@@ -141,11 +141,11 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 
 class AutomaticEditView(DBResource_Edit):
 
-    base_schema = {'title': Multilingual,
-                   'timestamp': DateTime(readonly=True, ignore=True)}
+    base_schema = freeze({'title': Multilingual,
+                          'timestamp': DateTime(readonly=True, ignore=True)})
 
     # Add timestamp_widget in get_widgets method
-    base_widgets = [title_widget]
+    base_widgets = freeze([title_widget])
 
 
     def _get_query_to_keep(self, resource, context):

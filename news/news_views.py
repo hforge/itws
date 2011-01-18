@@ -92,7 +92,8 @@ class NewsItem_Edit(WebPage_Edit):
 
 
     def _get_widgets(self, resource, context):
-        widgets = WebPage_Edit._get_widgets(self, resource, context)[:]
+        proxy = super(WebPage_Edit, self)
+        widgets = proxy._get_widgets(resource, context)[:]
         widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
         return freeze(widgets)
 

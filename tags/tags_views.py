@@ -51,9 +51,9 @@ from itws.widgets import DualSelectWidget
 
 class Tag_Edit(File_Edit):
 
-    widgets = [
+    widgets = freeze([
         timestamp_widget, title_widget, state_widget,
-        description_widget, subject_widget]
+        description_widget, subject_widget])
 
 
 ############################################################

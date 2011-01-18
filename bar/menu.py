@@ -72,7 +72,7 @@ class MenuProxyBox_Edit(DBResource_Edit):
     # Do not implement default action (compositeform)
     action = None
 
-    widgets = [timestamp_widget, title_widget]
+    widgets = freeze([timestamp_widget, title_widget])
 
     def get_value(self, resource, context, name, datatype):
         if name == 'title':

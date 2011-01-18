@@ -40,9 +40,9 @@ Disallow: /repository
 class RobotsTxt_Edit(Text_Edit):
 
     schema = freeze({'timestamp': DateTime(readonly=True), 'data': String})
-    widgets = [
+    widgets = freeze([
         timestamp_widget,
-        MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)]
+        MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)])
 
     def action(self, resource, context, form):
         # Check edit conflict
