@@ -15,7 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import freeze, merge_dicts
+from itools.datatypes import Boolean
 from itools.gettext import MSG
+
+# Import from ikaaro
+from ikaaro.autoform import CheckboxWidget
+from ikaaro.datatypes import Multilingual
 
 # Import from itws
 from itws.section_views.images import ImagesView_Configuration, ImagesView_View
@@ -35,6 +41,14 @@ class BoxGallery_View(ImagesView_View, Box_View):
         return resource.parent
 
 
+    def get_namespace(self, resource, context):
+        namespace = ImagesView_View.get_namespace(self, resource, context)
+        # Tweak title and show_title
+        namespace['title'] = resource.get_property('title')
+        namespace['show_title'] = resource.get_property('display_title')
+        return namespace
+
+
 
 class BoxGallery(ImagesView_Configuration, Box):
 
@@ -44,5 +58,20 @@ class BoxGallery(ImagesView_Configuration, Box):
 
     is_side = False
     is_content = True
+
+    class_schema = freeze(merge_dicts(
+        ImagesView_Configuration.class_schema,
+        display_title=Boolean(source='metadata', default=True)))
+
+    display_title = True
+    edit_schema = freeze(merge_dicts(
+        ImagesView_Configuration.edit_schema,
+        title=Multilingual,
+        display_title=Boolean))
+    edit_widgets  = freeze(
+         [ CheckboxWidget('display_title',
+                          title=MSG(u'Display title on section view')) ]
+         + ImagesView_Configuration.edit_widgets)
+
 
     view = BoxGallery_View()
