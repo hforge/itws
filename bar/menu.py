@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import is_thingy, merge_dicts
+from itools.core import freeze, is_thingy, merge_dicts
 from itools.datatypes import DateTime, String, Unicode
 from itools.gettext import MSG
 
@@ -65,8 +65,8 @@ class MenuSideBar_View(Box_View):
 class MenuProxyBox_Edit(DBResource_Edit):
 
     title = MSG(u'Edit box title')
-    schema = {'title': Unicode(multilingual=True),
-              'timestamp': DateTime(readonly=True, ignore=True)}
+    schema = freeze({'title': Unicode(multilingual=True),
+                     'timestamp': DateTime(readonly=True, ignore=True)})
     actions = [Button(access=True, css='button-ok', name='menu_edit',
                       title=MSG(u'Save'))]
     # Do not implement default action (compositeform)

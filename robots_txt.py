@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import DateTime, String
 from itools.gettext import MSG
 
@@ -39,7 +39,7 @@ Disallow: /repository
 
 class RobotsTxt_Edit(Text_Edit):
 
-    schema = {'timestamp': DateTime(readonly=True), 'data': String}
+    schema = freeze({'timestamp': DateTime(readonly=True), 'data': String})
     widgets = [
         timestamp_widget,
         MultilineWidget('data', title=MSG(u"Content"), rows=19, cols=69)]
