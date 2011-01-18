@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import form itools
-from itools.core import lazy
+from itools.core import freeze, lazy
 from itools.gettext import MSG
 from itools.web import BaseView, get_context
 
@@ -54,7 +54,7 @@ class SideBarAware(object):
 
 
     def get_internal_use_resource_names(self):
-        return [self.sidebar_name]
+        return freeze([self.sidebar_name])
 
 
     @lazy
@@ -127,7 +127,7 @@ class ContentBarAware(object):
 
 
     def get_internal_use_resource_names(self):
-        return [self.contentbar_name, 'section_view']
+        return freeze([self.contentbar_name, 'section_view'])
 
 
     @lazy
