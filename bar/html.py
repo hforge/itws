@@ -96,7 +96,7 @@ class HTMLContent_Edit(DBResource_Edit):
                     if widget.name not in ('description', 'subject') ]
         return freeze(widgets + [
             CheckboxWidget('display_title',
-                            title=MSG(u'Display on webpage view')),
+                            title=MSG(u'Display title on webpage view')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             SelectWidget('title_link_target', title=MSG(u'Title link target')),
             advance_rte_widget, state_widget ])

@@ -165,7 +165,8 @@ class BoxNavigation(Box):
                    'limit_to_current_folder': Boolean,
                    'limit_to_ordered_resources': Boolean}
     edit_widgets = [
-        CheckboxWidget('display_title', title=MSG(u'Display above the tree')),
+        CheckboxWidget('display_title',
+                       title=MSG(u'Display title above the tree')),
         CheckboxWidget('limit_to_current_folder',
                        title=MSG(u'Use current section as tree root')),
         CheckboxWidget('limit_to_ordered_resources',
