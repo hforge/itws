@@ -26,7 +26,7 @@ import urllib2
 
 # Import from itools
 from itools import __version__ as itools_version
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Integer, String, XMLContent, Boolean
 from itools.gettext import MSG
 from itools.log import log_warning
@@ -137,19 +137,18 @@ class TwitterSideBar(Box, ResourceWithCache):
 
     # Item configuration
 
-    edit_schema = {'user_id': TwitterID(mandatory=True),
-                   'user_name': String(mandatory=True),
-                   'limit': Integer(mandatory=True, default=5, size=3),
-                   'force_update': Boolean}
+    edit_schema = freeze({'user_id': TwitterID(mandatory=True),
+                          'user_name': String(mandatory=True),
+                          'limit': Integer(mandatory=True, default=5, size=3),
+                          'force_update': Boolean})
 
 
-    edit_widgets = [TextWidget('user_name',
-                              title=MSG(u"Twitter account name")),
-                    TextWidget('user_id', title=MSG(u"User Id")),
-                    TextWidget('limit', title=MSG(u'Number of tweets')),
-                    CheckboxWidget('force_update',
-                                    title=MSG(u'Force cache update')),
-                   ]
+    edit_widgets = freeze([
+        TextWidget('user_name', title=MSG(u"Twitter account name")),
+        TextWidget('user_id', title=MSG(u"User Id")),
+        TextWidget('limit', title=MSG(u'Number of tweets')),
+        CheckboxWidget('force_update', title=MSG(u'Force cache update'))
+        ])
 
     allow_instanciation = True
 
@@ -292,16 +291,15 @@ class IdenticaSideBar(TwitterSideBar):
     # Item configuration
     allow_instanciation = True
 
-    edit_schema = {'user_name': IndenticaName(mandatory=True),
-                   'limit': Integer(mandatory=True, default=5, size=3),
-                   'force_update': Boolean}
+    edit_schema = freeze({'user_name': IndenticaName(mandatory=True),
+                          'limit': Integer(mandatory=True, default=5, size=3),
+                          'force_update': Boolean})
 
-    edit_widgets = [TextWidget('user_name',
-                              title=MSG(u"Identi.ca account name")),
-                    TextWidget('limit', title=MSG(u'Number of message')),
-                    CheckboxWidget('force_update',
-                                    title=MSG(u'Force cache update')),
-                   ]
+    edit_widgets = freeze([
+        TextWidget('user_name', title=MSG(u"Identi.ca account name")),
+        TextWidget('limit', title=MSG(u'Number of message')),
+        CheckboxWidget('force_update', title=MSG(u'Force cache update'))
+        ])
 
     # Views
     view = IdenticaSideBar_View()

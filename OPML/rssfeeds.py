@@ -31,7 +31,7 @@ import urllib2
 
 # Import from itools
 from itools import __version__ as itools_version
-from itools.core import get_abspath, merge_dicts
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import CSVFile
 from itools.datatypes import Boolean, Integer, URI, Unicode, String, HTTPDate
 from itools.datatypes import Decimal, XMLContent
@@ -281,12 +281,14 @@ class RssFeeds(CSV):
 
     # Configuration of automatic edit view
     edit_show_meta = True
-    edit_schema = {'TTL': Integer(mandatory=True),
-                   'update_now': Boolean(ignore=True),
-                   'timeout': Decimal(mandatory=True)}
-    edit_widgets = [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
-                    TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-                    RadioWidget('update_now', title=MSG(u"Update RSS now"))]
+    edit_schema = freeze(
+            {'TTL': Integer(mandatory=True),
+             'update_now': Boolean(ignore=True),
+             'timeout': Decimal(mandatory=True)})
+    edit_widgets = freeze(
+            [TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
+             TextWidget('timeout', title=MSG(u"Timeout in seconds")),
+             RadioWidget('update_now', title=MSG(u"Update RSS now"))])
 
 
     def get_columns(self):

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 from itools.database import OrQuery, PhraseQuery
 from itools.datatypes import Enumerate, String
@@ -122,20 +122,22 @@ class BoxFeed(Box):
     is_content = True
 
     # Automatic Edit View
-    edit_schema = {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
-                   'view': BoxFeed_Enumerate,
-                   'count': PositiveInteger(default=3),
-                   'tags': TagsList(multiple=True)}
+    edit_schema = freeze(
+            {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
+             'view': BoxFeed_Enumerate,
+             'count': PositiveInteger(default=3),
+             'tags': TagsList(multiple=True)})
 
 
-    edit_widgets = [CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
+    edit_widgets = freeze([
+        CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
         SelectWidget('view', title=MSG(u'Feed template'),
                      has_empty_option=False),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
         DualSelectWidget('tags', title=MSG(u'Show only items with this TAGS'),
-                         is_inline=True, has_empty_option=False)]
+                         is_inline=True, has_empty_option=False)])
 
 
     # Views

@@ -36,7 +36,6 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument, Folder_Rename
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class, resources_registry
-from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.root import Root
 from ikaaro.utils import get_content_containers
@@ -166,7 +165,7 @@ class AutomaticEditView(DBResource_Edit):
         # FIXME Hide/Show title
         if getattr(resource, 'display_title', True) is False:
             del schema['title']
-        return schema
+        return freeze(schema)
 
 
     def _get_widgets(self, resource, context):
@@ -174,6 +173,8 @@ class AutomaticEditView(DBResource_Edit):
         if getattr(resource, 'edit_show_meta', False) is True:
             widgets.extend([description_widget, subject_widget])
         widgets = self.base_widgets + widgets + resource.edit_widgets
+        # Cast frozen list into list
+        widgets = list(widgets)
         # Add timestamp_widget
         widgets.append(timestamp_widget)
         # FIXME Hide/Show title

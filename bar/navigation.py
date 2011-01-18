@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.database import AndQuery, OrQuery, PhraseQuery
 from itools.datatypes import Boolean
 from itools.gettext import MSG
@@ -161,17 +161,17 @@ class BoxNavigation(Box):
             limit_to_ordered_resources=Boolean(source='metadata',
                                                default=False))
 
-    edit_schema = {'display_title': Boolean,
-                   'limit_to_current_folder': Boolean,
-                   'limit_to_ordered_resources': Boolean}
-    edit_widgets = [
+    edit_schema = freeze({'display_title': Boolean,
+                          'limit_to_current_folder': Boolean,
+                          'limit_to_ordered_resources': Boolean})
+    edit_widgets = freeze([
         CheckboxWidget('display_title',
                        title=MSG(u'Display title above the tree')),
         CheckboxWidget('limit_to_current_folder',
                        title=MSG(u'Use current section as tree root')),
         CheckboxWidget('limit_to_ordered_resources',
                        title=MSG(u'Display ordered resources only.'))
-        ]
+        ])
     is_content = False
 
     # Views

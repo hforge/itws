@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -31,8 +31,8 @@ class BoxAware(object):
     edit = AutomaticEditView()
     new_instance = EasyNewInstance()
 
-    edit_schema = {}
-    edit_widgets = []
+    edit_schema = freeze({})
+    edit_widgets = freeze([])
 
     is_side = True
     is_content = False
@@ -45,9 +45,9 @@ class Box(BoxAware, File):
     class_version = '20100622'
     class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
-    edit_schema = {}
-    class_schema = merge_dicts(File.class_schema,
-                               edit_schema)
+    edit_schema = freeze({})
+    class_schema = freeze(merge_dicts(
+        File.class_schema, edit_schema))
 
     download = None
     externaledit = None

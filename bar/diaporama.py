@@ -19,7 +19,7 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import is_thingy, merge_dicts
+from itools.core import freeze, is_thingy, merge_dicts
 from itools.csv import Property
 from itools.datatypes import Boolean, URI, String, Unicode, XMLContent
 from itools.gettext import MSG
@@ -351,9 +351,9 @@ class Diaporama(BoxAware, Folder):
     is_content = True
     is_side = False
 
-    edit_schema = {'display_title': Boolean}
-    edit_widgets = [CheckboxWidget('display_title',
-                                   title=MSG(u'Display title on section view'))]
+    edit_schema = freeze({'display_title': Boolean})
+    edit_widgets = freeze([CheckboxWidget('display_title',
+        title=MSG(u'Display title on section view'))])
 
     order_path = 'order-banners'
     order_table = DiaporamaTable

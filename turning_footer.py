@@ -21,7 +21,7 @@
 from random import choice
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.csv import Property
 from itools.datatypes import Boolean, String
 from itools.gettext import MSG
@@ -225,12 +225,11 @@ class TurningFooterFolder(Folder):
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
     # AutomaticEditView configuration
-    edit_schema = {'random': Boolean,
-                   'active': Boolean}
+    edit_schema = freeze({'random': Boolean, 'active': Boolean})
 
-    edit_widgets = [
+    edit_widgets = freeze([
                CheckboxWidget('random', title=MSG(u'Random selection')),
-               CheckboxWidget('active', title=MSG(u'Is active'))]
+               CheckboxWidget('active', title=MSG(u'Is active'))])
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)

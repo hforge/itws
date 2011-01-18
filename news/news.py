@@ -22,7 +22,7 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import get_abspath, merge_dicts
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.gettext import MSG
 from itools.uri import Path, get_reference
 from itools.web import get_context
@@ -204,8 +204,9 @@ class NewsFolder(SideBarAware, Folder):
 
     # Configuration of automatic edit view
     edit_show_meta = True
-    edit_schema =  {'batch_size': PositiveIntegerNotNull}
-    edit_widgets = [TextWidget('batch_size', title=MSG(u'Batch size'), size=3)]
+    edit_schema =  freeze({'batch_size': PositiveIntegerNotNull})
+    edit_widgets = freeze([
+        TextWidget('batch_size', title=MSG(u'Batch size'), size=3)])
 
 
     def init_resource(self, **kw):

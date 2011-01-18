@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.database import OrQuery, PhraseQuery
 from itools.datatypes import Enumerate
 from itools.gettext import MSG
@@ -51,16 +51,18 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
         thumb_width=PositiveIntegerNotNull(default=128, source='metadata'),
         thumb_height=PositiveIntegerNotNull(default=128, source='metadata'))
 
-    edit_schema = merge_dicts(
+    edit_schema = freeze(merge_dicts(
         BaseFeedView_Configuration.edit_schema,
         filtered_class=GalleryClassesEnumerate(mandatory=True),
         thumb_width=PositiveIntegerNotNull,
-        thumb_height=PositiveIntegerNotNull)
+        thumb_height=PositiveIntegerNotNull))
 
-    edit_widgets = (BaseFeedView_Configuration.edit_widgets + [
-        SelectWidget('filtered_class', title=MSG(u'Type of content to display')),
-        TextWidget('thumb_width', title=MSG(u'Thumb width')),
-        TextWidget('thumb_height', title=MSG(u'Thumb height'))])
+    edit_widgets = freeze(
+        BaseFeedView_Configuration.edit_widgets
+        + [SelectWidget('filtered_class',
+                        title=MSG(u'Type of content to display')),
+           TextWidget('thumb_width', title=MSG(u'Thumb width')),
+           TextWidget('thumb_height', title=MSG(u'Thumb height'))])
 
 
 

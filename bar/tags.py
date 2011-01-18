@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 
@@ -88,16 +88,16 @@ class BoxTags(Box):
                       display_title=Boolean(source='metadata'))
 
     # Configuration
-    allow_instanciation=  True
+    allow_instanciation = True
 
     # Box configuration
-    edit_schema = {'formats': TagsAwareClassEnumerate(multiple=True),
-                   'count':PositiveInteger(default=0),
-                   'show_number': Boolean,
-                   'random': Boolean,
-                   'display_title': Boolean}
+    edit_schema = freeze({'formats': TagsAwareClassEnumerate(multiple=True),
+                          'count':PositiveInteger(default=0),
+                          'show_number': Boolean,
+                          'random': Boolean,
+                          'display_title': Boolean})
 
-    edit_widgets = [
+    edit_widgets = freeze([
         CheckboxWidget('display_title',
                         title=MSG(u'Display title on tag cloud view')),
         TextWidget('count', size=4,
@@ -108,7 +108,7 @@ class BoxTags(Box):
         CheckboxWidget('formats',
                     title=MSG(u'This tag cloud will display only '
                               u'the tags from selected types of content'))
-        ]
+        ])
 
     # Views
     view = BoxTags_View()

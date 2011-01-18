@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import freeze
 from itools.datatypes import String
 from itools.gettext import MSG
 from itools.uri import Path, Reference
@@ -126,11 +127,11 @@ class BoxContact(Box):
     class_title = MSG(u'Contact box')
     class_description = MSG(u'Contact form to collect messages from users.')
 
-    edit_schema = {'configuration_shortcut': String(readonly=True)}
-    edit_widgets = [
+    edit_schema = freeze({'configuration_shortcut': String(readonly=True)})
+    edit_widgets = freeze([
         ReadOnlyWidget('configuration_shortcut',
                        title=MSG(u'To configure the website email options, '
-                                 u'please follow the link below'))]
+                                 u'please follow the link below'))])
 
     is_content = True
 

@@ -227,7 +227,7 @@ class BoxSectionChildrenToc(Box):
 
     # Box comfiguration
     edit_schema = hide_single_schema
-    edit_widgets = [hide_single_widget]
+    edit_widgets = freeze([hide_single_widget])
     display_title = False
     allow_instanciation = False
 
@@ -248,7 +248,7 @@ class ContentBoxSectionChildrenToc(Box):
 
     # Box configuration
     edit_schema = hide_single_schema
-    edit_widgets = [hide_single_widget]
+    edit_widgets = freeze([hide_single_widget])
     allow_instanciation = False
     is_content = True
     is_side = False

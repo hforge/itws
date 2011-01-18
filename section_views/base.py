@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import merge_dicts
+from itools.core import freeze, merge_dicts
 from itools.datatypes import Integer, Boolean
 from itools.gettext import MSG
 
@@ -34,8 +34,8 @@ class BaseSectionView_Configuration(File):
 
     class_views = ['edit', 'back']
 
-    edit_schema = {}
-    edit_widgets = []
+    edit_schema = freeze({})
+    edit_widgets = freeze([])
     display_title = False
 
     def get_document_types(self):
@@ -60,11 +60,11 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
         view_batch_size=Integer(source='metadata', default=20))
 
 
-    edit_schema = {'view_batch_size': Integer,
-                   'view_sort_by': SortBy_Enumerate,
-                   'view_reverse': Boolean}
+    edit_schema = freeze({'view_batch_size': Integer,
+                          'view_sort_by': SortBy_Enumerate,
+                          'view_reverse': Boolean})
 
-    edit_widgets = [
+    edit_widgets = freeze([
         TextWidget('view_batch_size', title=MSG(u'Batch size')),
         SelectWidget('view_sort_by', title=MSG(u'Sort by ?'), has_empty_option=False),
-        RadioWidget('view_reverse', title=MSG(u'Reverse'))]
+        RadioWidget('view_reverse', title=MSG(u'Reverse'))])
