@@ -28,29 +28,13 @@ from itools.html import xhtml_uri
 from itools.stl import stl, rewrite_uris
 from itools.uri import get_reference, Path, Reference
 from itools.web import get_context, INFO
-from itools.xml import TEXT, START_ELEMENT, XMLParser
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import stl_namespaces, XHTMLBody
 from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
-
-
-def is_empty(events):
-    """Return true if the events contains data"""
-    # FIXME copy/paste from itools.html XHTMLFile.is_empty
-    for type, value, line in events:
-        if type == TEXT:
-            if value.replace('&nbsp;', '').strip():
-                return False
-        elif type == START_ELEMENT:
-            tag_uri, tag_name, attributes = value
-            if tag_name in ('img', 'object'):
-                # If the document contains at leat one image
-                # or one object (i.e. flash object) it is not empty
-                return False
-    return True
 
 
 def get_path_and_view(path):
