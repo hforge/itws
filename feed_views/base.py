@@ -125,7 +125,10 @@ class Feed_View(Folder_BrowseContent):
 
 
     def _get_container(self, resource, context):
-        return resource
+        if self.search_on_current_folder is True:
+            return resource
+        # Current website
+        return context.resource.get_site_root()
 
 
     def get_items(self, resource, context, *args):
@@ -134,15 +137,12 @@ class Feed_View(Folder_BrowseContent):
         # Query
         args = list(args)
 
-        # Current container
+        # Get the container
+        container = self._get_container(resource, context)
+        abspath = container.get_canonical_path()
         if self.search_on_current_folder is True:
-            container = self._get_container(resource, context)
-            abspath = container.get_canonical_path()
             args.append(PhraseQuery('parent_path', str(abspath)))
         else:
-            # Current website
-            site_root = context.resource.get_site_root()
-            abspath = site_root.get_abspath()
             args.append(get_base_path_query(str(abspath)))
 
         # Search only on current folder ?
