@@ -103,7 +103,7 @@ class NeutralWS(Website_BarAware, WebSite):
 
     __fixed_handlers__ = (WebSite.__fixed_handlers__ +
                           Website_BarAware.__fixed_handlers__ +
-                          ['about-itws', 'news', 'sitemap.xml', 'robots.txt',
+                          ['about-itws', 'sitemap.xml', 'robots.txt',
                            'images', 'tags'])
 
     # Configuration
