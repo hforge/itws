@@ -18,20 +18,54 @@
 from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 from itools.database import OrQuery, PhraseQuery
+from itools.datatypes import PathDataType
 from itools.datatypes import Enumerate, String
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
+from ikaaro.utils import get_content_containers
 
 # Import from itws
 from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
+from itws.feed_views import Details_View
 from itws.tags import TagsList, TagsAwareClassEnumerate
+from itws.tags import get_registered_tags_aware_classes
 from itws.widgets import DualSelectWidget
 
-# XXX We have to refactor BoxFeed_View
-from itws.feed_views import Details_View
+
+
+class TagsAwareContainerPathDatatype(Enumerate):
+
+    def get_allowed_class_ids(cls):
+        _classes = get_registered_tags_aware_classes()
+        return [ _cls.class_id for _cls in _classes ]
+
+
+    def get_options(cls):
+        context = get_context()
+
+        allowed_class_ids = cls.get_allowed_class_ids()
+        skip_formats = set()
+        items = []
+        for resource in get_content_containers(context, skip_formats):
+            for cls in resource.get_document_types():
+                if cls.class_id in allowed_class_ids:
+                    break
+            else:
+                skip_formats.add(resource.class_id)
+                continue
+
+            path = context.site_root.get_pathto(resource)
+            title = '/' if not path else ('/%s/' % path)
+            # Next
+            items.append({'name': path, 'value': title, 'selected': False})
+
+        # Sort
+        items.sort(key=lambda x: x['name'])
+        return items
 
 
 
@@ -72,6 +106,15 @@ class BoxFeed_View(Box_View, Details_View):
         return view_resource.get_property('view')
 
 
+    def _get_container(self, resource, context):
+        site_root = context.resource.get_site_root()
+        path = resource.get_property('container_path')
+        # path is relative to current website
+        if path == '/':
+            return site_root
+        return site_root.get_resource(path)
+
+
     def get_items(self, resource, context, *args):
         args = list(args)
         tags = resource.get_property('tags')
@@ -102,6 +145,7 @@ class BoxFeed_View(Box_View, Details_View):
 
 
 class BoxFeed(Box):
+    # XXX We have to refactor BoxFeed_View
 
     class_id = 'box-feed'
     class_title = MSG(u'Box to feed items')
@@ -118,7 +162,8 @@ class BoxFeed(Box):
             feed_source=String(source='metadata', multiple=True),
             view=BoxFeed_Enumerate(source='metadata'),
             count=PositiveInteger(source='metadata', default=3),
-            tags=TagsList(source='metadata', multiple=True, default=[]))
+            tags=TagsList(source='metadata', multiple=True, default=[]),
+            container_path=PathDataType(source='metadata', default='/'))
 
     # Configuration
     allow_instanciation = True
@@ -130,10 +175,13 @@ class BoxFeed(Box):
             {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
              'view': BoxFeed_Enumerate,
              'count': PositiveInteger(default=3),
-             'tags': TagsList(multiple=True)})
+             'tags': TagsList(multiple=True),
+             'container_path': TagsAwareContainerPathDatatype})
 
 
     edit_widgets = freeze([
+        SelectWidget('container_path', title=MSG(u'Container'),
+                     has_empty_option=False),
         CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
         SelectWidget('view', title=MSG(u'Feed template'),
