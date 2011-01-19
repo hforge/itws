@@ -84,7 +84,7 @@ class EasyNewInstance_WithOrderer(EasyNewInstance):
                                        has_empty_option=False),
                    RadioWidget('order', title=self.order_widget_title,
                                has_empty_option=False) ]
-        return freeze(proxy.get_widgets(resource, context), addons)
+        return freeze(proxy.get_widgets(resource, context) + addons)
 
 
     def get_value(self, resource, context, name, datatype):
