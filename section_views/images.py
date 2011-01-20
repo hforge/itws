@@ -17,11 +17,11 @@
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.database import OrQuery, PhraseQuery
-from itools.datatypes import Enumerate
+from itools.datatypes import Boolean, Enumerate
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import SelectWidget, TextWidget
+from ikaaro.autoform import RadioWidget, SelectWidget, TextWidget
 
 # Import from itws
 from base import BaseFeedView_Configuration
@@ -49,20 +49,23 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
                                                source='metadata'),
         # Thumb size
         thumb_width=PositiveIntegerNotNull(default=128, source='metadata'),
-        thumb_height=PositiveIntegerNotNull(default=128, source='metadata'))
+        thumb_height=PositiveIntegerNotNull(default=128, source='metadata'),
+        thumb_strict=Boolean(default=False, source='metadata'))
 
     edit_schema = freeze(merge_dicts(
         BaseFeedView_Configuration.edit_schema,
         filtered_class=GalleryClassesEnumerate(mandatory=True),
         thumb_width=PositiveIntegerNotNull,
-        thumb_height=PositiveIntegerNotNull))
+        thumb_height=PositiveIntegerNotNull,
+        thumb_strict=Boolean))
 
     edit_widgets = freeze(
         BaseFeedView_Configuration.edit_widgets
         + [SelectWidget('filtered_class',
                         title=MSG(u'Type of content to display')),
            TextWidget('thumb_width', title=MSG(u'Thumb width')),
-           TextWidget('thumb_height', title=MSG(u'Thumb height'))])
+           TextWidget('thumb_height', title=MSG(u'Thumb height')),
+           RadioWidget('thumb_strict', title=MSG(u'Force thumbnail size'))])
 
 
 
@@ -105,6 +108,6 @@ class ImagesView_View(Feed_View):
         proxy = super(ImagesView_View, self)
         namespace = proxy.get_content_namespace(resource, context, items)
         conf_resource = self._get_configuration_file(resource)
-        for key in ['thumb_width', 'thumb_height']:
+        for key in ['thumb_width', 'thumb_height', 'thumb_strict']:
             namespace[key] = conf_resource.get_property(key)
         return namespace
