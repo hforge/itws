@@ -18,8 +18,7 @@
 from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 from itools.database import OrQuery, PhraseQuery
-from itools.datatypes import PathDataType
-from itools.datatypes import Enumerate, String
+from itools.datatypes import Boolean, Enumerate, PathDataType, String
 from itools.web import get_context
 
 # Import from ikaaro
@@ -163,7 +162,8 @@ class BoxFeed(Box):
             view=BoxFeed_Enumerate(source='metadata'),
             count=PositiveInteger(source='metadata', default=3),
             tags=TagsList(source='metadata', multiple=True, default=[]),
-            container_path=PathDataType(source='metadata', default='/'))
+            container_path=PathDataType(source='metadata', default='/'),
+            display_title=Boolean(source='metadata', default=True))
 
     # Configuration
     allow_instanciation = True
@@ -180,6 +180,8 @@ class BoxFeed(Box):
 
 
     edit_widgets = freeze([
+        CheckboxWidget('display_title',
+                       title=MSG(u'Display title on section view')),
         SelectWidget('container_path', title=MSG(u'Container'),
                      has_empty_option=False),
         CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
