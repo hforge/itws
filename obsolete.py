@@ -453,6 +453,14 @@ class SlideShow(ResourcesOrderedContainer):
         box.set_workflow_state('public')
         table = section.get_order_table_sidebar()
         table.add_new_record({'name': '%s-slideshow-tree' % section.name})
+        # populate the section with a feed box which display 5 slides
+        container_path = site_root.get_pathto(section)
+        box = section.make_resource('feed', BoxFeed,
+                state='public', container_path=container_path,
+                display_title=False, feed_class_id='webpage',
+                count=5, view='/ui/feed_views/Tag_item_viewbox.xml')
+        table = section.get_order_table_contentbar()
+        table.add_new_record({'name': 'feed'})
 
 
 
