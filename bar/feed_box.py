@@ -156,14 +156,13 @@ class BoxFeed(Box):
 
     class_schema = merge_dicts(
             Box.class_schema,
+            container_path=PathDataType(source='metadata', default='/'),
+            count=PositiveInteger(source='metadata', default=3),
+            display_title=Boolean(source='metadata', default=True),
             feed_class_id=TagsAwareClassEnumerate(source='metadata',
                                                   multiple=True),
-            feed_source=String(source='metadata', multiple=True),
-            view=BoxFeed_Enumerate(source='metadata'),
-            count=PositiveInteger(source='metadata', default=3),
             tags=TagsList(source='metadata', multiple=True, default=[]),
-            container_path=PathDataType(source='metadata', default='/'),
-            display_title=Boolean(source='metadata', default=True))
+            view=BoxFeed_Enumerate(source='metadata'))
 
     # Configuration
     allow_instanciation = True
@@ -171,12 +170,13 @@ class BoxFeed(Box):
     is_content = True
 
     # Automatic Edit View
-    edit_schema = freeze(
-            {'feed_class_id': TagsAwareClassEnumerate(multiple=True),
-             'view': BoxFeed_Enumerate,
+    edit_schema = freeze({
+             'container_path': TagsAwareContainerPathDatatype,
              'count': PositiveInteger(default=3),
+             'display_title': Boolean,
+             'feed_class_id': TagsAwareClassEnumerate(multiple=True),
              'tags': TagsList(multiple=True),
-             'container_path': TagsAwareContainerPathDatatype})
+             'view': BoxFeed_Enumerate})
 
 
     edit_widgets = freeze([
