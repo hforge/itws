@@ -300,7 +300,7 @@ class IdenticaSideBar(TwitterSideBar):
 
     edit_widgets = freeze([
         TextWidget('user_name', title=MSG(u"Identi.ca account name")),
-        TextWidget('limit', title=MSG(u'Number of message')),
+        TextWidget('limit', title=MSG(u'Number of messages')),
         CheckboxWidget('force_update', title=MSG(u'Force cache update'))
         ])
 

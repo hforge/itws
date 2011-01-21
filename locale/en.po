@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-18 17:01+CET\n"
+"POT-Creation-Date: 2011-01-21 16:01+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,6 +76,13 @@ msgctxt "link"
 msgid ""
 "<g id='1'>  <g id='2'>${menu/title}</g>  <x id='3'/>  <x id='4'/>  </g>  <g "
 "id='5'>  <g id='6'>${menu/title}</g>  <x id='7'/>  <x id='8'/>  </g>"
+msgstr ""
+
+#: ../ui/feed_views/images_view.xml.en:9
+msgctxt "link"
+msgid ""
+"<g id='1'>  <x id='2'/>  <x id='3'/>  <g id='4'>${item/title}</g>  </g>  <g "
+"id='5'>  <x id='6'/>  <x id='7'/>  <g id='8'>${item/title}</g>  </g>"
 msgstr ""
 
 #: ../ui/bar_items/NavigationBox_tree.xml.en:8
@@ -375,7 +382,7 @@ msgstr ""
 msgid "Box to create a menu (1 level only)"
 msgstr ""
 
-#: ../bar/feed_box.py:107
+#: ../bar/feed_box.py:151
 msgid "Box to feed items"
 msgstr ""
 
@@ -443,7 +450,7 @@ msgstr ""
 msgid "Configuration view"
 msgstr ""
 
-#: ../bar/diaporama.py:229 ../bar/diaporama.py:383 ../OPML/rssfeeds.py:279
+#: ../bar/diaporama.py:229 ../bar/diaporama.py:385 ../OPML/rssfeeds.py:279
 #: ../turning_footer.py:105 ../turning_footer.py:261
 msgid "Configure"
 msgstr ""
@@ -462,6 +469,10 @@ msgstr ""
 
 #: ../theme.py:127
 msgid "Contact us"
+msgstr ""
+
+#: ../bar/feed_box.py:188
+msgid "Container"
 msgstr ""
 
 #: ../robots_txt.py:45
@@ -502,7 +513,7 @@ msgstr ""
 msgid "Create a new sidebar box"
 msgstr ""
 
-#: ../datatypes.py:94
+#: ../datatypes.py:95
 msgid "Creation Date"
 msgstr ""
 
@@ -550,6 +561,10 @@ msgstr ""
 msgid "Display a cloud with defined tags."
 msgstr ""
 
+#: ../section_views/images.py:68
+msgid "Display image title"
+msgstr ""
+
 #: ../bar/gallery.py:58
 msgid "Display images or content"
 msgstr ""
@@ -558,7 +573,7 @@ msgstr ""
 msgid "Display ordered resources only."
 msgstr ""
 
-#: ../bar/feed_box.py:110
+#: ../bar/feed_box.py:154
 msgid "Display the last N items (Webpage/News) filtered by tags"
 msgstr ""
 
@@ -566,7 +581,8 @@ msgstr ""
 msgid "Display title above the tree"
 msgstr ""
 
-#: ../bar/diaporama.py:360 ../bar/map_box.py:98 ../bar/gallery.py:75
+#: ../bar/diaporama.py:362 ../bar/map_box.py:98 ../bar/feed_box.py:187
+#: ../bar/gallery.py:77
 msgid "Display title on section view"
 msgstr ""
 
@@ -586,7 +602,7 @@ msgstr ""
 msgid "Do not order (won't be displayed)"
 msgstr ""
 
-#: ../bar/diaporama.py:382 ../turning_footer.py:260
+#: ../bar/diaporama.py:384 ../turning_footer.py:260
 #: ../feed_views/browse_navigator.py:63
 msgid "Edit"
 msgstr ""
@@ -602,10 +618,6 @@ msgstr ""
 
 #: ../OPML/rssfeeds.py:277
 msgid "Edit RSS"
-msgstr ""
-
-#: ../theme.py:215
-msgid "Edit Turning footer"
 msgstr ""
 
 #: ../bar/map_box.py:67 ../bar/map_box.py:68
@@ -645,6 +657,10 @@ msgstr ""
 msgid "Edit theme"
 msgstr ""
 
+#: ../theme.py:215
+msgid "Edit turning footer"
+msgstr ""
+
 #: ../control_panel.py:173
 msgid "Edit with an external editor"
 msgstr ""
@@ -659,7 +675,7 @@ msgctxt "title attribute"
 msgid "Export the feeds as an OPML file"
 msgstr ""
 
-#: ../bar/feed_box.py:137
+#: ../bar/feed_box.py:190
 msgid "Feed Source"
 msgstr ""
 
@@ -667,8 +683,16 @@ msgstr ""
 msgid "Feed TagAware elements"
 msgstr ""
 
-#: ../bar/feed_box.py:139
+#: ../bar/feed_box.py:192
 msgid "Feed template"
+msgstr ""
+
+#: ../section_views/tagsaware.py:38
+msgid "Feed view"
+msgstr ""
+
+#: ../section_views/tagsaware.py:31
+msgid "Feed view configuration"
 msgstr ""
 
 #: ../OPML/rssfeeds.py:212
@@ -699,7 +723,7 @@ msgstr ""
 msgid "Find the GPS coordinates"
 msgstr ""
 
-#: ../datatypes.py:101
+#: ../datatypes.py:102
 msgid "First  to last"
 msgstr ""
 
@@ -713,6 +737,10 @@ msgstr ""
 
 #: ../bar/twitter.py:148 ../bar/twitter.py:300
 msgid "Force cache update"
+msgstr ""
+
+#: ../section_views/images.py:71
+msgid "Force thumbnail size"
 msgstr ""
 
 #: ../tags/tags.py:101
@@ -732,7 +760,7 @@ msgstr ""
 msgid "Gallery"
 msgstr ""
 
-#: ../section_views/images.py:44 ../section_views/images.py:79
+#: ../section_views/images.py:44 ../section_views/images.py:85
 msgid "Gallery view"
 msgstr ""
 
@@ -858,7 +886,7 @@ msgstr ""
 msgid "Last News"
 msgstr ""
 
-#: ../datatypes.py:102
+#: ../datatypes.py:103
 msgid "Last to first"
 msgstr ""
 
@@ -933,7 +961,7 @@ msgctxt "div"
 msgid "Minimum limit:"
 msgstr ""
 
-#: ../datatypes.py:93
+#: ../datatypes.py:94
 msgid "Modification Date"
 msgstr ""
 
@@ -1018,12 +1046,12 @@ msgctxt "body"
 msgid "Now you can add other boxes ;)"
 msgstr ""
 
-#: ../bar/feed_box.py:142
+#: ../bar/feed_box.py:197
 msgid "Number of items to show (0 = All)"
 msgstr ""
 
 #: ../bar/twitter.py:299
-msgid "Number of message"
+msgid "Number of messages"
 msgstr ""
 
 #: ../bar/twitter.py:147
@@ -1057,7 +1085,7 @@ msgid "On"
 msgstr ""
 
 #: ../bar/map_box.py:37
-msgid "Open Street Map"
+msgid "OpenStreetMap"
 msgstr ""
 
 #: ../section_views/composite.py:40
@@ -1106,6 +1134,10 @@ msgstr ""
 
 #: ../theme.py:124
 msgid "Powered by itws"
+msgstr ""
+
+#: ../datatypes.py:93
+msgid "Publication date"
 msgstr ""
 
 #: ../tags/tags_views.py:246
@@ -1242,7 +1274,7 @@ msgstr ""
 msgid "Show number of items for each tag"
 msgstr ""
 
-#: ../bar/feed_box.py:143
+#: ../bar/feed_box.py:198
 msgid "Show only items with this TAGS"
 msgstr ""
 
@@ -1266,7 +1298,7 @@ msgstr ""
 msgid "Skin"
 msgstr ""
 
-#: ../section_views/base.py:69
+#: ../section_views/base.py:69 ../bar/feed_box.py:194
 msgid "Sort by ?"
 msgstr ""
 
@@ -1313,10 +1345,6 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: ../section_views/tagsaware.py:31
-msgid "Tags Aware View configure"
-msgstr ""
-
 #: ../ui/common/Tags_tagcloud.xml.en:8
 msgctxt "div"
 msgid "Tags are global to the website."
@@ -1328,10 +1356,6 @@ msgstr ""
 
 #: ../section_views/images.py:37
 msgid "TagsAware"
-msgstr ""
-
-#: ../section_views/tagsaware.py:38
-msgid "TagsAware View"
 msgstr ""
 
 #: ../bar/diaporama.py:233 ../footer.py:60
@@ -1404,11 +1428,11 @@ msgid ""
 "backlinks\">backlinks interface</a>."
 msgstr ""
 
-#: ../section_views/images.py:65
+#: ../section_views/images.py:70
 msgid "Thumb height"
 msgstr ""
 
-#: ../section_views/images.py:64
+#: ../section_views/images.py:69
 msgid "Thumb width"
 msgstr ""
 
@@ -1477,7 +1501,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../section_views/images.py:63
+#: ../section_views/images.py:67
 msgid "Type of content to display"
 msgstr ""
 
@@ -1562,11 +1586,11 @@ msgstr ""
 msgid "User Id"
 msgstr ""
 
-#: ../bar/feed_box.py:44
+#: ../bar/feed_box.py:78
 msgid "V1"
 msgstr ""
 
-#: ../bar/feed_box.py:42
+#: ../bar/feed_box.py:76
 msgid "V3"
 msgstr ""
 
@@ -1574,7 +1598,7 @@ msgstr ""
 #: ../bar/section_views.py:56 ../bar/diaporama.py:143 ../about.py:33
 #: ../feed_views/browse_navigator.py:63 ../bar/bar_aware.py:140
 #: ../webpage_views.py:89 ../bar/tags.py:36 ../feed_views/base.py:39
-#: ../turning_footer.py:49 ../bar/feed_box.py:51 ../OPML/rssfeeds.py:86
+#: ../turning_footer.py:49 ../bar/feed_box.py:85 ../OPML/rssfeeds.py:86
 #: ../news/news_views.py:46 ../news/news_views.py:106
 msgid "View"
 msgstr ""

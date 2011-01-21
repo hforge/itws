@@ -212,7 +212,7 @@ class Theme(BaseTheme):
     edit_turning_footer = GoToSpecificDocument(
             access='is_allowed_to_edit',
             specific_document='turning-footer/menu',
-            title=MSG(u'Edit Turning footer'))
+            title=MSG(u'Edit turning footer'))
 
 
 
