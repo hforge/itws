@@ -52,14 +52,14 @@ class BoxSectionChildrenTree_View(Box_View):
         section = context._bar_aware
         if isinstance(section, Section) is False:
             self.set_view_is_empty(True)
-            return None
+            return ''
 
         section_class = section.get_subsection_class()
         base_section = self._get_base_section(section, section_class)
         if isinstance(base_section, section_class) is False:
             # Strange
             self.set_view_is_empty(True)
-            return None
+            return ''
 
         return STLView.GET(self, base_section, context)
 
