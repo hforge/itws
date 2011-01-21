@@ -181,7 +181,7 @@ htmlhelp_basename = 'itwsdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index_fr', 'index_fr.tex', u'itws Documentation',
+  ('index', 'index.tex', u'itws Documentation',
    u'Taverne Sylvain', 'manual'),
 ]
 
@@ -214,7 +214,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index_fr', 'ytws', u'ikaaro Documentation',
+    ('index', 'itws', u'ikaaro Documentation',
      [u'Taverne Sylvain'], 1)
 ]
 

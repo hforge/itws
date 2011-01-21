@@ -98,3 +98,10 @@ Known issues
 
 MapBox does not allow to use diferents 'render' (OSM, GoogleMap) inside the
 same page. This is because, the scripts override each other.
+
+Documentation
+=============
+
+To build documentation use ikaaro script::
+
+  $ ipkg-docs.py
