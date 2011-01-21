@@ -28,14 +28,14 @@ from itws.feed_views import Feed_View
 class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
     class_id = 'tagsaware_view_configuration'
-    class_title = MSG(u'Tags Aware View configure')
+    class_title = MSG(u'Feed View configure')
 
 
 
 class TagsAwareView_View(Feed_View):
 
     view_name = 'tags_view'
-    view_title = MSG(u'TagsAware View')
+    view_title = MSG(u'Feed View')
     view_configuration_cls = TagsAwareView_Configuration
 
     search_template = None
