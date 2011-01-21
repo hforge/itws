@@ -90,6 +90,7 @@ class SortBy_Enumerate(Enumerate):
 
     options = [
       {'name': 'title', 'value': MSG(u'Title')},
+      {'name': 'pub_datetime', 'value': MSG(u'Publication date')},
       {'name': 'mtime', 'value': MSG(u'Modification Date')},
       {'name': 'ctime', 'value': MSG(u'Creation Date')}]
 

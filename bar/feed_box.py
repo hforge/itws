@@ -29,6 +29,7 @@ from ikaaro.utils import get_content_containers
 from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
+from itws.datatypes import SortBy_Enumerate
 from itws.feed_views import Details_View
 from itws.tags import TagsList, TagsAwareClassEnumerate
 from itws.tags import get_registered_tags_aware_classes
@@ -128,7 +129,7 @@ class BoxFeed_View(Box_View, Details_View):
     def sort_and_batch(self, resource, context, results):
         root = context.root
         user = context.user
-        items = results.get_documents(sort_by='pub_datetime',
+        items = results.get_documents(sort_by=resource.get_property('sort_by'),
                                       reverse=True,
                                       start=0,
                                       size=resource.get_property('count'))
@@ -158,6 +159,7 @@ class BoxFeed(Box):
             Box.class_schema,
             container_path=PathDataType(source='metadata', default='/'),
             count=PositiveInteger(source='metadata', default=3),
+            sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime'),
             display_title=Boolean(source='metadata', default=True),
             feed_class_id=TagsAwareClassEnumerate(source='metadata',
                                                   multiple=True),
@@ -175,6 +177,7 @@ class BoxFeed(Box):
              'count': PositiveInteger(default=3),
              'display_title': Boolean,
              'feed_class_id': TagsAwareClassEnumerate(multiple=True),
+             'sort_by': SortBy_Enumerate,
              'tags': TagsList(multiple=True),
              'view': BoxFeed_Enumerate})
 
@@ -187,6 +190,8 @@ class BoxFeed(Box):
         CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
         SelectWidget('view', title=MSG(u'Feed template'),
+                     has_empty_option=False),
+        SelectWidget('sort_by', title=MSG(u'Sort by ?'),
                      has_empty_option=False),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
