@@ -13,7 +13,7 @@
 
   <div class="feed-view ${css}">
 
-    <stl:block stl:if="show_title">
+    <stl:block stl:if="display_title">
       <h3 class="title" stl:if="title">${title}</h3>
     </stl:block>
 

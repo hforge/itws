@@ -44,9 +44,8 @@ class BoxGallery_View(ImagesView_View, Box_View):
 
     def get_namespace(self, resource, context):
         namespace = ImagesView_View.get_namespace(self, resource, context)
-        # Tweak title and show_title
-        namespace['show_title'] = resource.get_property('display_title')
-        for key in ('title', 'display_thumb_title'):
+        # Tweak some properties
+        for key in ('title', 'display_thumb_title', 'display_title'):
             namespace[key] = resource.get_property(key)
         return namespace
 

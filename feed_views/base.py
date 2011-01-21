@@ -50,7 +50,7 @@ class Feed_View(Folder_BrowseContent):
     styles = []
     show_first_batch = False
     show_second_batch = True
-    show_title = True
+    display_title = True
     batch_size = 25
     sort_by = 'title'
     reverse = False
@@ -210,7 +210,7 @@ class Feed_View(Folder_BrowseContent):
         namespace['id'] = id
         namespace['css'] = self.view_name
         namespace['title'] = resource.get_property('title')
-        namespace['show_title'] = self.show_title
+        namespace['display_title'] = self.display_title
         namespace['show_first_batch'] = self.show_first_batch
         namespace['show_second_batch'] = self.show_second_batch
         if self.show_first_batch and self.show_second_batch:
