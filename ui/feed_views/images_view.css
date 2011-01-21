@@ -1,13 +1,18 @@
-.thumbnail{
+.thumbnail {
   float: left;
   margin: 10px;
 }
 
-.thumbnail a{
-  display: block;
-  border: 1px solid #ccc;
-  padding: 3px;
+.thumbnail a {
   background: #fff;
-  text-align: center;
+  border: 1px solid #ccc;
+  display: block;
   overflow: hidden;
+  padding: 3px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.thumbnail a span {
+  font-size: 0.8em;
 }

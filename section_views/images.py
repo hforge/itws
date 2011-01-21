@@ -45,16 +45,18 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
     class_schema = merge_dicts(
         BaseFeedView_Configuration.class_schema,
         # Filter
-        filtered_class=GalleryClassesEnumerate(default='image',
-                                               source='metadata'),
-        # Thumb size
-        thumb_width=PositiveIntegerNotNull(default=128, source='metadata'),
-        thumb_height=PositiveIntegerNotNull(default=128, source='metadata'),
-        thumb_strict=Boolean(default=False, source='metadata'))
+        filtered_class=GalleryClassesEnumerate(source='metadata',
+                                               default='image'),
+        # Thumb
+        display_thumb_title=Boolean(source='metadata', default=False),
+        thumb_width=PositiveIntegerNotNull(source='metadata', default=128),
+        thumb_height=PositiveIntegerNotNull(source='metadata', default=128),
+        thumb_strict=Boolean(source='metadata', default=False))
 
     edit_schema = freeze(merge_dicts(
         BaseFeedView_Configuration.edit_schema,
         filtered_class=GalleryClassesEnumerate(mandatory=True),
+        display_thumb_title=Boolean,
         thumb_width=PositiveIntegerNotNull,
         thumb_height=PositiveIntegerNotNull,
         thumb_strict=Boolean))
@@ -63,6 +65,7 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
         BaseFeedView_Configuration.edit_widgets
         + [SelectWidget('filtered_class',
                         title=MSG(u'Type of content to display')),
+           RadioWidget('display_thumb_title', title=MSG(u'Display image title')),
            TextWidget('thumb_width', title=MSG(u'Thumb width')),
            TextWidget('thumb_height', title=MSG(u'Thumb height')),
            RadioWidget('thumb_strict', title=MSG(u'Force thumbnail size'))])
@@ -108,6 +111,7 @@ class ImagesView_View(Feed_View):
         proxy = super(ImagesView_View, self)
         namespace = proxy.get_content_namespace(resource, context, items)
         conf_resource = self._get_configuration_file(resource)
-        for key in ['thumb_width', 'thumb_height', 'thumb_strict']:
+        for key in ['thumb_width', 'thumb_height', 'thumb_strict',
+                    'display_thumb_title']:
             namespace[key] = conf_resource.get_property(key)
         return namespace

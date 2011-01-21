@@ -12,6 +12,7 @@
            title="${item/title}"/>
       <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;strict=1"
            width="${thumb_width}" height="${thumb_height}" title="${item/title}"/>
+      <span stl:if="display_thumb_title">${item/title}</span>
     </a>
     <a href="${item/abspath}" title="${item/title}"
       stl:if="not item/is_image">
@@ -19,6 +20,7 @@
            title="${item/title}"/>
       <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;strict=1"
            width="${thumb_width}" height="${thumb_height}" title="${item/title}"/>
+      <span stl:if="display_thumb_title">${item/title}</span>
     </a>
   </div>
 
