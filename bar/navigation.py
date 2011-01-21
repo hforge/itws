@@ -119,6 +119,10 @@ class BoxNavigation_View(Box_View):
             d['css'] = css
             items.append(d)
 
+        # FIXME BoxView API
+        if len(items):
+            self.set_view_is_empty(False)
+
         template = context.resource.get_resource(self.tree_template)
         return stl(template, namespace={'items': items,
                                         'css': 'root' if level == 1 else None})
@@ -135,6 +139,9 @@ class BoxNavigation_View(Box_View):
             level = len(list(container.abspath))
         else:
             container = resource.get_site_root()
+
+        # FIXME BoxView API
+        self.set_view_is_empty(True)
 
         items = self.get_items(container, context, only_ordered=ltor,
                                level=level)

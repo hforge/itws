@@ -97,6 +97,10 @@ class TwitterSideBar_View(Box_View):
         is_allowed_to_edit = ac.is_allowed_to_edit(context.user, resource)
         namespace['items'] = items
         namespace['errors'] = is_allowed_to_edit and errors
+
+        if is_allowed_to_edit is False and (items is None or len(items) == 0):
+            self.set_view_is_empty(True)
+
         return namespace
 
 

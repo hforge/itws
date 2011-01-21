@@ -32,6 +32,16 @@ from itws.bar.base_views import Box_View
 
 class BoxGallery_View(ImagesView_View, Box_View):
 
+    def get_items(self, resource, context, *args):
+        items = ImagesView_View.get_items(self, resource, context, *args)
+
+        # FIXME BoxView API
+        allowed_to_edit = self.is_admin(resource, context)
+        if allowed_to_edit is False and len(items) == 0:
+            self.set_view_is_empty(True)
+
+        return items
+
 
     def _get_configuration_file(self, resource):
         return resource

@@ -140,6 +140,12 @@ class BoxFeed_View(Box_View, Details_View):
             ac = resource.get_access_control()
             if ac.is_allowed_to_view(user, resource):
                 allowed_items.append((item, resource))
+
+        # FIXME BoxView API
+        allowed_to_edit = self.is_admin(resource, context)
+        if allowed_to_edit is False and len(allowed_items) == 0:
+            self.set_view_is_empty(True)
+
         return allowed_items
 
 

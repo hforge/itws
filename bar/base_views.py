@@ -178,9 +178,9 @@ class Bar_View(CompositeView):
         views = []
         for view in self.subviews:
             item = view.item
+            stream = view.GET(item, context)
             if view.get_view_is_empty():
                 continue
-            stream = view.GET(item, context)
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
             views.append(
