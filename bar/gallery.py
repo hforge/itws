@@ -56,6 +56,8 @@ class BoxGallery(ImagesView_Configuration, Box):
     class_id = 'box-gallery'
     class_title = MSG(u'Gallery')
     class_description = MSG(u'Display images or content')
+    class_icon16 = 'bar_items/icons/16x16/gallery.png'
+    class_icon48 = 'bar_items/icons/48x48/gallery.png'
 
     is_side = False
     is_content = True

@@ -342,6 +342,8 @@ class Diaporama(BoxAware, Folder):
     class_title = MSG(u'Diaporama')
     class_views = ['configure', 'edit', 'browse_content']
     class_description = MSG(u'Diaporama to show a set of images.')
+    class_icon16 = 'bar_items/icons/16x16/slideshow.png'
+    class_icon48 = 'bar_items/icons/48x48/slideshow.png'
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
 
