@@ -14,97 +14,248 @@ Cette documentation a pour but de vous guider dans la prise en main et l'adminis
 .. contents:: Menu
 
 
-Prise en main de mon site Internet
-==================================
+La Théorie: Prise en main des concepts ITWS
+===================================================
 
 Structuration de mon site
 -------------------------
 
-Dans cette partie, nous allons vous présenter les différents
-éléments constituant votre site Internet.
-Voici un croquis représentant votre site Internet:
+Ce croquis représente les différents éléments constituant votre site Internet:
 
 .. figure:: figures/layout.*
 
-Les différents éléments constituant votre site:
+Voici un tableau récapitulatif des différentes zones de votre site:
 
 +------------------------------+----------------------------------------------------------+
 |**Zone**                      |**Description de la zone**                                |
 +==============================+==========================================================+
-|Haut de page                  |     XXX                                                  |
+|Haut de page                  | Le haut de page contient votre logo, votre slogan,       |
+|                              | un lien pour vous connecter, déconnecter ainsi qu'une    |
+|                              | zone de recherche                                        |
 +------------------------------+----------------------------------------------------------+
-|Le menu                       |        XXX                                               |
+|Le menu                       | Le menu de votre site est le principal élément de        |
+|                              | navigation. Il est personnalisable facilement dans       |
+|                              | le panneau de contrôle.                                  |
 +------------------------------+----------------------------------------------------------+
 |Zone de contenu               |        XXX                                               |
 +------------------------------+----------------------------------------------------------+
 |Le fil d'arianne              |        XXX                                               |
 +------------------------------+----------------------------------------------------------+
-|Barre latérale                |        XXX                                               |
+|Barre latérale                | Votre site dispose d'une barre latérale qui va vous      |
+|                              | permettre de dynamiser votre site                        |
 +------------------------------+----------------------------------------------------------+
-|Pied de page                  |        XXX                                               |
+|Pied de page                  | Le pied de page vous permet d'ajouter des informations   |
+|                              | sur votre société/organisation.                          |
 +------------------------------+----------------------------------------------------------+
 
+Types de resources
+----------------------
 
-Se connecter en tant qu'Administrateur
----------------------------------------
+Comme pour votre ordinateur, votre site internet est composé d'un ensemble de Dossiers et de Fichiers.
+Dans ITWS on appele cela des "Resources". Ces resources sont regroupables dans deux groupes:
 
-La première étape pour modifier votre site Internet est de vous identifier.
-Vous pouvez vous identifier via le lien "Se connecter", présentant en haut XXX.
-Si votre mot de passe est perdu, vous pouvez le réinitialiser en cochant la case "J'ai oublié mon mot de passe".
+  - Les "Dossiers" qui peuvent contenir d'autres fichiers ou dossiers
+  - Les "Fichiers" qui ne peuvent pas contenir d'autres resources.
+
+Voici la liste complétes des resources d'ITWS:
+
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|**Logo**                     |**Type**     |**Description**                                                                                  |
++=============================+=============+=================================================================================================+
+|.. figure:: figures/html.*   |Page Internet|Page Internet                                                                                    |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/file.*   | Fichier     |  Vous pouvez ajouter dans votre site internet des fichiers pour les partager avec vos visiteurs.|
+|                             |             |  Il est ainsi possible d'ajouter tout type de fichiers:                                         |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/image.*  | Image       |  Description                                                                                    |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|                             | RSSFeeds    |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|                             | Tag         |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/folder.* | Dossier     |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/folder.* | Tracker     |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/section.*| Section     |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+|.. figure:: figures/folder.* | News        |                                                                                                 |
++-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+
+Votre site internet met à votre disposition un "Navigateur" qui vous permet de parcourir l'ensemble
+des dossiers et fichiers de votre site Internet.
+Nous allons présenter le navigateur dans la section suivante.
+
+Le navigateur
+------------------------------------
+
+Votre site Internet est composé d'un ensemble de dossiers et de fichiers
+tout comme votre votre système d'exploitation préféré (Windows/Linux/Mac).
+Un navigateur est ainsi disponible dans votre site internet pour naviguer
+dans l'arborescence de votre site:
+
+.. figure:: figures/navigator.*
+
+Le navigateur est accessible à tout moment depuis l'icône présent dans la
+barre d'administration:
+
+  XXX
+
+A partir du navigateur, vous pouvez effectuer des actions,
+sur une ou plusieurs resources à la fois:
+
+  - Renommer
+  - Supprimer
+  - Copier
+  - Coller
+  - Publier
+  - Dépublier
+
 
 
 
 Les Barres d'administration
 ----------------------------
 
-Lorsque vous êtes connecté en tant qu'Administrateur du site,
-une barre comme celle ci...
+Lorsque vous êtes connecté en tant qu'Administrateur du site, une barre comme celle ci...
 
 .. figure:: figures/admin_bar.*
 
 ... apparaît en haut de votre site internet.
 Celle-ci vous permet d'administrer facilement votre site.
+Cette barre d'administration est composée de 3 blocs.
 
-
-Celle ci est composée de 3 blocs:
-
-La premiére barre d'administration, qui est toujours affichée vous permet XXX
+**Barre numéro 1**
 
 .. figure:: figures/admin_bar_1.*
 
-Voici la description de chacun de ces icônes:
+La premiére barre d'administration, qui est toujours affichée vous permet::
 
-=================================== ===============================
-.. figure:: figures/action_home.*   Aller à la page d'accueil
-.. figure:: figures/new.*           Créer une nouvelle resource
-.. figure:: figures/control_panel.* Panneau d'administration
-=================================== ===============================
+   - D'accéder rapidement à la page d'accueil
+   - D'accéder au panneau de contrôle dans lequel vous pouvez configurer votre site internet
+   - D'accéder à l'interface d'ajout d'une nouvelle resource
 
-
-La XXX
+**Barre numéro 2**
 
 .. figure:: figures/admin_bar_2.*
 
-aaa
+La deuxiéme barre d'administration est la barre d'administration la plus importante.
+Celle-ci est différentes sur toutes les pages de votre site.
 
- 2) La barre d'administration de la resource courante
+Cette barre vous donne des informations importantes:
 
-    - Workflow
-    - Type resource
+    - Le type de la resource courante (Section/WebPage...)
+    - L'état de publication de la resource (Vert=public, rouge=Privé, blanc=Pas de workflow)
 
-La XXX
+Vous disposez aussi de boutons permettant d'agir sur la resource courante.
+
+
+**Barre numéro 3**
 
 .. figure:: figures/admin_bar_3.*
 
+Cette troisième barre vous permet d'activer ou non le mode édition.
 
-Le mode Édition
-----------------------------
+Si le mode édition est activé, des boutons d'actions suplémentaires seront affichées
+lors de la navigation dans votre site.
+Ces boutons permettent d'éditer votre site. (D'où le nom de 'mode édition).
+
+Si le mode édition est désactivé, les boutons d'actions supplémentaires seront cachés.
+
+
+La barre d'administration centrale
+-----------------------------------------------------------
+
+Les 3 variantes de barre centrale
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+La barre centrale varie en fonction du type de la resource dans laquelle vous vous trouvez.
+On peut néanmoins distinguer trois variantes de cette barre centrale:
+
+  - La barre centrale du site Internet (à la racine du site)
+  - La barre centrale de contenu de type "Contenant". Par exemple "Section" ou "Dossier"
+  - La barre centrale sur du contenu éditable. Par exemple "Page Internet" ou "Fichier"
+
+Nous allons présenter, ci-aprés, les 3 variantes de la barre centrale.
+
+Barre d'administration de la racine de votre Site
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Lorsque vous êtes à la racine de votre site internet, vous devriez voir cette barre d'administration:
+
+.. figure:: figures/admin_bar_2.*
+
+Le titre de la resource courante est "ITWS Web Site", car vous êtes à la racine de votre site.
+
+L'expression "ITWS Web Site" n'est pas colorée (en vert/orange/ou rouge) car le site est forcément public.
+
+Cinq actions sont réalisables:
+
+  - **Voir** Cela permet de visualiser la page d'accueil de votre site
+  - **Modifier** Cela permet de modifier le titre, et l'apparence de la page d'accueil
+  - **Configuration** Cela permet d'accèder au panneau d'administration de votre site
+  - **Icône Dossier** Vous permet d'accèder au navigateur de fichier de votre site.
+  - **Icône Nouvelle ressource** Vous permet d'ajouter une nouvelle resource à la racine de votre site
+
+Barre d'administration d'une Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Lorsque la resource courante est une section, vous devriez voir cette barre d'administration
 
 XXX
+
+Le titre de la resource courante est donc "Section".
+Ce titre est coloré en vert car la resource est publiée.
+
+Cinq actions sont réalisables:
+
+  - **Voir** Cela permet de visualiser la section
+  - **Modifier** Cela permet de modifier le titre, et l'apparence de la section
+  - **Avancé** Vous pouvez effectuer des opérations avancées sur la section:
+        - Voir l'historique de modification de la section
+        - Voir la liste des liens et rétroliens de la section
+        - Gérer la table des matiéres de la section
+  - **Icône Dossier** Vous permet d'ouvrir le navigateur de fichier.
+    Le navigateur sera ouvert à l'emplacement courant.
+  - **Icône Nouvelle ressource** Vous permet d'ajouter une nouvelle resource dans la section courante
+
+
+Barre d'administration d'une "Page Internet"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Lorsque la resource courante est une Page Internet, vous devriez voir cette barre d'administration:
+
+XXX
+
+Le titre de la resource courante est donc "Page Web"
+Ce titre est coloré en vert car la resource est publiée.
+Quatres actions sont réalisables:
+
+    - **Voir** Cela permet de visualiser la "Page Internet"
+    - **Modifier** Cela permet de modifier le contenu de la "Page Internet"
+    - **Avancé** Qui permet d'accéder à des actions avancées
+    - **Icône Dossier parent** Vous permet d'ouvrir le navigateur dans la section parente qui contient la resource courante.
+
 
 
 Configurer et administrer mon site Internet
 =============================================
+
+Se connecter en tant qu'Administrateur
+---------------------------------------
+
+Vous avez sans doute reçu, par email vos identifiants et mot de passe.
+Si ce n'est pas le cas, demandez à l'administrateur du site de vous inscrire.
+
+La première étape pour modifier votre site Internet est de vous identifier.
+Vous pouvez vous identifier via le lien "Se connecter", présentant en haut de page.
+
+Cette page va vous demander de saisir votre email et votre mot de passe.
+Si vous avez oublié votre mot de passe, vous pouvez le réinitialiser en cochant la case "J'ai oublié mon mot de passe".
+
+
+
+
 
 Le panneau de contrôle
 -----------------------------
@@ -185,63 +336,6 @@ XXX
 
 
 
-Le navigateur
-------------------------------------
-
-Votre site Internet est composé d'un ensemble de dossiers et de fichiers
-tout comme votre votre système d'exploitation préféré (Windows/Linux/Mac).
-Un navigateur est ainsi disponible dans votre site internet pour naviguer
-dans l'arborescence de votre site:
-
-.. figure:: figures/navigator.*
-
-Le navigateur est accessible à tout moment depuis l'icône présent dans la
-barre d'administration:
-
-  XXX
-
-A partir du navigateur, vous pouvez effectuer des actions,
-sur une ou plusieurs resources à la fois:
-
-  - Renommer
-  - Supprimer
-  - Copier
-  - Coller
-  - Publier
-  - Dépublier
-
-
-
-Types de resources
-----------------------
-
-
-Votre site Internet va prendre vie en ajoutant un ensemble de resources
-
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|**Logo**                     |**Type**     |**Description**                                                                                  |
-+=============================+=============+=================================================================================================+
-|.. figure:: figures/html.*   |Page Internet|Page Internet                                                                                    |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/file.*   | Fichier     |  Vous pouvez ajouter dans votre site internet des fichiers pour les partager avec vos visiteurs.|
-|                             |             |  Il est ainsi possible d'ajouter tout type de fichiers:                                         |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/image.*  | Image       |  Description                                                                                    |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/section.*| Section     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | News        |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|                             | Tag         |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | Dossier     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | Tracker     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|                             | RSSFeeds    |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-
-Super non ?
 
 Les vues avancées
 -----------------------------
