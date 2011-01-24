@@ -22,6 +22,7 @@
   <link rel="shortcut icon" href="${favicon_href}" type="${favicon_type}" />
 </head>
 <body class="${body_css} ${lang}">
+  ${admin_bar}
   <div class="${page_css_class}">
     <table id="main-table">
       <tr id="tr-banner">
