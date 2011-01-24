@@ -265,7 +265,6 @@
 #browse-list th a.sort-up-active { background-position: -10px -67px; }
 
 
-
 /**************************************************************************
  * Bar items
  * ***********************************************************************/
@@ -319,4 +318,17 @@
   min-height: inherit;
   width: auto;
   float: none;
+}
+
+
+/**************************************************************************
+ * Comments
+ * ***********************************************************************/
+.comment-header {
+  background-color: #ddddff;
+  font-weight: bold;
+}
+
+.comment-body {
+  font-family: "Arial", "DejaVu Sans", sans-serif;
 }
