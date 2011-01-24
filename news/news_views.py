@@ -89,12 +89,13 @@ class NewsItem_AddImage(DBResource_AddImage):
 class NewsItem_Edit(WebPage_Edit):
 
     def _get_schema(self, resource, context):
-        return merge_dicts(WebPage_Edit._get_schema(self, resource, context),
-                           long_title=Multilingual)
+        proxy = super(NewsItem_Edit, self)
+        return freeze(merge_dicts(proxy._get_schema(resource, context),
+                                  long_title=Multilingual))
 
 
     def _get_widgets(self, resource, context):
-        proxy = super(WebPage_Edit, self)
+        proxy = super(NewsItem_Edit, self)
         widgets = proxy._get_widgets(resource, context)[:]
         widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
         return freeze(widgets)
