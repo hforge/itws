@@ -32,6 +32,15 @@ from itws.bar.base_views import Box_View
 
 class BoxGallery_View(ImagesView_View, Box_View):
 
+    show_first_batch = False
+    show_second_batch = False
+
+
+    def get_query_schema(self):
+        # Do not defined query
+        return Box_View.get_query_schema(self)
+
+
     def get_items(self, resource, context, *args):
         items = ImagesView_View.get_items(self, resource, context, *args)
 
@@ -41,6 +50,44 @@ class BoxGallery_View(ImagesView_View, Box_View):
             self.set_view_is_empty(True)
 
         return items
+
+
+    def sort_and_batch(self, resource, context, results):
+        user = context.user
+        root = context.root
+        conf = self._get_configuration_file(resource)
+
+        start = 0
+        sort_by = conf.get_property('view_sort_by')
+        size = conf.get_property('view_batch_size')
+        reverse = conf.get_property('view_reverse')
+
+        if sort_by is None:
+            get_key = None
+        else:
+            get_key = getattr(self, 'get_key_sorted_by_' + sort_by, None)
+        if get_key:
+            # Custom but slower sort algorithm
+            items = results.get_documents()
+            items.sort(key=get_key(), reverse=reverse)
+            if size:
+                items = items[start:start+size]
+            elif start:
+                items = items[start:]
+        else:
+            # Faster Xapian sort algorithm
+            items = results.get_documents(sort_by=sort_by, reverse=reverse,
+                                          start=start, size=size)
+
+        # Access Control (FIXME this should be done before batch)
+        allowed_items = []
+        for item in items:
+            resource = root.get_resource(item.abspath)
+            ac = resource.get_access_control()
+            if ac.is_allowed_to_view(user, resource):
+                allowed_items.append((item, resource))
+
+        return allowed_items
 
 
     def _get_configuration_file(self, resource):
