@@ -24,10 +24,12 @@ from itools.database.ro import ROGitDatabase
 from itools.datatypes import Unicode
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
+from itools.web import BaseView
 from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
+from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
@@ -52,18 +54,20 @@ else:
     not_allowed_cls_for_sidebar_view.append(WikiFolder)
 
 def register_not_allowed_cls_for_sidebar_view(cls):
+    assert issubclass(cls, DBResource)
     if cls in not_allowed_cls_for_sidebar_view:
         return
     not_allowed_cls_for_sidebar_view.append(cls)
 
 
-not_allowed_view_name_for_sidebar_view = ['not_found', 'about', 'credits',
-    'license']
+not_allowed_view_for_sidebar_view = [WebSite.about, WebSite.credits,
+    WebSite.license]
 
-def register_not_allowed_view_name_for_sidebar_view(view):
-    if view in not_allowed_view_name_for_sidebar_view:
+def register_not_allowed_view_for_sidebar_view(view):
+    assert isinstance(view, BaseView)
+    if view in not_allowed_view_for_sidebar_view:
         return
-    not_allowed_view_name_for_sidebar_view.append(view)
+    not_allowed_view_for_sidebar_view.append(view)
 
 
 ############################################################
@@ -97,12 +101,16 @@ class Skin(BaseSkin):
 
 
     def is_allowed_sidebar_on_current_view(self, context):
-        """Helper for not_allowed_view_name_for_sidebar_view"""
-        views = not_allowed_view_name_for_sidebar_view
+        """Helper for not_allowed_view_for_sidebar_view"""
+        views = list(not_allowed_view_for_sidebar_view)
         if self.disable_sidebar_on_control_panel:
             site_root = context.site_root
-            views = views + site_root.class_control_panel
-        return context.view_name not in views
+            if context.resource is site_root:
+                for view_name in site_root.class_control_panel:
+                    view = site_root.get_view(view_name)
+                    if view is not None:
+                        views.append(view)
+        return context.view not in views
 
 
     def get_backoffice_class(self, context):
