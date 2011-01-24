@@ -36,4 +36,6 @@
     });
   </script>
 
+  <div class="clear" />
+
 </stl:block>
