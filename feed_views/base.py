@@ -201,6 +201,13 @@ class Feed_View(Folder_BrowseContent):
     ## Namespace
     ###############################################
 
+    def get_batch_namespace(self, resource, context, items):
+        if self.show_first_batch or self.show_second_batch:
+            proxy = super(Feed_View, self)
+            return proxy.get_batch_namespace(resource, context, items)
+        return None
+
+
     def get_namespace(self, resource, context):
         self.view_resource = resource
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
