@@ -130,41 +130,6 @@
   margin-top: 10px;
 }
 
-/**************************************************************************
- * NUMERIC BATCH
- **************************************************************************/
-#content .batch-numerotation {
-  margin: 0;
-  padding: 0;
-}
-
-#content .batch-numerotation ul {
-  list-style-type: none;
-}
-
-#content .batch-numerotation li {
-  display: inline;
-}
-
-#content .batch-numerotation a {
-  width: 7px;
-  height: 7px;
-  color: #000;
-  text-decoration: none;
-  padding: 5px 5px 5px 7px;
-  margin: 2px;
-  border: 1px solid #D3D7CF;
-}
-
-#content .batch-numerotation a:hover {
-  background-color: #EEEEEC;
-}
-
-#content .batch-numerotation a.current {
-  background-color: #EEEEEC;
-  font-weight: bold;
-}
-
 
 /**************************************************************************
  * MANAGE VIEW
