@@ -152,7 +152,7 @@ class Bar_View(CompositeView):
             name = orderfile.get_record_value(record, 'name')
             item = repository.get_resource(name, soft=True)
             if item is None:
-                path = item.get_abspath()
+                path = resource.get_abspath()
                 warn('%s > bar item not found: %s' % (path, name))
                 continue
             ac = item.get_access_control()
