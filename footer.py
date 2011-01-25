@@ -16,24 +16,37 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import freeze, merge_dicts
 from itools.csv import Property
-from itools.datatypes import String
+from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 from itools.stl import rewrite_uris
 from itools.uri import get_reference, Path, Reference
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import SelectWidget, XHTMLBody
+from ikaaro.autoform import SelectWidget, XHTMLBody, RadioWidget
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
 from ikaaro.webpage import _get_links, _change_link
+from ikaaro.file_views import File_Edit
 
 # Import from itws
 from widgets import XMLTitleWidget
 from utils import get_path_and_view
 
+
+
+class Footer_Edit(File_Edit):
+
+    widgets = freeze(File_Edit.widgets
+                     + [RadioWidget('sanitize', title=MSG(u'Sanitize HTML')) ])
+
+    def _get_schema(self, resource, context):
+        proxy = super(Footer_Edit, self)
+        return freeze(merge_dicts(proxy._get_schema(resource, context),
+                                  sanitize=Boolean))
 
 
 class FooterMenuFile(MenuFile):
@@ -54,10 +67,27 @@ class FooterMenu(Menu):
     class_title = MSG(u'Footer menu')
     class_handler = FooterMenuFile
 
+    class_schema = freeze(merge_dicts(
+        Menu.class_schema,
+        sanitize=Boolean(source='metadata', default=True)))
+
     form = [TextWidget('title', title=MSG(u'Title')),
             XMLTitleWidget('html_content', title=MSG(u'HTML Content')),
             PathSelectorWidget('path', title=MSG(u'Path')),
             SelectWidget('target', title=MSG(u'Target'))]
+
+    edit = Footer_Edit()
+
+
+    def get_schema(self):
+        record_properties = self.handler.record_properties
+        # Hook html_content datatype
+        datatype = record_properties.get('html_content', None)
+        if datatype:
+            sanitize = self.get_property('sanitize')
+            return merge_dicts(record_properties,
+                               html_content=datatype(sanitize_html=sanitize))
+        return record_properties
 
 
     def _is_allowed_to_access(self, context, uri):
