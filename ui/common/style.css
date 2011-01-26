@@ -21,6 +21,11 @@
   font-weight: bold;
 }
 
+#content .document .reference.nowiki:link,
+#content .document .reference.nowiki:visited {
+  color: red;
+}
+
 /**************************************************************************
  * Tag Cloud
  **************************************************************************/
