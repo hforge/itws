@@ -39,6 +39,11 @@ class Box_View(STLView):
     styles = []
     scripts = []
 
+
+    def _get_query_suffix(self):
+        return self.position
+
+
     def get_query_schema(self):
         return {}
 
@@ -147,7 +152,7 @@ class Bar_View(CompositeView):
         repository = self._get_repository(bar_aware_resource, context)
         order = orderfile.get_records_in_order()
 
-        for record in order:
+        for i, record in enumerate(order):
             name = orderfile.get_record_value(record, 'name')
             item = repository.get_resource(name, soft=True)
             if item is None:
@@ -158,6 +163,7 @@ class Bar_View(CompositeView):
             if ac.is_allowed_to_view(user, item) is False:
                 continue
             view = copy(item.view)
+            view.position = i
             view.item = item
             all_items.append(view)
         return all_items

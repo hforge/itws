@@ -32,6 +32,18 @@ from itws.bar.base_views import Box_View
 
 class BoxGallery_View(ImagesView_View, Box_View):
 
+
+    def _get_query_suffix(self):
+        return Box_View._get_query_suffix(self)
+
+
+    def _get_query_value(self, resource, context, name):
+        if name in ('batch_size', 'reverse', 'sort_by'):
+            conf = self._get_configuration_file(resource)
+            return conf.get_property('view_%s' % name)
+        return ImagesView_View._get_query_value(self, resource, context, name)
+
+
     def get_items(self, resource, context, *args):
         items = ImagesView_View.get_items(self, resource, context, *args)
 
