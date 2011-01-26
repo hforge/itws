@@ -66,7 +66,9 @@ class Section_Composite_View(Bar_View):
 
 
     def _get_item_id(self, item, context):
-        return '%s-%s-%s' % (item.class_id, context._bar_aware.name, item.name)
+        item_id = '%s-%s-%s' % (item.class_id, context._bar_aware.name,
+                                item.name)
+        return item_id.replace('.', '-dot-')
 
 
     def _get_repository(self, resource, context):

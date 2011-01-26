@@ -121,8 +121,7 @@ class Bar_View(CompositeView):
 
     def _get_item_id(self, item, context):
         item_id = '%s-%s' % (item.class_id, item.name)
-        item_id = item_id.replace('.', '-dot-')
-        return item_id
+        return item_id.replace('.', '-dot-')
 
 
     def get_bar_aware(self, resource, context):
