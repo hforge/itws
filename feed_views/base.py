@@ -377,6 +377,10 @@ class Feed_View(Folder_BrowseContent):
         return namespace
 
 
+    def get_css(self, resource, context):
+        return self.view_name
+
+
     def get_namespace(self, resource, context):
         self.view_resource = resource
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
@@ -384,7 +388,7 @@ class Feed_View(Folder_BrowseContent):
         if self.specific_id_wrapper:
             id = 'section-%s' % resource.name
         namespace['id'] = id
-        namespace['css'] = self.view_name
+        namespace['css'] = self.get_css(resource, context)
         namespace['title'] = resource.get_property('title')
         namespace['display_title'] = self.display_title
         namespace['show_first_batch'] = self.show_first_batch

@@ -71,11 +71,14 @@ class TagsAwareContainerPathDatatype(Enumerate):
 
 class BoxFeed_Enumerate(Enumerate):
 
-    # XXX Why V2 is commented ???
+    # TODO Use more user friendly label ...
     options = [
-      {'name': '/ui/feed_views/Tag_item_viewbox.xml', 'value': MSG(u'V3')},
-#      {'name': '/ui/news/SectionNews_view.xml', 'value': MSG(u'V2')},
-      {'name': '/ui/feed_views/NewsItem_preview.xml', 'value': MSG(u'V1')}]
+      {'name': '/ui/feed_views/Tag_item_viewbox.xml', 'value': MSG(u'V3'),
+       'css': 'v3'},
+      {'name': '/ui/feed_views/NewsItem_preview_with_thumbnail.xml',
+       'value': MSG(u'V2'), 'css': 'v2'},
+      {'name': '/ui/feed_views/NewsItem_preview.xml', 'value': MSG(u'V1'),
+       'css': 'v1'}]
 
 
 
@@ -147,6 +150,18 @@ class BoxFeed_View(Box_View, Details_View):
             self.set_view_is_empty(True)
 
         return allowed_items
+
+
+    def get_css(self, resource, context):
+        # get css from template
+        template = self.table_template
+        for option in BoxFeed_Enumerate.get_options():
+            if option['name'] == template:
+                css = option['css']
+                break
+        else:
+            css = ''
+        return '%s %s' % (self.view_name, css)
 
 
 
