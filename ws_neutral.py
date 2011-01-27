@@ -39,7 +39,12 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
 from ikaaro.user import User
 from ikaaro.website import WebSite
-from ikaaro.workflow import WorkflowAware
+
+# Special case for the Wiki
+try:
+    from wiki import WikiFolder
+except ImportError:
+    WikiFolder = None
 
 # Import from itws
 from OPML import RssFeeds
@@ -240,32 +245,11 @@ class NeutralWS(Website_BarAware, WebSite):
     # ACL
     ###########################################################################
     def is_allowed_to_view(self, user, resource):
-        # Get the variables to resolve the formula
-        # Intranet or Extranet
-        is_open = self.get_property('website_is_open')
-        # User not authenticated or intranet mode
-        if is_open is False or user is None:
-            # Default ACL
-            return WebSite.is_allowed_to_view(self, user, resource)
-
-        # The role of the user
-        if self.is_admin(user, resource):
-            role = 'admins'
-        else:
-            role = self.get_user_role(user.name)
-
-        # The state of the resource
-        if isinstance(resource, WorkflowAware):
-            state = resource.workflow_state
-        else:
-            state = 'public'
-
-        if role == 'guests':
-            # Special case for the guests
-            return state == 'public'
-        elif state == 'public':
-            return True
-        return role is not None
+        proxy = super(NeutralWS, self)
+        if WikiFolder and isinstance(resource, WikiFolder):
+            frontpage = resource.get_resource('FrontPage')
+            return proxy.is_allowed_to_view(user, frontpage)
+        return proxy.is_allowed_to_view(user, resource)
 
 
     #######################################################################
