@@ -15,7 +15,7 @@
       <h3 class="title">
         <a href="${item/link}" title="${item/title}">${item/title}</a>
       </h3>
-      <a class="image-link" stl:if="item/image" href="${item/link}">
+      <a class="image-link" stl:if="item/image" href="${item/link}" title="${item/title}">
         <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"/>
       </a>
       <div class="preview">

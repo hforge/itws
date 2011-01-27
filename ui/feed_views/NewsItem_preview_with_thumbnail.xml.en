@@ -4,14 +4,15 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <div class="sitem ${item/css}" stl:repeat="item items">
+  <div class="item ${item/css}" stl:repeat="item items">
     <a class="image-link" stl:if="item/image" href="${item/link}">
       <img src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"/>
     </a>
-    <div class="newsitem-date">${item/pub_datetime}</div>
-    <div class="newsitem-title">
-      <a href="${item/link}">${item/long_title}</a>
+    <div class="pub-datetime">${item/pub_datetime}</div>
+    <div class="item-title">
+      <a href="${item/link}" title="${item/long_title}">${item/long_title}</a>
     </div>
+    <div class="clear" />
   </div>
 </stl:block>
 

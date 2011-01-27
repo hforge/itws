@@ -310,6 +310,33 @@
   margin-top: 10px;
 }
 
+/* feed box */
+.feed-view.feed-box.v1 .item,
+.feed-view.feed-box.v2 .item,
+.feed-view.feed-box.v3 .item {
+  border-bottom: 1px dotted #999;
+  padding-bottom: 10px;
+}
+.feed-view.feed-box.v2 .item:first-child {
+  background: red;
+  padding-top: 0;
+}
+.feed-view.feed-box.v2 .item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.feed-view.feed-box.v2 .image-link {
+  float: left;
+  padding-bottom: 5px;
+  padding-right: 10px;
+}
+.feed-view.feed-box.v2 .pub-datetime {
+    margin: 5px 0;
+}
+.feed-view.feed-box.v3 .item .title {
+  font-size: 1.1em;
+  border-bottom: 0;
+}
 
 /**************************************************************************
  * External Edit
