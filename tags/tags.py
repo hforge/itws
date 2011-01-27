@@ -289,14 +289,34 @@ class TagsAware(object):
     ##########################################################################
     def get_links(self):
         site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
         tags_base = site_root.get_abspath().resolve2('tags')
-        return set([ str(tags_base.resolve2(tag))
-                     for tag in self.get_property('tags') ])
+        links = set()
+
+        # Tags
+        for tag in self.get_property('tags'):
+            links.add(str(tags_base.resolve2(tag)))
+
+        # Thumbnail
+        for lang in available_languages:
+            path = self.get_property('thumbnail', lang)
+            if not path:
+                continue
+            ref = get_reference(path)
+            if ref.scheme:
+                continue
+            base = self.get_canonical_path()
+            links.add(str(base.resolve2(ref.path)))
+
+        return links
 
 
     def update_links(self, source, target):
         source = Path(source)
         site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+
+        # Tags
         tags_base = site_root.get_abspath().resolve2('tags')
         if tags_base.get_prefix(source) == tags_base:
             tags = list(self.get_property('tags'))
@@ -308,8 +328,51 @@ class TagsAware(object):
                     index = tags.index(source_name)
                     tags[index] = target_name
                     self.set_property('tags', tags)
+
+        # Thumbnail
+        base = self.get_canonical_path()
+        resources_new2old = get_context().database.resources_new2old
+        base = str(base)
+        old_base = resources_new2old.get(base, base)
+        old_base = Path(old_base)
+        new_base = Path(base)
+
+        for lang in available_languages:
+            path = self.get_property('thumbnail', lang)
+            if not path:
+                continue
+            ref = get_reference(path)
+            if ref.scheme:
+                continue
+            path = old_base.resolve2(path)
+            if path == source:
+                # Hit
+                self.set_property('thumbnail', new_base.get_pathto(target),
+                                  lang)
+
         get_context().database.change_resource(self)
 
 
     def update_relative_links(self, source):
-        pass
+        site_root = self.get_site_root()
+        available_languages = site_root.get_property('website_languages')
+        target = self.get_canonical_path()
+        resources_old2new = get_context().database.resources_old2new
+
+        # Tags: do nothing
+
+        # Thumbnail
+        for lang in available_languages:
+            path = self.get_property('thumbnail', lang)
+            if not path:
+                continue
+            ref = get_reference(path)
+            if ref.scheme:
+                continue
+            # Calcul the old absolute path
+            old_abs_path = source.resolve2(ref.path)
+            # Check if the target path has not been moved
+            new_abs_path = resources_old2new.get(old_abs_path,
+                                                 old_abs_path)
+            self.set_property('thumbnail', target.get_pathto(new_abs_path),
+                              lang)
