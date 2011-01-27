@@ -273,7 +273,8 @@ class AddressesFolder(Folder):
         # Content bar: Get order table
         table = section.get_resource('order-contentbar')
         # Add addresses into section
-        for i, address in enumerate(addresses):
+        cmp_fn = lambda x,y: cmp(x['name'], y['name'])
+        for i, address in enumerate(sorted(addresses, cmp=cmp_fn)):
             # Add html
             name_html = 'html-map-%s' % i
             html = section.make_resource(name_html, HTMLContent,
