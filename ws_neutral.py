@@ -20,6 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+import sys
+
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
@@ -246,9 +249,18 @@ class NeutralWS(Website_BarAware, WebSite):
     ###########################################################################
     def is_allowed_to_view(self, user, resource):
         proxy = super(NeutralWS, self)
+        # XXX Temporary hack for Wiki
         if WikiFolder and isinstance(resource, WikiFolder):
             frontpage = resource.get_resource('FrontPage')
             return proxy.is_allowed_to_view(user, frontpage)
+        # XXX Temporary hack for Tracker
+        tracker_mod = sys.modules.get('ikaaro.tracker')
+        if tracker_mod:
+            # Tracker module has been loaded
+            tracker_cls = tracker_mod.Tracker
+            if isinstance(resource, (tracker_cls, tracker_cls.issue_class)):
+                # Tracker/Issue are visible if the user can edit them
+                return proxy.is_allowed_to_edit(user, resource)
         return proxy.is_allowed_to_view(user, resource)
 
 
