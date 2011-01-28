@@ -33,6 +33,7 @@ class Browse_Navigator(Feed_View):
     search_template = None
     batch_size = 25
     sort_by = 'mtime'
+    reverse = True
     is_popup = True
     title = MSG(u'Navigator')
 
