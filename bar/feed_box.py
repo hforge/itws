@@ -197,7 +197,8 @@ class BoxFeed(Box):
              'container_path': TagsAwareContainerPathDatatype,
              'count': PositiveInteger(default=3),
              'display_title': Boolean,
-             'feed_class_id': TagsAwareClassEnumerate(multiple=True),
+             'feed_class_id': TagsAwareClassEnumerate(multiple=True,
+                                                      mandatory=True),
              'sort_by': SortBy_Enumerate,
              'tags': TagsList(multiple=True),
              'view': BoxFeed_Enumerate})
