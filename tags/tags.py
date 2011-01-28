@@ -35,7 +35,6 @@ from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
 from ikaaro.utils import reduce_string
 from ikaaro.views_new import NewInstance
-from ikaaro.webpage import ResourceWithHTML
 
 # Import from itws
 from tags_views import Tag_View, Tag_Edit, Tag_RSS, TagsFolder_TagCloud
@@ -231,24 +230,11 @@ class TagsAware(object):
         """"Return the preview content used in the tag view
             Method to be overriden by sub-classes.
 
-            By default, return handler.to_text()
+            By default, return resource.to_text()
         """
         if isinstance(self, Multilingual):
-            content = {}
-            get_handler = self.get_handler
-            if isinstance(self, ResourceWithHTML):
-                # Use ResourceWithHTML API
-                get_handler = self.get_html_document
-
-            for language in languages:
-                handler = self.get_handler(language)
-                data = handler.to_text()
-                if data.strip():
-                    content[language] = data
-        else:
-            content = self.to_text()
-
-        return content
+            return self.to_text(languages=languages)
+        return self.to_text()
 
 
     def get_preview_content(self):
@@ -265,12 +251,13 @@ class TagsAware(object):
         return content
 
 
-    def to_text(self):
+    def to_text(self, languages=None):
+        if languages is None:
+            languages = self.get_site_root().get_property('website_languages')
         result = {}
-        languages = self.get_site_root().get_property('website_languages')
         for language in languages:
-            result[language] = self.get_property('description',
-                                                 language=language)
+            description = self.get_property('description', language=language)
+            result[language] = description
         return result
 
 
