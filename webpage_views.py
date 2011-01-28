@@ -27,7 +27,7 @@ from ikaaro.autoform import RadioWidget, RTEWidget
 from ikaaro.webpage import HTMLEditView
 
 # Import from itws
-from tags.tags_views import TagsAware_Edit
+from tags import TagsAware_Edit
 from widgets import Advance_RTEWidget
 
 

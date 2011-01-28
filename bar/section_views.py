@@ -30,7 +30,7 @@ from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from itws.section_views import SectionViews_Enumerate
-from itws.tags.tags_views import TagsAware_Edit
+from itws.tags import TagsAware_Edit
 from itws.views import EditView
 
 
