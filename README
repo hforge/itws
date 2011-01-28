@@ -105,3 +105,8 @@ Documentation
 To build documentation use ikaaro script::
 
   $ ipkg-docs.py
+
+Build documentation PDF::
+
+  $ ipkg-docs.py pdf
+  $ evince docs/_build/latex/index.pdf

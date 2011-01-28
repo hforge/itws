@@ -11,3 +11,4 @@ version.txt
 locale/*.mo
 *.xhtml.fr
 *.xml.fr
+docs/_build/

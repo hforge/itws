@@ -24,29 +24,34 @@ Ce croquis représente les différents éléments constituant votre site Interne
 
 .. figure:: figures/layout.*
 
+
 Voici un tableau récapitulatif des différentes zones de votre site:
 
-+------------------------------+----------------------------------------------------------+
-|**Zone**                      |**Description de la zone**                                |
-+==============================+==========================================================+
-|Haut de page                  | Le haut de page contient votre logo, votre slogan,       |
-|                              | un lien pour vous connecter, déconnecter ainsi qu'une    |
-|                              | zone de recherche                                        |
-+------------------------------+----------------------------------------------------------+
-|Le menu                       | Le menu de votre site est le principal élément de        |
-|                              | navigation. Il est personnalisable facilement dans       |
-|                              | le panneau de contrôle.                                  |
-+------------------------------+----------------------------------------------------------+
-|Zone de contenu               |        XXX                                               |
-+------------------------------+----------------------------------------------------------+
-|Le fil d'arianne              |        XXX                                               |
-+------------------------------+----------------------------------------------------------+
-|Barre latérale                | Votre site dispose d'une barre latérale qui va vous      |
-|                              | permettre de dynamiser votre site                        |
-+------------------------------+----------------------------------------------------------+
-|Pied de page                  | Le pied de page vous permet d'ajouter des informations   |
-|                              | sur votre société/organisation.                          |
-+------------------------------+----------------------------------------------------------+
+.. list-table:: Tableau
+    :header-rows: 1
+    :widths: 100, 500
+
+    * - Zone
+      - Description de la zone*
+
+    * - Haut de page
+      - Le haut de page contient votre logo, votre slogan, un lien pour vous connecter, déconnecter ainsi qu'une zone de recherche
+
+    * - Le menu
+      - Le menu de votre site est le principal élément de navigation. Il est personnalisable facilement dans le panneau de contrôle.
+
+    * - Zone de contenu
+      - XXX
+
+    * - Le fil d'arianne
+      - XXX
+
+    * - Barre latérale
+      - Votre site dispose d'une barre latérale qui va vous permettre de dynamiser votre site
+
+    * - Pied de page
+      - Le pied de page vous permet d'ajouter des informations sur votre société/organisation
+
 
 Types de resources
 ----------------------
@@ -59,28 +64,51 @@ Dans ITWS on appele cela des "Resources". Ces resources sont regroupables dans d
 
 Voici la liste complétes des resources d'ITWS:
 
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|**Logo**                     |**Type**     |**Description**                                                                                  |
-+=============================+=============+=================================================================================================+
-|.. figure:: figures/html.*   |Page Internet|Page Internet                                                                                    |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/file.*   | Fichier     |  Vous pouvez ajouter dans votre site internet des fichiers pour les partager avec vos visiteurs.|
-|                             |             |  Il est ainsi possible d'ajouter tout type de fichiers:                                         |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/image.*  | Image       |  Description                                                                                    |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|                             | RSSFeeds    |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|                             | Tag         |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | Dossier     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | Tracker     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/section.*| Section     |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
-|.. figure:: figures/folder.* | News        |                                                                                                 |
-+-----------------------------+-------------+-------------------------------------------------------------------------------------------------+
+
+.. list-table:: Tableau
+    :header-rows: 1
+    :widths: 100, 200, 200
+
+    * - Logo
+      - Type
+      - Description
+
+    * - .. image:: figures/html.*
+      - Page Internet
+      - Page Internet
+
+    * - .. image:: figures/file.*
+      - Fichier
+      - Vous pouvez ajouter dans votre site internet des fichiers pour les partager avec vos visiteurs. Il est ainsi possible d'ajouter tout type de fichiers
+
+    * - .. image:: figures/image.*
+      - Image
+      - Description
+
+    * - .. image:: figures/image.*
+      - RSSFeeds
+      - Description
+
+    * - .. image:: figures/image.*
+      - Tag
+      - Description
+
+    * - .. image:: figures/folder.*
+      - Dossier
+      - Description
+
+    * - .. image:: figures/folder.*
+      - Tracker
+      - Description
+
+    * - .. image:: figures/section.*
+      - Section
+      - Description
+
+    * - .. image:: figures/section.*
+      - News
+      - Description
+
 
 Votre site internet met à votre disposition un "Navigateur" qui vous permet de parcourir l'ensemble
 des dossiers et fichiers de votre site Internet.
@@ -301,6 +329,8 @@ Dans le thème, vous pouvez:
 Modifier le menu principal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+XXX
+
 Modifier l'apparence du site
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -329,6 +359,9 @@ TynyMCE
 Les tags
 ------------
 
+XXX
+
+
 Exemple: création d'une gallerie d'images
 ------------------------------------------
 
@@ -342,19 +375,24 @@ Les vues avancées
 
 Certaines resources disposent de vues avancées
 
-+------------------------------+----------------------------------------------------------+
-|**Vue**                       |**Description**                                           |
-+==============================+==========================================================+
-| Links                        |     XXX                                                  |
-+------------------------------+----------------------------------------------------------+
-| Backlinks                    |        XXX                                               |
-+------------------------------+----------------------------------------------------------+
-| Commit log                   |                                                          |
-+------------------------------+----------------------------------------------------------+
-| Subscriptions                |                                                          |
-+------------------------------+----------------------------------------------------------+
+.. list-table:: Tableau
+    :header-rows: 1
+    :widths: 100, 500
 
+  * - Vue
+    - Description
 
+  * - Links
+    - XXX
+
+  * - Backlinks
+    - XXX
+
+  * - Commit log
+    - XXX
+
+  * - Subscriptions
+    - XXX
 
 
 Mon site et le référemencement
@@ -407,10 +445,6 @@ Workflow
 --------
 
 Un workflow
-
-Une URL
--------
-
 
 
 
