@@ -6,12 +6,12 @@ Documentation
    :maxdepth: 1
 
 
+Introduction
+==============
+
 
 ITWS est une solution qui vous permet de créer rapidement un site internet.
-
 Cette documentation a pour but de vous guider dans la prise en main et l'administration d'ITWS.
-
-.. contents:: Menu
 
 
 La Théorie: Prise en main des concepts ITWS
