@@ -25,12 +25,11 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, HTMLBody, PathSelectorWidget
+from ikaaro.autoform import CheckboxWidget, PathSelectorWidget
 from ikaaro.autoform import SelectWidget
 from ikaaro.menu import Target
-from ikaaro.resource_views import DBResource_Edit
-from ikaaro.webpage import WebPage_View
-from ikaaro.workflow import StateEnumerate, state_widget
+from ikaaro.webpage import HTMLEditView, WebPage_View
+from ikaaro.workflow import state_widget
 
 # Import from itws
 from base_views import Box_View
@@ -63,12 +62,12 @@ class HTMLContent_View(Box_View, WebPage_View):
 
 
 
-class HTMLContent_Edit(DBResource_Edit):
+class HTMLContent_Edit(HTMLEditView):
 
 
     def _get_query_to_keep(self, resource, context):
         """Forward is_admin_popup if defined"""
-        to_keep = DBResource_Edit._get_query_to_keep(self, resource, context)
+        to_keep = HTMLEditView._get_query_to_keep(self, resource, context)
         is_admin_popup = context.get_query_value('is_admin_popup')
         if is_admin_popup:
             to_keep.append({'name': 'is_admin_popup', 'value': '1'})
@@ -77,11 +76,9 @@ class HTMLContent_Edit(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         schema = merge_dicts(
-                DBResource_Edit._get_schema(self, resource, context),
-                state=StateEnumerate(resource=resource, context=context),
+                HTMLEditView._get_schema(self, resource, context),
                 title_link=String,
                 title_link_target=Target,
-                data=HTMLBody,
                 display_title=Boolean)
         # Delete unused description/subject(keywords)
         del schema['description']
@@ -91,34 +88,17 @@ class HTMLContent_Edit(DBResource_Edit):
 
 
     def _get_widgets(self, resource, context):
-        base_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        base_widgets = HTMLEditView._get_widgets(self, resource, context)
         # Delete unused description/subject(keywords)
         widgets = [ widget for widget in base_widgets
-                    if widget.name not in ('description', 'subject') ]
+                    if widget.name not in ('description', 'subject', 'state',
+                                           'data') ]
         return freeze(widgets + [
             CheckboxWidget('display_title',
                             title=MSG(u'Display title on webpage view')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             SelectWidget('title_link_target', title=MSG(u'Title link target')),
             advance_rte_widget, state_widget ])
-
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'data':
-            return resource.get_html_data()
-        return DBResource_Edit.get_value(self, resource, context, name,
-                                         datatype)
-
-
-    def set_value(self, resource, context, name, form):
-        if name == 'data':
-            new_body = form['data']
-            language = resource.get_edit_languages(context)[0]
-            handler = resource.get_handler(language=language)
-            handler.set_body(new_body)
-            return
-        return DBResource_Edit.set_value(self, resource, context, name,
-                                         form)
 
 
 
