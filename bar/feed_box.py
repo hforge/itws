@@ -18,7 +18,7 @@
 from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 from itools.database import OrQuery, PhraseQuery
-from itools.datatypes import Boolean, Enumerate, PathDataType, String
+from itools.datatypes import Boolean, Enumerate, PathDataType
 from itools.web import get_context
 
 # Import from ikaaro
@@ -185,7 +185,8 @@ class BoxFeed(Box):
             feed_class_id=TagsAwareClassEnumerate(source='metadata',
                                                   multiple=True),
             tags=TagsList(source='metadata', multiple=True, default=[]),
-            view=BoxFeed_Enumerate(source='metadata'))
+            view=BoxFeed_Enumerate(source='metadata',
+                default='/ui/feed_views/NewsItem_preview_with_thumbnail.xml'))
 
     # Configuration
     allow_instanciation = True
@@ -223,8 +224,3 @@ class BoxFeed(Box):
 
     # Views
     view = BoxFeed_View()
-
-
-    def update_20101228(self):
-        # XXX Update for developers
-        self.set_property('view', '/ui/feed_views/Tag_item_viewbox.xml')

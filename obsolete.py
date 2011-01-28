@@ -483,7 +483,9 @@ class BoxSectionNews(Box):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('view', '2')
+        datatype = BoxFeed.class_schema['view']
+        value = datatype.get_default()
+        metadata.set_property('view', value)
 
 
 
@@ -498,7 +500,9 @@ class ContentBoxSectionNews(BoxSectionNews):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('view', '3')
+        datatype = BoxFeed.class_schema['view']
+        value = datatype.get_default()
+        metadata.set_property('view', value)
 
 
 
@@ -512,7 +516,9 @@ class BoxNewsSiblingsToc(BoxSectionNews):
         metadata.set_changed()
         metadata.version = BoxFeed.class_version
         metadata.format = BoxFeed.class_id
-        metadata.set_property('view', '1')
+        datatype = BoxFeed.class_schema['view']
+        value = datatype.get_default()
+        metadata.set_property('view', value)
 
 
 
