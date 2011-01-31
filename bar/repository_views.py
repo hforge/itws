@@ -18,11 +18,10 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Integer, Enumerate
-from itools.datatypes import String
+from itools.database import AndQuery, PhraseQuery
+from itools.datatypes import Enumerate, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl
-from itools.database import AndQuery, PhraseQuery
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -87,7 +86,9 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
     title = MSG(u'Order boxes')
 
     columns = [('checkbox', None),
-               ('title', MSG(u'Title'), False)]
+               ('icon', None),
+               ('title', MSG(u'Title'), False),
+               ('format', MSG(u'Type'), False)]
 
 
     def sort_and_batch(self, resource, context, items):
@@ -103,6 +104,28 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
     def get_table_columns(self, resource, context):
         return self.columns
+
+
+    def get_item_value(self, resource, context, item, column):
+        if column in ('icon', 'format'):
+            order_root = resource.get_order_root()
+            item_resource = order_root.get_resource(item.name, soft=True)
+
+            if item_resource is None:
+                return None
+            if column == 'icon':
+                # icon
+                path_to_icon = item_resource.get_resource_icon(16)
+                if path_to_icon.startswith(';'):
+                    path_to_resource = context.get_link(item_resource)
+                    path_to_icon = path_to_resource.resolve(path_to_icon)
+                return path_to_icon
+            elif column == 'format':
+                # Type
+                return item_resource.class_title.gettext()
+
+        proxy = super(BoxesOrderedTable_Ordered, self)
+        return proxy.get_item_value(resource, context, item, column)
 
 
 
@@ -136,8 +159,8 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         columns = proxy.get_table_columns(resource, context)
 
         columns = list(columns) # create a new list
-        column = ('format', MSG(u'Type'), False)
-        columns.insert(3, column)
+        columns.insert(1, ('icon', None))
+        columns.insert(3, ('format', MSG(u'Type'), False))
 
         # Column to remove
         indexes = [ x for x, column in enumerate(columns)
