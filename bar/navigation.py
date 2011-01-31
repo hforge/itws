@@ -160,6 +160,8 @@ class BoxNavigation(Box):
     class_title = MSG(u'Navigation box')
     class_description = MSG(u'Navigation tree which displays a full tree from '
                             u'root.')
+    class_icon16 = 'bar_items/icons/16x16/box_navigation.png'
+    class_icon48 = 'bar_items/icons/48x48/box_navigation.png'
 
     class_schema = merge_dicts(
             Box.class_schema,

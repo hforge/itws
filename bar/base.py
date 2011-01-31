@@ -45,8 +45,8 @@ class Box(BoxAware, File):
     class_version = '20100622'
     class_title = MSG(u'Box')
     class_description = MSG(u'Sidebar box')
-    class_icon16 = 'bar_items/icons/16x16/box-icon.png'
-    class_icon48 = 'bar_items/icons/48x48/box-icon.png'
+    class_icon16 = 'bar_items/icons/16x16/box.png'
+    class_icon48 = 'bar_items/icons/48x48/box.png'
     # Configuration of automatic edit view
     edit_schema = freeze({})
     class_schema = freeze(merge_dicts(

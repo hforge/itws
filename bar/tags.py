@@ -79,6 +79,8 @@ class BoxTags(Box):
     class_title = MSG(u'Tag cloud')
     class_description = MSG(u'Display a cloud with defined tags.')
     class_icon16 = 'bar_items/icons/16x16/box_tags.png'
+    class_icon48 = 'bar_items/icons/48x48/box_tags.png'
+
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
     class_schema = merge_dicts(Box.class_schema,
             formats=TagsAwareClassEnumerate(source='metadata', multiple=True),

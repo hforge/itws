@@ -110,6 +110,8 @@ class HTMLContent(WebPage):
     class_version = '20100621'
     class_title = MSG(u'HTML')
     class_description = MSG(u'HTML snippet (free content).')
+    class_icon16 = 'bar_items/icons/16x16/html_content.png'
+    class_icon48 = 'bar_items/icons/48x48/html_content.png'
 
     class_schema = merge_dicts(WebPage.class_schema,
          # Metadata

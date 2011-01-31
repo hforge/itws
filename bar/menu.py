@@ -254,6 +254,8 @@ class MenuSideBar(BoxAware, MenuFolder):
     class_version = '20100616'
     class_title = MSG(u'Side menu')
     class_description = MSG(u'Box to create a menu (1 level only)')
+    class_icon16 = 'bar_items/icons/16x16/menu_side_bar.png'
+    class_icon48 = 'bar_items/icons/48x48/menu_side_bar.png'
     class_views = ['view', 'menu', 'edit']
     class_menu = MenuSideBarTable
 

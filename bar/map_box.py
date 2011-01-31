@@ -123,8 +123,8 @@ class MapBox(Box):
     class_id = 'box-map'
     class_title = MSG(u'Map')
     class_description = MSG(u'Add a google map or an openstreet map')
-    class_icon16 = 'bar_items/icons/16x16/map.png'
-    class_icon48 = 'bar_items/icons/48x48/map.png'
+    class_icon16 = 'bar_items/icons/16x16/map_box.png'
+    class_icon48 = 'bar_items/icons/48x48/map_box.png'
 
     class_schema = merge_dicts(Box.class_schema,
           # Metadata
