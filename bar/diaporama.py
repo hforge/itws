@@ -29,7 +29,7 @@ from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, ImageSelectorWidget, SelectWidget
+from ikaaro.autoform import CheckboxWidget, ImageSelectorWidget, RadioWidget
 from ikaaro.autoform import TextWidget, MultilineWidget, PathSelectorWidget
 from ikaaro.file import Image
 from ikaaro.folder import Folder
@@ -228,12 +228,12 @@ class DiaporamaTable(OrderedTable):
     configure = GoToSpecificDocument(specific_document='..',
             specific_view='configure', title=MSG(u'Configure'))
 
-    form = [ImageSelectorWidget('img_path', title=MSG(u'Image path')),
-            PathSelectorWidget('img_link', title=MSG(u'Image link')),
-            SelectWidget('target', title=MSG(u'Target')),
-            TextWidget('title', title=MSG(u'Title (Link tip)')),
-            MultilineWidget('description',
-                            title=MSG(u'Description (Alternative text)'))]
+    form = [ImageSelectorWidget('img_path', title=MSG(u'Image Path')),
+            PathSelectorWidget('img_link', title=MSG(u'Image Link')),
+            RadioWidget('target', title=MSG(u'Link Target'),
+                has_empty_option=False, oneline=True),
+            TextWidget('title', title=MSG(u'Caption Title')),
+            TextWidget('description', title=MSG(u'Caption Content'))]
 
 
     def get_links(self):

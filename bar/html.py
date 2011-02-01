@@ -25,8 +25,7 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, PathSelectorWidget
-from ikaaro.autoform import SelectWidget
+from ikaaro.autoform import CheckboxWidget, PathSelectorWidget, RadioWidget
 from ikaaro.menu import Target
 from ikaaro.webpage import HTMLEditView, WebPage_View
 from ikaaro.workflow import state_widget
@@ -97,7 +96,8 @@ class HTMLContent_Edit(HTMLEditView):
             CheckboxWidget('display_title',
                             title=MSG(u'Display title')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
-            SelectWidget('title_link_target', title=MSG(u'Title link target')),
+            RadioWidget('title_link_target', title=MSG(u'Title link target'),
+                has_empty_option=False, oneline=True),
             advance_rte_widget, state_widget ])
 
 
