@@ -34,8 +34,9 @@ from itws.widgets import OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 class OpenLayerRender(Enumerate):
 
-    options = [{'name': 'osm', 'value': MSG(u'OpenStreetMap')},
-               {'name': 'google', 'value': MSG(u'Google Map')}]
+    options = [
+        {'name': 'osm', 'value': MSG(u'OpenStreetMap')},
+        {'name': 'google', 'value': MSG(u'Google Maps')}]
 
     map_widget_cls = {'google': GoogleMapWidget,
                       'osm': OpenStreetMapWidget}
