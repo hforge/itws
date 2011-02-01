@@ -32,7 +32,7 @@ from webpage_views import WebPage_Edit, WebPage_View
 
 
 
-class WebPage(BaseWebPage, TagsAware):
+class WebPage(TagsAware, BaseWebPage):
     """
     We override the ikaaro webpage to:
       - Override RTE to allow to add iframe
