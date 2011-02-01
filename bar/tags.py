@@ -101,7 +101,7 @@ class BoxTags(Box):
 
     edit_widgets = freeze([
         CheckboxWidget('display_title',
-                        title=MSG(u'Display title on tag cloud view')),
+                        title=MSG(u'Display title')),
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         CheckboxWidget('show_number',

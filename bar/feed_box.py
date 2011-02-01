@@ -207,18 +207,18 @@ class BoxFeed(Box):
 
     edit_widgets = freeze([
         CheckboxWidget('display_title',
-                       title=MSG(u'Display title on section view')),
+                       title=MSG(u'Display title')),
         SelectWidget('container_path', title=MSG(u'Container'),
                      has_empty_option=False),
         CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),
         SelectWidget('view', title=MSG(u'Feed template'),
                      has_empty_option=False),
-        SelectWidget('sort_by', title=MSG(u'Sort by ?'),
+        SelectWidget('sort_by', title=MSG(u'Sort by'),
                      has_empty_option=False),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
-        DualSelectWidget('tags', title=MSG(u'Show only items with this TAGS'),
+        DualSelectWidget('tags', title=MSG(u'Show only items with these TAGS'),
                          is_inline=True, has_empty_option=False)])
 
 

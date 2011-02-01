@@ -95,7 +95,7 @@ class MapBox_Edit(DBResource_Edit):
         # Return widgets
         return freeze(DBResource_Edit._get_widgets(self, resource, context)
                 + [CheckboxWidget('display_title',
-                                  title=MSG(u'Display title on section view')),
+                                  title=MSG(u'Display title')),
                    SelectWidget('render', title=MSG(u'Render map with')),
                    TextWidget('width', title=MSG(u'Map width'), size=6),
                    TextWidget('height', title=MSG(u'Map height'), size=6),

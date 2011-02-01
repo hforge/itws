@@ -359,7 +359,7 @@ class Diaporama(BoxAware, Folder):
 
     edit_schema = freeze({'display_title': Boolean})
     edit_widgets = freeze([CheckboxWidget('display_title',
-        title=MSG(u'Display title on section view'))])
+        title=MSG(u'Display title'))])
 
     order_path = 'order-banners'
     order_table = DiaporamaTable
