@@ -65,7 +65,7 @@ class Search_View(Feed_View):
 class DetailsWithoutPicture_View(Feed_View):
 
     view_name = 'details-without-picture-view'
-    view_title = MSG(u'Details View (withour pictures)')
+    view_title = MSG(u'Details View (without pictures)')
     content_template = '/ui/news/SectionNews_view.xml'
 
 

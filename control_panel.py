@@ -133,7 +133,7 @@ class CPDBResource_CommitLog(DBResource_CommitLog):
 
 class CPDBResource_Links(DBResource_Links):
 
-    description = MSG(u'List resources that links to this resource')
+    description = MSG(u'List resources that link to this resource')
     itws_icon = 'links.png'
     context_menus = context_menus
 

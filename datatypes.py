@@ -99,5 +99,5 @@ class SortBy_Enumerate(Enumerate):
 class Reverse_Enumerate(Enumerate):
 
     options = [
-      {'name': '0', 'value': MSG(u'First  to last')},
+      {'name': '0', 'value': MSG(u'First to last')},
       {'name': '1', 'value': MSG(u'Last to first')}]
