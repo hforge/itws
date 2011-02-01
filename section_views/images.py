@@ -33,8 +33,9 @@ from itws.tags import get_registered_tags_aware_classes
 
 class GalleryClassesEnumerate(Enumerate):
 
-    options = [{'name': 'image', 'value': MSG(u'Image')},
-               {'name': 'tagsaware', 'value': MSG(u'TagsAware')}]
+    options = [
+        {'name': 'image', 'value': MSG(u'Image')},
+        {'name': 'tagsaware', 'value': MSG(u'Content with tags')}]
 
 
 
