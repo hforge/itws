@@ -239,14 +239,14 @@ class TagsAware_Edit(object):
 
     def _get_widgets(self, resource, context):
         return freeze(
-            [DualSelectWidget('tags', title=MSG(u'TAGS'), is_inline=True,
+            [DualSelectWidget('tags', title=MSG(u'Tags'), is_inline=True,
                               has_empty_option=False),
              ImageSelectorWidget('thumbnail', title=MSG(u'Thumbnail')),
              DateWidget('pub_date',
-                        title=MSG(u'Publication date (use by RSS and TAGS)')),
+                        title=MSG(u'Publication date (used by RSS and tags)')),
              TextWidget('pub_time', tip=MSG(u'hour:minute'), size=5,
                         maxlength=5,
-                        title=MSG(u'Publication time (use by RSS and TAGS)'))])
+                        title=MSG(u'Publication time (used by RSS and tags)'))])
 
 
     def get_value(self, resource, context, name, datatype):

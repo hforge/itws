@@ -218,7 +218,7 @@ class BoxFeed(Box):
                      has_empty_option=False),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
-        DualSelectWidget('tags', title=MSG(u'Show only items with these TAGS'),
+        DualSelectWidget('tags', title=MSG(u'Show only items with these tags'),
                          is_inline=True, has_empty_option=False)])
 
 
