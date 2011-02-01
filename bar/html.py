@@ -108,8 +108,8 @@ class HTMLContent(WebPage):
 
     class_id = 'html-content'
     class_version = '20100621'
-    class_title = MSG(u'HTML')
-    class_description = MSG(u'HTML snippet (free content).')
+    class_title = MSG(u'Content')
+    class_description = MSG(u'Formatted Content (HTML)')
     class_icon16 = 'bar_items/icons/16x16/html_content.png'
     class_icon48 = 'bar_items/icons/48x48/html_content.png'
 

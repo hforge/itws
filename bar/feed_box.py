@@ -169,12 +169,11 @@ class BoxFeed(Box):
     # XXX We have to refactor BoxFeed_View
 
     class_id = 'box-feed'
-    class_title = MSG(u'Box to feed items')
+    class_title = MSG(u'Feed')
+    class_description = MSG(u'Display the feed of a content from the website')
     class_version = '20101228'
     class_icon16 = 'bar_items/icons/16x16/box_feed.png'
     class_icon48 = 'bar_items/icons/48x48/box_feed.png'
-    class_description = MSG(u'Display the last N items (Webpage/News) '
-                            u'filtered by tags')
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(

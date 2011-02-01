@@ -124,8 +124,8 @@ class BoxContact(Box):
 
     class_id = 'box-contact'
     class_version = '20100923'
-    class_title = MSG(u'Contact box')
-    class_description = MSG(u'Contact form to collect messages from users.')
+    class_title = MSG(u'Contact')
+    class_description = MSG(u'Contact form to collect messages from users')
     class_icon16 = 'bar_items/icons/16x16/box_contact.png'
     class_icon48 = 'bar_items/icons/48x48/box_contact.png'
 

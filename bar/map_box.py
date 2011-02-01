@@ -122,7 +122,7 @@ class MapBox(Box):
 
     class_id = 'box-map'
     class_title = MSG(u'Map')
-    class_description = MSG(u'Add a google map or an openstreet map')
+    class_description = MSG(u'Show a location on Google Maps or OpenStreetMap')
     class_icon16 = 'bar_items/icons/16x16/map_box.png'
     class_icon48 = 'bar_items/icons/48x48/map_box.png'
 
