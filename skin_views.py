@@ -102,10 +102,10 @@ class AdminBarTemplate(CMSTemplate):
         # Manage content
         active = context.view_name == 'manage_content'
         if is_folder:
-            icon = '/ui/icons/16x16/folder.png'
+            icon = 'folder-explore'
             name = './;manage_content'
         else:
-            icon = '/ui/common/icons/16x16/parent_folder.png'
+            icon = 'folder-back'
             name = '../;manage_content'
         tabs.append({'name': name,
                      'label': MSG(u'Navigation'),
@@ -118,7 +118,7 @@ class AdminBarTemplate(CMSTemplate):
                 active = context.view_name == 'new_resource'
                 tabs.append({'name': './;new_resource',
                               'label': MSG(u'Add content'),
-                              'icon': '/ui/icons/16x16/new.png',
+                              'icon': 'page-white-add',
                               'rel': None,
                               'class': active and 'active' or None})
         return tabs
@@ -148,19 +148,19 @@ class AdminBarTemplate(CMSTemplate):
         active = is_site_root and context.view_name in (None, 'view')
         tabs.append({'name': '/',
                      'label': MSG(u'Go home'),
-                     'icon': '/ui/icons/16x16/action_home.png',
+                     'icon': 'house-go',
                      'class': active and 'active' or None})
         # New resource
         active = is_site_root and context.view_name == 'website_new_resource'
         tabs.append({'name': '/;website_new_resource',
                      'label': MSG(u'Create a new resource'),
-                     'icon': '/ui/icons/16x16/new.png',
+                     'icon': 'page-white-add',
                      'class': active and 'active' or None})
         # Control panel
         active = is_site_root and context.view_name == 'control_panel'
         tabs.append({'name': '/;control_panel',
                      'label': MSG(u'Control panel'),
-                     'icon': '/ui/icons/16x16/external.png',
+                     'icon': 'cog',
                      'class': active and 'active' or None})
         return tabs
 

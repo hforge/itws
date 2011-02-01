@@ -269,6 +269,20 @@
 #browse-list th a.sort-up { background-position: -10px -48px; }
 #browse-list th a.sort-up-active { background-position: -10px -67px; }
 
+/* Admin Bar */
+.adminbar16 {
+  background: transparent url(/ui/common/icons/16x16/sprite-admin-bar.png) no-repeat;
+  display: block;
+  float: left;
+  height: 16px;
+  width: 16px;
+}
+
+.house-go { background-position: -2px -2px; }
+.page-white-add { background-position: -2px -20px; }
+.cog { background-position: -2px -38px; }
+.folder-explore { background-position: -2px -56px; }
+.folder-back { background-position: -2px -74px; }
 
 /**************************************************************************
  * Bar items
