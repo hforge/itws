@@ -53,16 +53,16 @@ Voici un tableau récapitulatif des différentes zones de votre site:
       - Le pied de page vous permet d'ajouter des informations sur votre société/organisation
 
 
-Types de resources
+Types de ressources
 ----------------------
 
 Comme pour votre ordinateur, votre site internet est composé d'un ensemble de Dossiers et de Fichiers.
-Dans ITWS on appele cela des "Resources". Ces resources sont regroupables dans deux groupes:
+Dans ITWS on appelle cela des "ressources". Ces ressources sont présentes sous deux formes :
 
   - Les "Dossiers" qui peuvent contenir d'autres fichiers ou dossiers
-  - Les "Fichiers" qui ne peuvent pas contenir d'autres resources.
+  - Les "Fichiers" qui ne peuvent pas contenir d'autres ressources.
 
-Voici la liste complétes des resources d'ITWS:
+Voici la liste complète des ressources d'ITWS:
 
 
 .. list-table:: Tableau
@@ -130,7 +130,7 @@ barre d'administration:
   XXX
 
 A partir du navigateur, vous pouvez effectuer des actions,
-sur une ou plusieurs resources à la fois:
+sur une ou plusieurs ressources à la fois:
 
   - Renommer
   - Supprimer
@@ -157,25 +157,25 @@ Cette barre d'administration est composée de 3 blocs.
 
 .. figure:: figures/admin_bar_1.*
 
-La premiére barre d'administration, qui est toujours affichée vous permet::
+La première barre d'administration, qui est toujours affichée vous permet::
 
    - D'accéder rapidement à la page d'accueil
    - D'accéder au panneau de contrôle dans lequel vous pouvez configurer votre site internet
-   - D'accéder à l'interface d'ajout d'une nouvelle resource
+   - D'accéder à l'interface d'ajout d'une nouvelle ressource
 
 **Barre numéro 2**
 
 .. figure:: figures/admin_bar_2.*
 
-La deuxiéme barre d'administration est la barre d'administration la plus importante.
-Celle-ci est différentes sur toutes les pages de votre site.
+La deuxième barre d'administration est la barre d'administration la plus importante.
+Celle-ci est différente sur toutes les pages de votre site.
 
-Cette barre vous donne des informations importantes:
+Cette barre vous donne des informations importantes :
 
-    - Le type de la resource courante (Section/WebPage...)
-    - L'état de publication de la resource (Vert=public, rouge=Privé, blanc=Pas de workflow)
+    - Le type de la ressource courante (Section/WebPage...)
+    - L'état de publication de la ressource (Vert=public, rouge=Privé, blanc=Pas de workflow)
 
-Vous disposez aussi de boutons permettant d'agir sur la resource courante.
+Vous disposez aussi de boutons permettant d'agir sur la ressource courante.
 
 
 **Barre numéro 3**
@@ -184,9 +184,9 @@ Vous disposez aussi de boutons permettant d'agir sur la resource courante.
 
 Cette troisième barre vous permet d'activer ou non le mode édition.
 
-Si le mode édition est activé, des boutons d'actions suplémentaires seront affichées
+Si le mode édition est activé, des boutons d'actions suplémentaires seront affichés
 lors de la navigation dans votre site.
-Ces boutons permettent d'éditer votre site. (D'où le nom de 'mode édition).
+Ces boutons permettent d'éditer votre site. (D'où le nom de "mode édition").
 
 Si le mode édition est désactivé, les boutons d'actions supplémentaires seront cachés.
 
@@ -197,72 +197,72 @@ La barre d'administration centrale
 Les 3 variantes de barre centrale
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La barre centrale varie en fonction du type de la resource dans laquelle vous vous trouvez.
-On peut néanmoins distinguer trois variantes de cette barre centrale:
+La barre centrale varie en fonction du type de la ressource dans laquelle vous vous trouvez.
+On peut néanmoins distinguer trois variantes de cette barre centrale :
 
   - La barre centrale du site Internet (à la racine du site)
   - La barre centrale de contenu de type "Contenant". Par exemple "Section" ou "Dossier"
   - La barre centrale sur du contenu éditable. Par exemple "Page Internet" ou "Fichier"
 
-Nous allons présenter, ci-aprés, les 3 variantes de la barre centrale.
+Nous allons présenter, ci-après, les 3 variantes de la barre centrale.
 
-Barre d'administration de la racine de votre Site
+Barre d'administration de la racine de votre site
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Lorsque vous êtes à la racine de votre site internet, vous devriez voir cette barre d'administration:
 
 .. figure:: figures/admin_bar_2.*
 
-Le titre de la resource courante est "ITWS Web Site", car vous êtes à la racine de votre site.
+Le titre de la ressource courante est "ITWS Web Site", car vous êtes à la racine de votre site.
 
 L'expression "ITWS Web Site" n'est pas colorée (en vert/orange/ou rouge) car le site est forcément public.
 
 Cinq actions sont réalisables:
 
-  - **Voir** Cela permet de visualiser la page d'accueil de votre site
-  - **Modifier** Cela permet de modifier le titre, et l'apparence de la page d'accueil
-  - **Configuration** Cela permet d'accèder au panneau d'administration de votre site
-  - **Icône Dossier** Vous permet d'accèder au navigateur de fichier de votre site.
-  - **Icône Nouvelle ressource** Vous permet d'ajouter une nouvelle resource à la racine de votre site
+  - **Voir** permet de visualiser la page d'accueil de votre site
+  - **Modifier** permet de modifier le titre, et l'apparence de la page d'accueil
+  - **Configuration** permet d'accéder au panneau d'administration de votre site
+  - **Icône Dossier** permet d'accéder au navigateur de fichiers de votre site.
+  - **Icône Nouvelle ressource** permet d'ajouter une nouvelle ressource à la racine de votre site
 
 Barre d'administration d'une Section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Lorsque la resource courante est une section, vous devriez voir cette barre d'administration
+Lorsque la ressource courante est une section, vous devriez voir cette barre d'administration
 
 XXX
 
-Le titre de la resource courante est donc "Section".
-Ce titre est coloré en vert car la resource est publiée.
+Le titre de la ressource courante est donc "Section".
+Ce titre est coloré en vert car la ressource est publiée.
 
 Cinq actions sont réalisables:
 
-  - **Voir** Cela permet de visualiser la section
-  - **Modifier** Cela permet de modifier le titre, et l'apparence de la section
-  - **Avancé** Vous pouvez effectuer des opérations avancées sur la section:
+  - **Voir** permet de visualiser la section
+  - **Modifier** permet de modifier le titre, et l'apparence de la section
+  - **Avancé** permet d'effectuer des opérations avancées sur la section :
         - Voir l'historique de modification de la section
         - Voir la liste des liens et rétroliens de la section
-        - Gérer la table des matiéres de la section
-  - **Icône Dossier** Vous permet d'ouvrir le navigateur de fichier.
+        - Gérer la table des matières de la section
+  - **Icône Dossier** permet d'ouvrir le navigateur de fichiers.
     Le navigateur sera ouvert à l'emplacement courant.
-  - **Icône Nouvelle ressource** Vous permet d'ajouter une nouvelle resource dans la section courante
+  - **Icône Nouvelle ressource** permet d'ajouter une nouvelle ressource dans la section courante
 
 
 Barre d'administration d'une "Page Internet"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Lorsque la resource courante est une Page Internet, vous devriez voir cette barre d'administration:
+Lorsque la ressource courante est une page internet, vous devriez voir cette barre d'administration :
 
 XXX
 
-Le titre de la resource courante est donc "Page Web"
-Ce titre est coloré en vert car la resource est publiée.
-Quatres actions sont réalisables:
+Le titre de la ressource courante est donc "Page Web"
+Ce titre est coloré en vert car la ressource est publiée.
+Quatre actions sont réalisables :
 
-    - **Voir** Cela permet de visualiser la "Page Internet"
-    - **Modifier** Cela permet de modifier le contenu de la "Page Internet"
-    - **Avancé** Qui permet d'accéder à des actions avancées
-    - **Icône Dossier parent** Vous permet d'ouvrir le navigateur dans la section parente qui contient la resource courante.
+    - **Voir** permet de visualiser la "Page Internet"
+    - **Modifier** permet de modifier le contenu de la "Page Internet"
+    - **Avancé** permet d'accéder à des actions avancées
+    - **Icône Dossier parent** permet d'ouvrir le navigateur dans la section parente qui contient la ressource courante.
 
 
 
@@ -272,11 +272,11 @@ Configurer et administrer mon site Internet
 Se connecter en tant qu'Administrateur
 ---------------------------------------
 
-Vous avez sans doute reçu, par email vos identifiants et mot de passe.
+Vous avez sans doute reçu, par email vos identifiant et mot de passe.
 Si ce n'est pas le cas, demandez à l'administrateur du site de vous inscrire.
 
 La première étape pour modifier votre site Internet est de vous identifier.
-Vous pouvez vous identifier via le lien "Se connecter", présentant en haut de page.
+Vous pouvez vous identifier via le lien "Se connecter", situé en haut de la page.
 
 Cette page va vous demander de saisir votre email et votre mot de passe.
 Si vous avez oublié votre mot de passe, vous pouvez le réinitialiser en cochant la case "J'ai oublié mon mot de passe".
@@ -288,23 +288,23 @@ Si vous avez oublié votre mot de passe, vous pouvez le réinitialiser en cochan
 Le panneau de contrôle
 -----------------------------
 
-L'ensemble de la configuration de votre site Internet ce réalise dans le panneau de contrôle de votre site Internet.
+L'ensemble de la configuration de votre site Internet se réalise dans le panneau de contrôle de votre site Internet.
 
 Lorsque vous êtes connecté en tant qu'administrateur, vous pouvez cliquer sur l'icône:
 
 .. figure:: figures/control_panel.*
 
-"Panneau de contrôle" de la premiére barre d'administration.
+"Panneau de contrôle" de la première barre d'administration.
 
 Voici une capture d'écran du panneau de contrôle:
 
 .. figure:: figures/control_panel_view.*
 
-A partir de ce panneau de contrôle vous pouvez:
+A partir de ce panneau de contrôle vous pouvez :
 
   - Gérer les utilisateurs de votre site et leurs droits
   - Créer de nouveaux utilisateurs
-  - Modifier la liste des Hôtes virtuels
+  - Modifier la liste des hôtes virtuels
   - Configurer la politique de sécurité
   - Modifier la liste des langues disponibles et la langue par défaut
   - Modifier les options de contact
@@ -313,7 +313,7 @@ A partir de ce panneau de contrôle vous pouvez:
   - Modifier le fichier robots.txt
   - Gérer la liste des tags
   - Configurer des informations de référencement
-  - Visualiser les liens cassés, les resources orphelines et l'historique des modifications de votre site
+  - Visualiser les liens cassés, les ressources orphelines et l'historique des modifications de votre site
 
 Gestion du thème
 --------------------------
@@ -322,9 +322,9 @@ Dans le thème, vous pouvez:
 
   - Changer le favicon, et le logo de votre site internet
   - Choisir la skin utilisée
-  - Modifier la feuille CSS du site
+  - Modifier la feuille de style du site (CSS)
   - Modifier le menu du site
-  - Modifier le footer du site
+  - Modifier le pied de page du site (footer)
 
 Modifier le menu principal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -373,7 +373,7 @@ XXX
 Les vues avancées
 -----------------------------
 
-Certaines resources disposent de vues avancées
+Certaines ressources disposent de vues avancées
 
 .. list-table:: Tableau
     :header-rows: 1
@@ -395,27 +395,27 @@ Certaines resources disposent de vues avancées
     - XXX
 
 
-Mon site et le référemencement
+Mon site et le référencement
 ==============================
 
 ITWS est une solution naturellement optimisée pour le réferencement.
 
-Dans cette partie de la documentation nous aller vous présenter
-quelques actions qui vous permettrons d'améliorer encore XXX
-
+Dans cette partie de la documentation nous allons vous présenter
+quelques actions qui vous permettront d'améliorer encore davantage votre
+réferencement :
 
 
 **Sitemap.xml** XXX
-**Tobots.txt** XXXX
+**Robots.txt** XXXX
 **Vue SEO** XXX (Google key / Yahoo key /) Google Webmaster tools
 
 
 Questions
 =========
 
-Voici les réponses aux questions fréquemment possées:
+Voici les réponses aux questions fréquemment posées :
 
-**Comment savoir si je doit ajouter une section ou une webpage ?**
+**Comment savoir si je dois ajouter une section ou une webpage ?**
 
 XXX
 
@@ -434,18 +434,24 @@ cette documentation.
 CMS
 ---
 
-CMS signifie en anglais Content Management System.
+CMS signifie en anglais Content Management System (système de gestion de
+contenu).
 
-Une resource
+Une ressource
 -------------
 
-Dans ITWS, une resource
+Dans ITWS, une ressource désigne à peu près tout type d'objet mis à la
+disposition des utilisateurs.
 
 Workflow
 --------
 
-Un workflow
+Un workflow définit l'état d'une ressource et les transitions entre ces états
+(privé, en attente de publication, publié).
 
+SEO
+----
+Search Engine Optimization.
 
 
 À propos
