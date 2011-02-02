@@ -26,10 +26,23 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import stl_namespaces, SelectWidget
+from ikaaro.autoform import stl_namespaces, SelectWidget, make_stl_template
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 
+
+# Helper
+icon_with_title_template = make_stl_template(
+    """<img src="${icon}" border="0" title="${title}" alt="${title}" />""")
+
+def get_icon_with_title(resource, context):
+    path_to_icon = resource.get_resource_icon(16)
+    if path_to_icon.startswith(';'):
+        path_to_resource = context.get_link(resource)
+        path_to_icon = path_to_resource.resolve(path_to_icon)
+    title = resource.class_title.gettext()
+    return stl(events=icon_with_title_template,
+            namespace={'icon': path_to_icon, 'title': title})
 
 
 ###############################################################################
@@ -86,9 +99,9 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
     title = MSG(u'Order boxes')
 
     columns = [('checkbox', None),
-               ('icon', None),
+               ('icon_with_title', None),
                ('title', MSG(u'Title'), False),
-               ('format', MSG(u'Type'), False)]
+               ('name', MSG(u'Name'), False)]
 
 
     def sort_and_batch(self, resource, context, items):
@@ -107,22 +120,15 @@ class BoxesOrderedTable_Ordered(ResourcesOrderedTable_Ordered):
 
 
     def get_item_value(self, resource, context, item, column):
-        if column in ('icon', 'format'):
+        if column == 'icon_with_title':
             order_root = resource.get_order_root()
             item_resource = order_root.get_resource(item.name, soft=True)
 
             if item_resource is None:
                 return None
-            if column == 'icon':
-                # icon
-                path_to_icon = item_resource.get_resource_icon(16)
-                if path_to_icon.startswith(';'):
-                    path_to_resource = context.get_link(item_resource)
-                    path_to_icon = path_to_resource.resolve(path_to_icon)
-                return path_to_icon
-            elif column == 'format':
-                # Type
-                return item_resource.class_title.gettext()
+            return get_icon_with_title(item_resource, context)
+        elif column == 'name':
+            return item.name
 
         proxy = super(BoxesOrderedTable_Ordered, self)
         return proxy.get_item_value(resource, context, item, column)
@@ -159,8 +165,8 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         columns = proxy.get_table_columns(resource, context)
 
         columns = list(columns) # create a new list
-        columns.insert(1, ('icon', None))
-        columns.insert(3, ('format', MSG(u'Type'), False))
+        columns.insert(1, ('icon_with_title', None))
+        columns.insert(3, ('name', MSG(u'Name'), False))
 
         # Column to remove
         indexes = [ x for x, column in enumerate(columns)
@@ -170,6 +176,17 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
             columns.pop(index)
 
         return columns
+
+
+    def get_item_value(self, resource, context, item, column):
+        if column == 'icon_with_title':
+            item_brain, item_resource = item
+            return get_icon_with_title(item_resource, context)
+        elif column == 'name':
+            item_brain, item_resource = item
+            return item_brain.name
+        proxy = super(BoxesOrderedTable_Unordered, self)
+        return proxy.get_item_value(resource, context, item, column)
 
 
     def get_search_namespace(self, resource, context):
