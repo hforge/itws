@@ -16,9 +16,10 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.gettext import MSG
 from itools.database import OrQuery, PhraseQuery
 from itools.datatypes import Boolean, Enumerate, PathDataType
+from itools.gettext import MSG
+from itools.uri import Path
 from itools.web import get_context
 
 # Import from ikaaro
@@ -224,3 +225,69 @@ class BoxFeed(Box):
 
     # Views
     view = BoxFeed_View()
+
+
+    def get_links(self):
+        base = self.get_canonical_path()
+        links = super(BoxFeed, self).get_links()
+        container_path = self.get_property('container_path')
+        if container_path:
+            site_root = self.get_site_root()
+            if container_path == '/':
+                # site root
+                links.add(str(site_root.abspath))
+            else:
+                abs_path = site_root.abspath.resolve2(container_path)
+                links.add(str(abs_path))
+
+        return links
+
+
+    def update_links(self, source, target):
+        super(BoxFeed, self).update_links(source, target)
+
+        container_path = self.get_property('container_path')
+        if container_path:
+            if container_path == '/':
+                # Even if site_root is renammed, '/' is '/'
+                pass
+            else:
+                resources_new2old = get_context().database.resources_new2old
+                site_root_abspath = self.get_site_root().abspath
+                base = str(site_root_abspath)
+                old_base = resources_new2old.get(base, base)
+                old_base = Path(old_base)
+                # Path is relative to site_root
+                path = old_base.resolve2(container_path)
+
+                if path == source:
+                    # Hit the old name
+                    new_path = site_root_abspath.get_pathto(target)
+                    self.set_property('container_path', new_path)
+
+
+    def update_relative_links(self, source):
+        super(BoxFeed, self).update_relative_links(source)
+
+        container_path = self.get_property('container_path')
+        if container_path:
+            if container_path == '/':
+                # Even if site_root is renammed, '/' is '/'
+                pass
+            else:
+                # FIXME Should do nothing since container_path
+                # is inside the site_root
+                site_root = self.get_site_root()
+                site_root_abspath = site_root.abspath
+
+                target = self.get_canonical_path()
+                resources_old2new = get_context().database.resources_old2new
+                # Calcul the old absolute path
+                # Path is relative to site_root
+                old_abs_path = site_root_abspath.resolve2(container_path)
+                # Check if the target path has not been moved
+                new_abs_path = resources_old2new.get(old_abs_path,
+                                                     old_abs_path)
+                new_path = site_root_abspath.get_pathto(new_abs_path)
+                self.set_property('container_path', new_path)
+
