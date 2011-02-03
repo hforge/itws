@@ -348,6 +348,7 @@ class Diaporama(BoxAware, Folder):
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
 
     class_schema = merge_dicts(Folder.class_schema,
+                               BoxAware.class_schema,
                                display_title=Boolean(source='metadata',
                                                      default=True))
 
@@ -374,6 +375,11 @@ class Diaporama(BoxAware, Folder):
         # FIXME The side effect is that new_resource allow to add Image
         # only inside Diaporama folder without using the Diaporama view.
         return [Image]
+
+
+    def get_catalog_values(self):
+        return merge_dicts(Folder.get_catalog_values(self),
+                           BoxAware.get_catalog_values(self))
 
 
     ##############

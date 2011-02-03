@@ -259,6 +259,9 @@ class MenuSideBar(BoxAware, MenuFolder):
     class_views = ['view', 'menu', 'edit']
     class_menu = MenuSideBarTable
 
+    class_schema = merge_dicts(MenuFolder.class_schema,
+                               BoxAware.class_schema)
+
     # Configuration
     use_fancybox = False
     allow_instanciation = True
@@ -270,3 +273,8 @@ class MenuSideBar(BoxAware, MenuFolder):
     edit = AdvanceGoToSpecificDocument(
             specific_document='menu', specific_method='edit',
             title=MenuFolder.edit.title, keep_query=True)
+
+
+    def get_catalog_values(self):
+        return merge_dicts(MenuFolder.get_catalog_values(self),
+                           BoxAware.get_catalog_values(self))

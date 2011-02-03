@@ -125,9 +125,9 @@ class HTMLContent(WebPage):
 
 
     def get_catalog_values(self):
-        values = WebPage.get_catalog_values(self)
-        values['is_tagsaware'] = False
-        return values
+        return merge_dicts(WebPage.get_catalog_values(self),
+                           is_tagsaware=False,
+                           box_aware=True)
 
 
     ###########################

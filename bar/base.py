@@ -16,6 +16,7 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -38,6 +39,13 @@ class BoxAware(object):
     is_content = False
     allow_instanciation = True
 
+    class_schema = freeze({
+        'box_aware': Boolean(indexed=True)})
+
+
+    def get_catalog_values(self):
+        return {'box_aware': True}
+
 
 
 class Box(BoxAware, File):
@@ -50,7 +58,7 @@ class Box(BoxAware, File):
     # Configuration of automatic edit view
     edit_schema = freeze({})
     class_schema = freeze(merge_dicts(
-        File.class_schema, edit_schema))
+        File.class_schema, BoxAware.class_schema, edit_schema))
 
     download = None
     externaledit = None

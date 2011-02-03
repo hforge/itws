@@ -43,6 +43,7 @@ class Browse_Navigator(Feed_View):
 
     search_on_current_folder = True
     ignore_internal_resources = True
+    ignore_box_aware = True
     display_title = False
 
     table_columns = [

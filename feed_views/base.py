@@ -58,6 +58,7 @@ class Feed_View(Folder_BrowseContent):
     sort_by = 'title'
     reverse = False
     ignore_internal_resources = False
+    ignore_box_aware = True
     search_on_current_folder = True
     search_on_current_folder_recursive = False
     content_keys = ('pub_datetime', 'title', 'long_title',
@@ -235,6 +236,9 @@ class Feed_View(Folder_BrowseContent):
                 args.append(OrQuery(TextQuery('title', search_text),
                                     TextQuery('text', search_text),
                                     PhraseQuery('name', search_text)))
+
+        if self.ignore_box_aware:
+            args.append(NotQuery(PhraseQuery('box_aware', True)))
 
         if self.ignore_internal_resources:
             exclude_query = []
