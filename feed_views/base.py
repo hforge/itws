@@ -19,12 +19,14 @@ from itools.core import merge_dicts
 from itools.database import PhraseQuery, NotQuery, OrQuery, TextQuery, AndQuery
 from itools.datatypes import Enumerate, Integer, String, Boolean
 from itools.gettext import MSG
+from itools.uri import Path
 
 # Import from ikaaro
 from ikaaro.autoform import SelectWidget
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.registry import get_resource_class
 from ikaaro.utils import get_base_path_query
+from ikaaro.website import WebSite
 
 
 
@@ -189,6 +191,7 @@ class Feed_View(Folder_BrowseContent):
     def get_items(self, resource, context, *args):
         """ Same that Folder_BrowseContent but we allow to
             define var 'search_on_current_folder'"""
+        root = context.root
         # Query
         args = list(args)
 
@@ -205,7 +208,7 @@ class Feed_View(Folder_BrowseContent):
             query = get_base_path_query(str(abspath))
             args.append(query)
             # Exclude '/theme/'
-            if resource.get_abspath() == '/':
+            if isinstance(resource, WebSite):
                 theme_path = abspath.resolve_name('theme')
                 theme = get_base_path_query(str(theme_path), True)
                 args.append(NotQuery(theme))
@@ -232,18 +235,39 @@ class Feed_View(Folder_BrowseContent):
                 args.append(OrQuery(TextQuery('title', search_text),
                                     TextQuery('text', search_text),
                                     PhraseQuery('name', search_text)))
+
         if self.ignore_internal_resources:
+            exclude_query = []
             # Exclude internal use resources
             method = getattr(resource, 'get_internal_use_resource_names', None)
             if method:
-                exclude_query = []
                 resource_abspath = resource.get_abspath()
                 for name in method():
                     abspath = resource_abspath.resolve2(name)
                     q = get_base_path_query(str(abspath),
                                             include_container=True)
                     exclude_query.append(q)
+            if self.search_on_current_folder_recursive is True:
+                # TODO To improve
+                if len(args) == 1:
+                    q = args[0]
+                else:
+                    q = AndQuery(*args)
+                q = AndQuery(q, PhraseQuery('is_folder', True))
+                folder_results = root.search(q)
+                for doc in folder_results.get_documents():
+                    folder_resource = root.get_resource(doc.abspath)
+                    method = getattr(folder_resource,
+                            'get_internal_use_resource_names', None)
+                    if method is None:
+                        continue
+                    for name in method():
+                        abspath = Path(doc.abspath).resolve2(name)
+                        eq = get_base_path_query(str(abspath),
+                                include_container=True)
+                        exclude_query.append(eq)
 
+            if exclude_query:
                 args.append(NotQuery(OrQuery(*exclude_query)))
 
         # Ok
@@ -252,7 +276,7 @@ class Feed_View(Folder_BrowseContent):
         else:
             query = AndQuery(*args)
 
-        return context.root.search(query)
+        return root.search(query)
 
 
     def sort_and_batch(self, resource, context, results):
