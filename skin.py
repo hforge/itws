@@ -260,9 +260,9 @@ class Skin(BaseSkin):
         namespace = BaseSkin.build_namespace(self, context)
 
         here = context.resource
+        here_ac = here.get_access_control()
         site_root = context.site_root
         theme = site_root.get_resource('theme')
-        ac = self.get_access_control()
         # banner namespace
         banner_ns = {}
         banner_ns['title'] = theme.get_property('banner_title')
@@ -323,7 +323,8 @@ class Skin(BaseSkin):
 
         # Readonly
         body_css = None
-        if type(context.database) is ROGitDatabase:
+        if here_ac.is_allowed_to_edit(context.user, here) \
+                and type(context.database) is ROGitDatabase:
             body_css = 'read-only'
         namespace['body_css'] = body_css
 
@@ -380,7 +381,6 @@ class Skin(BaseSkin):
         namespace['display_menu'] = (namespace['nav_length'] > 1)
 
         # Admin bar
-        ac = here.get_access_control()
         if ac.is_allowed_to_edit(context.user, here):
             namespace['admin_bar'] = AdminBarTemplate(context=context)
         else:
