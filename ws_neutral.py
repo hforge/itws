@@ -208,8 +208,8 @@ class NeutralWS(Website_BarAware, WebSite):
     # InternalResourcesAware API
     def get_internal_use_resource_names(self):
         return freeze(Website_BarAware.get_internal_use_resource_names(self) +
-                      ['robots.txt', 'sitemap.xml', 'theme', 'tags',
-                       'repository'])
+                      ['robots.txt', 'sitemap.xml', 'theme/', 'tags/',
+                       'repository/'])
 
 
     def get_document_types(self):

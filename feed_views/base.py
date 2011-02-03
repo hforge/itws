@@ -16,7 +16,8 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.database import PhraseQuery, NotQuery, OrQuery, TextQuery, AndQuery
+from itools.database import AndQuery, NotQuery, OrQuery, PhraseQuery
+from itools.database import StartQuery, TextQuery
 from itools.datatypes import Enumerate, Integer, String, Boolean
 from itools.gettext import MSG
 from itools.uri import Path
@@ -192,6 +193,12 @@ class Feed_View(Folder_BrowseContent):
     def get_items(self, resource, context, *args):
         """ Same that Folder_BrowseContent but we allow to
             define var 'search_on_current_folder'"""
+        # Check parameters
+        if self.search_on_current_folder and self.search_on_current_folder_recursive:
+            msg = '{0} and {1} are mutually exclusive.'
+            raise ValueError, msg.format('search_on_current_folder',
+                                         'search_on_current_folder_recursive')
+
         root = context.root
         # Query
         args = list(args)
@@ -200,14 +207,17 @@ class Feed_View(Folder_BrowseContent):
         container = self._get_container(resource, context)
         container_abspath = container.get_canonical_path()
         if self.search_on_current_folder is True:
+            # Limit result to direct children
             args.append(PhraseQuery('parent_path', str(container_abspath)))
         else:
+            # Limit results to whole sub children
             args.append(get_base_path_query(str(container_abspath)))
 
         # Search only on current folder ?
         if self.search_on_current_folder_recursive is True:
-            query = get_base_path_query(str(container_abspath))
-            args.append(query)
+            # Already done before, because if search_on_current_folder and
+            # search_on_current_folder_recursive are exclusive
+
             # Exclude '/theme/'
             if isinstance(resource, WebSite):
                 theme_path = container_abspath.resolve_name('theme')
@@ -221,8 +231,8 @@ class Feed_View(Folder_BrowseContent):
             if search_type:
                 if ',' in search_type:
                     search_type = search_type.split(',')
-                    search_type = [PhraseQuery('format', x)
-                                      for x in search_type ]
+                    search_type = [ PhraseQuery('format', x)
+                                    for x in search_type ]
                     search_type = OrQuery(*search_type)
                 else:
                     search_type = PhraseQuery('format', search_type)
@@ -237,20 +247,21 @@ class Feed_View(Folder_BrowseContent):
                                     TextQuery('text', search_text),
                                     PhraseQuery('name', search_text)))
 
-        if self.ignore_box_aware:
-            args.append(NotQuery(PhraseQuery('box_aware', True)))
-
         if self.ignore_internal_resources:
-            exclude_query = []
+            exclude_folders_path = []
+            exclude_files_path = []
             # Exclude internal use resources
             method = getattr(resource, 'get_internal_use_resource_names', None)
             if method:
                 resource_abspath = resource.get_abspath()
                 for name in method():
                     abspath = resource_abspath.resolve2(name)
-                    q = get_base_path_query(str(abspath),
-                                            include_container=True)
-                    exclude_query.append(q)
+                    if name[-1] == '/':
+                        # folder
+                        exclude_folders_path.append(str(abspath))
+                    else:
+                        # file
+                        exclude_files_path.append(str(abspath))
             if self.search_on_current_folder_recursive is True:
                 q = AndQuery(get_base_path_query(str(container_abspath)),
                              PhraseQuery('internal_resource_aware', True))
@@ -259,12 +270,27 @@ class Feed_View(Folder_BrowseContent):
                     p_abspath = Path(doc.abspath)
                     for name in doc.internal_resource_names:
                         abspath = p_abspath.resolve2(name)
-                        eq = get_base_path_query(str(abspath),
-                                include_container=True)
-                        exclude_query.append(eq)
+                        if name[-1] == '/':
+                            # folder
+                            exclude_folders_path.append(str(abspath))
+                        else:
+                            # file
+                            exclude_files_path.append(str(abspath))
+
+            exclude_query = []
+            for abspath in exclude_files_path:
+                exclude_query.append(PhraseQuery('abspath', abspath))
+
+            for abspath in exclude_folders_path:
+                # Make get_base_path_query(xxx, include_container=True)
+                exclude_query.append(PhraseQuery('abspath', abspath))
+                exclude_query.append(StartQuery('abspath', '%s/' % abspath))
 
             if exclude_query:
                 args.append(NotQuery(OrQuery(*exclude_query)))
+
+        if self.ignore_box_aware:
+            args.append(NotQuery(PhraseQuery('box_aware', True)))
 
         # Ok
         if len(args) == 1:

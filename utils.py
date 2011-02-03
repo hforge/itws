@@ -277,7 +277,11 @@ class ResourceWithCache(DBResource):
 
 
 class InternalResourcesAware(object):
-    """Implement get_internal_use_resource_names"""
+    """Implement get_internal_use_resource_names
+
+    get_internal_use_resource_names MUST adding a trailing slash to folder
+    path. By doing this we can build more efficient query in Feed_View
+    """
 
     class_schema = freeze({
         'internal_resource_aware': Boolean(indexed=True),
