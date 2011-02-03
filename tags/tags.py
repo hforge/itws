@@ -253,7 +253,17 @@ class TagsAware(object):
 
     def to_text(self, languages=None):
         if languages is None:
-            languages = self.get_site_root().get_property('website_languages')
+            site_root = self.get_site_root()
+            languages = site_root.get_property('website_languages')
+        proxy = super(TagsAware, self)
+        try:
+            if isinstance(self, Multilingual):
+                return proxy.to_text(languages=languages)
+            else:
+                return proxy.to_text()
+        except NotImplementedError:
+            pass
+        # Default implementation for "_get_preview_content"
         result = {}
         for language in languages:
             description = self.get_property('description', language=language)
