@@ -100,9 +100,10 @@ class NeutralWS(Website_BarAware, WebSite):
     class_icon48 = 'common/icons/48x48/itws-website.png'
     class_views = ['view', 'edit', 'configure_view', 'control_panel']
     class_schema = merge_dicts(WebSite.class_schema,
-                              breadcrumb_title=Multilingual(source='metadata'),
-                              view=SectionViews_Enumerate(source='metadata',
-                                  default='composite-view'))
+            Website_BarAware.class_schema,
+            breadcrumb_title=Multilingual(source='metadata'),
+            view=SectionViews_Enumerate(source='metadata',
+                                        default='composite-view'))
 
     class_control_panel = (WebSite.class_control_panel +
                           Website_BarAware.class_control_panel +
@@ -186,6 +187,11 @@ class NeutralWS(Website_BarAware, WebSite):
         table.add_new_record({'name': 'first-sidebar'})
 
 
+    def get_catalog_values(self):
+        return merge_dicts(WebSite.get_catalog_values(self),
+                           Website_BarAware.get_catalog_values(self))
+
+
     @property
     def class_skin(self):
         return self.get_resource('theme').get_property('class_skin')
@@ -199,6 +205,7 @@ class NeutralWS(Website_BarAware, WebSite):
         return WebSite.get_skin(self, context)
 
 
+    # InternalResourcesAware API
     def get_internal_use_resource_names(self):
         return freeze(Website_BarAware.get_internal_use_resource_names(self) +
                       ['robots.txt', 'sitemap.xml', 'theme', 'tags',

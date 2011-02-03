@@ -22,7 +22,8 @@ from datetime import datetime, timedelta
 from functools import partial
 
 # Import from itools
-from itools.datatypes import Boolean, XMLContent
+from itools.core import freeze
+from itools.datatypes import Boolean, String, XMLContent
 from itools.gettext import MSG
 from itools.html import xhtml_uri
 from itools.stl import stl, rewrite_uris
@@ -273,3 +274,21 @@ class ResourceWithCache(DBResource):
 
         return metadata.cache_data, metadata.cache_errors
 
+
+
+class InternalResourcesAware(object):
+    """Implement get_internal_use_resource_names"""
+
+    class_schema = freeze({
+        'internal_resource_aware': Boolean(indexed=True),
+        'internal_resource_names': String(multiple=True, indexed=True,
+                                          stored=True)})
+
+    def get_catalog_values(self):
+        internal_names = self.get_internal_use_resource_names()
+        return {'internal_resource_aware': True,
+                'internal_resource_names': list(set(internal_names))}
+
+
+    def get_internal_use_resource_names(self):
+        return freeze([])

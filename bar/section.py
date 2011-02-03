@@ -133,9 +133,12 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
     def get_catalog_values(self):
         return merge_dicts(ResourcesOrderedContainer.get_catalog_values(self),
-                           TagsAware.get_catalog_values(self))
+                           TagsAware.get_catalog_values(self),
+                           SideBarAware.get_catalog_values(self),
+                           ContentBarAware.get_catalog_values(self))
 
 
+    # InternalResourcesAware API
     def get_internal_use_resource_names(self):
         return freeze(SideBarAware.get_internal_use_resource_names(self) +
                       ContentBarAware.get_internal_use_resource_names(self) +

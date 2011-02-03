@@ -26,6 +26,7 @@ from repository import ContentbarBoxesOrderedTable
 from repository import SidebarBoxesOrderedTable
 from itws.section_views import get_section_view_from_registry
 from itws.section_views import section_views_registry
+from itws.utils import InternalResourcesAware
 from itws.views import AdvanceGoToSpecificDocument
 
 
@@ -33,11 +34,11 @@ from itws.views import AdvanceGoToSpecificDocument
 ###############################################################################
 # Resources
 ###############################################################################
-class SideBarAware(object):
+class SideBarAware(InternalResourcesAware):
 
     class_version = '20100621'
     class_views = ['order_sidebar']
-    class_schema = {}
+    # class_schema is not overrided
 
     sidebar_name = 'order-sidebar'
     repository = None
@@ -53,6 +54,7 @@ class SideBarAware(object):
         self.make_resource(path, SidebarBoxesOrderedTable)
 
 
+    # InternalResourcesAware API
     def get_internal_use_resource_names(self):
         return freeze([self.sidebar_name])
 
@@ -96,7 +98,7 @@ class SideBarAware(object):
 
 
 
-class ContentBarAware(object):
+class ContentBarAware(InternalResourcesAware):
 
     class_version = '20100622'
     class_views = ['order_contentbar']
@@ -126,6 +128,7 @@ class ContentBarAware(object):
         return content_folder.get_resource(self.contentbar_name)
 
 
+    # InternalResourcesAware API
     def get_internal_use_resource_names(self):
         return freeze([self.contentbar_name, 'section_view'])
 

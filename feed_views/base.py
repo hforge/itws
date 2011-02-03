@@ -198,19 +198,19 @@ class Feed_View(Folder_BrowseContent):
 
         # Get the container
         container = self._get_container(resource, context)
-        abspath = container.get_canonical_path()
+        container_abspath = container.get_canonical_path()
         if self.search_on_current_folder is True:
-            args.append(PhraseQuery('parent_path', str(abspath)))
+            args.append(PhraseQuery('parent_path', str(container_abspath)))
         else:
-            args.append(get_base_path_query(str(abspath)))
+            args.append(get_base_path_query(str(container_abspath)))
 
         # Search only on current folder ?
         if self.search_on_current_folder_recursive is True:
-            query = get_base_path_query(str(abspath))
+            query = get_base_path_query(str(container_abspath))
             args.append(query)
             # Exclude '/theme/'
             if isinstance(resource, WebSite):
-                theme_path = abspath.resolve_name('theme')
+                theme_path = container_abspath.resolve_name('theme')
                 theme = get_base_path_query(str(theme_path), True)
                 args.append(NotQuery(theme))
 
@@ -252,21 +252,13 @@ class Feed_View(Folder_BrowseContent):
                                             include_container=True)
                     exclude_query.append(q)
             if self.search_on_current_folder_recursive is True:
-                # TODO To improve
-                if len(args) == 1:
-                    q = args[0]
-                else:
-                    q = AndQuery(*args)
-                q = AndQuery(q, PhraseQuery('is_folder', True))
+                q = AndQuery(get_base_path_query(str(container_abspath)),
+                             PhraseQuery('internal_resource_aware', True))
                 folder_results = root.search(q)
                 for doc in folder_results.get_documents():
-                    folder_resource = root.get_resource(doc.abspath)
-                    method = getattr(folder_resource,
-                            'get_internal_use_resource_names', None)
-                    if method is None:
-                        continue
-                    for name in method():
-                        abspath = Path(doc.abspath).resolve2(name)
+                    p_abspath = Path(doc.abspath)
+                    for name in doc.internal_resource_names:
+                        abspath = p_abspath.resolve2(name)
                         eq = get_base_path_query(str(abspath),
                                 include_container=True)
                         exclude_query.append(eq)
