@@ -325,7 +325,7 @@ class Skin(BaseSkin):
         body_css = None
         if here_ac.is_allowed_to_edit(context.user, here) \
                 and type(context.database) is ROGitDatabase:
-            body_css = 'read-only'
+            body_css = 'readonly'
         namespace['body_css'] = body_css
 
         # Sidebar
