@@ -16,10 +16,11 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean
+from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.autoform import TextWidget
 from ikaaro.file import File
 
 # Import from itws
@@ -29,22 +30,28 @@ from itws.views import AutomaticEditView , EasyNewInstance
 
 class BoxAware(object):
 
+    class_schema = freeze({
+        'box_aware': Boolean(indexed=True),
+        'specific_css': String(source='metadata')})
+
     edit = AutomaticEditView()
     new_instance = EasyNewInstance()
 
-    edit_schema = freeze({})
-    edit_widgets = freeze([])
+    edit_schema = freeze({'specific_css': String(hidden_by_default=True)})
+    edit_widgets = freeze([TextWidget('specific_css',
+                                      title=MSG(u'Specific CSS'))])
 
     is_side = True
     is_content = False
     allow_instanciation = True
 
-    class_schema = freeze({
-        'box_aware': Boolean(indexed=True)})
-
 
     def get_catalog_values(self):
         return {'box_aware': True}
+
+
+    def get_specific_css(self):
+        return self.get_property('specific_css')
 
 
 
@@ -56,9 +63,8 @@ class Box(BoxAware, File):
     class_icon16 = 'bar_items/icons/16x16/box.png'
     class_icon48 = 'bar_items/icons/48x48/box.png'
     # Configuration of automatic edit view
-    edit_schema = freeze({})
     class_schema = freeze(merge_dicts(
-        File.class_schema, BoxAware.class_schema, edit_schema))
+        File.class_schema, BoxAware.class_schema))
 
     download = None
     externaledit = None

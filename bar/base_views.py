@@ -188,9 +188,13 @@ class Bar_View(CompositeView):
                 continue
             prefix = here.get_pathto(item)
             stream = set_prefix(stream, '%s/' % prefix)
+            css = self.boxes_css_class
+            specific_css = item.get_specific_css()
+            if specific_css:
+                css = '%s %s' % (css, specific_css)
             views.append(
               {'id': self._get_item_id(item, context),
-               'css_class': self.boxes_css_class,
+               'css_class': css,
                'format': item.class_id,
                'admin_bar': get_admin_bar(item),
                'content': stream})

@@ -85,6 +85,7 @@ class BoxGallery(ImagesView_Configuration, Box):
     is_content = True
 
     class_schema = freeze(merge_dicts(
+        Box.class_schema,
         ImagesView_Configuration.class_schema,
         display_title=Boolean(source='metadata', default=True)))
 

@@ -32,6 +32,7 @@ from ikaaro.workflow import state_widget
 
 # Import from itws
 from base_views import Box_View
+from itws.bar.base import BoxAware
 from itws.utils import get_path_and_view
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
@@ -76,6 +77,9 @@ class HTMLContent_Edit(HTMLEditView):
     def _get_schema(self, resource, context):
         schema = merge_dicts(
                 HTMLEditView._get_schema(self, resource, context),
+                # BoxAware API
+                resource.edit_schema,
+                # other
                 title_link=String,
                 title_link_target=Target,
                 display_title=Boolean)
@@ -93,16 +97,17 @@ class HTMLContent_Edit(HTMLEditView):
                     if widget.name not in ('description', 'subject', 'state',
                                            'data') ]
         return freeze(widgets + [
-            CheckboxWidget('display_title',
-                            title=MSG(u'Display title')),
+            CheckboxWidget('display_title', title=MSG(u'Display title')),
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             RadioWidget('title_link_target', title=MSG(u'Title link target'),
-                has_empty_option=False, oneline=True),
-            advance_rte_widget, state_widget ])
+                        has_empty_option=False, oneline=True),
+            advance_rte_widget, state_widget ]
+            # BoxAware API
+            + resource.edit_widgets)
 
 
 
-class HTMLContent(WebPage):
+class HTMLContent(BoxAware, WebPage):
 
     # XXX WebPage is tagsaaware but not HTMLContent
 
@@ -114,9 +119,10 @@ class HTMLContent(WebPage):
     class_icon48 = 'bar_items/icons/48x48/html_content.png'
 
     class_schema = merge_dicts(WebPage.class_schema,
-         # Metadata
-         title_link=String(source='metadata'),
-         title_link_target=Target(source='metadata', default='_top'))
+        BoxAware.class_schema,
+        # Metadata
+        title_link=String(source='metadata'),
+        title_link_target=Target(source='metadata', default='_top'))
 
     # Configuration
     allow_instanciation = True
@@ -126,14 +132,15 @@ class HTMLContent(WebPage):
 
     def get_catalog_values(self):
         return merge_dicts(WebPage.get_catalog_values(self),
-                           is_tagsaware=False,
-                           box_aware=True)
+                           BoxAware.get_catalog_values(self),
+                           is_tagsaware=False)
 
 
     ###########################
     ## Links API
     ###########################
 
+    # BoxAware does not implement *_links
     def get_links(self):
         links = WebPage.get_links(self)
         base = self.get_canonical_path()
