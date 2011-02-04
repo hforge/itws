@@ -42,6 +42,7 @@ from news import NewsItem
 from OPML import RssFeeds
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
 from utils import get_admin_bar, is_navigation_mode
+from ws_neutral import NeutralWS
 
 
 not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
@@ -61,7 +62,7 @@ def register_not_allowed_cls_for_sidebar_view(cls):
 
 
 not_allowed_view_for_sidebar_view = [WebSite.about, WebSite.credits,
-    WebSite.license]
+    WebSite.license, NeutralWS.not_found]
 
 def register_not_allowed_view_for_sidebar_view(view):
     assert isinstance(view, BaseView)
