@@ -66,3 +66,9 @@ class Box(BoxAware, File):
     is_side = True
     is_content = False
     allow_instanciation = True
+
+
+    def get_catalog_values(self):
+        return merge_dicts(File.get_catalog_values(self),
+                           BoxAware.get_catalog_values(self))
+
