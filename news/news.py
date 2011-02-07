@@ -216,6 +216,11 @@ class NewsFolder(SideBarAware, Folder):
         self.make_resource('images', Folder)
 
 
+    def get_catalog_values(self):
+        return merge_dicts(Folder.get_catalog_values(self),
+                           SideBarAware.get_catalog_values(self))
+
+
     def get_document_types(self):
         return [self.news_class]
 
