@@ -103,7 +103,7 @@ Voici la liste complète des ressources d'ITWS:
 
     * - .. image:: figures/section.*
       - Section
-      - Description
+      - Une section est un dossier dont la vue est configurable
 
     * - .. image:: figures/section.*
       - News
@@ -265,6 +265,82 @@ Quatre actions sont réalisables :
     - **Icône Dossier parent** permet d'ouvrir le navigateur dans la section parente qui contient la ressource courante.
 
 
+Les Sections
+===========================
+
+Une section est une ressource (de type dossier) dont la vue est configurable.
+Il est possible de choisir le type d'affichage parmis ces 3 vues:
+
+  - Vue composite
+  - Vue galerie
+  - Vue du flux
+
+Certaines de ces vues sont configurables.
+La configuration se réalise via le lien "Vue configuration" de la barre d'administration.
+
+
+Vue composite
+--------------------
+
+La vue composite est composée d'un ensemble de blocs ordonnable.
+
+.. figure:: figures/edit-composite-section.*
+
+Description:
+
+   - (1) On est bien sur une section
+   - (2) Le mode édition est activé
+   - (3) Il est possible d'ordonner et d'ajouter des boîtes dans la vue composite
+   - (4) Un bouton permet de modifier chaque boîte de la vue composite
+
+Voici le tableau des différents types d'éléments pouvant être ordonnés:
+
+.. list-table:: Tableau
+    :header-rows: 1
+    :widths: 100, 200, 200
+
+    * - Logo
+      - Type
+      - Description
+
+    * - .. image:: figures/html.*
+      - Contenu
+      - Zone de contenu html
+
+    * - .. image:: figures/html.*
+      - Contact
+      - Formulaire de contact pour recueillir des messages des utilisateurs
+
+    * - .. image:: figures/html.*
+      - Flux de contenu
+      - Formulaire de contact pour recueillir des messages des utilisateurs
+
+    * - .. image:: figures/html.*
+      - Galerie
+      - Galerie d'images
+
+    * - .. image:: figures/html.*
+      - Carte
+      - Affiche un emplacement sur Google Maps ou OpenStreetMap
+
+    * - .. image:: figures/html.*
+      - Diaporama
+      - Diaporama d'une liste d'images
+
+
+Vue galerie
+--------------------
+
+Galerie d'images.
+
+
+Vue flux
+--------------------
+
+Cette vue permet d'afficher sur une page un ensemble de WebPage et de Section
+ayant (ou non) un ou plusieurs mots clés en commun. XXX
+
+
 
 Configurer et administrer mon site Internet
 =============================================
@@ -338,17 +414,57 @@ Choix de la skin et CSS
 
 
 
-
-
 Gérer le contenu de mon site
 ===============================
-
 
 Ajouter du contenu
 ---------------------
 
-Folder / Section
-Une section est
+Pour ajouter du contenu à votre site, il suffit de créer une nouvelle ressource.
+Le menu est toujours disponible dans la barre d'administration.
+
+.. figure:: figures/add-ressource.*
+
+La liste des différents types de ressource disponible sera alors affichée:
+
+.. figure:: figures/type-ressources.*
+
+Une fois le type de ressource séléctionné, le formulaire d'ajout est affiché:
+
+.. figure:: figures/add-ressource-form.*
+
+Ce formulaire contient des informations importantes:
+
+  - (1) Le type de la ressource selectionné
+  - (2) La description du tyepe de ressource selectionné
+
+Vous devez saisir deux champs:
+
+ - (3) Le titre de la ressource. Ce champs est obligatoire
+ - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voullez ajouter votre resource.
+
+Dans la zone texte, vous pouvez saisir le nom de la ressource.
+Ceci n'est pas obligatoire, en effet si le nom n'est pas saisit, il sera calculé automatiquement à partir du titre saisit.
+Exemple:
+
+  - Titre              -> Nom
+  - "Ma voiture bleue" -> "ma-voiture-bleue"
+
+
+
+
+Ajouter une actualité
+-------------------------------
+
+L'ajout d'une nouvelle actualité est très simple.
+
+.. figure:: figures/add-news.*
+
+Voici les deux étapes:
+
+  - (1) Cliquer sur le bouton "Ajouter une nouvelle resource" du panneau d'administration
+  - (2) Sélectionner la resource de type "Actualité"
+
 
 Editeur HTML
 ------------
@@ -359,7 +475,39 @@ TynyMCE
 Les tags
 ------------
 
-XXX
+Un tag est un marqueur lexical utilisé pour regrouper des resources ayant quelque chose en commun.
+Par exemple vous pouvez regrouper des actualités parlant d'évenement se passant à Paris grâce au tag "Paris".
+Une page internet sera alors automatiquement construite et regroupera tous les articles possédant ce tag.
+L'URL de cette page sera du type:
+
+  http://www.example.com/tags/paris
+
+Il est possible d'associer des tags aux resources de type:
+
+  - Page Internet
+  - Section
+
+La liste des tags sont administrable via l'onglet tags du panneau d'administration:
+
+.. figure:: figures/tags.*
+
+Depuis cette vue d'administration vous pouvez:
+
+  - Ajouter dex nouveax tags
+  - Lister les tags existants
+  - Publier ou dépublier des tags
+  - Supprimer des tags
+  - Afficher le nombre de resources associés aux différents tags
+  - Lister les resources associés aux différents tags
+
+Dans une page internet et dans une section, un selecteur de tag est disponible:
+
+.. figure:: figures/selection-tags.*
+
+Il vous suffit de sélectionner un tag et de cliquer sur le bouton ">" pour ajouter le tag à la page internet.
+Le bouton "»" permet d'associer tous les tags à la page internet courante.
+
+
 
 
 Exemple: création d'une gallerie d'images
