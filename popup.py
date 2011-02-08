@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import freeze
 from itools.database import NotQuery, OrQuery, PhraseQuery
 
 # Import from ikaaro
@@ -116,11 +117,38 @@ class ITWS_AddBase_BrowseContent(Feed_View, AddBase_BrowseContent):
     table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
 
+    hidden_fields = freeze(Feed_View.hidden_fields +
+                           AddBase_BrowseContent.hidden_fields + ['target'])
+
+    def _get_query_value(self, resource, context, name):
+        if name == 'target':
+            # Target is a special case
+            site_root = resource.get_site_root()
+            target = self._get_target(resource, context)
+            return site_root.get_pathto(target)
+        return Feed_View._get_query_value(self, resource, context, name)
+
+
+    def _get_target(self, resource, context):
+        query_target = context.get_form_value('target')
+        if query_target is None:
+            target = self.target
+        else:
+            site_root = resource.get_site_root()
+            target = site_root.get_resource(query_target)
+        return target
+
 
     def get_items(self, resource, context, *args):
+        target = self._get_target(resource, context)
         args = list(args)
         args.extend(itws_get_additional_args(self.target))
-        return AddBase_BrowseContent.get_items(self, resource, context, *args)
+        return AddBase_BrowseContent.get_items(self, target, context, *args)
+
+
+    def get_search_types(self, resource, context):
+        target = self._get_target(resource, context)
+        return Feed_View.get_search_types(self, target, context)
 
 
     def get_table_namespace(self, resource, context, items):

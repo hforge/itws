@@ -81,8 +81,11 @@ class Feed_View(Folder_BrowseContent):
     def _get_query_value(self, resource, context, name):
         query_suffix = self._get_query_suffix()
         key = name
+        hidden = key in self.hidden_fields
         if query_suffix not in (None, ''):
             key = '%s_%s' % (name, query_suffix)
+        if hidden:
+            return context.get_query_value(key)
         return context.query[key]
 
 
@@ -179,8 +182,15 @@ class Feed_View(Folder_BrowseContent):
                               value=search_type)
         search_text = self._get_query_value(resource, context, 'search_text')
 
+        # Hidden widgets
+        hidden_widgets = []
+        for name in self.hidden_fields:
+            value = self._get_query_value(resource, context, name)
+            hidden_widgets.append({'name': name, 'value': value})
+
         return {'search_text': search_text,
-                'search_types_widget': widget.render()}
+                'search_types_widget': widget.render(),
+                'hidden_widgets': hidden_widgets}
 
 
     def _get_container(self, resource, context):
