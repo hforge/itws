@@ -35,22 +35,26 @@ Voici un tableau récapitulatif des différentes zones de votre site:
       - Description de la zone*
 
     * - Haut de page
-      - Le haut de page contient votre logo, votre slogan, un lien pour vous connecter, déconnecter ainsi qu'une zone de recherche
+      - Le haut de page contient votre logo, votre slogan, un lien pour vous
+        connecter, déconnecter ainsi qu'une zone de recherche
 
     * - Le menu
-      - Le menu de votre site est le principal élément de navigation. Il est personnalisable facilement dans le panneau de contrôle.
+      - Le menu de votre site est le principal élément de navigation. Il est
+        personnalisable facilement dans le panneau de contrôle.
 
     * - Zone de contenu
-      - XXX
+      - Il s'agit de la zone principale de votre site.
 
     * - Le fil d'arianne
-      - XXX
+      - Ce fil situé sous le menu vous permet de savoir où vous êtes sur le
+        site et de revenir en arrière (dans la section qui contient la page que
+        vous visualisez par exemple).
 
     * - Barre latérale
-      - Votre site dispose d'une barre latérale qui va vous permettre de dynamiser votre site
+      - Votre site dispose d'une barre latérale qui va vous permettre de dynamiser votre site.
 
     * - Pied de page
-      - Le pied de page vous permet d'ajouter des informations sur votre société/organisation
+      - Le pied de page vous permet d'ajouter des informations sur votre société/organisation.
 
 
 Types de ressources
@@ -62,7 +66,7 @@ Dans ITWS on appelle cela des "ressources". Ces ressources sont présentes sous 
   - Les "Dossiers" qui peuvent contenir d'autres fichiers ou dossiers
   - Les "Fichiers" qui ne peuvent pas contenir d'autres ressources.
 
-Voici la liste complète des ressources d'ITWS:
+Voici la liste complète des ressources d'ITWS :
 
 
 .. list-table:: Tableau
@@ -75,39 +79,41 @@ Voici la liste complète des ressources d'ITWS:
 
     * - .. image:: figures/html.*
       - Page Internet
-      - Page Internet
+      - Page Internet (article, etc.)
 
     * - .. image:: figures/file.*
       - Fichier
-      - Vous pouvez ajouter dans votre site internet des fichiers pour les partager avec vos visiteurs. Il est ainsi possible d'ajouter tout type de fichiers
+      - Vous pouvez ajouter dans votre site internet des fichiers pour les
+        partager avec vos visiteurs. Il est ainsi possible d'ajouter tout type
+        de fichiers (documents bureautiques, pdf, sons, etc.)
 
     * - .. image:: figures/image.*
       - Image
-      - Description
+      - Image, photo, etc.
 
     * - .. image:: figures/image.*
       - RSSFeeds
-      - Description
+      - Flux RSS
 
     * - .. image:: figures/image.*
       - Tag
-      - Description
+      - Marqueur lexical permettant de regrouper des ressources
 
     * - .. image:: figures/folder.*
       - Dossier
-      - Description
+      - Conteneur utilisé pour classer des documents bureautiques par exemple.
 
     * - .. image:: figures/folder.*
-      - Tracker
-      - Description
+      - Tracker (optionnel)
+      - Outil de suivi par système de tickets, utilisé pour la gestion de projet.
 
     * - .. image:: figures/section.*
       - Section
-      - Une section est un dossier dont la vue est configurable
+      - Une section est un dossier dont la vue est configurable.
 
     * - .. image:: figures/section.*
       - News
-      - Description
+      - Actualité
 
 
 Votre site internet met à votre disposition un "Navigateur" qui vous permet de parcourir l'ensemble
@@ -309,23 +315,24 @@ Voici le tableau des différents types d'éléments pouvant être ordonnés :
 
     * - .. image:: figures/html.*
       - Contact
-      - Formulaire de contact pour recueillir des messages des utilisateurs
+      - Formulaire de contact pour recueillir des messages des utilisateurs.
 
     * - .. image:: figures/html.*
       - Flux de contenu
-      - Formulaire de contact pour recueillir des messages des utilisateurs
+      - Affiche un ensemble d'actualités (news), pages web et/ou sections d'un
+        conteneur donné selon différents critères.
 
     * - .. image:: figures/html.*
       - Galerie
-      - Galerie d'images
+      - Galerie d'images, on affiche les miniatures des images.
 
     * - .. image:: figures/html.*
       - Carte
-      - Affiche un emplacement sur Google Maps ou OpenStreetMap
+      - Affiche un emplacement sur Google Maps ou OpenStreetMap.
 
     * - .. image:: figures/html.*
       - Diaporama
-      - Diaporama d'une liste d'images
+      - Diaporama d'un ensemble d'images.
 
 
 Vue galerie
@@ -442,7 +449,7 @@ Ce formulaire contient des informations importantes :
 Vous devez saisir deux champs :
 
  - (3) Le titre de la ressource. Ce champs est obligatoire.
- - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voulez ajouter votre resource.
+ - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voulez ajouter votre ressource.
 
 Dans la zone texte, vous pouvez saisir le nom de la ressource.
 Ceci n'est pas obligatoire, en effet si le nom n'est pas saisit, il sera calculé automatiquement à partir du titre saisit.
@@ -463,7 +470,7 @@ L'ajout d'une nouvelle actualité est très simple.
 
 Voici les deux étapes :
 
-  - (1) Cliquer sur le bouton "Ajouter une nouvelle resource" du panneau d'administration
+  - (1) Cliquer sur le bouton "Ajouter une nouvelle ressource" du panneau d'administration
   - (2) Sélectionner la ressource de type "Actualité"
 
 
@@ -608,4 +615,4 @@ Search Engine Optimization.
 Cette documentation a été rédigée par:
 
    - Taverne Sylvain
-   - XXX
+   - Deram Nicolas
