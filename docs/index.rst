@@ -269,7 +269,7 @@ Les Sections
 ===========================
 
 Une section est une ressource (de type dossier) dont la vue est configurable.
-Il est possible de choisir le type d'affichage parmis ces 3 vues:
+Il est possible de choisir le type d'affichage parmi ces 3 vues :
 
   - Vue composite
   - Vue galerie
@@ -293,7 +293,7 @@ Description:
    - (3) Il est possible d'ordonner et d'ajouter des boîtes dans la vue composite
    - (4) Un bouton permet de modifier chaque boîte de la vue composite
 
-Voici le tableau des différents types d'éléments pouvant être ordonnés:
+Voici le tableau des différents types d'éléments pouvant être ordonnés :
 
 .. list-table:: Tableau
     :header-rows: 1
@@ -337,9 +337,10 @@ Galerie d'images.
 Vue flux
 --------------------
 
-Cette vue permet d'afficher sur une page un ensemble de WebPage et de Section
-ayant (ou non) un ou plusieurs mots clés en commun. XXX
-
+Cette vue permet d'afficher sur une page un ensemble d'actualités (news), pages
+web et/ou sections d'un conteneur donné. Sont ici configurables le nombre
+d'éléments affichés, le critère de tri, le gabarit d'affichage et un
+sous-ensemble des mots clés définis (tags) sur lequel on pourra filtrer.
 
 
 Configurer et administrer mon site Internet
@@ -425,23 +426,23 @@ Le menu est toujours disponible dans la barre d'administration.
 
 .. figure:: figures/add-ressource.*
 
-La liste des différents types de ressource disponible sera alors affichée:
+La liste des différents types de ressources disponibles sera alors affichée :
 
 .. figure:: figures/type-ressources.*
 
-Une fois le type de ressource séléctionné, le formulaire d'ajout est affiché:
+Une fois le type de ressource séléctionné, le formulaire d'ajout est affiché :
 
 .. figure:: figures/add-ressource-form.*
 
-Ce formulaire contient des informations importantes:
+Ce formulaire contient des informations importantes :
 
-  - (1) Le type de la ressource selectionné
-  - (2) La description du tyepe de ressource selectionné
+  - (1) Le type de la ressource selectionnée
+  - (2) La description du type de ressource selectionnée
 
-Vous devez saisir deux champs:
+Vous devez saisir deux champs :
 
- - (3) Le titre de la ressource. Ce champs est obligatoire
- - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voullez ajouter votre resource.
+ - (3) Le titre de la ressource. Ce champs est obligatoire.
+ - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voulez ajouter votre resource.
 
 Dans la zone texte, vous pouvez saisir le nom de la ressource.
 Ceci n'est pas obligatoire, en effet si le nom n'est pas saisit, il sera calculé automatiquement à partir du titre saisit.
@@ -460,47 +461,47 @@ L'ajout d'une nouvelle actualité est très simple.
 
 .. figure:: figures/add-news.*
 
-Voici les deux étapes:
+Voici les deux étapes :
 
   - (1) Cliquer sur le bouton "Ajouter une nouvelle resource" du panneau d'administration
-  - (2) Sélectionner la resource de type "Actualité"
+  - (2) Sélectionner la ressource de type "Actualité"
 
 
 Editeur HTML
 ------------
 
-TynyMCE
+TinyMCE
 
 
 Les tags
 ------------
 
-Un tag est un marqueur lexical utilisé pour regrouper des resources ayant quelque chose en commun.
-Par exemple vous pouvez regrouper des actualités parlant d'évenement se passant à Paris grâce au tag "Paris".
+Un tag est un marqueur lexical utilisé pour regrouper des ressources ayant quelque chose en commun.
+Par exemple vous pouvez regrouper des actualités parlant d'évènements se passant à Paris grâce au tag "Paris".
 Une page internet sera alors automatiquement construite et regroupera tous les articles possédant ce tag.
-L'URL de cette page sera du type:
+L'URL de cette page sera du type :
 
   http://www.example.com/tags/paris
 
-Il est possible d'associer des tags aux resources de type:
+Il est possible d'associer des tags aux ressources de type :
 
   - Page Internet
   - Section
 
-La liste des tags sont administrable via l'onglet tags du panneau d'administration:
+La liste des tags est administrable via l'onglet tags du panneau d'administration :
 
 .. figure:: figures/tags.*
 
-Depuis cette vue d'administration vous pouvez:
+Depuis cette vue d'administration vous pouvez :
 
-  - Ajouter dex nouveax tags
+  - Ajouter dex nouveaux tags
   - Lister les tags existants
   - Publier ou dépublier des tags
   - Supprimer des tags
-  - Afficher le nombre de resources associés aux différents tags
-  - Lister les resources associés aux différents tags
+  - Afficher le nombre de ressources associées aux différents tags
+  - Lister les ressources associées aux différents tags
 
-Dans une page internet et dans une section, un selecteur de tag est disponible:
+Dans une page internet et dans une section, un selecteur de tag est disponible :
 
 .. figure:: figures/selection-tags.*
 
@@ -509,8 +510,7 @@ Le bouton "»" permet d'associer tous les tags à la page internet courante.
 
 
 
-
-Exemple: création d'une gallerie d'images
+Exemple: création d'une galerie d'images
 ------------------------------------------
 
 XXX
