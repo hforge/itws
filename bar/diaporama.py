@@ -30,7 +30,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, ImageSelectorWidget, RadioWidget
-from ikaaro.autoform import TextWidget, MultilineWidget, PathSelectorWidget
+from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.file import Image
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
@@ -54,6 +54,20 @@ from menu import MenuSideBarTable_AddRecord
 ###########################################################################
 # Views
 ###########################################################################
+class DiaporamaTable_AddRecord(MenuSideBarTable_AddRecord):
+    """Redirect to current view after adding new record"""
+
+    title = MSG(u'Add new image')
+
+    def action_on_success(self, resource, context):
+        message = context.message
+        if type(message) is list:
+            message = message[0]
+        goto = context.get_link(context.resource)
+        return context.come_back(message, goto=goto)
+
+
+
 class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
 
     search_template = None
@@ -102,12 +116,13 @@ class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
 
 
 
+
 class DiaporamaTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
     title = DiaporamaTable_View.title
     subviews = [ # diaporama folder edition view
-                 MenuSideBarTable_AddRecord(title=MSG(u'Add new image')),
+                 DiaporamaTable_AddRecord(),
                  DiaporamaTable_View() ]
 
 
