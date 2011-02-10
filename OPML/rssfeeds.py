@@ -40,7 +40,7 @@ from itools.html import HTMLParser, sanitize_stream
 from itools.i18n.locale_ import format_date
 from itools.log import log_warning
 from itools.rss import RSSFile
-from itools.stl import stl
+from itools.stl import stl, set_prefix
 from itools.uri import get_reference
 from itools.web import BaseView, INFO, ERROR, STLView
 from itools.xml import XMLParser, stream_to_str, XMLError
@@ -54,7 +54,6 @@ from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from itws.utils import set_prefix_with_hostname
 from itws.views import AutomaticEditView
 
 
@@ -405,8 +404,8 @@ class RssFeeds(CSV):
             uri_ref = get_reference(uri)
             for number, article in enumerate(articles):
                 # Set prefix with url for article content
-                description = set_prefix_with_hostname(article['description'],
-                        prefix='.', uri=uri_ref, fix_absolute_path=True)
+                description = set_prefix(article['description'],
+                        prefix='.', uri=uri_ref)
                 # Transform generator into list
                 article['description'] = list(description)
                 # Anchor

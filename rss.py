@@ -24,14 +24,12 @@ from itools.database import RangeQuery
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.rss import RSSFile
+from itools.stl import set_prefix
 from itools.web import BaseView, get_context
 
 # Import from ikaaro
 from ikaaro.utils import get_base_path_query
 from ikaaro.webpage import WebPage
-
-# Import from itws
-from utils import set_prefix_with_hostname
 
 
 
@@ -195,8 +193,7 @@ class BaseRSS(BaseView):
                     return ''
                 # Set the prefix
                 prefix = site_root.get_pathto(item_resource)
-                data = set_prefix_with_hostname(data, '%s/' % prefix,
-                                                uri=context.uri)
+                data = set_prefix(data, '%s/' % prefix, uri=context.uri)
                 data = stream_to_str_as_xhtml(data)
                 return data.decode('utf-8')
             else:

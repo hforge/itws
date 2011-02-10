@@ -19,15 +19,12 @@
 
 # Import from the Standard Library
 from datetime import datetime, timedelta
-from functools import partial
 
 # Import from itools
 from itools.core import freeze
 from itools.datatypes import Boolean, String, XMLContent
 from itools.gettext import MSG
-from itools.html import xhtml_uri
-from itools.stl import stl, rewrite_uris
-from itools.uri import get_reference, Path, Reference
+from itools.stl import stl
 from itools.web import get_context, INFO
 from itools.xml import XMLParser
 
@@ -47,39 +44,6 @@ def get_path_and_view(path):
         path = path[:-1]
 
     return path, view
-
-
-def set_prefix_with_hostname(stream, prefix, uri, ns_uri=xhtml_uri,
-                             fix_absolute_path=False):
-    if isinstance(prefix, str):
-        prefix = Path(prefix)
-
-    ref = Reference(scheme=uri.scheme, authority=uri.authority,
-                    path='/', query={})
-
-    rewrite = partial(resolve_pointer_with_hostname, prefix, ref,
-                      fix_absolute_path)
-
-    return rewrite_uris(stream, rewrite, ns_uri)
-
-
-def resolve_pointer_with_hostname(offset, ref, fix_absolute_path, value):
-    # FIXME Exception for STL
-    if value[:2] == '${':
-        return value
-
-    # Absolute URI or path
-    uri = get_reference(value)
-    if uri.scheme or uri.authority:
-        return value
-    if fix_absolute_path is False and uri.path.is_absolute():
-        return value
-
-    # Resolve Path
-    path = offset.resolve(uri.path)
-    value = Reference(ref.scheme, ref.authority, path,
-                      uri.query.copy(), uri.fragment)
-    return str(value)
 
 
 ############################################################

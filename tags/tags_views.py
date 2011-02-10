@@ -27,6 +27,7 @@ from itools.core import freeze
 from itools.datatypes import PathDataType, Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
+from itools.stl import set_prefix
 from itools.uri import encode_query
 from itools.web import STLView
 from itools.database import AndQuery, PhraseQuery
@@ -45,7 +46,6 @@ from itws.datatypes import TimeWithoutSecond
 from itws.feed_views import Details_View
 from itws.rss import BaseRSS
 from itws.utils import is_navigation_mode
-from itws.utils import set_prefix_with_hostname
 from itws.widgets import DualSelectWidget
 
 
@@ -91,8 +91,7 @@ class Tag_RSS(BaseRSS):
                 content = view.GET(item_resource, context)
                 # set prefix
                 prefix = site_root.get_pathto(item_resource)
-                content = set_prefix_with_hostname(content, '%s/' % prefix,
-                                                   uri=context.uri)
+                content = set_prefix(content, '%s/' % prefix, uri=context.uri)
                 content = stream_to_str_as_xhtml(content)
                 return content.decode('utf-8')
             else:
