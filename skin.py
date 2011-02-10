@@ -143,9 +143,11 @@ class Skin(BaseSkin):
         return bo_class
 
 
-    def get_rss_feeds(self, context, site_root):
+    def get_rss_feeds(self, context):
         rss = []
         user = context.user
+        site_root = context.site_root
+        site_root_abspath = site_root.abspath
         # messages
         site_root_rss_title = MSG(u'{ws_title} -- RSS Feeds')
         rss_title = MSG(u'{ws_title} {title} -- RSS Feeds')
@@ -167,7 +169,13 @@ class Skin(BaseSkin):
             if view and ac.is_access_allowed(user, resource, view):
                 title = template.gettext(ws_title=ws_title,
                                          title=resource.get_title())
-                rss.append({'path': '/;rss', 'title': title})
+                if resource.abspath == site_root_abspath:
+                    # context.get_link(site_root) return ./
+                    path = '/;rss'
+                else:
+                    path = '%s/;rss' % context.get_link(resource)
+
+                rss.append({'path': path, 'title': title})
                 already_done.append(type(resource))
 
         return rss
@@ -318,7 +326,7 @@ class Skin(BaseSkin):
         namespace['custom_data'] = XMLParser(custom_data)
 
         # RSS Feeds title
-        namespace['rss_feeds'] = self.get_rss_feeds(context, site_root)
+        namespace['rss_feeds'] = self.get_rss_feeds(context)
 
         # Turning footer
         turning_footer = site_root.get_resource('theme/turning-footer',
