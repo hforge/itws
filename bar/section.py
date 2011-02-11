@@ -39,8 +39,9 @@ from ikaaro.workflow import WorkflowAware
 from bar_aware import SideBarAware, ContentBarAware
 from registry import get_boxes_registry
 from section_views import Section_Edit
-from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
+from toc import ContentBoxSectionChildrenToc
 from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
+from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import ITWS_ControlPanel
 from itws.feed_views import Browse_Navigator
 from itws.section_views import SectionViews_Enumerate
@@ -85,7 +86,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
               ResourcesOrderedContainer):
 
     class_id = 'section'
-    class_version = '20101124'
+    class_version = '20101125'
     class_title = MSG(u'Section')
     class_description = MSG(u'Sections allow to customize the central part '
             u'and the sidebar. Sections can contain subsections.')
@@ -106,7 +107,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
-                          + ['order-section', 'children-toc'])
+                          + ['order-section', 'toc'])
     # Order Webpage/Section
     order_path = 'order-section'
     order_class = SectionOrderedTable
@@ -125,10 +126,19 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
         # Preorder items
         if kw.get('add_boxes', True) is True:
+            site_root = self.get_site_root()
+            language = site_root.get_property('website_languages')[0]
+
             repository = self.get_site_root().get_repository()
             sidebar_table = self.get_resource(self.sidebar_name)
             # tags cloud (created by repository)
             sidebar_table.add_new_record({'name': repository.tags_box})
+            # TOC
+            box_cls = ContentBoxSectionChildrenToc
+            self.make_resource('toc', box_cls,
+                    title={language: box_cls.class_title.gettext()})
+            contentbar_table = self.get_resource(self.contentbar_name)
+            contentbar_table.add_new_record({'name': 'toc'})
 
 
     def get_catalog_values(self):
@@ -175,6 +185,33 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
     def update_20101124(self):
         self.set_property('state', 'public')
+
+
+    def update_20101125(self):
+        """Add toc or rename old toc"""
+        box_cls = ContentBoxSectionChildrenToc
+        toc = None
+        for resource in self.search_resources(cls=box_cls):
+            toc = resource
+            break
+
+        if toc:
+            if toc.name != 'toc':
+                self.move_resource(toc.name, 'toc')
+        else:
+            site_root = self.get_site_root()
+            language = site_root.get_property('website_languages')[0]
+            self.make_resource('toc', box_cls,
+                    title={language: box_cls.class_title.gettext()})
+
+        # Set right workflow state
+        toc = self.get_resource('toc')
+        toc.set_workflow_state(self.get_workflow_state())
+
+        # Order toc if contentbar is empty
+        contentbar_table = self.get_resource(self.contentbar_name)
+        if len(list(contentbar_table.get_ordered_names())) == 0:
+            contentbar_table.add_new_record({'name': 'toc'})
 
 
     # Views
