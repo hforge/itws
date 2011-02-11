@@ -339,7 +339,6 @@ body.readonly {
   padding-bottom: 10px;
 }
 .feed-view.feed-box.v2 .item:first-child {
-  background: red;
   padding-top: 0;
 }
 .feed-view.feed-box.v2 .item:last-child {
