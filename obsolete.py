@@ -93,11 +93,13 @@ class Old_NeutralWS(NeutralWS):
 
         # Remove order property
         order_cls_ids = [SectionOrderedTable.class_id,
-                         SidebarBoxesOrderedTable.class_id]
+                         SidebarBoxesOrderedTable.class_id,
+                         OldSection.class_id]
 
         for resource in self.traverse_resources():
             # Delete order property
             if resource.metadata.format in order_cls_ids:
+                resource.del_property('actu_summary_level')
                 resource.del_property('order')
                 continue
 
@@ -106,6 +108,15 @@ class Old_NeutralWS(NeutralWS):
 ###########################
 # Bar/Section
 ###########################
+class OldSection(Section):
+    """Hook class_schema"""
+
+    class_schema = merge_dicts(Section.class_schema,
+                               order=String(source='metadata'),
+                               actu_summary_level=String(source='metadata'))
+
+
+
 class OldSectionOrderedTable(SectionOrderedTable):
     """Hook class_schema"""
 
@@ -533,6 +544,7 @@ class ImagesFolder(Folder):
 register_resource_class(ITWSRoot)
 register_resource_class(OldUser)
 register_resource_class(Old_NeutralWS)
+register_resource_class(OldSection)
 register_resource_class(OldSectionOrderedTable)
 register_resource_class(OldSidebarBoxesOrderedTable)
 register_resource_class(Old_Tracker)
