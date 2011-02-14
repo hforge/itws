@@ -263,6 +263,8 @@ class RssFeeds(CSV):
     class_title = MSG(u'RSS Feeds')
     class_description = MSG(u'RSS feeds allow to aggregate external feeds, '
                             u'filtering content by keywords')
+    class_icon16 = 'rssfeeds/icons/16x16/rss_feeds.png'
+    class_icon48 = 'rssfeeds/icons/48x48/rss_feeds.png'
     class_views = ['view', 'edit', 'add_row', 'configure']
     class_handler = RssFeedsFile
     class_schema = merge_dicts(CSV.class_schema,
