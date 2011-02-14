@@ -45,8 +45,11 @@ from tags_views import TagsList, TagsFolder_BrowseContent
 class Tag(File):
 
     class_id = 'tag'
-    class_version = '20100618'
     class_title = MSG(u'Tag')
+    class_version = '20100618'
+    class_icon16 = 'itws-icons/16x16/tag.png'
+    class_icon48 = 'itws-icons/48x48/tag.png'
+
     class_views = ['view', 'edit', 'commit_log', 'backlinks']
 
     backlinks = DBResource_Backlinks(access='is_allowed_to_edit')
@@ -83,9 +86,11 @@ class TagsFolder(Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
+    class_version = '20100118'
+    class_icon16 = 'itws-icons/16x16/tags.png'
+    class_icon48 = 'itws-icons/48x48/tags.png'
     class_views = ['tag_cloud', 'browse_content', 'new_resource?type=tag',
                    'control_panel']
-    class_version = '20100118'
 
     tag_class = Tag
 
