@@ -128,31 +128,76 @@ class Feed_View(Folder_BrowseContent):
 
 
     def get_search_types(self, resource, context):
-        # 1. Build the query of all objects to search
-        path = resource.get_canonical_path()
-        if self.search_on_current_folder_recursive:
-            query = get_base_path_query(str(path))
-        else:
-            query = PhraseQuery('parent_path', str(path))
+        # FIXME get_search_types and get_items compute almost the same query
+        # The only difference is that get_items take into account search_template
+        # (type filter and text filter)
 
-        if resource.get_abspath() == '/':
-            theme_path = path.resolve_name('theme')
+        root = context.root
+        # Get the container
+        container = self._get_container(resource, context)
+        container_abspath = container.get_canonical_path()
+
+        # 1. Build the query of all objects to search
+        if self.search_on_current_folder_recursive:
+            query = get_base_path_query(str(container_abspath))
+        else:
+            query = PhraseQuery('parent_path', str(container_abspath))
+
+        # Exclude '/theme/'
+        if isinstance(resource, WebSite):
+            theme_path = container_abspath.resolve_name('theme')
             theme = get_base_path_query(str(theme_path), True)
             query = AndQuery(query, NotQuery(theme))
 
         if self.ignore_internal_resources:
+            exclude_folders_path = []
+            exclude_files_path = []
+            # Exclude internal use resources
             method = getattr(resource, 'get_internal_use_resource_names', None)
             if method:
-                sub_query = []
                 resource_abspath = resource.get_abspath()
                 for name in method():
-                    abspath = path.resolve2(name)
-                    sub_query.append(PhraseQuery('abspath', str(abspath)))
-                query = AndQuery(query, NotQuery(OrQuery(*sub_query)))
+                    abspath = resource_abspath.resolve2(name)
+                    if name[-1] == '/':
+                        # folder
+                        exclude_folders_path.append(str(abspath))
+                    else:
+                        # file
+                        exclude_files_path.append(str(abspath))
+
+            if self.search_on_current_folder_recursive is True:
+                q = AndQuery(get_base_path_query(str(container_abspath)),
+                             PhraseQuery('internal_resource_aware', True))
+                folder_results = root.search(q)
+                for doc in folder_results.get_documents():
+                    p_abspath = Path(doc.abspath)
+                    for name in doc.internal_resource_names:
+                        abspath = p_abspath.resolve2(name)
+                        if name[-1] == '/':
+                            # folder
+                            exclude_folders_path.append(str(abspath))
+                        else:
+                            # file
+                            exclude_files_path.append(str(abspath))
+
+            exclude_query = []
+            for abspath in exclude_files_path:
+                exclude_query.append(PhraseQuery('abspath', abspath))
+
+            for abspath in exclude_folders_path:
+                # Make get_base_path_query(xxx, include_container=True)
+                exclude_query.append(PhraseQuery('abspath', abspath))
+                exclude_query.append(StartQuery('abspath', '%s/' % abspath))
+
+            if exclude_query:
+                query = AndQuery(query, NotQuery(OrQuery(*exclude_query)))
+
+        if self.ignore_box_aware:
+            query = AndQuery(query, NotQuery(PhraseQuery('box_aware', True)))
 
         # 2. Compute children_formats
         children_formats = set()
-        for child in context.root.search(query).get_documents():
+        for child in root.search(query).get_documents():
             children_formats.add(child.format)
 
         # 3. Do not show two options with the same title
