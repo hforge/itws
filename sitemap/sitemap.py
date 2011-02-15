@@ -17,16 +17,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from the Standard Library
+from datetime import datetime
+
 # Import from itools
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
 from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
+from itools.database import RangeQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder
 from ikaaro.utils import get_base_path_query
 
+
+EPOCH = datetime(1970, 1, 1, 0, 0)
 
 
 class SiteMapView(BaseView):
@@ -37,56 +43,27 @@ class SiteMapView(BaseView):
 
     def get_items_query(self, resource, context):
         site_root = resource.parent
-        query = AndQuery(PhraseQuery('workflow_state', 'public'),
-                         PhraseQuery('is_image', False))
+        abspath = site_root.get_canonical_path()
+        query = [
+            get_base_path_query(str(abspath)),
+            PhraseQuery('workflow_state', 'public'),
+            PhraseQuery('is_image', False),
+            PhraseQuery('is_content', True)]
 
         # Allow news folder
-        newsfolder_cls = site_root.newsfolder_class
-        if newsfolder_cls:
-            query = OrQuery(query,
-                            PhraseQuery('format', newsfolder_cls.class_id))
+        newsfolder = site_root.get_news_folder(context)
+        if newsfolder:
+            news_query = list(query)
+            news_format = newsfolder.news_class.class_id
+            query.append(NotQuery(PhraseQuery('format', news_format)))
+            news_query += [
+                PhraseQuery('format', news_format),
+                RangeQuery('pub_datetime', EPOCH, datetime.now())]
+            query = OrQuery(AndQuery(*query), AndQuery(*news_query))
+        else:
+            query = AndQuery(*query)
 
-        # Excluded paths
-        excluded_paths = self.get_excluded_paths(resource, context)
-        if excluded_paths:
-            if len(excluded_paths) > 1:
-                query2 = OrQuery(*[ PhraseQuery('abspath', str(path))
-                                    for path in excluded_paths ])
-            else:
-                query2 = PhraseQuery('abspath', str(excluded_paths[0]))
-            query = AndQuery(query, NotQuery(query2))
-
-        # Excluded container paths
-        excluded_cpaths = self.get_excluded_container_paths(resource, context)
-        if excluded_cpaths:
-            if len(excluded_cpaths) > 1:
-                query2 = OrQuery(*[ get_base_path_query(str(path))
-                                    for path in excluded_cpaths ])
-            else:
-                query2 = get_base_path_query(str(excluded_cpaths[0]))
-            query = AndQuery(query, NotQuery(query2))
-
-        abspath = site_root.get_canonical_path()
-        query1 = get_base_path_query(str(abspath))
-        query = AndQuery(query, query1)
-
-        # Do not include content/side bar items
-        repository = site_root.get_repository()
-        bar_item_classes = repository._get_document_types()
-        bar_query = [ PhraseQuery('format', cls.class_id)
-                      for cls in bar_item_classes ]
-        bar_query = NotQuery(OrQuery(*bar_query))
-        query = AndQuery(query, bar_query)
-
-        # Add site root -> /
-        query = OrQuery(query,
-                        PhraseQuery('abspath', str(abspath)))
-
-        # FIXME Should be customizable
-        # Add about-itws
-        about_itws_abspath = abspath.resolve2('about-itws')
-        query = OrQuery(query,
-                        PhraseQuery('abspath', str(about_itws_abspath)))
+        query = OrQuery(query, PhraseQuery('abspath', str(abspath)))
 
         return query
 
@@ -97,28 +74,6 @@ class SiteMapView(BaseView):
         root = context.root
         results = root.search(query)
         return results.get_documents(sort_by='abspath')
-
-
-    def get_excluded_paths(self, resource, context):
-        site_root = resource.parent
-        abspath = site_root.get_canonical_path()
-
-        excluded = []
-        for name in ('404', 'robots.txt', 'style'):
-            excluded.append(str(abspath.resolve2(name)))
-
-        return excluded
-
-
-    def get_excluded_container_paths(self, resource, context):
-        site_root = resource.parent
-        abspath = site_root.get_canonical_path()
-
-        excluded = []
-        for name in ('footer', 'menu', 'repository', 'ws-data'):
-            excluded.append(str(abspath.resolve2(name)))
-
-        return excluded
 
 
     def get_item_value(self, resource, context, item, column, site_root):
