@@ -92,7 +92,8 @@ class SortBy_Enumerate(Enumerate):
       {'name': 'title', 'value': MSG(u'Title')},
       {'name': 'pub_datetime', 'value': MSG(u'Publication date')},
       {'name': 'mtime', 'value': MSG(u'Modification Date')},
-      {'name': 'ctime', 'value': MSG(u'Creation Date')}]
+      {'name': 'ctime', 'value': MSG(u'Creation Date')},
+      {'name': 'abspath', 'value': MSG(u'Abspath')}]
 
 
 
