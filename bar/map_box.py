@@ -142,8 +142,8 @@ class MapBox(Box):
 
     # Configuration
     allow_instanciation = True
-    is_content = True
-    is_side = True
+    is_contentbox = True
+    is_sidebox = True
 
     view = MapBox_View()
     edit = MapBox_Edit()

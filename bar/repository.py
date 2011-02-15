@@ -174,17 +174,17 @@ class Repository(Folder):
                            title={'en': BoxTags.class_title.gettext()})
 
 
-    def _get_document_types(self, allow_instanciation=None, is_content=None,
-                            is_side=None):
+    def _get_document_types(self, allow_instanciation=None, is_contentbox=None,
+                            is_sidebox=None):
         registry = get_boxes_registry()
         types = []
         for cls, allow in registry.iteritems():
             if allow_instanciation is not None and \
                     allow_instanciation <> allow['instanciation']:
                 continue
-            if is_content is not None and is_content <> allow['content']:
+            if is_contentbox is not None and is_contentbox <> allow['content']:
                 continue
-            if is_side is not None and is_side <> allow['side']:
+            if is_sidebox is not None and is_sidebox <> allow['side']:
                 continue
             types.append(cls)
         types.sort(lambda x, y : cmp(x.class_id, y.class_id))
@@ -200,7 +200,7 @@ class Repository(Folder):
         Allow RightItem and Box
         but Box cannot be directly instanciated
         """
-        side_types = self._get_document_types(is_side=True)
+        side_types = self._get_document_types(is_sidebox=True)
         allowed_types = side_types + [Box]
         return isinstance(source, tuple(allowed_types))
 

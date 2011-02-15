@@ -24,15 +24,17 @@ from itools.core import freeze
 ##############################
 boxes_registry = {}
 def register_box(resource_class):
-    is_content = resource_class.is_content
-    is_side = resource_class.is_side
+    is_contentbox = resource_class.is_contentbox
+    is_sidebox = resource_class.is_sidebox
     allow_instanciation = resource_class.allow_instanciation
-    if is_content is False and is_side is False:
+    if is_contentbox is False and is_sidebox is False:
         msg = u'Box %s should be at least content box or side box'
         raise ValueError, msg % resource_class.class_id
 
-    boxes_registry[resource_class] = {'instanciation': allow_instanciation,
-                                      'content': is_content, 'side': is_side}
+    boxes_registry[resource_class] = {
+        'instanciation': allow_instanciation,
+        'content': is_contentbox,
+        'side': is_sidebox}
 
 
 def get_boxes_registry():

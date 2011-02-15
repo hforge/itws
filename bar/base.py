@@ -41,9 +41,11 @@ class BoxAware(object):
     edit_widgets = freeze([TextWidget('specific_css',
                                       title=MSG(u'Specific CSS'))])
 
-    is_side = True
-    is_content = False
+    is_sidebox = True
+    is_contentbox = False
     allow_instanciation = True
+    # Hide in browse_content
+    is_content = False
 
 
     def get_catalog_values(self):
@@ -69,8 +71,8 @@ class Box(BoxAware, File):
     download = None
     externaledit = None
 
-    is_side = True
-    is_content = False
+    is_sidebox = True
+    is_contentbox = False
     allow_instanciation = True
 
 

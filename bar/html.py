@@ -126,8 +126,8 @@ class HTMLContent(BoxAware, WebPage):
 
     # Configuration
     allow_instanciation = True
-    is_content = True
-    is_side = True
+    is_contentbox = True
+    is_sidebox = True
 
 
     def get_catalog_values(self):

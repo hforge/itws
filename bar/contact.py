@@ -136,7 +136,7 @@ class BoxContact(Box):
                        title=MSG(u'To configure the website email options, '
                                  u'please follow the link below'))])
 
-    is_content = True
+    is_contentbox = True
 
     # Views
     view = BoxContact_View()

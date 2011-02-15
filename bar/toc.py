@@ -250,8 +250,8 @@ class ContentBoxSectionChildrenToc(Box):
     edit_schema = hide_single_schema
     edit_widgets = freeze([hide_single_widget])
     allow_instanciation = False
-    is_content = True
-    is_side = False
+    is_contentbox = True
+    is_sidebox = False
 
     # Views
     view = ContentBoxSectionChildrenToc_View()

@@ -112,6 +112,9 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     order_path = 'order-section'
     order_class = SectionOrderedTable
 
+    # Show in browse_content
+    is_content = True
+
 
     def init_resource(self, **kw):
         if 'add_boxes' in kw:

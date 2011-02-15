@@ -200,7 +200,7 @@ class SideBarBox_NewInstance(EasyNewInstance_WithOrderer):
         site_root = resource.get_site_root()
         repository = site_root.get_repository()
         return repository._get_document_types(
-                is_content=None, is_side=True,
+                is_contentbox=None, is_sidebox=True,
                 allow_instanciation=True)
 
 
@@ -228,5 +228,5 @@ class ContentBarBox_NewInstance(EasyNewInstance_WithOrderer):
         site_root = resource.get_site_root()
         repository = site_root.get_repository()
         return repository._get_document_types(
-                is_content=True, is_side=None,
+                is_contentbox=True, is_sidebox=None,
                 allow_instanciation=True)

@@ -182,7 +182,7 @@ class BoxNavigation(Box):
         CheckboxWidget('limit_to_ordered_resources',
                        title=MSG(u'Display ordered resources only.'))
         ])
-    is_content = False
+    is_contentbox = False
 
     # Views
     view = BoxNavigation_View()

@@ -372,8 +372,8 @@ class Diaporama(BoxAware, Folder):
     # Configuration
     use_fancybox = False
     allow_instanciation = True
-    is_content = True
-    is_side = False
+    is_contentbox = True
+    is_sidebox = False
 
     edit_schema = freeze({'display_title': Boolean})
     edit_widgets = freeze([CheckboxWidget('display_title',

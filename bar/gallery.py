@@ -81,8 +81,8 @@ class BoxGallery(ImagesView_Configuration, Box):
     class_icon16 = 'bar_items/icons/16x16/gallery.png'
     class_icon48 = 'bar_items/icons/48x48/gallery.png'
 
-    is_side = False
-    is_content = True
+    is_sidebox = False
+    is_contentbox = True
 
     class_schema = freeze(merge_dicts(
         Box.class_schema,

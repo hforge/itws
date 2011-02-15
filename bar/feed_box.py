@@ -191,8 +191,8 @@ class BoxFeed(Box):
 
     # Configuration
     allow_instanciation = True
-    is_side = True
-    is_content = True
+    is_sidebox = True
+    is_contentbox = True
 
     # Automatic Edit View
     edit_schema = freeze({
