@@ -7,10 +7,12 @@
   ${admin_bar}
   <stl:block stl:if="items">
     <stl:block stl:repeat="item items">
-      <!-- HTML CONTENT -->
-      <stl:block stl:if="item/html">${item/html}</stl:block>
-      <!-- LINK -->
+      <stl:block stl:if="item/html">
+        <!-- HTML CONTENT -->
+        ${item/html}
+      </stl:block>
       <stl:block stl:if="not item/html">
+        <!-- LINK -->
         <a stl:if="item/path" href="${item/path}" target="${item/target}">${item/title}</a>
         <span stl:if="not item/path">${item/title}</span>
       </stl:block>
