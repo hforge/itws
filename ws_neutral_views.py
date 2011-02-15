@@ -37,32 +37,13 @@ from views import EditView
 
 class NeutralWS_RSS(BaseRSS):
 
-    excluded_formats = freeze(['rssfeeds', 'text/css'])
+    excluded_formats = freeze(['rssfeeds'])
 
 
     def get_base_query(self, resource, context):
         query = BaseRSS.get_base_query(self, resource, context)
         query.append(PhraseQuery('workflow_state', 'public'))
         return query
-
-
-    def get_excluded_paths(self, resource, context):
-        site_root = resource.get_site_root()
-        site_root_abspath = site_root.get_abspath()
-        excluded = []
-        for name in ('./404',):
-            excluded.append(site_root_abspath.resolve2(name))
-        return excluded
-
-
-    def get_excluded_container_paths(self, resource, context):
-        site_root = resource.get_site_root()
-        site_root_abspath = site_root.get_abspath()
-        excluded = []
-        for name in ('./menu/', './repository/', './ws-data/',
-                     './footer/', './turning-footer/', './tags/'):
-            excluded.append(site_root_abspath.resolve2(name))
-        return excluded
 
 
     def get_item_value(self, resource, context, item, column, site_root):

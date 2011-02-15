@@ -46,7 +46,8 @@ class BaseRSS(BaseView):
     def get_base_query(self, resource, context):
         # Filter by website
         abspath = resource.get_site_root().get_canonical_path()
-        query = [ get_base_path_query(str(abspath)) ]
+        query = [ get_base_path_query(str(abspath)),
+                  PhraseQuery('is_content', True) ]
         # Filter by pub_datetime
         today = datetime.now()
         min_date = datetime(1900, 1, 1)

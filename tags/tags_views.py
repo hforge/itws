@@ -73,15 +73,6 @@ class Tag_RSS(BaseRSS):
         return query
 
 
-    def get_excluded_container_paths(self, resource, context):
-        site_root = resource.get_site_root()
-        site_root_abspath = site_root.get_abspath()
-        excluded = []
-        for name in ('./menu/', './repository/', './ws-data/'):
-            excluded.append(site_root_abspath.resolve2(name))
-        return excluded
-
-
     def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column == 'description':
