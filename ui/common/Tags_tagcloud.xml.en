@@ -19,9 +19,7 @@
 
   <ul id="tag-cloud" stl:if="tags">
     <li stl:repeat="tag tags" class="${tag/css}">
-      <a href="${tag/link}" title="${tag/title}">
-        ${tag/xml_title}
-      </a>
+      <a href="${tag/link}" title="${tag/title}">${tag/xml_title}</a>
     </li>
   </ul>
 

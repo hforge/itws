@@ -20,16 +20,10 @@
         </td>
         <td>
           <ul stl:if="tabs">
-            <li>
-              <span class="${workflow}">
-                ${resource_type}
-              </span>
-            </li>
+            <li><span class="${workflow}">${resource_type}</span></li>
             <li stl:repeat="tab tabs">
               <a href="${tab/name}" class="${tab/class}" rel="${tab/rel}">
-                <stl:block stl:if="not tab/icon">
-                  ${tab/label}
-                </stl:block>
+                <stl:block stl:if="not tab/icon">${tab/label}</stl:block>
                 <img src="/ui/common/images/1x1.gif"
                   class="adminbar16 ${tab/icon}" title="${tab/label}"
                   stl:if="tab/icon"/>
@@ -41,9 +35,7 @@
           <ul>
             <li><span>Edit mode</span></li>
             <li stl:repeat="tab edition_tabs">
-              <a href="${tab/name}" class="${tab/class}">
-                ${tab/label}
-              </a>
+              <a href="${tab/name}" class="${tab/class}">${tab/label}</a>
             </li>
           </ul>
         </td>

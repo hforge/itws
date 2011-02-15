@@ -9,18 +9,14 @@
       <li stl:if="repeat/menu/start" class="${menu/class} first">
         <!-- FIRST -->
         <a href="${menu/path}" id="${menu/id}"
-           target="${menu/target}" title="${menu/title}">
-          ${menu/title}
-        </a>
+           target="${menu/target}" title="${menu/title}">${menu/title}</a>
       </li>
       <stl:block stl:if="not repeat/menu/start">
         <stl:block stl:if="not repeat/menu/end">
           <!-- MIDDLE -->
           <li class="${menu/class}">
             <a href="${menu/path}" id="${menu/id}"
-               target="${menu/target}" title="${menu/title}">
-              ${menu/title}
-            </a>
+               target="${menu/target}" title="${menu/title}">${menu/title}</a>
           </li>
         </stl:block>
       </stl:block>
@@ -29,9 +25,7 @@
           <!-- LAST -->
           <li class="${menu/class} last">
             <a href="${menu/path}" id="${menu/id}"
-               target="${menu/target}" title="${menu/title}">
-              ${menu/title}
-            </a>
+               target="${menu/target}" title="${menu/title}">${menu/title}</a>
           </li>
         </stl:block>
       </stl:block>
