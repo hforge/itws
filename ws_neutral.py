@@ -21,6 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from the Standard Library
+from decimal import Decimal
 import sys
 
 # Import from itools
@@ -203,6 +204,20 @@ class NeutralWS(Website_BarAware, WebSite):
               or getattr(context.view, 'is_popup', False)):
             return self.get_resource('/ui/admin-popup/')
         return WebSite.get_skin(self, context)
+
+
+    def before_traverse(self, context, min=Decimal('0.000001'),
+                        zero=Decimal('0.0')):
+        proxy = super(NeutralWS, self)
+        proxy.before_traverse(context, min, zero)
+        # URI language ie en.mywebsite.com, fr.mywebsite.com
+        if context.uri:
+            uri_lang = context.uri.authority.split('.')[0]
+            available_languages = self.get_property('website_languages')
+            if uri_lang in available_languages:
+                # URI language (1.5)
+                accept = context.accept_language
+                accept.set(uri_lang, 1.5)
 
 
     # InternalResourcesAware API
