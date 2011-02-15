@@ -91,6 +91,14 @@ class ImagesView_View(Feed_View):
         return resource.get_resource('section_view')
 
 
+    def _get_query_value(self, resource, context, name):
+        conf_resource = self._get_configuration_file(resource)
+        if name in ('batch_size', 'sort_by', 'reverse'):
+            return conf_resource.get_property('view_%s' % name)
+        proxy = super(ImagesView_View, self)
+        return proxy._get_query_value(resource, context, name)
+
+
     def get_items(self, resource, context, *args):
         args = list(args)
         conf_resource = self._get_configuration_file(resource)
