@@ -38,6 +38,10 @@ class BaseSectionView_Configuration(File):
     edit_widgets = freeze([])
     display_title = False
 
+    # Hide in browse_content
+    is_content = False
+
+
     def get_document_types(self):
         return []
 
