@@ -24,7 +24,7 @@ from itools.core import freeze, merge_dicts, thingy_property
 from itools.datatypes import String, Boolean
 from itools.gettext import MSG
 from itools.web import get_context, STLView
-from itools.database import PhraseQuery, AndQuery, NotQuery, RangeQuery
+from itools.database import PhraseQuery, RangeQuery
 
 # Import from ikaaro
 from ikaaro.datatypes import Multilingual
@@ -185,11 +185,11 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
 
 
     def get_items(self, resource, context, *args):
+        proxy = super(NewsFolder_BrowseContent, self)
+        results = proxy.get_items(resource, context, *args)
+        # Return only direct children
         path = str(resource.get_canonical_path())
-        # Only remove 'order-sidebar'
-        query = [ PhraseQuery('parent_path', path),
-                  NotQuery(PhraseQuery('name', 'order-sidebar')) ]
-        return context.root.search(AndQuery(*query))
+        return results.search(PhraseQuery('parent_path', path))
 
 
     def get_item_value(self, resource, context, item, column):
