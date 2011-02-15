@@ -35,7 +35,7 @@ from itws.utils import is_navigation_mode
 
 hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
 hide_single_widget = RadioWidget('hide_if_only_one_item',
-        title=MSG(u'Hide if there is only one item'))
+        title=MSG(u'Hide if there is only one item'), oneline=True)
 
 
 ###############################################################################
