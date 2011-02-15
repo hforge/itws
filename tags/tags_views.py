@@ -278,6 +278,9 @@ class TagsAware_Edit(object):
                 dt = datetime(pub_date.year, pub_date.month, pub_date.day,
                               **dt_kw)
                 resource.set_property('pub_datetime', dt)
+            else:
+                resource.del_property('pub_datetime')
+        return False
 
 
 
