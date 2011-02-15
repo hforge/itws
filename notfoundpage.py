@@ -76,6 +76,9 @@ class NotFoundPage(WebPage):
                                          specific_view='control_panel',
                                          title=ControlPanel.title)
 
+    # Hide in browse_content
+    is_content = False
+
 
 
 register_resource_class(NotFoundPage, format='application/xhtml+xml')

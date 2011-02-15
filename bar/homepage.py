@@ -36,6 +36,9 @@ class WSDataFolder(Folder):
     class_views = ['commit_log']
     class_schema = Folder.class_schema
 
+    # Hide in browse_content
+    is_content = False
+
     __fixed_handlers__ = [SideBarAware.sidebar_name,
                           ContentBarAware.contentbar_name]
 

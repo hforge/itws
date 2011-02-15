@@ -92,6 +92,9 @@ class TagsFolder(Folder):
     class_views = ['tag_cloud', 'browse_content', 'new_resource?type=tag',
                    'control_panel']
 
+    # Hide in browse_content
+    is_content = False
+
     tag_class = Tag
 
     tag_cloud = TagsFolder_TagCloud()

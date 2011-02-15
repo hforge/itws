@@ -167,6 +167,9 @@ class SiteMap(Folder):
     class_title = MSG(u'Sitemap')
     class_views = ['view']
 
+    # Hide in browse_content
+    is_content = False
+
     view = SiteMapView()
 
 

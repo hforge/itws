@@ -159,6 +159,8 @@ class Repository(Folder):
     class_icon48 = 'bar_items/icons/48x48/repository.png'
     class_views = ['browse_content', 'new_resource_form',
                    'new_sidebar_resource', 'backlinks', 'commit_log']
+    # Hide in browse_content
+    is_content = False
 
     tags_box = 'tags'
 

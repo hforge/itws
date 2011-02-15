@@ -116,7 +116,6 @@ class DiaporamaTable_View(TableViewWithoutAddRecordButton, OrderedTable_View):
 
 
 
-
 class DiaporamaTable_CompositeView(CompositeForm):
 
     access = 'is_allowed_to_edit'
@@ -242,6 +241,9 @@ class DiaporamaTable(OrderedTable):
     view = DiaporamaTable_CompositeView()
     configure = GoToSpecificDocument(specific_document='..',
             specific_view='configure', title=MSG(u'Configure'))
+
+    # Hide in browse_content
+    is_content = False
 
     form = [ImageSelectorWidget('img_path', title=MSG(u'Image Path')),
             PathSelectorWidget('img_link', title=MSG(u'Image Link')),

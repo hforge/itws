@@ -17,10 +17,9 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.database import AndQuery, NotQuery, OrQuery, PhraseQuery
-from itools.database import StartQuery, TextQuery
+from itools.database import TextQuery
 from itools.datatypes import Enumerate, Integer, String, Boolean
 from itools.gettext import MSG
-from itools.uri import Path
 
 # Import from ikaaro
 from ikaaro.autoform import SelectWidget
@@ -150,47 +149,7 @@ class Feed_View(Folder_BrowseContent):
             query = AndQuery(query, NotQuery(theme))
 
         if self.ignore_internal_resources:
-            exclude_folders_path = []
-            exclude_files_path = []
-            # Exclude internal use resources
-            method = getattr(resource, 'get_internal_use_resource_names', None)
-            if method:
-                resource_abspath = resource.get_abspath()
-                for name in method():
-                    abspath = resource_abspath.resolve2(name)
-                    if name[-1] == '/':
-                        # folder
-                        exclude_folders_path.append(str(abspath))
-                    else:
-                        # file
-                        exclude_files_path.append(str(abspath))
-
-            if self.search_on_current_folder_recursive is True:
-                q = AndQuery(get_base_path_query(str(container_abspath)),
-                             PhraseQuery('internal_resource_aware', True))
-                folder_results = root.search(q)
-                for doc in folder_results.get_documents():
-                    p_abspath = Path(doc.abspath)
-                    for name in doc.internal_resource_names:
-                        abspath = p_abspath.resolve2(name)
-                        if name[-1] == '/':
-                            # folder
-                            exclude_folders_path.append(str(abspath))
-                        else:
-                            # file
-                            exclude_files_path.append(str(abspath))
-
-            exclude_query = []
-            for abspath in exclude_files_path:
-                exclude_query.append(PhraseQuery('abspath', abspath))
-
-            for abspath in exclude_folders_path:
-                # Make get_base_path_query(xxx, include_container=True)
-                exclude_query.append(PhraseQuery('abspath', abspath))
-                exclude_query.append(StartQuery('abspath', '%s/' % abspath))
-
-            if exclude_query:
-                query = AndQuery(query, NotQuery(OrQuery(*exclude_query)))
+            query = AndQuery(query, PhraseQuery('is_content', True))
 
         if self.ignore_box_aware:
             query = AndQuery(query, NotQuery(PhraseQuery('box_aware', True)))
@@ -303,46 +262,7 @@ class Feed_View(Folder_BrowseContent):
                                     PhraseQuery('name', search_text)))
 
         if self.ignore_internal_resources:
-            exclude_folders_path = []
-            exclude_files_path = []
-            # Exclude internal use resources
-            method = getattr(resource, 'get_internal_use_resource_names', None)
-            if method:
-                resource_abspath = resource.get_abspath()
-                for name in method():
-                    abspath = resource_abspath.resolve2(name)
-                    if name[-1] == '/':
-                        # folder
-                        exclude_folders_path.append(str(abspath))
-                    else:
-                        # file
-                        exclude_files_path.append(str(abspath))
-            if self.search_on_current_folder_recursive is True:
-                q = AndQuery(get_base_path_query(str(container_abspath)),
-                             PhraseQuery('internal_resource_aware', True))
-                folder_results = root.search(q)
-                for doc in folder_results.get_documents():
-                    p_abspath = Path(doc.abspath)
-                    for name in doc.internal_resource_names:
-                        abspath = p_abspath.resolve2(name)
-                        if name[-1] == '/':
-                            # folder
-                            exclude_folders_path.append(str(abspath))
-                        else:
-                            # file
-                            exclude_files_path.append(str(abspath))
-
-            exclude_query = []
-            for abspath in exclude_files_path:
-                exclude_query.append(PhraseQuery('abspath', abspath))
-
-            for abspath in exclude_folders_path:
-                # Make get_base_path_query(xxx, include_container=True)
-                exclude_query.append(PhraseQuery('abspath', abspath))
-                exclude_query.append(StartQuery('abspath', '%s/' % abspath))
-
-            if exclude_query:
-                args.append(NotQuery(OrQuery(*exclude_query)))
+            args.append(PhraseQuery('is_content', True))
 
         if self.ignore_box_aware:
             args.append(NotQuery(PhraseQuery('box_aware', True)))

@@ -69,6 +69,9 @@ class RobotsTxt(Text):
             Text.class_schema,
             state=String(source='metadata', default='public'))
 
+    # Hide in browse_content
+    is_content = False
+
 
     def init_resource(self, **kw):
         kw['extension'] = 'txt'
