@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright (C) 2010 Taverne Sylvain <sylvain@itaapy.com>
+# Copyright (C) 2011 Hervé Cauwelier <herve@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

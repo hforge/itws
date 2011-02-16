@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright (C) 2011 Taverne Sylvain <sylvain@itaapy.com>
 #
 # ikaaro documentation build configuration file, created by
 # sphinx-quickstart on Fri Nov 19 19:31:17 2010.

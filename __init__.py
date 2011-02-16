@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright (C) 2007, 2009 J. David Ibanez <jdavid@itaapy.com>
 # Copyright (C) 2007-2010 Henry Obein <henry@itaapy.com>
-# Copyright (C) 2008-2009 Nicolas Deram <nicolas@itaapy.com>
+# Copyright (C) 2008-2010 Nicolas Deram <nicolas@itaapy.com>
 # Copyright (C) 2010 Hervé Cauwelier <herve@itaapy.com>
 # Copyright (C) 2010 Taverne Sylvain <sylvain@itaapy.com>
 #
