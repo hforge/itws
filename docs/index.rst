@@ -411,7 +411,7 @@ Dans le thème, vous pouvez:
 Modifier le menu principal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-XXX
+À venir ...
 
 Modifier l'apparence du site
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -518,7 +518,7 @@ Le bouton "»" permet d'associer tous les tags à la page internet courante.
 Exemple: création d'une galerie d'images
 ------------------------------------------
 
-XXX
+À venir ...
 
 
 
@@ -536,16 +536,16 @@ Certaines ressources disposent de vues avancées
     - Description
 
   * - Links
-    - XXX
+    - À venir ...
 
   * - Backlinks
-    - XXX
+    - À venir ...
 
   * - Commit log
-    - XXX
+    - À venir ...
 
   * - Subscriptions
-    - XXX
+    - À venir ...
 
 
 Mon site et le référencement
@@ -558,9 +558,9 @@ quelques actions qui vous permettront d'améliorer encore davantage votre
 réferencement :
 
 
-**Sitemap.xml** XXX
-**Robots.txt** XXXX
-**Vue SEO** XXX (Google key / Yahoo key /) Google Webmaster tools
+**Sitemap.xml** À venir ...
+**Robots.txt** À venir ...
+**Vue SEO** À venir ... (Google key / Yahoo key /) Google Webmaster tools
 
 
 Questions
@@ -570,11 +570,11 @@ Voici les réponses aux questions fréquemment posées :
 
 **Comment savoir si je dois ajouter une section ou une webpage ?**
 
-XXX
+À venir ...
 
 **Comment ?**
 
-XXX
+À venir ...
 
 
 
