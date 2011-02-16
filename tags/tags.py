@@ -46,8 +46,8 @@ class Tag(File):
 
     class_id = 'tag'
     class_title = MSG(u'Tag')
-    class_description = MSG(u'Tags are used to categorize website content '
-                            u'and build RSS feeds')
+    class_description = MSG(u'Tags are used to categorize website content and '
+                            u'build navigation views.')
     class_version = '20100618'
     class_icon16 = 'itws-icons/16x16/tag.png'
     class_icon48 = 'itws-icons/48x48/tag.png'
