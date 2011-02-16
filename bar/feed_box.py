@@ -74,14 +74,13 @@ class TagsAwareContainerPathDatatype(Enumerate):
 
 class BoxFeed_Enumerate(Enumerate):
 
-    # TODO Use more user friendly label ...
     options = [
-      {'name': '/ui/feed_views/Tag_item_viewbox.xml', 'value': MSG(u'V3'),
-       'css': 'v3'},
+      {'name': '/ui/feed_views/Tag_item_viewbox.xml',
+       'value': MSG(u'Preview'), 'css': 'v3'},
       {'name': '/ui/feed_views/NewsItem_preview_with_thumbnail.xml',
-       'value': MSG(u'V2'), 'css': 'v2'},
-      {'name': '/ui/feed_views/NewsItem_preview.xml', 'value': MSG(u'V1'),
-       'css': 'v1'}]
+       'value': MSG(u'Title with thumbnail'), 'css': 'v2'},
+      {'name': '/ui/feed_views/NewsItem_preview.xml',
+       'value': MSG(u'Title only'), 'css': 'v1'}]
 
 
 
