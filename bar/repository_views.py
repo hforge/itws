@@ -18,7 +18,7 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.database import AndQuery, OrQuery, PhraseQuery, TextQuery
+from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Enumerate, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl
@@ -29,9 +29,6 @@ from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import stl_namespaces, SelectWidget, make_stl_template
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
-from ikaaro.utils import get_base_path_query
-from ikaaro.registry import get_resource_class
-
 
 
 # Helper
@@ -62,69 +59,6 @@ class Repository_BrowseContent(Folder_BrowseContent):
             <span stl:if="not repeat/item/end">,</span>
         </stl:block>
         """, stl_namespaces))
-
-
-    def get_search_types(self, resource, context):
-        # 1. Build the query of all objects to search
-        path = resource.get_canonical_path()
-        query = get_base_path_query(str(path))
-
-        # 2. Compute children_formats
-        children_formats = set()
-        for child in context.root.search(query).get_documents():
-            children_formats.add(child.format)
-
-        # 3. Do not show two options with the same title
-        formats = {}
-        for type in children_formats:
-            cls = get_resource_class(type)
-            title = cls.class_title.gettext()
-            formats.setdefault(title, []).append(type)
-
-        # 4. Build the namespace
-        types = []
-        for title, type in formats.items():
-            type = ','.join(type)
-            types.append({'name': type, 'value': title})
-        types.sort(key=lambda x: x['value'].lower())
-
-        return types
-
-
-    def get_items(self, resource, context, *args):
-        # Query
-        args = list(args)
-
-        # Search in subtree
-        path = resource.get_canonical_path()
-        query = get_base_path_query(str(path))
-        args.append(query)
-
-        # Filter by type
-        search_type = context.query['search_type']
-        if search_type:
-            if ',' in search_type:
-                search_type = search_type.split(',')
-                search_type = [ PhraseQuery('format', x) for x in search_type ]
-                search_type = OrQuery(*search_type)
-            else:
-                search_type = PhraseQuery('format', search_type)
-            args.append(search_type)
-
-        # Text search
-        search_text = context.query['search_text'].strip()
-        if search_text:
-            args.append(OrQuery(TextQuery('title', search_text),
-                                TextQuery('text', search_text),
-                                PhraseQuery('name', search_text)))
-
-        # Ok
-        if len(args) == 1:
-            query = args[0]
-        else:
-            query = AndQuery(*args)
-
-        return context.root.search(query)
 
 
     def get_table_columns(self, resource, context):
