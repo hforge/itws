@@ -27,7 +27,7 @@ Ce croquis représente les différents éléments constituant votre site Interne
 
 Voici un tableau récapitulatif des différentes zones de votre site:
 
-.. list-table:: Tableau
+.. list-table::
     :header-rows: 1
     :widths: 100, 500
 
@@ -69,9 +69,9 @@ Dans ITWS on appelle cela des "ressources". Ces ressources sont présentes sous 
 Voici la liste complète des ressources d'ITWS :
 
 
-.. list-table:: Tableau
+.. list-table::
     :header-rows: 1
-    :widths: 100, 200, 200
+    :widths: 30, 120, 350
 
     * - Logo
       - Type
@@ -95,7 +95,7 @@ Voici la liste complète des ressources d'ITWS :
       - RSSFeeds
       - Flux RSS
 
-    * - .. image:: figures/image.*
+    * - .. image:: figures/tags.*
       - Tag
       - Marqueur lexical permettant de regrouper des ressources
 
@@ -103,7 +103,7 @@ Voici la liste complète des ressources d'ITWS :
       - Dossier
       - Conteneur utilisé pour classer des documents bureautiques par exemple.
 
-    * - .. image:: figures/folder.*
+    * - .. image:: figures/tracker48.*
       - Tracker (optionnel)
       - Outil de suivi par système de tickets, utilisé pour la gestion de projet.
 
@@ -111,7 +111,7 @@ Voici la liste complète des ressources d'ITWS :
       - Section
       - Une section est un dossier dont la vue est configurable.
 
-    * - .. image:: figures/section.*
+    * - .. image:: figures/news_folder.*
       - News
       - Actualité
 
@@ -301,9 +301,9 @@ Description:
 
 Voici le tableau des différents types d'éléments pouvant être ordonnés :
 
-.. list-table:: Tableau
+.. list-table::
     :header-rows: 1
-    :widths: 100, 200, 200
+    :widths: 30, 120, 350
 
     * - Logo
       - Type
@@ -530,7 +530,7 @@ Les vues avancées
 
 Certaines ressources disposent de vues avancées
 
-.. list-table:: Tableau
+.. list-table::
     :header-rows: 1
     :widths: 100, 500
 
