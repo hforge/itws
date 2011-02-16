@@ -75,4 +75,4 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
         TextWidget('view_batch_size', title=MSG(u'Batch size')),
         SelectWidget('view_sort_by', title=MSG(u'Sort by'),
                      has_empty_option=False),
-        RadioWidget('view_reverse', title=MSG(u'Reverse'))])
+        RadioWidget('view_reverse', title=MSG(u'Reverse'), oneline=True)])

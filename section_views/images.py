@@ -69,10 +69,12 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
         BaseFeedView_Configuration.edit_widgets
         + [SelectWidget('filtered_class',
                         title=MSG(u'Type of content to display')),
-           RadioWidget('display_thumb_title', title=MSG(u'Display image title')),
+           RadioWidget('display_thumb_title', title=MSG(u'Display image title'),
+                       oneline=True),
            TextWidget('thumb_width', title=MSG(u'Thumb width')),
            TextWidget('thumb_height', title=MSG(u'Thumb height')),
-           RadioWidget('thumb_strict', title=MSG(u'Force thumbnail size'))])
+           RadioWidget('thumb_strict', title=MSG(u'Force thumbnail size'),
+                      oneline=True)])
 
 
 
