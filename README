@@ -75,8 +75,8 @@ Participate through:
 Requirements
 ============
 
- - itools 0.61.4 (http://www.hforge.org/itools)
- - ikaaro 0.61.4 (http://www.hforge.org/ikaaro)
+ - itools 0.62.x (http://www.hforge.org/itools)
+ - ikaaro 0.62.x (http://www.hforge.org/ikaaro)
 
 
 Install & Deployment
@@ -98,6 +98,7 @@ Known issues
 
 MapBox does not allow to use diferents 'render' (OSM, GoogleMap) inside the
 same page. This is because, the scripts override each other.
+
 
 Documentation
 =============
