@@ -2,16 +2,11 @@ TODO
 ============================================================
 
 * Bug when adding sidebar
-* Migration of slides (see more details bellow)
-* We have to be able to add ImagesFeedView into a CompositeView
-* Test migration of slides
 * Test migration of CSS for feed boxes
-* Fix update method of old addresses_views mechanism for contact (also copy images in folder)
 * Does TagsAware Feed Views has to show private resources ? No hide private resources
 * Add a search view on Navigation view ?
 * Hide sidebar when it's not needed
 * Test look&feel of wiki in new ITWS
-* Remove change mode on control panel
 * Bug Apache cache of header images and other (To test with last patch on itools)
 
 

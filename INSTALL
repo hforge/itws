@@ -87,6 +87,7 @@ Create your instance
     *   icms-start.py INSTANCE_NAME
     *
 
+If you want to add more modules (ie tracker, calendar), see ikaaro documentation
 
 Start the instance
 ------------------
@@ -105,7 +106,7 @@ Start and detach the server::
 Create your website
 -------------------
 
-- Go to http://localhost:8080/;new_resource?type=WebSite
+- Go to http://localhost:8080/;new_resource
 - Choose "ITWS website"
 - Set the virtual host of your website (for example test.localhost)
 
