@@ -30,7 +30,7 @@ from ikaaro.autoform import ImageSelectorWidget, MultilineWidget
 from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
-from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
 from ikaaro.registry import register_resource_class
 from ikaaro.theme import Theme as BaseTheme
 from ikaaro.theme_views import Theme_Edit as BaseTheme_Edit
@@ -207,6 +207,7 @@ class Theme(BaseTheme):
     # Views
     edit = Theme_Edit()
     control_panel = ITWS_ControlPanel()
+    browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
     edit_footer = GoToSpecificDocument(
             access='is_allowed_to_edit',
             specific_document='footer/menu',
