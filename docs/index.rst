@@ -526,26 +526,26 @@ Exemple: création d'une galerie d'images
 Les vues avancées
 -----------------------------
 
-Certaines ressources disposent de vues avancées
+Certaines ressources disposent de vues avancées :
 
 .. list-table::
     :header-rows: 1
     :widths: 100, 500
 
-  * - Vue
-    - Description
+    * - Vue
+      - Description
 
-  * - Links
-    - À venir ...
+    * - Links
+      - À venir ...
 
-  * - Backlinks
-    - À venir ...
+    * - Backlinks
+      - À venir ...
 
-  * - Commit log
-    - À venir ...
+    * - Commit log
+      - Historique des modifications sur la ressource.
 
-  * - Subscriptions
-    - À venir ...
+    * - Subscriptions
+      - Gestion des utilisateurs notifiés en cas de modification de la ressource.
 
 
 Mon site et le référencement
@@ -558,9 +558,9 @@ quelques actions qui vous permettront d'améliorer encore davantage votre
 réferencement :
 
 
-**Sitemap.xml** À venir ...
-**Robots.txt** À venir ...
-**Vue SEO** À venir ... (Google key / Yahoo key /) Google Webmaster tools
+- **Sitemap.xml** À venir ...
+- **Robots.txt** À venir ...
+- **Vue SEO** À venir ... (Google key / Yahoo key /) Google Webmaster tools
 
 
 Questions
