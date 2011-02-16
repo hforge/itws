@@ -125,26 +125,24 @@ Le navigateur
 
 Votre site Internet est composé d'un ensemble de dossiers et de fichiers
 tout comme votre votre système d'exploitation préféré (Windows/Linux/Mac).
-Un navigateur est ainsi disponible dans votre site internet pour naviguer
-dans l'arborescence de votre site:
 
-.. figure:: figures/navigator.*
-
-Le navigateur est accessible à tout moment depuis l'icône présent dans la
+Un navigateur est accessible à tout moment depuis l'icône présente dans la
 barre d'administration:
 
-  XXX
+.. figure:: figures/admin_bar_manage-fr.*
 
-A partir du navigateur, vous pouvez effectuer des actions,
-sur une ou plusieurs ressources à la fois:
 
-  - Renommer
-  - Supprimer
-  - Copier
-  - Coller
-  - Publier
-  - Dépublier
+Ce navigateur  vous permet de naviguer dans l'arborescence de votre site Internet :
 
+.. figure:: figures/navigator-fr.*
+
+Légende :
+
+  1. Recherche plein-texte
+  2. Filtre par type de contenu
+  3. Lien pour visualiser la ressource
+  4. Lien pour éditer la ressource
+  5. Barre d'action sur la ou les ressources sélectionnées.
 
 
 
@@ -153,7 +151,7 @@ Les Barres d'administration
 
 Lorsque vous êtes connecté en tant qu'Administrateur du site, une barre comme celle ci...
 
-.. figure:: figures/admin_bar.*
+.. figure:: figures/admin_bar-fr.*
 
 ... apparaît en haut de votre site internet.
 Celle-ci vous permet d'administrer facilement votre site.
@@ -161,7 +159,7 @@ Cette barre d'administration est composée de 3 blocs.
 
 **Barre numéro 1**
 
-.. figure:: figures/admin_bar_1.*
+.. figure:: figures/admin_bar_1-fr.*
 
 La première barre d'administration, qui est toujours affichée vous permet::
 
@@ -171,7 +169,7 @@ La première barre d'administration, qui est toujours affichée vous permet::
 
 **Barre numéro 2**
 
-.. figure:: figures/admin_bar_2.*
+.. figure:: figures/admin_bar_2-fr.*
 
 La deuxième barre d'administration est la barre d'administration la plus importante.
 Celle-ci est différente sur toutes les pages de votre site.
@@ -186,7 +184,7 @@ Vous disposez aussi de boutons permettant d'agir sur la ressource courante.
 
 **Barre numéro 3**
 
-.. figure:: figures/admin_bar_3.*
+.. figure:: figures/admin_bar_3-fr.*
 
 Cette troisième barre vous permet d'activer ou non le mode édition.
 
@@ -217,7 +215,7 @@ Barre d'administration de la racine de votre site
 
 Lorsque vous êtes à la racine de votre site internet, vous devriez voir cette barre d'administration:
 
-.. figure:: figures/admin_bar_2.*
+.. figure:: figures/admin_bar_2-fr.*
 
 Le titre de la ressource courante est "ITWS Web Site", car vous êtes à la racine de votre site.
 
@@ -236,7 +234,7 @@ Barre d'administration d'une Section
 
 Lorsque la ressource courante est une section, vous devriez voir cette barre d'administration
 
-XXX
+.. figure:: figures/admin_bar_section-fr.*
 
 Le titre de la ressource courante est donc "Section".
 Ce titre est coloré en vert car la ressource est publiée.
@@ -259,7 +257,7 @@ Barre d'administration d'une "Page Internet"
 
 Lorsque la ressource courante est une page internet, vous devriez voir cette barre d'administration :
 
-XXX
+.. figure:: figures/admin_bar_webpage-fr.*
 
 Le titre de la ressource courante est donc "Page Web"
 Ce titre est coloré en vert car la ressource est publiée.
