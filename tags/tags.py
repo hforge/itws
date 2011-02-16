@@ -46,6 +46,8 @@ class Tag(File):
 
     class_id = 'tag'
     class_title = MSG(u'Tag')
+    class_description = MSG(u'Tags are used to categorize website content '
+                            u'and build RSS feeds')
     class_version = '20100618'
     class_icon16 = 'itws-icons/16x16/tag.png'
     class_icon48 = 'itws-icons/48x48/tag.png'
@@ -86,6 +88,7 @@ class TagsFolder(Folder):
 
     class_id = 'tags-folder'
     class_title = MSG(u'Tags')
+    class_description = MSG(u'Tags folder')
     class_version = '20100118'
     class_icon16 = 'itws-icons/16x16/tags.png'
     class_icon48 = 'itws-icons/48x48/tags.png'
