@@ -154,7 +154,7 @@ When you are logged in as an administrator of the site, a bar like this one ...
 This allows you to easily manage your site.
 This admin bar consists of 3 blocks.
 
-** Bar 1**
+**Bar 1**
 
 .. figure:: figures/admin_bar_1-en.*
 
@@ -164,7 +164,7 @@ The first admin bar, which is always displayed allows you to:
     - To access the control panel where you can configure your website
     - To have access to the interface for adding a new resource
 
-** Bar 2**
+**Bar 2**
 
 .. figure:: figures/admin_bar_2-en.*
 
@@ -178,7 +178,7 @@ This bar gives you important information:
 
 You also have buttons that act on the current resource.
 
-** Bar 3**
+**Bar 3**
 
 .. figure:: figures/admin_bar_3-en.*
 
@@ -291,10 +291,10 @@ The composite view is made up of a set of orderable blocks.
 
 Description:
    
-    - (1) Current resource is a section
-    - (2) The edit mode is activated
-    - (3) It is possible to order and add boxes into the composite view
-    - (4) A button allows you to modify every box of the composite view
+    (1) Current resource is a section
+    (2) The edit mode is activated
+    (3) It is possible to order and add boxes into the composite view
+    (4) A button allows you to modify every box of the composite view
 
 Here is a picture of different types of items that can be ordered:
 
@@ -433,13 +433,13 @@ Once the resource type is selected, the add form is displayed:
 
 This form contains important information:
 
-   - (1) The type of the selected resource
-   - (2) The description of the resource type selected
+   (1) The type of the selected resource
+   (2) The description of the resource type selected
 
 You must enter two fields:
 
-  - (3) The title of the resource. This field is required.
-  - (4) You must select from the dropdown list, the location where you want to add your resource.
+  (3) The title of the resource. This field is required.
+  (4) You must select from the dropdown list, the location where you want to add your resource.
 
 In the text box, you can enter the name of the resource.
 This is not mandatory, since if the name is not seized, it will be
@@ -459,8 +459,8 @@ Adding a new news is very simple.
 
 Here are the two steps:
 
-   - (1) Click the "Add a new resource" of the admin bar
-   - (2) Select the resource type "News"
+   (1) Click the "Add a new resource" of the admin bar
+   (2) Select the resource type "News"
 
 
 HTML Editor

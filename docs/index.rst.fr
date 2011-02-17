@@ -292,10 +292,10 @@ La vue composite est composée d'un ensemble de blocs ordonnable.
 
 Description:
 
-   - (1) On est bien sur une section
-   - (2) Le mode édition est activé
-   - (3) Il est possible d'ordonner et d'ajouter des boîtes dans la vue composite
-   - (4) Un bouton permet de modifier chaque boîte de la vue composite
+   (1) On est bien sur une section
+   (2) Le mode édition est activé
+   (3) Il est possible d'ordonner et d'ajouter des boîtes dans la vue composite
+   (4) Un bouton permet de modifier chaque boîte de la vue composite
 
 Voici le tableau des différents types d'éléments pouvant être ordonnés :
 
@@ -436,8 +436,8 @@ Une fois le type de ressource séléctionné, le formulaire d'ajout est affiché
 
 Ce formulaire contient des informations importantes :
 
-  - (1) Le type de la ressource selectionnée
-  - (2) La description du type de ressource selectionnée
+  (1) Le type de la ressource selectionnée
+  (2) La description du type de ressource selectionnée
 
 Vous devez saisir deux champs :
 
@@ -463,8 +463,8 @@ L'ajout d'une nouvelle actualité est très simple.
 
 Voici les deux étapes :
 
-  - (1) Cliquer sur le bouton "Ajouter une nouvelle ressource" du panneau d'administration
-  - (2) Sélectionner la ressource de type "Actualité"
+  (1) Cliquer sur le bouton "Ajouter une nouvelle ressource" du panneau d'administration
+  (2) Sélectionner la ressource de type "Actualité"
 
 
 Editeur HTML
