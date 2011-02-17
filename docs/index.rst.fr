@@ -91,7 +91,7 @@ Voici la liste complète des ressources d'ITWS :
       - Image
       - Image, photo, etc.
 
-    * - .. image:: figures/image.*
+    * - .. image:: figures/rss_feeds.*
       - RSSFeeds
       - Flux RSS
 
@@ -307,28 +307,28 @@ Voici le tableau des différents types d'éléments pouvant être ordonnés :
       - Type
       - Description
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/html_content.*
       - Contenu
       - Zone de contenu html
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/box_contact.*
       - Contact
       - Formulaire de contact pour recueillir des messages des utilisateurs.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/box_feed.*
       - Flux de contenu
       - Affiche un ensemble d'actualités (news), pages web et/ou sections d'un
         conteneur donné selon différents critères.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/gallery.*
       - Galerie
       - Galerie d'images, on affiche les miniatures des images.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/map_box.*
       - Carte
       - Affiche un emplacement sur Google Maps ou OpenStreetMap.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/slideshow.*
       - Diaporama
       - Diaporama d'un ensemble d'images.
 
@@ -372,15 +372,10 @@ Le panneau de contrôle
 
 L'ensemble de la configuration de votre site Internet se réalise dans le panneau de contrôle de votre site Internet.
 
-Lorsque vous êtes connecté en tant qu'administrateur, vous pouvez cliquer sur l'icône:
+Lorsque vous êtes connecté en tant qu'administrateur, vous pouvez cliquer sur
+l'icône "Panneau de contrôle" de la première barre d'administration:
 
-.. figure:: figures/control_panel.*
-
-"Panneau de contrôle" de la première barre d'administration.
-
-Voici une capture d'écran du panneau de contrôle:
-
-.. figure:: figures/control_panel_view.*
+.. figure:: figures/control_panel_view-fr.*
 
 A partir de ce panneau de contrôle vous pouvez :
 
@@ -464,7 +459,7 @@ Ajouter une actualité
 
 L'ajout d'une nouvelle actualité est très simple.
 
-.. figure:: figures/add-news.*
+.. figure:: figures/add-news-fr.*
 
 Voici les deux étapes :
 

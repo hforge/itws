@@ -72,46 +72,46 @@ Here is the complete list of ITWS resources:
     :widths: 30, 120, 350
 
     * - Logo
-       - Type
-       - Description
+      - Type
+      - Description
 
-     * - .. image:: figures/html.*
-       - Website
-       - Website (article, etc.).
+    * - .. image:: figures/html.*
+      - Website
+      - Website (article, etc.).
 
-     * - .. image:: figures/file.*
-       - File
-       - You can add your website files for share with your visitors. It is
-         thus possible to add any type of files (office documents, pdf, sounds,
+    * - .. image:: figures/file.*
+      - File
+      - You can add your website files for share with your visitors. It is
+        thus possible to add any type of files (office documents, pdf, sounds,
         etc.).
 
-     * - .. image:: figures/image.*
-       - Image
-       - Image, photo, etc..
+    * - .. image:: figures/image.*
+      - Image
+      - Image, photo, etc..
 
-     * - .. image:: figures/image.*
-       - RSSFeed
-       - RSS feed
+    * - .. image:: figures/rss_feeds.*
+      - RSSFeed
+      - RSS feed
 
-     * - .. image:: figures/tags.*
-       - Tag
-       - Marker for grouping lexical resources
+    * - .. image:: figures/tags.*
+      - Tag
+      - Marker for grouping lexical resources
 
-     * - .. image:: figures/folder.*
-       - Folder
-       - Container used for classifying office documents for example.
+    * - .. image:: figures/folder.*
+      - Folder
+      - Container used for classifying office documents for example.
 
-     * - .. Image: figures/tracker48.*
-       - Tracker (optional)
-       - Ticketting tool used for project management.
+    * - .. Image: figures/tracker48.*
+      - Tracker (optional)
+      - Ticketting tool used for project management.
 
-     * - .. image:: figures/section.*
-       - Section
-       - A section is a folder whose view is configurable.
+    * - .. image:: figures/section.*
+      - Section
+      - A section is a folder whose view is configurable.
 
-     * - .. image:: figures/news_folder.*
-       - News
-       - News
+    * - .. image:: figures/news_folder.*
+      - News
+      - News
 
 
 Your website offers a "browser" that allows you to browse all folders and files
@@ -268,34 +268,6 @@ Four actions are possible:
      contains the current resource.
 
 
-
-
-Sections
-===========================
-
-A section is a resource (file type) that the view is configurable.
-You can choose the type of view among these three views:
-
-   - Composite View
-   - View Gallery
-   - View of the stream
-
-Some of these views are configurable.
-The configuration is done via the link "View configuration" for the admin bar.
-Lorsque la ressource courante est une page internet, vous devriez voir cette barre d'administration :
-
-.. figure:: figures/admin_bar_webpage-en.*
-
-Le titre de la ressource courante est donc "Page Web"
-Ce titre est coloré en vert car la ressource est publiée.
-Quatre actions sont réalisables :
-
-    - **Voir** permet de visualiser la "Page Internet"
-    - **Modifier** permet de modifier le contenu de la "Page Internet"
-    - **Avancé** permet d'accéder à des actions avancées
-    - **Icône Dossier parent** permet d'ouvrir le navigateur dans la section parente qui contient la ressource courante.
-
-
 Sections
 ===========================
 
@@ -304,7 +276,7 @@ You can choose the way of viewing among these three views:
   
    - Composite view
    - Gallery view 
-   - Stream view
+   - Feed view
 
 Some of these views are configurable.
 The configuration is done via the link "Configuration" of the admin bar.
@@ -315,7 +287,7 @@ Composite view
 
 The composite view is made up of a set of orderable blocks.
 
-.. figure:: figures/edit-composite-section.*
+.. figure:: figures/edit-composite-section-en.*
 
 Description:
    
@@ -334,28 +306,28 @@ Here is a picture of different types of items that can be ordered:
       - Type
       - Description
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/html_content.*
       - Content
       - HTML content area
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/box_contact.*
       - Contact
       - Contact form to collect users' messages.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/box_feed.*
       - Content feed
       - Displays a set of news (news), web pages and/or sections of a
         given container according to various criteria.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/gallery.*
       - Gallery
       - Image Gallery, it displays thumbnails of the images.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/map_box.*
       - Map
       - Displays a location on Google Maps or OpenStreetMap.
 
-    * - .. image:: figures/html.*
+    * - .. image:: figures/slideshow.*
       - Slideshow
       - Slideshow of a set of images.
 
@@ -396,15 +368,10 @@ The control panel
 
 The whole configuration of your website is achieved in the control panel of your website.
 
-When you are logged in as an administrator, you can click on the icon:
+When you are logged in as an administrator, you can click on the icon "Control
+panel" from the first admin bar:
 
-.. figure:: figures/control_panel.*
-
-"Control panel" from the first admin bar.
-
-Here is a screenshot of the control panel:
-
-.. figure:: figures/control_panel_view.*
+.. figure:: figures/control_panel_view-en.*
 
 From this control panel you can:
 
@@ -454,15 +421,15 @@ Add content
 To add content to your site, simply create a new resource.
 The menu is always available in the admin bar.
 
-.. figure:: figures/add-resource.*
+.. figure:: figures/add-ressource.*
 
 The list of different types of resources available will be displayed:
 
-.. figure:: figures/resource-type.*
+.. figure:: figures/type-ressources.*
 
 Once the resource type is selected, the add form is displayed:
 
-.. figure:: figures/add-resource-form.*
+.. figure:: figures/add-ressource-form.*
 
 This form contains important information:
 
@@ -488,7 +455,7 @@ Add a news
 
 Adding a new news is very simple.
 
-.. figure:: figures/add-news.*
+.. figure:: figures/add-news-en.*
 
 Here are the two steps:
 
@@ -533,7 +500,7 @@ From this configuration view you can:
 
 In a web page and in a section, a tag selector is available:
 
-.. figure:: figures/selection-tags.*
+.. figure:: figures/selection-tags-en.*
 
 Simply select a tag and click the ">" button to add the tag to the web page.
 The button "»" allows you to associate all the tags to the current web page.
@@ -551,8 +518,8 @@ Advanced views
 Some resources hold advanced views:
 
 .. list-table::
-    : header-rows: 1
-    : width: 100, 500
+    :header-rows: 1
+    :widths: 100, 500
 
     * - View
       - Description
