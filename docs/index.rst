@@ -9,255 +9,282 @@ Documentation
 Introduction
 ==============
 
+ITWS is a solution that allows you to quickly create a website.
+This documentation is intended to guide you in the handling and administration of ITWS. 
 
-ITWS est une solution qui vous permet de créer rapidement un site internet.
-Cette documentation a pour but de vous guider dans la prise en main et l'administration d'ITWS.
 
-
-La Théorie: Prise en main des concepts ITWS
+Theory: Getting started with the concepts of ITWS
 ===================================================
 
-Structuration de mon site
+Structure of my site
 -------------------------
 
-Ce croquis représente les différents éléments constituant votre site Internet:
+This sketch shows the various elements of your website:
 
 .. figure:: figures/layout.*
 
 
-Voici un tableau récapitulatif des différentes zones de votre site:
+Here is a summary of the different areas of your site:
 
 .. list-table::
     :header-rows: 1
     :widths: 100, 500
 
-    * - Zone
-      - Description de la zone*
+    * - Area
+      - Description of the area.
 
-    * - Haut de page
-      - Le haut de page contient votre logo, votre slogan, un lien pour vous
-        connecter, déconnecter ainsi qu'une zone de recherche
+    * - Top
+      - The top contains your logo, slogan, a link to connect, disconnect and a
+        search box.
 
-    * - Le menu
-      - Le menu de votre site est le principal élément de navigation. Il est
-        personnalisable facilement dans le panneau de contrôle.
+    * - The menu
+      - The menu on your site is the primary navigational element. It is
+        easily customizable in the control panel.
 
-    * - Zone de contenu
-      - Il s'agit de la zone principale de votre site.
+    * - Content area
+      - This is the main area of your site.
 
-    * - Le fil d'arianne
-      - Ce fil situé sous le menu vous permet de savoir où vous êtes sur le
-        site et de revenir en arrière (dans la section qui contient la page que
-        vous visualisez par exemple).
+    * - The breadcrumbs
+      - This breadcrumbs located under the menu lets you know where you are on
+        the site and back (in the section that contains the page you see, for
+        example).
 
-    * - Barre latérale
-      - Votre site dispose d'une barre latérale qui va vous permettre de dynamiser votre site.
+    * - Sidebar
+      - Your site has a sidebar that allows you to dynamise your site.
 
-    * - Pied de page
-      - Le pied de page vous permet d'ajouter des informations sur votre société/organisation.
+    * - Footer
+      - The footer allows you to add information about your company / organization.
 
 
-Types de ressources
+Resources types
 ----------------------
 
-Comme pour votre ordinateur, votre site internet est composé d'un ensemble de Dossiers et de Fichiers.
-Dans ITWS on appelle cela des "ressources". Ces ressources sont présentes sous deux formes :
+Like your computer, your website is composed of a set of folders and files.
+In ITWS it is called "resources". These resources are present in two forms:
 
-  - Les "Dossiers" qui peuvent contenir d'autres fichiers ou dossiers
-  - Les "Fichiers" qui ne peuvent pas contenir d'autres ressources.
+   - The "Folders" that can contain other resources (files or folders)
+   - The "Files" that can not contain other resources.
 
-Voici la liste complète des ressources d'ITWS :
-
+Here is the complete list of ITWS resources:
 
 .. list-table::
     :header-rows: 1
     :widths: 30, 120, 350
 
     * - Logo
-      - Type
-      - Description
+       - Type
+       - Description
 
-    * - .. image:: figures/html.*
-      - Page Internet
-      - Page Internet (article, etc.)
+     * - .. image:: figures/html.*
+       - Website
+       - Website (article, etc.).
 
-    * - .. image:: figures/file.*
-      - Fichier
-      - Vous pouvez ajouter dans votre site internet des fichiers pour les
-        partager avec vos visiteurs. Il est ainsi possible d'ajouter tout type
-        de fichiers (documents bureautiques, pdf, sons, etc.)
+     * - .. image:: figures/file.*
+       - File
+       - You can add your website files for share with your visitors. It is
+         thus possible to add any type of files (office documents, pdf, sounds,
+        etc.).
 
-    * - .. image:: figures/image.*
-      - Image
-      - Image, photo, etc.
+     * - .. image:: figures/image.*
+       - Image
+       - Image, photo, etc..
 
-    * - .. image:: figures/image.*
-      - RSSFeeds
-      - Flux RSS
+     * - .. image:: figures/image.*
+       - RSSFeed
+       - RSS feed
 
-    * - .. image:: figures/tags.*
-      - Tag
-      - Marqueur lexical permettant de regrouper des ressources
+     * - .. image:: figures/tags.*
+       - Tag
+       - Marker for grouping lexical resources
 
-    * - .. image:: figures/folder.*
-      - Dossier
-      - Conteneur utilisé pour classer des documents bureautiques par exemple.
+     * - .. image:: figures/folder.*
+       - Folder
+       - Container used for classifying office documents for example.
 
-    * - .. image:: figures/tracker48.*
-      - Tracker (optionnel)
-      - Outil de suivi par système de tickets, utilisé pour la gestion de projet.
+     * - .. Image: figures/tracker48.*
+       - Tracker (optional)
+       - Ticketting tool used for project management.
 
-    * - .. image:: figures/section.*
-      - Section
-      - Une section est un dossier dont la vue est configurable.
+     * - .. image:: figures/section.*
+       - Section
+       - A section is a folder whose view is configurable.
 
-    * - .. image:: figures/news_folder.*
-      - News
-      - Actualité
+     * - .. image:: figures/news_folder.*
+       - News
+       - News
 
 
-Votre site internet met à votre disposition un "Navigateur" qui vous permet de parcourir l'ensemble
-des dossiers et fichiers de votre site Internet.
-Nous allons présenter le navigateur dans la section suivante.
+Your website offers a "browser" that allows you to browse all folders and files
+on your website.
+We will present the browser in the next section.
 
-Le navigateur
+
+The browser
 ------------------------------------
 
-Votre site Internet est composé d'un ensemble de dossiers et de fichiers
-tout comme votre votre système d'exploitation préféré (Windows/Linux/Mac).
+Your website consists of a set of folders and files your just like your
+favorite operating system (Windows / Linux / Mac).
 
-Un navigateur est accessible à tout moment depuis l'icône présente dans la
-barre d'administration:
+A browser is accessible at any time since the icon in the admin bar:
 
-.. figure:: figures/admin_bar_manage-fr.*
-
-
-Ce navigateur  vous permet de naviguer dans l'arborescence de votre site Internet :
-
-.. figure:: figures/navigator-fr.*
-
-Légende :
-
-  1. Recherche plein-texte
-  2. Filtre par type de contenu
-  3. Lien pour visualiser la ressource
-  4. Lien pour éditer la ressource
-  5. Barre d'action sur la ou les ressources sélectionnées.
+.. figure:: figures/admin_bar_manage-en.*
 
 
+This browser allows you to navigate into the tree of your website:
 
-Les Barres d'administration
+.. figure:: figures/navigator-en.*
+
+Caption:
+
+   1. Full-text search 
+   2. Filter by content type
+   3. Link to view the resource
+   4. Link to edit the resource
+   5. Action bar on the selected resource(s).
+
+
+Administration bars
 ----------------------------
 
-Lorsque vous êtes connecté en tant qu'Administrateur du site, une barre comme celle ci...
+When you are logged in as an administrator of the site, a bar like this one ...
 
-.. figure:: figures/admin_bar-fr.*
+.. figure:: figures/admin_bar-en.*
 
-... apparaît en haut de votre site internet.
-Celle-ci vous permet d'administrer facilement votre site.
-Cette barre d'administration est composée de 3 blocs.
+... appears at the top of your website.
+This allows you to easily manage your site.
+This admin bar consists of 3 blocks.
 
-**Barre numéro 1**
+** Bar 1**
 
-.. figure:: figures/admin_bar_1-fr.*
+.. figure:: figures/admin_bar_1-en.*
 
-La première barre d'administration, qui est toujours affichée vous permet::
+The first admin bar, which is always displayed allows you to:
 
-   - D'accéder rapidement à la page d'accueil
-   - D'accéder au panneau de contrôle dans lequel vous pouvez configurer votre site internet
-   - D'accéder à l'interface d'ajout d'une nouvelle ressource
+    - To quickly access to the home page
+    - To access the control panel where you can configure your website
+    - To have access to the interface for adding a new resource
 
-**Barre numéro 2**
+** Bar 2**
 
-.. figure:: figures/admin_bar_2-fr.*
+.. figure:: figures/admin_bar_2-en.*
 
-La deuxième barre d'administration est la barre d'administration la plus importante.
-Celle-ci est différente sur toutes les pages de votre site.
+The second bar is the most important one.
+It is different on every page of your site.
 
-Cette barre vous donne des informations importantes :
+This bar gives you important information:
 
-    - Le type de la ressource courante (Section/WebPage...)
-    - L'état de publication de la ressource (Vert=public, rouge=Privé, blanc=Pas de workflow)
+     - The type of the current resource (Section / WebPage ...)
+     - The publication status of the resource (green=Public, red=Private, white=no workflow)
 
-Vous disposez aussi de boutons permettant d'agir sur la ressource courante.
+You also have buttons that act on the current resource.
 
+** Bar 3**
 
-**Barre numéro 3**
-
-.. figure:: figures/admin_bar_3-fr.*
-
-Cette troisième barre vous permet d'activer ou non le mode édition.
-
-Si le mode édition est activé, des boutons d'actions suplémentaires seront affichés
-lors de la navigation dans votre site.
-Ces boutons permettent d'éditer votre site. (D'où le nom de "mode édition").
-
-Si le mode édition est désactivé, les boutons d'actions supplémentaires seront cachés.
+.. figure:: figures/admin_bar_3-en.*
 
 
-La barre d'administration centrale
------------------------------------------------------------
+The third bar allows you to enable or disable the edit mode.
 
-Les 3 variantes de barre centrale
+If edit mode is activated, extra buttons will appear to act on resources when
+browsing your site.
+These buttons allow you to edit your site. (Hence the name "edit mode").
+
+If edit mode is disabled, the buttons of additional shares will be hidden.
+
+
+The central bar
+----------------------------------------------
+
+The 3 variants of the central bar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The central bar changes depending on the type of the resource in which you are.
+One can nevertheless distinguish three variants of this central bar:
+
+   - The central bar of the website (the site root)
+   - The central bar of content type "Container". Eg "Section" or "Folder"
+   - The central bar of the editable content. Eg "Website" or "File"
+
+We will present below, the 3 variants of the central bar.
+
+Admin bar from the root of your site
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you are at the root of your website, you should see the admin bar:
+
+.. figure:: figures/admin_bar_2-en.*
+
+The title of the current resource is "ITWS Web Site" because you are at the root of your site.
+
+The term "ITWS Web Site" is not colored (green / orange or red) because the site is public.
+
+Five actions are possible:
+
+   - **View** leads you to the home page of your site.
+   - **Edit** allows you change the title and appearance of the home page.
+   - **Configuration** leads you to the administration panel of your site.
+   - **Folder icon** allows you to browse files of your site.
+   - **New resource icon** allows you to add a new resource at the root of your site.
+
+
+Admin bar for a Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the current resource is a section, you should see the admin bar:
+
+.. figure:: figures/admin_bar_section-en.*
+
+The title of the current resource is "Section".
+This title is colored green because the resource is published.
+
+Five actions are possible:
+
+   - **See** leads you to the main view of the section
+   - **Edit** allows you to change title and appearance of the section
+   - **Advanced** can perform advanced operations on the section:
+         - See the history of modifications to the section
+         - See the list of links and backlinks of the section
+         - Manage the table of contents of the section
+   - **Folder icon** to open the files browser.
+     The browser will open at the current location.
+   - **New resource icon** allows you to add a new resource in the current section.
+
+
+Admin bar for a WebPage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La barre centrale varie en fonction du type de la ressource dans laquelle vous vous trouvez.
-On peut néanmoins distinguer trois variantes de cette barre centrale :
+When the current resource is a webpage, you should see the admin bar:
+    
+.. figure:: figures/admin_bar_webpage-en.*
 
-  - La barre centrale du site Internet (à la racine du site)
-  - La barre centrale de contenu de type "Contenant". Par exemple "Section" ou "Dossier"
-  - La barre centrale sur du contenu éditable. Par exemple "Page Internet" ou "Fichier"
+The title of the current resource is "Web Page"
+This title is colored green because the resource is published.
+Four actions are possible:
 
-Nous allons présenter, ci-après, les 3 variantes de la barre centrale.
-
-Barre d'administration de la racine de votre site
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Lorsque vous êtes à la racine de votre site internet, vous devriez voir cette barre d'administration:
-
-.. figure:: figures/admin_bar_2-fr.*
-
-Le titre de la ressource courante est "ITWS Web Site", car vous êtes à la racine de votre site.
-
-L'expression "ITWS Web Site" n'est pas colorée (en vert/orange/ou rouge) car le site est forcément public.
-
-Cinq actions sont réalisables:
-
-  - **Voir** permet de visualiser la page d'accueil de votre site
-  - **Modifier** permet de modifier le titre, et l'apparence de la page d'accueil
-  - **Configuration** permet d'accéder au panneau d'administration de votre site
-  - **Icône Dossier** permet d'accéder au navigateur de fichiers de votre site.
-  - **Icône Nouvelle ressource** permet d'ajouter une nouvelle ressource à la racine de votre site
-
-Barre d'administration d'une Section
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Lorsque la ressource courante est une section, vous devriez voir cette barre d'administration
-
-.. figure:: figures/admin_bar_section-fr.*
-
-Le titre de la ressource courante est donc "Section".
-Ce titre est coloré en vert car la ressource est publiée.
-
-Cinq actions sont réalisables:
-
-  - **Voir** permet de visualiser la section
-  - **Modifier** permet de modifier le titre, et l'apparence de la section
-  - **Avancé** permet d'effectuer des opérations avancées sur la section :
-        - Voir l'historique de modification de la section
-        - Voir la liste des liens et rétroliens de la section
-        - Gérer la table des matières de la section
-  - **Icône Dossier** permet d'ouvrir le navigateur de fichiers.
-    Le navigateur sera ouvert à l'emplacement courant.
-  - **Icône Nouvelle ressource** permet d'ajouter une nouvelle ressource dans la section courante
+   - **See** allows you to the main view of the webpage
+   - **Edit** allows you to change the contents of the "Website"
+   - **Advanced**  provides access to advanced actions
+   - **Parent folder icon** opens the browser from the parent section that
+     contains the current resource.
 
 
-Barre d'administration d'une "Page Internet"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+Sections
+===========================
+
+A section is a resource (file type) that the view is configurable.
+You can choose the type of view among these three views:
+
+   - Composite View
+   - View Gallery
+   - View of the stream
+
+Some of these views are configurable.
+The configuration is done via the link "View configuration" for the admin bar.
 Lorsque la ressource courante est une page internet, vous devriez voir cette barre d'administration :
 
-.. figure:: figures/admin_bar_webpage-fr.*
+.. figure:: figures/admin_bar_webpage-en.*
 
 Le titre de la ressource courante est donc "Page Web"
 Ce titre est coloré en vert car la ressource est publiée.
@@ -269,35 +296,35 @@ Quatre actions sont réalisables :
     - **Icône Dossier parent** permet d'ouvrir le navigateur dans la section parente qui contient la ressource courante.
 
 
-Les Sections
+Sections
 ===========================
 
-Une section est une ressource (de type dossier) dont la vue est configurable.
-Il est possible de choisir le type d'affichage parmi ces 3 vues :
+A section is a resource (container type) on which the view is configurable.
+You can choose the way of viewing among these three views:
+  
+   - Composite view
+   - Gallery view 
+   - Stream view
 
-  - Vue composite
-  - Vue galerie
-  - Vue du flux
-
-Certaines de ces vues sont configurables.
-La configuration se réalise via le lien "Vue configuration" de la barre d'administration.
+Some of these views are configurable.
+The configuration is done via the link "Configuration" of the admin bar.
 
 
-Vue composite
+Composite view
 --------------------
 
-La vue composite est composée d'un ensemble de blocs ordonnable.
+The composite view is made up of a set of orderable blocks.
 
 .. figure:: figures/edit-composite-section.*
 
 Description:
+   
+    - (1) Current resource is a section
+    - (2) The edit mode is activated
+    - (3) It is possible to order and add boxes into the composite view
+    - (4) A button allows you to modify every box of the composite view
 
-   - (1) On est bien sur une section
-   - (2) Le mode édition est activé
-   - (3) Il est possible d'ordonner et d'ajouter des boîtes dans la vue composite
-   - (4) Un bouton permet de modifier chaque boîte de la vue composite
-
-Voici le tableau des différents types d'éléments pouvant être ordonnés :
+Here is a picture of different types of items that can be ordered:
 
 .. list-table::
     :header-rows: 1
@@ -308,309 +335,285 @@ Voici le tableau des différents types d'éléments pouvant être ordonnés :
       - Description
 
     * - .. image:: figures/html.*
-      - Contenu
-      - Zone de contenu html
+      - Content
+      - HTML content area
 
     * - .. image:: figures/html.*
       - Contact
-      - Formulaire de contact pour recueillir des messages des utilisateurs.
+      - Contact form to collect users' messages.
 
     * - .. image:: figures/html.*
-      - Flux de contenu
-      - Affiche un ensemble d'actualités (news), pages web et/ou sections d'un
-        conteneur donné selon différents critères.
+      - Content feed
+      - Displays a set of news (news), web pages and/or sections of a
+        given container according to various criteria.
 
     * - .. image:: figures/html.*
-      - Galerie
-      - Galerie d'images, on affiche les miniatures des images.
+      - Gallery
+      - Image Gallery, it displays thumbnails of the images.
 
     * - .. image:: figures/html.*
-      - Carte
-      - Affiche un emplacement sur Google Maps ou OpenStreetMap.
+      - Map
+      - Displays a location on Google Maps or OpenStreetMap.
 
     * - .. image:: figures/html.*
-      - Diaporama
-      - Diaporama d'un ensemble d'images.
+      - Slideshow
+      - Slideshow of a set of images.
 
 
-Vue galerie
+Gallery view
 --------------------
 
-Galerie d'images.
+Image Gallery.
 
 
-Vue flux
+Feed view
 --------------------
 
-Cette vue permet d'afficher sur une page un ensemble d'actualités (news), pages
-web et/ou sections d'un conteneur donné. Sont ici configurables le nombre
-d'éléments affichés, le critère de tri, le gabarit d'affichage et un
-sous-ensemble des mots clés définis (tags) sur lequel on pourra filtrer.
+This view displays a page of a set of news (news), web pages and/or sections
+of a given container. Here are configurable the number of items displayed, the
+sort criteria, the display template and a subset of defined keywords (tags)
+which can be filtered.
 
 
-Configurer et administrer mon site Internet
+Configure and manage my website
 =============================================
 
-Se connecter en tant qu'Administrateur
+Log on as administrator
 ---------------------------------------
 
-Vous avez sans doute reçu, par email vos identifiant et mot de passe.
-Si ce n'est pas le cas, demandez à l'administrateur du site de vous inscrire.
+You've probably received by email your username and password.
+If it is not the case, ask the site administrator to register you.
 
-La première étape pour modifier votre site Internet est de vous identifier.
-Vous pouvez vous identifier via le lien "Se connecter", situé en haut de la page.
+The first step to change your website is to identify you.
+You can login via the link "Log In " at the top of the page.
 
-Cette page va vous demander de saisir votre email et votre mot de passe.
-Si vous avez oublié votre mot de passe, vous pouvez le réinitialiser en cochant la case "J'ai oublié mon mot de passe".
-
-
+This page will ask you to enter your email and password.
+If you forgot your password, you can reset it by checking the "I forgot my password" box.
 
 
-
-Le panneau de contrôle
+The control panel
 -----------------------------
 
-L'ensemble de la configuration de votre site Internet se réalise dans le panneau de contrôle de votre site Internet.
+The whole configuration of your website is achieved in the control panel of your website.
 
-Lorsque vous êtes connecté en tant qu'administrateur, vous pouvez cliquer sur l'icône:
+When you are logged in as an administrator, you can click on the icon:
 
 .. figure:: figures/control_panel.*
 
-"Panneau de contrôle" de la première barre d'administration.
+"Control panel" from the first admin bar.
 
-Voici une capture d'écran du panneau de contrôle:
+Here is a screenshot of the control panel:
 
 .. figure:: figures/control_panel_view.*
 
-A partir de ce panneau de contrôle vous pouvez :
+From this control panel you can:
 
-  - Gérer les utilisateurs de votre site et leurs droits
-  - Créer de nouveaux utilisateurs
-  - Modifier la liste des hôtes virtuels
-  - Configurer la politique de sécurité
-  - Modifier la liste des langues disponibles et la langue par défaut
-  - Modifier les options de contact
-  - Modifier le thème et la feuille CSS du site
-  - Modifier la page 404 du site (Page affichée quand un utilisateur essaye d'accèder à une page qui n'existe pas)
-  - Modifier le fichier robots.txt
-  - Gérer la liste des tags
-  - Configurer des informations de référencement
-  - Visualiser les liens cassés, les ressources orphelines et l'historique des modifications de votre site
+   - Manage users and their rights
+   - Create new users
+   - Modify the list of virtual hosts
+   - Configure security policy
+   - Modify the list of available languages and the default language
+   - Change contact options
+   - Modify the theme and CSS
+   - Modify page 404 of the site (page displayed when a user tries to access a
+     page that does not exist)
+   - Modify the robots.txt file
+   - Manage the list of tags
+   - Set up SEO (Search Engine Optimization) information
+   - Visualize broken links, orphan resources and the history of changes of your site
 
-Gestion du thème
+
+Manage the theme
 --------------------------
 
-Dans le thème, vous pouvez:
+In the theme, you can:
 
-  - Changer le favicon, et le logo de votre site internet
-  - Choisir la skin utilisée
-  - Modifier la feuille de style du site (CSS)
-  - Modifier le menu du site
-  - Modifier le pied de page du site (footer)
+   - Change the favicon and the logo of your website
+   - Choose the skin used
+   - Change the site's stylesheet (CSS)
+   - Modify the main menu
+   - Modify the footer of the site
 
-Modifier le menu principal
+Edit main menu
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-À venir ...
+Coming soon ...
 
-Modifier l'apparence du site
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Change the look
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Choix de la skin et CSS
+Choosing the skin and CSS
 
 
-
-Gérer le contenu de mon site
+Manage content on my site
 ===============================
 
-Ajouter du contenu
+Add content
 ---------------------
 
-Pour ajouter du contenu à votre site, il suffit de créer une nouvelle ressource.
-Le menu est toujours disponible dans la barre d'administration.
+To add content to your site, simply create a new resource.
+The menu is always available in the admin bar.
 
-.. figure:: figures/add-ressource.*
+.. figure:: figures/add-resource.*
 
-La liste des différents types de ressources disponibles sera alors affichée :
+The list of different types of resources available will be displayed:
 
-.. figure:: figures/type-ressources.*
+.. figure:: figures/resource-type.*
 
-Une fois le type de ressource séléctionné, le formulaire d'ajout est affiché :
+Once the resource type is selected, the add form is displayed:
 
-.. figure:: figures/add-ressource-form.*
+.. figure:: figures/add-resource-form.*
 
-Ce formulaire contient des informations importantes :
+This form contains important information:
 
-  - (1) Le type de la ressource selectionnée
-  - (2) La description du type de ressource selectionnée
+   - (1) The type of the selected resource
+   - (2) The description of the resource type selected
 
-Vous devez saisir deux champs :
+You must enter two fields:
 
- - (3) Le titre de la ressource. Ce champs est obligatoire.
- - (4) Vous devez sélectionner dans la liste déroulante, l'emplacement dans lequel vous voulez ajouter votre ressource.
+  - (3) The title of the resource. This field is required.
+  - (4) You must select from the dropdown list, the location where you want to add your resource.
 
-Dans la zone texte, vous pouvez saisir le nom de la ressource.
-Ceci n'est pas obligatoire, en effet si le nom n'est pas saisit, il sera calculé automatiquement à partir du titre saisit.
-Exemple:
+In the text box, you can enter the name of the resource.
+This is not mandatory, since if the name is not seized, it will be
+automatically calculated from the title captures.
+Example:
 
-  - Titre              -> Nom
-  - "Ma voiture bleue" -> "ma-voiture-bleue"
+   - title -> Name
+   - "My Blue Car" -> "my-car-blue"
 
 
-
-
-Ajouter une actualité
+Add a news
 -------------------------------
 
-L'ajout d'une nouvelle actualité est très simple.
+Adding a new news is very simple.
 
 .. figure:: figures/add-news.*
 
-Voici les deux étapes :
+Here are the two steps:
 
-  - (1) Cliquer sur le bouton "Ajouter une nouvelle ressource" du panneau d'administration
-  - (2) Sélectionner la ressource de type "Actualité"
+   - (1) Click the "Add a new resource" of the admin bar
+   - (2) Select the resource type "News"
 
 
-Editeur HTML
+HTML Editor
 ------------
 
 TinyMCE
 
 
-Les tags
+Tags
 ------------
 
-Un tag est un marqueur lexical utilisé pour regrouper des ressources ayant quelque chose en commun.
-Par exemple vous pouvez regrouper des actualités parlant d'évènements se passant à Paris grâce au tag "Paris".
-Une page internet sera alors automatiquement construite et regroupera tous les articles possédant ce tag.
-L'URL de cette page sera du type :
+A tag is a lexical marker used to pool resources with something in common.
+For example you can group news speaking of events around Paris with the tag "Paris".
+A web page will be automatically built and will include all items with that tag.
+The URL of this page will be like:
 
-  http://www.example.com/tags/paris
+   http://www.example.com/tags/paris
 
-Il est possible d'associer des tags aux ressources de type :
+It is possible to associate tags to resources of type:
 
-  - Page Internet
-  - Section
+   - Webpage
+   - Section
 
-La liste des tags est administrable via l'onglet tags du panneau d'administration :
+The list of tags is configured via the Tag tab of the admin bar:
 
 .. figure:: figures/tags.*
 
-Depuis cette vue d'administration vous pouvez :
 
-  - Ajouter dex nouveaux tags
-  - Lister les tags existants
-  - Publier ou dépublier des tags
-  - Supprimer des tags
-  - Afficher le nombre de ressources associées aux différents tags
-  - Lister les ressources associées aux différents tags
+From this configuration view you can:
 
-Dans une page internet et dans une section, un selecteur de tag est disponible :
+   - Add new tags
+   - List all existing tags
+   - Publish or unpublish tags
+   - Remove tags
+   - Show the number of resources associated with each tag
+   - List the resources associated to any tag
+
+In a web page and in a section, a tag selector is available:
 
 .. figure:: figures/selection-tags.*
 
-Il vous suffit de sélectionner un tag et de cliquer sur le bouton ">" pour ajouter le tag à la page internet.
-Le bouton "»" permet d'associer tous les tags à la page internet courante.
+Simply select a tag and click the ">" button to add the tag to the web page.
+The button "»" allows you to associate all the tags to the current web page.
 
 
 
-Exemple: création d'une galerie d'images
+Example: Creating an image gallery
 ------------------------------------------
 
-À venir ...
+Coming soon ...
 
-
-
-
-Les vues avancées
+Advanced views
 -----------------------------
 
-Certaines ressources disposent de vues avancées :
+Some resources hold advanced views:
 
 .. list-table::
-    :header-rows: 1
-    :widths: 100, 500
+    : header-rows: 1
+    : width: 100, 500
 
-    * - Vue
+    * - View
       - Description
 
     * - Links
-      - À venir ...
+      - Coming soon ...
 
     * - Backlinks
-      - À venir ...
+      - Coming soon ...
 
-    * - Commit log
-      - Historique des modifications sur la ressource.
+    * - Commit Log
+      - History of changes to the resource.
 
     * - Subscriptions
-      - Gestion des utilisateurs notifiés en cas de modification de la ressource.
+      - Manage users notified in case of change of the resource.
 
 
-Mon site et le référencement
+My site and SEO
 ==============================
 
-ITWS est une solution naturellement optimisée pour le réferencement.
+ITWS is is natively optimized for SEO.
 
-Dans cette partie de la documentation nous allons vous présenter
-quelques actions qui vous permettront d'améliorer encore davantage votre
-réferencement :
+In this part of the documentation we will present some actions that will help
+you further to improve your SEO:
 
-
-- **Sitemap.xml** À venir ...
-- **Robots.txt** À venir ...
-- **Vue SEO** À venir ... (Google key / Yahoo key /) Google Webmaster tools
+- **Sitemap.xml** Coming soon ...
+- **Robots.txt** Coming soon ...
+- **Vue SEO** Coming soon ... (Google key / Yahoo key /) Google Webmaster tools
 
 
-Questions
-=========
-
-Voici les réponses aux questions fréquemment posées :
-
-**Comment savoir si je dois ajouter une section ou une webpage ?**
-
-À venir ...
-
-**Comment ?**
-
-À venir ...
-
-
-
-Vocabulaire
+Vocabulary
 ===========
 
-Voici des définitions de mots ou expressions que nous allons utiliser dans
-cette documentation.
+Here are definitions of words or phrases that we use in this documentation.
 
 CMS
 ---
 
-CMS signifie en anglais Content Management System (système de gestion de
-contenu).
+CMS means Content Management System (Management System content).
 
-Une ressource
+A resource
 -------------
 
-Dans ITWS, une ressource désigne à peu près tout type d'objet mis à la
-disposition des utilisateurs.
+In ITWS, a resource means almost any object made available to users.
 
 Workflow
 --------
 
-Un workflow définit l'état d'une ressource et les transitions entre ces états
-(privé, en attente de publication, publié).
+A workflow defines the states of a resource and transitions between these states
+(private, pending publication, published).
 
 SEO
 ----
 Search Engine Optimization.
 
 
-À propos
+About
 ========
 
-Cette documentation a été rédigée par:
+This documentation was written by:
 
-   - Taverne Sylvain
-   - Deram Nicolas
+    - Sylvain Taverne
+    - Nicolas Deram
+
