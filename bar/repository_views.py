@@ -22,9 +22,11 @@ from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Enumerate, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl
+from itools.web import ERROR
 from itools.xml import XMLParser
 
 # Import from ikaaro
+from ikaaro.buttons import RemoveButton
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import stl_namespaces, SelectWidget, make_stl_template
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
@@ -144,6 +146,8 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
                                format=String, sort_by=String(default='title'))
     search_template = '/ui/bar_items/browse_search.xml'
 
+    table_actions = (ResourcesOrderedTable_Unordered.table_actions
+                     + [RemoveButton])
 
     def get_query_schema(self):
         return self.query_schema
@@ -210,3 +214,34 @@ class BoxesOrderedTable_Unordered(ResourcesOrderedTable_Unordered):
         namespace['is_admin_popup'] = is_admin_popup
 
         return namespace
+
+
+    def action_remove(self, resource, context, form):
+        # Tweak resource
+        container = resource.get_order_root()
+        # Tweak ids
+        orig_ids = form['ids']
+        form['ids'] = [ id for id in form['ids']
+                        if id not in container.__fixed_handlers__ ]
+
+        fixed_handlers_message = None
+        fixed_names = set(orig_ids).difference(set(form['ids']))
+        if fixed_names:
+            # Use try to remove 'fixed handlers'
+            fixed_resources = []
+            for name in fixed_names:
+                item = container.get_resource(name)
+                fixed_resources.append(item.get_title())
+            resources = ', '.join(sorted(list(fixed_resources)))
+            msg = ERROR(u'These following resources cannot be removed: '
+                        u'{resources}.')
+            fixed_handlers_message = msg(resources=resources)
+
+        # Call parent
+        ret = Folder_BrowseContent.action_remove(self, container, context,
+                                                 form)
+        if fixed_handlers_message:
+            context.message.append(fixed_handlers_message)
+        # Restore form
+        form['ids'] = orig_ids
+        return ret
