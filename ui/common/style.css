@@ -142,86 +142,6 @@ body.readonly {
   margin-top: 10px;
 }
 
-
-/**************************************************************************
- * MANAGE VIEW
- * ***********************************************************************/
-.manage-ul {
-  padding: 0;
-  margin: 0;
-  width: 40%;
-}
-
-.manage-ul.left {
-  float: left;
-}
-
-.manage-ul.right {
-  float: right;
-  margin-left: 5%;
-}
-
-.manage-ul li {
-  list-style: none;
-  padding: 2px 0 2px;
-}
-
-.manage-ul li img {
-  background: url('/ui/common/icons/16x16/sprites.png') top left no-repeat;
-  width: 16px;
-  height: 16px;
-  vertical-align: bottom;
-}
-
-/* disable */
-.manage-ul li.disable span {
-  color: #888A85;
-}
-
-/* children */
-.manage-ul li.child {
-  margin-left: 24px;
-}
-
-.manage-ul .edit img,
-.manage-ul .tags img,
-.manage-ul .robotstxt img,
-.manage-ul .edit img {
-  background-position: -20px -468px;
-}
-
-.manage-ul .menu img,
-.manage-ul .footer img,
-.manage-ul .turning-footer img,
-.manage-ul .controlpanel img {
-  background-position: -20px -432px;
-}
-
-.manage-ul .manage-404 img {
-  background-position: -20px -324px;
-}
-
-.manage-ul .css img {
-  background-position: -20px -288px;
-}
-
-.manage-ul .repository img {
-  background: url('/ui/bar_items/icons/16x16/repository.png') top left no-repeat;
-}
-
-.manage-ul .add img {
-  background-position: -20px 0;
-}
-
-.manage-ul .order img {
-  background-position: -20px -504px;
-}
-
-.manage-ul .order.disable img {
-  background-position: -20px -540px;
-}
-
-
 /**************************************************************************
  * SPRITES
  **************************************************************************/
@@ -371,7 +291,6 @@ body.readonly {
   width: auto;
   float: none;
 }
-
 
 /**************************************************************************
  * Comments
