@@ -94,7 +94,7 @@ class NeutralWS(Website_BarAware, WebSite):
     """
 
     class_id = 'neutral'
-    class_version = '20101014'
+    class_version = '20101015'
     class_title = MSG(u'ITWS Web Site')
     class_description = MSG(u'Create a new ITWS Web Site')
     class_icon16 = 'common/icons/16x16/itws-website.png'
@@ -466,6 +466,32 @@ class NeutralWS(Website_BarAware, WebSite):
         if value == 'community':
             value = 'extranet'
         self.set_property('website_is_open', value)
+
+
+    def update_20101015(self):
+        """Fix TagsAware pub_datetime
+        Add tzinfo"""
+        from pytz import timezone
+        from itools.core import utc
+
+        # Current server timezone
+        paris = timezone('Europe/Paris')
+
+        database = get_context().database
+        for resource in self.traverse_resources():
+            if isinstance(resource, TagsAware):
+                pub_datetime = resource.get_property('pub_datetime')
+                if pub_datetime is None:
+                    continue
+                # localize date
+                local_datetime = paris.localize(pub_datetime)
+                utc_datetime = local_datetime - local_datetime.utcoffset()
+                utc_datetime = utc_datetime.replace(tzinfo=utc)
+                # Call metadata.set_property directly to avoid
+                # comparison error 'TypeError'
+                # -> can't compare offset-naive and offset-aware datetimes
+                database.change_resource(resource)
+                resource.metadata.set_property('pub_datetime', utc_datetime)
 
 
 
