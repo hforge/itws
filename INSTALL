@@ -6,8 +6,8 @@ itools and ikaaro installation via pip
 ::
 
    $ virtualenv .
-   $ ./bin/pip install itools==0.62.x
-   $ ./bin/pip install ikaaro==0.62.x
+   $ ./bin/pip install itools==0.62.7
+   $ ./bin/pip install ikaaro==0.62.6
    $ ./bin/pip install lpod-python (optional)
    $ ./bin/pip install lxml (required by lpod-python, optional)
    $ ./bin/pip install itws
@@ -32,20 +32,20 @@ Get the required packages
 
   $ mkdir Packages
   $ cd Packages
-  $ wget http://download.hforge.org/itools/0.62/itools-0.62.x.tar.gz
-  $ wget http://download.hforge.org/ikaaro/0.62/ikaaro-0.62.x.tar.gz
+  $ wget http://download.hforge.org/itools/0.62/itools-0.62.7.tar.gz
+  $ wget http://download.hforge.org/ikaaro/0.62/ikaaro-0.62.6.tar.gz
   $ wget http://download.hforge.org/itws/1.2/itws-1.2.0.tar.gz
   $ wget http://download.lpod-project.org/lpod-python/lpod-python-0.9.2.tar.gz
   $ wget http://codespeak.net/lxml/lxml-2.2.6.tgz
-  $ tar xzf itools-0.62.x.tar.gz
-  $ tar xzf ikaaro-0.62.x.tar.gz
+  $ tar xzf itools-0.62.7.tar.gz
+  $ tar xzf ikaaro-0.62.6.tar.gz
   $ tar xzf itws-1.2.0.tar.gz
   $ tar xzf lpod-python-0.9.2.tar.gz
   $ tar xzf lxml-2.2.6.tgz
   $ ls
-  ikaaro-0.62.x         itools-0.62.x    itws-1.2.0
-  lpod-python-0.9.2     lxml-2.2.6       ikaaro-0.62.x.tar.gz
-  itools-0.62.x.tar.gz  itws-1.2.0.tar.gz  lpod-python-0.9.2.tar.gz
+  ikaaro-0.62.6         itools-0.62.7    itws-1.2.0
+  lpod-python-0.9.2     lxml-2.2.6       ikaaro-0.62.6.tar.gz
+  itools-0.62.7.tar.gz  itws-1.2.0.tar.gz  lpod-python-0.9.2.tar.gz
   lxml-2.2.6.tgz
 
 
@@ -54,9 +54,9 @@ Install the packages
 
   $ pwd
   /tmp/test_itws/Packages
-  $ cd itools-0.62.x/
+  $ cd itools-0.62.7/
   $ ../../bin/python setup.py install
-  $ cd ../ikaaro-0.62.x/
+  $ cd ../ikaaro-0.62.6/
   $ ../../bin/python setup.py install
   $ cd ../itws-1.2.0/
   $ ../../bin/python setup.py install
