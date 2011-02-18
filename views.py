@@ -278,7 +278,10 @@ NewInstance.goto_view = 'edit'
 
 # Add ITWS_ControlPanel for Folder resources
 Folder.class_views = ['view', 'browse_content', 'edit', 'control_panel']
-Folder.class_control_panel = ['links', 'backlinks', 'commit_log']
+Folder.control_panel = ITWS_ControlPanel()
+Folder.class_control_panel = ['links', 'backlinks', 'commit_log',
+                              'preview_content']
+Folder.preview_content.description = MSG(u'Display images as thumbnail')
 Folder.links = CPDBResource_Links()
 Folder.backlinks = CPDBResource_Backlinks()
 Folder.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
