@@ -32,6 +32,7 @@ from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.handlers import ro_database
 from itools.html import XHTMLFile
+from ikaaro.tracker import Tracker
 from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery
 
@@ -276,14 +277,9 @@ class NeutralWS(Website_BarAware, WebSite):
         if WikiFolder and isinstance(resource, WikiFolder):
             frontpage = resource.get_resource('FrontPage')
             return proxy.is_allowed_to_view(user, frontpage)
-        # XXX Temporary hack for Tracker
-        tracker_mod = sys.modules.get('ikaaro.tracker')
-        if tracker_mod:
-            # Tracker module has been loaded
-            tracker_cls = tracker_mod.Tracker
-            if isinstance(resource, (tracker_cls, tracker_cls.issue_class)):
-                # Tracker/Issue are visible if the user can edit them
-                return proxy.is_allowed_to_edit(user, resource)
+        if isinstance(resource, (Tracker, Tracker.issue_class)):
+            # Tracker/Issue are visible if the user can edit them
+            return proxy.is_allowed_to_edit(user, resource)
         return proxy.is_allowed_to_view(user, resource)
 
 
