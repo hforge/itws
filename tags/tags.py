@@ -20,7 +20,6 @@
 # Import from itools
 from itools.datatypes import Boolean, DateTime, PathDataType, String, Unicode
 from itools.gettext import MSG
-from itools.i18n import format_datetime
 from itools.uri import Path, encode_query, get_reference
 from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
@@ -229,7 +228,7 @@ class TagsAware(object):
         pub_datetime = self.get_pub_datetime()
         if pub_datetime is None:
             return None
-        return format_datetime(self.get_pub_datetime())
+        return get_context().format_datetime(pub_datetime)
 
 
     def has_pub_datetime(self):
