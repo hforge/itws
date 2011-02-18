@@ -36,7 +36,6 @@ from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
-from ikaaro.tracker.issue import Issue
 from ikaaro.website import WebSite
 
 # Import from itws
@@ -134,7 +133,8 @@ class Skin(BaseSkin):
                             'login', 'new_resource', 'backlinks',
                             'edit_state'):
             bo_class = 'backoffice'
-        elif isinstance(here, (Tracker, Issue, CSS, MenuFolder, Menu)):
+        elif isinstance(here, (Tracker, Tracker.issue_class, CSS, MenuFolder,
+                               Menu)):
             bo_class = 'backoffice'
         elif isinstance(here, WebSite):
             ac = here.get_access_control()
