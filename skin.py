@@ -29,19 +29,26 @@ from itools.web import BaseView
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
+from ikaaro.file_views import File_ExternalEdit_View
+from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
+from ikaaro.menu import Menu, MenuFolder, Menu_View, get_menu_namespace
 from ikaaro.resource_ import DBResource
+from ikaaro.resource_views import DBResource_Edit
 from ikaaro.revisions_views import DBResource_CommitLog, DBResource_Changes
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
+from ikaaro.views_new import NewInstance
 from ikaaro.website import WebSite
+from ikaaro.cc import SubscribeForm
 
 # Import from itws
 from OPML import RssFeeds
 from bar import SideBarAware, SideBar_View
+from control_panel import ITWS_ControlPanel
 from news import NewsItem
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
+from turning_footer import TurningFooterTable
 from utils import get_admin_bar, is_navigation_mode
 from ws_neutral import NeutralWS
 
@@ -65,8 +72,15 @@ def register_not_allowed_cls_for_sidebar_view(cls):
 not_allowed_view_for_sidebar_view = [
         NeutralWS.about, NeutralWS.credits, NeutralWS.license,
         NeutralWS.not_found,
+        # NewResource
+        Folder_NewResource, NewInstance,
+        # Divers
+        Folder_BrowseContent, DBResource_Edit, ITWS_ControlPanel,
+        File_ExternalEdit_View, SubscribeForm,
         # Every commit_log/changes
-        DBResource_CommitLog, DBResource_Changes]
+        DBResource_CommitLog, DBResource_Changes,
+        # Menu
+        Menu_View, TurningFooterTable.view]
 
 def register_not_allowed_view_for_sidebar_view(view):
     assert isinstance(view, BaseView)
