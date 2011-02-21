@@ -45,7 +45,8 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
         widgets = HTMLEditView._get_widgets(self, resource, context)[:]
         # Add display title widget
         display_title_widget = RadioWidget('display_title',
-                title=MSG(u'Display title on webpage view ?'))
+                title=MSG(u'Display title on webpage view ?'),
+                oneline=True)
         widgets.insert(2, display_title_widget)
         # Tags
         widgets.extend(TagsAware_Edit._get_widgets(self, resource, context))
