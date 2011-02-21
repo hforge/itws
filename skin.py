@@ -29,10 +29,9 @@ from itools.web import BaseView
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.file import File, Image
-from ikaaro.folder import Folder
 from ikaaro.menu import MenuFolder, Menu, get_menu_namespace
 from ikaaro.resource_ import DBResource
+from ikaaro.revisions_views import DBResource_CommitLog, DBResource_Changes
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
@@ -40,12 +39,10 @@ from ikaaro.website import WebSite
 
 # Import from itws
 from OPML import RssFeeds
-from bar import Section
 from bar import SideBarAware, SideBar_View
-from news import NewsFolder, NewsItem
+from news import NewsItem
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
 from utils import get_admin_bar, is_navigation_mode
-from webpage import WebPage
 from ws_neutral import NeutralWS
 
 
@@ -65,14 +62,11 @@ def register_not_allowed_cls_for_sidebar_view(cls):
     not_allowed_cls_for_sidebar_view.append(cls)
 
 
-not_allowed_view_for_sidebar_view = [WebSite.about, WebSite.credits,
-    WebSite.license, NeutralWS.not_found,
-    # ikaaro commit_log/changes
-    DBResource.commit_log, DBResource.changes,
-    # itws commit_log/changes
-    Section.commit_log, NewsFolder.commit_log, WebPage.commit_log,
-    # Monkey patch ikaaro commit_log
-    Folder.commit_log, File.commit_log, Image.commit_log]
+not_allowed_view_for_sidebar_view = [
+        NeutralWS.about, NeutralWS.credits, NeutralWS.license,
+        NeutralWS.not_found,
+        # Every commit_log/changes
+        DBResource_CommitLog, DBResource_Changes]
 
 def register_not_allowed_view_for_sidebar_view(view):
     assert isinstance(view, BaseView)
@@ -117,11 +111,21 @@ class Skin(BaseSkin):
         if self.disable_sidebar_on_control_panel:
             site_root = context.site_root
             if context.resource is site_root:
+                views.append(site_root.control_panel)
                 for view_name in site_root.class_control_panel:
                     view = site_root.get_view(view_name)
                     if view is not None:
                         views.append(view)
-        return context.view not in views
+        for view in views:
+            if type(view) is type:
+                # View class
+                if isinstance(context.view, view):
+                    return False
+            else:
+                # View instance
+                if context.view == view:
+                    return False
+        return True
 
 
     def get_backoffice_class(self, context):
