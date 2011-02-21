@@ -91,6 +91,7 @@ class Theme(BaseTheme):
                    'edit_turning_footer', 'browse_content', 'control_panel']
     class_control_panel = ['links', 'backlinks', 'commit_log']
 
+    is_content = True
 
     def init_resource(self, **kw):
         # Init resource

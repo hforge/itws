@@ -38,6 +38,7 @@ from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.registry import get_resource_class, resources_registry
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.root import Root
+from ikaaro.text import CSS
 from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
 
@@ -304,6 +305,10 @@ File.class_control_panel = ['links', 'backlinks', 'commit_log']
 File.links = CPDBResource_Links()
 File.backlinks = CPDBResource_Backlinks()
 File.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
+
+# Hide in browse_content
+CSS.is_content = False
+
 
 # Add navigator to all resources
 for cls in resources_registry.values():

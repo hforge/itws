@@ -105,6 +105,9 @@ class TurningFooterTable(OrderedTable):
     configure = GoToSpecificDocument(specific_document='..',
             specific_view='configure', title=MSG(u'Configure'))
 
+    # Hide in browse_content
+    is_content = False
+
 
     ##########################
     # Links API
@@ -222,6 +225,9 @@ class TurningFooterFolder(Folder):
     order_class = TurningFooterTable
     order_path = 'menu'
     use_fancybox = False
+
+    # Hide in browse_content
+    is_content = False
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 
