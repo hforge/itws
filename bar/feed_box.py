@@ -124,10 +124,18 @@ class BoxFeed_View(Box_View, Details_View):
         args = list(args)
         tags = resource.get_property('tags')
         if tags:
-            args.append(OrQuery(*[PhraseQuery('tags', x) for x in tags]))
+            tags_query = [ PhraseQuery('tags', x) for x in tags ]
+            if len(tags_query) == 1:
+                args.append(tags_query[0])
+            else:
+                args.append(OrQuery(*tags_query))
         formats = resource.get_property('feed_class_id')
         if formats:
-            args.append(OrQuery(*[PhraseQuery('format', x) for x in formats]))
+            formats_query = [ PhraseQuery('format', x) for x in formats ]
+            if len(formats_query) == 1:
+                args.append(formats_query[0])
+            else:
+                args.append(OrQuery(*formats_query))
         return Details_View.get_items(self, resource, context, *args)
 
 
