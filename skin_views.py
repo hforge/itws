@@ -144,26 +144,35 @@ class AdminBarTemplate(CMSTemplate):
     @thingy_lazy_property
     def backoffice_tabs(self):
         context = self.context
+        site_root = context.site_root
+        user = context.user
+
         tabs = []
-        is_site_root = context.site_root == context.resource
+        is_site_root = site_root == context.resource
         # Go home
         active = is_site_root and context.view_name in (None, 'view')
         tabs.append({'name': '/',
                      'label': MSG(u'Go home'),
                      'icon': 'house-go',
                      'class': active and 'active' or None})
+        # Site root access control
+        ac = site_root.get_access_control()
         # New resource
         active = is_site_root and context.view_name == 'website_new_resource'
-        tabs.append({'name': '/;website_new_resource',
-                     'label': MSG(u'Create a new resource'),
-                     'icon': 'page-white-add',
-                     'class': active and 'active' or None})
+        view = site_root.get_view('website_new_resource')
+        if view and ac.is_access_allowed(user, site_root, view):
+            tabs.append({'name': '/;website_new_resource',
+                         'label': MSG(u'Create a new resource'),
+                         'icon': 'page-white-add',
+                         'class': active and 'active' or None})
         # Control panel
-        active = is_site_root and context.view_name == 'control_panel'
-        tabs.append({'name': '/;control_panel',
-                     'label': MSG(u'Control panel'),
-                     'icon': 'cog',
-                     'class': active and 'active' or None})
+        view = site_root.get_view('control_panel')
+        if view and ac.is_access_allowed(user, site_root, view):
+            active = is_site_root and context.view_name == 'control_panel'
+            tabs.append({'name': '/;control_panel',
+                         'label': MSG(u'Control panel'),
+                         'icon': 'cog',
+                         'class': active and 'active' or None})
         return tabs
 
 
