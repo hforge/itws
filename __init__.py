@@ -41,6 +41,7 @@ import turning_footer
 import webpage
 import widgets
 import ws_neutral
+import monkey_patch
 
 # Import obsolete if command is icms-update.py
 if sys.argv[0].endswith('icms-update.py'):

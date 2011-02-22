@@ -64,6 +64,8 @@ class ITWS_ControlPanel(ControlPanel):
 
     title = MSG(u'Advanced')
     context_menus = [ITWS_ControlPanelMenu()]
+    # Hide sidebar
+    display_sidebar = False
 
 
     def get_namespace(self, resource, context):

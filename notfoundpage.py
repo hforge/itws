@@ -37,6 +37,9 @@ class NotFoundPage_View(BaseNotFoundView):
 
     not_found_template = 'theme/404'
 
+    # Hide sidebar
+    display_sidebar = False
+
 
     def get_template(self, resource, context):
         site_root = resource.get_site_root()

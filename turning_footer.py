@@ -105,9 +105,8 @@ class TurningFooterTable(OrderedTable):
     configure = GoToSpecificDocument(specific_document='..',
             specific_view='configure', title=MSG(u'Configure'))
 
-    # Hide in browse_content
-    is_content = False
-
+    # Hide sidebar
+    display_sidebar = False
 
     ##########################
     # Links API
@@ -228,6 +227,7 @@ class TurningFooterFolder(Folder):
 
     # Hide in browse_content
     is_content = False
+
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
 

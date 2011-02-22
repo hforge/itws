@@ -25,32 +25,23 @@ from itools.database.ro import ROGitDatabase
 from itools.datatypes import Unicode
 from itools.gettext import MSG
 from itools.stl import stl, set_prefix
-from itools.web import BaseView
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.file_views import File_ExternalEdit_View
-from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
-from ikaaro.menu import Menu, MenuFolder, Menu_View, get_menu_namespace
+from ikaaro.menu import Menu, MenuFolder, get_menu_namespace
 from ikaaro.resource_ import DBResource
-from ikaaro.resource_views import DBResource_Edit
-from ikaaro.revisions_views import DBResource_CommitLog, DBResource_Changes
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
-from ikaaro.views_new import NewInstance
 from ikaaro.website import WebSite
-from ikaaro.cc import SubscribeForm
 
 # Import from itws
 from OPML import RssFeeds
 from bar import SideBarAware, SideBar_View
-from control_panel import ITWS_ControlPanel
 from news import NewsItem
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
-from turning_footer import TurningFooterTable
 from utils import get_admin_bar, is_navigation_mode
-from ws_neutral import NeutralWS
+
 
 
 not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
@@ -62,31 +53,6 @@ except ImportError:
 else:
     not_allowed_cls_for_sidebar_view.append(WikiFolder)
 
-def register_not_allowed_cls_for_sidebar_view(cls):
-    assert issubclass(cls, DBResource)
-    if cls in not_allowed_cls_for_sidebar_view:
-        return
-    not_allowed_cls_for_sidebar_view.append(cls)
-
-
-not_allowed_view_for_sidebar_view = [
-        NeutralWS.about, NeutralWS.credits, NeutralWS.license,
-        NeutralWS.not_found,
-        # NewResource
-        Folder_NewResource, NewInstance,
-        # Divers
-        Folder_BrowseContent, DBResource_Edit, ITWS_ControlPanel,
-        File_ExternalEdit_View, SubscribeForm,
-        # Every commit_log/changes
-        DBResource_CommitLog, DBResource_Changes,
-        # Menu
-        Menu_View, TurningFooterTable.view]
-
-def register_not_allowed_view_for_sidebar_view(view):
-    assert isinstance(view, BaseView)
-    if view in not_allowed_view_for_sidebar_view:
-        return
-    not_allowed_view_for_sidebar_view.append(view)
 
 
 ############################################################
@@ -114,32 +80,6 @@ class Skin(BaseSkin):
 
     template_title_root = MSG(u"{root_title}")
     template_title_base = MSG(u"{root_title} - {here_title}")
-
-
-    disable_sidebar_on_control_panel = True
-
-
-    def is_allowed_sidebar_on_current_view(self, context):
-        """Helper for not_allowed_view_for_sidebar_view"""
-        views = list(not_allowed_view_for_sidebar_view)
-        if self.disable_sidebar_on_control_panel:
-            site_root = context.site_root
-            if context.resource is site_root:
-                views.append(site_root.control_panel)
-                for view_name in site_root.class_control_panel:
-                    view = site_root.get_view(view_name)
-                    if view is not None:
-                        views.append(view)
-        for view in views:
-            if type(view) is type:
-                # View class
-                if isinstance(context.view, view):
-                    return False
-            else:
-                # View instance
-                if context.view == view:
-                    return False
-        return True
 
 
     def get_backoffice_class(self, context):
@@ -371,8 +311,7 @@ class Skin(BaseSkin):
         nacfsv = tuple(not_allowed_cls_for_sidebar_view)
         is_allowed_cls = not isinstance(here, nacfsv)
         if here_ac.is_allowed_to_view(context.user, here) and is_allowed_cls:
-            iasocv = self.is_allowed_sidebar_on_current_view(context)
-            if iasocv:
+            if context.view.display_sidebar:
                 sidebar_resource = self.get_sidebar_resource(context)
                 if sidebar_resource:
                     order_name = sidebar_resource.sidebar_name
