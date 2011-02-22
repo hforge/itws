@@ -370,7 +370,7 @@ class Skin(BaseSkin):
         sidebar = None
         nacfsv = tuple(not_allowed_cls_for_sidebar_view)
         is_allowed_cls = not isinstance(here, nacfsv)
-        if is_allowed_cls:
+        if here_ac.is_allowed_to_view(context.user, here) and is_allowed_cls:
             iasocv = self.is_allowed_sidebar_on_current_view(context)
             if iasocv:
                 sidebar_resource = self.get_sidebar_resource(context)
