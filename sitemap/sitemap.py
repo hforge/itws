@@ -18,22 +18,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from datetime import datetime
-
 # Import from itools
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
-from itools.database import AndQuery, OrQuery, PhraseQuery, NotQuery
-from itools.database import RangeQuery
+from itools.database import AndQuery, OrQuery, PhraseQuery
 
 # Import from ikaaro
 from ikaaro.folder import Folder
 from ikaaro.utils import get_base_path_query
 
-
-EPOCH = datetime(1970, 1, 1, 0, 0)
 
 
 class SiteMapView(BaseView):
@@ -51,19 +45,7 @@ class SiteMapView(BaseView):
             PhraseQuery('is_image', False),
             PhraseQuery('is_content', True)]
 
-        # Allow news folder
-        newsfolder = site_root.get_news_folder(context)
-        if newsfolder:
-            news_query = list(query)
-            news_format = newsfolder.news_class.class_id
-            query.append(NotQuery(PhraseQuery('format', news_format)))
-            news_query += [
-                PhraseQuery('format', news_format),
-                RangeQuery('pub_datetime', EPOCH, datetime.now())]
-            query = OrQuery(AndQuery(*query), AndQuery(*news_query))
-        else:
-            query = AndQuery(*query)
-
+        query = AndQuery(*query)
         query = OrQuery(query, PhraseQuery('abspath', str(abspath)))
 
         return query
