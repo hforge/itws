@@ -74,13 +74,12 @@ class MapBox_Edit(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         base_schema = DBResource_Edit._get_schema(self, resource, context)
-        return merge_dicts(base_schema,
-                           display_title=Boolean,
-                           render=OpenLayerRender(mandatory=True),
-                           width=Integer, height=Integer, address=Unicode,
-                           latitude=Decimal, longitude=Decimal, zoom=Integer,
-                           # Hack
-                           gps=String)
+        return freeze(merge_dicts(base_schema,
+            display_title=Boolean, render=OpenLayerRender(mandatory=True),
+            width=Integer, height=Integer, address=Unicode,
+            latitude=Decimal, longitude=Decimal, zoom=Integer,
+            # Hack
+            gps=String))
 
 
     def _get_widgets(self, resource, context):

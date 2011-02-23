@@ -79,9 +79,10 @@ class NeutralWS_Edit(EditView, DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(DBResource_Edit._get_schema(self, resource, context),
-                           view=SectionViews_Enumerate,
-                           breadcrumb_title=Multilingual)
+        return freeze(merge_dicts(
+            DBResource_Edit._get_schema(self, resource, context),
+            view=SectionViews_Enumerate,
+            breadcrumb_title=Multilingual))
 
 
     def action(self, resource, context, form):

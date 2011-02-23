@@ -39,11 +39,11 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(
+        return freeze(merge_dicts(
                 DBResource_Edit._get_schema(self, resource, context),
                 TagsAware_Edit._get_schema(self, resource, context),
                 view=SectionViews_Enumerate,
-                state=StaticStateEnumerate)
+                state=StaticStateEnumerate))
 
 
     def _get_widgets(self, resource, context):

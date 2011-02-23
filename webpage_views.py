@@ -36,9 +36,10 @@ class WebPage_Edit(TagsAware_Edit, HTMLEditView):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(HTMLEditView._get_schema(self, resource, context),
-                           TagsAware_Edit._get_schema(self, resource, context),
-                           display_title=Boolean)
+        return freeze(merge_dicts(
+            HTMLEditView._get_schema(self, resource, context),
+            TagsAware_Edit._get_schema(self, resource, context),
+            display_title=Boolean))
 
 
     def _get_widgets(self, resource, context):

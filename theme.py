@@ -50,12 +50,13 @@ class Theme_Edit(BaseTheme_Edit):
 
 
     def _get_schema(self, resource, context):
-        return merge_dicts(BaseTheme_Edit._get_schema(self, resource, context),
-                           custom_data=String,
-                           banner_title=Multilingual,
-                           banner_path=PathDataType(multilingual=True,
-                                          parameters_schema={'lang': String}),
-                           class_skin=NeutralClassSkin(mandatory=True))
+        return freeze(merge_dicts(
+            BaseTheme_Edit._get_schema(self, resource, context),
+            custom_data=String,
+            banner_title=Multilingual,
+            banner_path=PathDataType(multilingual=True,
+                                     parameters_schema={'lang': String}),
+            class_skin=NeutralClassSkin(mandatory=True)))
 
 
     def _get_widgets(self, resource, context):

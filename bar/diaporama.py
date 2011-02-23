@@ -145,7 +145,7 @@ class DiaporamaTable_CompositeView(CompositeForm):
 
 
     def _get_schema(self, resource, context):
-        return self._get_edit_view()._get_schema(resource, context)
+        return freeze(self._get_edit_view()._get_schema(resource, context))
 
 
     def _get_widgets(self, resource, context):

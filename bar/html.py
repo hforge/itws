@@ -89,7 +89,7 @@ class HTMLContent_Edit(HTMLEditView):
         del schema['description']
         del schema['subject']
 
-        return schema
+        return freeze(schema)
 
 
     def _get_widgets(self, resource, context):
