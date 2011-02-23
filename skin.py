@@ -29,35 +29,16 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.menu import Menu, MenuFolder, get_menu_namespace
-from ikaaro.resource import DBResource
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
 from ikaaro.website import WebSite
 
 # Import from itws
-from OPML import RssFeeds
 from bar import SideBarAware, SideBar_View
 from news import NewsItem
 from skin_views import AdminBarTemplate, LocationTemplate, LanguagesTemplate
 from utils import get_admin_bar, is_navigation_mode
-
-
-
-not_allowed_cls_for_sidebar_view = [Tracker, Tracker.issue_class, RssFeeds]
-# Special case for the Wiki
-try:
-    from wiki import WikiFolder
-except ImportError:
-    pass
-else:
-    not_allowed_cls_for_sidebar_view.append(WikiFolder)
-
-def register_not_allowed_cls_for_sidebar_view(cls):
-    assert issubclass(cls, DBResource)
-    if cls in not_allowed_cls_for_sidebar_view:
-        return
-    not_allowed_cls_for_sidebar_view.append(cls)
 
 
 ############################################################
@@ -313,9 +294,8 @@ class Skin(BaseSkin):
 
         # Sidebar
         sidebar = None
-        nacfsv = tuple(not_allowed_cls_for_sidebar_view)
-        is_allowed_cls = not isinstance(here, nacfsv)
-        if here_ac.is_allowed_to_view(context.user, here) and is_allowed_cls:
+        if (here_ac.is_allowed_to_view(context.user, here)
+                and here.display_sidebar):
             if context.view.display_sidebar:
                 sidebar_resource = self.get_sidebar_resource(context)
                 if sidebar_resource:

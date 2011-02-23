@@ -27,10 +27,12 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.folder_views import Folder_Rename
 from ikaaro.menu import Menu_View
 from ikaaro.registry import resources_registry
+from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.revisions_views import DBResource_CommitLog, DBResource_Changes
 from ikaaro.root import Root
 from ikaaro.text import CSS
+from ikaaro.tracker import Tracker
 from ikaaro.views_new import NewInstance
 
 # Import from itws
@@ -62,6 +64,11 @@ Menu_View.display_sidebar = False
 NeutralWS.about.display_sidebar = False
 NeutralWS.credits.display_sidebar = False
 NeutralWS.license.display_sidebar = False
+# Add display_sidebar to DBResource
+DBResource.display_sidebar = True
+# Hide sidebar on some resources
+Tracker.display_sidebar = False
+Tracker.issue_class.display_sidebar = False
 
 # NEW RESOURCE
 # Keep Root.new_resource intact

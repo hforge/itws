@@ -267,9 +267,13 @@ class RssFeeds(CSV):
     class_icon48 = 'rssfeeds/icons/48x48/rss_feeds.png'
     class_views = ['view', 'edit', 'add_row', 'configure']
     class_handler = RssFeedsFile
-    class_schema = merge_dicts(CSV.class_schema,
-                               TTL=Integer(source='metadata', default=15),
-                               timeout=Decimal(source='metadata', default=1.0))
+    class_schema = merge_dicts(
+            CSV.class_schema,
+            TTL=Integer(source='metadata', default=15),
+            timeout=Decimal(source='metadata', default=1.0))
+
+    # Hide itws sidebar
+    display_sidebar = False
 
     # Views
     new_instance = NewInstance()
