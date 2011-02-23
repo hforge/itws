@@ -88,6 +88,9 @@ class NewsItem_AddImage(DBResource_AddImage):
 
 class NewsItem_Edit(WebPage_Edit):
 
+    # Publication datetime is mandatory
+    pub_datetime_mandatory = True
+
     def _get_schema(self, resource, context):
         proxy = super(NewsItem_Edit, self)
         return freeze(merge_dicts(proxy._get_schema(resource, context),

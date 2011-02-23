@@ -20,9 +20,10 @@
 
 # Import from the Standard Library
 from copy import deepcopy
+from datetime import datetime
 
 # Import from itools
-from itools.core import freeze, get_abspath, merge_dicts
+from itools.core import freeze, get_abspath, merge_dicts, utc
 from itools.gettext import MSG
 from itools.uri import Path, get_reference
 from itools.web import get_context
@@ -68,6 +69,14 @@ class NewsItem(WebPage):
 
     class_schema = merge_dicts(WebPage.class_schema,
              long_title=Multilingual(source='metadata'))
+
+
+    def init_resource(self, **kw):
+        # Initialize parent class
+        super(NewsItem, self).init_resource(**kw)
+        # Set pub_datetime
+        dt = datetime.now().replace(tzinfo=utc)
+        self.set_property('pub_datetime', dt)
 
 
     ##############

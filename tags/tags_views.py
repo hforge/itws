@@ -218,13 +218,16 @@ class TagsAware_Edit(object):
     """
     # Little optimisation not to compute the schema too often
     keys = ['tags', 'pub_datetime', 'pub_date', 'pub_time']
-
+    # Publication datetime is not mandatory
+    pub_datetime_mandatory = False
 
     def _get_schema(self, resource, context):
-        return {'tags': TagsList(multiple=True),
-                'pub_date': Date,
-                'pub_time': TimeWithoutSecond,
-                'thumbnail': PathDataType(multilingual=True)}
+        pdm = self.pub_datetime_mandatory
+        return freeze({
+            'tags': TagsList(multiple=True),
+            'pub_date': Date(mandatory=pdm),
+            'pub_time': TimeWithoutSecond(mandatory=pdm),
+            'thumbnail': PathDataType(multilingual=True)})
 
 
     def _get_widgets(self, resource, context):
