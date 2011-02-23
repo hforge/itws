@@ -478,6 +478,8 @@ class NeutralWS(Website_BarAware, WebSite):
                 pub_datetime = resource.get_property('pub_datetime')
                 if pub_datetime is None:
                     continue
+                if pub_datetime.tzinfo:
+                    return
                 # localize date
                 local_datetime = paris.localize(pub_datetime)
                 utc_datetime = local_datetime - local_datetime.utcoffset()
