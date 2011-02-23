@@ -58,7 +58,7 @@ from news_views import NewsItem_Edit, NewsItem_View
 class NewsItem(WebPage):
 
     class_id = 'news'
-    class_version = '20100810'
+    class_version = '20100811'
     class_title = MSG(u'News')
     class_description = MSG(u'News is a webpage with a small description '
                             u'used by the News Folder, News can be tagged')
@@ -174,6 +174,16 @@ class NewsItem(WebPage):
             new_ref = deepcopy(ref)
             new_ref.path = str(target.get_pathto(new_abs_path)) + view
             self.set_property('thumbnail', str(new_ref), language=lang)
+
+
+    def update_20100811(self):
+        """Set pub_datetime is not already set"""
+        value = self.get_property('pub_datetime')
+        if value:
+            return
+        # set pub_datetime
+        mtime = self.get_property('mtime')
+        self.set_property('pub_datetime', mtime)
 
 
     #####################
