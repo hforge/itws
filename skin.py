@@ -29,6 +29,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.menu import Menu, MenuFolder, get_menu_namespace
+from ikaaro.resource import DBResource
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
@@ -52,6 +53,11 @@ except ImportError:
 else:
     not_allowed_cls_for_sidebar_view.append(WikiFolder)
 
+def register_not_allowed_cls_for_sidebar_view(cls):
+    assert issubclass(cls, DBResource)
+    if cls in not_allowed_cls_for_sidebar_view:
+        return
+    not_allowed_cls_for_sidebar_view.append(cls)
 
 
 ############################################################
