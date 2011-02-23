@@ -59,6 +59,6 @@ User.is_allowed_to_view = User.is_allowed_to_edit
 
 # Silent pyflakes
 skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
-widgets, theme, feed_views, news
+widgets, theme, feed_views, news, monkey_patch
 
 register_skin('itws-icons', get_abspath('ui/itws-icons'))

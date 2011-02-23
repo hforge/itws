@@ -22,7 +22,6 @@
 
 # Import from the Standard Library
 from decimal import Decimal
-import sys
 
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts

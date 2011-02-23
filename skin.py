@@ -29,7 +29,6 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.menu import Menu, MenuFolder, get_menu_namespace
-from ikaaro.resource_ import DBResource
 from ikaaro.skins import Skin as BaseSkin, register_skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker
