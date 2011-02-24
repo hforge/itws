@@ -118,6 +118,9 @@ class NewsFolder_View(Details_View):
     sort_by = 'pub_datetime'
     reverse = True
 
+    # Display sidebar
+    display_sidebar = True
+
 
     @thingy_property
     def batch_size(self):

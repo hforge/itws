@@ -101,6 +101,8 @@ class Tag_View(Details_View):
     sort_by = 'pub_datetime'
     reverse = True
     search_on_current_folder = False
+    # Display sidebar
+    display_sidebar = True
 
 
     def get_items(self, resource, context, *args):
