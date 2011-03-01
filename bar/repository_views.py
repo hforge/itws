@@ -23,12 +23,11 @@ from itools.datatypes import Enumerate, Integer, String
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import ERROR
-from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.buttons import RemoveButton
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import stl_namespaces, SelectWidget, make_stl_template
+from ikaaro.autoform import SelectWidget, make_stl_template
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
 
@@ -55,12 +54,12 @@ class Repository_BrowseContent(Folder_BrowseContent):
     query_schema = merge_dicts(Folder_BrowseContent.query_schema,
                                sort_by=String(default='format'))
 
-    links_template = list(XMLParser("""
+    links_template = make_stl_template("""
         <stl:block stl:repeat="item items">
             <a href="${item/path}" title="${item/title}">${item/name}</a>
             <span stl:if="not repeat/item/end">,</span>
         </stl:block>
-        """, stl_namespaces))
+        """)
 
 
     def get_table_columns(self, resource, context):

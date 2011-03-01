@@ -17,10 +17,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces
+from ikaaro.autoform import make_stl_template
 
 # Import from itws
 from google_map import GoogleMapWidget, GoogleGPSWidget
@@ -29,7 +28,7 @@ from google_map import GoogleMapWidget, GoogleGPSWidget
 
 class OpenStreetMapWidget(GoogleMapWidget):
 
-    template = list(XMLParser("""
+    template = make_stl_template("""
     <script type="text/javascript" src="/ui/widgets/osm.js"/>
     <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
     <script type="text/javascript"
@@ -40,7 +39,7 @@ class OpenStreetMapWidget(GoogleMapWidget):
       $(document).ready(function(){
         initialize_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
       });
-    </script>""", stl_namespaces))
+    </script>""")
 
 
 

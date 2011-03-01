@@ -22,10 +22,9 @@ from copy import deepcopy
 # Import from itools
 from itools.gettext import MSG
 from itools.web import get_context
-from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import Widget, stl_namespaces
+from ikaaro.autoform import Widget, make_stl_template
 
 
 
@@ -35,7 +34,7 @@ class GoogleMapWidget(Widget):
     height = 400
     key = None
 
-    template = list(XMLParser(
+    template = make_stl_template(
         """
         <script type="text/javascript" src="/ui/widgets/google_map.js"/>
         <div id="map-${name}" style="width:${width}px;height:${height}px;"/>
@@ -46,8 +45,7 @@ class GoogleMapWidget(Widget):
             initialize_map('map-${name}', ${latitude}, ${longitude}, ${zoom});
           });
         </script>
-        """,
-        stl_namespaces))
+        """)
 
 
 
@@ -62,7 +60,7 @@ class GoogleGPSWidget(GoogleMapWidget):
                'http://maps.google.com/maps/api/js?sensor=false']
 
     find_gps_coords_label = MSG(u'Find the GPS coordinates')
-    template = list(XMLParser("""
+    template = make_stl_template("""
     <script type="text/javascript" src="${script}"
       stl:repeat="script scripts"/>
     <label for="address">Address</label><br/>
@@ -109,7 +107,7 @@ class GoogleGPSWidget(GoogleMapWidget):
         }
       }
       //-->
-    </script> """, stl_namespaces))
+    </script> """)
 
 
     def uri(self):

@@ -17,11 +17,10 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import RTEWidget, SelectWidget
-from ikaaro.autoform import rte_widget, stl_namespaces
+from ikaaro.autoform import rte_widget, make_stl_template
 from ikaaro.registry import get_resource_class
 
 
@@ -57,7 +56,7 @@ class DualSelectWidget(SelectWidget):
     selected_label = MSG(u'Selected')
     available_label = MSG(u'Available')
 
-    template = list(XMLParser("""
+    template = make_stl_template("""
         <script type="text/javascript">
             $(document).ready(function() {
                 $("#${id}.${css}").multiselect2side(
@@ -75,13 +74,13 @@ class DualSelectWidget(SelectWidget):
           <option stl:repeat="option options" value="${option/name}"
             selected="${option/selected}">${option/value}</option>
         </select>
-        """, stl_namespaces))
+        """)
 
 
 
 class ClassSelectorWidget(SelectWidget):
 
-    template = list(XMLParser("""
+    template = make_stl_template("""
         <table>
           <tr stl:repeat="item items">
             <td valign="top">
@@ -97,7 +96,7 @@ class ClassSelectorWidget(SelectWidget):
             </td>
           </tr>
         </table>
-        """, stl_namespaces))
+        """)
 
 
     def items(self):

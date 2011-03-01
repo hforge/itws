@@ -26,10 +26,9 @@ from itools.datatypes import Boolean, String, XMLContent
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import get_context, INFO
-from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import stl_namespaces, XHTMLBody
+from ikaaro.autoform import XHTMLBody, make_stl_template
 from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
@@ -50,7 +49,7 @@ def get_path_and_view(path):
 # Manage Buttons
 ############################################################
 
-admin_bar_template = list(XMLParser("""
+admin_bar_template = make_stl_template("""
   <div class="fancybox-buttons admin-bar">
     <a href="${link}" title="${title}" rel="${rel}">
       <img src="/ui/icons/16x16/edit.png"/>
@@ -58,10 +57,9 @@ admin_bar_template = list(XMLParser("""
         ${workflow/title}
       </strong>
     </a>
-  </div>
-  """, stl_namespaces))
+  </div>""")
 
-admin_bar_icon_template = list(XMLParser("""
+admin_bar_icon_template = make_stl_template("""
   <div class="fancybox-buttons admin-icons-bar" stl:if="buttons">
     <div class="box-content">
       <table>
@@ -76,7 +74,7 @@ admin_bar_icon_template = list(XMLParser("""
         </tr>
       </table>
     </div>
-  </div>""", stl_namespaces))
+  </div>""")
 
 def get_admin_bar(resource, buttons=[]):
     context = get_context()
