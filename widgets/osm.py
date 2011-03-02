@@ -19,7 +19,7 @@
 # Import from itools
 
 # Import from ikaaro
-from ikaaro.autoform import make_stl_template
+from ikaaro.utils import make_stl_template
 
 # Import from itws
 from google_map import GoogleMapWidget, GoogleGPSWidget

@@ -19,9 +19,9 @@
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import RTEWidget, SelectWidget
-from ikaaro.autoform import rte_widget, make_stl_template
+from ikaaro.autoform import RTEWidget, SelectWidget, rte_widget
 from ikaaro.registry import get_resource_class
+from ikaaro.utils import make_stl_template
 
 
 

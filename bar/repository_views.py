@@ -25,11 +25,12 @@ from itools.stl import stl
 from itools.web import ERROR
 
 # Import from ikaaro
+from ikaaro.autoform import SelectWidget
 from ikaaro.buttons import RemoveButton
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import SelectWidget, make_stl_template
 from ikaaro.future.order import ResourcesOrderedTable_Ordered
 from ikaaro.future.order import ResourcesOrderedTable_Unordered
+from ikaaro.utils import make_stl_template
 
 
 # Helper

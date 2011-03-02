@@ -24,7 +24,8 @@ from itools.gettext import MSG
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import Widget, make_stl_template
+from ikaaro.autoform import Widget
+from ikaaro.utils import make_stl_template
 
 
 

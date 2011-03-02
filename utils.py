@@ -28,8 +28,9 @@ from itools.stl import stl
 from itools.web import get_context, INFO
 
 # Import from ikaaro
-from ikaaro.autoform import XHTMLBody, make_stl_template
+from ikaaro.autoform import XHTMLBody
 from ikaaro.resource_ import DBResource
+from ikaaro.utils import make_stl_template
 from ikaaro.workflow import WorkflowAware
 
 
