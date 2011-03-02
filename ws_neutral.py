@@ -44,12 +44,6 @@ from ikaaro.registry import register_document_type
 from ikaaro.user import User
 from ikaaro.website import WebSite
 
-# Special case for the Wiki
-try:
-    from wiki import WikiFolder
-except ImportError:
-    WikiFolder = None
-
 # Import from itws
 from OPML import RssFeeds
 from about import AboutITWS
@@ -272,10 +266,7 @@ class NeutralWS(Website_BarAware, WebSite):
     ###########################################################################
     def is_allowed_to_view(self, user, resource):
         proxy = super(NeutralWS, self)
-        # XXX Temporary hack for Wiki
-        if WikiFolder and isinstance(resource, WikiFolder):
-            frontpage = resource.get_resource('FrontPage')
-            return proxy.is_allowed_to_view(user, frontpage)
+        # XXX Temporary hack for tracker
         if isinstance(resource, (Tracker, Tracker.issue_class)):
             # Tracker/Issue are visible if the user can edit them
             return proxy.is_allowed_to_edit(user, resource)
