@@ -38,13 +38,6 @@ from utils import get_admin_bar, is_navigation_mode
 
 
 
-def get_breadcrumb_short_name(resource):
-    if isinstance(resource, DBResource):
-        if resource.has_property('breadcrumb_title'):
-            return resource.get_property('breadcrumb_title')
-        return reduce_string(resource.get_title(), 15, 30)
-    return ''
-
 
 class LocationTemplateWithoutTab(LocationTemplate):
 
@@ -58,6 +51,14 @@ class LocationTemplateWithoutTab(LocationTemplate):
     # tabs comfiguration
     tabs_hidden_roles = None
     tabs_hide_if_only_one_item = True
+
+    def get_breadcrumb_short_name(self, resource):
+        if isinstance(resource, DBResource):
+            if resource.has_property('breadcrumb_title'):
+                return resource.get_property('breadcrumb_title')
+            return reduce_string(resource.get_title(), 15, 30)
+        return ''
+
 
     def get_breadcrumb(self, context):
         here = context.resource
@@ -75,7 +76,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
             'class': 'first',
             'url': path,
             'name': title,
-            'short_name': get_breadcrumb_short_name(site_root),
+            'short_name': self.get_breadcrumb_short_name(site_root),
             }]
 
         # Complete the breadcrumb
@@ -91,7 +92,7 @@ class LocationTemplateWithoutTab(LocationTemplate):
             # FIXME Check ACL
             url = path
             title = resource.get_title()
-            short_name = get_breadcrumb_short_name(resource)
+            short_name = self.get_breadcrumb_short_name(resource)
             # Append
             breadcrumb.append({
                 'class': '',
