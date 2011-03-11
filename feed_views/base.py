@@ -107,6 +107,7 @@ class Feed_View(Folder_BrowseContent):
         return self.content_template
 
 
+
     def _get_container(self, resource, context):
         #  Current resource or site_root
         if self.search_on_current_folder is True:

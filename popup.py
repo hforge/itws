@@ -17,7 +17,7 @@
 
 # Import from itools
 from itools.core import freeze
-from itools.database import NotQuery, OrQuery, PhraseQuery
+from itools.database import NotQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro.autoform import SelectWidget
@@ -97,7 +97,7 @@ def itws_get_additional_args(resource):
     args = []
     # Current folder
     abspath = resource.get_canonical_path()
-    args.append(PhraseQuery('parent_path', str(abspath)))
+    args.append(get_base_path_query(abspath, depth=1))
     # Ignore query
     method = getattr(resource, 'get_internal_use_resource_names', None)
     if method:

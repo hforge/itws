@@ -194,8 +194,9 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
         proxy = super(NewsFolder_BrowseContent, self)
         results = proxy.get_items(resource, context, *args)
         # Return only direct children
-        path = str(resource.get_canonical_path())
-        return results.search(PhraseQuery('parent_path', path))
+        abspath = str(resource.get_canonical_path())
+        query = get_base_path_query(abspath, depth=1)
+        return results.search(query)
 
 
     def get_item_value(self, resource, context, item, column):

@@ -22,7 +22,7 @@ from itools.datatypes import Boolean, DateTime, String, Unicode, URI
 from itools.gettext import MSG
 from itools.uri import Path, encode_query, get_reference
 from itools.web import get_context
-from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
+from itools.database import AndQuery, PhraseQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro.control_panel import ControlPanel
@@ -32,7 +32,7 @@ from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.multilingual import Multilingual
 from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.revisions_views import DBResource_CommitLog
-from ikaaro.utils import reduce_string
+from ikaaro.utils import reduce_string, get_base_path_query
 from ikaaro.views_new import NewInstance
 
 # Import from itws
@@ -125,8 +125,8 @@ class TagsFolder(Folder):
 
     def get_tags_query_terms(self, state=None, tags=[], formats=[]):
         site_root = self.get_site_root()
-        abspath = '%s/' % site_root.get_canonical_path()
-        query = [ StartQuery('abspath', abspath),
+        abspath = str(site_root.get_canonical_path())
+        query = [ PhraseQuery('parent_paths', abspath),
                   PhraseQuery('is_tagsaware', True) ]
 
         if state:
@@ -165,7 +165,7 @@ class TagsFolder(Folder):
     def get_tag_brains(self, context, sort_by='name', size=0, states=['public']):
         # tags
         abspath = self.get_canonical_path()
-        tags_query = [ PhraseQuery('parent_path', str(abspath)),
+        tags_query = [ get_base_path_query(abspath, depth=1),
                        PhraseQuery('format', Tag.class_id) ]
         # If state is not defined, don't filter on workflow state
         if states:

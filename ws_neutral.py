@@ -42,6 +42,7 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 from ikaaro.registry import register_document_type
 from ikaaro.user import User
+from ikaaro.utils import get_base_path_query
 from ikaaro.website import WebSite
 
 # Import from itws
@@ -243,7 +244,7 @@ class NeutralWS(Website_BarAware, WebSite):
     def get_news_folder(self, context):
         # News folder MUST be in root '/foo'
         abspath = self.get_canonical_path()
-        query = [PhraseQuery('parent_path', str(abspath)),
+        query = [get_base_path_query(abspath, depth=1),
                  PhraseQuery('format', self.newsfolder_class.class_id)]
         # Search
         results = context.root.search(AndQuery(*query), sort_by='name')

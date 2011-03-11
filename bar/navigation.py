@@ -74,7 +74,7 @@ class BoxNavigation_View(Box_View):
                 items_docs.append((item, doc))
         else:
             # Compute the query and get the documents
-            query = PhraseQuery('parent_path', str(container.abspath))
+            query = get_base_path_query(container.abspath, depth=1)
             # format
             format_query = [ PhraseQuery('format', cls.class_id)
                              for cls in self.get_classes() ]
