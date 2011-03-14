@@ -130,7 +130,8 @@ class SiteMapView(BaseView):
         nb_items = len(items)
         id_sitemap = context.query['id']
         if nb_items <= max_urls or id_sitemap:
-            start = (id_sitemap-1) * max_urls
+            # id_sitemap is None if id is not specified in the query
+            start = 0 if id_sitemap is None else (id_sitemap - 1) * max_urls
             base_uri = str(context.uri.resolve('/'))
             for brain in items.get_documents(sort_by='abspath',
                                              start=start, size=max_urls):
