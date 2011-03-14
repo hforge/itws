@@ -50,6 +50,7 @@ from ikaaro.resource_views import DBResource_Backlinks
 from ikaaro.skins import register_skin, Skin
 from ikaaro.text import CSS
 from ikaaro.tracker import Tracker, Issue
+from ikaaro.user import User
 from ikaaro.website import WebSite as BaseWebSite
 from ikaaro.workflow import WorkflowAware
 # Special case for the Wiki
@@ -299,7 +300,8 @@ class NeutralSkin(FoBoFooterAwareSkin):
         # FO edit/no edit
         ac = here.get_access_control()
         events = None
-        if ac.is_allowed_to_edit(context.user, here):
+        if (isinstance(here, User) is False and
+                ac.is_allowed_to_edit(context.user, here)):
             edit_mode = is_navigation_mode(context) is False
             events = stl(events=self.fo_edit_template,
                          namespace={
