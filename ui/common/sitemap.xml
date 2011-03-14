@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+<sitemapindex
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:stl="http://www.hforge.org/xml-namespaces/stl"
+    stl:if="sitemaps">
+ <sitemap stl:repeat="sitemap sitemaps">
+    <loc>${sitemap}</loc>
+ </sitemap>
+</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:stl="http://www.hforge.org/xml-namespaces/stl"
+        stl:if="urls">
   <url stl:repeat="url urls">
     <loc>${url/loc}</loc>
     <lastmod>${url/lastmod}</lastmod>

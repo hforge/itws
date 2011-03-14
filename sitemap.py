@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.datatypes import Integer
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
@@ -34,6 +35,7 @@ class SiteMapView(BaseView):
 
     template = '/ui/common/sitemap.xml'
     access = True
+    query_schema = {'id': Integer}
 
 
     def get_items_query(self, resource, context):
@@ -92,13 +94,6 @@ class SiteMapView(BaseView):
         return query
 
 
-    def get_items(self, resource, context):
-        # items are brains
-        query = self.get_items_query(resource, context)
-        root = context.root
-        results = root.search(query)
-        return results.get_documents(sort_by='abspath')
-
 
     def get_excluded_paths(self, resource, context):
         site_root = resource.parent
@@ -122,40 +117,36 @@ class SiteMapView(BaseView):
         return excluded
 
 
-    def get_item_value(self, resource, context, item, column, site_root):
-        # items are brains
-        brain = item
-
-        if column == 'loc':
-            path_reference = brain.abspath
-            r_abspath = resource.get_abspath()
-            path_to_brain_resource = r_abspath.get_pathto(path_reference)
-            return context.uri.resolve('/%s' % path_to_brain_resource)
-        elif column == 'lastmod':
-            # FIXME To improve
-            newsfolder_format = site_root.newsfolder_class.class_id
-            if brain.format == newsfolder_format:
-                # Return last news mtime
-                news_folder = resource.get_resource(brain.abspath)
-                news_brains = news_folder.get_news(context, brain_only=True)
-                if news_brains:
-                    return news_brains[0].mtime.strftime('%Y-%m-%d')
-
-            return brain.mtime.strftime('%Y-%m-%d')
-
-
     def get_namespace(self, resource, context):
+        # Max urls according to sitemaps.org is 50000
+        # Set to 5000 for performances
+        max_urls = 5000
         urls = []
-        site_root = resource.parent
+        sitemaps = []
 
-        for brain in self.get_items(resource, context):
-            row = {}
-            for column in ('loc', 'lastmod'):
-                row[column] = self.get_item_value(resource, context, brain,
-                                                  column, site_root)
-            urls.append(row)
+        query = self.get_items_query(resource, context)
+        items = context.root.search(query)
 
-        return {'urls': urls}
+        nb_items = len(items)
+        id_sitemap = context.query['id']
+        if nb_items <= max_urls or id_sitemap:
+            start = (id_sitemap-1) * max_urls
+            base_uri = str(context.uri.resolve('/'))
+            for brain in items.get_documents(sort_by='abspath',
+                                             start=start, size=max_urls):
+                uri = '/'.join(brain.abspath.split('/')[2:])
+                urls.append(
+                    {'loc': base_uri + uri,
+                     'lastmod': brain.mtime.strftime('%Y-%m-%d')})
+        else:
+            nb_sitemaps = nb_items / max_urls
+            if nb_items % max_urls > 0:
+                nb_sitemaps += 1
+            for i in range(1, nb_sitemaps+1):
+                loc = context.uri.replace(id=i)
+                sitemaps.append(str(loc))
+
+        return {'urls': urls, 'sitemaps': sitemaps}
 
 
     def GET(self, resource, context):
@@ -163,9 +154,15 @@ class SiteMapView(BaseView):
         namespace = self.get_namespace(resource, context)
         # Return xml
         context.set_content_type('text/xml')
-        # Ok
+        # Generate xml
+        from time import time
         template = resource.get_resource(self.template)
-        return stl(template, namespace, mode='xml')
+        t0 = time()
+        data = stl(template, namespace, mode='xml')
+        t1 = time()
+        print '--->', t1-t0
+        return data
+
 
 
 
