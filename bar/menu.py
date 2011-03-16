@@ -152,17 +152,7 @@ class MenuSideBarTable_AddRecord(Table_AddRecord):
         # (1) Actions (submit buttons)
         actions = []
         for button in self.get_actions(resource, context):
-            if button.confirm:
-                confirm = button.confirm.gettext().encode('utf_8')
-                onclick = 'return confirm("%s");' % confirm
-            else:
-                onclick = None
-            actions.append(
-                {'value': button.name,
-                 'title': button.title,
-                 'class': button.css,
-                 'onclick': onclick})
-
+            actions.append(button(resource=resource, context=context))
         return actions
 
 
