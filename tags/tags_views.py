@@ -226,7 +226,7 @@ class TagsAware_Edit(object):
     def _get_schema(self, resource, context):
         pdm = self.pub_datetime_mandatory
         return freeze({
-            'tags': TagsList(multiple=True),
+            'tags': TagsList(multiple=True, state=None),
             'pub_date': Date(mandatory=pdm),
             'pub_time': TimeWithoutSecond(mandatory=pdm),
             'thumbnail': PathDataType(multilingual=True)})

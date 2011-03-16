@@ -26,6 +26,8 @@ from utils import get_registered_tags_aware_classes
 
 class TagsList(Enumerate):
 
+    state = 'public'
+
     @staticmethod
     def decode(value):
         if not value:
@@ -48,9 +50,10 @@ class TagsList(Enumerate):
         if tags_folder is None:
             return []
         context = get_context()
+        brains = tags_folder.get_tag_brains(context, state=cls.state)
         options = [ {'name': brain.name,
                      'value': brain.title or brain.name}
-                    for brain in tags_folder.get_tag_brains(context) ]
+                    for brain in brains ]
 
         return options
 
