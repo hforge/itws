@@ -23,7 +23,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.core import freeze, utc
+from itools.core import freeze, fixed_offset
 from itools.datatypes import PathDataType, Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
@@ -273,7 +273,9 @@ class TagsAware_Edit(object):
                              'minute': pub_time.minute}
                 dt = datetime(pub_date.year, pub_date.month, pub_date.day,
                               **dt_kw)
-                dt = dt.replace(tzinfo=utc)
+                # FIXME There is a bug here, the timezone should be that of the
+                # user
+                dt = dt.replace(tzinfo=fixed_offset(0))
                 resource.set_property('pub_datetime', dt)
             else:
                 resource.del_property('pub_datetime')

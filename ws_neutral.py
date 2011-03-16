@@ -458,11 +458,12 @@ class NeutralWS(Website_BarAware, WebSite):
         """Fix TagsAware pub_datetime
         Add tzinfo"""
         from pytz import timezone
-        from itools.core import utc
+        from itools.core import fixed_offset
 
         # Current server timezone
         paris = timezone('Europe/Paris')
 
+        utc = fixed_offset(0)
         database = get_context().database
         for resource in self.traverse_resources():
             if isinstance(resource, TagsAware):

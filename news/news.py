@@ -20,10 +20,9 @@
 
 # Import from the Standard Library
 from copy import deepcopy
-from datetime import datetime
 
 # Import from itools
-from itools.core import freeze, get_abspath, merge_dicts, utc
+from itools.core import freeze, get_abspath, merge_dicts
 from itools.gettext import MSG
 from itools.uri import Path, get_reference
 from itools.web import get_context
@@ -75,7 +74,7 @@ class NewsItem(WebPage):
         # Initialize parent class
         super(NewsItem, self).init_resource(**kw)
         # Set pub_datetime
-        dt = datetime.now().replace(tzinfo=utc)
+        dt = get_context().timestamp
         self.set_property('pub_datetime', dt)
 
 
