@@ -375,7 +375,10 @@ class NeutralWS(Website_BarAware, WebSite):
         theme.set_property('logo', None)
 
         # Favicon
-        favicon = self.get_resource(self.get_property('favicon'), soft=True)
+        favicon_value = self.get_property('favicon')
+        favicon = None
+        if favicon_value:
+            favicon = self.get_resource(favicon_value, soft=True)
         self.del_property('favicon')
         if favicon:
             theme.set_property('favicon', theme.get_pathto(favicon))
