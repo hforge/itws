@@ -25,6 +25,7 @@ from itools.stl import stl
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget
+from ikaaro.workflow import state_widget
 
 # Import from itws
 from bar_aware import SideBarAware
@@ -182,7 +183,8 @@ class BoxNavigation(Box):
         CheckboxWidget('limit_to_current_folder',
                        title=MSG(u'Use current section as tree root')),
         CheckboxWidget('limit_to_ordered_resources',
-                       title=MSG(u'Display ordered resources only.'))
+                       title=MSG(u'Display ordered resources only.')),
+        state_widget
         ])
     is_contentbox = False
 

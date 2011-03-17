@@ -24,6 +24,7 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, TextWidget
+from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from base import Box
@@ -100,7 +101,8 @@ class BoxTags(Box):
                           'count':PositiveInteger(default=0),
                           'show_number': Boolean,
                           'random': Boolean,
-                          'display_title': Boolean})
+                          'display_title': Boolean,
+                          'state': StaticStateEnumerate})
 
     edit_widgets = freeze([
         CheckboxWidget('display_title',
@@ -112,7 +114,8 @@ class BoxTags(Box):
         CheckboxWidget('random', title=MSG(u'Randomize tags')),
         CheckboxWidget('formats',
                     title=MSG(u'This tag cloud will display only '
-                              u'the tags from selected types of content'))
+                              u'the tags from selected types of content')),
+        state_widget
         ])
 
     # Views

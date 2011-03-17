@@ -28,6 +28,7 @@ from itools.web import get_context
 from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
 from ikaaro.autoform import RadioWidget
 from ikaaro.utils import get_content_containers
+from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from base import Box
@@ -215,7 +216,8 @@ class BoxFeed(Box):
              'sort_by': SortBy_Enumerate,
              'reverse': Boolean(default=True),
              'tags': TagsList(multiple=True),
-             'view': BoxFeed_Enumerate})
+             'view': BoxFeed_Enumerate,
+             'state': StaticStateEnumerate})
 
 
     edit_widgets = freeze([
@@ -233,7 +235,8 @@ class BoxFeed(Box):
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
         DualSelectWidget('tags', title=MSG(u'Show only items with these tags'),
-                         is_inline=True, has_empty_option=False)])
+                         is_inline=True, has_empty_option=False),
+        state_widget])
 
 
     # Views

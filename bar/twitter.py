@@ -36,6 +36,7 @@ from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
 from ikaaro.autoform import TextWidget, CheckboxWidget
+from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from base import Box
@@ -144,13 +145,15 @@ class TwitterSideBar(Box, ResourceWithCache):
     edit_schema = freeze({'user_id': TwitterID(mandatory=True),
                           'user_name': String(mandatory=True),
                           'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean})
+                          'force_update': Boolean,
+                          'state': StaticStateEnumerate})
 
     edit_widgets = freeze([
         TextWidget('user_name', title=MSG(u"Twitter account name")),
         TextWidget('user_id', title=MSG(u"User Id")),
         TextWidget('limit', title=MSG(u'Number of tweets')),
-        CheckboxWidget('force_update', title=MSG(u'Force cache update'))
+        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
+        state_widget
         ])
 
     allow_instanciation = True
@@ -290,6 +293,7 @@ class IdenticaSideBar(TwitterSideBar):
              limit=Integer(source='metadata', mandatory=True, default=5,
                            size=3),
              force_update=Boolean(source='metadata'))
+
     # identica icons source: http://status.net/
 
     # Item configuration
@@ -297,12 +301,14 @@ class IdenticaSideBar(TwitterSideBar):
 
     edit_schema = freeze({'user_name': IndenticaName(mandatory=True),
                           'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean})
+                          'force_update': Boolean,
+                          'state': StaticStateEnumerate})
 
     edit_widgets = freeze([
         TextWidget('user_name', title=MSG(u"Identi.ca account name")),
         TextWidget('limit', title=MSG(u'Number of messages')),
-        CheckboxWidget('force_update', title=MSG(u'Force cache update'))
+        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
+        state_widget
         ])
 
     # Views
