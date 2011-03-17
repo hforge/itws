@@ -26,6 +26,7 @@ from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
+from ikaaro.autoform import RadioWidget
 from ikaaro.utils import get_content_containers
 
 # Import from itws
@@ -143,7 +144,7 @@ class BoxFeed_View(Box_View, Details_View):
         root = context.root
         user = context.user
         items = results.get_documents(sort_by=resource.get_property('sort_by'),
-                                      reverse=True,
+                                      reverse=resource.get_property('reverse'),
                                       start=0,
                                       size=resource.get_property('count'))
         # Access Control (FIXME this should be done before batch)
@@ -191,6 +192,7 @@ class BoxFeed(Box):
             container_path=PathDataType(source='metadata', default='/'),
             count=PositiveInteger(source='metadata', default=3),
             sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime'),
+            reverse=Boolean(source='metadata', default=True),
             display_title=Boolean(source='metadata', default=True),
             feed_class_id=TagsAwareClassEnumerate(source='metadata',
                                                   multiple=True),
@@ -211,6 +213,7 @@ class BoxFeed(Box):
              'feed_class_id': TagsAwareClassEnumerate(multiple=True,
                                                       mandatory=True),
              'sort_by': SortBy_Enumerate,
+             'reverse': Boolean(default=True),
              'tags': TagsList(multiple=True),
              'view': BoxFeed_Enumerate})
 
@@ -226,6 +229,7 @@ class BoxFeed(Box):
                      has_empty_option=False),
         SelectWidget('sort_by', title=MSG(u'Sort by'),
                      has_empty_option=False),
+        RadioWidget('reverse', title=MSG(u'Reverse'), oneline=True),
         TextWidget('count',
                    title=MSG(u'Number of items to show (0 = All)'), size=3),
         DualSelectWidget('tags', title=MSG(u'Show only items with these tags'),
