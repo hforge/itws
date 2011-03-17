@@ -36,6 +36,7 @@ class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
 class TagsAwareView_View(Feed_View):
 
+    # FIXME No sidebar
     view_name = 'tags_view'
     view_title = MSG(u'Feed view')
     view_configuration_cls = TagsAwareView_Configuration

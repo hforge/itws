@@ -80,6 +80,7 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
 
 class ImagesView_View(Feed_View):
 
+    # FIXME No sidebar
     content_template = '/ui/feed_views/images_view.xml'
     search_template = None
     styles = ['/ui/feed_views/images_view.css',
