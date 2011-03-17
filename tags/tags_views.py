@@ -253,6 +253,7 @@ class TagsAware_Edit(object):
             pub_datetime = resource.get_property('pub_datetime')
             if pub_datetime is None:
                 return None
+            pub_datetime = context.fix_tzinfo(pub_datetime)
             if name == 'pub_date':
                 return date(pub_datetime.year, pub_datetime.month,
                             pub_datetime.day)
@@ -273,9 +274,7 @@ class TagsAware_Edit(object):
                              'minute': pub_time.minute}
                 dt = datetime(pub_date.year, pub_date.month, pub_date.day,
                               **dt_kw)
-                # FIXME There is a bug here, the timezone should be that of the
-                # user
-                dt = dt.replace(tzinfo=fixed_offset(0))
+                dt = context.fix_tzinfo(dt)
                 resource.set_property('pub_datetime', dt)
             else:
                 resource.del_property('pub_datetime')
