@@ -162,14 +162,15 @@ class TagsFolder(Folder):
         return len(results) == 0
 
 
-    def get_tag_brains(self, context, sort_by='name', size=0, state='public'):
+    def get_tag_brains(self, context, sort_by='name', size=0, states=['public']):
         # tags
         abspath = self.get_canonical_path()
         tags_query = [ PhraseQuery('parent_path', str(abspath)),
                        PhraseQuery('format', Tag.class_id) ]
         # If state is not defined, don't filter on workflow state
-        if state is not None:
-            tags_query.append(PhraseQuery('workflow_state', state))
+        if states is not None:
+            tags_query.extend([ PhraseQuery('workflow_state', state)
+                                for state in states ])
         tags_query = AndQuery(*tags_query)
         tags_results = context.root.search(tags_query)
         documents = tags_results.get_documents(sort_by=sort_by, size=size)

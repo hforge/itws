@@ -151,7 +151,7 @@ class TagsFolder_TagCloud(STLView):
                     type(context.resource) is type(tags_folder):
                 bo_description = True
 
-        tag_brains = tags_folder.get_tag_brains(context, state=None)
+        tag_brains = tags_folder.get_tag_brains(context, states=[])
         tag_base_link = '%s/%%s' % context.get_link(tags_folder)
         if self.formats:
             query = {'format': self.formats}
@@ -232,7 +232,7 @@ class TagsAware_Edit(object):
     def _get_schema(self, resource, context):
         pdm = self.pub_datetime_mandatory
         return freeze({
-            'tags': TagsList(multiple=True, state=None),
+            'tags': TagsList(multiple=True, states=[]),
             'pub_date': Date(mandatory=pdm),
             'pub_time': TimeWithoutSecond(mandatory=pdm),
             'thumbnail': PathDataType(multilingual=True)})
