@@ -23,7 +23,7 @@ from math import ceil
 from random import shuffle
 
 # Import from itools
-from itools.core import freeze, fixed_offset
+from itools.core import freeze
 from itools.datatypes import PathDataType, Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
@@ -151,7 +151,7 @@ class TagsFolder_TagCloud(STLView):
                     type(context.resource) is type(tags_folder):
                 bo_description = True
 
-        tag_brains = tags_folder.get_tag_brains(context)
+        tag_brains = tags_folder.get_tag_brains(context, state=None)
         tag_base_link = '%s/%%s' % context.get_link(tags_folder)
         if self.formats:
             query = {'format': self.formats}
@@ -165,7 +165,13 @@ class TagsFolder_TagCloud(STLView):
 
         items_nb = []
         tags = []
+        ac = tags_folder.get_access_control()
         for brain in tag_brains:
+            # Check ACL
+            # FIXME To improve, use catalog instead resource
+            tag = tags_folder.get_resource(brain.name)
+            if ac.is_allowed_to_view(context.user, tag) is False:
+                continue
             if self.tags_to_show and len(items_nb) == self.tags_to_show:
                 break
             sub_results = tags_results.search(PhraseQuery('tags', brain.name))

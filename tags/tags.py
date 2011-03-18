@@ -206,12 +206,16 @@ class TagsAware(object):
 
     def get_tags_namespace(self, context):
         tags_folder = self.get_site_root().get_resource('tags')
+        ac = tags_folder.get_access_control()
         # query
         query = encode_query(context.uri.query)
 
         tags = []
         for tag_name in self.get_property('tags'):
             tag = tags_folder.get_resource(tag_name)
+            # Check ACL
+            if ac.is_allowed_to_view(context.user, tag) is False:
+                continue
             href = context.get_link(tag)
             if query:
                 href = '%s?%s' % (href, query)
