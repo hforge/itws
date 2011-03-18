@@ -294,17 +294,17 @@ class Skin(BaseSkin):
 
         # Sidebar
         sidebar = None
-        if (here_ac.is_allowed_to_view(context.user, here)
-                and here.display_sidebar):
-            if context.view.display_sidebar:
-                sidebar_resource = self.get_sidebar_resource(context)
-                if sidebar_resource:
-                    order_name = sidebar_resource.sidebar_name
-                    sidebar_view = SideBar_View(order_name=order_name)
-                    if not sidebar_view.is_empty(sidebar_resource, context):
-                        # Heuristic, do not compute sidebar view
-                        # if there is no items
-                        sidebar = sidebar_view.GET(sidebar_resource, context)
+        display_sidebar = (getattr(here, 'display_sidebar', True)
+                and getattr(context.view, 'display_sidebar', True))
+        if display_sidebar and here_ac.is_allowed_to_view(context.user, here):
+            sidebar_resource = self.get_sidebar_resource(context)
+            if sidebar_resource:
+                order_name = sidebar_resource.sidebar_name
+                sidebar_view = SideBar_View(order_name=order_name)
+                if not sidebar_view.is_empty(sidebar_resource, context):
+                    # Heuristic, do not compute sidebar view
+                    # if there is no items
+                    sidebar = sidebar_view.GET(sidebar_resource, context)
 
         namespace['sidebar_view'] = sidebar
         namespace['sidebar'] = sidebar or namespace['context_menus']

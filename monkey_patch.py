@@ -16,7 +16,6 @@
 
 # Import from itools
 from itools.gettext import MSG
-from itools.web import BaseView
 
 # Import from ikaaro
 from ikaaro.cc import SubscribeForm
@@ -27,7 +26,6 @@ from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
 from ikaaro.folder_views import Folder_Rename
 from ikaaro.menu import Menu_View
 from ikaaro.registry import resources_registry
-from ikaaro.resource_ import DBResource
 from ikaaro.resource_views import DBResource_Edit
 from ikaaro.revisions_views import DBResource_CommitLog, DBResource_Changes
 from ikaaro.root import Root
@@ -47,8 +45,6 @@ from ws_neutral import NeutralWS
 
 
 # Monkey patchs
-# Add display_sidebar to BaseView
-BaseView.display_sidebar = True
 # Hide sidebar on some views
 # ikaaro views
 NewInstance.display_sidebar = False
@@ -64,8 +60,6 @@ Menu_View.display_sidebar = False
 NeutralWS.about.display_sidebar = False
 NeutralWS.credits.display_sidebar = False
 NeutralWS.license.display_sidebar = False
-# Add display_sidebar to DBResource
-DBResource.display_sidebar = True
 # Hide sidebar on some resources
 Tracker.display_sidebar = False
 Tracker.issue_class.display_sidebar = False
