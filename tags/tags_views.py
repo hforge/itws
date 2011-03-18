@@ -29,7 +29,7 @@ from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
 from itools.uri import encode_query
-from itools.web import STLView
+from itools.web import get_context, STLView
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
@@ -305,17 +305,29 @@ class TagsFolder_BrowseContent(Folder_BrowseContent):
         ('workflow_state', MSG(u'State'))]
 
 
+    def _get_nb_resource_with_tag(self, resource, context, tag_name):
+        # Build the search query
+        query = resource.get_tags_query_terms()
+        query.append(PhraseQuery('tags', tag_name))
+        query = AndQuery(*query)
+
+        # Search
+        return len(context.root.search(query))
+
+
+    def get_key_sorted_by_items_nb(self):
+        def key(item):
+            context = get_context()
+            return self._get_nb_resource_with_tag(context.resource, context,
+                                                  item.name)
+        return key
+
+
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
         if column == 'items_nb':
-            # Build the search query
-            query = resource.get_tags_query_terms()
-            query.append(PhraseQuery('tags', brain.name))
-            query = AndQuery(*query)
-
-            # Search
-            results = context.root.search(query)
-            return len(results), './%s' % brain.name
+            nb = self._get_nb_resource_with_tag(resource, context, brain.name)
+            return nb, './%s' % brain.name
         elif column == 'name':
             return brain.name
 
