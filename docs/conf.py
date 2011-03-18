@@ -32,7 +32,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo']
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = '.rst.en'
 
 # List of documents that shouldn't be included in the build.
 unused_docs = ['developers']
@@ -165,7 +165,7 @@ html_theme = 'default'
 #html_use_opensearch = ''
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
-#html_file_suffix = None
+html_file_suffix = '.html.en'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'itwsdoc'
