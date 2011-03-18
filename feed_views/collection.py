@@ -61,6 +61,9 @@ class Search_View(Feed_View):
     search_on_current_folder = False
     search_on_current_folder_recursive = True
 
+    # Display sidebar
+    display_sidebar = True
+
 
 
 class DetailsWithoutPicture_View(Feed_View):

@@ -80,7 +80,6 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
 
 class ImagesView_View(Feed_View):
 
-    # FIXME No sidebar
     content_template = '/ui/feed_views/images_view.xml'
     search_template = None
     styles = ['/ui/feed_views/images_view.css',
@@ -91,6 +90,9 @@ class ImagesView_View(Feed_View):
     view_name = 'images-view'
     view_title = MSG(u'Gallery view')
     view_configuration_cls = ImagesView_Configuration
+
+    # Display sidebar
+    display_sidebar = True
 
 
     def _get_configuration_file(self, resource):

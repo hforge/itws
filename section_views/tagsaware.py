@@ -36,13 +36,15 @@ class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
 class TagsAwareView_View(Feed_View):
 
-    # FIXME No sidebar
     view_name = 'tags_view'
     view_title = MSG(u'Feed view')
     view_configuration_cls = TagsAwareView_Configuration
 
     search_template = None
     content_template = '/ui/feed_views/Tag_item_viewbox.xml'
+
+    # Display sidebar
+    display_sidebar = True
 
 
     def __init__(self, **kw):
