@@ -112,8 +112,8 @@ class Tag_View(Details_View):
         get_query_value = context.get_query_value
         formats = get_query_value('format', type=String(multiple=True),
                                   default=[])
-        query = resource.parent.get_tags_query_terms(state='public',
-                tags=[tag], formats=formats)
+        query = resource.parent.get_tags_query_terms(tags=[tag],
+                formats=formats)
         args.append(AndQuery(*query))
         return Details_View.get_items(self, resource, context, *args)
 

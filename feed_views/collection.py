@@ -36,7 +36,6 @@ class Details_View(Feed_View):
     def get_items(self, resource, context, *args):
         args = list(args)
         args.append(PhraseQuery('is_tagsaware', True))
-        args.append(PhraseQuery('workflow_state', 'public'))
         return Feed_View.get_items(self, resource, context, *args)
 
 
