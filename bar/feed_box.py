@@ -31,7 +31,7 @@ from ikaaro.utils import get_content_containers
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base import Box
+from base import title_link_schema, title_link_widgets, Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.datatypes import SortBy_Enumerate
@@ -138,7 +138,8 @@ class BoxFeed_View(Box_View, Details_View):
                 args.append(formats_query[0])
             else:
                 args.append(OrQuery(*formats_query))
-        return Details_View.get_items(self, resource, context, *args)
+        proxy = super(BoxFeed_View, self)
+        return proxy.get_items(resource, context, *args)
 
 
     def sort_and_batch(self, resource, context, results):
@@ -176,6 +177,14 @@ class BoxFeed_View(Box_View, Details_View):
         return '%s %s' % (self.view_name, css)
 
 
+    def get_namespace(self, resource, context):
+        proxy = super(BoxFeed_View, self)
+        namespace = proxy.get_namespace(resource, context)
+        for name in ('display_title', 'title_link', 'title_link_target'):
+            namespace[name] = resource.get_property(name)
+        return namespace
+
+
 
 class BoxFeed(Box):
     # XXX We have to refactor BoxFeed_View
@@ -190,6 +199,7 @@ class BoxFeed(Box):
 
     class_schema = merge_dicts(
             Box.class_schema,
+            title_link_schema,
             container_path=PathDataType(source='metadata', default='/'),
             count=PositiveInteger(source='metadata', default=3),
             sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime'),
@@ -207,7 +217,7 @@ class BoxFeed(Box):
     is_contentbox = True
 
     # Automatic Edit View
-    edit_schema = freeze({
+    edit_schema = freeze(merge_dicts({
              'container_path': TagsAwareContainerPathDatatype,
              'count': PositiveInteger(default=3),
              'display_title': Boolean,
@@ -217,13 +227,15 @@ class BoxFeed(Box):
              'reverse': Boolean(default=True),
              'tags': TagsList(multiple=True, states=[]),
              'view': BoxFeed_Enumerate,
-             'state': StaticStateEnumerate})
+             'state': StaticStateEnumerate},
+             title_link_schema))
 
 
-    edit_widgets = freeze([
-        CheckboxWidget('display_title',
-                       title=MSG(u'Display title')),
-        SelectWidget('container_path', title=MSG(u'Container'),
+    edit_widgets = freeze(
+        [ CheckboxWidget('display_title',
+                         title=MSG(u'Display title')) ] +
+        title_link_widgets +
+        [ SelectWidget('container_path', title=MSG(u'Container'),
                      has_empty_option=False),
         CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
                        has_empty_option=True),

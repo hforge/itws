@@ -14,7 +14,10 @@
   <div class="feed-view ${css}">
 
     <stl:block stl:if="display_title">
-      <h3 class="title" stl:if="title">${title}</h3>
+      <h3 stl:if="title" class="title">
+        <a stl:omit-tag="not title_link" href="${title_link}"
+           target="${title_link_target}" title="${title}">${title}</a>
+      </h3>
     </stl:block>
 
     ${content}

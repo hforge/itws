@@ -22,12 +22,22 @@ from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import TextWidget
+from ikaaro.autoform import PathSelectorWidget, RadioWidget, TextWidget
 from ikaaro.file import File
+from ikaaro.menu import Target
 
 # Import from itws
 from itws.views import AutomaticEditView , EasyNewInstance
 
+
+
+title_link_schema = freeze({
+    'title_link': String(source='metadata'),
+    'title_link_target': Target(source='metadata', default='_top')})
+title_link_widgets = freeze([
+    PathSelectorWidget('title_link', title=MSG(u'Title link')),
+    RadioWidget('title_link_target', title=MSG(u'Title link target'),
+                has_empty_option=False, oneline=True)])
 
 
 class BoxAware(object):
