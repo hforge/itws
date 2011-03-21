@@ -168,9 +168,13 @@ class TagsFolder(Folder):
         tags_query = [ PhraseQuery('parent_path', str(abspath)),
                        PhraseQuery('format', Tag.class_id) ]
         # If state is not defined, don't filter on workflow state
-        if states is not None:
-            tags_query.extend([ PhraseQuery('workflow_state', state)
-                                for state in states ])
+        if states:
+            workflow_query = [ PhraseQuery('workflow_state', state)
+                               for state in states ]
+            if len(workflow_query) == 1:
+                tags_query.append(workflow_query[0])
+            else:
+                tags_query.append(OrQuery(*workflow_query))
         tags_query = AndQuery(*tags_query)
         tags_results = context.root.search(tags_query)
         documents = tags_results.get_documents(sort_by=sort_by, size=size)

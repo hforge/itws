@@ -215,7 +215,7 @@ class BoxFeed(Box):
                                                       mandatory=True),
              'sort_by': SortBy_Enumerate,
              'reverse': Boolean(default=True),
-             'tags': TagsList(multiple=True),
+             'tags': TagsList(multiple=True, states=[]),
              'view': BoxFeed_Enumerate,
              'state': StaticStateEnumerate})
 
