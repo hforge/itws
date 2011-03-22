@@ -24,11 +24,11 @@ from itools.datatypes import Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
+from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
-from base import Box
+from base import display_title_widget, Box
 from base_views import Box_View
 from itws.widgets import GoogleMapWidget, GoogleGPSWidget
 from itws.widgets import OpenStreetMapWidget, OpenStreetMapGPSWidget
@@ -97,8 +97,7 @@ class MapBox_Edit(DBResource_Edit):
                       'zoom': resource.get_property('zoom')}
         # Return widgets
         return freeze(DBResource_Edit._get_widgets(self, resource, context)
-                + [CheckboxWidget('display_title',
-                                  title=MSG(u'Display title')),
+                + [display_title_widget,
                    SelectWidget('render', title=MSG(u'Render map with')),
                    TextWidget('width', title=MSG(u'Map width'), size=6),
                    TextWidget('height', title=MSG(u'Map height'), size=6),

@@ -31,7 +31,7 @@ from itools.web import get_context
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, ImageSelectorWidget, RadioWidget
+from ikaaro.autoform import ImageSelectorWidget, RadioWidget
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.file import Image
 from ikaaro.folder import Folder
@@ -43,7 +43,7 @@ from ikaaro.table_views import OrderedTable_View, AddRecordButton
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from base import BoxAware
+from base import display_title_widget, BoxAware
 from base_views import Box_View
 from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
@@ -378,8 +378,7 @@ class Diaporama(BoxAware, Folder):
     is_sidebox = False
 
     edit_schema = freeze({'display_title': Boolean})
-    edit_widgets = freeze([CheckboxWidget('display_title',
-        title=MSG(u'Display title'))])
+    edit_widgets = freeze([display_title_widget])
 
     order_path = 'order-banners'
     order_table = DiaporamaTable

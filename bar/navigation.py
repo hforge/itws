@@ -29,7 +29,7 @@ from ikaaro.workflow import state_widget
 
 # Import from itws
 from bar_aware import SideBarAware
-from base import Box
+from base import display_title_widget, Box
 from base_views import Box_View
 from itws.webpage import WebPage
 from section import Section
@@ -178,8 +178,7 @@ class BoxNavigation(Box):
                           'limit_to_current_folder': Boolean,
                           'limit_to_ordered_resources': Boolean})
     edit_widgets = freeze([
-        CheckboxWidget('display_title',
-                       title=MSG(u'Display title')),
+        display_title_widget,
         CheckboxWidget('limit_to_current_folder',
                        title=MSG(u'Use current section as tree root')),
         CheckboxWidget('limit_to_ordered_resources',

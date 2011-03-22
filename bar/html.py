@@ -27,14 +27,14 @@ from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, PathSelectorWidget, RadioWidget
+from ikaaro.autoform import PathSelectorWidget, RadioWidget
 from ikaaro.menu import Target
 from ikaaro.webpage import HTMLEditView, WebPage_View
 from ikaaro.workflow import state_widget
 
 # Import from itws
 from base_views import Box_View
-from itws.bar.base import BoxAware
+from itws.bar.base import display_title_widget, BoxAware
 from itws.utils import get_path_and_view
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
@@ -99,7 +99,7 @@ class HTMLContent_Edit(HTMLEditView):
                     if widget.name not in ('description', 'subject', 'state',
                                            'data') ]
         return freeze(widgets + [
-            CheckboxWidget('display_title', title=MSG(u'Display title')),
+            display_title_widget,
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             RadioWidget('title_link_target', title=MSG(u'Title link target'),
                         has_empty_option=False, oneline=True),

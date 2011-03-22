@@ -31,7 +31,8 @@ from ikaaro.utils import get_content_containers
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base import title_link_schema, title_link_widgets, Box
+from base import display_title_widget, title_link_schema, title_link_widgets
+from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.datatypes import SortBy_Enumerate
@@ -232,8 +233,7 @@ class BoxFeed(Box):
 
 
     edit_widgets = freeze(
-        [ CheckboxWidget('display_title',
-                         title=MSG(u'Display title')) ] +
+        [ display_title_widget ] +
         title_link_widgets +
         [ SelectWidget('container_path', title=MSG(u'Container'),
                      has_empty_option=False),

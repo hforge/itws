@@ -21,12 +21,11 @@ from itools.datatypes import Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget
 from ikaaro.datatypes import Multilingual
 
 # Import from itws
 from itws.section_views.images import ImagesView_Configuration, ImagesView_View
-from itws.bar.base import Box
+from itws.bar.base import display_title_widget, Box
 from itws.bar.base_views import Box_View
 
 
@@ -97,8 +96,7 @@ class BoxGallery(ImagesView_Configuration, Box):
         title=Multilingual,
         display_title=Boolean))
     edit_widgets  = freeze(
-         [ CheckboxWidget('display_title',
-                          title=MSG(u'Display title')) ]
+         [ display_title_widget ]
          + ImagesView_Configuration.edit_widgets)
 
 

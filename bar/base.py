@@ -22,7 +22,8 @@ from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import PathSelectorWidget, RadioWidget, TextWidget
+from ikaaro.autoform import CheckboxWidget, PathSelectorWidget, RadioWidget
+from ikaaro.autoform import TextWidget
 from ikaaro.file import File
 from ikaaro.menu import Target
 
@@ -38,6 +39,9 @@ title_link_widgets = freeze([
     PathSelectorWidget('title_link', title=MSG(u'Title link')),
     RadioWidget('title_link_target', title=MSG(u'Title link target'),
                 has_empty_option=False, oneline=True)])
+
+display_title_widget = CheckboxWidget('display_title',
+        title=MSG(u'Display title'))
 
 
 class BoxAware(object):

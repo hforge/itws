@@ -27,7 +27,7 @@ from ikaaro.autoform import CheckboxWidget, TextWidget
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base import Box
+from base import display_title_widget, Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsAwareClassEnumerate
@@ -105,8 +105,7 @@ class BoxTags(Box):
                           'state': StaticStateEnumerate})
 
     edit_widgets = freeze([
-        CheckboxWidget('display_title',
-                        title=MSG(u'Display title')),
+        display_title_widget,
         TextWidget('count', size=4,
                    title=MSG(u'Tags to show (0 for all tags)')),
         CheckboxWidget('show_number',
