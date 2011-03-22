@@ -201,6 +201,8 @@ class NewsFolder_BrowseContent(Folder_BrowseContent):
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
         if column == 'pub_datetime':
+            if brain.is_tagsaware is False:
+                return None
             return context.format_datetime(brain.pub_datetime)
         return Folder_BrowseContent.get_item_value(self, resource, context,
                                                    item, column)
