@@ -102,18 +102,18 @@ class Bar_View(STLView):
             orderfile = order.handler
             user = context.user
             repository = self._get_repository(resource, context)
+            ac = repository.get_access_control()
             order = orderfile.get_records_in_order()
             items = []
 
             for record in order:
-                name = orderfile.get_record_value(record, 'name')
+                name = record.name
                 item = repository.get_resource(name, soft=True)
                 if item is None:
                     path = resource.get_abspath()
                     warn('%s > bar item not found: %s' % (path, name))
                     continue
                 if check_acl:
-                    ac = item.get_access_control()
                     if ac.is_allowed_to_view(user, item) is False:
                         continue
 
