@@ -166,6 +166,8 @@ class ITWS_AddMedia_BrowseContent(Feed_View, AddMedia_BrowseContent):
     table_template = '/ui/common/popup_browse_content.xml'
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
 
+    hidden_fields = freeze(Feed_View.hidden_fields +
+                           AddMedia_BrowseContent.hidden_fields + ['target'])
 
     def get_items(self, resource, context, *args):
         args = list(args)
@@ -188,6 +190,8 @@ class ITWS_AddImage_BrowseContent(Feed_View, AddImage_BrowseContent):
     content_keys = Feed_View.content_keys + ('js_link', 'link', 'is_selectable')
     item_classes = (Image,)
 
+    hidden_fields = freeze(Feed_View.hidden_fields +
+                           AddImage_BrowseContent.hidden_fields + ['target'])
 
     def get_items(self, resource, context, *args):
         args = list(args)
