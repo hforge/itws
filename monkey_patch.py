@@ -84,7 +84,8 @@ Folder.backlinks = CPDBResource_Backlinks()
 Folder.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
 # Add ITWS_ControlPanel for Images resources
-Image.class_views = ['view', 'download', 'edit', 'control_panel']
+Image.class_views = ['view', 'download', 'edit', 'externaledit',
+                     'control_panel']
 Image.control_panel = ITWS_ControlPanel()
 Image.class_control_panel = ['externaledit', 'links',
                              'backlinks', 'commit_log']
@@ -94,7 +95,7 @@ Image.backlinks = CPDBResource_Backlinks()
 Image.commit_log = CPDBResource_CommitLog(access='is_allowed_to_edit')
 
 # Add ITWS_ControlPanel for File resources
-File.class_views = ['view', 'edit', 'control_panel']
+File.class_views = ['view', 'edit', 'externaledit', 'control_panel']
 File.control_panel = ITWS_ControlPanel()
 File.class_control_panel = ['links', 'backlinks', 'commit_log']
 File.links = CPDBResource_Links()

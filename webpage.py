@@ -52,7 +52,7 @@ class WebPage(TagsAware, BaseWebPage):
                                display_title=Boolean(source='metadata',
                                                      default=True))
 
-    class_views = ['view', 'edit', 'control_panel']
+    class_views = ['view', 'edit', 'externaledit', 'control_panel']
 
     class_control_panel = ['externaledit', 'subscribe',
                            'links', 'backlinks', 'commit_log']
