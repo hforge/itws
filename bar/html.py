@@ -21,20 +21,19 @@ from copy import deepcopy
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, String
+from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.uri import get_reference, Path
 from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import PathSelectorWidget, RadioWidget
-from ikaaro.menu import Target
 from ikaaro.webpage import HTMLEditView, WebPage_View
 from ikaaro.workflow import state_widget
 
 # Import from itws
 from base_views import Box_View
-from itws.bar.base import display_title_widget, BoxAware
+from itws.bar.base import display_title_widget, title_link_schema, BoxAware
 from itws.utils import get_path_and_view
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
@@ -82,8 +81,7 @@ class HTMLContent_Edit(HTMLEditView):
                 # BoxAware API
                 resource.edit_schema,
                 # other
-                title_link=String,
-                title_link_target=Target,
+                title_link_schema,
                 display_title=Boolean)
         # Delete unused description/subject(keywords)
         del schema['description']
@@ -121,10 +119,7 @@ class HTMLContent(BoxAware, WebPage):
     class_icon48 = 'bar_items/icons/48x48/html_content.png'
 
     class_schema = merge_dicts(WebPage.class_schema,
-        BoxAware.class_schema,
-        # Metadata
-        title_link=String(source='metadata'),
-        title_link_target=Target(source='metadata', default='_top'))
+        BoxAware.class_schema, title_link_schema)
 
     # Configuration
     allow_instanciation = True
@@ -146,9 +141,9 @@ class HTMLContent(BoxAware, WebPage):
     def get_links(self):
         links = WebPage.get_links(self)
         base = self.get_canonical_path()
-        path = self.get_property('title_link')
-        if path:
-            ref = get_reference(path)
+        uri = self.get_property('title_link')
+        if uri:
+            ref = get_reference(uri)
             if not ref.scheme:
                 path, view = get_path_and_view(ref.path)
                 links.add(str(base.resolve2(path)))
@@ -165,9 +160,9 @@ class HTMLContent(BoxAware, WebPage):
         old_base = Path(old_base)
         new_base = Path(base)
 
-        path = self.get_property('title_link')
-        if path:
-            ref = get_reference(path)
+        uri = self.get_property('title_link')
+        if uri:
+            ref = get_reference(uri)
             if not ref.scheme:
                 path, view = get_path_and_view(ref.path)
                 path = str(old_base.resolve2(path))
@@ -186,9 +181,9 @@ class HTMLContent(BoxAware, WebPage):
 
         target = self.get_canonical_path()
         resources_old2new = get_context().database.resources_old2new
-        path = self.get_property('title_link')
-        if path:
-            ref = get_reference(str(path))
+        uri = self.get_property('title_link')
+        if uri:
+            ref = get_reference(uri)
             if not ref.scheme:
                 path, view = get_path_and_view(ref.path)
                 # Calcul the old absolute path

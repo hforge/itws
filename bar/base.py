@@ -18,7 +18,7 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, String
+from itools.datatypes import Boolean, String, URI
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -33,7 +33,7 @@ from itws.views import AutomaticEditView , EasyNewInstance
 
 
 title_link_schema = freeze({
-    'title_link': String(source='metadata'),
+    'title_link': URI(source='metadata'),
     'title_link_target': Target(source='metadata', default='_top')})
 title_link_widgets = freeze([
     PathSelectorWidget('title_link', title=MSG(u'Title link')),
