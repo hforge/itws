@@ -184,7 +184,9 @@ class BaseRSS(BaseView):
             value = context.uri.resolve(context.get_link(item_resource))
             return str(value)
         elif column == 'pubDate':
-            return brain.pub_datetime
+            if brain.is_tagsaware:
+                return brain.pub_datetime
+            return brain.mtime
         elif column == 'title':
             return item_resource.get_title()
         elif column == 'description':

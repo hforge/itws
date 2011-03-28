@@ -44,17 +44,6 @@ class NeutralWS_RSS(BaseRSS):
         return query
 
 
-    def get_item_value(self, resource, context, item, column, site_root):
-        brain, item_resource = item
-        if column == 'pubDate':
-            if brain.is_tagsaware:
-                return brain.pub_datetime
-            return brain.mtime
-
-        return BaseRSS.get_item_value(self, resource, context, item,
-                                      column, site_root)
-
-
 
 class NeutralWS_Edit(EditView, DBResource_Edit):
 
