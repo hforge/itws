@@ -27,10 +27,8 @@ from ikaaro.datatypes import Multilingual
 from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
-from bar import Section
 from rss import BaseRSS
 from section_views import SectionViews_Enumerate
-from tags import TagsAware
 from views import EditView
 
 
@@ -49,19 +47,9 @@ class NeutralWS_RSS(BaseRSS):
     def get_item_value(self, resource, context, item, column, site_root):
         brain, item_resource = item
         if column == 'pubDate':
-            if isinstance(item_resource, TagsAware):
+            if brain.is_tagsaware:
                 return brain.pub_datetime
-            else:
-                return brain.mtime
-        elif column == 'title':
-            # Special case for the title
-            title = item_resource.get_title()
-            # FIXME
-            if brain.name == 'index':
-                parent = item_resource.parent
-                if isinstance(parent, Section):
-                    title = parent.get_title()
-            return title
+            return brain.mtime
 
         return BaseRSS.get_item_value(self, resource, context, item,
                                       column, site_root)
