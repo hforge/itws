@@ -267,13 +267,21 @@ class InternalResourcesAware(object):
 ############################################################
 # Links
 ############################################################
-def automatic_get_links(resource, field_names):
+def automatic_get_links(resource, field_names, schema=None, get_values=None):
     links = set()
     base = resource.get_canonical_path()
     site_root = resource.get_site_root()
     available_languages = site_root.get_property('website_languages')
-    schema = resource.class_schema
-    get_value = resource.get_property
+
+    if schema is None:
+        schema = resource.class_schema
+
+    if get_values is None:
+        get_property = resource.get_property
+        def get_values(name, lang):
+            values = get_property(name, lang)
+            if values:
+                yield values
 
     for name in field_names:
         datatype = schema[name]
@@ -281,10 +289,8 @@ def automatic_get_links(resource, field_names):
         languages = [ None ]
         if getattr(datatype, 'multilingual', False):
             languages = available_languages
-
         for lang in languages:
-            values = resource.get_property(name, lang)
-            if values:
+            for values in get_values(name, lang):
                 if getattr(datatype, 'multiple', False) is False:
                     values = [ values ]
                 for value in values:
@@ -298,35 +304,16 @@ def automatic_get_links(resource, field_names):
     return links
 
 
+
 def automatic_table_get_links(resource, field_names):
-    links = set()
-    base = resource.get_canonical_path()
-    site_root = resource.get_site_root()
-    available_languages = site_root.get_property('website_languages')
     handler = resource.handler
     schema = handler.record_properties
-    get_value = handler.get_record_value
-    records = list(handler.get_records())
+    get_record_value = handler.get_record_value
 
-    for name in field_names:
-        datatype = schema[name]
-        is_html = is_thingy(datatype, XHTMLBody)
-        languages = [ None ]
-        if getattr(datatype, 'multilingual', False):
-            languages = available_languages
+    def get_values(name, lang):
+        for record in handler.get_records():
+            values = get_record_value(record, name, lang)
+            if values:
+                yield values
 
-        for lang in languages:
-            for record in records:
-                values = get_value(record, name, lang)
-                if values:
-                    if getattr(datatype, 'multiple', False) is False:
-                        values = [ values ]
-                    for value in values:
-                        if is_html is True:
-                            links.update(_get_links(base, value))
-                        else:
-                            ref = get_reference(value)
-                            if not ref.scheme:
-                                path, view = get_path_and_view(ref.path)
-                                links.add(str(base.resolve2(path)))
-    return links
+    return automatic_get_links(resource, field_names, schema, get_values)
