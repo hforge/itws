@@ -36,10 +36,10 @@ from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
 from ikaaro.table import OrderedTableFile, OrderedTable
-from ikaaro.webpage import _get_links, _change_link
+from ikaaro.webpage import _change_link
 
 # Import from itws
-from utils import get_admin_bar, get_path_and_view
+from utils import automatic_table_get_links, get_admin_bar, get_path_and_view
 from views import AutomaticEditView
 
 
@@ -113,22 +113,7 @@ class TurningFooterTable(OrderedTable):
     ##########################
     def get_links(self):
         links = OrderedTable.get_links(self)
-        base = self.get_canonical_path()
-        # languages
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        # Append links contained in data
-        handler = self.handler
-        get_value = handler.get_record_value
-
-        for record in handler.get_records_in_order():
-            for language in available_languages:
-                data = get_value(record, 'data', language=language)
-                if data is None:
-                    continue
-                links.update(_get_links(base, data))
-
+        links.update(automatic_table_get_links(self, ['data']))
         return links
 
 

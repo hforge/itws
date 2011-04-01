@@ -31,14 +31,14 @@ from ikaaro.utils import get_content_containers
 from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
-from base import display_title_widget, title_link_schema, title_link_widgets
 from base import Box
+from base import display_title_widget, title_link_schema, title_link_widgets
 from base_views import Box_View
-from itws.datatypes import PositiveInteger
-from itws.datatypes import SortBy_Enumerate
+from itws.datatypes import PositiveInteger, SortBy_Enumerate
 from itws.feed_views import Details_View
 from itws.tags import TagsList, TagsAwareClassEnumerate
 from itws.tags import get_registered_tags_aware_classes
+from itws.utils import automatic_get_links
 from itws.widgets import DualSelectWidget
 
 
@@ -267,7 +267,7 @@ class BoxFeed(Box):
             else:
                 abs_path = site_root.abspath.resolve2(container_path)
                 links.add(str(abs_path))
-
+        links.update(automatic_get_links(self, ['title_link']))
         return links
 
 

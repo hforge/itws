@@ -41,6 +41,7 @@ from datatypes import NeutralClassSkin
 from footer import FooterFolder
 from notfoundpage import NotFoundPage
 from turning_footer import TurningFooterFolder
+from utils import automatic_get_links
 
 
 
@@ -140,16 +141,7 @@ class Theme(BaseTheme):
     ##########################
     def get_links(self):
         links = BaseTheme.get_links(self)
-        base = self.get_canonical_path()
-
-        # banner_path
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        for language in available_languages:
-            path = self.get_property('banner_path', language=language)
-            links.add(str(base.resolve2(path)))
-
+        links.update(automatic_get_links(self, ['banner_path']))
         return links
 
 

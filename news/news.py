@@ -18,13 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from the Standard Library
-from copy import deepcopy
-
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts
 from itools.gettext import MSG
-from itools.uri import Path, get_reference
 from itools.web import get_context
 
 # Import from ikaaro
@@ -42,7 +38,6 @@ from itws.control_panel import CPDBResource_Backlinks
 from itws.control_panel import ITWS_ControlPanel
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import register_tags_aware
-from itws.utils import get_path_and_view
 from itws.views import AutomaticEditView
 from itws.webpage import WebPage
 from news_views import NewsFolder_View, NewsFolder_RSS
@@ -91,88 +86,6 @@ class NewsItem(WebPage):
 
     def can_paste_into(self, target):
         return isinstance(target, NewsFolder)
-
-
-    ##########################################################################
-    # Links API
-    ##########################################################################
-    def get_links(self):
-        links = WebPage.get_links(self)
-
-        base = self.get_canonical_path()
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        for language in available_languages:
-            path = self.get_property('thumbnail')
-            if not path:
-                continue
-            ref = get_reference(path)
-            if not ref.scheme:
-                path, view = get_path_and_view(ref.path)
-                links.add(str(base.resolve2(path)))
-
-        return links
-
-
-    def update_links(self, source, target):
-        WebPage.update_links(self, source, target)
-
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        base = self.get_canonical_path()
-        resources_new2old = get_context().database.resources_new2old
-        base = str(base)
-        old_base = resources_new2old.get(base, base)
-        old_base = Path(old_base)
-        new_base = Path(base)
-
-        for lang in available_languages:
-            path = self.get_property('thumbnail', language=lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            path, view = get_path_and_view(ref.path)
-            path = str(old_base.resolve2(path))
-            if path == source:
-                # Hit the old name
-                # Build the new reference with the right path
-                new_ref = deepcopy(ref)
-                new_ref.path = str(new_base.get_pathto(target)) + view
-                self.set_property('thumbnail', str(new_ref), language=lang)
-
-        get_context().database.change_resource(self)
-
-
-    def update_relative_links(self, source):
-        WebPage.update_relative_links(self, source)
-
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-
-        for lang in available_languages:
-            path = self.get_property('thumbnail', language=lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            path, view = get_path_and_view(ref.path)
-            # Calcul the old absolute path
-            old_abs_path = source.resolve2(path)
-            # Check if the target path has not been moved
-            new_abs_path = resources_old2new.get(old_abs_path, old_abs_path)
-            # Build the new reference with the right path
-            # Absolute path allow to call get_pathto with the target
-            new_ref = deepcopy(ref)
-            new_ref.path = str(target.get_pathto(new_abs_path)) + view
-            self.set_property('thumbnail', str(new_ref), language=lang)
 
 
     def update_20100811(self):

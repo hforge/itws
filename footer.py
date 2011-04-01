@@ -30,12 +30,12 @@ from ikaaro.autoform import SelectWidget, XHTMLBody, RadioWidget
 from ikaaro.autoform import TextWidget, PathSelectorWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.menu import MenuFolder, Menu, MenuFile, Target
-from ikaaro.webpage import _get_links, _change_link
+from ikaaro.webpage import _change_link
 from ikaaro.file_views import File_Edit
 
 # Import from itws
 from widgets import XMLTitleWidget
-from utils import get_path_and_view
+from utils import automatic_table_get_links, get_path_and_view
 
 
 
@@ -104,21 +104,8 @@ class FooterMenu(Menu):
     ###########################
 
     def get_links(self):
-        base = self.get_canonical_path()
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
         links = Menu.get_links(self)
-        handler = self.handler
-        get_value = handler.get_record_value
-
-        for record in handler.get_records_in_order():
-            for language in available_languages:
-                html_content = get_value(record, 'html_content',
-                                         language=language)
-                if html_content is None:
-                    continue
-                links.update(_get_links(base, html_content))
-
+        links.update(automatic_table_get_links(self, ['html_content', 'path']))
         return links
 
 

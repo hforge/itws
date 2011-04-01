@@ -36,6 +36,7 @@ from ikaaro.utils import reduce_string
 from ikaaro.views_new import NewInstance
 
 # Import from itws
+from itws.utils import automatic_get_links
 from tags_views import Tag_View, Tag_Edit, Tag_RSS, TagsFolder_TagCloud
 from tags_views import TagsList, TagsFolder_BrowseContent
 
@@ -316,17 +317,7 @@ class TagsAware(object):
         for tag in self.get_property('tags'):
             links.add(str(tags_base.resolve2(tag)))
 
-        # Thumbnail
-        for lang in available_languages:
-            path = self.get_property('thumbnail', lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            base = self.get_canonical_path()
-            links.add(str(base.resolve2(ref.path)))
-
+        links.update(automatic_get_links(self, ['thumbnail']))
         return links
 
 

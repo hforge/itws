@@ -34,7 +34,7 @@ from ikaaro.workflow import state_widget
 # Import from itws
 from base_views import Box_View
 from itws.bar.base import display_title_widget, title_link_schema, BoxAware
-from itws.utils import get_path_and_view
+from itws.utils import automatic_get_links, get_path_and_view
 from itws.views import EasyNewInstance
 from itws.webpage import WebPage
 from itws.widgets.base import advance_rte_widget
@@ -140,13 +140,7 @@ class HTMLContent(BoxAware, WebPage):
     # BoxAware does not implement *_links
     def get_links(self):
         links = WebPage.get_links(self)
-        base = self.get_canonical_path()
-        uri = self.get_property('title_link')
-        if uri:
-            ref = get_reference(uri)
-            if not ref.scheme:
-                path, view = get_path_and_view(ref.path)
-                links.add(str(base.resolve2(path)))
+        links.update(automatic_get_links(self, ['title_link']))
         return links
 
 

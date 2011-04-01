@@ -46,7 +46,7 @@ from ikaaro.views import CompositeForm
 from base import display_title_widget, BoxAware
 from base_views import Box_View
 from itws.datatypes import ImagePathDataType
-from itws.utils import get_path_and_view
+from itws.utils import get_path_and_view, automatic_table_get_links
 from itws.views import AutomaticEditView, EditOnlyLanguageMenu
 from itws.views import TableViewWithoutAddRecordButton
 from menu import MenuSideBarTable_AddRecord
@@ -256,25 +256,7 @@ class DiaporamaTable(OrderedTable):
 
 
     def get_links(self):
-        base = self.get_canonical_path()
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-        handler = self.handler
-        links = set()
-
-        get_value = handler.get_record_value
-        for record in handler.get_records():
-            for lang in available_languages:
-                for key in ('img_path', 'img_link'):
-                    path = get_value(record, key, lang)
-                    if not path:
-                        continue
-                    ref = get_reference(path)
-                    if not ref.scheme:
-                        path, view = get_path_and_view(ref.path)
-                        links.add(str(base.resolve2(path)))
-
-        return links
+        return automatic_table_get_links(self, ['img_path', 'img_link'])
 
 
     def update_links(self, source, target):

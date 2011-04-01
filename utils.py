@@ -21,9 +21,10 @@
 from datetime import datetime, timedelta
 
 # Import from itools
-from itools.core import freeze
+from itools.core import freeze, is_thingy
 from itools.datatypes import Boolean, String, XMLContent
 from itools.gettext import MSG
+from itools.uri import get_reference
 from itools.stl import stl
 from itools.web import get_context, INFO
 
@@ -31,6 +32,7 @@ from itools.web import get_context, INFO
 from ikaaro.autoform import XHTMLBody
 from ikaaro.resource_ import DBResource
 from ikaaro.utils import make_stl_template
+from ikaaro.webpage import _get_links
 from ikaaro.workflow import WorkflowAware
 
 
@@ -259,3 +261,72 @@ class InternalResourcesAware(object):
 
     def get_internal_use_resource_names(self):
         return freeze([])
+
+
+
+############################################################
+# Links
+############################################################
+def automatic_get_links(resource, field_names):
+    links = set()
+    base = resource.get_canonical_path()
+    site_root = resource.get_site_root()
+    available_languages = site_root.get_property('website_languages')
+    schema = resource.class_schema
+    get_value = resource.get_property
+
+    for name in field_names:
+        datatype = schema[name]
+        is_html = is_thingy(datatype, XHTMLBody)
+        languages = [ None ]
+        if getattr(datatype, 'multilingual', False):
+            languages = available_languages
+
+        for lang in languages:
+            values = resource.get_property(name, lang)
+            if values:
+                if getattr(datatype, 'multiple', False) is False:
+                    values = [ values ]
+                for value in values:
+                    if is_html is True:
+                        links.update(_get_links(base, value))
+                    else:
+                        ref = get_reference(value)
+                        if not ref.scheme:
+                            path, view = get_path_and_view(ref.path)
+                            links.add(str(base.resolve2(path)))
+    return links
+
+
+def automatic_table_get_links(resource, field_names):
+    links = set()
+    base = resource.get_canonical_path()
+    site_root = resource.get_site_root()
+    available_languages = site_root.get_property('website_languages')
+    handler = resource.handler
+    schema = handler.record_properties
+    get_value = handler.get_record_value
+    records = list(handler.get_records())
+
+    for name in field_names:
+        datatype = schema[name]
+        is_html = is_thingy(datatype, XHTMLBody)
+        languages = [ None ]
+        if getattr(datatype, 'multilingual', False):
+            languages = available_languages
+
+        for lang in languages:
+            for record in records:
+                values = get_value(record, name, lang)
+                if values:
+                    if getattr(datatype, 'multiple', False) is False:
+                        values = [ values ]
+                    for value in values:
+                        if is_html is True:
+                            links.update(_get_links(base, value))
+                        else:
+                            ref = get_reference(value)
+                            if not ref.scheme:
+                                path, view = get_path_and_view(ref.path)
+                                links.add(str(base.resolve2(path)))
+    return links
