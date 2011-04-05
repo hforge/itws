@@ -105,7 +105,7 @@ class FooterMenu(Menu):
 
     def get_links(self):
         links = Menu.get_links(self)
-        links.update(automatic_table_get_links(self, ['html_content', 'path']))
+        links.update(automatic_table_get_links(self, ['html_content']))
         return links
 
 
