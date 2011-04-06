@@ -168,32 +168,32 @@ class Diaporama_View(Box_View):
         title = resource.get_property('display_title')
         if title:
             title = resource.get_title()
-        namespace = {'title': title, 'first_img': {'link': None}}
+        namespace = {'title': title}
         user = context.user
         banners = []
+        # Use to compute first image namespace
+        first_banner_resource = None
         table = resource.get_resource(resource.order_path)
         handler = table.handler
         get_value = handler.get_record_value
-        for i, record in enumerate(handler.get_records_in_order()):
+
+        for record in handler.get_records_in_order():
             banner_ns = {}
             for key in ('title', 'description', 'target',):
                 banner_ns[key] = get_value(record, key)
             # img path
             img_path = get_value(record, 'img_path')
             img_path_resource = table.get_resource(str(img_path), soft=True)
-            img_path = None
-            if img_path_resource:
-                # ACL
-                ac = img_path_resource.get_access_control()
-                if ac.is_allowed_to_view(user, img_path_resource) is False:
-                    continue
-                img_path = context.get_link(img_path_resource)
-                img_path = '%s/;download' % img_path
-                if i == 0:
-                    width, height = img_path_resource.handler.get_size()
-                    namespace['first_img']['path'] = img_path
-                    for key in ('title', 'description', 'target',):
-                        namespace['first_img'][key] = get_value(record, key)
+            if img_path_resource is None:
+                # Skip broken image
+                continue
+            # ACL
+            ac = img_path_resource.get_access_control()
+            if ac.is_allowed_to_view(user, img_path_resource) is False:
+                continue
+            if first_banner_resource is None:
+                first_banner_resource = img_path_resource
+            img_path = '%s/;download' % context.get_link(img_path_resource)
             banner_ns['img_path'] = img_path
             # img link
             img_link = get_value(record, 'img_link')
@@ -208,12 +208,17 @@ class Diaporama_View(Box_View):
                         img_link = reference
                     else:
                         img_link = context.get_link(item_link_resource)
-                if i == 0:
-                    namespace['first_img']['link'] = img_link
             else:
                 img_link = None
             banner_ns['img_link'] = img_link
             banners.append(banner_ns)
+
+        # Compute first_img namespace
+        first_img = {}
+        if first_banner_resource:
+            first_img = banners[0]
+            width, height = first_banner_resource.handler.get_size()
+        namespace['first_img'] = first_img
         namespace['banners'] = banners
         namespace['width'] = width
         namespace['height'] = height

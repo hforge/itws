@@ -44,11 +44,13 @@
     });
     // Navigation
     $('.slider-itws-nav').hide();
-    slider.hover(function() {
-      $('.slider-itws-nav').show();
-    }, function(){
-      $('.slider-itws-nav').hide();
-    });
+    if (vars.images.length > 1) {
+      slider.hover(function() {
+        $('.slider-itws-nav').show();
+      }, function(){
+        $('.slider-itws-nav').hide();
+      });
+    }
     // Run
     if (vars.images.length > 1) {
         vars.timer = setInterval(function() { run(slider); }, 3000);
