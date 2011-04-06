@@ -202,8 +202,8 @@ class Diaporama_View(Box_View):
                 if reference.scheme:
                     img_link = reference
                 else:
-                    item_link_resource = resource.get_resource(reference.path,
-                                                               soft=True)
+                    item_link_resource = table.get_resource(reference.path,
+                                                            soft=True)
                     if not item_link_resource:
                         img_link = reference
                     else:
