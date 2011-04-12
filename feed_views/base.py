@@ -144,6 +144,12 @@ class Feed_View(Folder_BrowseContent):
         else:
             query = PhraseQuery('parent_path', str(container_abspath))
 
+        # Exclude '/theme/'
+        if isinstance(resource, WebSite):
+            theme_path = container_abspath.resolve_name('theme')
+            theme = get_base_path_query(str(theme_path), True)
+            query = AndQuery(query, NotQuery(theme))
+
         if self.ignore_internal_resources:
             query = AndQuery(query, PhraseQuery('is_content', True))
 
