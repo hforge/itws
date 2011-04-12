@@ -34,7 +34,7 @@ class WSDataFolder(Folder):
     class_id = 'neutral-ws-data'
     class_version = '20101012'
     class_title = MSG(u'Website data folder')
-    class_views = ['commit_log']
+    class_views = ['browse_content', 'preview_content', 'commit_log']
     class_schema = Folder.class_schema
 
     # Hide in browse_content

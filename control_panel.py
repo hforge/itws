@@ -128,6 +128,17 @@ class CPEditRobotsTXT(GoToSpecificDocument):
 
 
 
+class CPManageHomePageMedia(GoToSpecificDocument):
+
+    access = 'is_allowed_to_edit'
+    title = MSG(u'Home page')
+    itws_icon = 'home.png'
+    description = MSG(u'Manage home page content')
+    specific_document = 'ws-data'
+    specific_view = 'browse_content'
+
+
+
 class CPDBResource_CommitLog(DBResource_CommitLog):
 
     description = MSG(u'See last modifications')
