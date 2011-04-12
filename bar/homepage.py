@@ -22,6 +22,7 @@ from itools.gettext import MSG
 # Import from ikaaro
 from ikaaro.file import File
 from ikaaro.folder import Folder
+from ikaaro.folder_views import Folder_BrowseContent, Folder_PreviewContent
 
 # Import from itws
 from bar_aware import ContentBarAware, SideBarAware
@@ -42,6 +43,9 @@ class WSDataFolder(Folder):
 
     __fixed_handlers__ = [SideBarAware.sidebar_name,
                           ContentBarAware.contentbar_name]
+
+    browse_content = Folder_BrowseContent(access='is_allowed_to_edit')
+    preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
 
 
     def get_document_types(self):
