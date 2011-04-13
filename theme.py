@@ -113,6 +113,8 @@ class Theme(BaseTheme):
         else:
             banner_title = website.get_title()
         self.set_property('banner_title', banner_title, language=language)
+        # Drop logo property since itws uses banner_path property
+        self.del_property('logo')
         # CSS file
         # TODO Add an API in ikaaro that allow to easily change CSS...
         path = get_abspath('ui/themes/style.css')
