@@ -148,15 +148,19 @@ class BoxFeed_View(Box_View, Details_View):
         user = context.user
         items = results.get_documents(sort_by=resource.get_property('sort_by'),
                                       reverse=resource.get_property('reverse'),
-                                      start=0,
-                                      size=resource.get_property('count'))
+                                      start=0)
         # Access Control (FIXME this should be done before batch)
         allowed_items = []
+        nb_allowed = 0
+        count = resource.get_property('count')
         for item in items:
             resource = root.get_resource(item.abspath)
             ac = resource.get_access_control()
             if ac.is_allowed_to_view(user, resource):
                 allowed_items.append((item, resource))
+                nb_allowed += 1
+                if nb_allowed == count:
+                    break
 
         # FIXME BoxView API
         allowed_to_edit = self.is_admin(resource, context)
