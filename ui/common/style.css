@@ -201,43 +201,6 @@ body.readonly {
 /**************************************************************************
  * Bar items
  * ***********************************************************************/
-.contentbar-box-section-news .item {
-  border-bottom: 1px dotted #999;
-  padding-bottom: 10px;
-  padding-top: 10px;
-}
-
-.contentbar-box-section-news .item .pub-datetime {
-  float: left;
-  padding-right: 8px;
-  font-family: Tahoma,sans-serif;
-  font-style: italic;
-}
-
-.contentbar-box-section-news .item .tag {
-  float: left;
-}
-
-.contentbar-box-section-news .item h3.title {
-  clear: both;
-  border: none;
-  margin-right: 0;
-}
-
-.contentbar-box-section-news .item h3.title a {
-  text-decoration: none;
-}
-
-.contentbar-box-section-news .item .image-link {
-  float: left;
-  padding: 0 5px 5px 0;
-}
-
-.contentbar-box-section-news .item .more {
-  float: right;
-  margin-top: 10px;
-}
-
 /* feed box */
 .feed-view.feed-box.v1 .item,
 .feed-view.feed-box.v2 .item,
