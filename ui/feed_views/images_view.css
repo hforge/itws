@@ -16,4 +16,10 @@
 .thumbnail a span {
   font-size: 0.8em;
   display: block;
+  height: 12px;
+  margin: auto;
+}
+
+.thumbnail.thumb-128x128 span {
+  width: 128px;
 }
