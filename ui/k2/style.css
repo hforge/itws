@@ -358,15 +358,6 @@ fieldset legend{
   width: 248px; /* 270 - 1 (border-left) - 10 (padding-left) - 1 (border-right) - 10 (padding-right) */
 }
 
-#contentbar .sidebar-box {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  border-radius: 0;
-
-  border: 0;
-  width: auto;
-}
-
 .sidebar-box h3.title {
   border-bottom: 1px solid #bbb;
   color: #000;
