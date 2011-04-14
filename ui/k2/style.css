@@ -433,43 +433,43 @@ fieldset legend{
 /**************************************************************************
  * NEWS FOLDER
  * ***********************************************************************/
-#page.news-folder-view {
+.feed-view.news-folder-view {
 }
 
-#page.news-folder-view .item {
+.feed-view.news-folder-view .item {
   border-bottom: 1px dotted #999;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
-#page.news-folder-view .item .pub-datetime {
+.feed-view.news-folder-view .item .pub-datetime {
   float: left;
   padding-right: 8px;
   font-family: Tahoma, sans-serif;
   font-style: italic;
 }
 
-#page.news-folder-view .item .tag {
+.feed-view.news-folder-view .item .tag {
   float: left;
 }
 
-#page.news-folder-view .item h3.title {
+.feed-view.news-folder-view .item h3.title {
   clear: both;
   border: none;
   margin-right: 0;
   margin-top: 0; /* IE7 fix */
 }
 
-#page.news-folder-view .item h3.title a {
+.feed-view.news-folder-view .item h3.title a {
   text-decoration: none;
 }
 
-#page.news-folder-view .item .image-link {
+.feed-view.news-folder-view .item .image-link {
   float: left;
   padding: 0 5px 5px 0;
 }
 
-#page.news-folder-view .item .more {
+.feed-view.news-folder-view .item .more {
   float: right;
   margin-top: 10px;
 }
