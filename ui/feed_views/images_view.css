@@ -14,10 +14,11 @@
 }
 
 .thumbnail a span {
-  font-size: 0.8em;
   display: block;
+  font-size: 0.8em;
   height: 12px;
   margin: auto;
+  overflow: auto;
 }
 
 .thumbnail.thumb-128x128 span {
