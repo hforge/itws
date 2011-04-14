@@ -513,10 +513,6 @@ fieldset legend{
 /**************************************************************************
  * RSSFEEDS
  * ***********************************************************************/
-#page.rssfeeds-view #contentbar {
-  width: 930px;
-}
-
 #rss-body .rss-article {
   width: 640px;
   overflow-x: hidden;
@@ -545,23 +541,6 @@ fieldset legend{
   background: url("/ui/common/images/opml_logo.png") no-repeat scroll left 50% transparent;
   height: 23px;
   padding: 3px 0 3px 19px;
-}
-
-/* Do not force contentbar width for specific views */
-#page.tracker-view #contentbar,
-#page.tracker-add-issue #contentbar,
-#page.issue-edit #contentbar,
-#page.wikipage-edit #contentbar,
-#page.news-edit #contentbar,
-#page.repository-browse-content #contentbar,
-#page.text-slash-css-edit #contentbar {
-  min-width: 640px;
-  width: auto;
-}
-
-/* Do not hide sidebar on wiki view, just add overflow:hidden to pre */
-#page.wikipage-view #contentbar .literal-block {
-  overflow: auto;
 }
 
 /**************************************************************************
@@ -654,4 +633,22 @@ body.popup p.tabme a.selected {
 .details-view .item .more {
   float: right;
   margin-top: 10px;
+}
+
+
+/* Do not force contentbar width for specific views */
+#page.tracker-view #contentbar,
+#page.tracker-add-issue #contentbar,
+#page.issue-edit #contentbar,
+#page.wikipage-edit #contentbar,
+#page.news-edit #contentbar,
+#page.repository-browse-content #contentbar,
+#page.text-slash-css-edit #contentbar {
+  min-width: 640px;
+  width: auto;
+}
+
+/* Do not hide sidebar on wiki view, just add overflow:hidden to pre */
+#page.wikipage-view #contentbar .literal-block {
+  overflow: auto;
 }
