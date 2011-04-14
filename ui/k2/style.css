@@ -425,29 +425,6 @@ fieldset legend{
   float: right;
 }
 
-/* section siblings */
-.box-news-siblings-toc .newsitem.active {
-  border-left: 5px solid #bbb;
-  padding-left: 5px;
-}
-
-/* news sibings toc */
-.box-news-siblings-toc .newsitem {
-  margin-bottom: 8px;
-}
-
-.box-news-siblings-toc .newsitem-date {
-  text-align: right;
-}
-
-.box-news-siblings-toc .newsitem-title p {
-  margin: 0;
-}
-
-.box-news-siblings-toc .newsitem-title a {
-  text-decoration: none;
-}
-
 /* tree */
 .box-section-children-toc .admin-link {
   float: right;

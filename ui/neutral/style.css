@@ -331,11 +331,6 @@ body {
   margin-bottom:10px;
 }
 
-.box-news-siblings-toc .newsitem {
-  margin-bottom: 10px;
-  border-bottom: 1px dotted;
-}
-
 /* section news */
 .box-feed .item {
   border-bottom: 1px dotted;

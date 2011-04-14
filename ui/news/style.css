@@ -10,13 +10,6 @@
   width: 100%;
 }
 
-.box-news-siblings-toc .newsitems-more {
-  text-align: right;
-}
-.box-news-siblings-toc .newsitems-more a {
-  text-decoration: none;
-}
-
 /* News folder view */
 .news-folder-view #td-contentbar .item {
   border-bottom: 1px solid #000;
