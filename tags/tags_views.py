@@ -24,7 +24,7 @@ from random import shuffle
 
 # Import from itools
 from itools.core import freeze
-from itools.datatypes import PathDataType, Date, String
+from itools.datatypes import Date, String
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -33,6 +33,7 @@ from itools.web import get_context, STLView
 from itools.database import AndQuery, PhraseQuery
 
 # Import from ikaaro
+from ikaaro.datatypes import RReference
 from ikaaro.file_views import File_Edit
 from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.autoform import DateWidget, TextWidget, ImageSelectorWidget
@@ -235,7 +236,7 @@ class TagsAware_Edit(object):
             'tags': TagsList(multiple=True, states=[]),
             'pub_date': Date(mandatory=pdm),
             'pub_time': TimeWithoutSecond(mandatory=pdm),
-            'thumbnail': PathDataType(multilingual=True)})
+            'thumbnail': RReference(multilingual=True)})
 
 
     def _get_widgets(self, resource, context):
