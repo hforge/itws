@@ -22,8 +22,7 @@ from ikaaro.cc import SubscribeForm
 from ikaaro.file import File, Image
 from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_BrowseContent, Folder_NewResource
-from ikaaro.folder_views import Folder_Rename
+from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 from ikaaro.menu import Menu_View
 from ikaaro.registry import resources_registry
 from ikaaro.resource_views import DBResource_Edit
@@ -40,6 +39,7 @@ from itws.control_panel import CPExternalEdit, CPDBResource_Links
 from itws.control_panel import ITWS_ControlPanel
 from popup import ITWS_DBResource_AddImage, ITWS_DBResource_AddLink
 from popup import ITWS_DBResource_AddMedia
+from views import Folder_NewResource
 from ws_neutral import NeutralWS
 
 
