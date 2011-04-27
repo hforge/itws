@@ -70,6 +70,47 @@ from edit_area import EditArea_Edit_View
 # NewInstance
 ############################################################
 
+class ImproveAutoForm(AutoForm):
+
+    template = '/ui/common/improve_auto_form.xml'
+    actions = [Button(access='is_allowed_to_edit',
+                      name='', title=MSG(u'Save'))]
+
+
+    def get_actions(self, resource, context):
+        return self.actions
+
+
+    def _get_action_namespace(self, resource, context):
+        # (1) Actions (submit buttons)
+        actions = []
+        for button in self.get_actions(resource, context):
+            #if button.show(resource, context, []) is False:
+            #    continue
+            if button.confirm:
+                confirm = button.confirm.gettext().encode('utf_8')
+                onclick = 'return confirm("%s");' % confirm
+            else:
+                onclick = None
+            actions.append(
+                {'value': button.name,
+                 'title': button.title,
+                 'class': button.css,
+                 'onclick': onclick})
+
+        return actions
+
+
+    def get_namespace(self, resource, context):
+        proxy = super(ImproveAutoForm, self)
+        namespace = proxy.get_namespace(resource, context)
+        # actions namespace
+        namespace['actions'] = self._get_action_namespace(resource, context)
+
+        return namespace
+
+
+
 class EasyNewInstance(NewInstance):
     """ ikaaro.views_new.NewInstance without field name.
     """
