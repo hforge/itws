@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Boolean, DateTime, String, Unicode
+from itools.datatypes import Boolean, DateTime, String, Unicode, URI
 from itools.gettext import MSG
 from itools.uri import Path, encode_query, get_reference
 from itools.web import get_context
@@ -26,7 +26,6 @@ from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
 
 # Import from ikaaro
 from ikaaro.control_panel import ControlPanel
-from ikaaro.datatypes import RReference
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
@@ -191,8 +190,8 @@ class TagsAware(object):
                              stored=True),
             'pub_datetime': DateTime(source='metadata', indexed=True,
                                      stored=True),
-            'thumbnail': RReference(source='metadata', multilingual=True,
-                                    parameters_schema={'lang': String}),
+            'thumbnail': URI(source='metadata', multilingual=True,
+                             parameters_schema={'lang': String}),
             # Catalog
             'is_tagsaware': Boolean(indexed=True, stored=True),
             'preview_content': Unicode(stored=True, indexed=True),

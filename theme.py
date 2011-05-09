@@ -19,14 +19,14 @@
 # Import from itools
 from itools.core import freeze, get_abspath, merge_dicts
 from itools.csv import Property
-from itools.datatypes import String
+from itools.datatypes import String, URI
 from itools.gettext import MSG
 from itools.handlers import ro_database, File as FileHandler
 
 # Import from ikaaro
 from ikaaro.autoform import ImageSelectorWidget, MultilineWidget
 from ikaaro.autoform import SelectWidget, TextWidget
-from ikaaro.datatypes import Multilingual, RReference
+from ikaaro.datatypes import Multilingual
 from ikaaro.file import Image
 from ikaaro.folder_views import Folder_BrowseContent, GoToSpecificDocument
 from ikaaro.registry import register_resource_class
@@ -52,8 +52,8 @@ class Theme_Edit(BaseTheme_Edit):
             BaseTheme_Edit._get_schema(self, resource, context),
             custom_data=String,
             banner_title=Multilingual,
-            banner_path=RReference(multilingual=True,
-                                   parameters_schema={'lang': String}),
+            banner_path=URI(multilingual=True,
+                            parameters_schema={'lang': String}),
             class_skin=NeutralClassSkin(mandatory=True)))
 
 
@@ -82,8 +82,8 @@ class Theme(BaseTheme):
     class_schema = merge_dicts(BaseTheme.class_schema,
          custom_data=String(source='metadata', default=''),
          banner_title=Multilingual(source='metadata', default=''),
-         banner_path=RReference(source='metadata', multilingual=True,
-                                parameters_schema={'lang': String}),
+         banner_path=URI(source='metadata', multilingual=True,
+                         parameters_schema={'lang': String}),
          class_skin=NeutralClassSkin(source='metadata', default='/ui/k2'))
 
     class_views = ['edit', 'edit_css', 'edit_menu', 'edit_footer',
