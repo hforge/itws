@@ -10,7 +10,7 @@
       stl:if="item/is_image">
       <img stl:if="not thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"
            title="${item/title}"/>
-      <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;strict=1"
+      <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;fit=1"
            width="${thumb_width}" height="${thumb_height}" title="${item/title}"/>
       <span stl:if="display_thumb_title">${item/title}</span>
     </a>
@@ -18,7 +18,7 @@
       stl:if="not item/is_image">
       <img stl:if="not thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}"
            title="${item/title}"/>
-      <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;strict=1"
+      <img stl:if="thumb_strict" src="${item/image}/;thumb?width=${thumb_width}&amp;height=${thumb_height}&amp;fit=1"
            width="${thumb_width}" height="${thumb_height}" title="${item/title}"/>
       <span stl:if="display_thumb_title">${item/title}</span>
     </a>
