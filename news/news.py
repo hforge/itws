@@ -97,7 +97,7 @@ class NewsItem(WebPage):
     # Links API
     ##########################################################################
     def get_links(self):
-        links = WebPage.get_links(self)
+        links = super(NewsItem, self).get_links()
 
         base = self.get_canonical_path()
         site_root = self.get_site_root()
@@ -116,7 +116,7 @@ class NewsItem(WebPage):
 
 
     def update_links(self, source, target):
-        WebPage.update_links(self, source, target)
+        super(NewsItem, self).update_links(source, target)
 
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
@@ -148,7 +148,7 @@ class NewsItem(WebPage):
 
 
     def update_relative_links(self, source):
-        WebPage.update_relative_links(self, source)
+        super(NewsItem, self).update_relative_links(source)
 
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
