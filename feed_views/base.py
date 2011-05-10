@@ -323,7 +323,6 @@ class Feed_View(Folder_BrowseContent):
             return None
 
         namespace = {}
-        query_suffix = self._get_query_suffix()
         batch_start = self._get_query_value(resource, context, 'batch_start')
         uri = context.uri
 
@@ -427,7 +426,6 @@ class Feed_View(Folder_BrowseContent):
     # Table
     def get_table_head(self, resource, context, items, actions=None):
         # Get from the query
-        query = context.query
         sort_by = self._get_query_value(resource, context, 'sort_by')
         reverse = self._get_query_value(resource, context, 'reverse')
 

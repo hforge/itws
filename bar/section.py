@@ -128,7 +128,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
         ResourcesOrderedContainer.init_resource(self, **kw)
 
         # Preorder items
-        if kw.get('add_boxes', True) is True:
+        if add_boxes:
             site_root = self.get_site_root()
             language = site_root.get_property('website_languages')[0]
 
