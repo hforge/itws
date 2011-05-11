@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Boolean, DateTime, PathDataType, String, Unicode
+from itools.datatypes import Boolean, DateTime, String, Unicode, URI
 from itools.gettext import MSG
 from itools.uri import Path, encode_query, get_reference
 from itools.web import get_context
@@ -190,8 +190,8 @@ class TagsAware(object):
                              stored=True),
             'pub_datetime': DateTime(source='metadata', indexed=True,
                                      stored=True),
-            'thumbnail': PathDataType(source='metadata', multilingual=True,
-                                      parameters_schema={'lang': String}),
+            'thumbnail': URI(source='metadata', multilingual=True,
+                             parameters_schema={'lang': String}),
             # Catalog
             'is_tagsaware': Boolean(indexed=True, stored=True),
             'preview_content': Unicode(stored=True, indexed=True),
@@ -308,7 +308,6 @@ class TagsAware(object):
     ##########################################################################
     def get_links(self):
         site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
         tags_base = site_root.get_abspath().resolve2('tags')
         links = set()
 
@@ -316,24 +315,12 @@ class TagsAware(object):
         for tag in self.get_property('tags'):
             links.add(str(tags_base.resolve2(tag)))
 
-        # Thumbnail
-        for lang in available_languages:
-            path = self.get_property('thumbnail', lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            base = self.get_canonical_path()
-            links.add(str(base.resolve2(ref.path)))
-
         return links
 
 
     def update_links(self, source, target):
         source = Path(source)
         site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
 
         # Tags
         tags_base = site_root.get_abspath().resolve2('tags')
@@ -348,50 +335,9 @@ class TagsAware(object):
                     tags[index] = target_name
                     self.set_property('tags', tags)
 
-        # Thumbnail
-        base = self.get_canonical_path()
-        resources_new2old = get_context().database.resources_new2old
-        base = str(base)
-        old_base = resources_new2old.get(base, base)
-        old_base = Path(old_base)
-        new_base = Path(base)
-
-        for lang in available_languages:
-            path = self.get_property('thumbnail', lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            path = old_base.resolve2(path)
-            if path == source:
-                # Hit
-                self.set_property('thumbnail', new_base.get_pathto(target),
-                                  lang)
-
         get_context().database.change_resource(self)
 
 
     def update_relative_links(self, source):
-        site_root = self.get_site_root()
-        available_languages = site_root.get_property('website_languages')
-        target = self.get_canonical_path()
-        resources_old2new = get_context().database.resources_old2new
-
         # Tags: do nothing
-
-        # Thumbnail
-        for lang in available_languages:
-            path = self.get_property('thumbnail', lang)
-            if not path:
-                continue
-            ref = get_reference(path)
-            if ref.scheme:
-                continue
-            # Calcul the old absolute path
-            old_abs_path = source.resolve2(ref.path)
-            # Check if the target path has not been moved
-            new_abs_path = resources_old2new.get(old_abs_path,
-                                                 old_abs_path)
-            self.set_property('thumbnail', target.get_pathto(new_abs_path),
-                              lang)
+        pass

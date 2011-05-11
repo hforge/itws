@@ -107,7 +107,7 @@ class FooterMenu(Menu):
         base = self.get_canonical_path()
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
-        links = Menu.get_links(self)
+        links = super(FooterMenu, self).get_links()
         handler = self.handler
         get_value = handler.get_record_value
 
@@ -123,6 +123,8 @@ class FooterMenu(Menu):
 
 
     def update_links(self,  source, target):
+        super(FooterMenu, self).update_links(source, target)
+
         base = self.get_canonical_path()
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
@@ -150,6 +152,8 @@ class FooterMenu(Menu):
 
 
     def update_relative_links(self, source):
+        super(FooterMenu, self).update_relative_links(source)
+
         target = self.get_canonical_path()
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')

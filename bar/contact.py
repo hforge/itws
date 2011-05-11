@@ -103,7 +103,7 @@ class BoxContact_View(ContactForm):
 
     def action(self, resource, context, form):
         site_root = context.resource.get_site_root()
-        ret = ContactForm.action(self, site_root, context, form)
+        ContactForm.action(self, site_root, context, form)
         # Hook goto
         parent_view_container = self._get_parent_view_container(resource)
         goto = context.get_link(parent_view_container)

@@ -112,7 +112,7 @@ class TurningFooterTable(OrderedTable):
     # Links API
     ##########################
     def get_links(self):
-        links = OrderedTable.get_links(self)
+        links = super(TurningFooterTable, self).get_links()
         base = self.get_canonical_path()
         # languages
         site_root = self.get_site_root()
@@ -133,7 +133,8 @@ class TurningFooterTable(OrderedTable):
 
 
     def update_links(self, source, target):
-        OrderedTable.update_links(self, source, target)
+        super(TurningFooterTable, self).update_links(source, target)
+
         base = self.get_canonical_path()
         resources_new2old = get_context().database.resources_new2old
         base = str(base)
@@ -164,6 +165,8 @@ class TurningFooterTable(OrderedTable):
 
 
     def update_relative_links(self, source):
+        super(TurningFooterTable, self).update_relative_links(source)
+
         target = self.get_canonical_path()
         # languages
         site_root = self.get_site_root()

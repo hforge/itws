@@ -265,7 +265,7 @@ class DiaporamaTable(OrderedTable):
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
         handler = self.handler
-        links = set()
+        links = super(DiaporamaTable, self).get_links()
 
         get_value = handler.get_record_value
         for record in handler.get_records():
@@ -283,6 +283,8 @@ class DiaporamaTable(OrderedTable):
 
 
     def update_links(self, source, target):
+        super(DiaporamaTable, self).update_links(source, target)
+
         # Caution multilingual property
         base = self.get_canonical_path()
         resources_new2old = get_context().database.resources_new2old
@@ -323,6 +325,8 @@ class DiaporamaTable(OrderedTable):
 
 
     def update_relative_links(self, source):
+        super(DiaporamaTable, self).update_relative_links(source)
+
         site_root = self.get_site_root()
         available_languages = site_root.get_property('website_languages')
         target = self.get_canonical_path()

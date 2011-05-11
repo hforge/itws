@@ -260,7 +260,6 @@ class BoxFeed(Box):
 
 
     def get_links(self):
-        base = self.get_canonical_path()
         links = super(BoxFeed, self).get_links()
         container_path = self.get_property('container_path')
         if container_path:
@@ -312,7 +311,6 @@ class BoxFeed(Box):
                 site_root = self.get_site_root()
                 site_root_abspath = site_root.abspath
 
-                target = self.get_canonical_path()
                 resources_old2new = get_context().database.resources_old2new
                 # Calcul the old absolute path
                 # Path is relative to site_root

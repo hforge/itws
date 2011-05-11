@@ -24,7 +24,7 @@ from random import shuffle
 
 # Import from itools
 from itools.core import freeze
-from itools.datatypes import PathDataType, Date, String
+from itools.datatypes import Date, String, URI
 from itools.gettext import MSG
 from itools.html import stream_to_str_as_xhtml
 from itools.stl import set_prefix
@@ -235,7 +235,7 @@ class TagsAware_Edit(object):
             'tags': TagsList(multiple=True, states=[]),
             'pub_date': Date(mandatory=pdm),
             'pub_time': TimeWithoutSecond(mandatory=pdm),
-            'thumbnail': PathDataType(multilingual=True)})
+            'thumbnail': URI(multilingual=True)})
 
 
     def _get_widgets(self, resource, context):
