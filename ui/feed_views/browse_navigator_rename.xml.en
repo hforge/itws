@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <form action=";manage_content_rename" method="post">
+    <table style="margin-left: 20px; font-family: monospace;">
+      <tr stl:repeat="item items">
+        <td>
+          <input type="hidden" name="paths" value="${item/path}" />
+          ${item/path}
+        </td>
+        <td>
+          &rArr; ${item/parent_path}<input type="text" name="new_names"
+          value="${item/name}" style="font-family: monospace;"/>
+        </td>
+      </tr>
+    </table>
+    <p><button type="submit" class="button-rename">Rename</button></p>
+  </form>
+
+</stl:block>

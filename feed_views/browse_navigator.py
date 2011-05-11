@@ -21,10 +21,20 @@ from itools.web import INFO
 
 # Import from ikaaro
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_BrowseContent
+from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 
 # Import from itws
 from base import Feed_View
+
+
+
+class Browse_Navigator_Rename(Folder_Rename):
+
+    # XXX Modify form action
+    template = '/ui/feed_views/browse_navigator_rename.xml'
+
+    is_popup = True
+    goto_after = ';manage_content'
 
 
 
@@ -107,3 +117,12 @@ class Browse_Navigator(Feed_View):
                                 'title': title})
             return INFO(self.actions_template, format='stl', actions=actions)
         return Feed_View.get_item_value(self, resource, context, item, column)
+
+
+    def action_rename(self, resource, context, form):
+        proxy = super(Browse_Navigator, self)
+        ret = proxy.action_rename(resource, context, form)
+        # Tweak view
+        path = ret.path
+        path[-1] = ';manage_content_rename'
+        return ret

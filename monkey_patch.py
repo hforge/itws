@@ -22,7 +22,7 @@ from ikaaro.cc import SubscribeForm
 from ikaaro.file import File, Image
 from ikaaro.file_views import File_ExternalEdit_View
 from ikaaro.folder import Folder
-from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
+from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.menu import Menu_View
 from ikaaro.registry import resources_registry
 from ikaaro.resource_views import DBResource_Edit
@@ -33,7 +33,7 @@ from ikaaro.tracker import Tracker
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from feed_views import Browse_Navigator
+from feed_views import Browse_Navigator, Browse_Navigator_Rename
 from itws.control_panel import CPDBResource_Backlinks, CPDBResource_CommitLog
 from itws.control_panel import CPExternalEdit, CPDBResource_Links
 from itws.control_panel import ITWS_ControlPanel
@@ -110,7 +110,7 @@ CSS.is_content = False
 for cls in resources_registry.values():
     if issubclass(cls, Folder):
         cls.manage_content = Browse_Navigator()
-        cls.rename = Folder_Rename(is_popup=True, goto_after=';manage_content')
+        cls.manage_content_rename = Browse_Navigator_Rename()
     cls.add_image = ITWS_DBResource_AddImage()
     cls.add_link = ITWS_DBResource_AddLink()
     cls.add_media = ITWS_DBResource_AddMedia()
