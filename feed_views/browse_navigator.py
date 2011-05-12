@@ -16,16 +16,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.datatypes import Unicode
 from itools.gettext import MSG
 from itools.web import INFO
 
 # Import from ikaaro
+from ikaaro.autoform import SelectWidget, TextWidget
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent, Folder_Rename
 
 # Import from itws
 from base import Feed_View
-
+from itws.enumerates import SearchTypes_Enumerate
 
 
 class Browse_Navigator_Rename(Folder_Rename):
@@ -41,7 +43,6 @@ class Browse_Navigator_Rename(Folder_Rename):
 class Browse_Navigator(Feed_View):
 
     access = 'is_allowed_to_edit'
-    search_template = None
     batch_size = 25
     sort_by = 'mtime'
     reverse = True
@@ -49,8 +50,13 @@ class Browse_Navigator(Feed_View):
     title = MSG(u'Navigator')
 
     template = '/ui/feed_views/base_feed_view_div.xml'
-    search_template = '/ui/folder/browse_search.xml'
+    #search_template = '/ui/folder/browse_search.xml'
     content_template = '/ui/feed_views/browse_navigator.xml'
+
+    search_schema = {'text': Unicode,
+                     'format': SearchTypes_Enumerate}
+    search_widgets = [TextWidget('text', title=MSG(u'Text')),
+                      SelectWidget('format', title=MSG(u'Format'))]
 
     search_on_current_folder = True
     ignore_internal_resources = True

@@ -147,11 +147,6 @@ class ITWS_AddBase_BrowseContent(Feed_View, AddBase_BrowseContent):
         return AddBase_BrowseContent.get_items(self, target, context, *args)
 
 
-    def get_search_types(self, resource, context):
-        target = self._get_target(resource, context)
-        return Feed_View.get_search_types(self, target, context)
-
-
     def get_table_namespace(self, resource, context, items):
         return itws_get_table_namespace(self, resource, context, items)
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <form method="GET">
+    <fieldset>
+      <legend>${title}</legend>
+      <p stl:if="description">${description}</p>
+      <stl:block stl:repeat="widget widgets">
+        <div class="block-widget-${widget/name}">
+          <stl:block stl:if="widget/title">
+            <label class="title" for="${widget/name}">${widget/title}</label>
+            <span stl:if="widget/mandatory" class="field-is-missing"
+              title="This field is required">*</span>
+            <span stl:if="widget/tip" title="${widget/tip}">(?)</span>
+            <br/>
+          </stl:block>
+          <p class="widget">${widget/widget}</p>
+        </div>
+        <div stl:if="widget/endline" class="clear" />
+      </stl:block>
+      <p stl:if="actions">
+        <stl:block stl:repeat="action actions">${action}</stl:block>
+      </p>
+    </fieldset>
+    <script type="text/javascript">
+      document.getElementById("${first_widget}").focus();
+    </script>
+  </form>
+
+</stl:block>

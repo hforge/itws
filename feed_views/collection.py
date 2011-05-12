@@ -18,10 +18,15 @@
 
 # Import from itools
 from itools.database import PhraseQuery
+from itools.datatypes import Unicode
 from itools.gettext import MSG
+
+# Import from ikaaro
+from ikaaro.autoform import TextWidget, SelectWidget
 
 # Import from itws
 from base import Feed_View
+from itws.enumerates import SearchTypes_Enumerate
 
 
 
@@ -56,6 +61,11 @@ class Search_View(Feed_View):
 
     styles = ['/ui/feed_views/search_view.css']
     content_template = '/ui/feed_views/search_view.xml'
+
+    search_schema = {'text': Unicode,
+                     'format': SearchTypes_Enumerate}
+    search_widgets = [TextWidget('text', title=MSG(u'Text')),
+                      SelectWidget('format', title=MSG(u'Format'))]
 
     ignore_internal_resources = True
     search_on_current_folder = False

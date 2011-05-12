@@ -21,8 +21,8 @@
 from datetime import datetime, timedelta
 
 # Import from itools
-from itools.core import freeze
-from itools.datatypes import Boolean, String, XMLContent
+from itools.core import freeze, thingy
+from itools.datatypes import Boolean, Enumerate, String, XMLContent
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import get_context, INFO
@@ -190,6 +190,53 @@ def get_linked_resources_message(resource, context, state='public'):
     message = XHTMLBody.decode(message)
     # Return custom message
     return message
+
+
+############################################################
+# Autoform
+############################################################
+
+
+class ITWS_Autoform(thingy):
+
+    title = MSG(u'Form')
+    schema = {}
+    widgets = []
+    actions = []
+    get_value_method = None
+    description = None
+
+    def render(self, context):
+        namespace = {'title': self.title,
+                     'action': '.',
+                     'description': self.description,
+                     'actions': self.actions,
+                     'has_required_widget': False,
+                     'widgets': []}
+        for widget in self.widgets:
+            value = self.get_value_method(widget.name)
+            datatype = self.schema[widget.name]
+            if issubclass(datatype, Enumerate):
+                value = datatype.get_namespace(value)
+            elif datatype.multiple:
+                value = value[0]
+            widget.datatype = datatype
+            widget.value = value
+            namespace['widgets'].append(
+                {'name': widget.name,
+                 'title': widget.title,
+                 'multiple': getattr(datatype, 'multiple', False),
+                 'tip': getattr(widget, 'tip', None),
+                 'mandatory': getattr(datatype, 'mandatory', False),
+                 'endline': getattr(widget, 'endline', None),
+                 'class': None,
+                 'suffix': widget.suffix,
+                 'widget': widget})
+        if namespace['widgets']:
+            namespace['first_widget'] = namespace['widgets'][0]['name']
+        template = context.resource.get_resource('/ui/common/itws_autoform.xml')
+        return stl(template, namespace)
+
 
 
 ############################################################
