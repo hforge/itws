@@ -22,6 +22,7 @@ from itools.database import AndQuery, NotQuery, PhraseQuery
 from itools.database import OrQuery, TextQuery
 from itools.datatypes import Integer, String, Boolean
 from itools.gettext import MSG
+from itools.web import FormError
 
 # Import from ikaaro
 from ikaaro.buttons import Button
@@ -108,6 +109,20 @@ class Feed_View(Folder_BrowseContent):
     ###############################################
     ## Build query and get items
     ###############################################
+    def on_query_error(self, resource, context):
+        # XXX Should be donne in ikaaro
+        context.message = context.query_error.get_message()
+        # Keep max of query
+        query = {}
+        for name, datatype in self.get_query_schema().items():
+            try:
+                query[name] = context.get_query_value(name, type=datatype)
+            except FormError:
+                query[name] = datatype.get_default()
+        context.query = query
+        return self.GET
+
+
     def get_search_query(self, resource, context):
         queries = []
         form = context.query
@@ -230,7 +245,7 @@ class Feed_View(Folder_BrowseContent):
         form = ITWS_Autoform(
             title=MSG(u'Search'),
             schema=self.search_schema,
-            get_value_method=context.query.get,
+            get_value_method=context.get_query_value,
             widgets=self.search_widgets,
             actions=[search_button])
         return {'body': form.render(context)}

@@ -25,7 +25,7 @@ from itools.core import freeze, thingy
 from itools.datatypes import Boolean, Enumerate, String, XMLContent
 from itools.gettext import MSG
 from itools.stl import stl
-from itools.web import get_context, INFO
+from itools.web import get_context, INFO, FormError
 
 # Import from ikaaro
 from ikaaro.autoform import XHTMLBody
@@ -214,8 +214,14 @@ class ITWS_Autoform(thingy):
                      'has_required_widget': False,
                      'widgets': []}
         for widget in self.widgets:
-            value = self.get_value_method(widget.name)
             datatype = self.schema[widget.name]
+            try:
+                value = self.get_value_method(widget.name, type=datatype)
+            except FormError:
+                value = self.get_value_method(widget.name)
+                error = MSG(u'Invalid value.')
+            else:
+                error = None
             if issubclass(datatype, Enumerate):
                 value = datatype.get_namespace(value)
             elif datatype.multiple:
@@ -231,6 +237,7 @@ class ITWS_Autoform(thingy):
                  'endline': getattr(widget, 'endline', None),
                  'class': None,
                  'suffix': widget.suffix,
+                 'error': error,
                  'widget': widget})
         if namespace['widgets']:
             namespace['first_widget'] = namespace['widgets'][0]['name']
