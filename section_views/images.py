@@ -29,7 +29,7 @@ from ikaaro.autoform import RadioWidget, SelectWidget, TextWidget
 # Import from itws
 from base import BaseFeedView_Configuration
 from itws.datatypes import PositiveIntegerNotNull
-from itws.feed_views.base import Feed_View
+from itws.feed_views import MultipleFeed_View
 from itws.tags import get_registered_tags_aware_classes
 
 
@@ -78,7 +78,7 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
 
 
 
-class ImagesView_View(Feed_View):
+class ImagesView_View(MultipleFeed_View):
 
     content_template = '/ui/feed_views/images_view.xml'
     search_template = None
@@ -121,7 +121,7 @@ class ImagesView_View(Feed_View):
                 query.append(PhraseQuery('format', _cls.class_id))
             args.append(OrQuery(*query))
 
-        return Feed_View.get_items(self, resource, context, *args)
+        return MultipleFeed_View.get_items(self, resource, context, *args)
 
 
     def get_content_namespace(self, resource, context, items):

@@ -23,7 +23,7 @@ from itools.web import get_context
 
 # Import from itws
 from base import BaseFeedView_Configuration
-from itws.feed_views import Feed_View
+from itws.feed_views import MultipleFeed_View
 
 
 
@@ -34,7 +34,7 @@ class TagsAwareView_Configuration(BaseFeedView_Configuration):
 
 
 
-class TagsAwareView_View(Feed_View):
+class TagsAwareView_View(MultipleFeed_View):
 
     view_name = 'tags_view'
     view_title = MSG(u'Feed view')
@@ -63,7 +63,7 @@ class TagsAwareView_View(Feed_View):
         # Get configuration
         args = list(args)
         args.append(PhraseQuery('is_tagsaware', True))
-        return Feed_View.get_items(self, resource, context, *args)
+        return MultipleFeed_View.get_items(self, resource, context, *args)
 
 
     def get_content_namespace(self, resource, items, context):

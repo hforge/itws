@@ -25,6 +25,7 @@ from base import Feed_View
 from browse_navigator import Browse_Navigator, Browse_Navigator_Rename
 from collection import Search_View, Details_View
 from collection import DetailsWithoutPicture_View, Title_View
+from multiple import MultipleFeed_View
 
 
 # Register skin
@@ -32,4 +33,4 @@ register_skin('feed_views', get_abspath('../ui/feed_views/'))
 
 # Silent pyflakes
 Feed_View, Details_View, DetailsWithoutPicture_View,
-Browse_Navigator, Browse_Navigator_Rename, Search_View, Title_View
+Browse_Navigator, Browse_Navigator_Rename, MultipleFeed_View, Search_View, Title_View
