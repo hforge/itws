@@ -93,7 +93,7 @@ class NeutralWS(Website_BarAware, WebSite):
     class_description = MSG(u'Create a new ITWS Web Site')
     class_icon16 = 'common/icons/16x16/itws-website.png'
     class_icon48 = 'common/icons/48x48/itws-website.png'
-    class_views = ['view', 'edit', 'configure_view', 'control_panel']
+    class_views = ['view', 'edit', 'configure_view']
     class_schema = merge_dicts(WebSite.class_schema,
             Website_BarAware.class_schema,
             breadcrumb_title=Multilingual(source='metadata'),
