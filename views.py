@@ -21,14 +21,14 @@ from urllib import quote
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, DateTime, String, Unicode
+from itools.datatypes import Boolean, String, Unicode
 from itools.gettext import MSG
 from itools.uri import get_reference
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.autoform import title_widget, timestamp_widget, TextWidget
-from ikaaro.datatypes import Multilingual
+from ikaaro.autoform import TextWidget, get_default_widget
 from ikaaro.file import File
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.folder_views import GoToSpecificDocument
@@ -129,10 +129,12 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 # AutomaticEditView
 ############################################################
 class AutomaticEditView(DBResource_Edit):
-
-    base_schema = freeze({'title': Multilingual,
-                          'timestamp': DateTime(readonly=True, ignore=True)})
-    base_widgets = freeze([title_widget, timestamp_widget])
+    """
+    Same that  DBResource_Edit but we add:
+        - State (if workflowAware)
+        - Allow to hide title widget
+        - Fix a bug (with query to keep)
+    """
 
     # Configuration
     display_title = True
@@ -150,7 +152,7 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        schema = merge_dicts(self.base_schema, self.edit_schema)
+        schema = merge_dicts(self.schema, self.edit_schema)
         # If Workfloware we add state
         if isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate
@@ -161,7 +163,7 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_widgets(self, resource, context):
-        widgets = self.base_widgets + self.edit_widgets
+        widgets = self.widgets + self.edit_widgets
         # Cast frozen list into list
         widgets = list(widgets)
         # If workfloware we add state
@@ -176,6 +178,44 @@ class AutomaticEditView(DBResource_Edit):
         return DBResource_Edit.get_value(self, resource, context, name,
                                          datatype)
 
+
+
+class FieldsAutomaticEditView(AutomaticEditView):
+    """
+    Same that AutomaticEditView but we replace
+
+      edit_schema = {'title': Unicode}
+      edit_widgets = [TextWidget('title', MSG(u'Title')]
+
+    by
+
+      edit_fields = ['title']
+
+    We use get_default_widget to guess widgets.
+    We use schema title to define widget title
+    """
+
+    edit_fields = []
+
+    @property
+    def edit_schema(self):
+        kw = {}
+        schema = get_context().resource.class_schema
+        for name in self.edit_fields:
+            kw[name] = schema[name]
+        return kw
+
+
+    @property
+    def edit_widgets(self):
+        widgets = []
+        schema = get_context().resource.class_schema
+        for name in self.edit_fields:
+            datatype = schema[name]
+            title = getattr(datatype, 'title', name)
+            widget = get_default_widget(datatype)(name, title=title)
+            widgets.append(widget)
+        return widgets
 
 
 ############################################################

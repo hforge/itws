@@ -22,7 +22,7 @@
 from copy import deepcopy
 
 # Import from itools
-from itools.core import freeze, get_abspath, merge_dicts
+from itools.core import get_abspath, merge_dicts
 from itools.gettext import MSG
 from itools.uri import Path, get_reference
 from itools.web import get_context
@@ -31,7 +31,6 @@ from itools.web import get_context
 from ikaaro.datatypes import Multilingual
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_PreviewContent
-from ikaaro.autoform import TextWidget
 from ikaaro.registry import register_document_type
 from ikaaro.skins import register_skin
 
@@ -43,7 +42,7 @@ from itws.control_panel import ITWS_ControlPanel
 from itws.datatypes import PositiveIntegerNotNull
 from itws.tags import register_tags_aware
 from itws.utils import get_path_and_view
-from itws.views import AutomaticEditView
+from itws.views import FieldsAutomaticEditView
 from itws.webpage import WebPage
 from news_views import NewsFolder_View, NewsFolder_RSS
 from news_views import NewsItem_AddImage, NewsFolder_BrowseContent
@@ -210,7 +209,8 @@ class NewsFolder(SideBarAware, Folder):
     class_schema = merge_dicts(
           SideBarAware.class_schema,
           Folder.class_schema,
-          batch_size=PositiveIntegerNotNull(source='metadata', default=7))
+          batch_size=PositiveIntegerNotNull(
+            source='metadata', default=7, title=MSG(u'Batch size')))
 
 
     __fixed_handlers__ = (SideBarAware.__fixed_handlers__ +
@@ -218,12 +218,6 @@ class NewsFolder(SideBarAware, Folder):
 
     # Configuration
     news_class = NewsItem
-
-    # Configuration of automatic edit view
-    edit_schema =  freeze({'batch_size': PositiveIntegerNotNull})
-    edit_widgets = freeze([
-        TextWidget('batch_size', title=MSG(u'Batch size'), size=3)])
-
 
     def init_resource(self, **kw):
         Folder.init_resource(self, **kw)
@@ -246,8 +240,7 @@ class NewsFolder(SideBarAware, Folder):
     ##########################
 
     view = NewsFolder_View()
-    edit = AutomaticEditView(edit_schema=edit_schema,
-                             edit_widgets=edit_widgets)
+    edit = FieldsAutomaticEditView(edit_fields=['batch_size'])
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit',
                                               title=MSG(u'Browse'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
