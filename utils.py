@@ -23,6 +23,7 @@ from datetime import datetime, timedelta
 # Import from itools
 from itools.core import freeze, thingy
 from itools.datatypes import Boolean, Enumerate, String, XMLContent
+from itools.datatypes import Date, DateTime
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import get_context, INFO, FormError
@@ -191,6 +192,32 @@ def get_linked_resources_message(resource, context, state='public'):
     # Return custom message
     return message
 
+
+
+def render_for_datatype(value, datatype, context):
+    if issubclass(datatype, Boolean):
+        return MSG(u'Yes') if value else MSG(u'No')
+    elif issubclass(datatype, Enumerate):
+        return datatype.get_value(value)
+    elif issubclass(datatype, DateTime):
+        if value is None:
+            return u'-'
+        return context.format_datetime(value)
+    elif issubclass(datatype, Date):
+        if value is None:
+            return u'-'
+        return context.format_date(value)
+    return value
+
+
+def build_resource_namespace(resource, context):
+    namespace = {}
+    for key, datatype in resource.class_schema.items():
+        if getattr(datatype, 'source', None) != 'metadata':
+            continue
+        value = resource.get_property(key)
+        namespace[key] = render_for_datatype(value, datatype, context)
+    return namespace
 
 ############################################################
 # Autoform

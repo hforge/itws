@@ -20,10 +20,8 @@
 from itools.core import merge_dicts
 from itools.database import AndQuery, NotQuery, PhraseQuery
 from itools.database import OrQuery, TextQuery
-from itools.datatypes import Integer, Enumerate, String, Boolean
-from itools.datatypes import Date, DateTime, PathDataType
+from itools.datatypes import Integer, String, Boolean
 from itools.gettext import MSG
-from itools.i18n import format_datetime, format_date
 from itools.web import FormError
 
 # Import from ikaaro
@@ -34,7 +32,7 @@ from ikaaro.website import WebSite
 from ikaaro.workflow import get_workflow_preview
 
 # Import from itws
-from itws.utils import ITWS_Autoform
+from itws.utils import ITWS_Autoform, render_for_datatype
 
 
 
@@ -324,21 +322,6 @@ class Feed_View(Folder_BrowseContent):
         if  schema.has_key(column):
             datatype = schema[column]
             value = item_resource.get_property(column)
-            if issubclass(datatype, PathDataType):
-                r = resource.get_resource(value)
-                return r.get_title(), context.get_link(resource)
-            elif issubclass(datatype, Boolean):
-                return MSG(u'Yes') if value else MSG(u'No')
-            elif issubclass(datatype, Enumerate):
-                return datatype.get_value(value)
-            elif issubclass(datatype, DateTime):
-                if value is None:
-                    return u'-'
-                return format_datetime(value, context.accept_language)
-            elif issubclass(datatype, Date):
-                if value is None:
-                    return u'-'
-                return format_date(value, context.accept_language)
-            return value
+            return render_for_datatype(value, datatype, context)
         return Folder_BrowseContent.get_item_value(self, resource, context,
             item, column)

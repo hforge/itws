@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.datatypes import PathDataType
 from itools.web import get_context
 
 # Import from ikaaro
@@ -36,7 +37,6 @@ class TableFeed_View(Feed_View):
         context = get_context()
         resource = context.resource
         columns = self.get_table_columns(resource, context)
-        print [x for x, y in columns]
         return [x for x, y in columns]
 
 
@@ -45,6 +45,7 @@ class TableFeed_View(Feed_View):
 
 
     def get_item_value(self, resource, context, item, column):
+        """It's specific because we have to return a tuple"""
         item_brain, item_resource = item
         # Default columns
         if column == 'name':
@@ -52,6 +53,15 @@ class TableFeed_View(Feed_View):
             return name, name
         elif column == 'title':
             return item_resource.get_title(), context.get_link(item_resource)
+        # We guess from class_schema
+        # http://bugs.hforge.org/show_bug.cgi?id=1202
+        schema = item_resource.class_schema
+        if schema.has_key(column):
+            datatype = schema[column]
+            value = item_resource.get_property(column)
+            if issubclass(datatype, PathDataType):
+                r = resource.get_resource(value)
+                return r.get_title(), context.get_link(resource)
         # Super
         proxy = super(TableFeed_View, self)
         return proxy.get_item_value(resource, context, item, column)
