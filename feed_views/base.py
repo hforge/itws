@@ -288,6 +288,11 @@ class Feed_View(Folder_BrowseContent):
             return None
         elif column == 'title':
             return item_resource.get_title()
+        elif column == 'format':
+            return item_resource.class_title.gettext()
+        elif column == 'last_author':
+            author =  item_brain.last_author
+            return context.root.get_user_title(author) if author else None
         elif column == 'long_title':
             if item_brain.is_tagsaware:
                 return item_resource.get_long_title()
