@@ -26,7 +26,6 @@ from itools.gettext import MSG
 # Import from ikaaro
 from ikaaro.autoform import MultilineWidget, SelectWidget
 from ikaaro.resource_views import DBResource_Edit
-from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from itws.section_views import SectionViews_Enumerate
@@ -42,8 +41,7 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
         return freeze(merge_dicts(
                 DBResource_Edit._get_schema(self, resource, context),
                 TagsAware_Edit._get_schema(self, resource, context),
-                view=SectionViews_Enumerate,
-                state=StaticStateEnumerate))
+                view=SectionViews_Enumerate))
 
 
     def _get_widgets(self, resource, context):
@@ -53,8 +51,8 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
                 title=MSG(u'Description (used by RSS and tags)'))
 
         widgets =  (default_widgets +
-                [state_widget, SelectWidget('view', title=MSG(u'View'),
-                                            has_empty_option=False)] +
+                [SelectWidget('view', title=MSG(u'View'),
+                              has_empty_option=False)] +
                 TagsAware_Edit._get_widgets(self, resource, context))
         return freeze(widgets)
 

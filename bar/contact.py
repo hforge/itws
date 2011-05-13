@@ -142,4 +142,5 @@ class BoxContact(Box):
 
     # Views
     view = BoxContact_View()
-    edit = BoxContact_Edit()
+    edit = BoxContact_Edit(edit_schema=edit_schema,
+                           edit_widgets=edit_widgets)

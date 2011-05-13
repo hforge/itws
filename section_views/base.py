@@ -50,7 +50,9 @@ class BaseSectionView_Configuration(File):
 
 
     # Views
-    edit = AutomaticEditView(title=MSG(u'Configure view'))
+    edit = AutomaticEditView(title=MSG(u'Configure view'),
+                             edit_schema=edit_schema,
+                             edit_widgets=edit_widgets)
     back = GoToSpecificDocument(
               title=MSG(u'Back to section'),
               adminbar_icon='/ui/icons/16x16/next.png',

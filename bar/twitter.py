@@ -36,7 +36,6 @@ from itools.xml import XMLParser, XMLError
 
 # Import from ikaaro
 from ikaaro.autoform import TextWidget, CheckboxWidget
-from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from base import Box
@@ -118,6 +117,18 @@ class IdenticaSideBar_View(TwitterSideBar_View):
 
 class Microblogging_Edit(AutomaticEditView):
 
+    edit_schema = freeze({'user_id': TwitterID(mandatory=True),
+                          'user_name': String(mandatory=True),
+                          'limit': Integer(mandatory=True, default=5, size=3),
+                          'force_update': Boolean})
+
+    edit_widgets = freeze([
+        TextWidget('user_name', title=MSG(u"Twitter account name")),
+        TextWidget('user_id', title=MSG(u"User Id")),
+        TextWidget('limit', title=MSG(u'Number of tweets')),
+        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
+        ])
+
 
     def action(self, resource, context, form):
         AutomaticEditView.action(self, resource, context, form)
@@ -140,21 +151,6 @@ class TwitterSideBar(Box, ResourceWithCache):
              user_name=String(source='metadata'),
              limit=Integer(source='metadata', default=5),
              force_update=Boolean(source='metadata'))
-
-    # Configuration of automatic edit view
-    edit_schema = freeze({'user_id': TwitterID(mandatory=True),
-                          'user_name': String(mandatory=True),
-                          'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean,
-                          'state': StaticStateEnumerate})
-
-    edit_widgets = freeze([
-        TextWidget('user_name', title=MSG(u"Twitter account name")),
-        TextWidget('user_id', title=MSG(u"User Id")),
-        TextWidget('limit', title=MSG(u'Number of tweets')),
-        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
-        state_widget
-        ])
 
     allow_instanciation = True
 
@@ -301,19 +297,18 @@ class IdenticaSideBar(TwitterSideBar):
 
     edit_schema = freeze({'user_name': IndenticaName(mandatory=True),
                           'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean,
-                          'state': StaticStateEnumerate})
+                          'force_update': Boolean})
 
     edit_widgets = freeze([
         TextWidget('user_name', title=MSG(u"Identi.ca account name")),
         TextWidget('limit', title=MSG(u'Number of messages')),
         CheckboxWidget('force_update', title=MSG(u'Force cache update')),
-        state_widget
         ])
 
     # Views
     view = IdenticaSideBar_View()
-    edit = Microblogging_Edit()
+    edit = Microblogging_Edit(edit_schema=edit_schema,
+                              edit_widgets=edit_widgets)
 
 
     def _get_account_uri(self):

@@ -27,7 +27,6 @@ from itools.uri import get_reference
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.autoform import description_widget, subject_widget
 from ikaaro.autoform import title_widget, timestamp_widget, TextWidget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import File
@@ -37,6 +36,8 @@ from ikaaro.registry import get_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
 from ikaaro.utils import get_content_containers
 from ikaaro.views_new import NewInstance
+from ikaaro.workflow import StaticStateEnumerate, state_widget
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from itws.tags import Tag, get_registered_tags_aware_classes
@@ -131,9 +132,12 @@ class AutomaticEditView(DBResource_Edit):
 
     base_schema = freeze({'title': Multilingual,
                           'timestamp': DateTime(readonly=True, ignore=True)})
+    base_widgets = freeze([title_widget, timestamp_widget])
 
-    # Add timestamp_widget in get_widgets method
-    base_widgets = freeze([title_widget])
+    # Configuration
+    display_title = True
+    edit_schema = {}
+    edit_widgets = []
 
 
     def _get_query_to_keep(self, resource, context):
@@ -146,31 +150,23 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        schema = {}
-        if getattr(resource, 'edit_show_meta', False) is True:
-            schema['description'] = Unicode(multilingual=True)
-            schema['subject'] = Unicode(multilingual=True)
-        schema = merge_dicts(self.base_schema, schema, resource.edit_schema)
-        # FIXME Hide/Show title
-        if getattr(resource, 'display_title', True) is False:
-            del schema['title']
+        schema = merge_dicts(self.base_schema, self.edit_schema)
+        # If Workfloware we add state
+        if isinstance(resource, WorkflowAware):
+            schema['state'] = StaticStateEnumerate
+        # Hide title ?
+        if self.display_title is False:
+            schema['title'].hidden_by_default = True
         return freeze(schema)
 
 
     def _get_widgets(self, resource, context):
-        widgets = []
-        if getattr(resource, 'edit_show_meta', False) is True:
-            widgets.extend([description_widget, subject_widget])
-        widgets = self.base_widgets + widgets + resource.edit_widgets
+        widgets = self.base_widgets + self.edit_widgets
         # Cast frozen list into list
         widgets = list(widgets)
-        # Add timestamp_widget
-        widgets.append(timestamp_widget)
-        # FIXME Hide/Show title
-        if getattr(resource, 'display_title', True) is False:
-            to_remove = [ w for w in widgets if w.name == 'title' ]
-            if to_remove:
-                widgets.remove(to_remove[0])
+        # If workfloware we add state
+        if isinstance(resource, WorkflowAware):
+            widgets.append(state_widget)
         return freeze(widgets)
 
 

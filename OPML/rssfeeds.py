@@ -222,6 +222,16 @@ class CSV_View(BaseCSV_View):
 
 class RssFeeds_Configure(AutomaticEditView):
 
+    edit_schema = freeze({
+        'TTL': Integer(mandatory=True),
+        'update_now': Boolean(ignore=True),
+        'timeout': Decimal(mandatory=True)})
+    edit_widgets = freeze([
+        TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
+        TextWidget('timeout', title=MSG(u"Timeout in seconds")),
+        RadioWidget('update_now', title=MSG(u"Update RSS now"))])
+
+
     def get_value(self, resource, context, name, datatype):
         if name == 'update_now':
             return False
@@ -281,20 +291,8 @@ class RssFeeds(CSV):
     edit = CSV_View(title=MSG(u'RSS List'))
     edit_row = CSV_EditRow(title=MSG(u'Edit RSS'))
     add_row = CSV_AddRow(title=MSG(u'Add RSS'))
-    configure = RssFeeds_Configure(title=MSG(u'Configure'))
     export_to_opml = FeedRSS_OPML()
-
-    # Configuration of automatic edit view
-    edit_show_meta = True
-    edit_schema = freeze({
-        'TTL': Integer(mandatory=True),
-        'update_now': Boolean(ignore=True),
-        'timeout': Decimal(mandatory=True)})
-    edit_widgets = freeze([
-        TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
-        TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-        RadioWidget('update_now', title=MSG(u"Update RSS now"))])
-
+    configure = RssFeeds_Configure(title=MSG(u'Configure'))
 
     def get_columns(self):
         return [('uri', MSG(u'URL')),

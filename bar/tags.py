@@ -24,7 +24,6 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import CheckboxWidget, TextWidget
-from ikaaro.workflow import state_widget, StaticStateEnumerate
 
 # Import from itws
 from base import display_title_widget, Box
@@ -101,8 +100,7 @@ class BoxTags(Box):
                           'count':PositiveInteger(default=0),
                           'show_number': Boolean,
                           'random': Boolean,
-                          'display_title': Boolean,
-                          'state': StaticStateEnumerate})
+                          'display_title': Boolean})
 
     edit_widgets = freeze([
         display_title_widget,
@@ -114,7 +112,6 @@ class BoxTags(Box):
         CheckboxWidget('formats',
                     title=MSG(u'This tag cloud will display only '
                               u'the tags from selected types of content')),
-        state_widget
         ])
 
     # Views

@@ -268,4 +268,6 @@ class TurningFooterFolder(Folder):
     view = TurningFooterFolder_View()
     edit = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit'))
-    configure = AutomaticEditView(title=MSG(u'Configure'))
+    configure = AutomaticEditView(title=MSG(u'Configure'),
+                                  edit_schema=edit_schema,
+                                  edit_widgets=edit_widgets)

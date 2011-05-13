@@ -220,7 +220,6 @@ class NewsFolder(SideBarAware, Folder):
     news_class = NewsItem
 
     # Configuration of automatic edit view
-    edit_show_meta = True
     edit_schema =  freeze({'batch_size': PositiveIntegerNotNull})
     edit_widgets = freeze([
         TextWidget('batch_size', title=MSG(u'Batch size'), size=3)])
@@ -247,7 +246,8 @@ class NewsFolder(SideBarAware, Folder):
     ##########################
 
     view = NewsFolder_View()
-    edit = AutomaticEditView()
+    edit = AutomaticEditView(edit_schema=edit_schema,
+                             edit_widgets=edit_widgets)
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit',
                                               title=MSG(u'Browse'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
