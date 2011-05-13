@@ -70,6 +70,7 @@ class Feed_View(Folder_BrowseContent):
 
     # Search configuration
     search_template = '/ui/feed_views/base_search_template.xml'
+    search_class_id = None
     search_on_current_folder = True
     search_on_current_folder_recursive = False
     search_widgets = []
@@ -154,6 +155,9 @@ class Feed_View(Folder_BrowseContent):
             # Limit results to whole sub children
             args.append(get_base_path_query(str(container_abspath)))
 
+        # Search specific format ?
+        if self.search_class_id is not None:
+            args.append(PhraseQuery('format', self.search_class_id))
         # Search only on current folder ?
         if self.search_on_current_folder_recursive is True:
             # Already done before, because if search_on_current_folder and
@@ -164,6 +168,7 @@ class Feed_View(Folder_BrowseContent):
                 theme_path = container_abspath.resolve_name('theme')
                 theme = get_base_path_query(str(theme_path), True)
                 args.append(NotQuery(theme))
+
         # Ignore resources
         if self.ignore_internal_resources:
             args.append(PhraseQuery('is_content', True))
