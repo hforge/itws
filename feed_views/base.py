@@ -246,6 +246,7 @@ class Feed_View(Folder_BrowseContent):
 
 
     def get_search_namespace(self, resource, context):
+        # http://bugs.hforge.org/show_bug.cgi?id=997
         search_button = Button(access=True,
             resource=resource, context=context,
             css='button-search', title=MSG(u'Search'))
