@@ -26,6 +26,63 @@ from ikaaro.utils import get_base_path_query
 from ikaaro.website import WebSite
 
 
+class DynamicEnumerate(Enumerate):
+    """
+    Automaticaly build an enumerate with all resources
+    of a given class_id.
+    results = [{'name': resource1.get_abspath()
+                'title': resource1.get_title()}
+               {'name': resource2.get_abspath()
+                'title': resource2.get_title()}]
+    """
+
+    format = None
+
+    @classmethod
+    def get_options(cls):
+        context = get_context()
+        root = context.root
+        resources = [root.get_resource(brain.abspath)
+                      for brain in root.search(format=cls.format).get_documents()]
+        return [{'name': str(res.get_abspath()),
+                 'value': res.get_title()}
+                   for res in resources]
+
+    @classmethod
+    def get_resource(cls, name):
+        context = get_context()
+        return context.site_root.get_resource(name)
+
+
+    @classmethod
+    def get_value(cls, name, default=None):
+        if name is None:
+            return
+        resource = cls.get_resource(name)
+        return resource.get_title()
+
+
+class Users_Enumerate(DynamicEnumerate):
+    """
+    Automaticaly build an enumerate with all users
+    """
+
+    @classmethod
+    def get_options(cls):
+        context = get_context()
+        root = context.root
+        resources = [root.get_resource(brain.abspath)
+                      for brain in root.search(format='user').get_documents()]
+        return [{'name': res.name, 'value': res.get_title()}
+                   for res in resources]
+
+    @classmethod
+    def get_resource(cls, name):
+        context = get_context()
+        return context.root.get_user(name)
+
+
+
 class SearchTypes_Enumerate(Enumerate):
 
     @classmethod
@@ -56,7 +113,6 @@ class SearchTypes_Enumerate(Enumerate):
         if view.ignore_box_aware:
             query = AndQuery(query, NotQuery(PhraseQuery('box_aware', True)))
 
-        print query
         # 2. Compute children_formats
         children_formats = set()
         for child in root.search(query).get_documents():
