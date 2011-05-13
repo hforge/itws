@@ -26,6 +26,7 @@ from browse_navigator import Browse_Navigator, Browse_Navigator_Rename
 from collection import Search_View, Details_View
 from collection import DetailsWithoutPicture_View, Title_View
 from multiple import MultipleFeed_View
+from table import TableFeed_View
 
 
 # Register skin
