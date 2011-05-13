@@ -2,7 +2,7 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
   xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <form method="GET">
+  <form method="GET" stl:if="widgets">
     <fieldset>
       <legend>${title}</legend>
       <p stl:if="description">${description}</p>
