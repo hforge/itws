@@ -173,6 +173,11 @@ class AdminBarTemplate(CMSTemplate):
                          'label': MSG(u'Control panel'),
                          'icon': 'cog',
                          'class': active and 'active' or None})
+        # Logout
+        tabs.append({'name': '/;logout',
+                     'label': MSG(u'Log out'),
+                     'icon': 'action-logout',
+                     'class': active and 'active' or None})
         return tabs
 
 

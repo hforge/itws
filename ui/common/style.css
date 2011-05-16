@@ -197,6 +197,7 @@ body.readonly {
 .cog { background-position: -2px -38px; }
 .folder-explore { background-position: -2px -56px; }
 .folder-back { background-position: -2px -74px; }
+.action-logout { background-position: -2px -92px; }
 
 /**************************************************************************
  * Bar items
