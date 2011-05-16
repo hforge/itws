@@ -25,27 +25,26 @@ from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import MultilineWidget, SelectWidget
-from ikaaro.resource_views import DBResource_Edit
 
 # Import from itws
 from itws.section_views import SectionViews_Enumerate
 from itws.tags import TagsAware_Edit
-from itws.views import EditView
+from itws.views import AutomaticEditView, EditView
 
 
 
-class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
+class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
 
 
     def _get_schema(self, resource, context):
         return freeze(merge_dicts(
-                DBResource_Edit._get_schema(self, resource, context),
+                AutomaticEditView._get_schema(self, resource, context),
                 TagsAware_Edit._get_schema(self, resource, context),
                 view=SectionViews_Enumerate))
 
 
     def _get_widgets(self, resource, context):
-        base_widgets = DBResource_Edit._get_widgets(self, resource, context)
+        base_widgets = AutomaticEditView._get_widgets(self, resource, context)
         default_widgets = [ widget for widget in base_widgets ]
         default_widgets[2] = MultilineWidget('description',
                 title=MSG(u'Description (used by RSS and tags)'))
@@ -61,7 +60,7 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
         if name in ('tags', 'pub_date', 'pub_time'):
             return TagsAware_Edit.get_value(self, resource, context, name,
                     datatype)
-        return DBResource_Edit.get_value(self, resource, context, name,
+        return AutomaticEditView.get_value(self, resource, context, name,
                   datatype)
 
 
@@ -69,7 +68,7 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
         if name in ('tags', 'pub_date', 'pub_time'):
             return TagsAware_Edit.set_value(self, resource, context, name,
                     form)
-        return DBResource_Edit.set_value(self, resource, context, name,
+        return AutomaticEditView.set_value(self, resource, context, name,
                   form)
 
 
@@ -78,4 +77,4 @@ class Section_Edit(EditView, DBResource_Edit, TagsAware_Edit):
         if context.edit_conflict:
             return
         EditView.action(self, resource, context, form)
-        return DBResource_Edit.action(self, resource, context, form)
+        return AutomaticEditView.action(self, resource, context, form)
