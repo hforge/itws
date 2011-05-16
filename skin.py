@@ -343,7 +343,9 @@ class Skin(BaseSkin):
         namespace['display_menu'] = (namespace['nav_length'] > 1)
 
         # Admin bar
-        if here_ac.is_allowed_to_edit(context.user, here):
+        site_root = context.site_root
+        site_root_ac = site_root.get_access_control()
+        if site_root_ac.is_allowed_to_edit(context.user, site_root):
             namespace['admin_bar'] = AdminBarTemplate(context=context)
         else:
             namespace['admin_bar'] = None
