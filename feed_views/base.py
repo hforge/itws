@@ -56,6 +56,7 @@ class Feed_View(Folder_BrowseContent):
     show_first_batch = False
     show_second_batch = True
     display_title = True
+    show_resource_title = True
     batch_size = 25
     sort_by = 'title'
     reverse = False
@@ -219,6 +220,11 @@ class Feed_View(Folder_BrowseContent):
     ###############################################
     ## Namespace
     ###############################################
+    def get_title(self, context):
+        if self.show_resource_title:
+            return context.resource.get_title()
+        return self.title
+
 
     def get_namespace(self, resource, context):
         self.view_resource = resource
@@ -226,7 +232,7 @@ class Feed_View(Folder_BrowseContent):
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
         namespace['id'] = self.get_css_id(resource, context)
         namespace['css'] = self.get_css(resource, context)
-        namespace['title'] = resource.get_title()
+        namespace['title'] = self.get_title(context)
         namespace['display_title'] = self.display_title
         namespace['show_first_batch'] = self.show_first_batch
         namespace['show_second_batch'] = self.show_second_batch
