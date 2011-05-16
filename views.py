@@ -21,14 +21,18 @@ from urllib import quote
 
 # Import from itools
 from itools.core import freeze, merge_dicts
+from itools.csv import Property
+from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Boolean, String, Unicode
 from itools.gettext import MSG
+from itools.handlers import checkid
 from itools.uri import get_reference
 from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro import messages
-from ikaaro.autoform import TextWidget, get_default_widget
+from ikaaro.autoform import AutoForm, TextWidget, get_default_widget
+from ikaaro.datatypes import Multilingual
 from ikaaro.file import File
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.folder_views import GoToSpecificDocument
@@ -221,6 +225,111 @@ class FieldsAutomaticEditView(AutomaticEditView):
         title = getattr(datatype, 'title', name)
         return get_default_widget(datatype)(name, title=title)
 
+
+
+class FieldsAdvance_NewInstance(AutoForm):
+
+    goto_view = None
+
+    query_schema = freeze({
+        'type': String,
+        'title': Unicode,
+        'path': String,
+        'name': String})
+
+    @property
+    def add_cls(self):
+        context = get_context()
+        class_id = context.query['type']
+        return get_resource_class(class_id)
+
+
+    def get_title(self, context):
+        if self.title is not None:
+            return self.title
+        class_title = self.add_cls.class_title.gettext()
+        title = MSG(u'Add {class_title}')
+        return title.gettext(class_title=class_title)
+
+
+    def get_schema(self, resource, context):
+        kw = {}
+        schema = self.add_cls.class_schema
+        for name in self.fields:
+            # No multilingual datatypes on creation forms
+            datatype = schema[name]
+            if issubclass(datatype, Multilingual):
+                datatype = Unicode
+            elif getattr(datatype, 'multilingual', False):
+                datatype.multilingual = False
+            kw[name] = datatype
+        return kw
+
+
+    def get_widgets(self, resource, context):
+        widgets = []
+        schema = self.add_cls.class_schema
+        for name in self.fields:
+            # No multilingual datatypes on creation forms
+            datatype = schema[name]
+            if issubclass(datatype, Multilingual):
+                datatype = Unicode
+            widget = self.get_widget(name, datatype)
+            widgets.append(widget)
+        return widgets
+
+
+    def get_widget(self, name, datatype):
+        title = getattr(datatype, 'title', name)
+        return get_default_widget(datatype)(name, title=title)
+
+
+    def get_new_resource_name(self, form):
+        if form.has_key('name') and form['name'].strip():
+            # Name
+            name = form['name'].strip()
+        elif form.has_key('title') and form['title'].strip():
+            # Title
+            name = form['title']
+        else:
+            # Number
+            context = get_context()
+            abspath = context.resource.get_canonical_path()
+            query = AndQuery(
+                    PhraseQuery('parent_path', str(abspath)),
+                    PhraseQuery('format', self.add_cls.class_id))
+            search = context.root.search(query)
+            if len(search):
+                doc = search.get_documents(sort_by='name', reverse=True)[0]
+                name = int(doc.name) + 1
+            else:
+                name = 1
+            name = str(name)
+        return checkid(name)
+
+
+    def action(self, resource, context, form):
+        # Get the container
+        container = resource
+        # Make the resource
+        name = self.get_new_resource_name(form)
+        cls = get_resource_class(self.add_cls.class_id)
+        child = container.make_resource(name, cls)
+        # Set properies
+        resource_schema = self.add_cls.class_schema
+        for key in self.get_schema(resource, context):
+            datatype = resource_schema[key]
+            if getattr(datatype, 'multilingual', False) is True:
+                language = container.get_edit_languages(context)[0]
+                value = Property(form[key], lang=language)
+            else:
+                value = form[key]
+            child.metadata.set_property(key, value)
+        # Ok
+        goto = str(resource.get_pathto(child))
+        if self.goto_view:
+            goto = '%s/;%s' % (goto, self.goto_view)
+        return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
 
 ############################################################
 # EditLanguageMenu (Only language selection)
