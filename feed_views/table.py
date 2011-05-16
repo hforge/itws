@@ -22,10 +22,10 @@ from itools.web import get_context
 from ikaaro.views import BrowseForm
 
 # Import from itws
-from base import Feed_View
+from multiple import MultipleFeed_View
 
 
-class TableFeed_View(Feed_View):
+class TableFeed_View(MultipleFeed_View):
     """
     It's a BrowseFormbut with Feed_View API
     """
