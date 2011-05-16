@@ -212,10 +212,14 @@ class FieldsAutomaticEditView(AutomaticEditView):
         schema = get_context().resource.class_schema
         for name in self.edit_fields:
             datatype = schema[name]
-            title = getattr(datatype, 'title', name)
-            widget = get_default_widget(datatype)(name, title=title)
+            widget = self.get_widget(name, datatype)
             widgets.append(widget)
         return widgets
+
+
+    def get_widget(self, name, datatype):
+        title = getattr(datatype, 'title', name)
+        return get_default_widget(datatype)(name, title=title)
 
 
 ############################################################
