@@ -58,8 +58,8 @@ class TableFeed_View(Feed_View):
         schema = item_resource.class_schema
         if schema.has_key(column):
             datatype = schema[column]
-            value = item_resource.get_property(column)
             if issubclass(datatype, PathDataType):
+                value = item_resource.get_property(column)
                 r = resource.get_resource(value)
                 return r.get_title(), context.get_link(resource)
         # Super

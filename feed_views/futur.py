@@ -14,8 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from itools
+from itools.datatypes import Unicode
+
 # Import from ikaaro
 from ikaaro.autoform import get_default_widget
+from ikaaro.datatypes import Multilingual
 
 # Import from itws
 from base import Feed_View
@@ -45,7 +49,10 @@ class BaseFieldsFeed_View(object):
         kw = {}
         schema = self.search_cls.class_schema
         for name in self.search_fields:
-            kw[name] = schema[name]
+            datatype = schema[name]
+            if issubclass(datatype, Multilingual):
+                datatype = Unicode
+            kw[name] = datatype
         return kw
 
 
@@ -70,9 +77,12 @@ class FieldsTableFeed_View(BaseFieldsFeed_View, TableFeed_View):
         columns = []
         schema = self.search_cls.class_schema
         for name in self.table_fields:
-            datatype = schema[name]
-            title = getattr(datatype, 'title', name)
-            columns.append((name, title))
+            if name == 'checkbox':
+                columns.append(('checkbox', None))
+            else:
+                datatype = schema[name]
+                title = getattr(datatype, 'title', name)
+                columns.append((name, title))
         return columns
 
 
