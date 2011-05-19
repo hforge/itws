@@ -225,7 +225,7 @@ class Feed_View(Folder_BrowseContent):
     ###############################################
     ## Namespace
     ###############################################
-    def get_title(self, context):
+    def get_webpage_title(self, context):
         if self.show_resource_title:
             return context.resource.get_title()
         return self.title
@@ -237,7 +237,7 @@ class Feed_View(Folder_BrowseContent):
         namespace = Folder_BrowseContent.get_namespace(self, resource, context)
         namespace['id'] = self.get_css_id(resource, context)
         namespace['css'] = self.get_css(resource, context)
-        namespace['title'] = self.get_title(context)
+        namespace['title'] = self.get_webpage_title(context)
         namespace['display_title'] = self.display_title
         namespace['show_first_batch'] = self.show_first_batch
         namespace['show_second_batch'] = self.show_second_batch
