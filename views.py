@@ -162,7 +162,7 @@ class AutomaticEditView(DBResource_Edit):
             schema['state'] = StaticStateEnumerate
         # Hide title ?
         if self.display_title is False:
-            schema['title'].hidden_by_default = True
+            schema['title'] = schema['title'](hidden_by_default=True)
         return freeze(schema)
 
 
