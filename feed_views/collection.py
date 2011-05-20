@@ -44,7 +44,7 @@ class Details_View(Feed_View):
         return Feed_View.get_items(self, resource, context, *args)
 
 
-    def get_content_namespace(self, resource, items, context):
+    def get_content_namespace(self, resource, context, items):
         proxy = super(Details_View, self)
         namespace = proxy.get_content_namespace(resource, items, context)
         namespace['thumb_width'] = 90

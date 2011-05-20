@@ -65,9 +65,9 @@ class TagsAwareView_View(MultipleFeed_View):
         return MultipleFeed_View.get_items(self, resource, context, *args)
 
 
-    def get_content_namespace(self, resource, items, context):
+    def get_content_namespace(self, resource, context, items):
         proxy = super(TagsAwareView_View, self)
-        namespace = proxy.get_content_namespace(resource, items, context)
+        namespace = proxy.get_content_namespace(resource, context, items)
         namespace['thumb_width'] = 90
         namespace['thumb_height'] = 90
         namespace['more_title'] = MSG(u'Read more')
