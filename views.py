@@ -223,7 +223,10 @@ class FieldsAutomaticEditView(AutomaticEditView):
 
     def get_widget(self, name, datatype):
         title = getattr(datatype, 'title', name)
-        return get_default_widget(datatype)(name, title=title)
+        widget = getattr(datatype, 'widget', None)
+        if widget is None:
+            widget = get_default_widget(datatype)
+        return widget(name, title=title)
 
 
 
