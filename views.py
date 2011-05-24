@@ -436,5 +436,4 @@ class EditView(object):
             view = section_views_registry[form['view']]
             cls = view.view_configuration_cls
             if cls:
-                resource.make_resource('section_view',
-                                       view.view_configuration_cls)
+                resource.make_resource('section_view', cls)
