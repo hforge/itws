@@ -44,7 +44,7 @@ from itws.control_panel import CPDBResource_Backlinks, CPOrderItems
 from itws.control_panel import CPDBResource_CommitLog, CPDBResource_Links
 from itws.control_panel import ITWS_ControlPanel
 from itws.feed_views import Browse_Navigator
-from itws.section_views import SectionViews_Enumerate
+from itws.section_views import SectionViews_Enumerate, section_views_registry
 from itws.tags import TagsAware, register_tags_aware
 from itws.webpage import WebPage
 
@@ -116,6 +116,11 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
     is_content = True
 
 
+    @property
+    def section_view_name(self):
+        return self.class_schema['view'].get_default()
+
+
     def init_resource(self, **kw):
         if 'add_boxes' in kw:
             add_boxes = kw.get('add_boxes')
@@ -142,6 +147,12 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
                     title={language: box_cls.class_title.gettext()})
             contentbar_table = self.get_resource(self.contentbar_name)
             contentbar_table.add_new_record({'name': 'toc'})
+
+        # Section view
+        view = section_views_registry[self.section_view_name]
+        cls = view.view_configuration_cls
+        if cls:
+            self.make_resource('section_view', cls)
 
 
     def get_catalog_values(self):
