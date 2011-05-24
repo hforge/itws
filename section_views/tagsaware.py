@@ -62,7 +62,8 @@ class TagsAwareView_View(MultipleFeed_View):
         # Get configuration
         args = list(args)
         args.append(PhraseQuery('is_tagsaware', True))
-        return MultipleFeed_View.get_items(self, resource, context, *args)
+        proxy = super(TagsAwareView_View, self)
+        return proxy.get_items(resource, context, *args)
 
 
     def get_content_namespace(self, resource, context, items):
