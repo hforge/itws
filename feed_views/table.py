@@ -22,6 +22,7 @@ from itools.web import get_context
 from ikaaro.views import BrowseForm
 
 # Import from itws
+from itws.enumerates import Users_Enumerate, DynamicEnumerate
 from multiple import MultipleFeed_View
 
 
@@ -50,7 +51,7 @@ class TableFeed_View(MultipleFeed_View):
         # Default columns
         if column == 'name':
             name = item_brain.name
-            return name, name
+            return name, context.get_link(item_resource)
         elif column == 'title':
             return item_resource.get_title(), context.get_link(item_resource)
         # We guess from class_schema
@@ -58,10 +59,18 @@ class TableFeed_View(MultipleFeed_View):
         schema = item_resource.class_schema
         if schema.has_key(column):
             datatype = schema[column]
-            if issubclass(datatype, PathDataType):
-                value = item_resource.get_property(column)
+            if issubclass(datatype, Users_Enumerate):
+                value = self.get_schema_value(item_resource, column, datatype)
+                if value is None:
+                    return None
+                r = context.root.get_user(value)
+                return r.get_title(), context.get_link(r)
+            elif issubclass(datatype, (PathDataType, DynamicEnumerate)):
+                value = self.get_schema_value(item_resource, column, datatype)
+                if value is None:
+                    return None
                 r = resource.get_resource(value)
-                return r.get_title(), context.get_link(resource)
+                return r.get_title(), context.get_link(r)
         # Super
         proxy = super(TableFeed_View, self)
         return proxy.get_item_value(resource, context, item, column)

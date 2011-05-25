@@ -197,22 +197,19 @@ def get_linked_resources_message(resource, context, state='public'):
 
 
 def render_for_datatype(value, datatype, context):
+    if value is None:
+        return None
     if issubclass(datatype, Boolean):
         return MSG(u'Yes') if value else MSG(u'No')
     elif issubclass(datatype, DynamicEnumerate):
         resource = datatype.get_resource(value)
-        print resource.get_title()
         return {'title': resource.get_title(),
                 'link': context.get_link(resource)}
     elif issubclass(datatype, Enumerate):
         return datatype.get_value(value)
     elif issubclass(datatype, DateTime):
-        if value is None:
-            return u'-'
         return context.format_datetime(value)
     elif issubclass(datatype, Date):
-        if value is None:
-            return u'-'
         return context.format_date(value)
     return value
 

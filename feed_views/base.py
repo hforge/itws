@@ -280,6 +280,14 @@ class Feed_View(Folder_BrowseContent):
         return namespace
 
 
+    def get_schema_value(self, resource, column, datatype):
+        if datatype.source == 'metadata':
+            value = resource.get_property(column)
+        elif datatype.source == 'computed':
+            value = resource.get_computed_property(column)
+        return value
+
+
     def get_item_value(self, resource, context, item, column):
         from ikaaro.file import Image
 
@@ -339,7 +347,7 @@ class Feed_View(Folder_BrowseContent):
         schema = item_resource.class_schema
         if  schema.has_key(column):
             datatype = schema[column]
-            value = item_resource.get_property(column)
+            value = self.get_schema_value(item_resource, column, datatype)
             return render_for_datatype(value, datatype, context)
         return Folder_BrowseContent.get_item_value(self, resource, context,
             item, column)
