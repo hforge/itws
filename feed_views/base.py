@@ -73,6 +73,7 @@ class Feed_View(Folder_BrowseContent):
     search_title = MSG(u'Search')
     search_template = '/ui/feed_views/base_search_template.xml'
     search_class_id = None
+    search_css = None
     search_on_current_folder = True
     search_on_current_folder_recursive = False
     search_widgets = []
@@ -180,7 +181,6 @@ class Feed_View(Folder_BrowseContent):
         return args
 
 
-
     def get_items(self, resource, context, *args):
         root = context.root
         # Query
@@ -255,8 +255,9 @@ class Feed_View(Folder_BrowseContent):
         # http://bugs.hforge.org/show_bug.cgi?id=997
         search_button = Button(access=True,
             resource=resource, context=context,
-            css='button-search', title=MSG(u'Search'))
+            css='button-search', title=self.search_title)
         form = ITWS_Autoform(
+            css=self.search_css,
             title=self.search_title,
             schema=self.search_schema,
             get_value_method=context.get_query_value,

@@ -231,16 +231,19 @@ def build_resource_namespace(resource, context):
 class ITWS_Autoform(thingy):
 
     title = MSG(u'Form')
+    template = '/ui/common/itws_autoform.xml'
     schema = {}
     widgets = []
     actions = []
     get_value_method = None
     description = None
+    css = None
 
     def render(self, context):
         namespace = {'title': self.title,
                      'action': '.',
                      'description': self.description,
+                     'css': self.css,
                      'actions': self.actions,
                      'has_required_widget': False,
                      'widgets': []}
@@ -272,7 +275,7 @@ class ITWS_Autoform(thingy):
                  'widget': widget})
         if namespace['widgets']:
             namespace['first_widget'] = namespace['widgets'][0]['name']
-        template = context.resource.get_resource('/ui/common/itws_autoform.xml')
+        template = context.resource.get_resource(self.template)
         return stl(template, namespace)
 
 
