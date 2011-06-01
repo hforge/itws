@@ -283,11 +283,16 @@ class Feed_View(Folder_BrowseContent):
         return namespace
 
 
-    def get_schema_value(self, resource, column, datatype):
-        if datatype.source == 'metadata':
+    def get_schema_value(self, resource, column, datatype, brain=None):
+        source = getattr(datatype, 'source', None)
+        value = None
+        if source == 'metadata':
             value = resource.get_property(column)
-        elif datatype.source == 'computed':
+        elif source == 'computed':
             value = resource.get_computed_property(column)
+        elif source is None:
+            if getattr(brain, 'stored', None) is True:
+                value = getattr(datatype, column, None)
         return value
 
 
@@ -350,7 +355,8 @@ class Feed_View(Folder_BrowseContent):
         schema = item_resource.class_schema
         if  schema.has_key(column):
             datatype = schema[column]
-            value = self.get_schema_value(item_resource, column, datatype)
+            value = self.get_schema_value(item_resource, column, datatype,
+                                          item_brain)
             return render_for_datatype(value, datatype, context)
         return Folder_BrowseContent.get_item_value(self, resource, context,
             item, column)
