@@ -133,11 +133,15 @@ class Feed_View(Folder_BrowseContent):
         queries = []
         form = context.query
         for key, datatype in self.search_schema.items():
-            if form[key] and key == 'text':
+            value = form[key]
+            if value and key == 'text':
                 queries.append(TextQuery(key, form[key]))
-            elif form[key] and datatype.multiple is True:
-                queries.append(OrQuery(*[PhraseQuery(key, x) for x in form[key]]))
-            elif form[key]:
+            elif value and datatype.multiple is True:
+                # FIXME value == ['']
+                if len(value) != 1 or value[0]:
+                    queries.append(OrQuery(*[PhraseQuery(key, x)
+                                            for x in form[key]]))
+            elif value:
                 queries.append(PhraseQuery(key, form[key]))
         return queries
 
