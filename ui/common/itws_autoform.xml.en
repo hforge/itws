@@ -4,10 +4,12 @@
 
   <form method="GET" stl:if="widgets" class="${css}">
     <fieldset>
-      <legend>${title}</legend>
+      <legend>${title} <span stl:if="advanced"
+          onclick="toggle_advanced_search_form($(this));">${advanced_title}</span>
+      </legend>
       <p stl:if="description">${description}</p>
       <stl:block stl:repeat="widget widgets">
-        <div class="block-widget-${widget/name}">
+        <div class="block-widget-${widget/id} ${widget/advanced}">
           <stl:block stl:if="widget/title">
             <label class="title" for="${widget/name}">${widget/title}</label>
             <span stl:if="widget/mandatory" class="field-is-missing"
@@ -25,6 +27,7 @@
       </p>
     </fieldset>
     <script type="text/javascript">
+      init_advanced_search($("#${first_widget}"));
       document.getElementById("${first_widget}").focus();
     </script>
   </form>

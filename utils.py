@@ -232,21 +232,26 @@ class ITWS_Autoform(thingy):
 
     title = MSG(u'Form')
     template = '/ui/common/itws_autoform.xml'
+    scripts = ['/ui/common/js/javascript.js']
     schema = {}
     widgets = []
     actions = []
     get_value_method = None
     description = None
     css = None
+    advanced_title = None
 
     def render(self, context):
         namespace = {'title': self.title,
                      'action': '.',
                      'description': self.description,
                      'css': self.css,
+                     'advanced_title': self.advanced_title,
                      'actions': self.actions,
                      'has_required_widget': False,
                      'widgets': []}
+        # If any widget advanced, activate advance mode
+        advanced = False
         for widget in self.widgets:
             datatype = self.schema[widget.name]
             try:
@@ -262,19 +267,24 @@ class ITWS_Autoform(thingy):
                 value = value[0]
             widget.datatype = datatype
             widget.value = value
+            w_advanced = getattr(widget, 'advanced', None)
+            advanced = advanced or w_advanced
             namespace['widgets'].append(
                 {'name': widget.name,
+                 'id': widget.id,
                  'title': widget.title,
                  'multiple': getattr(datatype, 'multiple', False),
                  'tip': getattr(widget, 'tip', None),
                  'mandatory': getattr(datatype, 'mandatory', False),
                  'endline': getattr(widget, 'endline', None),
                  'class': None,
+                 'advanced': w_advanced and 'advanced',
                  'suffix': widget.suffix,
                  'error': error,
                  'widget': widget})
         if namespace['widgets']:
             namespace['first_widget'] = namespace['widgets'][0]['name']
+        namespace['advanced'] = advanced
         template = context.resource.get_resource(self.template)
         return stl(template, namespace)
 

@@ -78,6 +78,7 @@ class Feed_View(Folder_BrowseContent):
     search_on_current_folder_recursive = False
     search_widgets = []
     search_schema = {}
+    search_advanced_title = MSG(u'(Switch to simple/advanded mode)')
 
     # Get items configuration
     ignore_internal_resources = False
@@ -260,6 +261,7 @@ class Feed_View(Folder_BrowseContent):
             css=self.search_css,
             title=self.search_title,
             schema=self.search_schema,
+            advanced_title=self.search_advanced_title,
             get_value_method=context.get_query_value,
             widgets=self.search_widgets,
             actions=[search_button])

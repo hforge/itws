@@ -54,3 +54,16 @@ $(document).ready(function() {
     return false;
   });
 });
+
+
+/*
+ * Toggle Simple/Advanced Search
+ */
+function toggle_advanced_search_form(item){
+  var form = item.parents('form');
+  form.find('div.advanced').toggle();
+};
+
+function init_advanced_search(first){
+  toggle_advanced_search_form(first);
+}
