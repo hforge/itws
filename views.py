@@ -27,7 +27,7 @@ from itools.datatypes import Boolean, String, Unicode
 from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.uri import get_reference
-from itools.web import get_context
+from itools.web import get_context, FormError
 
 # Import from ikaaro
 from ikaaro import messages
@@ -287,13 +287,31 @@ class FieldsAdvance_NewInstance(AutoForm):
         return get_default_widget(datatype)(name, title=title)
 
 
+    def _get_form(self, resource, context):
+        form = super(AutoForm, self)._get_form(resource, context)
+        name = self.get_new_resource_name(form)
+        container = resource
+        if not name:
+            raise FormError, messages.MSG_NAME_MISSING
+        try:
+            name = checkid(name)
+        except UnicodeEncodeError:
+            name = None
+        if name is None:
+            raise FormError, messages.MSG_BAD_NAME
+
+        # Check the name is free
+        if container.get_resource(name, soft=True) is not None:
+            raise FormError, messages.MSG_NAME_CLASH
+        form['name'] = name
+        return form
+
+
     def get_new_resource_name(self, form):
         if form.has_key('name') and form['name'].strip():
-            # Name
             name = form['name'].strip()
-        elif form.has_key('title') and form['title'].strip():
-            # Title
-            name = form['title']
+        elif form.has_key('title'):
+            name = form['title'].strip()
         else:
             # Number
             context = get_context()
@@ -308,14 +326,16 @@ class FieldsAdvance_NewInstance(AutoForm):
             else:
                 name = 1
             name = str(name)
-        return checkid(name)
+        return name
 
 
     def action(self, resource, context, form):
         # Get the container
         container = resource
+        # Get resource name
+        name = form['name']
+
         # Make the resource
-        name = self.get_new_resource_name(form)
         cls = get_resource_class(self.add_cls.class_id)
         child = container.make_resource(name, cls)
         # Set properies
