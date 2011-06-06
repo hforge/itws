@@ -233,6 +233,7 @@ class FieldsAutomaticEditView(AutomaticEditView):
 class FieldsAdvance_NewInstance(AutoForm):
 
     goto_view = None
+    goto_come_back = False
 
     query_schema = freeze({
         'type': String,
@@ -284,12 +285,16 @@ class FieldsAdvance_NewInstance(AutoForm):
 
     def get_widget(self, name, datatype):
         title = getattr(datatype, 'title', name)
-        return get_default_widget(datatype)(name, title=title)
+        widget = getattr(datatype, 'widget', None)
+        if widget is None:
+            widget = get_default_widget(datatype)
+        return widget(name, title=title)
 
 
     def _get_form(self, resource, context):
         form = super(AutoForm, self)._get_form(resource, context)
         name = self.get_new_resource_name(form)
+        form['name'] = name
         container = resource
         if not name:
             raise FormError, messages.MSG_NAME_MISSING
@@ -303,7 +308,6 @@ class FieldsAdvance_NewInstance(AutoForm):
         # Check the name is free
         if container.get_resource(name, soft=True) is not None:
             raise FormError, messages.MSG_NAME_CLASH
-        form['name'] = name
         return form
 
 
@@ -332,8 +336,7 @@ class FieldsAdvance_NewInstance(AutoForm):
     def action(self, resource, context, form):
         # Get the container
         container = resource
-        # Get resource name
-        name = form['name']
+        name = self.get_new_resource_name(form)
 
         # Make the resource
         cls = get_resource_class(self.add_cls.class_id)
@@ -348,11 +351,21 @@ class FieldsAdvance_NewInstance(AutoForm):
             else:
                 value = form[key]
             child.metadata.set_property(key, value)
+        # Other set properties
+        self.post_action(resource, child, context, form)
         # Ok
-        goto = str(resource.get_pathto(child))
-        if self.goto_view:
-            goto = '%s/;%s' % (goto, self.goto_view)
+        if self.goto_come_back is True:
+            goto = None
+        else:
+            goto = str(resource.get_pathto(child))
+            if self.goto_view:
+                goto = '%s/;%s' % (goto, self.goto_view)
         return context.come_back(messages.MSG_NEW_RESOURCE, goto=goto)
+
+
+    def post_action(self, resource, child, context, form):
+        pass
+
 
 ############################################################
 # EditLanguageMenu (Only language selection)
