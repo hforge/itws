@@ -238,6 +238,7 @@ class FieldsAdvance_NewInstance(AutoForm):
 
     goto_view = None
     goto_come_back = False
+    new_resource_name_prefix = None
 
     query_schema = freeze({
         'type': String,
@@ -337,11 +338,17 @@ class FieldsAdvance_NewInstance(AutoForm):
             search = context.root.search(query)
             if len(search):
                 doc = search.get_documents(sort_by='name', reverse=True)[0]
-                name = int(doc.name) + 1
+                if self.new_resource_name_prefix:
+                    start = len(self.new_resource_name_prefix)
+                else:
+                    start = 0
+                name = int(doc.name[start:]) + 1
             else:
                 name = 1
             name = str(name)
-        return name
+        if self.new_resource_name_prefix:
+            name = '%s-%s' % (self.new_resource_name_prefix, name)
+        return checkid(name)
 
 
     def action(self, resource, context, form):
