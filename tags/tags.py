@@ -186,12 +186,12 @@ class TagsAware(object):
 
     class_schema = {
             # Metadata
-            'tags': TagsList(source='metadata', multiple=True, indexed=True,
-                             stored=True),
+            'tags': TagsList(source='metadata', title=MSG(u'Tags'),
+                multiple=True, indexed=True, stored=True),
             'pub_datetime': DateTime(source='metadata', indexed=True,
                                      stored=True),
             'thumbnail': URI(source='metadata', multilingual=True,
-                             parameters_schema={'lang': String}),
+                title=MSG(u'Thumbnail'), parameters_schema={'lang': String}),
             # Catalog
             'is_tagsaware': Boolean(indexed=True, stored=True),
             'preview_content': Unicode(stored=True, indexed=True),
