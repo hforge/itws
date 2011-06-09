@@ -157,6 +157,11 @@ class AutomaticEditView(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         schema = merge_dicts(self.schema, self.edit_schema)
+        # Remove item taken from DBResource_Edit.schema but not on resource
+        r_class_schema = resource.class_schema
+        for key in self.schema:
+            if key not in r_class_schema:
+                del schema[key]
         # If Workfloware we add state
         if isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate
