@@ -275,13 +275,20 @@ class FieldsAdvance_NewInstance(AutoForm):
 
 
     def get_widgets(self, resource, context):
+        attr_keys = ('title', 'size', 'mandatory', 'mutiple', 'tip', 'endline')
         widgets = []
         schema = self.add_cls.class_schema
         for name in self.fields:
             # No multilingual datatypes on creation forms
             datatype = schema[name]
             if issubclass(datatype, Multilingual):
-                datatype = Unicode
+                new_datatype = Unicode
+                # Keep datatype attributes
+                for attr_name in attr_keys:
+                    attr_value = getattr(datatype, attr_name, None)
+                    if attr_value != getattr(new_datatype, attr_name, None):
+                        setattr(new_datatype, attr_name, attr_value)
+                datatype = new_datatype
             widget = self.get_widget(name, datatype)
             widgets.append(widget)
         return widgets
