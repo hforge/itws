@@ -23,7 +23,7 @@ from urllib import quote
 from itools.core import freeze, merge_dicts
 from itools.csv import Property
 from itools.database import AndQuery, PhraseQuery
-from itools.datatypes import Boolean, String, Unicode
+from itools.datatypes import Boolean, DateTime, String, Unicode
 from itools.gettext import MSG
 from itools.handlers import checkid
 from itools.uri import get_reference
@@ -32,6 +32,7 @@ from itools.web import get_context, FormError
 # Import from ikaaro
 from ikaaro import messages
 from ikaaro.autoform import AutoForm, TextWidget, get_default_widget
+from ikaaro.autoform import timestamp_widget
 from ikaaro.datatypes import Multilingual
 from ikaaro.file import File
 from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
@@ -139,6 +140,9 @@ class AutomaticEditView(DBResource_Edit):
         - Allow to hide title widget
         - Fix a bug (with query to keep)
     """
+    # Reset DBResource_Edit values, keep only timestamp
+    schema = freeze({'timestamp': DateTime(readonly=True)})
+    widgets = freeze([timestamp_widget])
 
     # Configuration
     display_title = True
@@ -157,11 +161,6 @@ class AutomaticEditView(DBResource_Edit):
 
     def _get_schema(self, resource, context):
         schema = merge_dicts(self.schema, self.edit_schema)
-        # Remove item taken from DBResource_Edit.schema but not on resource
-        r_class_schema = resource.class_schema
-        for key in self.schema:
-            if key != 'timestamp' and key not in r_class_schema:
-                del schema[key]
         # If Workfloware we add state
         if isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate
@@ -172,15 +171,9 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_widgets(self, resource, context):
-        widgets = []
-        # Add only items in resource schema (except timestamp)
-        r_class_schema = resource.class_schema
-        for w in self.widgets:
-            if w.name == 'timestamp' or w.name in r_class_schema:
-                widgets.append(w)
-
+        widgets = self.widgets + self.edit_widgets
         # Cast frozen list into list
-        widgets.extend(list(self.edit_widgets))
+        widgets = list(widgets)
         # If workfloware we add state
         if isinstance(resource, WorkflowAware):
             widgets.append(state_widget)
