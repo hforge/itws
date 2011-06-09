@@ -160,7 +160,7 @@ class AutomaticEditView(DBResource_Edit):
         # Remove item taken from DBResource_Edit.schema but not on resource
         r_class_schema = resource.class_schema
         for key in self.schema:
-            if key not in r_class_schema:
+            if key != 'timestamp' and key not in r_class_schema:
                 del schema[key]
         # If Workfloware we add state
         if isinstance(resource, WorkflowAware):
