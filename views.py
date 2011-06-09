@@ -172,9 +172,15 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_widgets(self, resource, context):
-        widgets = self.widgets + self.edit_widgets
+        widgets = []
+        # Add only items in resource schema (except timestamp)
+        r_class_schema = resource.class_schema
+        for w in self.widgets:
+            if w.name == 'timestamp' or w.name in r_class_schema:
+                widgets.append(w)
+
         # Cast frozen list into list
-        widgets = list(widgets)
+        widgets.extend(list(self.edit_widgets))
         # If workfloware we add state
         if isinstance(resource, WorkflowAware):
             widgets.append(state_widget)
