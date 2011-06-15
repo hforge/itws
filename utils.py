@@ -23,7 +23,7 @@ from datetime import datetime, timedelta
 # Import from itools
 from itools.core import freeze, thingy
 from itools.datatypes import Boolean, Enumerate, String, XMLContent
-from itools.datatypes import Date, DateTime
+from itools.datatypes import Date, DateTime, PathDataType
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import get_context, INFO, FormError
@@ -196,15 +196,21 @@ def get_linked_resources_message(resource, context, state='public'):
 
 
 
-def render_for_datatype(value, datatype, context):
+def render_for_datatype(value, datatype, context, resource=None):
     if value is None:
         return None
     if issubclass(datatype, Boolean):
         return MSG(u'Yes') if value else MSG(u'No')
     elif issubclass(datatype, DynamicEnumerate):
-        resource = datatype.get_resource(value)
-        return {'title': resource.get_title(),
-                'link': context.get_link(resource)}
+        the_resource = datatype.get_resource(value)
+        return {'title': the_resource.get_title(),
+                'link': context.get_link(the_resource)}
+    elif issubclass(datatype, PathDataType):
+        the_resource = resource.get_resource(value, soft=True)
+        if the_resource is None:
+            return None
+        return {'title': the_resource.get_title(),
+                'link': context.get_link(the_resource)}
     elif issubclass(datatype, Enumerate):
         return datatype.get_value(value)
     elif issubclass(datatype, DateTime):
@@ -220,7 +226,11 @@ def build_resource_namespace(resource, context):
         if getattr(datatype, 'source', None) != 'metadata':
             continue
         value = resource.get_property(key)
-        namespace[key] = render_for_datatype(value, datatype, context)
+        render = render_for_datatype(value, datatype, context, resource)
+        namespace[key] = {'value': value,
+                          'render': render}
+    # Base namespace
+    namespace['link'] = context.get_link(resource)
     return namespace
 
 ############################################################
