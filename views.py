@@ -272,6 +272,9 @@ class FieldsAdvance_NewInstance(AutoForm):
             elif getattr(datatype, 'multilingual', False):
                 datatype.multilingual = False
             kw[name] = datatype
+        # If Workfloware we add state
+        if schema.has_key('workflow_state'):
+            kw['state'] = StaticStateEnumerate
         return kw
 
 
@@ -292,6 +295,9 @@ class FieldsAdvance_NewInstance(AutoForm):
                 datatype = new_datatype
             widget = self.get_widget(name, datatype)
             widgets.append(widget)
+        # If workfloware we add state
+        if schema.has_key('workflow_state'):
+            widgets.append(state_widget)
         return widgets
 
 
