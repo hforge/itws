@@ -165,7 +165,7 @@ class AutomaticEditView(DBResource_Edit):
         if isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate
         # Hide title ?
-        if self.display_title is False:
+        if self.display_title is False and self.schema.has_key('title'):
             schema['title'] = schema['title'](hidden_by_default=True)
         return freeze(schema)
 
