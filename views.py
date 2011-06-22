@@ -319,6 +319,7 @@ class FieldsAdvance_NewInstance(AutoForm):
             raise FormError, messages.MSG_NAME_MISSING
         try:
             name = checkid(name)
+            form['name'] = name
         except UnicodeEncodeError:
             name = None
         if name is None:
