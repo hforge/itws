@@ -135,10 +135,12 @@ class AdvanceGoToSpecificDocument(GoToSpecificDocument):
 ############################################################
 class AutomaticEditView(DBResource_Edit):
     """
-    Same that  DBResource_Edit but we add:
+    Same that DBResource_Edit but we add:
         - State (if workflowAware)
         - Allow to hide title widget
         - Fix a bug (with query to keep)
+        - Use edit_widgets instead of widgets
+        - Add timestamp if not already present
     """
     # Reset DBResource_Edit values, keep only timestamp
     schema = freeze({'timestamp': DateTime(readonly=True)})
@@ -146,8 +148,8 @@ class AutomaticEditView(DBResource_Edit):
 
     # Configuration
     display_title = True
-    edit_schema = {}
-    edit_widgets = []
+    edit_schema = DBResource_Edit.schema
+    edit_widgets = DBResource_Edit.widgets
 
 
     def _get_query_to_keep(self, resource, context):
@@ -167,13 +169,19 @@ class AutomaticEditView(DBResource_Edit):
         # Hide title ?
         if self.display_title is False and self.schema.has_key('title'):
             schema['title'] = schema['title'](hidden_by_default=True)
+        if 'timestamp' not in schema:
+            schema['timestamp'] = DateTime(readonly=True)
+
         return freeze(schema)
 
 
     def _get_widgets(self, resource, context):
-        widgets = self.widgets + self.edit_widgets
+        widgets = self.edit_widgets
         # Cast frozen list into list
         widgets = list(widgets)
+        # Force timestamp if not set in edit_widgets
+        if 'timestamp' not in widgets:
+            widgets.append(timestamp_widget)
         # If workfloware we add state
         if isinstance(resource, WorkflowAware):
             widgets.append(state_widget)
@@ -202,8 +210,8 @@ class FieldsAutomaticEditView(AutomaticEditView):
     We use get_default_widget to guess widgets.
     We use schema title to define widget title
     """
+    edit_fields = freeze(['title', 'description', 'subject', 'timestamp'])
 
-    edit_fields = []
 
     @property
     def edit_schema(self):
