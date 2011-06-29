@@ -295,8 +295,8 @@ class Feed_View(Folder_BrowseContent):
         elif source == 'computed':
             value = resource.get_computed_property(column)
         elif source is None:
-            if getattr(brain, 'stored', None) is True:
-                value = getattr(datatype, column, None)
+            if getattr(datatype, 'stored', None) is True:
+                value = getattr(brain, column, None)
         return value
 
 
