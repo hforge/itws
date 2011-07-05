@@ -93,6 +93,10 @@ class AdminBarTemplate(CMSTemplate):
             if context.view == here.get_view(name, args):
                 active = True
 
+            # Ignore new_resource
+            if link == 'new_resource':
+                continue
+
             # Add the menu
             tabs.append({
                 'name': '%s/;%s' % (here_link, link),
