@@ -72,6 +72,7 @@ class Feed_View(Folder_BrowseContent):
     # Search configuration
     search_title = MSG(u'Search')
     search_template = '/ui/feed_views/base_search_template.xml'
+    search_form_template = '/ui/common/itws_autoform.xml'
     search_class_id = None
     search_css = None
     search_on_current_folder = True
@@ -264,6 +265,7 @@ class Feed_View(Folder_BrowseContent):
         form = ITWS_Autoform(
             css=self.search_css,
             title=self.search_title,
+            template=self.search_form_template,
             schema=self.search_schema,
             advanced_title=self.search_advanced_title,
             get_value_method=context.get_query_value,
