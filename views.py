@@ -47,7 +47,9 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from itws.tags import Tag, get_registered_tags_aware_classes
 
-
+"""Known attributes of widgets, useful on Multilingual fields."""
+attr_keys = ('title', 'size', 'mandatory', 'mutiple', 'tip', 'endline', 'rows',
+             'cols', 'format')
 
 ############################################################
 # NewInstance
@@ -287,7 +289,6 @@ class FieldsAdvance_NewInstance(AutoForm):
 
 
     def get_widgets(self, resource, context):
-        attr_keys = ('title', 'size', 'mandatory', 'mutiple', 'tip', 'endline')
         widgets = []
         schema = self.add_cls.class_schema
         for name in self.fields:
@@ -295,6 +296,9 @@ class FieldsAdvance_NewInstance(AutoForm):
             datatype = schema[name]
             if issubclass(datatype, Multilingual):
                 new_datatype = Unicode
+                widget = getattr(datatype, 'widget', None)
+                widget = widget or self.get_widget(name, datatype)
+                setattr(new_datatype, 'widget', widget)
                 # Keep datatype attributes
                 for attr_name in attr_keys:
                     attr_value = getattr(datatype, attr_name, None)
@@ -310,11 +314,20 @@ class FieldsAdvance_NewInstance(AutoForm):
 
 
     def get_widget(self, name, datatype):
-        title = getattr(datatype, 'title', name)
         widget = getattr(datatype, 'widget', None)
         if widget is None:
             widget = get_default_widget(datatype)
-        return widget(name, title=title)
+
+        # Keep datatype attributes on widget if None
+        kw = {}
+        for attr_name in attr_keys:
+            attr_value = getattr(datatype, attr_name, None)
+            if attr_value is not None and attr_value != '':
+                kw[attr_name] = attr_value
+
+        title = getattr(datatype, 'title', name)
+        kw['title'] = title
+        return widget(name, **kw)
 
 
     def _get_form(self, resource, context):
