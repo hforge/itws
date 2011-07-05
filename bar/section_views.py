@@ -34,7 +34,7 @@ from itws.views import AutomaticEditView, EditView
 
 
 class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
-
+    """ EditView gives "view" helper. """
 
     def _get_schema(self, resource, context):
         return freeze(merge_dicts(
@@ -46,8 +46,11 @@ class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
     def _get_widgets(self, resource, context):
         base_widgets = AutomaticEditView._get_widgets(self, resource, context)
         default_widgets = [ widget for widget in base_widgets ]
-        default_widgets[2] = MultilineWidget('description',
-                title=MSG(u'Description (used by RSS and tags)'))
+        if 'description' in self.edit_schema:
+            for w in default_widgets:
+                if w.name == 'description':
+                    w = MultilineWidget('description',
+                          title=MSG(u'Description (used by RSS and tags)'))
 
         widgets =  (default_widgets +
                 [SelectWidget('view', title=MSG(u'View'),
