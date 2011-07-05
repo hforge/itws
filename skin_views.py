@@ -116,13 +116,21 @@ class AdminBarTemplate(CMSTemplate):
                      'class': active and 'active' or None})
         # New resources
         if is_folder:
-            if len(here.get_document_types()) > 0:
+            document_types = here.get_document_types()
+
+            if len(document_types) > 0:
                 active = context.view_name == 'new_resource'
-                tabs.append({'name': './;new_resource',
-                              'label': MSG(u'Add content'),
-                              'icon': 'page-white-add',
-                              'rel': None,
-                              'class': active and 'active' or None})
+                href = './;new_resource'
+                label = MSG(u'Add content')
+                if len(document_types) == 1:
+                    href += '?type='+ document_types[0].class_id
+                    class_title = document_types[0].class_title
+                    label = MSG(u"Add '{x}'").gettext(x=class_title)
+                tabs.append({'name': href,
+                             'label': label,
+                             'icon': 'page-white-add',
+                             'rel': None,
+                             'class': active and 'active' or None})
         return tabs
 
 
