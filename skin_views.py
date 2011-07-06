@@ -39,6 +39,7 @@ class AdminBarTemplate(CMSTemplate):
 
     template = '/ui/common/admin_bar.xml'
 
+    show_edition_tabs = True
 
     @thingy_lazy_property
     def workflow(self):
@@ -141,6 +142,8 @@ class AdminBarTemplate(CMSTemplate):
     @thingy_lazy_property
     def edition_tabs(self):
         views = []
+        if self.show_edition_tabs is False:
+            return []
         context = self.context
         navigation_mode = is_navigation_mode(context)
         # edit mode
