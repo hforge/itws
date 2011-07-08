@@ -202,7 +202,6 @@ class FieldsAutomaticEditView(AutomaticEditView):
     We use get_default_widget to guess widgets.
     We use schema title to define widget title
     """
-    get_default_widget = get_default_widget
 
     edit_fields = []
 
@@ -230,7 +229,7 @@ class FieldsAutomaticEditView(AutomaticEditView):
         title = getattr(datatype, 'title', name)
         widget = getattr(datatype, 'widget', None)
         if widget is None:
-            widget = self.get_default_widget(datatype)
+            widget = get_default_widget(datatype)
         return widget(name, title=title)
 
 
