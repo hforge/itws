@@ -23,7 +23,7 @@ from itools.datatypes import Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import PathSelectorWidget, MultilineWidget
+from ikaaro.autoform import MultilineWidget
 from ikaaro.folder import Folder
 
 # Import from itws
@@ -42,8 +42,7 @@ class OrderModule(Folder):
     class_title = MSG(u'Orders')
     class_views = ['view', 'configure']
     class_schema = merge_dicts(Folder.class_schema,
-        logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo'),
-                               widget=PathSelectorWidget),
+        logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo')),
         signature=Unicode(source='metadata', title=MSG(u'PDF Signature'),
                           widget=MultilineWidget))
 
@@ -54,8 +53,6 @@ class OrderModule(Folder):
     edit_fields = ['logo', 'signature']
     configure = FieldsAutomaticEditView(title=MSG(u'Configure'),
                                         edit_fields=edit_fields)
-
-
 
 
     def get_document_types(self):
