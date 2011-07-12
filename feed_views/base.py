@@ -289,7 +289,7 @@ class Feed_View(Folder_BrowseContent):
         return namespace
 
 
-    def get_schema_value(self, resource, column, datatype, brain=None):
+    def get_schema_value(self, resource, column, datatype, brain):
         source = getattr(datatype, 'source', None)
         value = None
         if source == 'metadata':
@@ -297,7 +297,7 @@ class Feed_View(Folder_BrowseContent):
         elif source == 'computed':
             value = resource.get_computed_property(column)
         elif source is None:
-            if getattr(datatype, 'stored', None) is True:
+            if getattr(datatype, 'stored', False) is True:
                 value = getattr(brain, column, None)
         return value
 
@@ -359,7 +359,7 @@ class Feed_View(Folder_BrowseContent):
         # We guess from class_schema
         # http://bugs.hforge.org/show_bug.cgi?id=1202
         schema = item_resource.class_schema
-        if  schema.has_key(column):
+        if schema.has_key(column):
             datatype = schema[column]
             value = self.get_schema_value(item_resource, column, datatype,
                                           item_brain)

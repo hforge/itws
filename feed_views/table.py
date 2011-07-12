@@ -60,13 +60,15 @@ class TableFeed_View(MultipleFeed_View):
         if schema.has_key(column):
             datatype = schema[column]
             if issubclass(datatype, Users_Enumerate):
-                value = self.get_schema_value(item_resource, column, datatype)
+                value = self.get_schema_value(item_resource, column, datatype,
+                    item_brain)
                 if value is None:
                     return None
                 r = context.root.get_user(value)
                 return r.get_title(), context.get_link(r)
             elif issubclass(datatype, (PathDataType, DynamicEnumerate)):
-                value = self.get_schema_value(item_resource, column, datatype)
+                value = self.get_schema_value(item_resource, column, datatype,
+                    item_brain)
                 if value is None:
                     return None
                 r = resource.get_resource(value)
