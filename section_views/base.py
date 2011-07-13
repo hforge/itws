@@ -30,8 +30,8 @@ from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
 from itws.datatypes import SortBy_Enumerate
+from itws.enumerates import SearchTypes_Enumerate
 from itws.views import AutomaticEditView
-
 
 
 class BaseSectionView_Configuration(File):
@@ -68,6 +68,8 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
         view_search_on_current_folder=Boolean(source='metadata', default=True),
         view_search_on_current_folder_recursive=Boolean(source='metadata',
             default=False),
+        # search_class_id : only one authorized
+        view_search_class_id=SearchTypes_Enumerate(source='metadata'),
         view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
         view_reverse=Boolean(source='metadata'),
         view_batch_size=Integer(source='metadata', default=20))
