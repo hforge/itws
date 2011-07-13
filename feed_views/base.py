@@ -75,7 +75,6 @@ class Feed_View(Folder_BrowseContent):
     search_form_template = '/ui/common/itws_autoform.xml'
     search_class_id = None
     search_css = None
-    # TODO Merge search_on_xx values into one Enumerate
     search_on_current_folder = True
     search_on_current_folder_recursive = False
     search_widgets = []
@@ -108,7 +107,7 @@ class Feed_View(Folder_BrowseContent):
 
 
     def _get_container(self, resource, context):
-        # XXX Add documentation
+        #  Current resource or site_root
         if self.search_on_current_folder is True:
             return resource
         # Current website
@@ -150,35 +149,24 @@ class Feed_View(Folder_BrowseContent):
 
     def get_content_query(self, resource, context):
         args = []
-        # Check parameters
-        if (self.search_on_current_folder and
-                self.search_on_current_folder_recursive):
-            msg = '{0} and {1} are mutually exclusive.'
-            raise ValueError, msg.format('search_on_current_folder',
-                                         'search_on_current_folder_recursive')
         # Get the container
         container = self._get_container(resource, context)
         container_abspath = container.get_canonical_path()
-        if self.search_on_current_folder is True:
+        if self.search_on_current_folder_recursive is False:
             # Limit result to direct children
             args.append(PhraseQuery('parent_path', str(container_abspath)))
         else:
             # Limit results to whole sub children
             args.append(get_base_path_query(str(container_abspath)))
-
-        # Search specific format ?
-        if self.search_class_id is not None:
-            args.append(PhraseQuery('format', self.search_class_id))
-        # Search only on current folder ?
-        if self.search_on_current_folder_recursive is True:
-            # Already done before, because if search_on_current_folder and
-            # search_on_current_folder_recursive are exclusive
-
             # Exclude '/theme/'
             if isinstance(resource, WebSite):
                 theme_path = container_abspath.resolve_name('theme')
                 theme = get_base_path_query(str(theme_path), True)
                 args.append(NotQuery(theme))
+
+        # Search specific format ?
+        if self.search_class_id is not None:
+            args.append(PhraseQuery('format', self.search_class_id))
 
         # Ignore resources
         if self.ignore_internal_resources:
