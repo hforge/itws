@@ -29,9 +29,9 @@ from base import Feed_View
 from itws.enumerates import SearchTypes_Enumerate
 
 
-
 class Details_View(Feed_View):
-
+    """ View items as a list with preview of items.
+    """
     view_name = 'details-view'
     view_title = MSG(u'Feed TagAware elements')
     search_template = None
@@ -55,7 +55,8 @@ class Details_View(Feed_View):
 
 
 class Search_View(Feed_View):
-
+    """ View items as a list below a search form.
+    """
     view_name = 'search-view'
     view_title = MSG(u'Search view')
 
@@ -77,7 +78,7 @@ class Search_View(Feed_View):
 
 
 class DetailsWithoutPicture_View(Feed_View):
-
+    # Deprecated ?
     view_name = 'details-without-picture-view'
     view_title = MSG(u'Details View (without pictures)')
     content_template = '/ui/news/SectionNews_view.xml'
@@ -85,7 +86,8 @@ class DetailsWithoutPicture_View(Feed_View):
 
 
 class Title_View(Feed_View):
-
+    """ View items as a list with only long title of items.
+    """
     view_name = 'view_title-view'
     view_title = MSG(u'Title view')
     content_template = '/ui/feed_views/NewsItem_preview.xml'
