@@ -78,3 +78,8 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
         SelectWidget('view_sort_by', title=MSG(u'Sort by'),
                      has_empty_option=False),
         RadioWidget('view_reverse', title=MSG(u'Reverse'), oneline=True)])
+
+    # Reset edit view with schema/widgets
+    edit = AutomaticEditView(title=MSG(u'Configure view'),
+                             edit_schema=edit_schema,
+                             edit_widgets=edit_widgets)
