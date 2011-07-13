@@ -23,7 +23,8 @@ from itools.datatypes import Integer, Boolean
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import SelectWidget, TextWidget, RadioWidget
+from ikaaro.autoform import CheckboxWidget, RadioWidget, SelectWidget
+from ikaaro.autoform import TextWidget
 from ikaaro.file import File
 from ikaaro.folder_views import GoToSpecificDocument
 
@@ -64,16 +65,26 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
 
     class_schema = merge_dicts(
         BaseSectionView_Configuration.class_schema,
+        view_search_on_current_folder=Boolean(source='metadata', default=True),
+        view_search_on_current_folder_recursive=Boolean(source='metadata',
+            default=False),
         view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
         view_reverse=Boolean(source='metadata'),
         view_batch_size=Integer(source='metadata', default=20))
 
 
-    edit_schema = freeze({'view_batch_size': Integer,
-                          'view_sort_by': SortBy_Enumerate,
-                          'view_reverse': Boolean})
+    edit_schema = freeze({
+        'view_batch_size': Integer,
+        'view_sort_by': SortBy_Enumerate,
+        'view_reverse': Boolean,
+        'view_search_on_current_folder': Boolean,
+        'view_search_on_current_folder_recursive': Boolean})
 
     edit_widgets = freeze([
+        CheckboxWidget('view_search_on_current_folder',
+            title=MSG(u'Only on current section'), oneline=True),
+        CheckboxWidget('view_search_on_current_folder_recursive',
+            title=MSG(u'Recursively'), oneline=True),
         TextWidget('view_batch_size', title=MSG(u'Batch size')),
         SelectWidget('view_sort_by', title=MSG(u'Sort by'),
                      has_empty_option=False),

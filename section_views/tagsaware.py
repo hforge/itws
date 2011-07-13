@@ -53,9 +53,10 @@ class TagsAwareView_View(MultipleFeed_View):
         context = get_context()
         resource = context.resource
         conf_resource = resource.get_resource('section_view')
-        self.sort_by = conf_resource.get_property('view_sort_by')
-        self.reverse = conf_resource.get_property('view_reverse')
-        self.batch_size = conf_resource.get_property('view_batch_size')
+        for key in ('sort_by', 'reverse', 'batch_size',
+                    'search_on_current_folder',
+                    'search_on_current_folder_recursive'):
+            setattr(self, key, conf_resource.get_property('view_%s' % key))
 
 
     def get_items(self, resource, context, *args):

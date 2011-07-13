@@ -75,6 +75,7 @@ class Feed_View(Folder_BrowseContent):
     search_form_template = '/ui/common/itws_autoform.xml'
     search_class_id = None
     search_css = None
+    # TODO Merge search_on_xx values into one Enumerate
     search_on_current_folder = True
     search_on_current_folder_recursive = False
     search_widgets = []
@@ -150,7 +151,8 @@ class Feed_View(Folder_BrowseContent):
     def get_content_query(self, resource, context):
         args = []
         # Check parameters
-        if self.search_on_current_folder and self.search_on_current_folder_recursive:
+        if (self.search_on_current_folder and
+                self.search_on_current_folder_recursive):
             msg = '{0} and {1} are mutually exclusive.'
             raise ValueError, msg.format('search_on_current_folder',
                                          'search_on_current_folder_recursive')
