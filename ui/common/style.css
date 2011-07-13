@@ -203,6 +203,7 @@ body.readonly {
  * Bar items
  * ***********************************************************************/
 /* feed box */
+.feed-view.tags-view .item,
 .feed-view.feed-box.v1 .item,
 .feed-view.feed-box.v2 .item,
 .feed-view.feed-box.v3 .item {

@@ -178,7 +178,8 @@ class BoxFeed_View(Box_View, Details_View):
                 break
         else:
             css = ''
-        return '%s %s' % (self.view_name, css)
+        view_css = self.view_name.replace('_', '-').lower()
+        return '%s %s' % (view_css, css)
 
 
     def get_namespace(self, resource, context):
