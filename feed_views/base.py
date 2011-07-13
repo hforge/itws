@@ -286,6 +286,7 @@ class Feed_View(Folder_BrowseContent):
             for key in self.content_keys:
                 kw[key] = self.get_item_value(resource, context, item, key)
             namespace['items'].append(kw)
+        namespace['more_title'] = MSG(u'Read more')
         return namespace
 
 
