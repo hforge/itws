@@ -205,8 +205,9 @@ class Feed_View(Folder_BrowseContent):
     ## CSS Class / ID
     ###############################################
     def get_css(self, resource, context):
-        view_css = self.view_name.replace('_', '-').lower()
-        return view_css
+        if self.view_name:
+            return self.view_name.replace('_', '-').lower()
+        return None
 
 
     def get_css_id(self, resource, context):
