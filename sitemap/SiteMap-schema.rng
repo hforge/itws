@@ -28,12 +28,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
   <start>
-    <ref name="urlset" />
+    <optional><ref name="sitemapindex" /></optional>
+    <optional><ref name="urlset" /></optional>
   </start>
+
+  <define name="sitemapindex">
+    <element name="sitemap:sitemapindex">
+      <ref name="sitemap" />
+    </element>
+  </define>
+
+  <define name="sitemap">
+    <element name="sitemap:sitemap">
+      <ref name="loc" />
+    </element>
+  </define>
 
   <define name="urlset">
     <element name="sitemap:urlset">
-      <attribute name="url"><data type="string"/></attribute>
       <ref name="url" />
     </element>
   </define>

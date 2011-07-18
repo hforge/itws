@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.datatypes import Integer
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import BaseView
@@ -34,6 +35,7 @@ class SiteMapView(BaseView):
 
     template = '/ui/common/sitemap.xml'
     access = True
+    query_schema = {'id': Integer}
 
 
     def get_items_query(self, resource, context):
@@ -75,17 +77,36 @@ class SiteMapView(BaseView):
 
 
     def get_namespace(self, resource, context):
+        # Max urls according to sitemaps.org is 50000
+        # Set to 5000 for performances
+        max_urls = 5000
         urls = []
-        site_root = resource.parent
+        sitemaps = []
 
-        for brain in self.get_items(resource, context):
-            row = {}
-            for column in ('loc', 'lastmod'):
-                row[column] = self.get_item_value(resource, context, brain,
-                                                  column, site_root)
-            urls.append(row)
+        query = self.get_items_query(resource, context)
+        items = context.root.search(query)
 
-        return {'urls': urls}
+        nb_items = len(items)
+        id_sitemap = context.query['id']
+        if nb_items <= max_urls or id_sitemap:
+            # id_sitemap is None if id is not specified in the query
+            start = 0 if id_sitemap is None else (id_sitemap - 1) * max_urls
+            base_uri = str(context.uri.resolve('/'))
+            for brain in items.get_documents(sort_by='abspath',
+                                             start=start, size=max_urls):
+                uri = '/'.join(brain.abspath.split('/')[2:])
+                urls.append(
+                    {'loc': base_uri + uri,
+                     'lastmod': brain.mtime.strftime('%Y-%m-%d')})
+        else:
+            nb_sitemaps = nb_items / max_urls
+            if nb_items % max_urls > 0:
+                nb_sitemaps += 1
+            for i in range(1, nb_sitemaps+1):
+                loc = context.uri.replace(id=i)
+                sitemaps.append(str(loc))
+
+        return {'urls': urls, 'sitemaps': sitemaps}
 
 
     def GET(self, resource, context):
