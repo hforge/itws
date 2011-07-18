@@ -36,7 +36,10 @@ from itws.views import AdvanceGoToSpecificDocument
 # Resources
 ###############################################################################
 class SideBarAware(InternalResourcesAware):
-
+    """ Allow to include a side bar with items to be displayed.
+        Side bar is showed only if display_sidebar is not False
+        neither on resource nor view.
+    """
     class_version = '20100621'
     class_views = ['order_sidebar']
     # class_schema is not overrided
