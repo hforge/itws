@@ -39,7 +39,7 @@ from ikaaro.folder_views import Folder_NewResource as BaseFolder_NewResource
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.registry import get_resource_class
 from ikaaro.resource_views import DBResource_Edit, EditLanguageMenu
-from ikaaro.utils import get_content_containers
+from ikaaro.utils import get_content_containers, get_base_path_query
 from ikaaro.views_new import NewInstance
 from ikaaro.workflow import StaticStateEnumerate, state_widget
 from ikaaro.workflow import WorkflowAware
@@ -375,7 +375,7 @@ class FieldsAdvance_NewInstance(AutoForm):
             context = get_context()
             abspath = context.resource.get_canonical_path()
             query = AndQuery(
-                    PhraseQuery('parent_path', str(abspath)),
+                    get_base_path_query(str(abspath), depth=1),
                     PhraseQuery('format', self.add_cls.class_id))
             search = context.root.search(query)
             if len(search):

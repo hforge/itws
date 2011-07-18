@@ -156,7 +156,7 @@ class Feed_View(Folder_BrowseContent):
         container_abspath = container.get_canonical_path()
         if self.search_on_current_folder_recursive is False:
             # Limit result to direct children
-            args.append(PhraseQuery('parent_path', str(container_abspath)))
+            args.append(get_base_path_query(str(container_abspath), depth=1))
         else:
             # Limit results to whole sub children
             args.append(get_base_path_query(str(container_abspath)))

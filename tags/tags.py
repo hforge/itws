@@ -126,8 +126,8 @@ class TagsFolder(Folder):
     def get_tags_query_terms(self, state=None, tags=[], formats=[]):
         site_root = self.get_site_root()
         abspath = str(site_root.get_canonical_path())
-        query = [ PhraseQuery('parent_paths', abspath),
-                  PhraseQuery('is_tagsaware', True) ]
+        query = [PhraseQuery('parent_paths', abspath),
+                 PhraseQuery('is_tagsaware', True) ]
 
         if state:
             query.append(PhraseQuery('workflow_state', state))

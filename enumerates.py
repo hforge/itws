@@ -99,7 +99,7 @@ class SearchTypes_Enumerate(Enumerate):
         if view.search_on_current_folder_recursive:
             query = get_base_path_query(str(container_abspath))
         else:
-            query = PhraseQuery('parent_path', str(container_abspath))
+            query = get_base_path_query(str(container_abspath), depth=1)
 
         # Exclude '/theme/'
         if isinstance(resource, WebSite):
