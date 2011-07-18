@@ -60,6 +60,7 @@ class Feed_View(Folder_BrowseContent):
     batch_size = 25
     sort_by = 'title'
     reverse = False
+    more_title = MSG(u'Read more')
     content_keys = ('pub_datetime', 'title', 'long_title',
                     'link', 'is_image', 'preview',
                     'tags', 'workflow_state',
@@ -278,7 +279,7 @@ class Feed_View(Folder_BrowseContent):
             for key in self.content_keys:
                 kw[key] = self.get_item_value(resource, context, item, key)
             namespace['items'].append(kw)
-        namespace['more_title'] = MSG(u'Read more')
+        namespace['more_title'] = self.more_title
         return namespace
 
 
