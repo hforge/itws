@@ -111,3 +111,14 @@ Build documentation PDF::
 
   $ ipkg-docs.py pdf
   $ evince docs/_build/latex/index.pdf
+
+
+About versions
+==============
+
+Here details about ITWS versions::
+
+  - ITWS 1.0 -> Use ikaaro/itools 0.61 (First version of ITWS)
+  - ITWS 1.1 -> Use ikaaro/itools 0.61 (Same that ITWS 1.0 but with advance navigation)
+  - ITWS 1.2 -> Use ikaaro/itools 0.62
+  - ITWS Master -> Devel branch
