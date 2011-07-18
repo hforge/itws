@@ -142,11 +142,11 @@ class AutomaticEditView(DBResource_Edit):
         - Allow to hide title widget
         - Fix a bug (with query to keep)
         - Use edit_widgets instead of widgets
-        - Add timestamp if not already present
+        - timestamp is added automatically
     """
-    # Reset DBResource_Edit values, keep only timestamp
-    schema = freeze({'timestamp': DateTime(readonly=True)})
-    widgets = freeze([timestamp_widget])
+    # Reset DBResource_Edit values
+    schema = freeze({})
+    widgets = freeze([])
 
     # Configuration
     display_title = True
@@ -164,26 +164,23 @@ class AutomaticEditView(DBResource_Edit):
 
 
     def _get_schema(self, resource, context):
-        schema = merge_dicts(self.schema, self.edit_schema)
+        schema = {'timestamp': DateTime(readonly=True)}
+        # Add edit_schema items
+        schema = merge_dicts(schema, self.edit_schema)
         # If Workfloware we add state
         if isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate(workflow=resource.workflow)
         # Hide title ?
         if self.display_title is False and self.schema.has_key('title'):
             schema['title'] = schema['title'](hidden_by_default=True)
-        if 'timestamp' not in schema:
-            schema['timestamp'] = DateTime(readonly=True)
 
         return freeze(schema)
 
 
     def _get_widgets(self, resource, context):
-        widgets = self.edit_widgets
-        # Cast frozen list into list
-        widgets = list(widgets)
-        # Force timestamp if not set in edit_widgets
-        if 'timestamp' not in widgets:
-            widgets.append(timestamp_widget)
+        widgets = [timestamp_widget]
+        # Add edit_widgets items
+        widgets.extend(self.edit_widgets)
         # If workfloware we add state
         if isinstance(resource, WorkflowAware):
             widgets.append(state_widget)
@@ -212,7 +209,7 @@ class FieldsAutomaticEditView(AutomaticEditView):
     We use get_default_widget to guess widgets.
     We use schema title to define widget title
     """
-    edit_fields = freeze(['title', 'description', 'subject', 'timestamp'])
+    edit_fields = freeze(['title', 'description', 'subject'])
 
 
     @property
