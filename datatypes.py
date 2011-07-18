@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import Integer, Enumerate, PathDataType, Time
+from itools.datatypes import Integer, Enumerate, PathDataType, Time, String
 from itools.gettext import MSG
 from itools.uri import get_reference
 from itools.web import get_context
@@ -28,6 +28,14 @@ from itools.web import get_context
 from ikaaro.file import Image
 from ikaaro.skins import skin_registry
 
+
+class StringFixSize(String):
+
+    @classmethod
+    def is_valid(cls, value):
+        if not value:
+            return True
+        return len(value) == cls.size
 
 
 class PositiveInteger(Integer):
