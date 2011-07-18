@@ -1,0 +1,12 @@
+/*
+ * Workflow
+ */
+
+/* Orders */
+.wf-open { color: #FFAB00; }
+.wf-canceled { color: #FF1F00; }
+.wf-closed { color: #000000; }
+/* Payments */
+.wf-partially-paid { color: #75906E; }
+.wf-paid, .wf-validated { color: #008000; }
+.wf-payment-error { color: #BF0000; }

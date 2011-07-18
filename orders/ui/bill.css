@@ -1,0 +1,66 @@
+body{
+  margin-left:0.5cm;
+  margin-right:0.5cm;
+  padding-left:0;
+  padding-right:0;
+}
+
+#table{
+  margin-top: 20px;
+  border: 0.3px solid black;
+}
+
+#table th{
+  background-color: #F0F0F0;
+  padding: 4px;
+}
+
+#table td{
+  padding: 4px;
+}
+
+#articles{
+  margin-top: 20px;
+}
+
+#articles th{
+  background-color: #F0F0F0;
+  padding: 4px;
+}
+
+#articles td{
+  padding: 4px;
+  border-bottom: 1px solid black;
+}
+
+#price td{
+  font-weight: bold;
+}
+
+.align-right{
+  text-align: right;
+}
+
+p.page {
+  font-family: sansserif;
+  text-align: right;
+  font-size: 6;
+  font-weight: normal;
+  padding: 0;
+}
+
+p.footer {
+  font-family: sansserif;
+  text-align: center;
+  font-size: 8;
+  font-weight: normal;
+  padding: 0;
+}
+
+#header td{
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#addresses{
+}

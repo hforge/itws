@@ -1,0 +1,157 @@
+<pml:html xmlns:pml="http://www.hforge.org/xml-namespaces/pml"
+          xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <pml:head>
+    <pml:title>Bill</pml:title>
+    <pml:link rel="stylesheet" type="text/css" href="./bill.css"/>
+  </pml:head>
+
+  <pml:header>
+    <pml:table id="header">
+      <pml:tr>
+        <pml:td>
+          <br/>
+          <pml:img src="${logo}" stl:if="logo" style="float:left"/>
+        </pml:td>
+        <pml:td>
+        Invoice number: ${reference}
+        <pml:img src="${order_barcode}" stl:if="order_barcode"/><br/>
+        </pml:td>
+      </pml:tr>
+    </pml:table>
+  </pml:header>
+
+  <pml:footer>
+    <pml:p class="footer">
+      ${pdf_signature}
+    </pml:p>
+    <pml:p class="page">Page <pml:pagenumber/> / <pml:pagetotal/></pml:p>
+  </pml:footer>
+
+
+  <pml:body>
+
+    <pml:table id="addresses">
+      <pml:tr>
+        <pml:td>
+          <pml:p>
+            OOOOOO
+          </pml:p>
+        </pml:td>
+      </pml:tr>
+    </pml:table>
+
+  <!--
+    <pml:table id="addresses">
+      <pml:tr>
+        <pml:td>
+          <pml:p>
+            <pml:b>Delivery address</pml:b><pml:br/>
+            ${delivery_address/firstname} ${delivery_address/lastname}<pml:br/>
+            ${delivery_address/address_1}<br/>
+            <stl:block stl:if="delivery_address/address_2">
+              ${delivery_address/address_2}<br/>
+            </stl:block>
+            ${delivery_address/zipcode} ${delivery_address/town}<pml:br/>
+            ${delivery_address/country}<pml:br/>
+            ${customer/email}<pml:br/>
+            <span stl:if="customer/phone1">${customer/phone1}<br/></span>
+            <span stl:if="customer/phone2">${customer/phone2}<br/></span>
+          </pml:p>
+        </pml:td>
+        <pml:td>
+          <pml:p>
+            <pml:b>Bill address</pml:b><pml:br/>
+            ${bill_address/firstname} ${bill_address/lastname}<pml:br/>
+            ${bill_address/address_1}<pml:br/>
+            <stl:block stl:if="bill_address/address_2">
+              ${bill_address/address_2}<br/>
+            </stl:block>
+            ${bill_address/zipcode} ${bill_address/town}<pml:br/>
+            ${bill_address/country}<pml:br/>
+          </pml:p>
+        </pml:td>
+      </pml:tr>
+    </pml:table>
+
+
+
+    <pml:table id="table">
+      <pml:tr>
+        <pml:th>
+          Invoice number ${reference} from ${creation_date}
+        </pml:th>
+      </pml:tr>
+      <pml:tr>
+        <pml:td>
+          Invoice ${reference}
+        </pml:td>
+      </pml:tr>
+    </pml:table>
+!-->
+
+    <pml:table id="articles">
+      <pml:tr>
+        <pml:th width="7cm">Description</pml:th>
+        <pml:th>Reference</pml:th>
+        <pml:th width="2cm">Unit price</pml:th>
+        <pml:th width="1cm">Qty</pml:th>
+        <pml:th width="2cm">Pre-Tax Total</pml:th>
+        <pml:th>VAT</pml:th>
+        <pml:th>Total</pml:th>
+      </pml:tr>
+      <pml:tr stl:repeat="product products">
+        <pml:td>${product/title}</pml:td>
+        <pml:td>${product/reference}</pml:td>
+        <pml:td>-</pml:td>
+        <pml:td>${product/quantity}</pml:td>
+        <pml:td>-</pml:td>
+        <pml:td>-</pml:td>
+        <pml:td>-</pml:td>
+      </pml:tr>
+    </pml:table>
+
+    <p>
+      <br/>
+    </p>
+<!--
+    <pml:table id="price">
+      <pml:tr>
+        <pml:td width="15cm"></pml:td>
+        <pml:td width="5cm" class="align-right">
+          Total products (tax exclu.):
+        </pml:td>
+        <pml:td width="5cm">
+          ${price/products/without_tax}
+        </pml:td>
+      </pml:tr>
+      <pml:tr>
+        <pml:td width="15cm"></pml:td>
+        <pml:td class="align-right">
+          Total products (tax incl.):
+        </pml:td>
+        <pml:td width="5cm">
+          ${price/products/with_tax}
+        </pml:td>
+      </pml:tr>
+      <pml:tr>
+        <pml:td></pml:td>
+        <pml:td class="align-right">
+          Total shipping:
+        </pml:td>
+        <pml:td>
+          ${price/shippings/with_tax}
+        </pml:td>
+      </pml:tr>
+      <pml:tr>
+        <pml:td></pml:td>
+        <pml:td class="align-right">
+          Total with Tax:
+        </pml:td>
+        <pml:td>${price/total/with_tax}</pml:td>
+      </pml:tr>
+    </pml:table>
+-->
+
+ </pml:body>
+</pml:html>

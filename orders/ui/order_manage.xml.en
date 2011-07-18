@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <table cellpadding="0" cellspacing="0" style="width:100%">
+    <tr>
+      <td style="width:48px" valign="top">
+        <img src="/ui/icons/48x48/tasks.png"/>
+      </td>
+      <td>
+        <h1 style="padding:0;margin:0">
+          Order number #${order/id}
+        </h1>
+      </td>
+    </tr>
+  </table>
+
+
+  <table cellpadding="0" cellspacing="10">
+    <tr>
+      <th>State</th>
+      <td>
+        <form method="post">
+          ${transitions}
+          <button type="submit" class="button-ok"
+            name="action" value="change_order_state">OK</button>
+          <br/>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <th>Bill</th>
+      <td>
+        <form method="POST">
+          <button class="pdf" name="action" value="generate_bill">Generate BILL</button>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <th>Payments</th>
+      <td>
+        <a href="./;add_payment">Add a payment</a>
+      </td>
+    </tr>
+  </table>
+
+
+
+  <h1 class="title">Products</h1>
+
+  <table id="browse-list">
+    <thead>
+      <tr>
+        <th>
+          <a href="./;add_line">
+            <img src="/ui/icons/16x16/new.png"/>
+          </a>
+        </th>
+        <th>Reference</th>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr stl:repeat="product products">
+        <td/>
+        <td>${product/reference}</td>
+        <td>${product/title}</td>
+        <td>${product/quantity}</td>
+        <td>${product/price}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</stl:block>
