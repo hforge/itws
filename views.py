@@ -287,7 +287,13 @@ class FieldsAdvance_NewInstance(AutoForm):
             # No multilingual datatypes on creation forms
             datatype = schema[name]
             if issubclass(datatype, Multilingual):
-                datatype = Unicode
+                new_datatype = Unicode()
+                # Keep datatype attributes
+                for attr_name in attr_keys:
+                    attr_value = getattr(datatype, attr_name, None)
+                    if attr_value != getattr(new_datatype, attr_name, None):
+                        setattr(new_datatype, attr_name, attr_value)
+                datatype = new_datatype
             elif getattr(datatype, 'multilingual', False):
                 datatype.multilingual = False
             kw[name] = datatype
