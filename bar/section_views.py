@@ -38,7 +38,8 @@ class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
     """ EditView gives "view" helper. """
 
     def _get_schema(self, resource, context):
-        base = {'title': Multilingual}
+        base = {'title': Multilingual,
+                'description': Multilingual}
         return freeze(merge_dicts(
                 base,
                 AutomaticEditView._get_schema(self, resource, context),
