@@ -57,8 +57,8 @@ admin_bar_template = make_stl_template("""
   <div class="fancybox-buttons admin-bar">
     <a href="${link}" title="${title}" rel="${rel}">
       <img src="/ui/icons/16x16/edit.png"/>
-      <strong stl:if="workflow" class="wf-${workflow/state}">
-        ${workflow/title}
+      <strong stl:omit-tag="not workflow" class="wf-${workflow/state}">
+        ${class_title}
       </strong>
     </a>
   </div>""")
@@ -105,6 +105,7 @@ def get_admin_bar(resource, buttons=[]):
     namespace = {'link': link,
                  'rel': 'fancybox' if use_fancybox else None,
                  'buttons': buttons,
+                 'class_title': resource.class_title,
                  'title': title,
                  'workflow': workflow}
     return stl(events=events, namespace=namespace)
