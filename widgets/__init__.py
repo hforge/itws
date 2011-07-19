@@ -23,13 +23,13 @@ from ikaaro.skins import register_skin
 
 # Import from itws
 from base import Advance_RTEWidget, DualSelectWidget, XMLTitleWidget
-from base import ClassSelectorWidget
+from base import ClassSelectorWidget, JSDatetimeWidget
 from google_map import GoogleMapWidget, GoogleGPSWidget
 from osm import OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 # Silent pyflakes
 Advance_RTEWidget, ClassSelectorWidget, DualSelectWidget, XMLTitleWidget
-GoogleMapWidget, GoogleGPSWidget
+GoogleMapWidget, GoogleGPSWidget, JSDatetimeWidget
 OpenStreetMapWidget, OpenStreetMapGPSWidget
 
 

@@ -25,6 +25,7 @@ from itools.web import get_context
 from itools.database import AndQuery, PhraseQuery, StartQuery, OrQuery
 
 # Import from ikaaro
+from ikaaro.autoform import ImageSelectorWidget
 from ikaaro.control_panel import ControlPanel
 from ikaaro.file import File
 from ikaaro.folder import Folder
@@ -36,8 +37,10 @@ from ikaaro.utils import reduce_string
 from ikaaro.views_new import NewInstance
 
 # Import from itws
+from datatypes import TagsList
 from tags_views import Tag_View, Tag_Edit, Tag_RSS, TagsFolder_TagCloud
-from tags_views import TagsList, TagsFolder_BrowseContent
+from tags_views import TagsFolder_BrowseContent
+from itws.widgets import DualSelectWidget, JSDatetimeWidget
 
 
 
@@ -187,10 +190,14 @@ class TagsAware(object):
     class_schema = {
             # Metadata
             'tags': TagsList(source='metadata', title=MSG(u'Tags'),
-                multiple=True, indexed=True, stored=True),
+                has_empty_option=False,
+                multiple=True, indexed=True, stored=True,
+                widget=DualSelectWidget),
             'pub_datetime': DateTime(source='metadata', indexed=True,
-                                     stored=True),
+                stored=True, title=MSG(u'Publication Date & Time'),
+                widget=JSDatetimeWidget),
             'thumbnail': URI(source='metadata', multilingual=True,
+                widget=ImageSelectorWidget,
                 title=MSG(u'Thumbnail'), parameters_schema={'lang': String}),
             # Catalog
             'is_tagsaware': Boolean(indexed=True, stored=True),

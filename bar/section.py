@@ -25,6 +25,7 @@ from itools.datatypes import String
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.autoform import MultilineWidget
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import Folder_BrowseContent
@@ -97,7 +98,9 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
         TagsAware.class_schema,
         ResourcesOrderedContainer.class_schema,
         view=SectionViews_Enumerate(source='metadata',
-                                    default='composite-view'))
+            title=MSG(u'View'), default='composite-view'))
+    class_schema['description'].title = MSG(u'Description')
+    class_schema['description'].widget = MultilineWidget
 
 
     class_views = ['view', 'edit', 'configure_view', 'control_panel']

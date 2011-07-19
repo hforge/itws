@@ -27,9 +27,7 @@ from itools.web import get_context, STLView
 from itools.database import PhraseQuery, RangeQuery
 
 # Import from ikaaro
-from ikaaro.datatypes import Multilingual
 from ikaaro.folder_views import Folder_BrowseContent
-from ikaaro.autoform import TextWidget
 from ikaaro.popup import DBResource_AddImage
 from ikaaro.utils import get_base_path_query
 
@@ -88,21 +86,8 @@ class NewsItem_AddImage(DBResource_AddImage):
 
 class NewsItem_Edit(WebPage_Edit):
 
-    # Publication datetime is mandatory
-    pub_datetime_mandatory = True
-
-    def _get_schema(self, resource, context):
-        proxy = super(NewsItem_Edit, self)
-        return freeze(merge_dicts(proxy._get_schema(resource, context),
-                                  long_title=Multilingual))
-
-
-    def _get_widgets(self, resource, context):
-        proxy = super(NewsItem_Edit, self)
-        widgets = proxy._get_widgets(resource, context)[:]
-        widgets.insert(2, TextWidget('long_title', title=MSG(u'Long title')))
-        return freeze(widgets)
-
+    edit_fields = freeze(['title', 'display_title', 'long_title',
+                          'data', 'tags', 'thumbnail', 'pub_datetime'])
 
 
 class NewsFolder_View(Details_View):
