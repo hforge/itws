@@ -24,12 +24,11 @@ from itools.gettext import MSG
 from itools.stl import stl
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget
-from ikaaro.workflow import state_widget
+from ikaaro.utils import get_base_path_query
 
 # Import from itws
 from bar_aware import SideBarAware
-from base import display_title_widget, Box
+from base import Box
 from base_views import Box_View
 from itws.webpage import WebPage
 from section import Section
@@ -167,24 +166,22 @@ class BoxNavigation(Box):
     class_icon48 = 'bar_items/icons/48x48/box_navigation.png'
 
     class_schema = merge_dicts(
-            Box.class_schema,
-            display_title=Boolean(source='metadata', default=True),
-            limit_to_current_folder=Boolean(source='metadata', default=False),
-            limit_to_ordered_resources=Boolean(source='metadata',
-                                               default=False))
+        Box.class_schema,
+        display_title=Boolean(source='metadata', default=True,
+                              title=MSG(u'Display title')),
+        limit_to_current_folder=Boolean(
+                       source='metadata', default=False,
+                       title=MSG(u'Use current section as tree root')),
+        limit_to_ordered_resources=Boolean(source='metadata',
+                       title=MSG(u'Display ordered resources only.'),
+                       default=False))
 
     # Configuration of automatic edit view
-    edit_schema = freeze({'display_title': Boolean,
-                          'limit_to_current_folder': Boolean,
-                          'limit_to_ordered_resources': Boolean})
-    edit_widgets = freeze([
-        display_title_widget,
-        CheckboxWidget('limit_to_current_folder',
-                       title=MSG(u'Use current section as tree root')),
-        CheckboxWidget('limit_to_ordered_resources',
-                       title=MSG(u'Display ordered resources only.')),
-        state_widget
-        ])
+    # XXX Workflow state
+    edit_fields = freeze(['display_title', 'limit_to_current_folder',
+                          'limit_to_ordered_resources'])
+
+    # Configuration
     is_contentbox = False
 
     # Views

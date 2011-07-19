@@ -78,8 +78,6 @@ class HTMLContent_Edit(HTMLEditView):
     def _get_schema(self, resource, context):
         schema = merge_dicts(
                 HTMLEditView._get_schema(self, resource, context),
-                # BoxAware API
-                resource.edit_schema,
                 # other
                 title_link_schema,
                 display_title=Boolean)
@@ -101,9 +99,7 @@ class HTMLContent_Edit(HTMLEditView):
             PathSelectorWidget('title_link', title=MSG(u'Title link')),
             RadioWidget('title_link_target', title=MSG(u'Title link target'),
                         has_empty_option=False, oneline=True),
-            advance_rte_widget, state_widget ]
-            # BoxAware API
-            + resource.edit_widgets)
+            advance_rte_widget, state_widget ])
 
 
 

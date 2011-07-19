@@ -43,11 +43,11 @@ from ikaaro.table_views import OrderedTable_View, AddRecordButton
 from ikaaro.views import CompositeForm
 
 # Import from itws
-from base import display_title_widget, BoxAware
+from base import BoxAware
 from base_views import Box_View
 from itws.datatypes import ImagePathDataType
 from itws.utils import get_path_and_view
-from itws.views import AutomaticEditView, EditOnlyLanguageMenu
+from itws.views import FieldsAutomaticEditView, EditOnlyLanguageMenu
 from itws.views import TableViewWithoutAddRecordButton
 from menu import MenuSideBarTable_AddRecord
 
@@ -375,10 +375,12 @@ class Diaporama(BoxAware, Folder):
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['order-banners']
 
-    class_schema = merge_dicts(Folder.class_schema,
-                               BoxAware.class_schema,
-                               display_title=Boolean(source='metadata',
-                                                     default=True))
+    class_schema = merge_dicts(
+        Folder.class_schema,
+        BoxAware.class_schema,
+        display_title=Boolean(source='metadata',
+                              title=MSG(u'Display title'),
+                              default=True))
 
     # Configuration
     use_fancybox = False
@@ -386,8 +388,7 @@ class Diaporama(BoxAware, Folder):
     is_contentbox = True
     is_sidebox = False
 
-    edit_schema = freeze({'display_title': Boolean})
-    edit_widgets = freeze([display_title_widget])
+    edit_fields = freeze(['display_title'])
 
     order_path = 'order-banners'
     order_table = DiaporamaTable
@@ -415,6 +416,5 @@ class Diaporama(BoxAware, Folder):
     view = Diaporama_View()
     edit = GoToSpecificDocument(specific_document='order-banners',
                                 title=MSG(u'Edit'))
-    configure = AutomaticEditView(title=MSG(u'Configure'),
-                                  edit_schema=edit_schema,
-                                  edit_widgets=edit_widgets)
+    configure = FieldsAutomaticEditView(title=MSG(u'Configure'),
+                                  edit_fields=edit_fields)

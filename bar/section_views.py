@@ -44,19 +44,12 @@ class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
 
 
     def _get_widgets(self, resource, context):
-        base_widgets = AutomaticEditView._get_widgets(self, resource, context)
-        default_widgets = [ widget for widget in base_widgets ]
-        if 'description' in self.edit_schema:
-            for w in default_widgets:
-                if w.name == 'description':
-                    w = MultilineWidget('description',
-                          title=MSG(u'Description (used by RSS and tags)'))
-
-        widgets =  (default_widgets +
-                [SelectWidget('view', title=MSG(u'View'),
-                              has_empty_option=False)] +
-                TagsAware_Edit._get_widgets(self, resource, context))
-        return freeze(widgets)
+        return freeze(
+            AutomaticEditView._get_widgets(self, resource, context) + [
+            SelectWidget('view', title=MSG(u'View'), has_empty_option=False),
+            MultilineWidget('description',
+                  title=MSG(u'Description (used by RSS and tags)'))] +
+            TagsAware_Edit._get_widgets(self, resource, context))
 
 
     def get_value(self, resource, context, name, datatype):

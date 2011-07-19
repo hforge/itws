@@ -25,12 +25,10 @@ from itools.uri import Path
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, SelectWidget, TextWidget
-from ikaaro.autoform import RadioWidget
 from ikaaro.utils import get_content_containers
 
 # Import from itws
-from base import display_title_widget, title_link_schema, title_link_widgets
+from base import title_link_schema
 from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
@@ -38,7 +36,6 @@ from itws.datatypes import SortBy_Enumerate
 from itws.feed_views import Details_View
 from itws.tags import TagsList, TagsAwareClassEnumerate
 from itws.tags import get_registered_tags_aware_classes
-from itws.widgets import DualSelectWidget
 
 
 
@@ -203,18 +200,25 @@ class BoxFeed(Box):
     class_views = ['view', 'edit', 'edit_state', 'backlinks', 'commit_log']
 
     class_schema = merge_dicts(
-            Box.class_schema,
-            title_link_schema,
-            container_path=PathDataType(source='metadata', default='/'),
-            count=PositiveInteger(source='metadata', default=3),
-            sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime'),
-            reverse=Boolean(source='metadata', default=True),
-            display_title=Boolean(source='metadata', default=True),
-            feed_class_id=TagsAwareClassEnumerate(source='metadata',
-                                                  multiple=True),
-            tags=TagsList(source='metadata', multiple=True, default=[]),
-            view=BoxFeed_Enumerate(source='metadata',
-                default='/ui/feed_views/NewsItem_preview_with_thumbnail.xml'))
+        Box.class_schema,
+        title_link_schema,
+        container_path=TagsAwareContainerPathDatatype(
+              source='metadata', default='/', title=MSG(u'Container')),
+        count=PositiveInteger(source='metadata', default=3,
+                              title=MSG(u'Number of items to show (0 = All)')),
+        sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime',
+                                 title=MSG(u'Sort by')),
+        reverse=Boolean(source='metadata', default=True,
+                        title=MSG(u'Reverse')),
+        display_title=Boolean(source='metadata', default=True,
+                          title=MSG(u'Display title')),
+        feed_class_id=TagsAwareClassEnumerate(source='metadata',
+                          title=MSG(u'Feed Source'), multiple=True),
+        tags=TagsList(source='metadata', multiple=True, default=[],
+                      title=MSG(u'Show only items with these tags')),
+        view=BoxFeed_Enumerate(source='metadata',
+            title=MSG(u'Feed template'),
+            default='/ui/feed_views/NewsItem_preview_with_thumbnail.xml'))
 
     # Configuration
     allow_instanciation = True
@@ -222,40 +226,17 @@ class BoxFeed(Box):
     is_contentbox = True
 
     # Automatic Edit View
-    edit_schema = freeze(merge_dicts({
-             'container_path': TagsAwareContainerPathDatatype,
-             'count': PositiveInteger(default=3),
-             'display_title': Boolean,
-             'feed_class_id': TagsAwareClassEnumerate(multiple=True,
-                                                      mandatory=True),
-             'sort_by': SortBy_Enumerate,
-             'reverse': Boolean(default=True),
-             'tags': TagsList(multiple=True, states=[]),
-             'view': BoxFeed_Enumerate},
-             title_link_schema))
-
-
-    edit_widgets = freeze(
-        [ display_title_widget ] +
-        title_link_widgets +
-        [ SelectWidget('container_path', title=MSG(u'Container'),
-                     has_empty_option=False),
-        CheckboxWidget('feed_class_id', title=MSG(u'Feed Source'),
-                       has_empty_option=True),
-        SelectWidget('view', title=MSG(u'Feed template'),
-                     has_empty_option=False),
-        SelectWidget('sort_by', title=MSG(u'Sort by'),
-                     has_empty_option=False),
-        RadioWidget('reverse', title=MSG(u'Reverse'), oneline=True),
-        TextWidget('count',
-                   title=MSG(u'Number of items to show (0 = All)'), size=3),
-        DualSelectWidget('tags', title=MSG(u'Show only items with these tags'),
-                         is_inline=True, has_empty_option=False)])
-
+    edit_fields = freeze(['title', 'display_title',
+                          'title_link', 'title_link_target',
+                          'container_path', 'count', 'feed_class_id',
+                          'sort_by', 'reverse', 'tags', 'view'])
 
     # Views
     view = BoxFeed_View()
 
+    ##########################################
+    # Links API
+    ##########################################
 
     def get_links(self):
         links = super(BoxFeed, self).get_links()

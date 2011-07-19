@@ -17,19 +17,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze
-from itools.datatypes import String
 from itools.gettext import MSG
 from itools.uri import Path, Reference
 
 # Import from ikaaro
-from ikaaro.autoform import ReadOnlyWidget, XHTMLBody
 from ikaaro.website_views import ContactForm
 
 # Import from itws
 from base import Box
 from homepage import WSDataFolder
-from itws.views import AutomaticEditView
 
 
 
@@ -111,17 +107,6 @@ class BoxContact_View(ContactForm):
 
 
 
-class BoxContact_Edit(AutomaticEditView):
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'configuration_shortcut':
-            html = '<a href="/;edit_contact_options">configuration</a>'
-            return XHTMLBody.decode(html)
-        proxy = super(BoxContact_Edit, self)
-        return proxy.get_value(resource, context, name, datatype)
-
-
-
 class BoxContact(Box):
 
     class_id = 'box-contact'
@@ -131,16 +116,10 @@ class BoxContact(Box):
     class_icon16 = 'bar_items/icons/16x16/box_contact.png'
     class_icon48 = 'bar_items/icons/48x48/box_contact.png'
 
-    # Configuration of automatic edit view
-    edit_schema = freeze({'configuration_shortcut': String(readonly=True)})
-    edit_widgets = freeze([
-        ReadOnlyWidget('configuration_shortcut',
-                       title=MSG(u'To configure the website email options, '
-                                 u'please follow the link below'))])
+    # Configuration of edit view
+    edit_fields = ['title']
 
     is_contentbox = True
 
     # Views
     view = BoxContact_View()
-    edit = BoxContact_Edit(edit_schema=edit_schema,
-                           edit_widgets=edit_widgets)

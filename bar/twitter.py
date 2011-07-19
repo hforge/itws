@@ -28,20 +28,16 @@ import urllib2
 # Import from itools
 from itools import __version__ as itools_version
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Integer, String, XMLContent, Boolean
+from itools.datatypes import Integer, String, XMLContent
 from itools.gettext import MSG
 from itools.log import log_warning
 from itools.rss import RSSFile
 from itools.xml import XMLParser, XMLError
 
-# Import from ikaaro
-from ikaaro.autoform import TextWidget, CheckboxWidget
-
 # Import from itws
 from base import Box
 from base_views import Box_View
 from itws.utils import ResourceWithCache
-from itws.views import AutomaticEditView
 
 
 
@@ -114,29 +110,6 @@ class IdenticaSideBar_View(TwitterSideBar_View):
         return title_href
 
 
-
-class Microblogging_Edit(AutomaticEditView):
-
-    edit_schema = freeze({'user_id': TwitterID(mandatory=True),
-                          'user_name': String(mandatory=True),
-                          'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean})
-
-    edit_widgets = freeze([
-        TextWidget('user_name', title=MSG(u"Twitter account name")),
-        TextWidget('user_id', title=MSG(u"User Id")),
-        TextWidget('limit', title=MSG(u'Number of tweets')),
-        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
-        ])
-
-
-    def action(self, resource, context, form):
-        AutomaticEditView.action(self, resource, context, form)
-        if not context.edit_conflict and form['force_update']:
-            resource._update_data()
-
-
-
 class TwitterSideBar(Box, ResourceWithCache):
 
     class_id = 'box-twitter'
@@ -147,16 +120,20 @@ class TwitterSideBar(Box, ResourceWithCache):
     # Free twitter icon
     #http://www.webdesignerdepot.com/2009/07/50-free-and-exclusive-twitter-icons/
     class_schema = merge_dicts(Box.class_schema,
-             user_id=TwitterID(source='metadata'),
-             user_name=String(source='metadata'),
-             limit=Integer(source='metadata', default=5),
-             force_update=Boolean(source='metadata'))
+             user_id=TwitterID(source='metadata',
+                               title=MSG(u'User Id')),
+             user_name=String(source='metadata',
+                              title=MSG(u"Twitter account name")),
+             limit=Integer(source='metadata',
+                           title=MSG(u"Number of tweets"), default=5))
 
+
+    # Configuration
     allow_instanciation = True
+    edit_fields = freeze(['user_id', 'user_name', 'limit'])
 
     # Views
     view = TwitterSideBar_View()
-    edit = Microblogging_Edit()
 
 
     def _get_account_uri(self):
@@ -285,30 +262,20 @@ class IdenticaSideBar(TwitterSideBar):
     class_icon16 = 'bar_items/icons/16x16/identica.png'
     class_icon48 = 'bar_items/icons/48x48/identica.png'
     class_schema = merge_dicts(Box.class_schema,
-             user_name=IndenticaName(source='metadata'),
+             user_name=IndenticaName(source='metadata',
+                                     title=MSG(u'Identi.ca account name')),
              limit=Integer(source='metadata', mandatory=True, default=5,
-                           size=3),
-             force_update=Boolean(source='metadata'))
+                           size=3, title=MSG(u'Number of messages')))
 
     # identica icons source: http://status.net/
 
     # Item configuration
     allow_instanciation = True
 
-    edit_schema = freeze({'user_name': IndenticaName(mandatory=True),
-                          'limit': Integer(mandatory=True, default=5, size=3),
-                          'force_update': Boolean})
-
-    edit_widgets = freeze([
-        TextWidget('user_name', title=MSG(u"Identi.ca account name")),
-        TextWidget('limit', title=MSG(u'Number of messages')),
-        CheckboxWidget('force_update', title=MSG(u'Force cache update')),
-        ])
+    edit_fields = freeze(['user_name', 'limit'])
 
     # Views
     view = IdenticaSideBar_View()
-    edit = Microblogging_Edit(edit_schema=edit_schema,
-                              edit_widgets=edit_widgets)
 
 
     def _get_account_uri(self):

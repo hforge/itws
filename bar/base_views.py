@@ -32,7 +32,15 @@ from ikaaro.views import CompositeView
 
 # Import from itws
 from itws.utils import get_admin_bar
+from itws.views import FieldsAutomaticEditView
 
+
+class Box_Edit(FieldsAutomaticEditView):
+
+    @property
+    def edit_fields(self):
+        context = get_context()
+        return context.resource.edit_fields
 
 
 class Box_View(STLView):

@@ -22,23 +22,20 @@ from itools.datatypes import Boolean, String, URI
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, PathSelectorWidget, RadioWidget
-from ikaaro.autoform import TextWidget
+from ikaaro.autoform import CheckboxWidget
+from ikaaro.multilingual import Multilingual
 from ikaaro.file import File
 from ikaaro.menu import Target
 
 # Import from itws
-from itws.views import AutomaticEditView , EasyNewInstance
-
+from base_views import Box_Edit
+from itws.views import EasyNewInstance
 
 
 title_link_schema = freeze({
-    'title_link': URI(source='metadata'),
-    'title_link_target': Target(source='metadata', default='_top')})
-title_link_widgets = freeze([
-    PathSelectorWidget('title_link', title=MSG(u'Title link')),
-    RadioWidget('title_link_target', title=MSG(u'Title link target'),
-                has_empty_option=False, oneline=True)])
+    'title_link': URI(source='metadata', title=MSG(u'Title link')),
+    'title_link_target': Target(source='metadata', default='_top',
+                                title=MSG(u'Title link target'))})
 
 display_title_widget = CheckboxWidget('display_title',
         title=MSG(u'Display title'))
@@ -48,14 +45,12 @@ class BoxAware(object):
 
     class_schema = freeze({
         'box_aware': Boolean(indexed=True),
-        'specific_css': String(source='metadata')})
+        'specific_css': String(source='metadata', title=MSG(u'Specific CSS'))})
 
-    edit = AutomaticEditView()
+    edit = Box_Edit()
     new_instance = EasyNewInstance()
 
-    edit_schema = freeze({'specific_css': String(hidden_by_default=True)})
-    edit_widgets = freeze([TextWidget('specific_css',
-                                      title=MSG(u'Specific CSS'))])
+    edit_fields = freeze(['specific_css'])
 
     is_sidebox = True
     is_contentbox = False
@@ -83,6 +78,7 @@ class Box(BoxAware, File):
     # Configuration of automatic edit view
     class_schema = freeze(merge_dicts(
         File.class_schema, BoxAware.class_schema))
+    class_schema['title'].title = MSG(u'Title')
 
     download = None
     externaledit = None
@@ -95,4 +91,3 @@ class Box(BoxAware, File):
     def get_catalog_values(self):
         return merge_dicts(File.get_catalog_values(self),
                            BoxAware.get_catalog_values(self))
-

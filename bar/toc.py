@@ -25,19 +25,12 @@ from itools.datatypes import Boolean
 from itools.gettext import MSG
 from itools.web import STLView
 
-# Import from ikaaro
-from ikaaro.autoform import RadioWidget
-
 # Import from itws
 from base import Box
 from base_views import Box_View
 from itws.utils import is_navigation_mode
 
 
-
-hide_single_schema = freeze({'hide_if_only_one_item': Boolean(default=True)})
-hide_single_widget = RadioWidget('hide_if_only_one_item',
-        title=MSG(u'Hide if there is only one item'), oneline=True)
 
 
 ###############################################################################
@@ -225,11 +218,11 @@ class BoxSectionChildrenToc(Box):
     class_description = MSG(u'Table Of Content (TOC) to display choosen '
                             u'subsections and webpages')
     class_schema = merge_dicts(Box.class_schema,
-            hide_if_only_one_item=Boolean(source='metadata', default=True))
+            hide_if_only_one_item=Boolean(source='metadata', default=True,
+                title=MSG(u'Hide if there is only one item')))
 
     # Box comfiguration
-    edit_schema = hide_single_schema
-    edit_widgets = freeze([hide_single_widget])
+    edit_fields = freeze(['hide_if_only_one_item'])
     display_title = False
     allow_instanciation = False
 
@@ -246,11 +239,11 @@ class ContentBoxSectionChildrenToc(Box):
                             u'subsections and webpages in the central part')
     class_views = ['edit_state', 'backlinks']
     class_schema = merge_dicts(Box.class_schema,
-            hide_if_only_one_item=Boolean(source='metadata', default=True))
+            hide_if_only_one_item=Boolean(source='metadata', default=True,
+                title=MSG(u'Hide if there is only one item')))
 
     # Box configuration
-    edit_schema = hide_single_schema
-    edit_widgets = freeze([hide_single_widget])
+    edit_fields = freeze(['hide_if_only_one_item'])
     allow_instanciation = False
     is_contentbox = True
     is_sidebox = False

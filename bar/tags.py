@@ -22,11 +22,8 @@ from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 
-# Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, TextWidget
-
 # Import from itws
-from base import display_title_widget, Box
+from base import Box
 from base_views import Box_View
 from itws.datatypes import PositiveInteger
 from itws.tags import TagsAwareClassEnumerate
@@ -86,33 +83,23 @@ class BoxTags(Box):
 
     class_views = ['edit', 'edit_state', 'backlinks', 'commit_log']
     class_schema = merge_dicts(Box.class_schema,
-            formats=TagsAwareClassEnumerate(source='metadata', multiple=True),
-            count=PositiveInteger(source='metadata', default=0),
-            show_number=Boolean(source='metadata'),
-            random=Boolean(source='metadata'),
-            display_title=Boolean(source='metadata'))
+            formats=TagsAwareClassEnumerate(source='metadata', multiple=True,
+                        title=MSG(u'This tag cloud will display only '
+                                  u'the tags from selected types of content')),
+            count=PositiveInteger(source='metadata', default=0,
+                      title=MSG(u'Tags to show (0 for all tags)')),
+            show_number=Boolean(source='metadata',
+                title=MSG(u'Show number of items for each tag')),
+            random=Boolean(source='metadata', title=MSG(u'Randomize tags')),
+            display_title=Boolean(source='metadata',
+                                  title=MSG(u'Display title')))
 
     # Configuration
     allow_instanciation = True
 
     # Box configuration
-    edit_schema = freeze({'formats': TagsAwareClassEnumerate(multiple=True),
-                          'count':PositiveInteger(default=0),
-                          'show_number': Boolean,
-                          'random': Boolean,
-                          'display_title': Boolean})
-
-    edit_widgets = freeze([
-        display_title_widget,
-        TextWidget('count', size=4,
-                   title=MSG(u'Tags to show (0 for all tags)')),
-        CheckboxWidget('show_number',
-                        title=MSG(u'Show number of items for each tag')),
-        CheckboxWidget('random', title=MSG(u'Randomize tags')),
-        CheckboxWidget('formats',
-                    title=MSG(u'This tag cloud will display only '
-                              u'the tags from selected types of content')),
-        ])
+    edit_fields = freeze(['title', 'display_title',
+                          'count', 'show_number', 'random', 'formats'])
 
     # Views
     view = BoxTags_View()

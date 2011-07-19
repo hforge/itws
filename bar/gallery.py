@@ -20,12 +20,9 @@ from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean
 from itools.gettext import MSG
 
-# Import from ikaaro
-from ikaaro.datatypes import Multilingual
-
 # Import from itws
 from itws.section_views.images import ImagesView_Configuration, ImagesView_View
-from itws.bar.base import display_title_widget, Box
+from itws.bar.base import Box
 from itws.bar.base_views import Box_View
 
 
@@ -87,17 +84,12 @@ class BoxGallery(ImagesView_Configuration, Box):
     class_schema = freeze(merge_dicts(
         Box.class_schema,
         ImagesView_Configuration.class_schema,
-        display_title=Boolean(source='metadata', default=True)))
+        display_title=Boolean(source='metadata', default=True,
+                              title=MSG(u'Display title'))),
+                              )
 
     # Configuration of automatic edit view
-    display_title = True
-    edit_schema = freeze(merge_dicts(
-        ImagesView_Configuration.edit_schema,
-        title=Multilingual,
-        display_title=Boolean))
-    edit_widgets  = freeze(
-         [ display_title_widget ]
-         + ImagesView_Configuration.edit_widgets)
-
+    # XXX ImagesView_Configuration
+    edit_fields = freeze(['title', 'display_title'])
 
     view = BoxGallery_View()
