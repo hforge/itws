@@ -241,7 +241,15 @@ class FieldsAutomaticEditView(AutomaticEditView):
         widget = getattr(datatype, 'widget', None)
         if widget is None:
             widget = get_default_widget(datatype)
-        return widget(name, title=title)
+
+        # Keep datatype attributes on widget if None
+        kw = {'title': title}
+        for attr_name in attr_keys:
+            attr_value = getattr(datatype, attr_name, None)
+            if attr_value is not None and attr_value != '':
+                kw[attr_name] = attr_value
+
+        return widget(name, **kw)
 
 
 
