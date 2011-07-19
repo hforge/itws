@@ -168,7 +168,7 @@ class AutomaticEditView(DBResource_Edit):
         # Add edit_schema items
         schema = merge_dicts(schema, self.edit_schema)
         # If Workfloware we add state
-        if isinstance(resource, WorkflowAware):
+        if 'state' not in schema and isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate(workflow=resource.workflow)
         # Hide title ?
         if self.display_title is False and self.schema.has_key('title'):
@@ -183,7 +183,11 @@ class AutomaticEditView(DBResource_Edit):
         widgets.extend(self.edit_widgets)
         # If workfloware we add state
         if isinstance(resource, WorkflowAware):
-            widgets.append(state_widget)
+            for w in widgets:
+                if w.name == 'state':
+                    break
+            else:
+                widgets.append(state_widget)
         return freeze(widgets)
 
 
