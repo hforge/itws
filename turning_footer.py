@@ -22,7 +22,7 @@
 from random import choice
 
 # Import from itools
-from itools.core import freeze, merge_dicts
+from itools.core import merge_dicts
 from itools.csv import Property
 from itools.datatypes import Boolean, String
 from itools.gettext import MSG
@@ -34,13 +34,13 @@ from itools.web import get_context, STLView
 from ikaaro.file import File
 from ikaaro.folder import Folder
 from ikaaro.folder_views import GoToSpecificDocument
-from ikaaro.autoform import CheckboxWidget, XHTMLBody, RTEWidget
+from ikaaro.autoform import XHTMLBody, RTEWidget
 from ikaaro.table import OrderedTableFile, OrderedTable
 from ikaaro.webpage import _get_links, _change_link
 
 # Import from itws
 from utils import get_admin_bar, get_path_and_view
-from views import AutomaticEditView
+from views import FieldsAutomaticEditView
 
 
 
@@ -221,8 +221,10 @@ class TurningFooterFolder(Folder):
 
 
     class_schema = merge_dicts(Folder.class_schema,
-                           random=Boolean(source='metadata', default=True),
-                           active=Boolean(source='metadata', default=True))
+       random=Boolean(source='metadata', default=True,
+                      title=MSG(u'Random selection')),
+       active=Boolean(source='metadata', default=True,
+                      title=MSG(u'Is active')))
 
     order_class = TurningFooterTable
     order_path = 'menu'
@@ -233,13 +235,6 @@ class TurningFooterFolder(Folder):
 
 
     __fixed_handlers__ = Folder.__fixed_handlers__ + [order_path]
-
-    # AutomaticEditView configuration
-    edit_schema = freeze({'random': Boolean, 'active': Boolean})
-
-    edit_widgets = freeze([
-               CheckboxWidget('random', title=MSG(u'Random selection')),
-               CheckboxWidget('active', title=MSG(u'Is active'))])
 
 
     def init_resource(self, **kw):
@@ -268,6 +263,6 @@ class TurningFooterFolder(Folder):
     view = TurningFooterFolder_View()
     edit = GoToSpecificDocument(specific_document='menu',
                                 title=MSG(u'Edit'))
-    configure = AutomaticEditView(title=MSG(u'Configure'),
-                                  edit_schema=edit_schema,
-                                  edit_widgets=edit_widgets)
+    configure = FieldsAutomaticEditView(
+                    title=MSG(u'Configure'),
+                    edit_fields=['random', 'active'])

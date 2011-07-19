@@ -24,7 +24,8 @@ from itools.core import freeze, merge_dicts
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import MultilineWidget, SelectWidget
+from ikaaro.autoform import MultilineWidget, SelectWidget, TextWidget
+from ikaaro.datatypes import Multilingual
 
 # Import from itws
 from itws.section_views import SectionViews_Enumerate
@@ -37,7 +38,9 @@ class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
     """ EditView gives "view" helper. """
 
     def _get_schema(self, resource, context):
+        base = {'title': Multilingual}
         return freeze(merge_dicts(
+                base,
                 AutomaticEditView._get_schema(self, resource, context),
                 TagsAware_Edit._get_schema(self, resource, context),
                 view=SectionViews_Enumerate))
@@ -45,6 +48,7 @@ class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
 
     def _get_widgets(self, resource, context):
         return freeze(
+            [TextWidget('title', title=MSG(u'Title'))] +
             AutomaticEditView._get_widgets(self, resource, context) + [
             SelectWidget('view', title=MSG(u'View'), has_empty_option=False),
             MultilineWidget('description',

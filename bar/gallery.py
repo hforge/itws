@@ -89,7 +89,7 @@ class BoxGallery(ImagesView_Configuration, Box):
                               )
 
     # Configuration of automatic edit view
-    # XXX ImagesView_Configuration
-    edit_fields = freeze(['title', 'display_title'])
+    edit_fields = freeze(['title', 'display_title'] +
+                         ImagesView_Configuration.edit_fields)
 
     view = BoxGallery_View()

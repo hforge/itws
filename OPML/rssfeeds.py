@@ -31,7 +31,7 @@ import urllib2
 
 # Import from itools
 from itools import __version__ as itools_version
-from itools.core import freeze, get_abspath, merge_dicts
+from itools.core import get_abspath, merge_dicts
 from itools.csv import CSVFile
 from itools.datatypes import Boolean, Integer, URI, Unicode, String, HTTPDate
 from itools.datatypes import Decimal, XMLContent
@@ -47,14 +47,13 @@ from itools.xml import XMLParser, stream_to_str, XMLError
 
 # Import from ikaaro
 from ikaaro.buttons import BrowseButton
-from ikaaro.autoform import RadioWidget, TextWidget
 from ikaaro.skins import register_skin
 from ikaaro.text import CSV
 from ikaaro.text_views import CSV_View as BaseCSV_View, CSV_EditRow, CSV_AddRow
 from ikaaro.views_new import NewInstance
 
 # Import from itws
-from itws.views import AutomaticEditView
+from itws.views import FieldsAutomaticEditView
 
 
 
@@ -219,34 +218,6 @@ class CSV_View(BaseCSV_View):
         context.message = INFO(u'Feeds deactivated.')
 
 
-
-class RssFeeds_Configure(AutomaticEditView):
-
-    edit_schema = freeze({
-        'TTL': Integer(mandatory=True),
-        'update_now': Boolean(ignore=True),
-        'timeout': Decimal(mandatory=True)})
-    edit_widgets = freeze([
-        TextWidget('TTL', title=MSG(u"RSS TTL in minutes.")),
-        TextWidget('timeout', title=MSG(u"Timeout in seconds")),
-        RadioWidget('update_now', title=MSG(u"Update RSS now"))])
-
-
-    def get_value(self, resource, context, name, datatype):
-        if name == 'update_now':
-            return False
-        return AutomaticEditView.get_value(self, resource, context, name,
-                                           datatype)
-
-
-    def set_value(self, resource, context, name, form):
-        if name == 'update_now':
-            resource.update_rss()
-            return
-        return AutomaticEditView.set_value(self, resource, context, name, form)
-
-
-
 ######################################################################
 # Handler / resource
 ######################################################################
@@ -292,7 +263,9 @@ class RssFeeds(CSV):
     edit_row = CSV_EditRow(title=MSG(u'Edit RSS'))
     add_row = CSV_AddRow(title=MSG(u'Add RSS'))
     export_to_opml = FeedRSS_OPML()
-    configure = RssFeeds_Configure(title=MSG(u'Configure'))
+    configure = FieldsAutomaticEditView(
+                    title=MSG(u'Configure'),
+                    edit_fields=['title', 'TTL', 'timeout'])
 
     def get_columns(self):
         return [('uri', MSG(u'URL')),

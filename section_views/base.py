@@ -21,25 +21,31 @@
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Integer, Boolean
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import CheckboxWidget, RadioWidget, SelectWidget
-from ikaaro.autoform import TextWidget
 from ikaaro.file import File
 from ikaaro.folder_views import GoToSpecificDocument
 
 # Import from itws
 from itws.datatypes import SortBy_Enumerate
 from itws.enumerates import SearchTypes_Enumerate
-from itws.views import AutomaticEditView
+from itws.views import FieldsAutomaticEditView
+
+
+class BaseSectionView_ConfigurationEdit(FieldsAutomaticEditView):
+
+    @property
+    def edit_fields(self):
+        context = get_context()
+        return context.resource.edit_fields
 
 
 class BaseSectionView_Configuration(File):
 
     class_views = ['edit', 'back']
 
-    edit_schema = freeze({})
-    edit_widgets = freeze([])
+    edit_fields = freeze([])
     display_title = False
 
     # Hide in browse_content
@@ -51,9 +57,7 @@ class BaseSectionView_Configuration(File):
 
 
     # Views
-    edit = AutomaticEditView(title=MSG(u'Configure view'),
-                             edit_schema=edit_schema,
-                             edit_widgets=edit_widgets)
+    edit = BaseSectionView_ConfigurationEdit(title=MSG(u'Configure view'))
     back = GoToSpecificDocument(
               title=MSG(u'Back to section'),
               adminbar_icon='/ui/icons/16x16/next.png',
@@ -65,34 +69,20 @@ class BaseFeedView_Configuration(BaseSectionView_Configuration):
 
     class_schema = merge_dicts(
         BaseSectionView_Configuration.class_schema,
-        view_search_on_current_folder=Boolean(source='metadata', default=True),
+        view_search_on_current_folder=Boolean(source='metadata', default=True,
+            title=MSG(u'Only on current section'), oneline=True),
         view_search_on_current_folder_recursive=Boolean(source='metadata',
-            default=False),
+            title=MSG(u'Recursively'), oneline=True, default=False),
         # search_class_id : only one authorized
         view_search_class_id=SearchTypes_Enumerate(source='metadata'),
-        view_sort_by=SortBy_Enumerate(source='metadata', default='title'),
-        view_reverse=Boolean(source='metadata'),
-        view_batch_size=Integer(source='metadata', default=20))
+        view_sort_by=SortBy_Enumerate(source='metadata', default='title',
+            title=MSG(u'Sort by'), has_empty_option=False),
+        view_reverse=Boolean(source='metadata', title=MSG(u'Reverse'),
+                             oneline=True),
+        view_batch_size=Integer(source='metadata', default=20,
+                                title=MSG(u'Batch size')))
 
 
-    edit_schema = freeze({
-        'view_batch_size': Integer,
-        'view_sort_by': SortBy_Enumerate,
-        'view_reverse': Boolean,
-        'view_search_on_current_folder': Boolean,
-        'view_search_on_current_folder_recursive': Boolean})
-
-    edit_widgets = freeze([
-        CheckboxWidget('view_search_on_current_folder',
-            title=MSG(u'Only on current section'), oneline=True),
-        CheckboxWidget('view_search_on_current_folder_recursive',
-            title=MSG(u'Recursively'), oneline=True),
-        TextWidget('view_batch_size', title=MSG(u'Batch size')),
-        SelectWidget('view_sort_by', title=MSG(u'Sort by'),
-                     has_empty_option=False),
-        RadioWidget('view_reverse', title=MSG(u'Reverse'), oneline=True)])
-
-    # Reset edit view with schema/widgets
-    edit = AutomaticEditView(title=MSG(u'Configure view'),
-                             edit_schema=edit_schema,
-                             edit_widgets=edit_widgets)
+    edit_fields = ['view_batch_size', 'view_sort_by', 'view_reverse',
+                   'view_search_on_current_folder',
+                   'view_search_on_current_folder_recursive']

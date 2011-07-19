@@ -23,9 +23,6 @@ from itools.database import OrQuery, PhraseQuery
 from itools.datatypes import Boolean, Enumerate
 from itools.gettext import MSG
 
-# Import from ikaaro
-from ikaaro.autoform import RadioWidget, SelectWidget, TextWidget
-
 # Import from itws
 from base import BaseFeedView_Configuration
 from itws.datatypes import PositiveIntegerNotNull
@@ -50,31 +47,21 @@ class ImagesView_Configuration(BaseFeedView_Configuration):
         BaseFeedView_Configuration.class_schema,
         # Filter
         filtered_class=GalleryClassesEnumerate(source='metadata',
-                                               default='image'),
+            title=MSG(u'Type of content to display'), default='image'),
         # Thumb
-        display_thumb_title=Boolean(source='metadata', default=False),
-        thumb_width=PositiveIntegerNotNull(source='metadata', default=128),
-        thumb_height=PositiveIntegerNotNull(source='metadata', default=128),
-        thumb_strict=Boolean(source='metadata', default=False))
+        display_thumb_title=Boolean(source='metadata', default=False,
+            title=MSG(u'Display image title'), oneline=True),
+        thumb_width=PositiveIntegerNotNull(source='metadata', default=128,
+            title=MSG(u'Thumb width')),
+        thumb_height=PositiveIntegerNotNull(source='metadata', default=128,
+           title=MSG(u'Thumb height')),
+        thumb_strict=Boolean(source='metadata', default=False,
+           title=MSG(u'Force thumbnail size'), oneline=True))
 
-    edit_schema = freeze(merge_dicts(
-        BaseFeedView_Configuration.edit_schema,
-        filtered_class=GalleryClassesEnumerate(mandatory=True),
-        display_thumb_title=Boolean,
-        thumb_width=PositiveIntegerNotNull,
-        thumb_height=PositiveIntegerNotNull,
-        thumb_strict=Boolean))
 
-    edit_widgets = freeze(
-        BaseFeedView_Configuration.edit_widgets
-        + [SelectWidget('filtered_class',
-                        title=MSG(u'Type of content to display')),
-           RadioWidget('display_thumb_title', title=MSG(u'Display image title'),
-                       oneline=True),
-           TextWidget('thumb_width', title=MSG(u'Thumb width')),
-           TextWidget('thumb_height', title=MSG(u'Thumb height')),
-           RadioWidget('thumb_strict', title=MSG(u'Force thumbnail size'),
-                      oneline=True)])
+    edit_fields = freeze(BaseFeedView_Configuration.edit_fields +
+                         ['filtered_class', 'display_thumb_title',
+                          'thumb_width', 'thumb_height', 'thumb_strict'])
 
 
 
