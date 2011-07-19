@@ -49,7 +49,7 @@ from itws.tags import Tag, get_registered_tags_aware_classes
 
 """Known attributes of widgets, useful on Multilingual fields."""
 attr_keys = ('title', 'size', 'mandatory', 'mutiple', 'tip', 'endline', 'rows',
-             'cols', 'format')
+             'cols', 'format', 'has_empty_option', 'inline')
 
 ############################################################
 # NewInstance
@@ -214,7 +214,6 @@ class FieldsAutomaticEditView(AutomaticEditView):
     We use schema title to define widget title
     """
     edit_fields = freeze(['title', 'description', 'subject'])
-
 
     @property
     def edit_schema(self):
