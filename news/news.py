@@ -240,7 +240,7 @@ class NewsFolder(SideBarAware, Folder):
     ##########################
 
     view = NewsFolder_View()
-    edit = FieldsAutomaticEditView(edit_fields=['batch_size'])
+    edit = FieldsAutomaticEditView(edit_fields=['title', 'batch_size'])
     browse_content = NewsFolder_BrowseContent(access='is_allowed_to_edit',
                                               title=MSG(u'Browse'))
     preview_content = Folder_PreviewContent(access='is_allowed_to_edit')
