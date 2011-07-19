@@ -18,9 +18,11 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Boolean
+from itools.datatypes import Boolean, String
+from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.autoform import HTMLBody
 from ikaaro.registry import register_resource_class, register_document_type
 from ikaaro.webpage import WebPage as BaseWebPage
 
@@ -30,6 +32,7 @@ from control_panel import CPDBResource_Backlinks, CPSubscribe
 from control_panel import CPExternalEdit, ITWS_ControlPanel
 from tags import TagsAware, register_tags_aware
 from webpage_views import WebPage_Edit, WebPage_View
+from widgets import Advance_RTEWidget
 
 
 
@@ -47,10 +50,17 @@ class WebPage(TagsAware, BaseWebPage):
 
     class_id = 'webpage'
     class_version = '20100621'
-    class_schema = merge_dicts(BaseWebPage.class_schema,
-                               TagsAware.class_schema,
-                               display_title=Boolean(source='metadata',
-                                                     default=True))
+    class_schema = merge_dicts(
+            BaseWebPage.class_schema,
+            TagsAware.class_schema,
+            display_title=Boolean(source='metadata',
+                title=MSG(u'Display title'), default=True),
+            # Handler
+            data=HTMLBody(source='handler',
+                title=MSG(u'Body'),
+                widget=Advance_RTEWidget,
+                multilingual=True, parameters_schema={'lang': String}))
+
 
     class_views = ['view', 'edit', 'externaledit', 'control_panel']
 

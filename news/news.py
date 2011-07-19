@@ -66,7 +66,7 @@ class NewsItem(WebPage):
 
 
     class_schema = merge_dicts(WebPage.class_schema,
-             long_title=Multilingual(source='metadata'))
+         long_title=Multilingual(source='metadata', title=MSG(u'Long title')))
 
 
     def init_resource(self, **kw):

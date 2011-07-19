@@ -20,62 +20,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import freeze, merge_dicts
-from itools.gettext import MSG
-
-# Import from ikaaro
-from ikaaro.autoform import MultilineWidget, SelectWidget, TextWidget
-from ikaaro.datatypes import Multilingual
+from itools.core import freeze
 
 # Import from itws
-from itws.section_views import SectionViews_Enumerate
-from itws.tags import TagsAware_Edit
-from itws.views import AutomaticEditView, EditView
+from itws.views import FieldsAutomaticEditView, EditView
 
 
-
-class Section_Edit(EditView, AutomaticEditView, TagsAware_Edit):
+class Section_Edit(EditView, FieldsAutomaticEditView):
     """ EditView gives "view" helper. """
 
-    def _get_schema(self, resource, context):
-        base = {'title': Multilingual,
-                'description': Multilingual}
-        return freeze(merge_dicts(
-                base,
-                AutomaticEditView._get_schema(self, resource, context),
-                TagsAware_Edit._get_schema(self, resource, context),
-                view=SectionViews_Enumerate))
-
-
-    def _get_widgets(self, resource, context):
-        return freeze(
-            [TextWidget('title', title=MSG(u'Title'))] +
-            AutomaticEditView._get_widgets(self, resource, context) + [
-            SelectWidget('view', title=MSG(u'View'), has_empty_option=False),
-            MultilineWidget('description',
-                  title=MSG(u'Description (used by RSS and tags)'))] +
-            TagsAware_Edit._get_widgets(self, resource, context))
-
-
-    def get_value(self, resource, context, name, datatype):
-        if name in ('tags', 'pub_date', 'pub_time'):
-            return TagsAware_Edit.get_value(self, resource, context, name,
-                    datatype)
-        return AutomaticEditView.get_value(self, resource, context, name,
-                  datatype)
-
-
-    def set_value(self, resource, context, name, form):
-        if name in ('tags', 'pub_date', 'pub_time'):
-            return TagsAware_Edit.set_value(self, resource, context, name,
-                    form)
-        return AutomaticEditView.set_value(self, resource, context, name,
-                  form)
-
+    edit_fields = freeze(['title', 'description', 'view',
+                          'tags', 'thumbnail', 'pub_datetime'])
 
     def action(self, resource, context, form):
         self.check_edit_conflict(resource, context, form)
         if context.edit_conflict:
             return
         EditView.action(self, resource, context, form)
-        return AutomaticEditView.action(self, resource, context, form)
+        return FieldsAutomaticEditView.action(self, resource, context, form)

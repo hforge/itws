@@ -15,11 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from datetime import datetime
+
 # Import from itools
+from itools.datatypes import DateTime
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import RTEWidget, SelectWidget, rte_widget
+from ikaaro.autoform import RTEWidget, SelectWidget, Widget, rte_widget
 from ikaaro.registry import get_resource_class
 from ikaaro.utils import make_stl_template
 
@@ -111,3 +115,65 @@ class ClassSelectorWidget(SelectWidget):
                           'description': cls.class_description})
         return items
 
+
+
+class JSDatetimeWidget(Widget):
+
+    template = make_stl_template("""
+    <table cellpadding="5" cellspacing="0">
+      <tr>
+        <td>Date</td>
+        <td>
+          <input type="text" name="${name}_date" value="${date_value}"
+            id="${id}-date"
+            class="dateField" size="10" />
+          <button class="button-selector">...</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Hour</td>
+        <td>
+          <input id="${id}-hour" type="text" name="${name}_hour"
+            value="${hour_value}" size="2"/> : 
+          <input id="${id}-min" type="text" name="${name}_min"
+            value="${min_value}" size="2"/>
+        </td>
+      </tr>
+    </table>
+    <input type="hidden" id="${id}" name="${name}" value="${value}"/>
+    <script type="text/javascript">
+      jQuery( "input.dateField" ).dynDateTime({
+        ifFormat: "%Y-%m-%d",
+        timeFormat: "24",
+        button: ".next()" });
+      $("#${id}-date").change(function(){change_itws_datetime()});
+      $("#${id}-hour").change(function(){change_itws_datetime()});
+      $("#${id}-min").change(function(){change_itws_datetime()});
+      function change_itws_datetime(){
+          var date = $("#${id}-date").val();
+          var hour = $("#${id}-hour").val();
+          var min = $("#${id}-min").val();
+          $("#${id}").val(date + "T" + hour + ":" + min +":00+0000");
+      }
+    </script>""")
+
+    def get_date(self):
+        try:
+            return DateTime.decode(self.value)
+        except Exception:
+            return datetime.today()
+
+
+    def date_value(self):
+        d = self.get_date()
+        return d.date() if d else d
+
+
+    def hour_value(self):
+        d = self.get_date()
+        return d.hour if d else d
+
+
+    def min_value(self):
+        d = self.get_date()
+        return d.minute if d else d
