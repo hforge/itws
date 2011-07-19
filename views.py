@@ -139,7 +139,6 @@ class AutomaticEditView(DBResource_Edit):
     """
     Same that DBResource_Edit but we add:
         - State (if workflowAware)
-        - Allow to hide title widget
         - Fix a bug (with query to keep)
         - Use edit_widgets instead of widgets
         - timestamp is added automatically
@@ -149,7 +148,6 @@ class AutomaticEditView(DBResource_Edit):
     widgets = freeze([])
 
     # Configuration
-    display_title = True
     edit_schema = DBResource_Edit.schema
     edit_widgets = DBResource_Edit.widgets
 
@@ -170,9 +168,6 @@ class AutomaticEditView(DBResource_Edit):
         # If WorkflowAware we add state
         if 'state' not in schema and isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate(workflow=resource.workflow)
-        # Hide title ?
-        if self.display_title is False and self.schema.has_key('title'):
-            schema['title'] = schema['title'](hidden_by_default=True)
 
         return freeze(schema)
 

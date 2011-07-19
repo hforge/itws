@@ -223,7 +223,6 @@ class BoxSectionChildrenToc(Box):
 
     # Box comfiguration
     edit_fields = freeze(['hide_if_only_one_item'])
-    display_title = False
     allow_instanciation = False
 
     # Views
