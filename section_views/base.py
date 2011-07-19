@@ -46,7 +46,6 @@ class BaseSectionView_Configuration(File):
     class_views = ['edit', 'back']
 
     edit_fields = freeze([])
-    display_title = False
 
     # Hide in browse_content
     is_content = False
