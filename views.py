@@ -167,7 +167,7 @@ class AutomaticEditView(DBResource_Edit):
         schema = {'timestamp': DateTime(readonly=True)}
         # Add edit_schema items
         schema = merge_dicts(schema, self.edit_schema)
-        # If Workfloware we add state
+        # If WorkflowAware we add state
         if 'state' not in schema and isinstance(resource, WorkflowAware):
             schema['state'] = StaticStateEnumerate(workflow=resource.workflow)
         # Hide title ?
@@ -297,7 +297,7 @@ class FieldsAdvance_NewInstance(AutoForm):
             elif getattr(datatype, 'multilingual', False):
                 datatype.multilingual = False
             kw[name] = datatype
-        # If Workfloware we add state
+        # If WorkflowAware we add state
         if schema.has_key('workflow_state'):
             kw['state'] = StaticStateEnumerate(workflow=self.add_cls.workflow)
         return kw
@@ -323,7 +323,7 @@ class FieldsAdvance_NewInstance(AutoForm):
             widget = self.get_widget(name, datatype)
             widgets.append(widget)
         # If workfloware we add state
-        if schema.has_key('workflow_state'):
+        if 'state' not in self.fields and schema.has_key('workflow_state'):
             widgets.append(state_widget)
         return widgets
 
