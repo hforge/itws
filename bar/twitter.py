@@ -28,7 +28,7 @@ import urllib2
 # Import from itools
 from itools import __version__ as itools_version
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Integer, String, XMLContent
+from itools.datatypes import Integer, String, XMLContent, Boolean
 from itools.gettext import MSG
 from itools.log import log_warning
 from itools.rss import RSSFile
@@ -120,6 +120,7 @@ class TwitterSideBar(Box, ResourceWithCache):
     # Free twitter icon
     #http://www.webdesignerdepot.com/2009/07/50-free-and-exclusive-twitter-icons/
     class_schema = merge_dicts(Box.class_schema,
+             force_update=Boolean(source='metadata'), # XXX Useless to delete
              user_id=TwitterID(source='metadata',
                                title=MSG(u'User Id')),
              user_name=String(source='metadata',
@@ -262,6 +263,7 @@ class IdenticaSideBar(TwitterSideBar):
     class_icon16 = 'bar_items/icons/16x16/identica.png'
     class_icon48 = 'bar_items/icons/48x48/identica.png'
     class_schema = merge_dicts(Box.class_schema,
+             force_update=Boolean(source='metadata'), # XXX Useless to delete
              user_name=IndenticaName(source='metadata',
                                      title=MSG(u'Identi.ca account name')),
              limit=Integer(source='metadata', mandatory=True, default=5,
