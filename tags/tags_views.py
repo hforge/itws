@@ -96,6 +96,7 @@ class Tag_View(Details_View):
     sort_by = 'pub_datetime'
     reverse = True
     search_on_current_folder = False
+    search_on_current_folder_recursive = True
     # Display sidebar
     display_sidebar = True
 
