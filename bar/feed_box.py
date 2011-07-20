@@ -19,7 +19,7 @@
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.database import OrQuery, PhraseQuery
-from itools.datatypes import Boolean, Enumerate, PathDataType
+from itools.datatypes import Boolean, Enumerate
 from itools.gettext import MSG
 from itools.uri import Path
 from itools.web import get_context
@@ -36,6 +36,7 @@ from itws.datatypes import SortBy_Enumerate
 from itws.feed_views import Details_View
 from itws.tags import TagsList, TagsAwareClassEnumerate
 from itws.tags import get_registered_tags_aware_classes
+from itws.widgets import DualSelectWidget
 
 
 
@@ -110,6 +111,12 @@ class BoxFeed_View(Box_View, Details_View):
         return view_resource.get_property('view')
 
 
+    @property
+    def search_on_current_folder_recursive(self):
+        view_resource = self.view_resource
+        return view_resource.get_property('search_on_current_folder_recursive')
+
+
     def _get_container(self, resource, context):
         site_root = context.resource.get_site_root()
         path = resource.get_property('container_path')
@@ -119,24 +126,25 @@ class BoxFeed_View(Box_View, Details_View):
         return site_root.get_resource(path)
 
 
-    def get_items(self, resource, context, *args):
-        args = list(args)
+    def get_search_query(self, resource, context):
+        queries = []
+        # Limit by Tags
         tags = resource.get_property('tags')
         if tags:
             tags_query = [ PhraseQuery('tags', x) for x in tags ]
             if len(tags_query) == 1:
-                args.append(tags_query[0])
+                queries.append(tags_query[0])
             else:
-                args.append(OrQuery(*tags_query))
+                queries.append(OrQuery(*tags_query))
+        # Limit by class_id
         formats = resource.get_property('feed_class_id')
         if formats:
             formats_query = [ PhraseQuery('format', x) for x in formats ]
             if len(formats_query) == 1:
-                args.append(formats_query[0])
+                queries.append(formats_query[0])
             else:
-                args.append(OrQuery(*formats_query))
-        proxy = super(BoxFeed_View, self)
-        return proxy.get_items(resource, context, *args)
+                queries.append(OrQuery(*formats_query))
+        return queries
 
 
     def sort_and_batch(self, resource, context, results):
@@ -203,7 +211,10 @@ class BoxFeed(Box):
         Box.class_schema,
         title_link_schema,
         container_path=TagsAwareContainerPathDatatype(
-              source='metadata', default='/', title=MSG(u'Container')),
+              source='metadata', default='/', title=MSG(u'Container'),
+              has_empty_option=False),
+        search_on_current_folder_recursive=Boolean(source='metadata',
+            title=MSG(u'Recursively'), oneline=True, default=False),
         count=PositiveInteger(source='metadata', default=3,
                               title=MSG(u'Number of items to show (0 = All)')),
         sort_by=SortBy_Enumerate(source='metadata', default='pub_datetime',
@@ -215,6 +226,7 @@ class BoxFeed(Box):
         feed_class_id=TagsAwareClassEnumerate(source='metadata',
                           title=MSG(u'Feed Source'), multiple=True),
         tags=TagsList(source='metadata', multiple=True, default=[],
+                      widget=DualSelectWidget,
                       title=MSG(u'Show only items with these tags')),
         view=BoxFeed_Enumerate(source='metadata',
             title=MSG(u'Feed template'),
@@ -228,7 +240,8 @@ class BoxFeed(Box):
     # Automatic Edit View
     edit_fields = freeze(['title', 'display_title',
                           'title_link', 'title_link_target',
-                          'container_path', 'count', 'feed_class_id',
+                          'container_path', 'search_on_current_folder_recursive',
+                          'count', 'feed_class_id',
                           'sort_by', 'reverse', 'tags', 'view'])
 
     # Views
