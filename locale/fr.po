@@ -44,10 +44,9 @@ msgid "${sort_by} ${reverse} <g id='4'>Ok</g>"
 msgstr ""
 
 #: ../ui/common/itws_autoform.xml.en:7
-#, fuzzy
 msgctxt "legend"
 msgid "${title} <g id='1'>${advanced_title}</g>"
-msgstr "<g id='1'>${item/title}</g>  <g id='2'>${item/title}</g>"
+msgstr ""
 
 #: ../orders/ui/order_manage.xml.en:26
 msgctxt "form"
@@ -135,10 +134,9 @@ msgid "<g id='1'>${item/title}</g>  <g id='2'>${item/title}</g>"
 msgstr "<g id='1'>${item/title}</g>  <g id='2'>${item/title}</g>"
 
 #: ../payments/ui/paybox/end.xml.en:10
-#, fuzzy
 msgctxt "b"
 msgid "<g id='1'>${status}</g>  <g id='2'>Unknow state</g>"
-msgstr "<g id='1'>${item/title}</g>  <g id='2'>${item/title}</g>"
+msgstr "<g id='1'>${status}</g>  <g id='2'>État inconnu</g>"
 
 #: ../ui/feed_views/Tag_item_viewbox.xml.en:12
 msgctxt "link"
@@ -179,10 +177,9 @@ msgid "<g id='16'>Log in</g>  <g id='17'>Log out</g>"
 msgstr "<g id='16'>Connexion</g>  <g id='17'>Déconnexion</g>"
 
 #: ../ui/common/location.xml.en:14
-#, fuzzy
 msgctxt "link"
 msgid "<g id='2'>${item/short_name}</g><g id='3'>${bc_separator}</g>"
-msgstr "<g id='2'>${item/short_name}</g>  <g id='3'>${bc_separator}</g>"
+msgstr ""
 
 #: ../ui/feed_views/search_view.xml.en:9
 msgctxt "link"
@@ -192,11 +189,9 @@ msgid ""
 msgstr ""
 
 #: ../ui/common/itws_autoform.xml.en:14
-#, fuzzy
 msgctxt "label"
 msgid "<g id='2'>${widget/title}</g>  <g id='3'>*</g>  <g id='4'>(?)</g>"
 msgstr ""
-"<g id='12'>${user/title}</g>  <g id='13'>|</g>  <g id='14'>Déconnexion</g>"
 
 #: ../ui/about/view.xml.en:57
 msgctxt "link"
@@ -263,7 +258,7 @@ msgstr "À propos d'ITWS"
 
 #: ../orders/order.py:73 ../datatypes.py:106
 msgid "Abspath"
-msgstr ""
+msgstr "Chemin absolu"
 
 #: ../payments/paybox.py:135
 msgid "Access refused or site/rank/identifier incorrect"
@@ -291,7 +286,7 @@ msgstr "Ajouter"
 
 #: ../skin_views.py:133
 msgid "Add '{x}'"
-msgstr ""
+msgstr "Ajouter '{x}'"
 
 #: ../section_views/composite.py:63
 msgid "Add Central Part Box"
@@ -306,20 +301,17 @@ msgid "Add a box"
 msgstr "Ajouter une boîte"
 
 #: ../orders/order_views.py:44
-#, fuzzy
 msgid "Add a line"
-msgstr "Ajouter une section"
+msgstr "Ajouter une ligne"
 
 #: ../orders/order_views.py:119
-#, fuzzy
 msgid "Add a payment"
-msgstr "Ajouter une entrée"
+msgstr "Ajouter un paiement"
 
 #: ../orders/ui/order_manage.xml.en:44
-#, fuzzy
 msgctxt "link"
 msgid "Add a payment"
-msgstr "Ajouter une entrée"
+msgstr "Ajouter un paiement"
 
 #: ../bar/base_views.py:253
 msgid "Add a sidebar box"
@@ -364,9 +356,8 @@ msgid "Advanced"
 msgstr "Avancé"
 
 #: ../payments/paybox.py:394
-#, fuzzy
 msgid "Advanced State"
-msgstr "Avancé"
+msgstr "État avancé"
 
 #: ../OPML/rssfeeds.py:142
 msgid "All feeds"
@@ -381,11 +372,11 @@ msgstr ""
 #: ../payments/ui/payment_end.xml.en:17
 msgctxt "table cell"
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #: ../payments/paybox.py:140
 msgid "Amount incorrect"
-msgstr ""
+msgstr "Montant incorrect"
 
 #: ../payments/paybox.py:198
 msgid "Amount of withdrawal past the limit"
@@ -426,16 +417,16 @@ msgstr "Nombre d'éléments affichés"
 
 #: ../orders/ui/bill.xml.en:5 ../orders/order.py:242
 msgid "Bill"
-msgstr ""
+msgstr "Facture"
 
 #: ../orders/ui/order_manage.xml.en:34
 msgctxt "table cell"
 msgid "Bill"
-msgstr ""
+msgstr "Facture"
 
 #: ../orders/order.py:246
 msgid "Bill has been generated"
-msgstr ""
+msgstr "Facture générée"
 
 #: ../turning_footer.py:102
 msgid "Body"
@@ -479,9 +470,8 @@ msgid "COFINOGA"
 msgstr ""
 
 #: ../orders/workflows.py:27 ../payments/workflows.py:31
-#, fuzzy
 msgid "Canceled"
-msgstr "Avancé"
+msgstr "Annulé"
 
 #: ../bar/diaporama.py:260
 msgid "Caption Content"
@@ -530,7 +520,7 @@ msgstr "Basculer en mode navigation"
 #: ../ui/feed_views/browse_navigator.xml.en:28
 msgctxt "title attribute"
 msgid "Click to select/unselect all rows"
-msgstr ""
+msgstr "Cliquez pour sélectionner/désélectionner toutes les lignes"
 
 #: ../payments/paybox.py:164
 msgid "Client cancellation"
@@ -538,7 +528,7 @@ msgstr ""
 
 #: ../orders/workflows.py:28
 msgid "Closed"
-msgstr ""
+msgstr "Clos"
 
 #: ../section_views/composite.py:32
 msgid "Composite view"
@@ -554,9 +544,8 @@ msgid "Configure"
 msgstr "Configurer"
 
 #: ../payments/paybox.py:417
-#, fuzzy
 msgid "Configure Paybox"
-msgstr "Configurer"
+msgstr "Configurer Paybox"
 
 #: ../section_views/base.py:60
 msgid "Configure view"
@@ -591,17 +580,16 @@ msgid "Content with tags"
 msgstr "Contenu taggé"
 
 #: ../payments/buttons.py:26
-#, fuzzy
 msgid "Continue >"
-msgstr "Conteneur"
+msgstr "Continuer >"
 
 #: ../control_panel.py:86
 msgid "Control Panel"
-msgstr ""
+msgstr "Configuration"
 
 #: ../skin_views.py:188
 msgid "Control panel"
-msgstr ""
+msgstr "Configuration"
 
 #: ../ws_neutral.py:94
 msgid "Create a new ITWS Web Site"
@@ -624,7 +612,6 @@ msgid "Creation Date"
 msgstr "Date de création"
 
 #: ../orders/order.py:94
-#, fuzzy
 msgid "Creation date"
 msgstr "Date de création"
 
@@ -650,9 +637,8 @@ msgstr "Désactiver"
 
 #: ../orders/ui/bill.xml.en:95 ../payments/modules_views.py:49
 #: ../payments/payment_way_views.py:47
-#, fuzzy
 msgid "Description"
-msgstr "Section"
+msgstr ""
 
 #: ../bar/section_views.py:56
 msgid "Description (used by RSS and tags)"
@@ -660,11 +646,11 @@ msgstr "Description (utilisée par RSS et les tags)"
 
 #: ../payments/payment_views.py:49
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
 #: ../feed_views/collection.py:83
 msgid "Details View (without pictures)"
-msgstr ""
+msgstr "Vue détaillée (sans les images)"
 
 #: ../payments/paybox.py:433
 msgid "Diff days (On two digits ex: 04)"
@@ -690,9 +676,8 @@ msgid "Display image title"
 msgstr "Afficher le titre de l'image"
 
 #: ../monkey_patch.py:80
-#, fuzzy
 msgid "Display images as thumbnail"
-msgstr "Afficher le titre de l'image"
+msgstr "Afficher les images en vignettes"
 
 #: ../bar/gallery.py:77
 msgid "Display images or thumbnails as a gallery"
@@ -700,7 +685,7 @@ msgstr "Afficher des images ou des miniatures en galerie"
 
 #: ../bar/navigation.py:176
 msgid "Display ordered resources only."
-msgstr ""
+msgstr "N'afficher que les ressources ordonnées."
 
 #: ../bar/feed_box.py:196
 msgid "Display the feed of a content from the website"
@@ -717,11 +702,11 @@ msgstr "Afficher le titre sur la vue de la page web ?"
 
 #: ../payments/modules_views.py:114
 msgid "Do a payment"
-msgstr ""
+msgstr "Effectuer un règlement"
 
 #: ../payments/paybox.py:155
 msgid "Do not honour"
-msgstr ""
+msgstr "Ne pas honorer"
 
 #: ../bar/datatypes.py:27
 msgid "Do not order (won't be displayed)"
@@ -732,9 +717,8 @@ msgid "Dollar"
 msgstr ""
 
 #: ../payments/enumerates.py:30
-#, fuzzy
 msgid "EUR"
-msgstr "URL"
+msgstr ""
 
 #: ../payments/paybox.py:103
 msgid "EUROCARD_MASTERCARD"
@@ -804,11 +788,11 @@ msgstr "Modifier avec un éditeur externe"
 
 #: ../payments/modules_views.py:50
 msgid "Enabled ?"
-msgstr ""
+msgstr "Activé ?"
 
 #: ../payments/payment_way_views.py:46
 msgid "Enabled?"
-msgstr ""
+msgstr "Activé ?"
 
 #: ../payments/paybox.py:228
 msgid "Erreur inconnue (code %s)"
@@ -890,7 +874,7 @@ msgstr "Exporter les flux au format OPML"
 
 #: ../bar/feed_box.py:195
 msgid "Feed"
-msgstr "Flux de contenu"
+msgstr "Remontée de contenu (flux)"
 
 #: ../bar/feed_box.py:216
 msgid "Feed Source"
@@ -898,19 +882,19 @@ msgstr "Source du flux"
 
 #: ../feed_views/collection.py:36
 msgid "Feed TagAware elements"
-msgstr ""
+msgstr "Remontée d'éléments taggés"
 
 #: ../bar/feed_box.py:220
 msgid "Feed template"
-msgstr "Gabarit du flux"
+msgstr "Gabarit de remontée (flux)"
 
 #: ../section_views/tagsaware.py:40
 msgid "Feed view"
-msgstr "Vue du flux"
+msgstr "Vue de remontée (flux)"
 
 #: ../section_views/tagsaware.py:33
 msgid "Feed view configuration"
-msgstr ""
+msgstr "Configuration de la vue de remontée"
 
 #: ../OPML/rssfeeds.py:210
 msgid "Feeds activated."
@@ -959,9 +943,8 @@ msgid "Force thumbnail size"
 msgstr "Forcer la taille de l'aperçu"
 
 #: ../utils.py:244
-#, fuzzy
 msgid "Form"
-msgstr "Format"
+msgstr "Formulaire"
 
 #: ../feed_views/collection.py:69 ../feed_views/browse_navigator.py:59
 msgid "Format"
@@ -1027,7 +1010,6 @@ msgid "Holder already on stop, former record kept"
 msgstr ""
 
 #: ../control_panel.py:134
-#, fuzzy
 msgid "Home page"
 msgstr "Accueil"
 
@@ -1049,9 +1031,8 @@ msgid "Id Autorisation"
 msgstr ""
 
 #: ../payments/paybox.py:390
-#, fuzzy
 msgid "Id transaction"
-msgstr "Ajouter une section"
+msgstr ""
 
 #: ../bar/twitter.py:261
 msgid "Identi.ca"
@@ -1098,14 +1079,12 @@ msgid "Internal server error"
 msgstr ""
 
 #: ../payments/paybox.py:161
-#, fuzzy
 msgid "Invalid amoint"
-msgstr "Titre invalide"
+msgstr "Montant invalide"
 
 #: ../payments/workflows.py:29
-#, fuzzy
 msgid "Invalid amount"
-msgstr "Titre invalide"
+msgstr "Montant invalide"
 
 #: ../payments/paybox.py:162
 msgid "Invalid holder number"
@@ -1121,19 +1100,16 @@ msgid "Invalid retailer"
 msgstr "Titre invalide"
 
 #: ../payments/paybox.py:160
-#, fuzzy
 msgid "Invalid transaction"
-msgstr "Titre invalide"
+msgstr "Transaction invalide"
 
 #: ../utils.py:272
-#, fuzzy
 msgid "Invalid value."
-msgstr "Titre invalide"
+msgstr "Valeur non valide"
 
 #: ../orders/ui/bill.xml.en:17
-#, fuzzy
 msgid "Invoice number:"
-msgstr "Nombre d'objets taggés"
+msgstr "Numéro de facture :"
 
 #: ../turning_footer.py:227
 msgid "Is active"
@@ -1152,7 +1128,7 @@ msgstr "Nombre d'objets taggés"
 #: ../data/welcome_on_itws.xhtml.en:7
 msgctxt "body"
 msgid "Itws allow you to do many things"
-msgstr ""
+msgstr "Itws vous permet de faire beaucoup de choses"
 
 #: ../payments/paybox.py:107
 msgid "JCB"
@@ -1195,7 +1171,7 @@ msgstr ""
 
 #: ../orders/order_views.py:47
 msgid "Line"
-msgstr ""
+msgstr "Ligne"
 
 #: ../bar/diaporama.py:257
 msgid "Link Target"
@@ -1203,7 +1179,7 @@ msgstr "Cible du lien"
 
 #: ../orders/order_views.py:79
 msgid "List Payments"
-msgstr ""
+msgstr "Liste des paiements"
 
 #: ../control_panel.py:160
 msgid "List backlinks of this resource"
@@ -1211,11 +1187,11 @@ msgstr "Liste des ressources qui pointent vers cette ressource"
 
 #: ../orders/order_views.py:61
 msgid "List bills"
-msgstr ""
+msgstr "Liste des factures"
 
 #: ../control_panel.py:152
 msgid "List resources that link to this resource"
-msgstr ""
+msgstr "Lister les ressources qui ont un lien vers cette ressource"
 
 #: ../ui/feed_views/browse_navigator.xml.en:11
 msgctxt "label"
@@ -1233,7 +1209,6 @@ msgid "Log in"
 msgstr "Connexion"
 
 #: ../skin_views.py:193
-#, fuzzy
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -1259,14 +1234,12 @@ msgid "Manage TOC"
 msgstr "Gérer la table des matières"
 
 #: ../control_panel.py:136
-#, fuzzy
 msgid "Manage home page content"
 msgstr "Gérer le contenu de la page d'accueil"
 
 #: ../orders/order_views.py:145 ../orders/order_views.py:172
-#, fuzzy
 msgid "Manage order"
-msgstr "Éditer le pied de page"
+msgstr "Gérer la commande"
 
 #: ../bar/repository.py:114
 msgid "Manage sidebar boxes"
@@ -1429,9 +1402,8 @@ msgid "One of the PBX_RETOUR variable is too long"
 msgstr ""
 
 #: ../section_views/base.py:73
-#, fuzzy
 msgid "Only on current section"
-msgstr "Retourner à la section parente"
+msgstr "Seulement sur la section courante"
 
 #: ../bar/map_box.py:41
 msgid "OpenStreetMap"
@@ -1439,12 +1411,11 @@ msgstr ""
 
 #: ../payments/paybox.py:128
 msgid "Operation successful"
-msgstr ""
+msgstr "Opération effectuée avec succès"
 
 #: ../orders/order.py:87
-#, fuzzy
 msgid "Order"
-msgstr "Ordonner la boîte"
+msgstr "Commande"
 
 #: ../section_views/composite.py:41
 msgid "Order Central Part Boxes"
@@ -1469,7 +1440,7 @@ msgstr "Ordonner les boîtes centrales"
 #: ../orders/ui/order_manage.xml.en:14
 msgctxt "heading"
 msgid "Order number #${order/id}"
-msgstr ""
+msgstr "Commande numéro #${order/id}"
 
 #: ../bar/section.py:66
 msgid "Order section"
@@ -1484,9 +1455,8 @@ msgid "Order top"
 msgstr "Placer en haut"
 
 #: ../orders/modules.py:42 ../orders/modules_views.py:28
-#, fuzzy
 msgid "Orders"
-msgstr "Ordonner les boîtes"
+msgstr "Commandes"
 
 #: ../ui/about/view.xml.en:58
 msgctxt "paragraph"
@@ -1545,7 +1515,7 @@ msgstr ""
 
 #: ../orders/workflows.py:31
 msgid "Paid"
-msgstr ""
+msgstr "Payé"
 
 #: ../payments/paybox.py:227
 msgid "Paiement Refusé (code %s)"
@@ -1553,7 +1523,7 @@ msgstr ""
 
 #: ../orders/workflows.py:30
 msgid "Partially paid"
-msgstr ""
+msgstr "Payé partiellement"
 
 #: ../footer.py:77 ../news/news_views.py:184
 msgid "Path"
@@ -1561,7 +1531,7 @@ msgstr "Chemin"
 
 #: ../payments/paybox.py:247
 msgid "Pay"
-msgstr ""
+msgstr "Payer"
 
 #: ../payments/paybox.py:441
 msgid "Paybox"
@@ -1627,9 +1597,8 @@ msgstr ""
 
 #: ../orders/workflows.py:32 ../payments/workflows.py:30
 #: ../payments/paybox.py:55
-#, fuzzy
 msgid "Payment error"
-msgstr "Voir les erreurs"
+msgstr "Erreur lors du paiement"
 
 #: ../payments/modules_views.py:41
 msgid "Payment modes"
@@ -1687,21 +1656,21 @@ msgstr "Aperçu"
 
 #: ../orders/order.py:77
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: ../orders/ui/order_manage.xml.en:64
 msgctxt "table cell"
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: ../orders/order.py:67
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
 #: ../orders/ui/order_manage.xml.en:51
 msgctxt "heading"
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
 #: ../datatypes.py:103
 msgid "Publication date"
@@ -1766,23 +1735,21 @@ msgstr "Lire la suite"
 
 #: ../payments/paybox.py:172
 msgid "Record duplicated, former record replaced"
-msgstr ""
+msgstr "Enregistrement dupliqué, enregistrement initial remplacé"
 
 #: ../section_views/base.py:75
 msgid "Recursively"
-msgstr ""
+msgstr "Récursivement"
 
 #: ../orders/order_views.py:89 ../orders/order.py:74
 #: ../orders/ui/bill.xml.en:96
-#, fuzzy
 msgid "Reference"
-msgstr "Utilisé par"
+msgstr "Référence"
 
 #: ../orders/ui/order_manage.xml.en:61
-#, fuzzy
 msgctxt "table cell"
 msgid "Reference"
-msgstr "Utilisé par"
+msgstr "Référence"
 
 #: ../bar/repository_views.py:70
 msgid "Referenced by"
@@ -1835,14 +1802,13 @@ msgstr ""
 
 #: ../footer.py:45
 msgid "Sanitize HTML"
-msgstr ""
+msgstr "Nettoyer le HTML"
 
 #: ../bar/menu.py:72
 msgid "Save"
 msgstr "Enregistrer"
 
 #: ../feed_views/base.py:74
-#, fuzzy
 msgid "Search"
 msgstr "Rechercher"
 
@@ -1897,7 +1863,8 @@ msgstr ""
 
 #: ../control_panel.py:171
 msgid "Select and order items of the table of contents of this section."
-msgstr ""
+msgstr "Sélectionner or ordonner des éléments de la table des matières"
+"de cette section."
 
 #: ../widgets/base.py:56
 msgid "Selected"
@@ -1962,7 +1929,6 @@ msgid "State"
 msgstr "État"
 
 #: ../orders/ui/order_manage.xml.en:23 ../payments/ui/payment_end.xml.en:13
-#, fuzzy
 msgctxt "table cell"
 msgid "State"
 msgstr "État"
@@ -2035,9 +2001,8 @@ msgid "Tags are used to categorize website content and build navigation views."
 msgstr ""
 
 #: ../tags/tags.py:90
-#, fuzzy
 msgid "Tags folder"
-msgstr "Répertoire d'images"
+msgstr "Répertoire étiquettes"
 
 #: ../bar/tags.py:90
 msgid "Tags to show (0 for all tags)"
@@ -2053,7 +2018,7 @@ msgstr ""
 
 #: ../feed_views/collection.py:68 ../feed_views/browse_navigator.py:58
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: ../payments/paybox.py:130
 msgid "The connection to the authorization centre failed"
@@ -2074,49 +2039,44 @@ msgid "There are errors in this RSS:"
 msgstr "Des erreurs ont été détectées dans ce RSS:"
 
 #: ../orders/order_views.py:68
-#, fuzzy
 msgid "There are {n} bills."
-msgstr "Aucun résultat"
+msgstr "{n} factures."
 
 #: ../orders/modules_views.py:31
-#, fuzzy
 msgid "There are {n} orders"
-msgstr "Aucun résultat"
+msgstr "{n} commandes."
 
 #: ../payments/modules_views.py:85
-#, fuzzy
 msgid "There are {n} payments"
-msgstr "Aucun résultat"
+msgstr "{n} paiements."
 
 #: ../payments/modules_views.py:44
-#, fuzzy
 msgid "There are {n} payments mode."
-msgstr "Aucun résultat"
+msgstr "{n} modes de paiement."
 
 #: ../orders/order_views.py:86
-#, fuzzy
 msgid "There are {n} payments."
-msgstr "Aucun résultat"
+msgstr "{n} paiements."
 
 #: ../orders/order_views.py:67
 msgid "There is 1 bill."
-msgstr ""
+msgstr "1 facture."
 
 #: ../orders/modules_views.py:30
 msgid "There is 1 order"
-msgstr ""
+msgstr "1 commande."
 
 #: ../payments/modules_views.py:84
 msgid "There is 1 payment"
-msgstr ""
+msgstr "1 paiement."
 
 #: ../payments/modules_views.py:43
 msgid "There is 1 payment mode."
-msgstr ""
+msgstr "1 mode de paiement."
 
 #: ../orders/order_views.py:85
 msgid "There is 1 payment."
-msgstr ""
+msgstr "1 paiement."
 
 #: ../ui/bar_items/Tags_view.xml.en:12
 msgid "There is currently no referenced tags."
@@ -2135,7 +2095,7 @@ msgstr ""
 
 #: ../bar/repository_views.py:236
 msgid "These following resources cannot be removed: {resources}."
-msgstr ""
+msgstr "Les ressources suivantes ne peuvent être supprimées : {resources}."
 
 #: ../ui/bar_items/HTMLContent_view.xml.en:15
 msgctxt "div"
@@ -2145,7 +2105,7 @@ msgstr "Contenu HTML vide"
 #: ../ui/common/itws_autoform.xml.en:15
 msgctxt "title attribute"
 msgid "This field is required"
-msgstr ""
+msgstr "Ce champ est obligatoire"
 
 #: ../data/first_sidebar.xhtml.en:7
 msgctxt "body"
@@ -2154,7 +2114,7 @@ msgstr "Ceci est votre première boîte dans votre barre latérale."
 
 #: ../orders/order_views.py:53
 msgid "This product has been added to your order"
-msgstr ""
+msgstr "Ce produit a été ajouté à votre commande"
 
 #: ../ui/about/view.xml.en:8
 msgctxt "paragraph"
@@ -2211,7 +2171,6 @@ msgid "Title"
 msgstr "Titre"
 
 #: ../orders/ui/order_manage.xml.en:62
-#, fuzzy
 msgctxt "table cell"
 msgid "Title"
 msgstr "Titre"
@@ -2225,18 +2184,16 @@ msgid "Title link target"
 msgstr "Cible du lien sur le titre"
 
 #: ../bar/feed_box.py:82
-#, fuzzy
 msgid "Title only"
-msgstr "Lien sur le titre"
+msgstr "Titre seulement"
 
 #: ../feed_views/collection.py:92
 msgid "Title view"
 msgstr "Vue du titre"
 
 #: ../bar/feed_box.py:80
-#, fuzzy
 msgid "Title with thumbnail"
-msgstr "Aperçu"
+msgstr "Titre avec vignette"
 
 #: ../payments/paybox.py:182
 msgid "Too many attemps at secret code"
@@ -2336,7 +2293,7 @@ msgstr ""
 
 #: ../orders/order_views.py:92
 msgid "Validated ?"
-msgstr ""
+msgstr "Validé ?"
 
 #: ../ws_neutral_views.py:53 ../section_views/composite.py:28 ../views.py:108
 #: ../bar/section_views.py:54 ../bar/diaporama.py:159 ../about.py:33
@@ -2349,11 +2306,11 @@ msgstr "Voir"
 
 #: ../orders/workflows.py:26
 msgid "Waiting payment"
-msgstr ""
+msgstr "En attente de paiement"
 
 #: ../payments/workflows.py:26
 msgid "Waiting validation"
-msgstr ""
+msgstr "En attente de validation"
 
 #: ../bar/homepage.py:37
 msgid "Website data folder"
@@ -2375,7 +2332,7 @@ msgstr "Xapian"
 
 #: ../payments/modules_views.py:75 ../utils.py:204
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: ../utils.py:118
 msgid ""
