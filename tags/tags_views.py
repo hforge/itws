@@ -155,8 +155,7 @@ class TagsFolder_TagCloud(STLView):
 
         # query
         root = context.root
-        tags_query = tags_folder.get_tags_query_terms(state='public',
-                                                      formats=self.formats)
+        tags_query = tags_folder.get_tags_query_terms(formats=self.formats)
         tags_results = root.search(AndQuery(*tags_query))
 
         items_nb = []
