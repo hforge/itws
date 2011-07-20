@@ -6,8 +6,8 @@
 
 <fieldset>
   <legend>How to add a box in the sidebar ?</legend>
-    You have to choose a box in the collection of boxes below or
-    <a href="./;new_box?is_admin_popup=1" class="button button-ok" rel="fancybox">create a new box</a>
+    Select an existing box below or <a href="./;new_box?is_admin_popup=1"
+      class="button button-ok" rel="fancybox">create a new box</a>
 </fieldset>
 
 <form action="" method="get">
