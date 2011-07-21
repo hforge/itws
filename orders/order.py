@@ -23,14 +23,14 @@ from decimal import Decimal as decimal
 from itools.core import freeze, merge_dicts
 from itools.csv import Table as BaseTable
 from itools.database import AndQuery, PhraseQuery
-from itools.datatypes import Boolean, DateTime, Decimal, PathDataType
-from itools.datatypes import String, Unicode, Integer
+from itools.datatypes import Boolean, DateTime, Decimal
+from itools.datatypes import Integer, String, Unicode, URI
 from itools.gettext import MSG
 from itools.pdf import stl_pmltopdf
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import TextWidget
+from ikaaro.autoform import PathSelectorWidget, TextWidget
 from ikaaro.file import PDF
 from ikaaro.folder import Folder
 from ikaaro.table import Table
@@ -54,7 +54,7 @@ from workflows import order_workflow
 class Base_Order_Lines(BaseTable):
 
     record_properties = {
-      'abspath': PathDataType,
+      'abspath': URI,
       'reference': String,
       'title': Unicode,
       'quantity': Integer,
@@ -63,7 +63,14 @@ class Base_Order_Lines(BaseTable):
 
 
 class Order_Lines(Table):
-
+    """Table with order lines.
+       An order line must define:
+       - abspath (of product)
+       - reference (of product)
+       - title (of product)
+       - quantity
+       - price (by unit)
+    """
     class_id = 'orders-products'
     class_title = MSG(u'Products')
     class_handler = Base_Order_Lines
@@ -71,7 +78,7 @@ class Order_Lines(Table):
     class_views = ['view']
 
     form = [
-        TextWidget('abspath', title=MSG(u'Abspath')),
+        PathSelectorWidget('abspath', title=MSG(u'Abspath')),
         TextWidget('reference', title=MSG(u'Reference')),
         TextWidget('title', title=MSG(u'Title')),
         TextWidget('quantity', title=MSG(u'Quantity')),
@@ -160,6 +167,10 @@ class Order(WorkflowAware, Folder):
     # API
     ##################################################
 
+    def get_price(self):
+        return decimal(0)
+
+
     def add_lines(self, resources):
         """Add given order lines."""
         handler = self.get_resource('lines').handler
@@ -169,7 +180,7 @@ class Order(WorkflowAware, Folder):
                'reference': None,
                'title': resource.get_title(),
                'quantity': quantity,
-               'price': decimal(0)})
+               'price': resource.get_price()})
 
 
     def update_payment(self, payment, context):
@@ -235,7 +246,6 @@ class Order(WorkflowAware, Folder):
             namespace['order_barcode'] = None
         # Products
         namespace['products'] = self.get_products_namespace()
-        print namespace['products']
         # Build pdf
         pdf = stl_pmltopdf(document, namespace=namespace)
         metadata =  {'title': {'en': u'Bill'},
