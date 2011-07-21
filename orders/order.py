@@ -40,6 +40,7 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from itws.enumerates import Users_Enumerate
 from itws.payments import format_price
+from itws.views import FieldsAdvance_NewInstance
 
 # Import from payments
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
@@ -93,11 +94,11 @@ class Order(WorkflowAware, Folder):
     """ Order on which we define a workflow.
         Folder with a table with order lines.
         Basic properties:
-        - total_price
-        - ctime
-        - customer_id
-        - is_order
-        - is_paid
+          - total_price
+          - ctime
+          - customer_id
+          - is_order
+          - is_paid
     """
     class_id = 'order'
     class_title = MSG(u'Order')
@@ -109,9 +110,11 @@ class Order(WorkflowAware, Folder):
         ctime=DateTime(source='metadata',
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,
-            stored=True),
+            stored=True, title=MSG(u'Customer')),
+        pdf=URI(source='metadata'),
         is_order=Boolean(indexed=True, stored=True),
         is_paid=Boolean(default=False, stored=True)))
+    class_schema['name'].title = MSG(u'#Num')
 
     class_views = ['manage', 'add_line']
 
@@ -168,7 +171,7 @@ class Order(WorkflowAware, Folder):
     ##################################################
 
     def get_price(self):
-        return decimal(0)
+        return decimal(20.0)
 
 
     def add_lines(self, resources):
@@ -180,7 +183,7 @@ class Order(WorkflowAware, Folder):
                'reference': None,
                'title': resource.get_title(),
                'quantity': quantity,
-               'price': resource.get_price()})
+               'price': 0})#resource.get_price()})
 
 
     def update_payment(self, payment, context):
@@ -259,3 +262,5 @@ class Order(WorkflowAware, Folder):
     manage =  Order_Manage()
     add_line = Order_AddLine()
     add_payment = Order_AddPayment()
+    new_instance = FieldsAdvance_NewInstance(
+        access='is_admin', fields=['title', 'customer_id'])

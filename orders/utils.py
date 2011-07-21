@@ -14,7 +14,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from cStringIO import StringIO
+
+
 def get_orders(resource):
     return resource.get_site_root().get_resource('orders')
 
 
+def join_pdfs(list_pdf):
+    try:
+        from pyPdf import PdfFileWriter, PdfFileReader
+    except:
+        return None
+    n = len(list_pdf)
+    if n == 0:
+        raise ValueError, 'unexpected empty list'
+
+    # Files == 1
+    if n == 1:
+        return open(list_pdf[0]).read()
+
+    # Files > 1
+    pdf_output = PdfFileWriter()
+    for path in list_pdf:
+        input = PdfFileReader(open(path, "rb"))
+        for page in input.pages:
+            pdf_output.addPage(page)
+
+    output = StringIO()
+    try:
+        pdf_output.write(output)
+        return output.getvalue()
+    finally:
+        output.close()

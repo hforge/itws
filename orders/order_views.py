@@ -147,8 +147,14 @@ class Order_Top(STLForm):
 
 
     def get_namespace(self, resource, context):
+        customer_id = resource.get_property('customer_id')
+        from itws.enumerates import Users_Enumerate
+        from utils import get_orders
+        orders = get_orders(resource)
         namespace = {}
+        namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
+        namespace['customer'] = Users_Enumerate.get_value(customer_id)
         namespace['products'] = resource.get_products_namespace()
         namespace['transitions'] = SelectWidget('state',
             datatype=OrderStateEnumerate, value=None).render()

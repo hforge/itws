@@ -33,27 +33,21 @@ from itws.views import FieldsAutomaticEditView
 
 # Import from orders
 from order import Order
-from modules_views import OrderModule_ViewOrders
+from modules_views import OrderModule_ViewOrders, OrderModule_ExportOrders
+from modules_views import OrderModule_ViewProducts
 
 
 class OrderModule(Folder):
 
     class_id = 'orders'
     class_title = MSG(u'Orders')
-    class_views = ['view', 'configure']
+    class_views = ['view', 'products', 'configure', 'export']
     class_schema = merge_dicts(Folder.class_schema,
         logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo')),
         signature=Unicode(source='metadata', title=MSG(u'PDF Signature'),
                           widget=MultilineWidget))
 
     order_class = Order
-
-    # Views
-    view = OrderModule_ViewOrders()
-    edit_fields = ['logo', 'signature']
-    configure = FieldsAutomaticEditView(title=MSG(u'Configure'),
-                                        edit_fields=edit_fields)
-
 
     def get_document_types(self):
         return [self.order_class]
@@ -87,3 +81,14 @@ class OrderModule(Folder):
             return order
         payment_way = get_payment_way(self, mode)
         return order.make_payment(payment_way, total_price)
+
+
+    ###################################
+    # Views
+    ###################################
+    view = OrderModule_ViewOrders()
+    export = OrderModule_ExportOrders()
+    products = OrderModule_ViewProducts()
+    configure = FieldsAutomaticEditView(title=MSG(u'Configure Order module'),
+                    edit_fields=['logo', 'signature'])
+

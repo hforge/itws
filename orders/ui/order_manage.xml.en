@@ -4,6 +4,8 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
+  <a href="${orders_link}">Manage all orders</a>
+
   <table cellpadding="0" cellspacing="0" style="width:100%">
     <tr>
       <td style="width:48px" valign="top">
@@ -17,6 +19,7 @@
     </tr>
   </table>
 
+  ${customer}
 
   <table cellpadding="0" cellspacing="10">
     <tr>
