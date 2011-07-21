@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2009 Sylvain Taverne <sylvain@itaapy.com>
+# Copyright (C) 2009-2011 Sylvain Taverne <sylvain@itaapy.com>
+# Copyright (C) 2011 Nicolas Deram <nicolas@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -82,7 +83,15 @@ class Order_Lines(Table):
 ####################################
 
 class Order(WorkflowAware, Folder):
-
+    """ Order on which we define a workflow.
+        Folder with a table with order lines.
+        Basic properties:
+        - total_price
+        - ctime
+        - customer_id
+        - is_order
+        - is_paid
+    """
     class_id = 'order'
     class_title = MSG(u'Order')
     class_schema = freeze(merge_dicts(
@@ -101,11 +110,6 @@ class Order(WorkflowAware, Folder):
 
     workflow = order_workflow
 
-    # Views
-    manage =  Order_Manage()
-    add_line = Order_AddLine()
-    add_payment = Order_AddPayment()
-
 
     def init_resource(self, *args, **kw):
         Folder.init_resource(self, *args, **kw)
@@ -119,19 +123,6 @@ class Order(WorkflowAware, Folder):
         values['is_paid'] = self.is_payed()
         values['is_order'] = True
         return values
-
-    ##################################################
-    # API
-    ##################################################
-    def add_lines(self, resources):
-        handler = self.get_resource('lines').handler
-        for quantity, resource in resources:
-            handler.add_record(
-              {'abspath': str(resource.get_abspath()),
-               'reference': None,
-               'title': resource.get_title(),
-               'quantity': quantity,
-               'price': decimal(0)})
 
     ##################################################
     # Namespace
@@ -154,10 +145,35 @@ class Order(WorkflowAware, Folder):
         return namespace
 
 
+    def get_products_namespace(self):
+        l = []
+        products = self.get_resource('lines')
+        get_value = products.handler.get_record_value
+        for record in products.handler.get_records():
+            kw = {'id': record.id}
+            for key in Base_Order_Lines.record_properties.keys():
+                kw[key] = get_value(record, key)
+            l.append(kw)
+        return l
+
     ##################################################
-    # Update order states
+    # API
     ##################################################
+
+    def add_lines(self, resources):
+        """Add given order lines."""
+        handler = self.get_resource('lines').handler
+        for quantity, resource in resources:
+            handler.add_record(
+              {'abspath': str(resource.get_abspath()),
+               'reference': None,
+               'title': resource.get_title(),
+               'quantity': quantity,
+               'price': decimal(0)})
+
+
     def update_payment(self, payment, context):
+        """Update order payment state."""
         # Partial payment
         amount = payment.get_property('amount')
         if amount < self.get_property('total_price'):
@@ -166,14 +182,12 @@ class Order(WorkflowAware, Folder):
             self.set_workflow_state('paid')
 
 
-    ###################################################
-    # API
-    ###################################################
     def is_payed(self):
         return self.get_workflow_state() == 'paid'
 
 
     def get_payments(self, as_results=False):
+        """Get order payments as brains."""
         query = AndQuery(
             get_base_path_query(self.get_canonical_path()),
             PhraseQuery('is_payment', True))
@@ -200,24 +214,9 @@ class Order(WorkflowAware, Folder):
         cls = payment_way.payment_class
         return self.make_resource(name, cls, **kw)
 
-    ################
-    # API
-    ################
-    def get_products_namespace(self):
-        l = []
-        products = self.get_resource('lines')
-        get_value = products.handler.get_record_value
-        for record in products.handler.get_records():
-            kw = {'id': record.id}
-            for key in Base_Order_Lines.record_properties.keys():
-                kw[key] = get_value(record, key)
-            l.append(kw)
-        return l
 
-    ################
-    # BILL
-    ################
     def generate_bill(self, context):
+        """Creates bill as a pdf."""
         # Get template
         document = self.get_resource('/ui/orders/bill.xml')
         # Build namespace
@@ -244,3 +243,9 @@ class Order(WorkflowAware, Folder):
         self.del_resource('bill.pdf', soft=True)
         self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
         context.message = MSG(u'Bill has been generated')
+
+    ##################################################
+    # Views
+    manage =  Order_Manage()
+    add_line = Order_AddLine()
+    add_payment = Order_AddPayment()

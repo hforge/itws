@@ -140,10 +140,9 @@ class Order_AddPayment(AutoForm):
 
 
 class Order_Top(STLForm):
-
+    """Display order main information with state and products."""
     access = 'is_admin'
     title = MSG(u'Manage order')
-
     template = '/ui/orders/order_manage.xml'
 
 
@@ -167,7 +166,9 @@ class Order_Top(STLForm):
 
 
 class Order_Manage(CompositeForm):
-
+    """Display order main information with state and products
+       and below a list of payments and bills.
+    """
     access = 'is_admin'
     title = MSG(u'Manage order')
 
