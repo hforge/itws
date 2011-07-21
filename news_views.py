@@ -266,7 +266,9 @@ class NewsFolder_View(Tag_View):
 
         for tag_name in tags:
             query = encode_query({'tag': tag_name})
-            tag = tags_folder.get_resource(tag_name)
+            tag = tags_folder.get_resource(tag_name, soft=True)
+            if tag is None:
+                continue
             tags_ns.append({'title': tag.get_title(),
                             'href': '%s?%s' % (here_link, query)})
 
