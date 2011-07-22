@@ -21,7 +21,6 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import ReadOnlyWidget
-from ikaaro.messages import MSG_CHANGES_SAVED
 from ikaaro.workflow import get_workflow_preview
 
 # Import from payments
