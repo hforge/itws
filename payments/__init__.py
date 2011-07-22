@@ -28,10 +28,12 @@ from utils import get_payment_way, format_price
 from widgets import PaymentWays_Widget
 
 # Register payment ways
+from check import Check
 from paybox import Paybox
 
 
 __all__ = [
+        'Check',
         'PaymentModule',
         'Paybox',
         'PaymentWays_Enumerate',

@@ -4,19 +4,25 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <th>Payment Way</th>
-      <td>${payment_way}</td>
-    </tr>
-    <tr>
-      <th>State</th>
-      <td>${state}</td>
-    </tr>
-    <tr>
-      <th>Amount</th>
-      <td>${amount}</td>
-    </tr>
-  </table>
+  <div id="payment-end-msg">
+    ${payment_end_msg}
+  </div>
+
+  <div id="payment-end-details">
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <th>Payment Way</th>
+        <td>${payment_way}</td>
+      </tr>
+      <tr>
+        <th>State</th>
+        <td>${state}</td>
+      </tr>
+      <tr>
+        <th>Amount</th>
+        <td>${amount}</td>
+      </tr>
+    </table>
+  </div>
 
 </stl:block>

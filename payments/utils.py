@@ -15,11 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-@property
-def not_implemented(*args, **kwargs):
-    raise NotImplementedError
-
-
 def get_payments(resource):
     return resource.get_site_root().get_resource('payments')
 

@@ -20,12 +20,13 @@ from itools.datatypes import Boolean, Decimal
 from itools.gettext import MSG
 
 # Import from ikaaro
+from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware, get_workflow_preview
 
 # Import from payments
-from payment_views import Payment_Edit
-from utils import format_price, not_implemented, get_payments
+from payment_views import Payment_Edit, Payment_End
+from utils import format_price, get_payments
 from workflows import payment_workflow
 
 
@@ -51,8 +52,9 @@ class Payment(WorkflowAware, DBResource):
 
     # Views
     edit = Payment_Edit()
-    payment_form = not_implemented
-    end = not_implemented
+    payment_form = GoToSpecificDocument(title=MSG(u'Pay'),
+                      specific_document='.', specific_view='end')
+    end = Payment_End()
 
 
     def get_catalog_values(self):

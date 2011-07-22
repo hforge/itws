@@ -23,7 +23,7 @@ import sys
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, Integer, Unicode, String, Decimal
+from itools.datatypes import Boolean, String, Decimal
 from itools.datatypes import Enumerate
 from itools.datatypes.primitive import enumerate_get_value, enumerate_is_valid
 from itools.gettext import MSG
@@ -31,17 +31,12 @@ from itools.log import log_debug
 from itools.html import HTMLFile
 from itools.web import BaseView, BaseForm
 
-# Import from ikaaro
-from ikaaro.autoform import RadioWidget, TextWidget
-
 # Import from itws
 from itws.datatypes import StringFixSize
 
 # Import from payments
 from payment import Payment
-from payment_views import Payment_End
 from payment_way import PaymentWay, register_payment_way
-from payment_way_views import PaymentWay_Configure
 from utils import get_payment_way
 
 
@@ -308,36 +303,6 @@ class PayboxPayment_PaymentForm(BaseView):
 
 
 
-class PayboxPayment_End(Payment_End):
-    """The customer is redirect on this page after payment"""
-    access = "is_authenticated"
-#    template = '/ui/payments/paybox/end.xml'
-#
-#    query_schema = freeze(merge_dicts(
-#        Payment_End.query_schema,
-#        status=Integer(mandatory=True),
-#        NUMERR=String))
-#
-#
-#    def get_namespace(self, resource, context):
-#        proxy = super(PayboxPayment_End, self)
-#        namespace = proxy.get_namespace(resource, context)
-#        numerr = context.query['NUMERR']
-#        if numerr:
-#            # Send mail
-#            root = context.root
-#            server = context.server
-#            from_addr = server.smtp_from
-#            subject = u'Paybox problem'
-#            body = 'Paybox error: %s' % PayboxCGIErrors.get_value(numerr)
-#            root.send_email(from_addr, subject, from_addr, body)
-#        status = PBXState.get_value(context.query['status'])
-#        namespace['status'] = status.gettext()
-#        print namespace
-#        return namespace
-
-
-
 class PayboxPayment_Callback(BaseForm):
     """The paybox server send a POST request to say if the payment was done
     """
@@ -399,7 +364,7 @@ class PayboxPayment(Payment):
 
     # Views
     payment_form = PayboxPayment_PaymentForm()
-    end = PayboxPayment_End()
+
     callback = PayboxPayment_Callback()
 
 
@@ -413,28 +378,6 @@ class PayboxPayment(Payment):
 # Payment Way #
 ###############
 
-class Paybox_Configure(PaymentWay_Configure):
-    title = MSG(u'Configure Paybox')
-
-    schema = freeze(merge_dicts(
-        PaymentWay_Configure.schema,
-        PBX_SITE=StringFixSize(size=7),
-        PBX_RANG=StringFixSize(size=2),
-        PBX_IDENTIFIANT=String,
-        PBX_DIFF=StringFixSize(size=2),
-        real_mode=Boolean))
-
-    widgets = freeze(
-        PaymentWay_Configure.widgets + [
-        TextWidget('PBX_SITE', title=MSG(u'Paybox Site')),
-        TextWidget('PBX_RANG', title=MSG(u'Paybox Rang')),
-        TextWidget('PBX_IDENTIFIANT', title=MSG(u'Paybox Identifiant')),
-        TextWidget('PBX_DIFF',
-            title=MSG(u'Diff days (On two digits ex: 04)'), size=2),
-        RadioWidget('real_mode', title=MSG(u'Payments in real mode'))])
-
-
-
 class Paybox(PaymentWay):
 
     class_id = 'paybox'
@@ -447,17 +390,20 @@ class Paybox(PaymentWay):
     logo = '/ui/payments/paybox/images/logo.png'
     payment_class = PayboxPayment
 
-    # Views
-    configure = Paybox_Configure()
-
     # Schema
     base_schema = freeze({
-        'PBX_SITE': StringFixSize(source='metadata', size=7),
-        'PBX_RANG': StringFixSize(source='metadata', size=2),
-        'PBX_IDENTIFIANT': String(source='metadata'),
-        'PBX_DIFF': StringFixSize(source='metadata', size=2),
-        'PBX_AUTOSEULE': String(source='metadata'), # XXX StringFixSize?
-        'real_mode': Boolean(source='metadata', default=False)})
+        'PBX_SITE': StringFixSize(source='metadata', size=7,
+                                  title=MSG(u'Paybox Site')),
+        'PBX_RANG': StringFixSize(source='metadata', size=2,
+                                  title=MSG(u'Paybox Rang')),
+        'PBX_IDENTIFIANT': String(source='metadata',
+                                  title=MSG(u'Paybox Identifiant')),
+        'PBX_DIFF': StringFixSize(source='metadata', size=2,
+                        title=MSG(u'Diff days (On two digits ex: 04)')),
+        # XXX StringFixSize?
+        'PBX_AUTOSEULE': String(source='metadata'),
+        'real_mode': Boolean(source='metadata', default=False,
+                             title=MSG(u'Payments in real mode'))})
 
     class_schema = freeze(merge_dicts(
         PaymentWay.class_schema,
@@ -469,6 +415,10 @@ class Paybox(PaymentWay):
         'PBX_RANG': 99,
         'PBX_PAYBOX': 'https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi',
         'PBX_IDENTIFIANT': 2})
+
+    payment_way_edit_fields = ['PBX_SITE', 'PBX_RANG', 'PBX_IDENTIFIANT',
+                               'PBX_DIFF', 'real_mode']
+
 
 
 register_payment_way(Paybox)

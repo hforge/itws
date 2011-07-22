@@ -81,7 +81,9 @@ class Payment_End(STLView):
     template = '/ui/payments/payment_end.xml'
 
     def get_namespace(self, resource, context):
+        payment_way = resource.get_payment_way()
         return {
-            'payment_way': resource.get_payment_way().get_title(),
+            'payment_end_msg': payment_way.get_property('payment_end_msg'),
+            'payment_way': payment_way.get_title(),
             'amount': format_price(resource.get_property('amount'), unit=u"€"),
             'state': get_workflow_preview(resource, context)}

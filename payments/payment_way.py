@@ -17,17 +17,19 @@
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, String, Integer
+from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import XHTMLBody
+from ikaaro.autoform import ImageSelectorWidget, RTEWidget, XHTMLBody
 from ikaaro.folder import Folder
 
 # Import from payments
 from payment import Payment
-from payment_way_views import PaymentWay_Configure
 
 # Import from itws
 from itws.datatypes import ImagePathDataType
+from itws.views import FieldsAutomaticEditView
 
 
 ####################################
@@ -40,22 +42,45 @@ def register_payment_way(payment_way):
 
 
 
+class PaymentWay_Configure(FieldsAutomaticEditView):
+
+    access = 'is_admin'
+
+    base_edit_fields = ['title', 'logo', 'enabled', 'data', 'payment_end_msg']
+
+    @property
+    def edit_fields(self):
+        return (self.base_edit_fields +
+                get_context().resource.payment_way_edit_fields)
+
+
 class PaymentWay(Folder):
+
     class_id = 'payment_way'
     class_schema = freeze(merge_dicts(
         Folder.class_schema,
         data=XHTMLBody(source='metadata', multilingual=True,
-            parameters_schema={'lang': String}),
+            parameters_schema={'lang': String},
+            widget=RTEWidget,
+            title=MSG(u'Description')),
         enabled=Boolean(source='metadata', default=True, indexed=True,
+            title=MSG(u'Enabled ?'),
             stored=True),
         logo=ImagePathDataType(source='metadata', multilingual=True,
+            widget=ImageSelectorWidget,
+            title=MSG(u'Logo'),
             parameters_schema={'lang': String}, stored=True),
-        increment=Integer(source='metadata', default=0),
+        payment_end_msg=XHTMLBody(source='metadata', multilingual=True,
+            title=MSG(u'Payment end message'),
+            parameters_schema={'lang': String},
+            widget=RTEWidget),
+        increment=Integer(source='metadata', default=0), # XXX ?
         is_payment_way=Boolean(indexed=True)))
     class_views = ['configure']
 
     logo = None
     payment_class = Payment
+    payment_way_edit_fields = []
 
     # Views
     configure = PaymentWay_Configure()
