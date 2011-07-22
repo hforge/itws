@@ -66,7 +66,7 @@ class PaymentModule(Folder):
     def make_reference(self):
         reference = self.get_property('incremental_reference') + 1
         self.set_property('incremental_reference', reference)
-        return reference
+        return str(reference)
 
 
     def make_payment(self, resource, mode, amount):
@@ -76,7 +76,7 @@ class PaymentModule(Folder):
         # Payment configuration
         kw = {'amount': amount}
         # Create order
-        cls = payment_way.__class__
+        cls = payment_way.payment_class
         return resource.make_resource(name, cls, **kw)
 
 

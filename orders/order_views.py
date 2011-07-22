@@ -30,7 +30,7 @@ from ikaaro.workflow import get_workflow_preview
 
 # Import from itws
 from itws.payments import PaymentWays_Enumerate, get_payment_way, format_price
-from itws.payments import PaymentWays_Widget
+from itws.payments import PaymentWays_Widget, get_payments
 from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from orders
@@ -128,12 +128,9 @@ class Order_AddPayment(AutoForm):
 
 
     def action(self, resource, context, form):
-        # Create payment and redirect to payment form
-        payment_way = get_payment_way(resource, form['mode'])
-        if not payment_way.is_enabled(context):
-            raise ValueError
-        total_price = form['amount']
-        payment = resource.make_payment(payment_way, total_price)
+        payments_module = get_payments(resource)
+        payment = payments_module.make_payment(
+                      resource, form['mode'], form['amount'])
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)
 

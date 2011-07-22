@@ -106,7 +106,7 @@ class Order(WorkflowAware, Folder):
         Folder.class_schema,
         WorkflowAware.class_schema,
         total_price=Decimal(source='metadata', title=MSG(u'Total price'),
-            indexed=True, stored=True),
+            indexed=True, stored=True, default=decimal('0')),
         ctime=DateTime(source='metadata',
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,

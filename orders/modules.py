@@ -75,7 +75,7 @@ class OrderModule(Folder):
     def make_reference(self):
         reference = self.get_property('incremental_reference') + 1
         self.set_property('incremental_reference', reference)
-        return reference
+        return str(reference)
 
     ###################################
     # Public API
