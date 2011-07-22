@@ -125,14 +125,6 @@ class PaymentModule_DoPayment(AutoForm):
 
 
     def action(self, resource, context, form):
-        # XXX
-        # Container should be any resource that allow to
-        # contains a payment ?
-        container = resource
-        kw = {'amount': form['amount']}
-        # XXX incremental ID
-        name = str(time())
-        payment_way = get_payment_way(resource, form['mode'])
-        payment = container.make_resource(name, payment_way.payment_class, **kw)
+        payment = resource.make_payment(resource, form['mode'], form['amount'])
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)

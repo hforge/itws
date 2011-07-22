@@ -36,14 +36,14 @@ class Payment(WorkflowAware, DBResource):
     class_icon48 = 'icons/48x48/file.png'
 
     payment_class = None
-    payment_schema = {
-        'amount': Decimal(source='metadata', title=MSG(u'Amount'),
-            indexed=True, stored=True)}
+    payment_schema = {}
 
     class_schema = freeze(merge_dicts(
         DBResource.class_schema,
         WorkflowAware.class_schema,
         payment_schema,
+        amount=Decimal(source='metadata', title=MSG(u'Amount'),
+            indexed=True, stored=True),
         is_payment=Boolean(indexed=True)))
     class_views = ['payment_form', 'edit']
 
