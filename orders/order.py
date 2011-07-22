@@ -170,20 +170,24 @@ class Order(WorkflowAware, Folder):
     # API
     ##################################################
 
-    def get_price(self):
-        return decimal(20.0)
+    def get_total_price(self):
+        return self.get_property('total_price')
 
 
     def add_lines(self, resources):
         """Add given order lines."""
+        total_price = self.get_total_price()
         handler = self.get_resource('lines').handler
         for quantity, resource in resources:
+            price = resource.get_price()
+            total_price += price
             handler.add_record(
               {'abspath': str(resource.get_abspath()),
                'reference': None,
                'title': resource.get_title(),
                'quantity': quantity,
-               'price': 0})#resource.get_price()})
+               'price': price})
+        self.set_property('total_price', total_price)
 
 
     def update_payment(self, payment, context):

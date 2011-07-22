@@ -57,3 +57,7 @@ class Product(DBResource):
         values = super(Product, self).get_catalog_values()
         values['is_buyable'] = True
         return values
+
+
+    def get_price(self):
+        raise NotImplementedError
