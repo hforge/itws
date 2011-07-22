@@ -26,7 +26,7 @@ from ikaaro.workflow import WorkflowAware, get_workflow_preview
 
 # Import from payments
 from payment_views import Payment_Edit, Payment_End
-from utils import format_price, get_payments
+from utils import format_price
 from workflows import payment_workflow
 
 class Payment(WorkflowAware, DBResource):
@@ -45,7 +45,7 @@ class Payment(WorkflowAware, DBResource):
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         is_payment=Boolean(indexed=True)))
-    class_views = ['payment_form', 'edit']
+    class_views = ['edit', 'payment_form']
 
     workflow = payment_workflow
 

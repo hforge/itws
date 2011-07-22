@@ -14,9 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from standard library
-from time import time
-
 # Import from itools
 from itools.core import freeze
 from itools.database import PhraseQuery
@@ -26,14 +23,14 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, TextWidget
-from ikaaro.folder_views import Folder_BrowseContent
 from ikaaro.views import BrowseForm
 
 # Import from payments
 from buttons import NextButton
 from enumerates import PaymentWays_Enumerate
-from utils import get_payment_way
+from payment import Payment
 from widgets import PaymentWays_Widget
+from itws.feed_views import FieldsTableFeed_View
 
 
 class PaymentModule_View(BrowseForm):
@@ -76,7 +73,7 @@ class PaymentModule_View(BrowseForm):
         raise NotImplementedError
 
 
-class PaymentModule_ViewPayments(Folder_BrowseContent):
+class PaymentModule_ViewPayments(FieldsTableFeed_View):
 
     access = 'is_admin'
     title = MSG(u'Payments')
@@ -85,27 +82,14 @@ class PaymentModule_ViewPayments(Folder_BrowseContent):
     batch_msg2 = MSG(u"There are {n} payments")
     table_actions = []
     search_template = None
+    search_cls = Payment
 
-    table_columns = freeze([
-        ('name', MSG(u'name')),
-        ('mode', MSG(u'Mode')),
-        ('workflow_state', MSG(u'State')),
-        ('amount', MSG(u'Amount'))])
-
-    def get_item_value(self, resource, context, item, column):
-        brain, item_resource = item
-        if column == 'mode':
-            return item_resource.class_title
-        elif column == 'amount':
-            # TODO store in catalog
-            return item_resource.get_property('amount')
-        proxy = super(PaymentModule_ViewPayments, self)
-        return proxy.get_item_value(resource, context, item, column)
-
+    table_fields = ['name', 'workflow_state', 'amount']
 
     def get_items(self, resource, context):
         query = PhraseQuery('is_payment', True)
         return resource.get_root().search(query)
+
 
 
 class PaymentModule_DoPayment(AutoForm):
