@@ -20,7 +20,7 @@
 from itools.core import freeze
 from itools.datatypes import Decimal, Integer
 from itools.gettext import MSG
-from itools.web import INFO, STLForm
+from itools.web import INFO, STLForm, get_context
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
@@ -29,8 +29,9 @@ from ikaaro.views import CompositeForm
 from ikaaro.workflow import get_workflow_preview
 
 # Import from itws
-from itws.payments import PaymentWays_Enumerate, get_payment_way, format_price
+from itws.payments import PaymentWays_Enumerate, format_price
 from itws.payments import PaymentWays_Widget, get_payments
+from itws.views import FieldsAdvance_NewInstance
 from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from orders
@@ -178,3 +179,22 @@ class Order_Manage(CompositeForm):
     subviews = [Order_Top(),
                 Order_ViewPayments(),
                 Order_ViewBills()]
+
+
+class Order_NewInstance(FieldsAdvance_NewInstance):
+
+    access = 'is_admin'
+    title = MSG(u'Create a new order')
+    fields = ['customer_id']
+
+    def _get_form(self, resource, context):
+        # Hack
+        return super(AutoForm, self)._get_form(resource, context)
+
+
+    def action(self, resource, context, form):
+        orders_module = resource
+        order = orders_module.make_order(resource, context.user, lines=[])
+        goto = context.get_link(order)
+        message = MSG(u'Order has been created')
+        return context.come_back(message, goto=goto)

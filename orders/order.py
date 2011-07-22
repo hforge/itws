@@ -40,10 +40,10 @@ from ikaaro.workflow import WorkflowAware
 # Import from itws
 from itws.enumerates import Users_Enumerate
 from itws.payments import format_price
-from itws.views import FieldsAdvance_NewInstance
 
 # Import from payments
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
+from order_views import Order_NewInstance
 from utils import get_orders
 from workflows import order_workflow
 
@@ -267,5 +267,4 @@ class Order(WorkflowAware, Folder):
     manage =  Order_Manage()
     add_line = Order_AddLine()
     add_payment = Order_AddPayment()
-    new_instance = FieldsAdvance_NewInstance(
-        access='is_admin', fields=['title', 'customer_id'])
+    new_instance = Order_NewInstance()
