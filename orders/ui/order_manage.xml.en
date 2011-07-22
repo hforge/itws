@@ -4,24 +4,17 @@
 <stl:block xmlns="http://www.w3.org/1999/xhtml"
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
-  <a href="${orders_link}">Manage all orders</a>
-
-  <table cellpadding="0" cellspacing="0" style="width:100%">
-    <tr>
-      <td style="width:48px" valign="top">
-        <img src="/ui/icons/48x48/tasks.png"/>
-      </td>
-      <td>
-        <h1 style="padding:0;margin:0">
-          Order number #${order/id}
-        </h1>
-      </td>
-    </tr>
-  </table>
-
-  ${customer}
+  <h1>Order number #${order/id}</h1>
 
   <table cellpadding="0" cellspacing="10">
+    <tr>
+      <th>Customer</th>
+      <td>
+        <a href="${customer/link}">
+          ${customer/title}
+        </a>
+      </td>
+    </tr>
     <tr>
       <th>State</th>
       <td>
@@ -42,9 +35,9 @@
       </td>
     </tr>
     <tr>
-      <th>Payments</th>
+      <th>Manage all orders</th>
       <td>
-        <a href="./;add_payment">Add a payment</a>
+        <a href="${orders_link}">Manage all orders</a>
       </td>
     </tr>
   </table>

@@ -20,7 +20,7 @@
 from itools.core import freeze
 from itools.datatypes import Decimal, Integer
 from itools.gettext import MSG
-from itools.web import INFO, STLForm, get_context
+from itools.web import INFO, STLForm
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
@@ -36,6 +36,7 @@ from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from orders
 from product import Product_List
+from utils import get_orders
 from workflows import OrderStateEnumerate
 
 
@@ -145,14 +146,10 @@ class Order_Top(STLForm):
 
 
     def get_namespace(self, resource, context):
-        customer_id = resource.get_property('customer_id')
-        from itws.enumerates import Users_Enumerate
-        from utils import get_orders
         orders = get_orders(resource)
-        namespace = {}
+        namespace = resource.get_namespace(context)
         namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
-        namespace['customer'] = Users_Enumerate.get_value(customer_id)
         namespace['products'] = resource.get_products_namespace()
         namespace['transitions'] = SelectWidget('state',
             datatype=OrderStateEnumerate, value=None).render()

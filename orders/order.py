@@ -146,12 +146,10 @@ class Order(WorkflowAware, Folder):
                 'creation_date': context.format_date(creation_date),
                 'total_price': format_price(total_price)}
         # Customer
-        customer_id = self.get_property('customer_id') or 0 # XXX XXX
+        customer_id = self.get_property('customer_id')
         user = context.root.get_user(customer_id)
-        namespace['customer'] = {'id': customer_id,
+        namespace['customer'] = {'link': context.get_link(user),
                                  'title': user.get_title()}
-        for key in ('email', 'phone1', 'phone2'):
-            namespace['customer'][key] = None
         return namespace
 
 
