@@ -45,6 +45,7 @@ def register_payment_way(payment_way):
 class PaymentWay_Configure(FieldsAutomaticEditView):
 
     access = 'is_admin'
+    title = MSG(u'Configure')
 
     base_edit_fields = ['title', 'logo', 'enabled', 'data', 'payment_end_msg']
 

@@ -29,7 +29,6 @@ from payment_views import Payment_Edit, Payment_End
 from utils import format_price, get_payments
 from workflows import payment_workflow
 
-
 class Payment(WorkflowAware, DBResource):
 
     class_id = 'payment'
@@ -106,3 +105,11 @@ class Payment(WorkflowAware, DBResource):
 
     def is_payment_validated(self):
         return self.get_workflow_state() == 'validated'
+
+
+    def get_advanced_state(self):
+        datatype = self.class_schema.get('advanced_state')
+        if datatype:
+            advanced_state = self.get_property('advanced_state')
+            return datatype.get_value(advanced_state).gettext()
+        return None

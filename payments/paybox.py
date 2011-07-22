@@ -31,6 +31,9 @@ from itools.log import log_debug
 from itools.html import HTMLFile
 from itools.web import BaseView, BaseForm
 
+# Import from ikaaro
+from ikaaro.autoform import ReadOnlyWidget
+
 # Import from itws
 from itws.datatypes import StringFixSize
 
@@ -352,11 +355,14 @@ class PayboxPayment(Payment):
 
     payment_schema = freeze(merge_dicts(
         Payment.payment_schema,
-        transaction=String(source='metadata', title=MSG(u'Id transaction')),
+        transaction=String(source='metadata', title=MSG(u'Id transaction'),
+                           widget=ReadOnlyWidget),
         autorisation=String(source='metadata',
-            title=MSG(u'Id Autorisation')),
-        advanced_state=PayboxStatus(source='metadata',
+            title=MSG(u'Id Autorisation'), widget=ReadOnlyWidget),
+        advanced_state=PayboxStatus(source='metadata', widget=ReadOnlyWidget,
             title=MSG(u'Advanced State'))))
+
+    payment_fields = ['transaction', 'autorisation', 'advanced_state']
 
     class_schema = freeze(merge_dicts(
         Payment.class_schema,
@@ -366,11 +372,6 @@ class PayboxPayment(Payment):
     payment_form = PayboxPayment_PaymentForm()
 
     callback = PayboxPayment_Callback()
-
-
-    def get_advanced_state(self):
-        advanced_state = self.get_property('advanced_state')
-        return PayboxStatus.get_value(advanced_state).gettext()
 
 
 

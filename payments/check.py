@@ -31,7 +31,7 @@ class CheckStatus(Enumerate):
     default = 'waiting'
 
     options = [
-      {'name': 'waiting', 'value': MSG(u'Waiting for payment')},
+      {'name': 'waiting', 'value': MSG(u'Waiting for check')},
       {'name': 'refused', 'value': MSG(u'Check refused by the bank')},
       {'name': 'invalid', 'value': MSG(u'Invalid amount')},
       {'name': 'success', 'value': MSG(u'Payment successful')},
@@ -50,8 +50,9 @@ class CheckPayment(Payment):
         check_number=Integer(source='metadata', title=MSG(u'Check number')),
         bank=Unicode(source='metadata', title=MSG(u'Bank')),
         account_holder=Unicode(source='metadata', title=MSG(u'Account holder')),
-        advanced_state=CheckStatus(source='metadata',
-            title=MSG(u'Advanced State'))))
+        advanced_state=CheckStatus(source='metadata', default='waiting',
+            title=MSG(u'Advanced State'), has_empty_option=False)))
+    payment_fields = ['check_number', 'bank', 'account_holder', 'advanced_state']
 
     class_schema = freeze(merge_dicts(
         Payment.class_schema,

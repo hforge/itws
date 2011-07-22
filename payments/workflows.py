@@ -21,14 +21,11 @@ from itools.workflow import Workflow
 
 
 class PaymentStateEnumerate(Enumerate):
+
     options = [
-        {'name': '', 'value': MSG(u"Unknow")},
-        {'name': 'open', 'value': MSG(u'Waiting validation')},
+        {'name': 'open', 'value': MSG(u'Waiting payment')},
         {'name': 'validated', 'value': MSG(u'Payment validated')},
-        {'name': 'bank_refused', 'value': MSG(u'Payment refused by the bank')},
-        {'name': 'invalid_amount', 'value': MSG(u'Invalid amount')},
-        {'name': 'payment_error', 'value': MSG(u'Payment error')},
-        {'name': 'canceled', 'value': MSG(u'Canceled')}]
+        {'name': 'error', 'value': MSG(u'Payment error')}]
 
 
 payment_workflow = Workflow()
