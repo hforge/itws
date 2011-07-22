@@ -24,7 +24,7 @@ from ikaaro.skins import register_skin
 from buttons import NextButton
 from enumerates import PaymentWays_Enumerate
 from modules import PaymentModule
-from utils import get_payment_way, format_price
+from utils import get_payment_way, format_price, get_payments
 from widgets import PaymentWays_Widget
 
 # Register payment ways
@@ -40,3 +40,6 @@ __all__ = [
         'PaymentWays_Widget']
 
 register_skin('payments', get_abspath('ui'))
+
+# Silent
+get_payments

@@ -17,7 +17,9 @@
 # Import from standard library
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.database import AndQuery, PhraseQuery
+from itools.datatypes import Integer
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -28,13 +30,18 @@ from ikaaro.utils import get_base_path_query
 from modules_views import PaymentModule_View, PaymentModule_DoPayment
 from modules_views import PaymentModule_ViewPayments
 from payment_way import payment_ways_registry
+from utils import get_payment_way
 
 
 class PaymentModule(Folder):
+
     class_id = 'payments'
     class_title = MSG(u'Payment Module')
     class_views = ['view', 'view_payments', 'do_payment']
 
+    class_schema = merge_dicts(Folder.class_schema,
+        incremental_reference=Integer(source='metadata',
+            title=MSG(u'Index'), default=0))
 
     # Views
     view = PaymentModule_View()
@@ -56,7 +63,24 @@ class PaymentModule(Folder):
     ######################
     # Public API
     ######################
+    def make_reference(self):
+        reference = self.get_property('incremental_reference') + 1
+        self.set_property('incremental_reference', reference)
+        return reference
 
+
+    def make_payment(self, resource, mode, amount):
+        # Auto incremental name for payments
+        name = self.make_reference()
+        payment_way = get_payment_way(self, mode)
+        # Payment configuration
+        kw = {'amount': amount}
+        # Create order
+        cls = payment_way.__class__
+        return resource.make_resource(name, cls, **kw)
+
+
+    # XXX See if we can remove it
     def get_payment_ways(self, enabled=None, as_results=False):
         query = AndQuery(
             get_base_path_query(self.get_canonical_path()),

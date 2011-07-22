@@ -24,6 +24,7 @@ from ikaaro.skins import register_skin
 from modules import OrderModule
 from order import Order
 from product import Product
+from utils import get_orders
 
 
 __all__ = ['OrderModule']
@@ -31,4 +32,4 @@ __all__ = ['OrderModule']
 register_skin('orders', get_abspath('ui'))
 
 # Silent pyflakes
-Order, Product
+Order, Product, get_orders

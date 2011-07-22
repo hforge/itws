@@ -19,7 +19,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.database import PhraseQuery
-from itools.datatypes import Unicode
+from itools.datatypes import Integer, Unicode
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -28,7 +28,6 @@ from ikaaro.folder import Folder
 
 # Import from itws
 from itws.datatypes import ImagePathDataType
-from itws.payments import get_payment_way
 from itws.views import FieldsAutomaticEditView
 
 # Import from orders
@@ -43,6 +42,9 @@ class OrderModule(Folder):
     class_title = MSG(u'Orders')
     class_views = ['view', 'products', 'configure', 'export']
     class_schema = merge_dicts(Folder.class_schema,
+        incremental_reference=Integer(source='metadata',
+            title=MSG(u'Index'), default=0),
+        # Configuration
         logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo')),
         signature=Unicode(source='metadata', title=MSG(u'PDF Signature'),
                           widget=MultilineWidget))
@@ -70,17 +72,24 @@ class OrderModule(Folder):
         return None
 
 
-    def make_order(self, customer, total_price, mode=None, **kw):
+    def make_reference(self):
+        reference = self.get_property('incremental_reference') + 1
+        self.set_property('incremental_reference', reference)
+        return reference
+
+    ###################################
+    # Public API
+    ###################################
+
+    def make_order(self, resource, customer, lines):
         # Auto incremental name for orders
         name = self.make_reference()
-        # Order class
+        # Create Order resource
         cls = self.order_class
-        order = self.make_resource(name, cls, customer_id=customer.name,
-                total_price=total_price, **kw)
-        if mode is None:
-            return order
-        payment_way = get_payment_way(self, mode)
-        return order.make_payment(payment_way, total_price)
+        order = self.make_resource(name, cls, customer_id=customer.name)
+        # Add products to order
+        order.add_lines(lines)
+        return order
 
 
     ###################################
@@ -91,4 +100,3 @@ class OrderModule(Folder):
     products = OrderModule_ViewProducts()
     configure = FieldsAutomaticEditView(title=MSG(u'Configure Order module'),
                     edit_fields=['logo', 'signature'])
-

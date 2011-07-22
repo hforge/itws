@@ -259,6 +259,7 @@ class Order(WorkflowAware, Folder):
 
     ##################################################
     # Views
+    ##################################################
     manage =  Order_Manage()
     add_line = Order_AddLine()
     add_payment = Order_AddPayment()
