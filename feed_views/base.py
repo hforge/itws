@@ -166,9 +166,15 @@ class Feed_View(Folder_BrowseContent):
                 theme = get_base_path_query(str(theme_path), True)
                 args.append(NotQuery(theme))
 
-        # Search specific format ?
-        if self.search_class_id is not None:
-            args.append(PhraseQuery('format', self.search_class_id))
+        # Search specific format(s) ?
+        search_class_id = self.search_class_id
+        if search_class_id is not None:
+            if (isinstance(search_class_id, (list, tuple)) and
+                    len(search_class_id) == 1):
+                args.append(PhraseQuery('format', search_class_id))
+            else:
+                args.append(OrQuery(*[PhraseQuery('format', x)
+                                      for x in search_class_id]))
 
         # Ignore resources
         if self.ignore_internal_resources:
