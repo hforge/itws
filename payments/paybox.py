@@ -23,8 +23,7 @@ import sys
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, String, Decimal
-from itools.datatypes import Enumerate
+from itools.datatypes import Boolean, String, Decimal, Enumerate, Email
 from itools.datatypes.primitive import enumerate_get_value, enumerate_is_valid
 from itools.gettext import MSG
 from itools.log import log_debug
@@ -281,7 +280,10 @@ class PayboxPayment_PaymentForm(BaseView):
         # PBX_PORTEUR
         # XXX Allow to overide PBX_PORTEUR
         # (If someone call and give his card number ?)
-        kw['PBX_PORTEUR'] = context.user.get_property('email')
+        email = context.user.get_property('email')
+        if Email.is_valid(email) is False:
+            raise ValueError, 'PBX_PORTEUR should be a valid Email address'
+        kw['PBX_PORTEUR'] = email
         # En mode test:
         if not payment_way.get_property('real_mode'):
             kw.update(payment_way.test_configuration)
@@ -295,8 +297,16 @@ class PayboxPayment_PaymentForm(BaseView):
             html = re.match ('.*?<HEAD>(.*?)</HTML>', result, re.DOTALL)
             if html is None:
                 raise CalledProcessError
-        except CalledProcessError:
-            raise ValueError, u"Error: payment module can't be loaded."
+        except CalledProcessError, e:
+            # Try do get error number
+            num_error = re.match ('.*?NUMERR=(.*?)"', e.output, re.DOTALL)
+            if num_error:
+                num_error = num_error.group(1)
+                error = PayboxCGIErrors.get_value(num_error)
+            else:
+                error = "Unknow reason"
+            error = u"Error: payment module can't be loaded. (%s)" % error
+            raise ValueError, error
         # We return the payment widget
         html = html.group(1)
         ## Encapsulate in pay view
