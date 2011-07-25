@@ -26,6 +26,7 @@ from ikaaro.autoform import AutoForm, SelectWidget
 # Import from itws
 from utils import join_pdfs
 from itws.feed_views import FieldsTableFeed_View
+from itws.payments import format_price
 
 
 class ExportFormats(Enumerate):
@@ -71,16 +72,13 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
 
     search_fields = ['name', 'customer_id']
     table_fields = ['checkbox', 'name', 'customer_id', 'workflow_state',
-                    'total_price', 'ctime', 'bill']
+                    'total_price', 'total_paid', 'ctime', 'bill']
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
-        if column == 'total_price':
-            # TODO store in catalog
-            order_price = item_resource.get_property('total_price')
-            from decimal import Decimal as decimal
-            order_price = decimal('20')
-            return order_price
+        if column in ('total_price', 'total_paid'):
+            value = item_resource.get_property(column)
+            return format_price(value)
         elif column == 'bill':
             bill = item_resource.get_property('bill')
             if bill is None:

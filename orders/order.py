@@ -43,7 +43,7 @@ from itws.payments import format_price
 
 # Import from payments
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
-from order_views import Order_NewInstance
+from order_views import Order_NewInstance, Order_View
 from utils import get_orders
 from workflows import order_workflow
 
@@ -106,15 +106,18 @@ class Order(WorkflowAware, Folder):
         WorkflowAware.class_schema,
         total_price=Decimal(source='metadata', title=MSG(u'Total price'),
             indexed=True, stored=True, default=decimal('0')),
+        total_paid=Decimal(source='metadata', title=MSG(u'Total paid'),
+            default=decimal('0')),
         ctime=DateTime(source='metadata',
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,
             stored=True, title=MSG(u'Customer')),
         bill=URI(source='metadata'),
+        is_paid=Boolean(source='metadata'),
         is_order=Boolean(indexed=True, stored=True)))
     class_schema['name'].title = MSG(u'#Num')
 
-    class_views = ['manage', 'add_line', 'add_payment']
+    class_views = ['manage', 'add_line', 'add_payment', 'view']
 
     workflow = order_workflow
 
@@ -137,11 +140,11 @@ class Order(WorkflowAware, Folder):
     def get_namespace(self, context):
         # Build namespace
         creation_date = self.get_property('ctime')
-        total_price = self.get_property('total_price')
         namespace = {
                 'reference': self.name,
-                'creation_date': context.format_date(creation_date),
-                'total_price': format_price(total_price)}
+                'creation_date': context.format_date(creation_date)}
+        for key in ['total_price', 'total_paid']:
+            namespace[key] = format_price(self.get_property(key))
         # Customer
         customer_id = self.get_property('customer_id')
         user = context.root.get_user(customer_id)
@@ -185,18 +188,30 @@ class Order(WorkflowAware, Folder):
         self.set_property('total_price', total_price)
 
 
-    def update_payment(self, payment, context):
+    def update_payment_state(self, context):
         """Update order payment state."""
-        # Partial payment
-        amount = payment.get_property('amount')
-        if amount < self.get_property('total_price'):
+        total_paid = decimal('0')
+        for brain in self.get_payments(as_results=False):
+            payment = context.root.get_resource(brain.abspath)
+            if payment.get_property('is_paid') is False:
+                continue
+            total_paid += payment.get_property('amount')
+        self.set_property('total_paid', total_paid)
+        if total_paid < self.get_property('total_price'):
             self.set_workflow_state('partially_paid')
-        else:
+            self.set_property('is_paid', False)
+        elif total_paid == self.get_property('total_price'):
             self.set_workflow_state('paid')
+            self.set_property('is_paid', True)
+        elif total_paid > self.get_property('total_price'):
+            self.set_workflow_state('to-much-paid')
+        # Generate bill
+        # XXX Does we have to generate bill now ?
+        self.generate_bill(context)
 
 
-    def is_payed(self):
-        return self.get_workflow_state() == 'paid'
+    def is_paid(self):
+        return self.get_property('is_paid')
 
 
     def get_payments(self, as_results=False):
@@ -242,12 +257,12 @@ class Order(WorkflowAware, Folder):
                      'filename': 'bill.pdf'}
         self.del_resource('bill.pdf', soft=True)
         context.message = MSG(u'Bill has been generated')
-        bill = self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
-        self.set_property('bill', bill.get_abspath())
+        return self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
 
     ##################################################
     # Views
     ##################################################
+    view = Order_View()
     manage =  Order_Manage()
     add_line = Order_AddLine()
     add_payment = Order_AddPayment()

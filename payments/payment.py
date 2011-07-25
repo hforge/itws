@@ -66,37 +66,6 @@ class Payment(DBResource):
         return values
 
 
-    ##################################################
-    # Namespace
-    ##################################################
-    def get_namespace(self, context):
-        order = self.parent
-        namespace = {
-                'id': self.name,
-                'complete_id': '%s-%s' % (order.name, self.name),
-                'payment_mode': self.payment_mode} # TODO
-        # Base namespace (from subclasses)
-        get_property = self.get_property
-        for key in self.payment_schema:
-            namespace[key] = get_property(key)
-        # State
-        namespace['state'] = get_workflow_preview(self, context)
-        # Format amount
-        namespace['amount'] = format_price(namespace['amount'], unit=u"€")
-        # Customer
-        customer_id = self.get_property('customer_id')
-        customer = context.root.get_user(customer_id)
-        namespace['customer'] = {
-            'id': customer_id,
-            'title': customer.get_title(),
-            'email': customer.get_property('email')}
-        # Advanced state (from subclasses)
-        namespace['advanced_state'] = None
-        # Timestamp
-        namespace['ts'] = context.format_datetime(get_property('mtime'))
-        return namespace
-
-
     ###################################################
     # API
     ###################################################
@@ -107,24 +76,25 @@ class Payment(DBResource):
         return root.get_resource(brain.abspath, soft=True)
 
 
-    def set_as_paid(self, context):
-        # Set payment as paid
-        self.set_property('is_paid', True)
-        # Get customer email
-        customer = context.root.get_user(self.get_property('customer_id'))
-        customer_email = customer.get_property('email')
-        # Sent an email to inform user that payment has been done
-        subject = self.mail_subject_template.gettext()
-        text = self.mail_body_template.gettext(
-              name=self.name,
-              payment_way=self.get_payment_way().get_title(),
-              amount=format_price(self.get_property('amount')))
-        context.root.send_email(customer_email, subject, text=text)
+    def update_payment_state(self, context, paid):
+        # Set payment as paid or not
+        self.set_property('is_paid', paid)
+        if paid:
+            # Get customer email
+            customer = context.root.get_user(self.get_property('customer_id'))
+            customer_email = customer.get_property('email')
+            # Sent an email to inform user that payment has been done
+            subject = self.mail_subject_template.gettext()
+            text = self.mail_body_template.gettext(
+                  name=self.name,
+                  payment_way=self.get_payment_way().get_title(),
+                  amount=format_price(self.get_property('amount')))
+            context.root.send_email(customer_email, subject, text=text)
         # Inform order that a new payment as been done
         order_abspath = self.get_property('order_abspath')
         if order_abspath:
             order = self.get_resource(order_abspath)
-            order.new_payment_done()
+            order.update_payment_state(context)
 
 
     def is_payment_validated(self):

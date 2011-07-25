@@ -24,12 +24,11 @@ class OrderStateEnumerate(Enumerate):
 
     options = [
         {'name': 'open', 'value': MSG(u'Waiting payment'), 'color': '#BF0000'},
-        {'name': 'canceled', 'value': MSG(u'Canceled'), 'color': '#FF1F00'},
-        {'name': 'closed', 'value': MSG(u'Closed'), 'color': '#000000'},
-        # Payment
         {'name': 'partially-paid', 'value': MSG(u'Partially paid'), 'color': '#75906E'},
+        {'name': 'to-much-paid', 'value': MSG(u'To much Paid'), 'color': '#75906F'},
         {'name': 'paid', 'value': MSG(u'Paid'), 'color': '#FFAB00'},
-        {'name': 'payment_error', 'value': MSG(u'Payment error'), 'color': '#FFAB00'}]
+        {'name': 'canceled', 'value': MSG(u'Canceled'), 'color': '#FF1F00'},
+        {'name': 'closed', 'value': MSG(u'Closed'), 'color': '#000000'}]
 
 
 order_workflow = Workflow()

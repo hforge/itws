@@ -21,7 +21,6 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import ReadOnlyWidget
-from ikaaro.workflow import get_workflow_preview
 
 # Import from payments
 from utils import format_price
@@ -79,9 +78,8 @@ class Payment_Edit(FieldsAutomaticEditView):
 
 
     def action(self, resource, context, form):
-        # Set as paid
-        if form['is_paid'] is True:
-            resource.set_as_paid(context)
+        # Update payment state
+        resource.update_payment_state(context, paid=form['is_paid'])
         # Action
         proxy = super(Payment_Edit, self)
         return proxy.action(resource, context, form)

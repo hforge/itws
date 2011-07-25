@@ -19,12 +19,20 @@
       <th>State</th>
       <td>
         <form method="post">
-          ${transitions}
+          ${state}
           <button type="submit" class="button-ok"
             name="action" value="change_order_state">OK</button>
           <br/>
         </form>
       </td>
+    </tr>
+    <tr>
+      <th>Total price</th>
+      <td>${total_price}</td>
+    </tr>
+    <tr>
+      <th>Total paid</th>
+      <td>${total_paid}</td>
     </tr>
     <tr>
       <th>Manage all orders</th>

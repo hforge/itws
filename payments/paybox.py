@@ -333,7 +333,9 @@ class PayboxPayment_Callback(BaseForm):
         form = self._get_form(resource, context)
         # Set payment as paid
         if form['autorisation']:
-            resource.set_as_paid(context)
+            resource.update_payment_state(context, paid=True)
+        else:
+            resource.update_payment_state(context, paid=False)
         for key in ['transaction', 'autorisation', 'advanced_state']:
             resource.set_property(key, form[key])
         # We check amount

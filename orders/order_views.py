@@ -25,7 +25,7 @@ from itools.web import INFO, STLForm
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
 from ikaaro.file import PDF
-from ikaaro.views import CompositeForm
+from ikaaro.views import CompositeForm, CompositeView
 
 # Import from itws
 from itws.payments import PaymentWays_Enumerate, format_price
@@ -89,7 +89,8 @@ class Order_ViewPayments(TableFeed_View):
     table_columns = freeze([
         ('reference', MSG(u'Reference')),
         ('payment_way', MSG(u'Payment Way')),
-        ('amount', MSG(u'total_price')),
+        ('amount', MSG(u'Amount')),
+        ('advanced_state', MSG(u'Advanced state')),
         ('is_payment_validated', MSG(u'Validated ?'))])
 
 
@@ -105,6 +106,8 @@ class Order_ViewPayments(TableFeed_View):
             return item_resource.get_payment_way().get_title()
         elif column == 'amount':
             return format_price(item_resource.get_property('amount'))
+        elif column == 'advanced_state':
+            return item_resource.get_advanced_state()
         elif column  == 'is_payment_validated':
             return item_resource.is_payment_validated()
         raise NotImplementedError
@@ -144,12 +147,14 @@ class Order_Top(STLForm):
 
     def get_namespace(self, resource, context):
         orders = get_orders(resource)
+        total_price = resource.get_property('total_price')
         namespace = resource.get_namespace(context)
         namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
+        namespace['total_price'] = format_price(total_price)
         namespace['products'] = resource.get_products_namespace()
-        namespace['transitions'] = SelectWidget('state',
-            datatype=OrderStateEnumerate, value=None).render()
+        namespace['state'] = SelectWidget('state', has_empty_option=False,
+            datatype=OrderStateEnumerate, value=resource.get_statename()).render()
         return namespace
 
 
@@ -157,6 +162,13 @@ class Order_Top(STLForm):
     def action_change_order_state(self, resource, context, form):
         resource.set_workflow_state(form['state'])
 
+
+class Order_View(CompositeView):
+
+    access = 'is_allowed_to_view'
+    title = MSG(u'View')
+
+    subviews = [Order_ViewPayments()]
 
 
 class Order_Manage(CompositeForm):
