@@ -26,7 +26,6 @@ from itools.web import INFO, STLForm
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
 from ikaaro.file import PDF
 from ikaaro.views import CompositeForm
-from ikaaro.workflow import get_workflow_preview
 
 # Import from itws
 from itws.payments import PaymentWays_Enumerate, format_price
@@ -91,8 +90,7 @@ class Order_ViewPayments(TableFeed_View):
         ('reference', MSG(u'Reference')),
         ('payment_way', MSG(u'Payment Way')),
         ('amount', MSG(u'total_price')),
-        ('is_payment_validated', MSG(u'Validated ?')),
-        ('state', MSG(u'State'))])
+        ('is_payment_validated', MSG(u'Validated ?'))])
 
 
     def get_items(self, resource, context):
@@ -109,8 +107,6 @@ class Order_ViewPayments(TableFeed_View):
             return format_price(item_resource.get_property('amount'))
         elif column  == 'is_payment_validated':
             return item_resource.is_payment_validated()
-        elif column == 'state':
-            return get_workflow_preview(item_resource, context)
         raise NotImplementedError
 
 
@@ -132,7 +128,8 @@ class Order_AddPayment(AutoForm):
     def action(self, resource, context, form):
         payments_module = get_payments(resource)
         payment = payments_module.make_payment(
-                      resource, form['mode'], form['amount'])
+                      resource, form['mode'], form['amount'],
+                      context.user, order=resource)
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)
 
@@ -154,10 +151,6 @@ class Order_Top(STLForm):
         namespace['transitions'] = SelectWidget('state',
             datatype=OrderStateEnumerate, value=None).render()
         return namespace
-
-
-    def action_generate_bill(self, resource, context, form):
-        return resource.generate_bill(context)
 
 
     action_change_order_state_schema = {'state': OrderStateEnumerate}

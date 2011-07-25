@@ -329,30 +329,24 @@ class PayboxPayment_Callback(BaseForm):
 
 
     def POST(self, resource, context):
+        # XXX TODO Check signature
         form = self._get_form(resource, context)
-
-        # Set informations
+        # Set payment as paid
         if form['autorisation']:
-            resource.set_workflow_state('validated')
+            resource.set_as_paid(context)
         for key in ['transaction', 'autorisation', 'advanced_state']:
             resource.set_property(key, form[key])
         # We check amount
         amount = form['amount'] / decimal('100')
         if resource.get_property('amount') != amount:
-            resource.set_workflow_state('invalid_amount')
+            raise ValueError, 'invalid payment amount'
         # We ensure that remote ip address belongs to Paybox
         authorized_ip = self.authorized_ip
         payment_way = get_payment_way(resource, 'paybox')
         if not payment_way.get_property('real_mode'):
             authorized_ip = authorized_ip + [None]
         if context.get_remote_ip() not in authorized_ip:
-            resource.set_workflow_state('payment_error')
             resource.set_property('advanced_state', 'ip_not_authorized')
-        # XXX TODO Check signature
-        # Update order workflow
-        if resource.is_payment_validated():
-            order = resource.parent
-            order.update_payment(resource, context)
         # Return a blank page to payment
         context.set_content_type('text/plain')
 

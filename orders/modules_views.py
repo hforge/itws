@@ -71,7 +71,7 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
 
     search_fields = ['name', 'customer_id']
     table_fields = ['checkbox', 'name', 'customer_id', 'workflow_state',
-                    'total_price', 'ctime', 'pdf']
+                    'total_price', 'ctime', 'bill']
 
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
@@ -81,11 +81,14 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
             from decimal import Decimal as decimal
             order_price = decimal('20')
             return order_price
-        elif column == 'pdf':
+        elif column == 'bill':
+            bill = item_resource.get_property('bill')
+            if bill is None:
+                return None
             return XMLParser("""
-                    <a href="./%s/bill.pdf/;download">
+                    <a href="./%s/%s/;download">
                       <img src="/ui/icons/16x16/pdf.png"/>
-                    </a>""" % brain.name)
+                    </a>""" % (brain.name, bill))
         proxy = super(OrderModule_ViewOrders, self)
         return proxy.get_item_value(resource, context, item, column)
 

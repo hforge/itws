@@ -27,14 +27,6 @@
       </td>
     </tr>
     <tr>
-      <th>Bill</th>
-      <td>
-        <form method="POST">
-          <button class="pdf" name="action" value="generate_bill">Generate BILL</button>
-        </form>
-      </td>
-    </tr>
-    <tr>
       <th>Manage all orders</th>
       <td>
         <a href="${orders_link}">Manage all orders</a>

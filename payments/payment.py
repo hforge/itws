@@ -16,44 +16,48 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, Decimal
+from itools.datatypes import Boolean, Decimal, String, URI
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.folder_views import GoToSpecificDocument
 from ikaaro.resource_ import DBResource
-from ikaaro.workflow import WorkflowAware, get_workflow_preview
 
 # Import from payments
 from payment_views import Payment_Edit, Payment_End
 from utils import format_price
-from workflows import payment_workflow
 
-class Payment(WorkflowAware, DBResource):
+class Payment(DBResource):
 
     class_id = 'payment'
     class_icon16 = 'icons/16x16/file.png'
     class_icon48 = 'icons/48x48/file.png'
+    class_version = '20110725'
 
     payment_class = None
     payment_schema = {}
 
     class_schema = freeze(merge_dicts(
         DBResource.class_schema,
-        WorkflowAware.class_schema,
         payment_schema,
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
+        customer_id=String(source='metadata', title=MSG(u'Customer id')),
+        is_paid=Boolean(source='metadata', indexed=True, title=MSG(u'Is paid ?')),
+        order_abspath=URI(source='metadata', title=MSG(u'Order')),
         is_payment=Boolean(indexed=True)))
     class_views = ['edit', 'payment_form']
 
-    workflow = payment_workflow
 
-    # Views
-    edit = Payment_Edit()
-    payment_form = GoToSpecificDocument(title=MSG(u'Pay'),
-                      specific_document='.', specific_view='end')
-    end = Payment_End()
+    mail_subject_template = MSG(u"Payment validated")
+
+    mail_body_template = MSG(u"Hi, your payment has been validated.\n\n"
+                             u"------------------------\n"
+                             u"Id payment: {name}\n"
+                             u"Payment Way: {payment_way}\n"
+                             u"Amount: {amount}\n"
+                             u"------------------------\n"
+                             u"\n\n")
 
 
     def get_catalog_values(self):
@@ -80,7 +84,7 @@ class Payment(WorkflowAware, DBResource):
         # Format amount
         namespace['amount'] = format_price(namespace['amount'], unit=u"€")
         # Customer
-        customer_id = order.get_property('customer_id') or '0'
+        customer_id = self.get_property('customer_id')
         customer = context.root.get_user(customer_id)
         namespace['customer'] = {
             'id': customer_id,
@@ -103,8 +107,28 @@ class Payment(WorkflowAware, DBResource):
         return root.get_resource(brain.abspath, soft=True)
 
 
+    def set_as_paid(self, context):
+        # Set payment as paid
+        self.set_property('is_paid', True)
+        # Get customer email
+        customer = context.root.get_user(self.get_property('customer_id'))
+        customer_email = customer.get_property('email')
+        # Sent an email to inform user that payment has been done
+        subject = self.mail_subject_template.gettext()
+        text = self.mail_body_template.gettext(
+              name=self.name,
+              payment_way=self.get_payment_way().get_title(),
+              amount=format_price(self.get_property('amount')))
+        context.root.send_email(customer_email, subject, text=text)
+        # Inform order that a new payment as been done
+        order_abspath = self.get_property('order_abspath')
+        if order_abspath:
+            order = self.get_resource(order_abspath)
+            order.new_payment_done()
+
+
     def is_payment_validated(self):
-        return self.get_workflow_state() == 'validated'
+        return self.get_property('is_paid') == True
 
 
     def get_advanced_state(self):
@@ -113,3 +137,18 @@ class Payment(WorkflowAware, DBResource):
             advanced_state = self.get_property('advanced_state')
             return datatype.get_value(advanced_state).gettext()
         return None
+
+
+    def get_order(self):
+        order_abspath = self.get_property('order_abspath')
+        if not order_abspath:
+            return None
+        return self.get_resource(order_abspath)
+
+    ###################################################
+    # Views
+    ###################################################
+    edit = Payment_Edit()
+    payment_form = GoToSpecificDocument(title=MSG(u'Pay'),
+                      specific_document='.', specific_view='end')
+    end = Payment_End()

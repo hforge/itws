@@ -33,7 +33,7 @@ class Payment_Edit(FieldsAutomaticEditView):
     access = 'is_allowed_to_edit'
     title = MSG(u'Edit')
 
-    base_edit_fields = ['name', 'amount']
+    base_edit_fields = ['name', 'amount', 'is_paid']
 
     @property
     def edit_fields(self):
@@ -55,8 +55,15 @@ class Payment_Edit(FieldsAutomaticEditView):
             payment_way = resource.get_payment_way()
             payment_way_title = payment_way.get_title().encode('utf-8')
             payment_way_link = context.get_link(payment_way)
-            events = XMLParser('Payment #%s via <a href="%s">%s</a>' %
-                        (resource.name, payment_way_link, payment_way_title))
+            order = resource.get_order()
+            if order:
+                order_txt = " for <a href='%s'>order %s</a>" % (
+                    context.get_link(order), order.get_title())
+            else:
+                order_txt = ''
+            events = XMLParser('Payment #%s via <a href="%s">%s</a>%s' %
+                        (resource.name, payment_way_link, payment_way_title,
+                         order_txt.encode('utf-8')))
             return list(events)
         elif name == 'amount':
             return u'%s' % resource.get_property('amount')
@@ -72,11 +79,9 @@ class Payment_Edit(FieldsAutomaticEditView):
 
 
     def action(self, resource, context, form):
-        workflow_state = form['state']
-        if workflow_state == 'validated':
-            resource.set_payment_as_validated(resource, context)
-        else:
-            resource.set_workflow_state(workflow_state)
+        # Set as paid
+        if form['is_paid'] is True:
+            resource.set_as_paid(context)
         # Action
         proxy = super(Payment_Edit, self)
         return proxy.action(resource, context, form)
@@ -90,8 +95,14 @@ class Payment_End(STLView):
 
     def get_namespace(self, resource, context):
         payment_way = resource.get_payment_way()
+        order = resource.get_order()
+        if order:
+            order = {'link': context.get_link(order),
+                     'title': order.get_title()}
         return {
+            'order': order,
             'payment_end_msg': payment_way.get_property('payment_end_msg'),
             'payment_way': payment_way.get_title(),
+            'is_paid': resource.get_property('is_paid'),
             'amount': format_price(resource.get_property('amount'), unit=u"€"),
-            'state': get_workflow_preview(resource, context)}
+            'state': resource.get_advanced_state()}

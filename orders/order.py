@@ -98,7 +98,6 @@ class Order(WorkflowAware, Folder):
           - ctime
           - customer_id
           - is_order
-          - is_paid
     """
     class_id = 'order'
     class_title = MSG(u'Order')
@@ -111,12 +110,11 @@ class Order(WorkflowAware, Folder):
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,
             stored=True, title=MSG(u'Customer')),
-        pdf=URI(source='metadata'),
-        is_order=Boolean(indexed=True, stored=True),
-        is_paid=Boolean(default=False, stored=True)))
+        bill=URI(source='metadata'),
+        is_order=Boolean(indexed=True, stored=True)))
     class_schema['name'].title = MSG(u'#Num')
 
-    class_views = ['manage', 'add_line']
+    class_views = ['manage', 'add_line', 'add_payment']
 
     workflow = order_workflow
 
@@ -130,7 +128,6 @@ class Order(WorkflowAware, Folder):
 
     def get_catalog_values(self):
         values = super(Order, self).get_catalog_values()
-        values['is_paid'] = self.is_payed()
         values['is_order'] = True
         return values
 
@@ -219,18 +216,6 @@ class Order(WorkflowAware, Folder):
         return user.get_property('email')
 
 
-    def make_payment(self, payment_way, amount, **kw):
-        """We add payment in payments table. Overridable for example to
-        auto-validate payment or to add additional informations.
-        """
-        # Auto incremental name for orders # XXX
-        name = 'payment'
-        kw['amount'] = amount
-        # Payment class
-        cls = payment_way.payment_class
-        return self.make_resource(name, cls, **kw)
-
-
     def generate_bill(self, context):
         """Creates bill as a pdf."""
         # Get template
@@ -256,8 +241,9 @@ class Order(WorkflowAware, Folder):
         metadata =  {'title': {'en': u'Bill'},
                      'filename': 'bill.pdf'}
         self.del_resource('bill.pdf', soft=True)
-        self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
         context.message = MSG(u'Bill has been generated')
+        bill = self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
+        self.set_property('bill', bill.get_abspath())
 
     ##################################################
     # Views

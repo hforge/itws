@@ -9,10 +9,14 @@
   </div>
 
   <div id="payment-end-details">
-    <table cellpadding="0" cellspacing="0">
+    <table cellpadding="5" cellspacing="5">
       <tr>
         <th>Payment Way</th>
         <td>${payment_way}</td>
+      </tr>
+      <tr>
+        <th>Paid</th>
+        <td>${is_paid}</td>
       </tr>
       <tr>
         <th>State</th>
@@ -21,6 +25,14 @@
       <tr>
         <th>Amount</th>
         <td>${amount}</td>
+      </tr>
+      <tr stl:if="order">
+        <th>Order</th>
+        <td>
+          <a href="${order/link}">
+            ${order/title}
+          </a>
+        </td>
       </tr>
     </table>
   </div>

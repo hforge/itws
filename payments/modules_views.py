@@ -109,6 +109,7 @@ class PaymentModule_DoPayment(AutoForm):
 
 
     def action(self, resource, context, form):
-        payment = resource.make_payment(resource, form['mode'], form['amount'])
+        payment = resource.make_payment(resource, form['mode'],
+            form['amount'], context.user)
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)
