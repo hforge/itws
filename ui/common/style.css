@@ -256,3 +256,11 @@ body.readonly {
   font-family: "Arial", "DejaVu Sans", sans-serif;
   font-size: 1.2em;
 }
+
+/**************************************************************************
+ * Autoform
+ * ***********************************************************************/
+.advanced-search-title {
+  cursor: pointer;
+  text-decoration: underline;
+}

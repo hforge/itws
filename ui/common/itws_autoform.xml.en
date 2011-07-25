@@ -4,7 +4,7 @@
 
   <form method="GET" stl:if="widgets" class="${css}">
     <fieldset>
-      <legend>${title} <span stl:if="advanced"
+      <legend>${title} <span stl:if="advanced" class="advanced-search-title"
           onclick="toggle_advanced_search_form($(this));">${advanced_title}</span>
       </legend>
       <p stl:if="description">${description}</p>
