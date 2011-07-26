@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.datatypes import PathDataType
+from itools.datatypes import PathDataType, URI
 from itools.web import get_context
 
 # Import from ikaaro
@@ -66,7 +66,7 @@ class TableFeed_View(MultipleFeed_View):
                     return None
                 r = context.root.get_user(value)
                 return r.get_title(), context.get_link(r)
-            elif issubclass(datatype, (PathDataType, DynamicEnumerate)):
+            elif issubclass(datatype, (PathDataType, URI, DynamicEnumerate)):
                 value = self.get_schema_value(item_resource, column, datatype,
                     item_brain)
                 if value is None:
