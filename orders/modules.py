@@ -82,11 +82,10 @@ class OrderModule(Folder):
     # Public API
     ###################################
 
-    def make_order(self, resource, customer, lines):
+    def make_order(self, resource, customer, lines, cls=Order):
         # Auto incremental name for orders
         name = self.make_reference()
         # Create Order resource
-        cls = self.order_class
         order = resource.make_resource(name, cls, customer_id=customer.name)
         # Add products to order
         order.add_lines(lines)
