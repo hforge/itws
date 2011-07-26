@@ -40,6 +40,7 @@ class OrderModule(Folder):
 
     class_id = 'orders'
     class_title = MSG(u'Orders')
+    class_description = MSG(u'Order module')
     class_views = ['view', 'products', 'configure', 'export']
     class_schema = merge_dicts(Folder.class_schema,
         incremental_reference=Integer(source='metadata',
@@ -86,7 +87,7 @@ class OrderModule(Folder):
         name = self.make_reference()
         # Create Order resource
         cls = self.order_class
-        order = self.make_resource(name, cls, customer_id=customer.name)
+        order = resource.make_resource(name, cls, customer_id=customer.name)
         # Add products to order
         order.add_lines(lines)
         return order
