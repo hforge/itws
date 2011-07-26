@@ -84,7 +84,7 @@ class PaymentModule_ViewPayments(FieldsTableFeed_View):
     search_template = None
     search_cls = Payment
 
-    table_fields = ['name', 'amount', 'is_paid']
+    table_fields = ['name', 'amount', 'is_paid', 'order_abspath']
 
     def get_items(self, resource, context):
         query = PhraseQuery('is_payment', True)
