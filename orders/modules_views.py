@@ -70,6 +70,9 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
     batch_msg2 = MSG(u"There are {n} orders")
     table_actions = []
 
+    search_on_current_folder = False
+    search_on_current_folder_recursive = True
+
     search_fields = ['name', 'customer_id']
     table_fields = ['checkbox', 'name', 'customer_id', 'workflow_state',
                     'total_price', 'total_paid', 'ctime', 'bill']
