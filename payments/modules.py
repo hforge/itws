@@ -43,6 +43,8 @@ class PaymentModule(Folder):
         incremental_reference=Integer(source='metadata',
             title=MSG(u'Index'), default=0))
 
+    is_content = False
+
     # Views
     view = PaymentModule_View()
     view_payments = PaymentModule_ViewPayments()

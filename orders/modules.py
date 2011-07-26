@@ -49,6 +49,7 @@ class OrderModule(Folder):
         logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo')),
         signature=Unicode(source='metadata', title=MSG(u'PDF Signature'),
                           widget=MultilineWidget))
+    is_content = False
 
     order_class = Order
 
