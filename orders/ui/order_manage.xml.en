@@ -43,33 +43,4 @@
   </table>
 
 
-
-  <h1 class="title">Products</h1>
-
-  <table id="browse-list">
-    <thead>
-      <tr>
-        <th>
-          <a href="./;add_line">
-            <img src="/ui/icons/16x16/new.png"/>
-          </a>
-        </th>
-        <th>Reference</th>
-        <th>Title</th>
-        <th>Quantity</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr stl:repeat="product products">
-        <td/>
-        <td>${product/reference}</td>
-        <td>${product/title}</td>
-        <td>${product/quantity}</td>
-        <td>${product/price}</td>
-      </tr>
-    </tbody>
-  </table>
-
-
 </stl:block>

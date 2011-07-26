@@ -153,14 +153,24 @@ class Order(WorkflowAware, Folder):
         return namespace
 
 
-    def get_products_namespace(self):
+    def get_products_namespace(self, context):
         l = []
         products = self.get_resource('lines')
         get_value = products.handler.get_record_value
         for record in products.handler.get_records():
             kw = {'id': record.id}
-            for key in Base_Order_Lines.record_properties.keys():
-                kw[key] = get_value(record, key)
+            # Get base product namespace
+            kw['reference'] = get_value(record, 'reference')
+            kw['title'] = get_value(record, 'title')
+            kw['price'] = get_value(record, 'price')
+            kw['quantity'] = get_value(record, 'quantity')
+            kw['total_price'] = kw['price'] * kw['quantity']
+            # Get product link (if exist)
+            abspath = get_value(record, 'abspath')
+            product = context.root.get_resource(abspath, soft=True)
+            if product:
+                kw['link'] = context.get_link(product)
+            # Add product to list of products
             l.append(kw)
         return l
 
@@ -250,7 +260,7 @@ class Order(WorkflowAware, Folder):
         else:
             namespace['order_barcode'] = None
         # Products
-        namespace['products'] = self.get_products_namespace()
+        namespace['products'] = self.get_products_namespace(context)
         # Build pdf
         pdf = stl_pmltopdf(document, namespace=namespace)
         metadata =  {'title': {'en': u'Bill'},

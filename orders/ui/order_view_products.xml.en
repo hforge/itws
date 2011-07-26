@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+  <h1 class="title">Products</h1>
+
+  <table id="browse-list">
+    <thead>
+      <tr>
+        <th>Reference</th>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr stl:repeat="product products">
+        <td>
+          <a href="${product/link}" stl:omit-tag="not product/link">
+          ${product/reference}
+          </a>
+        </td>
+        <td>${product/title}</td>
+        <td>${product/quantity}</td>
+        <td>${product/price}</td>
+        <td>${product/total_price}</td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+        <td>${total_price}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</stl:block>

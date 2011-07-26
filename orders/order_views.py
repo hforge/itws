@@ -20,7 +20,7 @@
 from itools.core import freeze
 from itools.datatypes import Decimal, Integer
 from itools.gettext import MSG
-from itools.web import INFO, STLForm
+from itools.web import INFO, STLForm, STLView
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
@@ -138,7 +138,7 @@ class Order_AddPayment(AutoForm):
 
 
 
-class Order_Top(STLForm):
+class Order_AdminTop(STLForm):
     """Display order main information with state and products."""
     access = 'is_admin'
     title = MSG(u'Manage order')
@@ -152,7 +152,7 @@ class Order_Top(STLForm):
         namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
         namespace['total_price'] = format_price(total_price)
-        namespace['products'] = resource.get_products_namespace()
+        namespace['products'] = resource.get_products_namespace(context)
         namespace['state'] = SelectWidget('state', has_empty_option=False,
             datatype=OrderStateEnumerate, value=resource.get_statename()).render()
         return namespace
@@ -163,12 +163,38 @@ class Order_Top(STLForm):
         resource.set_workflow_state(form['state'])
 
 
+class Order_Top(STLView):
+
+    access = 'is_allowed_to_view'
+    template = '/ui/orders/order_top.xml'
+
+    def get_namespace(self, resource, context):
+        return {'name': resource.name,
+                'is_paid': resource.get_property('is_paid')}
+
+
+
+class Order_ViewProducts(STLView):
+
+    access = 'is_allowed_to_view'
+    title = MSG(u'View products')
+    template = '/ui/orders/order_view_products.xml'
+
+    def get_namespace(self, resource, context):
+        namespace = {}
+        namespace['products'] = resource.get_products_namespace(context)
+        namespace['total_price'] = resource.get_property('total_price')
+        return namespace
+
+
 class Order_View(CompositeView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'View')
 
-    subviews = [Order_ViewPayments()]
+    subviews = [Order_Top(),
+                Order_ViewProducts()]
+
 
 
 class Order_Manage(CompositeForm):
@@ -178,7 +204,8 @@ class Order_Manage(CompositeForm):
     access = 'is_admin'
     title = MSG(u'Manage order')
 
-    subviews = [Order_Top(),
+    subviews = [Order_AdminTop(),
+                Order_ViewProducts(),
                 Order_ViewPayments(),
                 Order_ViewBills()]
 
