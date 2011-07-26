@@ -139,6 +139,9 @@ class Feed_View(Folder_BrowseContent):
             value = form[key]
             if value and key == 'text':
                 queries.append(TextQuery(key, form[key]))
+            elif key == 'format' and value and 'image/' in value:
+                # Replace image format by is_image
+                queries.append(PhraseQuery('is_image', True))
             elif value and datatype.multiple is True:
                 # FIXME value == ['']
                 if len(value) != 1 or value[0]:
