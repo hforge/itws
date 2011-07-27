@@ -9,4 +9,11 @@
   <p stl:if="is_paid">This order has been payed</p>
   <p stl:if="not is_paid">This order hasn't been payed yet.</p>
 
+  <p stl:if="bill">
+    <a href="${bill}/;download">
+      <img src="/ui/icons/16x16/pdf.png"/>
+      Download your bill
+    </a>
+  </p>
+
 </stl:block>
