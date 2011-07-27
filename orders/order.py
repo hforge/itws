@@ -190,7 +190,7 @@ class Order(WorkflowAware, Folder):
             total_price += price
             handler.add_record(
               {'abspath': str(resource.get_abspath()),
-               'reference': None,
+               'reference': resource.get_property('reference'),
                'title': resource.get_title(),
                'quantity': quantity,
                'price': price})
