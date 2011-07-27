@@ -93,14 +93,4 @@ class Payment_End(STLView):
 
     def get_namespace(self, resource, context):
         payment_way = resource.get_payment_way()
-        order = resource.get_order()
-        if order:
-            order = {'link': context.get_link(order),
-                     'title': order.get_title()}
-        return {
-            'order': order,
-            'payment_end_msg': payment_way.get_property('payment_end_msg'),
-            'payment_way': payment_way.get_title(),
-            'is_paid': resource.get_property('is_paid'),
-            'amount': format_price(resource.get_property('amount'), unit=u"€"),
-            'state': resource.get_advanced_state()}
+        return {'payment_end_msg': payment_way.get_property('payment_end_msg')}

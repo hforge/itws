@@ -8,33 +8,4 @@
     ${payment_end_msg}
   </div>
 
-  <div id="payment-end-details">
-    <table cellpadding="5" cellspacing="5">
-      <tr>
-        <th>Payment Way</th>
-        <td>${payment_way}</td>
-      </tr>
-      <tr>
-        <th>Paid</th>
-        <td>${is_paid}</td>
-      </tr>
-      <tr>
-        <th>State</th>
-        <td>${state}</td>
-      </tr>
-      <tr>
-        <th>Amount</th>
-        <td>${amount}</td>
-      </tr>
-      <tr stl:if="order">
-        <th>Order</th>
-        <td>
-          <a href="${order/link}">
-            ${order/title}
-          </a>
-        </td>
-      </tr>
-    </table>
-  </div>
-
 </stl:block>
