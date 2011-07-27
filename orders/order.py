@@ -115,7 +115,6 @@ class Order(WorkflowAware, Folder):
         bill=URI(source='metadata'),
         is_paid=Boolean(source='metadata'),
         is_order=Boolean(indexed=True, stored=True)))
-    class_schema['name'].title = MSG(u'#Num')
 
     class_views = ['manage', 'add_line', 'add_payment', 'view']
 

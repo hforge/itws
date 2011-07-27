@@ -23,54 +23,47 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, TextWidget
-from ikaaro.views import BrowseForm
 
 # Import from payments
 from buttons import NextButton
 from enumerates import PaymentWays_Enumerate
 from payment import Payment
+from payment_way import PaymentWay
 from widgets import PaymentWays_Widget
 from itws.feed_views import FieldsTableFeed_View
 
 
-class PaymentModule_View(BrowseForm):
+class PaymentModule_View(FieldsTableFeed_View):
+
     access = 'is_admin'
     title = MSG(u'Payment modes')
 
     batch_msg1 = MSG(u"There is 1 payment mode.")
     batch_msg2 = MSG(u"There are {n} payments mode.")
 
-    table_columns = freeze([
-        ('logo', MSG(u'Logo')),
-        ('title', MSG(u'Title')),
-        ('description', MSG(u'Description')),
-        ('enabled', MSG(u'Enabled ?'))])
+    table_fields = ['logo', 'name', 'title', 'description', 'enabled']
+    table_actions = []
+
+    search_cls = PaymentWay
 
 
     def get_items(self, resource, context):
         return resource.get_payment_ways(as_results=True)
 
 
-    def sort_and_batch(self, resource, context, results):
-        # Batch
-        start = context.query['batch_start']
-        size = context.query['batch_size']
-        return results.get_documents(start=start, size=size)
-
-
-    def get_item_value(self, resource, context, brain, column):
+    def get_item_value(self, resource, context, item, column):
+        brain, item_resource = item
         if column == 'logo':
-            logo = '<img src="{0}"/>'.format(brain.logo)
+            logo = item_resource.get_property('logo')
+            if logo:
+                logo = item_resource.get_resource(logo)
+                link = context.get_link(logo)
+                logo = '<img src="{0}/;download"/>'.format(link)
+            else:
+                logo = '-'
             return (XMLParser(logo), brain.name)
-        elif column == 'title':
-            return (brain.title, brain.name)
-        elif column == 'description':
-            # TODO store in catalog
-            item_resource = resource.get_resource(brain.name)
-            return item_resource.get_property('description')
-        elif column == 'enabled':
-            return MSG(u"Yes") if brain.enabled else MSG(u"No")
-        raise NotImplementedError
+        proxy = super(PaymentModule_View, self)
+        return proxy.get_item_value(resource, context, item, column)
 
 
 class PaymentModule_ViewPayments(FieldsTableFeed_View):
