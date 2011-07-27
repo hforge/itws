@@ -251,13 +251,6 @@ class Order(WorkflowAware, Folder):
         signature = orders.get_property('signature')
         signature = signature.encode('utf-8')
         namespace['pdf_signature'] = XMLParser(signature.replace('\n', '<br/>'))
-        barcode = self.get_resource('barcode', soft=True)
-        if barcode:
-            key = barcode.handler.key
-            path = context.database.fs.get_absolute_path(key)
-            namespace['order_barcode'] = path
-        else:
-            namespace['order_barcode'] = None
         # Products
         namespace['products'] = self.get_products_namespace(context)
         # Build pdf
