@@ -16,11 +16,12 @@
 
 # Import from itools
 from itools.gettext import MSG
+from itools.stl import stl
 from itools.web import STLView, get_context
-from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import ReadOnlyWidget
+from ikaaro.utils import make_stl_template
 
 # Import from payments
 from utils import format_price
@@ -32,7 +33,7 @@ class Payment_Edit(FieldsAutomaticEditView):
     access = 'is_allowed_to_edit'
     title = MSG(u'Edit')
 
-    base_edit_fields = ['name', 'amount', 'is_paid']
+    base_edit_fields = ['amount', 'is_paid']
 
     @property
     def edit_fields(self):
@@ -41,40 +42,50 @@ class Payment_Edit(FieldsAutomaticEditView):
 
 
     def get_widget(self, name, datatype):
-        if name == 'name':
-            return ReadOnlyWidget('name', title=MSG(u"Payment ID"))
-        elif name == 'amount':
+        if name == 'amount':
             return ReadOnlyWidget('amount', title=MSG(u"Amount"))
         proxy = super(Payment_Edit, self)
         return proxy.get_widget(name, datatype)
 
 
-    def get_value(self, resource, context, name, datatype):
-        if name == 'name':
-            payment_way = resource.get_payment_way()
-            payment_way_title = payment_way.get_title().encode('utf-8')
-            payment_way_link = context.get_link(payment_way)
-            order = resource.get_order()
-            if order:
-                order_txt = " for <a href='%s'>order %s</a>" % (
-                    context.get_link(order), order.get_title())
-            else:
-                order_txt = ''
-            events = XMLParser('Payment #%s via <a href="%s">%s</a>%s' %
-                        (resource.name, payment_way_link, payment_way_title,
-                         order_txt.encode('utf-8')))
-            return list(events)
-        elif name == 'amount':
-            return u'%s' % resource.get_property('amount')
-        proxy = super(Payment_Edit, self)
-        return proxy.get_value(resource, context, name, datatype)
+    def get_namespace(self, resource, context):
+        namespace = FieldsAutomaticEditView.get_namespace(self, resource, context)
+        namespace['before'] = self.get_introduction(resource, context)
+        return namespace
 
 
-    def set_value(self, resource, context, name, datatype):
-        if name in ['name', 'amount']:
-            return
-        proxy = super(Payment_Edit, self)
-        return proxy.set_value(resource, context, name, datatype)
+    introduction = make_stl_template("""
+        <fieldset>
+          <legend>Informations about payment #${name}</legend>
+          <p stl:if="payment_way">
+            Payment way:
+            <a href="${payment_way/link}">
+              ${payment_way/title}
+            </a>
+          </p>
+          <p stl:if="order">
+            Order:
+            <a href="${order/link}">
+             ${order/title}
+            </a>
+          </p>
+        </fieldset>""")
+
+    def get_introduction(self, resource, context):
+        # Get payement way
+        payment_way = resource.get_payment_way()
+        if payment_way:
+            payment_way = {'title': payment_way.get_title(),
+                           'link': context.get_link(payment_way)}
+        # Get order
+        order = resource.get_order()
+        if order:
+            order = {'title': order.get_title(),
+                     'link': context.get_link(order)}
+        # Build namespace
+        namespace = {'name': resource.name,
+                     'order': order, 'payment_way': payment_way}
+        return stl(events=self.introduction, namespace=namespace)
 
 
     def action(self, resource, context, form):
