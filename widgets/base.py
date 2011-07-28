@@ -23,7 +23,8 @@ from itools.datatypes import DateTime
 from itools.gettext import MSG
 
 # Import from ikaaro
-from ikaaro.autoform import RTEWidget, SelectWidget, Widget, rte_widget
+from ikaaro.autoform import CheckboxWidget, RTEWidget, SelectWidget
+from ikaaro.autoform import Widget, rte_widget
 from ikaaro.registry import get_resource_class
 from ikaaro.utils import make_stl_template
 
@@ -177,3 +178,19 @@ class JSDatetimeWidget(Widget):
     def min_value(self):
         d = self.get_date()
         return d.minute if d else d
+
+
+
+class CGUWidget(CheckboxWidget):
+    """One line CheckboxWidget with link and description aside option.
+    """
+    description = MSG(u"I agree with the terms and conditions of use.")
+    link = './cgu'
+
+    template = make_stl_template("""
+        <stl:block stl:repeat="option options">
+          <input type="checkbox" id="${id}-${option/name}" name="${name}"
+            value="${option/name}" checked="${option/selected}" />
+          <label for="${id}-${option/name}">${option/value}</label>
+          <a href="${link}" target="_blank">${description}</a>
+        </stl:block>""")
