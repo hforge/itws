@@ -379,7 +379,7 @@ class FieldsAdvance_NewInstance(AutoForm):
                     start = len(self.new_resource_name_prefix)
                 else:
                     start = 0
-                name = int(doc.name[start:]) + 1
+                name = int(doc.name[start+1:]) + 1
             else:
                 name = 1
             name = str(name)
