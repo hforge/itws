@@ -219,7 +219,7 @@ class Order_NewInstance(FieldsAdvance_NewInstance):
     fields = ['customer_id']
 
     def _get_form(self, resource, context):
-        # Hack
+        # Skip checking name as we use make_reference
         return super(AutoForm, self)._get_form(resource, context)
 
 
