@@ -172,8 +172,9 @@ class Feed_View(Folder_BrowseContent):
         # Search specific format(s) ?
         search_class_id = self.search_class_id
         if search_class_id is not None:
-            if (isinstance(search_class_id, (list, tuple)) and
-                    len(search_class_id) == 1):
+            if (isinstance(search_class_id, str) or
+                (isinstance(search_class_id, (list, tuple)) and
+                    len(search_class_id) == 1)):
                 args.append(PhraseQuery('format', search_class_id))
             else:
                 args.append(OrQuery(*[PhraseQuery('format', x)
