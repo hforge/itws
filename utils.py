@@ -227,7 +227,11 @@ def build_resource_namespace(resource, context):
         if getattr(datatype, 'source', None) != 'metadata':
             continue
         value = resource.get_property(key)
-        render = render_for_datatype(value, datatype, context, resource)
+        if getattr(datatype, 'multiple', False) is True:
+            render = [render_for_datatype(x, datatype, context, resource)
+                      for x in value]
+        else:
+            render = render_for_datatype(value, datatype, context, resource)
         namespace[key] = {'value': value,
                           'render': render}
     # Base namespace
