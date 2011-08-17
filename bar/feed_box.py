@@ -192,6 +192,7 @@ class BoxFeed_View(Box_View, Details_View):
         namespace = proxy.get_namespace(resource, context)
         for name in ('display_title', 'title_link', 'title_link_target'):
             namespace[name] = resource.get_property(name)
+        namespace['title'] = resource.get_property('title')
         return namespace
 
 
