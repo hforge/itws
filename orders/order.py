@@ -113,7 +113,7 @@ class Order(WorkflowAware, Folder):
         customer_id=Users_Enumerate(source='metadata', indexed=True,
             stored=True, title=MSG(u'Customer')),
         bill=URI(source='metadata'),
-        is_paid=Boolean(source='metadata'),
+        is_paid=Boolean(source='metadata', indexed=True),
         is_order=Boolean(indexed=True, stored=True)))
 
     class_views = ['manage', 'add_line', 'add_payment', 'view']
