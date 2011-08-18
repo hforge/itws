@@ -43,7 +43,8 @@ class Payment(DBResource):
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         customer_id=String(source='metadata', title=MSG(u'Customer id')),
-        is_paid=Boolean(source='metadata', indexed=True, title=MSG(u'Is paid ?')),
+        is_paid=Boolean(source='metadata', title=MSG(u'Is paid ?'),
+            indexed=True, stored=True),
         order_abspath=URI(source='metadata', title=MSG(u'Order')),
         is_payment=Boolean(indexed=True)))
     class_views = ['edit', 'payment_form']
