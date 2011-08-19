@@ -258,9 +258,9 @@ class Order(WorkflowAware, Folder):
         pdf = stl_pmltopdf(document, namespace=namespace)
         metadata =  {'title': {'en': u'Bill'},
                      'filename': 'bill.pdf'}
-        self.del_resource('bill.pdf', soft=True)
+        self.del_resource('bill', soft=True)
         context.message = MSG(u'Bill has been generated')
-        return self.make_resource('bill.pdf', PDF, body=pdf, **metadata)
+        return self.make_resource('bill', PDF, body=pdf, **metadata)
 
     ##################################################
     # Views

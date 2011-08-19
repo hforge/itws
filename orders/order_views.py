@@ -169,7 +169,7 @@ class Order_Top(STLView):
     template = '/ui/orders/order_top.xml'
 
     def get_namespace(self, resource, context):
-        bill = resource.get_resource('bill.pdf', soft=True)
+        bill = resource.get_resource('bill', soft=True)
         return {'name': resource.name,
                 'bill': context.get_link(bill) if bill else None,
                 'is_paid': resource.get_property('is_paid')}

@@ -50,7 +50,7 @@ class OrderModule_ExportOrders(AutoForm):
         context.set_content_disposition('attachment; filename="Orders.pdf"')
         list_pdf = []
         for order in resource.get_resources():
-            pdf = resource.get_resource('./%s/bill.pdf' % order.name, soft=True)
+            pdf = resource.get_resource('./%s/bill' % order.name, soft=True)
             if pdf is None:
                 continue
             path = context.database.fs.get_absolute_path(pdf.handler.key)
