@@ -208,7 +208,7 @@ class Order(WorkflowAware, Folder):
             total_paid += payment.get_property('amount')
         self.set_property('total_paid', total_paid)
         if total_paid < self.get_property('total_price'):
-            self.set_workflow_state('partially_paid')
+            self.set_workflow_state('partially-paid')
             self.set_property('is_paid', False)
         elif total_paid == self.get_property('total_price'):
             self.set_workflow_state('paid')
