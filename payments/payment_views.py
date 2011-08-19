@@ -30,7 +30,7 @@ from itws.views import FieldsAutomaticEditView
 
 class Payment_Edit(FieldsAutomaticEditView):
 
-    access = 'is_allowed_to_edit'
+    access = 'is_admin'
     title = MSG(u'Edit')
 
     base_edit_fields = ['amount', 'is_paid']
