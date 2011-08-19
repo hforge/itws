@@ -37,7 +37,7 @@ class PaymentModule(Folder):
 
     class_id = 'payments'
     class_title = MSG(u'Payment Module')
-    class_views = ['view', 'view_payments', 'do_payment']
+    class_views = ['view_payments', 'view', 'do_payment']
 
     class_schema = merge_dicts(Folder.class_schema,
         incremental_reference=Integer(source='metadata',
