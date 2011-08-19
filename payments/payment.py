@@ -40,6 +40,7 @@ class Payment(DBResource):
     class_schema = freeze(merge_dicts(
         DBResource.class_schema,
         payment_schema,
+        name=String(stored=True, indexed=True, title=MSG(u'Reference')),
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         customer_id=String(source='metadata', title=MSG(u'Customer id')),

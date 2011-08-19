@@ -104,6 +104,7 @@ class Order(WorkflowAware, Folder):
     class_schema = freeze(merge_dicts(
         Folder.class_schema,
         WorkflowAware.class_schema,
+        name=String(stored=True, indexed=True, title=MSG(u'Reference')),
         total_price=Decimal(source='metadata', title=MSG(u'Total price'),
             indexed=True, stored=True, default=decimal('0')),
         total_paid=Decimal(source='metadata', title=MSG(u'Total paid'),
