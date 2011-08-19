@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-07-20 08:07+CET\n"
+"POT-Creation-Date: 2011-08-19 10:08+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,23 +46,19 @@ msgctxt "form"
 msgid "${sort_by} ${reverse} <g id='4'>Ok</g>"
 msgstr ""
 
+#: ../orders/ui/order_manage.xml.en:22
+msgctxt "form"
+msgid "${state} <g id='2'>OK</g>"
+msgstr ""
+
 #: ../ui/common/itws_autoform.xml.en:7
 msgctxt "legend"
 msgid "${title} <g id='1'>${advanced_title}</g>"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:26
-msgctxt "form"
-msgid "${transitions} <g id='2'>OK</g>"
-msgstr ""
-
 #: ../ui/common/Bar_view.xml.en:10
 msgctxt "div"
 msgid "${view/admin_bar} ${view/content}"
-msgstr ""
-
-#: ../payments/payment_views.py:60
-msgid "%s"
 msgstr ""
 
 #: ../root.py:41
@@ -74,7 +70,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../tags/tags_views.py:183
+#: ../tags/tags_views.py:179
 msgid "%s (%s)"
 msgstr ""
 
@@ -98,16 +94,11 @@ msgstr ""
 msgid "+"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:106 ../orders/ui/bill.xml.en:108
-#: ../orders/ui/bill.xml.en:109 ../orders/ui/bill.xml.en:110
-msgid "-"
-msgstr ""
-
-#: ../orders/ui/bill.xml.en:28
+#: ../orders/ui/bill.xml.en:27
 msgid "/"
 msgstr ""
 
-#: ../payments/paybox.py:112
+#: ../payments/paybox.py:109
 msgid "24H00"
 msgstr ""
 
@@ -230,15 +221,15 @@ msgctxt "paragraph"
 msgid "<g id='6'>${article/formated_pubDate}, </g>  <g id='7'>source:</g>"
 msgstr ""
 
-#: ../payments/paybox.py:71
+#: ../payments/paybox.py:68
 msgid "A mandatory variable is missing."
 msgstr ""
 
-#: ../payments/paybox.py:105
+#: ../payments/paybox.py:102
 msgid "AMEX"
 msgstr ""
 
-#: ../payments/paybox.py:110
+#: ../payments/paybox.py:107
 msgid "AURORE"
 msgstr ""
 
@@ -246,16 +237,20 @@ msgstr ""
 msgid "About ITWS"
 msgstr ""
 
-#: ../orders/order.py:73 ../datatypes.py:106
+#: ../orders/order.py:82 ../datatypes.py:106
 msgid "Abspath"
 msgstr ""
 
-#: ../payments/paybox.py:135
+#: ../payments/paybox.py:132
 msgid "Access refused or site/rank/identifier incorrect"
 msgstr ""
 
-#: ../payments/paybox.py:175
+#: ../payments/paybox.py:172
 msgid "Access to file denied"
+msgstr ""
+
+#: ../payments/check.py:52
+msgid "Account holder"
 msgstr ""
 
 #: ../feed_views/browse_navigator.py:70
@@ -290,16 +285,11 @@ msgstr ""
 msgid "Add a box"
 msgstr ""
 
-#: ../orders/order_views.py:44
+#: ../orders/order_views.py:45
 msgid "Add a line"
 msgstr ""
 
-#: ../orders/order_views.py:119
-msgid "Add a payment"
-msgstr ""
-
-#: ../orders/ui/order_manage.xml.en:44
-msgctxt "link"
+#: ../orders/order_views.py:120
 msgid "Add a payment"
 msgstr ""
 
@@ -328,7 +318,7 @@ msgstr ""
 msgid "Add sidebar box"
 msgstr ""
 
-#: ../views.py:278
+#: ../views.py:273
 msgid "Add {class_title}"
 msgstr ""
 
@@ -345,30 +335,29 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: ../payments/paybox.py:394
+#: ../payments/check.py:54 ../payments/paybox.py:369
 msgid "Advanced State"
+msgstr ""
+
+#: ../orders/order_views.py:93
+msgid "Advanced state"
 msgstr ""
 
 #: ../OPML/rssfeeds.py:142
 msgid "All feeds"
 msgstr ""
 
-#: ../orders/order_views.py:126 ../payments/modules_views.py:93
-#: ../payments/modules_views.py:123 ../payments/payment.py:40
-#: ../payments/payment_views.py:47
+#: ../orders/order_views.py:92 ../orders/order_views.py:127
+#: ../payments/modules_views.py:100 ../payments/payment.py:43
+#: ../payments/payment_views.py:46
 msgid "Amount"
 msgstr ""
 
-#: ../payments/ui/payment_end.xml.en:17
-msgctxt "table cell"
-msgid "Amount"
-msgstr ""
-
-#: ../payments/paybox.py:140
+#: ../payments/paybox.py:137
 msgid "Amount incorrect"
 msgstr ""
 
-#: ../payments/paybox.py:198
+#: ../payments/paybox.py:195
 msgid "Amount of withdrawal past the limit"
 msgstr ""
 
@@ -377,20 +366,24 @@ msgctxt "paragraph"
 msgid "An error occured, the tweets have not been updated."
 msgstr ""
 
-#: ../payments/paybox.py:159
+#: ../payments/paybox.py:156
 msgid "Approve after holder identification"
 msgstr ""
 
-#: ../widgets/base.py:57
+#: ../widgets/base.py:62
 msgid "Available"
 msgstr ""
 
-#: ../bar/section.py:81
+#: ../bar/section.py:82
 msgid "Back to parent section"
 msgstr ""
 
-#: ../section_views/base.py:62
+#: ../section_views/base.py:61
 msgid "Back to section"
+msgstr ""
+
+#: ../payments/check.py:51
+msgid "Bank"
 msgstr ""
 
 #: ../theme.py:68
@@ -401,24 +394,19 @@ msgstr ""
 msgid "Banner title"
 msgstr ""
 
-#: ../section_views/base.py:83 ../news/news.py:213
+#: ../section_views/base.py:82 ../news/news.py:213
 msgid "Batch size"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:5 ../orders/order.py:242
+#: ../orders/ui/bill.xml.en:5 ../orders/order.py:115 ../orders/order.py:259
 msgid "Bill"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:34
-msgctxt "table cell"
-msgid "Bill"
-msgstr ""
-
-#: ../orders/order.py:246
+#: ../orders/order.py:262
 msgid "Bill has been generated"
 msgstr ""
 
-#: ../turning_footer.py:102
+#: ../webpage.py:60 ../turning_footer.py:102
 msgid "Body"
 msgstr ""
 
@@ -442,23 +430,23 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: ../payments/paybox.py:101
+#: ../payments/paybox.py:98
 msgid "CB"
 msgstr ""
 
-#: ../payments/paybox.py:111
+#: ../payments/paybox.py:108
 msgid "CDGP"
 msgstr ""
 
-#: ../tags/tags.py:110
+#: ../tags/tags.py:113
 msgid "CMS"
 msgstr ""
 
-#: ../payments/paybox.py:108
+#: ../payments/paybox.py:105
 msgid "COFINOGA"
 msgstr ""
 
-#: ../orders/workflows.py:27 ../payments/workflows.py:31
+#: ../orders/workflows.py:30
 msgid "Canceled"
 msgstr ""
 
@@ -470,27 +458,27 @@ msgstr ""
 msgid "Caption Title"
 msgstr ""
 
-#: ../payments/paybox.py:189
+#: ../payments/paybox.py:186
 msgid "Card absent from file"
 msgstr ""
 
-#: ../payments/paybox.py:196
+#: ../payments/paybox.py:193
 msgid "Card accepter must contact purchaser"
 msgstr ""
 
-#: ../payments/paybox.py:207
+#: ../payments/paybox.py:204
 msgid "Card issuer not accessible"
 msgstr ""
 
-#: ../payments/paybox.py:163
+#: ../payments/paybox.py:160
 msgid "Card issuer unknown"
 msgstr ""
 
-#: ../payments/paybox.py:133
+#: ../payments/paybox.py:130
 msgid "Cardholder's number or visual cryptogram invalid"
 msgstr ""
 
-#: ../payments/paybox.py:95
+#: ../payments/paybox.py:92
 msgid "Carte"
 msgstr ""
 
@@ -506,16 +494,32 @@ msgstr ""
 msgid "Change to navigation mode"
 msgstr ""
 
+#: ../payments/check.py:66
+msgid "Check"
+msgstr ""
+
+#: ../payments/check.py:44
+msgid "Check Payment"
+msgstr ""
+
+#: ../payments/check.py:50
+msgid "Check number"
+msgstr ""
+
+#: ../payments/check.py:35
+msgid "Check refused by the bank"
+msgstr ""
+
 #: ../ui/feed_views/browse_navigator.xml.en:28
 msgctxt "title attribute"
 msgid "Click to select/unselect all rows"
 msgstr ""
 
-#: ../payments/paybox.py:164
+#: ../payments/paybox.py:161
 msgid "Client cancellation"
 msgstr ""
 
-#: ../orders/workflows.py:28
+#: ../orders/workflows.py:31
 msgid "Closed"
 msgstr ""
 
@@ -527,16 +531,17 @@ msgstr ""
 msgid "Configuration view"
 msgstr ""
 
-#: ../bar/diaporama.py:250 ../bar/diaporama.py:419 ../turning_footer.py:106
-#: ../turning_footer.py:267 ../OPML/rssfeeds.py:267 ../orders/modules.py:54
+#: ../bar/diaporama.py:250 ../bar/diaporama.py:419 ../OPML/rssfeeds.py:267
+#: ../payments/payment_way.py:48 ../turning_footer.py:106
+#: ../turning_footer.py:267
 msgid "Configure"
 msgstr ""
 
-#: ../payments/paybox.py:417
-msgid "Configure Paybox"
+#: ../orders/modules.py:102
+msgid "Configure Order module"
 msgstr ""
 
-#: ../section_views/base.py:60
+#: ../section_views/base.py:59
 msgid "Configure view"
 msgstr ""
 
@@ -548,7 +553,7 @@ msgstr ""
 msgid "Contact form to collect messages from users"
 msgstr ""
 
-#: ../payments/paybox.py:152
+#: ../payments/paybox.py:149
 msgid "Contact the card issuer"
 msgstr ""
 
@@ -556,7 +561,7 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: ../bar/feed_box.py:206
+#: ../bar/feed_box.py:214
 msgid "Container"
 msgstr ""
 
@@ -588,6 +593,10 @@ msgstr ""
 msgid "Create a new central box"
 msgstr ""
 
+#: ../orders/order_views.py:218
+msgid "Create a new order"
+msgstr ""
+
 #: ../skin_views.py:180
 msgid "Create a new resource"
 msgstr ""
@@ -600,11 +609,11 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: ../orders/order.py:94
+#: ../orders/order.py:112
 msgid "Creation date"
 msgstr ""
 
-#: ../payments/paybox.py:139
+#: ../payments/paybox.py:136
 msgid "Currency unknown"
 msgstr ""
 
@@ -612,11 +621,24 @@ msgstr ""
 msgid "Custom data"
 msgstr ""
 
-#: ../payments/paybox.py:106
+#: ../orders/order.py:114
+msgid "Customer"
+msgstr ""
+
+#: ../orders/ui/order_manage.xml.en:11
+msgctxt "table cell"
+msgid "Customer"
+msgstr ""
+
+#: ../payments/payment.py:45
+msgid "Customer id"
+msgstr ""
+
+#: ../payments/paybox.py:103
 msgid "DINERS"
 msgstr ""
 
-#: ../news/news_views.py:186
+#: ../news/news_views.py:171
 msgid "Date of writing"
 msgstr ""
 
@@ -624,24 +646,16 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:95 ../payments/modules_views.py:49
-#: ../payments/payment_way_views.py:47
+#: ../bar/section.py:102 ../orders/ui/bill.xml.en:55
+#: ../payments/payment_way.py:66
 msgid "Description"
-msgstr ""
-
-#: ../bar/section_views.py:56
-msgid "Description (used by RSS and tags)"
-msgstr ""
-
-#: ../payments/payment_views.py:49
-msgid "Details"
 msgstr ""
 
 #: ../feed_views/collection.py:83
 msgid "Details View (without pictures)"
 msgstr ""
 
-#: ../payments/paybox.py:433
+#: ../payments/paybox.py:409
 msgid "Diff days (On two digits ex: 04)"
 msgstr ""
 
@@ -673,24 +687,21 @@ msgstr ""
 msgid "Display ordered resources only."
 msgstr ""
 
-#: ../bar/feed_box.py:196
+#: ../bar/feed_box.py:204
 msgid "Display the feed of a content from the website"
 msgstr ""
 
-#: ../bar/diaporama.py:382 ../bar/navigation.py:171 ../bar/tags.py:95
-#: ../bar/gallery.py:88 ../bar/feed_box.py:214 ../bar/base.py:41
+#: ../webpage.py:57 ../bar/diaporama.py:382 ../bar/navigation.py:171
+#: ../bar/tags.py:95 ../bar/gallery.py:88 ../bar/feed_box.py:225
+#: ../bar/base.py:41
 msgid "Display title"
 msgstr ""
 
-#: ../webpage_views.py:49
-msgid "Display title on webpage view ?"
-msgstr ""
-
-#: ../payments/modules_views.py:114
+#: ../payments/modules_views.py:91
 msgid "Do a payment"
 msgstr ""
 
-#: ../payments/paybox.py:155
+#: ../payments/paybox.py:152
 msgid "Do not honour"
 msgstr ""
 
@@ -702,20 +713,25 @@ msgstr ""
 msgid "Dollar"
 msgstr ""
 
+#: ../orders/ui/order_top.xml.en:15
+msgctxt "link"
+msgid "Download your bill"
+msgstr ""
+
 #: ../payments/enumerates.py:30
 msgid "EUR"
 msgstr ""
 
-#: ../payments/paybox.py:103
+#: ../payments/paybox.py:100
 msgid "EUROCARD_MASTERCARD"
 msgstr ""
 
-#: ../payments/paybox.py:104
+#: ../payments/paybox.py:101
 msgid "E_CARD"
 msgstr ""
 
 #: ../bar/diaporama.py:418 ../turning_footer.py:265
-#: ../payments/payment_views.py:37 ../feed_views/browse_navigator.py:82
+#: ../payments/payment_views.py:34 ../feed_views/browse_navigator.py:82
 msgid "Edit"
 msgstr ""
 
@@ -772,80 +788,80 @@ msgstr ""
 msgid "Edit with an external editor"
 msgstr ""
 
-#: ../payments/modules_views.py:50
+#: ../payments/payment_way.py:68
 msgid "Enabled ?"
 msgstr ""
 
-#: ../payments/payment_way_views.py:46
-msgid "Enabled?"
-msgstr ""
-
-#: ../payments/paybox.py:228
+#: ../payments/paybox.py:225
 msgid "Erreur inconnue (code %s)"
 msgstr ""
 
-#: ../payments/paybox.py:138
+#: ../payments/paybox.py:135
 msgid "Error during the creation of the subscription"
 msgstr ""
 
-#: ../payments/paybox.py:174
+#: ../payments/paybox.py:171
 msgid "Error in 'edit' in file up-date field"
 msgstr ""
 
-#: ../payments/paybox.py:70
+#: ../payments/paybox.py:67
 msgid "Error in file format"
 msgstr ""
 
-#: ../payments/paybox.py:177
+#: ../payments/paybox.py:174
 msgid "Error in format"
 msgstr ""
 
-#: ../payments/paybox.py:65
+#: ../payments/paybox.py:62
 msgid "Error in memory allocation"
 msgstr ""
 
-#: ../payments/paybox.py:69
+#: ../payments/paybox.py:66
 msgid "Error in opening the file"
 msgstr ""
 
-#: ../payments/paybox.py:64
+#: ../payments/paybox.py:61
 msgid "Error in reading the parameters via stdin"
 msgstr ""
 
-#: ../payments/paybox.py:167
+#: ../payments/paybox.py:164
 msgid "Error in reply (error in ther server's domain)"
 msgstr ""
 
-#: ../payments/paybox.py:188
+#: ../payments/paybox.py:185
 msgid "Error in secret code"
 msgstr ""
 
-#: ../payments/paybox.py:66
+#: ../payments/paybox.py:63
 msgid "Error in the parameters (Http Error)"
 msgstr ""
 
-#: ../payments/paybox.py:82
+#: ../payments/paybox.py:79
 msgid "Error of coherence"
 msgstr ""
 
-#: ../payments/paybox.py:301
-msgid "Error: payment module can't be loaded."
+#: ../payments/paybox.py:308
+msgid "Error: payment module can't be loaded. (%s)"
 msgstr ""
 
 #: ../payments/enumerates.py:29
 msgid "Euro"
 msgstr ""
 
-#: ../payments/paybox.py:180
+#: ../payments/paybox.py:177
 msgid "Expired card"
 msgstr ""
 
-#: ../payments/paybox.py:136
+#: ../payments/paybox.py:133
 msgid "Expiry date incorrect"
 msgstr ""
 
-#: ../payments/paybox.py:187
+#: ../payments/paybox.py:184
 msgid "Expiry date of the card passed"
+msgstr ""
+
+#: ../orders/modules_views.py:42
+msgid "Export Orders"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:16
@@ -858,11 +874,11 @@ msgctxt "title attribute"
 msgid "Export the feeds as an OPML file"
 msgstr ""
 
-#: ../bar/feed_box.py:195
+#: ../bar/feed_box.py:203
 msgid "Feed"
 msgstr ""
 
-#: ../bar/feed_box.py:216
+#: ../bar/feed_box.py:227
 msgid "Feed Source"
 msgstr ""
 
@@ -870,7 +886,7 @@ msgstr ""
 msgid "Feed TagAware elements"
 msgstr ""
 
-#: ../bar/feed_box.py:220
+#: ../bar/feed_box.py:232
 msgid "Feed template"
 msgstr ""
 
@@ -890,11 +906,11 @@ msgstr ""
 msgid "Feeds deactivated."
 msgstr ""
 
-#: ../payments/paybox.py:176
+#: ../payments/paybox.py:173
 msgid "File up-date impossible"
 msgstr ""
 
-#: ../payments/paybox.py:168
+#: ../payments/paybox.py:165
 msgid "File update not withstood"
 msgstr ""
 
@@ -928,11 +944,12 @@ msgstr ""
 msgid "Force thumbnail size"
 msgstr ""
 
-#: ../utils.py:244
+#: ../utils.py:248
 msgid "Form"
 msgstr ""
 
-#: ../feed_views/collection.py:69 ../feed_views/browse_navigator.py:59
+#: ../feed_views/collection.py:69 ../orders/modules_views.py:45
+#: ../feed_views/browse_navigator.py:59
 msgid "Format"
 msgstr ""
 
@@ -940,7 +957,7 @@ msgstr ""
 msgid "Formatted Content (HTML)"
 msgstr ""
 
-#: ../tags/tags.py:110
+#: ../tags/tags.py:113
 msgid "GIT"
 msgstr ""
 
@@ -959,11 +976,6 @@ msgstr ""
 
 #: ../section_views/images.py:45 ../section_views/images.py:78
 msgid "Gallery view"
-msgstr ""
-
-#: ../orders/ui/order_manage.xml.en:37
-msgctxt "button"
-msgid "Generate BILL"
 msgstr ""
 
 #: ../skin_views.py:170
@@ -987,11 +999,24 @@ msgctxt "div"
 msgid "Here you can create and translate them."
 msgstr ""
 
-#: ../bar/toc.py:222 ../bar/toc.py:243
+#: ../payments/payment.py:55
+msgid ""
+"Hi, your payment has been validated.\n"
+"\n"
+"------------------------\n"
+"Id payment: {name}\n"
+"Payment Way: {payment_way}\n"
+"Amount: {amount}\n"
+"------------------------\n"
+"\n"
+"\n"
+msgstr ""
+
+#: ../bar/toc.py:222 ../bar/toc.py:242
 msgid "Hide if there is only one item"
 msgstr ""
 
-#: ../payments/paybox.py:205
+#: ../payments/paybox.py:202
 msgid "Holder already on stop, former record kept"
 msgstr ""
 
@@ -1004,6 +1029,10 @@ msgctxt "legend"
 msgid "How to add a box in the sidebar ?"
 msgstr ""
 
+#: ../widgets/base.py:187
+msgid "I agree with the terms and conditions of use."
+msgstr ""
+
 #: ../ws_neutral.py:93
 msgid "ITWS Web Site"
 msgstr ""
@@ -1012,11 +1041,11 @@ msgstr ""
 msgid "ITWS skin"
 msgstr ""
 
-#: ../payments/paybox.py:392
+#: ../payments/paybox.py:367
 msgid "Id Autorisation"
 msgstr ""
 
-#: ../payments/paybox.py:390
+#: ../payments/paybox.py:364
 msgid "Id transaction"
 msgstr ""
 
@@ -1032,7 +1061,7 @@ msgstr ""
 msgid "Identi.ca feed (open micro-blogging service)."
 msgstr ""
 
-#: ../payments/paybox.py:179
+#: ../payments/paybox.py:176
 msgid "Identifier of purchasing body unknown"
 msgstr ""
 
@@ -1048,15 +1077,19 @@ msgstr ""
 msgid "Image Path"
 msgstr ""
 
-#: ../payments/paybox.py:170
+#: ../payments/paybox.py:167
 msgid "Impossible to situate the record in the file"
 msgstr ""
 
-#: ../payments/paybox.py:215
+#: ../payments/paybox.py:212
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../payments/paybox.py:186
+#: ../orders/modules.py:47 ../payments/modules.py:44
+msgid "Index"
+msgstr ""
+
+#: ../payments/paybox.py:183
 msgid "Insufficient funds or over credit limit"
 msgstr ""
 
@@ -1064,32 +1097,36 @@ msgstr ""
 msgid "Internal server error"
 msgstr ""
 
-#: ../payments/paybox.py:161
+#: ../payments/paybox.py:158
 msgid "Invalid amoint"
 msgstr ""
 
-#: ../payments/workflows.py:29
+#: ../payments/check.py:36
 msgid "Invalid amount"
 msgstr ""
 
-#: ../payments/paybox.py:162
+#: ../payments/paybox.py:159
 msgid "Invalid holder number"
 msgstr ""
 
-#: ../payments/paybox.py:126
+#: ../payments/paybox.py:123
 msgid "Invalid payment amount"
 msgstr ""
 
-#: ../payments/paybox.py:153
+#: ../payments/paybox.py:150
 msgid "Invalid retailer"
 msgstr ""
 
-#: ../payments/paybox.py:160
+#: ../payments/paybox.py:157
 msgid "Invalid transaction"
 msgstr ""
 
-#: ../utils.py:272
+#: ../utils.py:276
 msgid "Invalid value."
+msgstr ""
+
+#: ../orders/ui/bill.xml.en:37
+msgid "Invoice number ${reference}"
 msgstr ""
 
 #: ../orders/ui/bill.xml.en:17
@@ -1100,13 +1137,17 @@ msgstr ""
 msgid "Is active"
 msgstr ""
 
+#: ../orders/order.py:116 ../payments/payment.py:46
+msgid "Is paid ?"
+msgstr ""
+
 #: ../ui/about/view.xml.en:11 ../ui/about/view.xml.en:16
 #: ../ui/about/view.xml.en:57
 msgctxt "title attribute"
 msgid "Itaapy"
 msgstr ""
 
-#: ../tags/tags_views.py:302
+#: ../tags/tags_views.py:231
 msgid "Items number"
 msgstr ""
 
@@ -1115,15 +1156,15 @@ msgctxt "body"
 msgid "Itws allow you to do many things"
 msgstr ""
 
-#: ../payments/paybox.py:107
+#: ../payments/paybox.py:104
 msgid "JCB"
 msgstr ""
 
-#: ../payments/paybox.py:154
+#: ../payments/paybox.py:151
 msgid "Keep the card"
 msgstr ""
 
-#: ../payments/paybox.py:157
+#: ../payments/paybox.py:154
 msgid "Keep the card, special conditions."
 msgstr ""
 
@@ -1131,12 +1172,12 @@ msgstr ""
 msgid "Keywords (Separated by comma)"
 msgstr ""
 
-#: ../news/news_views.py:188 ../tags/tags_views.py:304
+#: ../news/news_views.py:173 ../tags/tags_views.py:233
 #: ../feed_views/browse_navigator.py:73
 msgid "Last Author"
 msgstr ""
 
-#: ../news/news_views.py:187 ../tags/tags_views.py:303
+#: ../news/news_views.py:172 ../tags/tags_views.py:232
 #: ../feed_views/browse_navigator.py:72
 msgid "Last Modified"
 msgstr ""
@@ -1154,7 +1195,7 @@ msgctxt "title attribute"
 msgid "Libsoup"
 msgstr ""
 
-#: ../orders/order_views.py:47
+#: ../orders/order_views.py:48
 msgid "Line"
 msgstr ""
 
@@ -1162,7 +1203,7 @@ msgstr ""
 msgid "Link Target"
 msgstr ""
 
-#: ../orders/order_views.py:79
+#: ../orders/order_views.py:80
 msgid "List Payments"
 msgstr ""
 
@@ -1170,8 +1211,12 @@ msgstr ""
 msgid "List backlinks of this resource"
 msgstr ""
 
-#: ../orders/order_views.py:61
+#: ../orders/order_views.py:62
 msgid "List bills"
+msgstr ""
+
+#: ../orders/modules_views.py:112
+msgid "List buyable products"
 msgstr ""
 
 #: ../control_panel.py:152
@@ -1202,15 +1247,15 @@ msgctxt "title attribute"
 msgid "Log out"
 msgstr ""
 
-#: ../payments/modules_views.py:47 ../payments/payment_way_views.py:45
+#: ../payments/payment_way.py:72
 msgid "Logo"
 msgstr ""
 
-#: ../news/news_views.py:103
+#: ../news/news.py:69
 msgid "Long title"
 msgstr ""
 
-#: ../payments/paybox.py:183
+#: ../payments/paybox.py:180
 msgid "Lost card"
 msgstr ""
 
@@ -1218,11 +1263,21 @@ msgstr ""
 msgid "Manage TOC"
 msgstr ""
 
+#: ../orders/ui/order_manage.xml.en:40
+msgctxt "link"
+msgid "Manage all orders"
+msgstr ""
+
+#: ../orders/ui/order_manage.xml.en:38
+msgctxt "table cell"
+msgid "Manage all orders"
+msgstr ""
+
 #: ../control_panel.py:136
 msgid "Manage home page content"
 msgstr ""
 
-#: ../orders/order_views.py:145 ../orders/order_views.py:172
+#: ../orders/order_views.py:144 ../orders/order_views.py:207
 msgid "Manage order"
 msgstr ""
 
@@ -1248,15 +1303,11 @@ msgctxt "div"
 msgid "Minimum limit:"
 msgstr ""
 
-#: ../payments/modules_views.py:91
-msgid "Mode"
-msgstr ""
-
-#: ../payments/paybox.py:117
+#: ../payments/paybox.py:114
 msgid "Mode autorisation + télécollecte."
 msgstr ""
 
-#: ../payments/paybox.py:118
+#: ../payments/paybox.py:115
 msgid "Mode autorisation uniquement."
 msgstr ""
 
@@ -1269,7 +1320,7 @@ msgid "My first sidebar"
 msgstr ""
 
 #: ../bar/repository_views.py:106 ../bar/repository_views.py:173
-#: ../tags/tags_views.py:300
+#: ../tags/tags_views.py:229
 msgid "Name"
 msgstr ""
 
@@ -1305,7 +1356,7 @@ msgstr ""
 msgid "News Folder contains news ordered  by date of writing"
 msgstr ""
 
-#: ../news/news_views.py:115
+#: ../news/news_views.py:100
 msgid "News folder view"
 msgstr ""
 
@@ -1315,7 +1366,7 @@ msgid ""
 "be tagged"
 msgstr ""
 
-#: ../payments/modules_views.py:75 ../utils.py:204
+#: ../utils.py:204
 msgid "No"
 msgstr ""
 
@@ -1330,11 +1381,11 @@ msgctxt "div"
 msgid "No ordered webpages/subsections to show"
 msgstr ""
 
-#: ../payments/paybox.py:143
+#: ../payments/paybox.py:140
 msgid "Not authorized bin card"
 msgstr ""
 
-#: ../payments/paybox.py:145
+#: ../payments/paybox.py:142
 msgid "Not the same card used for the first payment"
 msgstr ""
 
@@ -1343,7 +1394,7 @@ msgctxt "body"
 msgid "Now you can add other boxes ;)"
 msgstr ""
 
-#: ../bar/feed_box.py:208
+#: ../bar/feed_box.py:219
 msgid "Number of items to show (0 = All)"
 msgstr ""
 
@@ -1355,16 +1406,12 @@ msgstr ""
 msgid "Number of tweets"
 msgstr ""
 
-#: ../payments/paybox.py:73
+#: ../payments/paybox.py:70
 msgid "Numerical variables contains a non-numerical character"
 msgstr ""
 
-#: ../tags/tags.py:109
+#: ../tags/tags.py:112
 msgid "ODF"
-msgstr ""
-
-#: ../orders/ui/bill.xml.en:38
-msgid "OOOOOO"
 msgstr ""
 
 #: ../OPML/rssfeeds.py:163
@@ -1379,11 +1426,11 @@ msgstr ""
 msgid "On"
 msgstr ""
 
-#: ../payments/paybox.py:68
+#: ../payments/paybox.py:65
 msgid "One of the PBX_RETOUR variable is too long"
 msgstr ""
 
-#: ../section_views/base.py:73
+#: ../section_views/base.py:72
 msgid "Only on current section"
 msgstr ""
 
@@ -1391,11 +1438,11 @@ msgstr ""
 msgid "OpenStreetMap"
 msgstr ""
 
-#: ../payments/paybox.py:128
+#: ../payments/paybox.py:125
 msgid "Operation successful"
 msgstr ""
 
-#: ../orders/order.py:87
+#: ../orders/order.py:103 ../payments/payment.py:48
 msgid "Order"
 msgstr ""
 
@@ -1419,12 +1466,29 @@ msgstr ""
 msgid "Order central boxes"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:14
+#: ../orders/ui/bill.xml.en:42
+msgid "Order date:"
+msgstr ""
+
+#: ../orders/order_views.py:230
+msgid "Order has been created"
+msgstr ""
+
+#: ../orders/modules.py:43
+msgid "Order module"
+msgstr ""
+
+#: ../orders/ui/order_manage.xml.en:7
 msgctxt "heading"
 msgid "Order number #${order/id}"
 msgstr ""
 
-#: ../bar/section.py:66
+#: ../orders/ui/order_top.xml.en:7
+msgctxt "heading"
+msgid "Order n°${name}"
+msgstr ""
+
+#: ../bar/section.py:67
 msgid "Order section"
 msgstr ""
 
@@ -1436,7 +1500,7 @@ msgstr ""
 msgid "Order top"
 msgstr ""
 
-#: ../orders/modules.py:42 ../orders/modules_views.py:28
+#: ../orders/modules.py:42 ../orders/modules_views.py:67
 msgid "Orders"
 msgstr ""
 
@@ -1448,147 +1512,144 @@ msgid ""
 "existing information system."
 msgstr ""
 
-#: ../payments/paybox.py:89
+#: ../payments/paybox.py:86
 msgid "PAYBOX DIRECT"
 msgstr ""
 
-#: ../payments/paybox.py:88
+#: ../payments/paybox.py:85
 msgid "PAYBOX SYSTEM"
 msgstr ""
 
-#: ../payments/paybox.py:78
+#: ../payments/paybox.py:75
 msgid "PBX_CMD is empty or invalid"
 msgstr ""
 
-#: ../payments/paybox.py:77
+#: ../payments/paybox.py:74
 msgid "PBX_LANGUE or PBX_DEVISE is invalid"
 msgstr ""
 
-#: ../payments/paybox.py:81
+#: ../payments/paybox.py:78
 msgid "PBX_PORTEUR is invalid"
 msgstr ""
 
-#: ../payments/paybox.py:75
+#: ../payments/paybox.py:72
 msgid "PBX_RANG value is invalid"
 msgstr ""
 
-#: ../payments/paybox.py:74
+#: ../payments/paybox.py:71
 msgid "PBX_SITE value is invalid."
 msgstr ""
 
-#: ../payments/paybox.py:76
+#: ../payments/paybox.py:73
 msgid "PBX_TOTAL value is invalid"
 msgstr ""
 
-#: ../orders/modules.py:45
+#: ../orders/modules_views.py:36
+msgid "PDF"
+msgstr ""
+
+#: ../orders/modules.py:49
 msgid "PDF Logo"
 msgstr ""
 
-#: ../orders/modules.py:46
+#: ../orders/modules.py:50
 msgid "PDF Signature"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:28
+#: ../orders/ui/bill.xml.en:27
 msgid "Page"
 msgstr ""
 
-#: ../orders/workflows.py:31
+#: ../orders/workflows.py:29
 msgid "Paid"
 msgstr ""
 
-#: ../payments/paybox.py:227
+#: ../payments/paybox.py:224
 msgid "Paiement Refusé (code %s)"
 msgstr ""
 
-#: ../orders/workflows.py:30
+#: ../orders/workflows.py:27
 msgid "Partially paid"
 msgstr ""
 
-#: ../footer.py:77 ../news/news_views.py:184
+#: ../footer.py:77 ../news/news_views.py:169
 msgid "Path"
 msgstr ""
 
-#: ../payments/paybox.py:247
+#: ../payments/paybox.py:244 ../payments/payment.py:123
 msgid "Pay"
 msgstr ""
 
-#: ../payments/paybox.py:441
+#: ../payments/paybox.py:391
 msgid "Paybox"
 msgstr ""
 
-#: ../payments/paybox.py:125
+#: ../payments/paybox.py:122
 msgid "Paybox IP address invalid"
 msgstr ""
 
-#: ../payments/paybox.py:431
+#: ../payments/paybox.py:407
 msgid "Paybox Identifiant"
 msgstr ""
 
-#: ../payments/paybox.py:384
+#: ../payments/paybox.py:358
 msgid "Paybox Payment"
 msgstr ""
 
-#: ../payments/paybox.py:430
+#: ../payments/paybox.py:405
 msgid "Paybox Rang"
 msgstr ""
 
-#: ../payments/paybox.py:429
+#: ../payments/paybox.py:403
 msgid "Paybox Site"
 msgstr ""
 
-#: ../payments/paybox.py:131
+#: ../payments/paybox.py:128
 msgid "Paybox error"
 msgstr ""
 
-#: ../payments/payment_views.py:45
-msgid "Payment ID"
-msgstr ""
-
-#: ../payments/modules_views.py:124
+#: ../payments/modules_views.py:101
 msgid "Payment Mode"
 msgstr ""
 
-#: ../payments/modules.py:35
+#: ../payments/modules.py:39
 msgid "Payment Module"
 msgstr ""
 
-#: ../orders/order_views.py:90 ../orders/order_views.py:127
-#: ../payments/payment_views.py:46
+#: ../orders/order_views.py:91 ../orders/order_views.py:128
 msgid "Payment Way"
 msgstr ""
 
-#: ../payments/ui/payment_end.xml.en:9
-msgctxt "table cell"
-msgid "Payment Way"
-msgstr ""
-
-#: ../payments/paybox.py:141
+#: ../payments/paybox.py:138
 msgid "Payment already made."
 msgstr ""
 
-#: ../payments/paybox.py:57
+#: ../payments/check.py:67
+msgid "Payment by check"
+msgstr ""
+
+#: ../payments/paybox.py:54
 msgid "Payment cancelled"
 msgstr ""
 
-#: ../payments/paybox.py:51
+#: ../payments/paybox.py:48
 msgid "Payment done"
 msgstr ""
 
-#: ../orders/workflows.py:32 ../payments/workflows.py:30
-#: ../payments/paybox.py:55
+#: ../payments/payment_way.py:75
+msgid "Payment end message"
+msgstr ""
+
+#: ../payments/paybox.py:52
 msgid "Payment error"
 msgstr ""
 
-#: ../payments/modules_views.py:41
+#: ../payments/modules_views.py:39
 msgid "Payment modes"
 msgstr ""
 
-#: ../payments/paybox.py:53
+#: ../payments/paybox.py:50
 msgid "Payment refused"
-msgstr ""
-
-#: ../payments/workflows.py:28
-msgid "Payment refused by the bank"
 msgstr ""
 
 #: ../payments/ui/paybox/end.xml.en:9
@@ -1596,20 +1657,19 @@ msgctxt "div"
 msgid "Payment state:"
 msgstr ""
 
-#: ../payments/workflows.py:27
+#: ../payments/check.py:37
+msgid "Payment successful"
+msgstr ""
+
+#: ../payments/payment.py:53
 msgid "Payment validated"
 msgstr ""
 
-#: ../payments/modules_views.py:82
+#: ../payments/modules_views.py:72
 msgid "Payments"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:42
-msgctxt "table cell"
-msgid "Payments"
-msgstr ""
-
-#: ../payments/paybox.py:434
+#: ../payments/paybox.py:413
 msgid "Payments in real mode"
 msgstr ""
 
@@ -1617,7 +1677,7 @@ msgstr ""
 msgid "Please choose a payment mode"
 msgstr ""
 
-#: ../orders/order_views.py:120
+#: ../orders/order_views.py:121
 msgid "Please follow the payment procedure below."
 msgstr ""
 
@@ -1625,45 +1685,32 @@ msgstr ""
 msgid "Powered by itws"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:99
-msgid "Pre-Tax Total"
-msgstr ""
-
-#: ../bar/feed_box.py:78
+#: ../bar/feed_box.py:79
 msgid "Preview"
 msgstr ""
 
-#: ../orders/order.py:77
+#: ../orders/order.py:86
 msgid "Price"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:64
-msgctxt "table cell"
-msgid "Price"
-msgstr ""
-
-#: ../orders/order.py:67
+#: ../orders/order.py:76
 msgid "Products"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:51
+#: ../orders/ui/order_view_products.xml.en:7
 msgctxt "heading"
 msgid "Products"
+msgstr ""
+
+#: ../tags/tags.py:197
+msgid "Publication Date & Time"
 msgstr ""
 
 #: ../datatypes.py:103
 msgid "Publication date"
 msgstr ""
 
-#: ../tags/tags_views.py:247
-msgid "Publication date (used by RSS and tags)"
-msgstr ""
-
-#: ../tags/tags_views.py:250
-msgid "Publication time (used by RSS and tags)"
-msgstr ""
-
-#: ../tags/tags.py:109
+#: ../tags/tags.py:112
 msgid "Python"
 msgstr ""
 
@@ -1672,15 +1719,15 @@ msgctxt "title attribute"
 msgid "Python"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:98
+#: ../orders/ui/bill.xml.en:56
 msgid "Qty"
 msgstr ""
 
-#: ../orders/order_views.py:48 ../orders/order.py:76
+#: ../orders/order_views.py:49 ../orders/order.py:85
 msgid "Quantity"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:63
+#: ../orders/ui/order_view_products.xml.en:14
 msgctxt "table cell"
 msgid "Quantity"
 msgstr ""
@@ -1710,20 +1757,20 @@ msgstr ""
 msgid "Read more"
 msgstr ""
 
-#: ../payments/paybox.py:172
+#: ../payments/paybox.py:169
 msgid "Record duplicated, former record replaced"
 msgstr ""
 
-#: ../section_views/base.py:75
+#: ../section_views/base.py:74 ../bar/feed_box.py:217
 msgid "Recursively"
 msgstr ""
 
-#: ../orders/order_views.py:89 ../orders/order.py:74
-#: ../orders/ui/bill.xml.en:96
+#: ../orders/order_views.py:90 ../orders/order.py:83
+#: ../orders/ui/bill.xml.en:54
 msgid "Reference"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:61
+#: ../orders/ui/order_view_products.xml.en:12
 msgctxt "table cell"
 msgid "Reference"
 msgstr ""
@@ -1741,19 +1788,19 @@ msgstr ""
 msgid "Render map with"
 msgstr ""
 
-#: ../payments/paybox.py:165
+#: ../payments/paybox.py:162
 msgid "Repeat the transaction later"
 msgstr ""
 
-#: ../payments/paybox.py:202
+#: ../payments/paybox.py:199
 msgid "Reply not forthcoming or received too late"
 msgstr ""
 
-#: ../payments/paybox.py:208
+#: ../payments/paybox.py:205
 msgid "Request duplicated"
 msgstr ""
 
-#: ../payments/paybox.py:148
+#: ../payments/paybox.py:145
 msgid "Reserved"
 msgstr ""
 
@@ -1761,7 +1808,7 @@ msgstr ""
 msgid "Resource type"
 msgstr ""
 
-#: ../section_views/base.py:80 ../bar/feed_box.py:212
+#: ../section_views/base.py:79 ../bar/feed_box.py:223
 msgid "Reverse"
 msgstr ""
 
@@ -1773,7 +1820,7 @@ msgstr ""
 msgid "Robots.txt"
 msgstr ""
 
-#: ../payments/paybox.py:109
+#: ../payments/paybox.py:106
 msgid "SOFINCO"
 msgstr ""
 
@@ -1798,21 +1845,21 @@ msgstr ""
 msgid "Search view"
 msgstr ""
 
-#: ../bar/section.py:90
+#: ../bar/section.py:91
 msgid "Section"
 msgstr ""
 
-#: ../bar/section.py:91
+#: ../bar/section.py:92
 msgid ""
 "Sections allow to customize the central part and the sidebar. Sections can "
 "contain subsections."
 msgstr ""
 
-#: ../payments/paybox.py:442
+#: ../payments/paybox.py:392
 msgid "Secured payment paybox"
 msgstr ""
 
-#: ../payments/paybox.py:200
+#: ../payments/paybox.py:197
 msgid "Security regulations not respected"
 msgstr ""
 
@@ -1838,11 +1885,11 @@ msgstr ""
 msgid "Select and order items of the table of contents of this section."
 msgstr ""
 
-#: ../widgets/base.py:56
+#: ../widgets/base.py:61
 msgid "Selected"
 msgstr ""
 
-#: ../payments/paybox.py:213
+#: ../payments/paybox.py:210
 msgid "Server inaccessible (set by the server)"
 msgstr ""
 
@@ -1854,7 +1901,7 @@ msgstr ""
 msgid "Show number of items for each tag"
 msgstr ""
 
-#: ../bar/feed_box.py:218
+#: ../bar/feed_box.py:230
 msgid "Show only items with these tags"
 msgstr ""
 
@@ -1886,7 +1933,7 @@ msgstr ""
 msgid "Slideshow of a set of images"
 msgstr ""
 
-#: ../section_views/base.py:79 ../bar/feed_box.py:210
+#: ../section_views/base.py:78 ../bar/feed_box.py:221
 msgid "Sort by"
 msgstr ""
 
@@ -1894,22 +1941,21 @@ msgstr ""
 msgid "Specific CSS"
 msgstr ""
 
-#: ../orders/order_views.py:93 ../payments/modules_views.py:92
-#: ../news/news_views.py:190 ../tags/tags_views.py:305
+#: ../news/news_views.py:175 ../tags/tags_views.py:234
 #: ../feed_views/browse_navigator.py:74
 msgid "State"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:23 ../payments/ui/payment_end.xml.en:13
+#: ../orders/ui/order_manage.xml.en:19
 msgctxt "table cell"
 msgid "State"
 msgstr ""
 
-#: ../payments/paybox.py:221
+#: ../payments/paybox.py:218
 msgid "Statut inconnu."
 msgstr ""
 
-#: ../payments/paybox.py:184
+#: ../payments/paybox.py:181
 msgid "Stolen card"
 msgstr ""
 
@@ -1917,19 +1963,19 @@ msgstr ""
 msgid "Subscribe to resources modifications"
 msgstr ""
 
-#: ../payments/paybox.py:142
+#: ../payments/paybox.py:139
 msgid "Subscriber already exists"
 msgstr ""
 
-#: ../bar/toc.py:217 ../bar/toc.py:237
+#: ../bar/toc.py:217 ../bar/toc.py:236
 msgid "Subsections and Webpages TOC"
 msgstr ""
 
-#: ../payments/paybox.py:181 ../payments/paybox.py:194
+#: ../payments/paybox.py:178 ../payments/paybox.py:191
 msgid "Suspicion of fraud"
 msgstr ""
 
-#: ../payments/paybox.py:209
+#: ../payments/paybox.py:206
 msgid "System malfunctioning"
 msgstr ""
 
@@ -1937,17 +1983,17 @@ msgstr ""
 msgid "Table Of Content (TOC) to display choosen subsections and webpages"
 msgstr ""
 
-#: ../bar/toc.py:238
+#: ../bar/toc.py:237
 msgid ""
 "Table Of Content (TOC) to display choosen subsections and webpages in the "
 "central part"
 msgstr ""
 
-#: ../tags/tags.py:47
+#: ../tags/tags.py:50
 msgid "Tag"
 msgstr ""
 
-#: ../tags/tags_views.py:125
+#: ../tags/tags_views.py:121
 msgid "Tag Cloud Preview"
 msgstr ""
 
@@ -1955,8 +2001,7 @@ msgstr ""
 msgid "Tag cloud"
 msgstr ""
 
-#: ../control_panel.py:101 ../tags/tags.py:89 ../tags/tags.py:189
-#: ../tags/tags_views.py:243
+#: ../control_panel.py:101 ../tags/tags.py:92 ../tags/tags.py:192
 msgid "Tags"
 msgstr ""
 
@@ -1965,11 +2010,11 @@ msgctxt "div"
 msgid "Tags are global to the website."
 msgstr ""
 
-#: ../tags/tags.py:48
+#: ../tags/tags.py:51
 msgid "Tags are used to categorize website content and build navigation views."
 msgstr ""
 
-#: ../tags/tags.py:90
+#: ../tags/tags.py:93
 msgid "Tags folder"
 msgstr ""
 
@@ -1981,7 +2026,7 @@ msgstr ""
 msgid "Target"
 msgstr ""
 
-#: ../payments/paybox.py:206
+#: ../payments/paybox.py:203
 msgid "Temporary halt of the system"
 msgstr ""
 
@@ -1989,7 +2034,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: ../payments/paybox.py:130
+#: ../payments/paybox.py:127
 msgid "The connection to the authorization centre failed"
 msgstr ""
 
@@ -2007,43 +2052,43 @@ msgctxt "div"
 msgid "There are errors in this RSS:"
 msgstr ""
 
-#: ../orders/order_views.py:68
+#: ../orders/order_views.py:69
 msgid "There are {n} bills."
 msgstr ""
 
-#: ../orders/modules_views.py:31
+#: ../orders/modules_views.py:70
 msgid "There are {n} orders"
 msgstr ""
 
-#: ../payments/modules_views.py:85
+#: ../payments/modules_views.py:75
 msgid "There are {n} payments"
 msgstr ""
 
-#: ../payments/modules_views.py:44
+#: ../payments/modules_views.py:42
 msgid "There are {n} payments mode."
 msgstr ""
 
-#: ../orders/order_views.py:86
+#: ../orders/order_views.py:87
 msgid "There are {n} payments."
 msgstr ""
 
-#: ../orders/order_views.py:67
+#: ../orders/order_views.py:68
 msgid "There is 1 bill."
 msgstr ""
 
-#: ../orders/modules_views.py:30
+#: ../orders/modules_views.py:69
 msgid "There is 1 order"
 msgstr ""
 
-#: ../payments/modules_views.py:84
+#: ../payments/modules_views.py:74
 msgid "There is 1 payment"
 msgstr ""
 
-#: ../payments/modules_views.py:43
+#: ../payments/modules_views.py:41
 msgid "There is 1 payment mode."
 msgstr ""
 
-#: ../orders/order_views.py:85
+#: ../orders/order_views.py:86
 msgid "There is 1 payment."
 msgstr ""
 
@@ -2080,7 +2125,17 @@ msgctxt "body"
 msgid "This is your first box in your sidebar."
 msgstr ""
 
-#: ../orders/order_views.py:53
+#: ../orders/ui/order_top.xml.en:9
+msgctxt "paragraph"
+msgid "This order has been payed"
+msgstr ""
+
+#: ../orders/ui/order_top.xml.en:10
+msgctxt "paragraph"
+msgid "This order hasn't been payed yet."
+msgstr ""
+
+#: ../orders/order_views.py:54
 msgid "This product has been added to your order"
 msgstr ""
 
@@ -2111,27 +2166,26 @@ msgstr ""
 msgid "Thumb width"
 msgstr ""
 
-#: ../tags/tags.py:194 ../tags/tags_views.py:245
+#: ../tags/tags.py:201
 msgid "Thumbnail"
 msgstr ""
 
-#: ../payments/paybox.py:211
+#: ../payments/paybox.py:208
 msgid "Time of global surveillance has expired"
 msgstr ""
 
-#: ../payments/paybox.py:147
+#: ../payments/paybox.py:144
 msgid "Time-out > 15 mn before validation by the buyer"
 msgstr ""
 
-#: ../news/news_views.py:185 ../tags/tags_views.py:301
-#: ../payments/payment_way_views.py:44 ../bar/section_views.py:52
-#: ../payments/modules_views.py:48 ../datatypes.py:102
+#: ../tags/tags_views.py:230 ../datatypes.py:102
 #: ../feed_views/browse_navigator.py:69 ../views.py:62 ../footer.py:75
-#: ../orders/order.py:75 ../bar/repository_views.py:105 ../bar/base.py:81
+#: ../bar/base.py:81 ../orders/order.py:84 ../bar/repository_views.py:105
+#: ../news/news_views.py:170
 msgid "Title"
 msgstr ""
 
-#: ../orders/ui/order_manage.xml.en:62
+#: ../orders/ui/order_view_products.xml.en:13
 msgctxt "table cell"
 msgid "Title"
 msgstr ""
@@ -2144,7 +2198,7 @@ msgstr ""
 msgid "Title link target"
 msgstr ""
 
-#: ../bar/feed_box.py:82
+#: ../bar/feed_box.py:83
 msgid "Title only"
 msgstr ""
 
@@ -2152,35 +2206,62 @@ msgstr ""
 msgid "Title view"
 msgstr ""
 
-#: ../bar/feed_box.py:80
+#: ../bar/feed_box.py:81
 msgid "Title with thumbnail"
 msgstr ""
 
-#: ../payments/paybox.py:182
+#: ../orders/workflows.py:28
+msgid "To much Paid"
+msgstr ""
+
+#: ../payments/paybox.py:179
 msgid "Too many attemps at secret code"
 msgstr ""
 
-#: ../payments/paybox.py:203
+#: ../payments/paybox.py:200
 msgid "Too many attempts at secret card"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:101
+#: ../orders/ui/bill.xml.en:58
 msgid "Total"
 msgstr ""
 
-#: ../orders/order.py:91
+#: ../orders/ui/order_view_products.xml.en:16
+msgctxt "table cell"
+msgid "Total Price"
+msgstr ""
+
+#: ../orders/order.py:109
+msgid "Total paid"
+msgstr ""
+
+#: ../orders/ui/order_manage.xml.en:34
+msgctxt "table cell"
+msgid "Total paid"
+msgstr ""
+
+#: ../orders/ui/bill.xml.en:91 ../orders/order.py:107
 msgid "Total price"
 msgstr ""
 
-#: ../payments/paybox.py:151
+#: ../orders/ui/order_manage.xml.en:30
+msgctxt "table cell"
+msgid "Total price"
+msgstr ""
+
+#: ../orders/ui/bill.xml.en:47
+msgid "Total price ${total_price}"
+msgstr ""
+
+#: ../payments/paybox.py:148
 msgid "Transaction approved or successfully processed."
 msgstr ""
 
-#: ../payments/paybox.py:193
+#: ../payments/paybox.py:190
 msgid "Transaction forbidden at this terminal"
 msgstr ""
 
-#: ../payments/paybox.py:191
+#: ../payments/paybox.py:188
 msgid "Transaction not permitted for this holder"
 msgstr ""
 
@@ -2204,7 +2285,7 @@ msgstr ""
 msgid "Twitter feed (micro-blogging service)."
 msgstr ""
 
-#: ../news/news_views.py:189 ../feed_views/browse_navigator.py:71
+#: ../news/news_views.py:174 ../feed_views/browse_navigator.py:71
 msgid "Type"
 msgstr ""
 
@@ -2212,7 +2293,7 @@ msgstr ""
 msgid "Type of content to display"
 msgstr ""
 
-#: ../utils.py:344
+#: ../utils.py:348
 msgid "UPDATE CACHE"
 msgstr ""
 
@@ -2224,15 +2305,16 @@ msgstr ""
 msgid "USD"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:97
+#: ../orders/ui/order_view_products.xml.en:15
+msgctxt "table cell"
+msgid "Unit Price"
+msgstr ""
+
+#: ../orders/ui/bill.xml.en:57
 msgid "Unit price"
 msgstr ""
 
-#: ../payments/workflows.py:25
-msgid "Unknow"
-msgstr ""
-
-#: ../payments/paybox.py:79 ../payments/paybox.py:80
+#: ../payments/paybox.py:76 ../payments/paybox.py:77
 msgid "Unknow error"
 msgstr ""
 
@@ -2244,33 +2326,34 @@ msgstr ""
 msgid "User Id"
 msgstr ""
 
-#: ../orders/ui/bill.xml.en:100
-msgid "VAT"
-msgstr ""
-
-#: ../payments/paybox.py:102
+#: ../payments/paybox.py:99
 msgid "VISA"
 msgstr ""
 
-#: ../orders/order_views.py:92
+#: ../orders/order_views.py:94
 msgid "Validated ?"
 msgstr ""
 
-#: ../ws_neutral_views.py:53 ../section_views/composite.py:28 ../views.py:108
-#: ../bar/section_views.py:54 ../bar/diaporama.py:159 ../about.py:33
+#: ../orders/order_views.py:195 ../section_views/composite.py:28
+#: ../views.py:108 ../bar/section.py:101 ../bar/diaporama.py:159
+#: ../ws_neutral_views.py:53 ../about.py:33
 #: ../feed_views/browse_navigator.py:82 ../bar/bar_aware.py:147
-#: ../webpage_views.py:91 ../bar/tags.py:36 ../feed_views/base.py:46
-#: ../turning_footer.py:50 ../bar/feed_box.py:89 ../OPML/rssfeeds.py:84
-#: ../news/news_views.py:46 ../news/news_views.py:110
+#: ../webpage_views.py:61 ../bar/tags.py:36 ../feed_views/base.py:46
+#: ../turning_footer.py:50 ../bar/feed_box.py:90 ../OPML/rssfeeds.py:84
+#: ../news/news_views.py:44 ../news/news_views.py:95
 msgid "View"
+msgstr ""
+
+#: ../orders/order_views.py:182
+msgid "View products"
+msgstr ""
+
+#: ../payments/check.py:34
+msgid "Waiting for check"
 msgstr ""
 
 #: ../orders/workflows.py:26
 msgid "Waiting payment"
-msgstr ""
-
-#: ../payments/workflows.py:26
-msgid "Waiting validation"
 msgstr ""
 
 #: ../bar/homepage.py:37
@@ -2291,7 +2374,7 @@ msgctxt "title attribute"
 msgid "Xapian"
 msgstr ""
 
-#: ../payments/modules_views.py:75 ../utils.py:204
+#: ../utils.py:204
 msgid "Yes"
 msgstr ""
 
@@ -2329,10 +2412,6 @@ msgctxt "option"
 msgid "[${feed/nb_articles}] ${feed/title}"
 msgstr ""
 
-#: ../tags/tags_views.py:248
-msgid "hour:minute"
-msgstr ""
-
 #: ../ui/about/view.xml.en:24 ../ui/about/view.xml.en:38
 msgctxt "title attribute"
 msgid "iKaaro"
@@ -2353,10 +2432,6 @@ msgctxt "title attribute"
 msgid "itws"
 msgstr ""
 
-#: ../payments/modules_views.py:90
-msgid "name"
-msgstr ""
-
 #: ../bar/toc.py:79
 msgid "resource \"%s\" not found"
 msgstr ""
@@ -2365,11 +2440,7 @@ msgstr ""
 msgid "symbol"
 msgstr ""
 
-#: ../orders/order_views.py:91
-msgid "total_price"
-msgstr ""
-
-#: ../payments/datatypes.py:41 ../payments/utils.py:42
+#: ../payments/utils.py:37
 msgid "{0} {1}"
 msgstr ""
 
@@ -2392,11 +2463,6 @@ msgstr ""
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:49
 msgctxt "div"
 msgid " "
-msgstr ""
-
-#: ../payments/payment_views.py:86 ../payments/payment.py:80
-#: ../payments/datatypes.py:31
-msgid "€"
 msgstr ""
 
 #: ../ui/feed_views/browse_navigator_rename.xml.en:15
