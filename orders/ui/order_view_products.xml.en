@@ -5,7 +5,6 @@
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <h1 class="title">Products</h1>
-
   <table id="browse-list">
     <thead>
       <tr>
@@ -29,10 +28,9 @@
         <td>${product/total_price}</td>
       </tr>
       <tr>
-        <td colspan="4"></td>
-        <td>${total_price}</td>
+        <td colspan="4"><em>Total amount</em></td>
+        <td><em>${total_price}</em></td>
       </tr>
     </tbody>
   </table>
-
 </stl:block>

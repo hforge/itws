@@ -59,7 +59,7 @@ class Order_AddLine(AutoForm):
 class Order_ViewBills(FieldsTableFeed_View):
 
     access = 'is_admin'
-    title = MSG(u'List bills')
+    title = MSG(u'Bills')
 
     table_actions = []
     show_resource_title = False
@@ -74,10 +74,11 @@ class Order_ViewBills(FieldsTableFeed_View):
     search_cls = PDF
 
 
+
 class Order_ViewPayments(TableFeed_View):
 
     access = 'is_admin'
-    title = MSG(u'List Payments')
+    title = MSG(u'Payments')
 
     show_resource_title = False
     query_suffix = 'payments'
@@ -179,14 +180,16 @@ class Order_Top(STLView):
 class Order_ViewProducts(STLView):
 
     access = 'is_allowed_to_view'
-    title = MSG(u'View products')
+    title = MSG(u'Products')
     template = '/ui/orders/order_view_products.xml'
 
     def get_namespace(self, resource, context):
         namespace = {}
         namespace['products'] = resource.get_products_namespace(context)
-        namespace['total_price'] = resource.get_property('total_price')
+        total = resource.get_property('total_price')
+        namespace['total_price'] = format_price(total)
         return namespace
+
 
 
 class Order_View(CompositeView):

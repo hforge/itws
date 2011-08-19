@@ -164,7 +164,7 @@ class Order(WorkflowAware, Folder):
             kw['title'] = get_value(record, 'title')
             kw['price'] = get_value(record, 'price')
             kw['quantity'] = get_value(record, 'quantity')
-            kw['total_price'] = kw['price'] * kw['quantity']
+            kw['total_price'] = format_price(kw['price'] * kw['quantity'])
             # Get product link (if exist)
             abspath = get_value(record, 'abspath')
             product = context.root.get_resource(abspath, soft=True)

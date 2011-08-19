@@ -66,6 +66,8 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
     access = 'is_admin'
     title = MSG(u'Orders')
 
+    sort_by = 'ctime'
+    reverse = True
     batch_msg1 = MSG(u"There is 1 order")
     batch_msg2 = MSG(u"There are {n} orders")
     table_actions = []
@@ -83,13 +85,13 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
             value = item_resource.get_property(column)
             return format_price(value)
         elif column == 'bill':
-            bill = item_resource.get_property('bill')
+            bill = item_resource.get_resource('bill', soft=True)
             if bill is None:
                 return None
             return XMLParser("""
-                    <a href="./%s/%s/;download">
+                    <a href="%s/;download">
                       <img src="/ui/icons/16x16/pdf.png"/>
-                    </a>""" % (brain.name, bill))
+                    </a>""" % context.get_link(bill))
         proxy = super(OrderModule_ViewOrders, self)
         return proxy.get_item_value(resource, context, item, column)
 
