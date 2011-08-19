@@ -71,13 +71,15 @@ class PaymentModule_ViewPayments(FieldsTableFeed_View):
     access = 'is_admin'
     title = MSG(u'Payments')
 
+    sort_by = 'mtime'
+    reverse = True
     batch_msg1 = MSG(u"There is 1 payment")
     batch_msg2 = MSG(u"There are {n} payments")
     table_actions = []
     search_template = None
     search_cls = Payment
 
-    table_fields = ['name', 'amount', 'is_paid', 'order_abspath']
+    table_fields = ['name', 'amount', 'is_paid', 'order_abspath', 'mtime']
 
     def get_items(self, resource, context):
         query = PhraseQuery('is_payment', True)

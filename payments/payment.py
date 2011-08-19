@@ -16,7 +16,7 @@
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.datatypes import Boolean, Decimal, String, URI
+from itools.datatypes import Boolean, DateTime, Decimal, String, URI
 from itools.gettext import MSG
 
 # Import from ikaaro
@@ -41,6 +41,8 @@ class Payment(DBResource):
         DBResource.class_schema,
         payment_schema,
         name=String(stored=True, indexed=True, title=MSG(u'Reference')),
+        mtime=DateTime(source='metadata', indexed=True, stored=True,
+            title=MSG(u'Dernière modification')),
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         customer_id=String(source='metadata', title=MSG(u'Customer id')),
