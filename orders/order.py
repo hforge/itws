@@ -112,7 +112,7 @@ class Order(WorkflowAware, Folder):
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,
             stored=True, title=MSG(u'Customer')),
-        bill=URI(source='metadata'),
+        bill=URI(source='metadata', title=MSG(u'Bill')),
         is_paid=Boolean(source='metadata', title=MSG(u'Is paid ?'),
             indexed=True, stored=True),
         is_order=Boolean(indexed=True, stored=True)))
