@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from news import NewsFolder, NewsItem
+from newsletter_model import Newsletter_Model
 
 # Silent pyflakes
-NewsFolder, NewsItem
+NewsFolder, NewsItem, Newsletter_Model
