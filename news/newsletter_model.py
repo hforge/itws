@@ -15,13 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Enumerate, PathDataType, String, Unicode
 from itools.gettext import MSG
 from itools.web import get_context
 
 # Import from ikaar
 from ikaaro.autoform import ImageSelectorWidget, TextWidget, HiddenWidget
-from ikaaro.utils import CMSTemplate
+from ikaaro.utils import CMSTemplate, get_base_path_query
 
 # Import from itws
 from itws.widgets import DualSelectWidget
@@ -38,7 +39,10 @@ class News(Enumerate):
     def get_options(cls):
         context = get_context()
         root = context.root
-        search = root.search(format='news', workflow_state='public')
+        query = [get_base_path_query(str(context.site_root.get_abspath())),
+                 PhraseQuery('format','news'),
+                 PhraseQuery('workflow_state', 'public')]
+        search = root.search(AndQuery(*query))
         resources = [root.get_resource(brain.abspath)
               for brain in search.get_documents(sort_by='mtime', reverse=True)]
         return [{'name': str(res.get_abspath()),
