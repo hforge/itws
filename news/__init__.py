@@ -16,7 +16,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from news import NewsFolder, NewsItem
-from newsletter_model import Newsletter_Model
+
+# Load Newsletter model ?
+try:
+    from newsletter_model import Newsletter_Model
+except ImportError:
+    print "Newsletter model hasn't be loaded"
 
 # Silent pyflakes
-NewsFolder, NewsItem, Newsletter_Model
+NewsFolder, NewsItem
