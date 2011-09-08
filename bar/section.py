@@ -153,7 +153,7 @@ class Section(WorkflowAware, TagsAware, SideBarAware, ContentBarAware,
 
         # Section view
         view = section_views_registry[self.section_view_name]
-        cls = view.view_configuration_cls
+        cls = getattr(view, 'view_configuration_cls', None)
         if cls:
             self.make_resource('section_view', cls)
 
