@@ -209,6 +209,7 @@ class FieldsAutomaticEditView(AutomaticEditView):
     We use schema title to define widget title
     """
     edit_fields = freeze(['title', 'description', 'subject'])
+    hide_context_menus = False
 
     @property
     def edit_schema(self):
@@ -244,6 +245,12 @@ class FieldsAutomaticEditView(AutomaticEditView):
                 kw[attr_name] = attr_value
 
         return widget(name, **kw)
+
+
+    def get_context_menus(self):
+        if self.hide_context_menus:
+            return []
+        return super(FieldsAutomaticEditView, self).get_context_menus()
 
 
 
