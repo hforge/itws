@@ -60,6 +60,7 @@ class DualSelectWidget(SelectWidget):
     css = 'dual-select'
     selected_label = MSG(u'Selected')
     available_label = MSG(u'Available')
+    has_empty_option = False
 
     template = make_stl_template("""
         <script type="text/javascript">
