@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-08-19 10:08+CET\n"
+"POT-Creation-Date: 2011-09-13 08:09+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,7 +133,7 @@ msgstr ""
 msgid "Add a line"
 msgstr ""
 
-#: ../orders/order_views.py:120
+#: ../orders/order_views.py:121
 msgid "Add a payment"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Add sidebar box"
 msgstr ""
 
-#: ../views.py:273
+#: ../views.py:280
 msgid "Add {class_title}"
 msgstr ""
 
@@ -175,7 +175,7 @@ msgstr ""
 msgid "Advanced State"
 msgstr ""
 
-#: ../orders/order_views.py:93
+#: ../orders/order_views.py:94
 msgid "Advanced state"
 msgstr ""
 
@@ -183,10 +183,10 @@ msgstr ""
 msgid "All feeds"
 msgstr ""
 
-#: ../orders/order_views.py:92
-#: ../orders/order_views.py:127
-#: ../payments/modules_views.py:100
-#: ../payments/payment.py:43
+#: ../orders/order_views.py:93
+#: ../orders/order_views.py:128
+#: ../payments/modules_views.py:102
+#: ../payments/payment.py:46
 #: ../payments/payment_views.py:46
 msgid "Amount"
 msgstr ""
@@ -233,13 +233,17 @@ msgid "Batch size"
 msgstr ""
 
 #: ../orders/ui/bill.xml.en:5
-#: ../orders/order.py:115
-#: ../orders/order.py:259
+#: ../orders/order.py:116
+#: ../orders/order.py:260
 msgid "Bill"
 msgstr ""
 
-#: ../orders/order.py:262
+#: ../orders/order.py:263
 msgid "Bill has been generated"
+msgstr ""
+
+#: ../orders/order_views.py:62
+msgid "Bills"
 msgstr ""
 
 #: ../webpage.py:60
@@ -396,7 +400,7 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: ../bar/feed_box.py:214
+#: ../bar/feed_box.py:215
 msgid "Container"
 msgstr ""
 
@@ -429,7 +433,7 @@ msgstr ""
 msgid "Create a new central box"
 msgstr ""
 
-#: ../orders/order_views.py:218
+#: ../orders/order_views.py:221
 msgid "Create a new order"
 msgstr ""
 
@@ -445,7 +449,7 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: ../orders/order.py:112
+#: ../orders/order.py:113
 msgid "Creation date"
 msgstr ""
 
@@ -457,11 +461,11 @@ msgstr ""
 msgid "Custom data"
 msgstr ""
 
-#: ../orders/order.py:114
+#: ../orders/order.py:115
 msgid "Customer"
 msgstr ""
 
-#: ../payments/payment.py:45
+#: ../payments/payment.py:48
 msgid "Customer id"
 msgstr ""
 
@@ -475,6 +479,10 @@ msgstr ""
 
 #: ../OPML/rssfeeds.py:77
 msgid "Deactivate"
+msgstr ""
+
+#: ../payments/payment.py:45
+msgid "Dernière modification"
 msgstr ""
 
 #: ../bar/section.py:102
@@ -511,7 +519,7 @@ msgstr ""
 msgid "Display ordered resources only."
 msgstr ""
 
-#: ../bar/feed_box.py:204
+#: ../bar/feed_box.py:205
 msgid "Display the feed of a content from the website"
 msgstr ""
 
@@ -520,12 +528,12 @@ msgstr ""
 #: ../bar/navigation.py:171
 #: ../bar/tags.py:95
 #: ../bar/gallery.py:88
-#: ../bar/feed_box.py:225
+#: ../bar/feed_box.py:226
 #: ../bar/base.py:41
 msgid "Display title"
 msgstr ""
 
-#: ../payments/modules_views.py:91
+#: ../payments/modules_views.py:93
 msgid "Do a payment"
 msgstr ""
 
@@ -685,11 +693,11 @@ msgstr ""
 msgid "Export Orders"
 msgstr ""
 
-#: ../bar/feed_box.py:203
+#: ../bar/feed_box.py:204
 msgid "Feed"
 msgstr ""
 
-#: ../bar/feed_box.py:227
+#: ../bar/feed_box.py:228
 msgid "Feed Source"
 msgstr ""
 
@@ -697,7 +705,7 @@ msgstr ""
 msgid "Feed TagAware elements"
 msgstr ""
 
-#: ../bar/feed_box.py:232
+#: ../bar/feed_box.py:233
 msgid "Feed template"
 msgstr ""
 
@@ -792,7 +800,7 @@ msgstr ""
 msgid "HTML Content"
 msgstr ""
 
-#: ../payments/payment.py:55
+#: ../payments/payment.py:58
 msgid "Hi, your payment has been validated.\n\n------------------------\nId payment: {name}\nPayment Way: {payment_way}\nAmount: {amount}\n------------------------\n\n\n"
 msgstr ""
 
@@ -809,8 +817,12 @@ msgstr ""
 msgid "Home page"
 msgstr ""
 
-#: ../widgets/base.py:187
+#: ../widgets/base.py:188
 msgid "I agree with the terms and conditions of use."
+msgstr ""
+
+#: ../news/newsletter_model.py:57
+msgid "ITWS Newsletter"
 msgstr ""
 
 #: ../ws_neutral.py:93
@@ -918,8 +930,8 @@ msgstr ""
 msgid "Is active"
 msgstr ""
 
-#: ../orders/order.py:116
-#: ../payments/payment.py:46
+#: ../orders/order.py:117
+#: ../payments/payment.py:49
 msgid "Is paid ?"
 msgstr ""
 
@@ -971,19 +983,11 @@ msgstr ""
 msgid "Link Target"
 msgstr ""
 
-#: ../orders/order_views.py:80
-msgid "List Payments"
-msgstr ""
-
 #: ../control_panel.py:160
 msgid "List backlinks of this resource"
 msgstr ""
 
-#: ../orders/order_views.py:62
-msgid "List bills"
-msgstr ""
-
-#: ../orders/modules_views.py:112
+#: ../orders/modules_views.py:114
 msgid "List buyable products"
 msgstr ""
 
@@ -1015,8 +1019,8 @@ msgstr ""
 msgid "Manage home page content"
 msgstr ""
 
-#: ../orders/order_views.py:144
-#: ../orders/order_views.py:207
+#: ../orders/order_views.py:145
+#: ../orders/order_views.py:210
 msgid "Manage order"
 msgstr ""
 
@@ -1079,6 +1083,7 @@ msgid "Neutral Skin 1"
 msgstr ""
 
 #: ../ws_neutral.py:154
+#: ../news/newsletter_model.py:65
 #: ../news/news.py:60
 msgid "News"
 msgstr ""
@@ -1111,7 +1116,7 @@ msgstr ""
 msgid "Not the same card used for the first payment"
 msgstr ""
 
-#: ../bar/feed_box.py:219
+#: ../bar/feed_box.py:220
 msgid "Number of items to show (0 = All)"
 msgstr ""
 
@@ -1160,7 +1165,7 @@ msgid "Operation successful"
 msgstr ""
 
 #: ../orders/order.py:103
-#: ../payments/payment.py:48
+#: ../payments/payment.py:51
 msgid "Order"
 msgstr ""
 
@@ -1190,7 +1195,7 @@ msgstr ""
 msgid "Order date:"
 msgstr ""
 
-#: ../orders/order_views.py:230
+#: ../orders/order_views.py:233
 msgid "Order has been created"
 msgstr ""
 
@@ -1282,7 +1287,7 @@ msgid "Path"
 msgstr ""
 
 #: ../payments/paybox.py:244
-#: ../payments/payment.py:123
+#: ../payments/payment.py:126
 msgid "Pay"
 msgstr ""
 
@@ -1314,7 +1319,7 @@ msgstr ""
 msgid "Paybox error"
 msgstr ""
 
-#: ../payments/modules_views.py:101
+#: ../payments/modules_views.py:103
 msgid "Payment Mode"
 msgstr ""
 
@@ -1322,8 +1327,8 @@ msgstr ""
 msgid "Payment Module"
 msgstr ""
 
-#: ../orders/order_views.py:91
-#: ../orders/order_views.py:128
+#: ../orders/order_views.py:92
+#: ../orders/order_views.py:129
 msgid "Payment Way"
 msgstr ""
 
@@ -1363,10 +1368,11 @@ msgstr ""
 msgid "Payment successful"
 msgstr ""
 
-#: ../payments/payment.py:53
+#: ../payments/payment.py:56
 msgid "Payment validated"
 msgstr ""
 
+#: ../orders/order_views.py:81
 #: ../payments/modules_views.py:72
 msgid "Payments"
 msgstr ""
@@ -1379,7 +1385,7 @@ msgstr ""
 msgid "Please choose a payment mode"
 msgstr ""
 
-#: ../orders/order_views.py:121
+#: ../orders/order_views.py:122
 msgid "Please follow the payment procedure below."
 msgstr ""
 
@@ -1395,6 +1401,7 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
+#: ../orders/order_views.py:183
 #: ../orders/order.py:76
 msgid "Products"
 msgstr ""
@@ -1449,12 +1456,14 @@ msgid "Record duplicated, former record replaced"
 msgstr ""
 
 #: ../section_views/base.py:74
-#: ../bar/feed_box.py:217
+#: ../bar/feed_box.py:218
 msgid "Recursively"
 msgstr ""
 
-#: ../orders/order_views.py:90
+#: ../orders/order_views.py:91
 #: ../orders/order.py:83
+#: ../orders/order.py:107
+#: ../payments/payment.py:43
 #: ../orders/ui/bill.xml.en:54
 msgid "Reference"
 msgstr ""
@@ -1488,7 +1497,7 @@ msgid "Resource type"
 msgstr ""
 
 #: ../section_views/base.py:79
-#: ../bar/feed_box.py:223
+#: ../bar/feed_box.py:224
 msgid "Reverse"
 msgstr ""
 
@@ -1564,7 +1573,7 @@ msgstr ""
 msgid "Show number of items for each tag"
 msgstr ""
 
-#: ../bar/feed_box.py:230
+#: ../bar/feed_box.py:231
 msgid "Show only items with these tags"
 msgstr ""
 
@@ -1598,7 +1607,7 @@ msgid "Slideshow of a set of images"
 msgstr ""
 
 #: ../section_views/base.py:78
-#: ../bar/feed_box.py:221
+#: ../bar/feed_box.py:222
 msgid "Sort by"
 msgstr ""
 
@@ -1705,11 +1714,11 @@ msgstr ""
 msgid "There are {n} bills."
 msgstr ""
 
-#: ../orders/modules_views.py:70
+#: ../orders/modules_views.py:72
 msgid "There are {n} orders"
 msgstr ""
 
-#: ../payments/modules_views.py:75
+#: ../payments/modules_views.py:77
 msgid "There are {n} payments"
 msgstr ""
 
@@ -1717,7 +1726,7 @@ msgstr ""
 msgid "There are {n} payments mode."
 msgstr ""
 
-#: ../orders/order_views.py:87
+#: ../orders/order_views.py:88
 msgid "There are {n} payments."
 msgstr ""
 
@@ -1725,11 +1734,11 @@ msgstr ""
 msgid "There is 1 bill."
 msgstr ""
 
-#: ../orders/modules_views.py:69
+#: ../orders/modules_views.py:71
 msgid "There is 1 order"
 msgstr ""
 
-#: ../payments/modules_views.py:74
+#: ../payments/modules_views.py:76
 msgid "There is 1 payment"
 msgstr ""
 
@@ -1737,7 +1746,7 @@ msgstr ""
 msgid "There is 1 payment mode."
 msgstr ""
 
-#: ../orders/order_views.py:86
+#: ../orders/order_views.py:87
 msgid "There is 1 payment."
 msgstr ""
 
@@ -1791,8 +1800,9 @@ msgstr ""
 #: ../views.py:62
 #: ../footer.py:75
 #: ../bar/base.py:81
-#: ../orders/order.py:84
+#: ../news/newsletter_model.py:64
 #: ../bar/repository_views.py:105
+#: ../orders/order.py:84
 #: ../news/news_views.py:170
 msgid "Title"
 msgstr ""
@@ -1835,12 +1845,12 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: ../orders/order.py:109
+#: ../orders/order.py:110
 msgid "Total paid"
 msgstr ""
 
 #: ../orders/ui/bill.xml.en:91
-#: ../orders/order.py:107
+#: ../orders/order.py:108
 msgid "Total price"
 msgstr ""
 
@@ -1922,11 +1932,11 @@ msgstr ""
 msgid "VISA"
 msgstr ""
 
-#: ../orders/order_views.py:94
+#: ../orders/order_views.py:95
 msgid "Validated ?"
 msgstr ""
 
-#: ../orders/order_views.py:195
+#: ../orders/order_views.py:198
 #: ../section_views/composite.py:28
 #: ../views.py:108
 #: ../bar/section.py:101
@@ -1944,10 +1954,6 @@ msgstr ""
 #: ../news/news_views.py:44
 #: ../news/news_views.py:95
 msgid "View"
-msgstr ""
-
-#: ../orders/order_views.py:182
-msgid "View products"
 msgstr ""
 
 #: ../payments/check.py:34
@@ -1972,6 +1978,10 @@ msgstr ""
 
 #: ../utils.py:118
 msgid "You are linking to {n} unpublished resources, some users may not be able to see them.<br/>See <a href=\"{path}/;backlinks\">backlinks interface</a>."
+msgstr ""
+
+#: ../news/newsletter_model.py:66
+msgid "You can choose a banner"
 msgstr ""
 
 #: ../bar/toc.py:79
@@ -2113,6 +2123,11 @@ msgstr ""
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:49
 msgctxt "div"
 msgid " "
+msgstr ""
+
+#: ../orders/ui/order_view_products.xml.en:31
+msgctxt "emphasis"
+msgid "Total amount"
 msgstr ""
 
 #: ../ui/bar_items/browse_search.xml.en:16
@@ -2290,6 +2305,11 @@ msgctxt "option"
 msgid "[${feed/nb_articles}] ${feed/title}"
 msgstr ""
 
+#: ../ui/news/newsletter.xml.en:55
+msgctxt "paragraph"
+msgid "${n/description} <g id='8'> Read more... </g>"
+msgstr ""
+
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:39
 msgctxt "paragraph"
 msgid "<g id='6'>${article/formated_pubDate}, </g>  <g id='7'>source:</g>"
@@ -2345,6 +2365,11 @@ msgctxt "span"
 msgid "Filter by feed"
 msgstr ""
 
+#: ../ui/news/newsletter.xml.en:69
+msgctxt "span"
+msgid "Generated by ITWS"
+msgstr ""
+
 #: ../ui/neutral/template.xhtml.en:44
 #: ../ui/k2/template.xhtml.en:47
 msgctxt "span"
@@ -2354,6 +2379,12 @@ msgstr ""
 #: ../ui/neutral/template.xhtml.en:58
 msgctxt "table cell"
 msgid "${location} ${message}"
+msgstr ""
+
+#: ../ui/news/newsletter.xml.en:34
+#: ../ui/news/newsletter.xml.en:35
+msgctxt "table cell"
+msgid "Add your content here."
 msgstr ""
 
 #: ../orders/ui/order_manage.xml.en:11
@@ -2366,12 +2397,12 @@ msgctxt "table cell"
 msgid "Manage all orders"
 msgstr ""
 
-#: ../orders/ui/order_view_products.xml.en:14
+#: ../orders/ui/order_view_products.xml.en:13
 msgctxt "table cell"
 msgid "Quantity"
 msgstr ""
 
-#: ../orders/ui/order_view_products.xml.en:12
+#: ../orders/ui/order_view_products.xml.en:11
 msgctxt "table cell"
 msgid "Reference"
 msgstr ""
@@ -2381,12 +2412,12 @@ msgctxt "table cell"
 msgid "State"
 msgstr ""
 
-#: ../orders/ui/order_view_products.xml.en:13
+#: ../orders/ui/order_view_products.xml.en:12
 msgctxt "table cell"
 msgid "Title"
 msgstr ""
 
-#: ../orders/ui/order_view_products.xml.en:16
+#: ../orders/ui/order_view_products.xml.en:15
 msgctxt "table cell"
 msgid "Total Price"
 msgstr ""
@@ -2401,7 +2432,7 @@ msgctxt "table cell"
 msgid "Total price"
 msgstr ""
 
-#: ../orders/ui/order_view_products.xml.en:15
+#: ../orders/ui/order_view_products.xml.en:14
 msgctxt "table cell"
 msgid "Unit Price"
 msgstr ""
