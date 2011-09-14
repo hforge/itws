@@ -41,7 +41,28 @@ from itws.utils import ITWS_Autoform, render_for_datatype
 # http://bugs.hforge.org/show_bug.cgi?id=1100
 ###########################################
 
-class Feed_View(Folder_BrowseContent):
+class BrowseContent(Folder_BrowseContent):
+    """ Folder_BrowseContent browsing a folder different from "resource"."""
+
+    def get_container(self, resource, context):
+        """ Defines which folder is browsed instead of "resource". """
+        return resource
+
+
+    def get_search_types(self, resource, context):
+        proxy = super(BrowseContent, self)
+        container = self.get_container(resource, context)
+        return proxy.get_search_types(container, context)
+
+
+    def get_items(self, resource, context, *args):
+        proxy = super(BrowseContent, self)
+        container = self.get_container(resource, context)
+        return proxy.get_items(container, context, *args)
+
+
+
+class Feed_View(BrowseContent):
 
     title = MSG(u'View')
     access = 'is_allowed_to_view'
@@ -94,7 +115,7 @@ class Feed_View(Folder_BrowseContent):
 
     def get_query_schema(self):
         # We allow to define 2 variable (sort_by and batch_size)
-        return merge_dicts(Folder_BrowseContent.get_query_schema(self),
+        return merge_dicts(BrowseContent.get_query_schema(self),
                            batch_size=Integer(default=self.batch_size),
                            sort_by=String(default=self.sort_by),
                            reverse=Boolean(default=self.reverse))
@@ -239,7 +260,7 @@ class Feed_View(Folder_BrowseContent):
     def get_namespace(self, resource, context):
         self.view_resource = resource
         # Build namespace
-        namespace = Folder_BrowseContent.get_namespace(self, resource, context)
+        namespace = BrowseContent.get_namespace(self, resource, context)
         namespace['id'] = self.get_css_id(resource, context)
         namespace['css'] = self.get_css(resource, context)
         namespace['title'] = self.get_webpage_title(context)
@@ -369,5 +390,5 @@ class Feed_View(Folder_BrowseContent):
             value = self.get_schema_value(item_resource, column, datatype,
                                           item_brain)
             return render_for_datatype(value, datatype, context)
-        return Folder_BrowseContent.get_item_value(self, resource, context,
+        return BrowseContent.get_item_value(self, resource, context,
             item, column)
