@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2008 Sylvain Taverne <sylvain@itaapy.com>
+# Copyright (C) 2011 Sylvain Taverne <sylvain@itaapy.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,24 +15,29 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
-from itools.core import get_abspath
+from itools.core import thingy_lazy_property
+from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.skins import register_skin
-
-# Import from orders
-from orders import Orders
-from order import Order
-from product import Product
-from shop import Shop
-from utils import get_orders
-from taxes import Taxes
-from widgets import PriceWidget
+from ikaaro.autoform import Widget, SelectWidget
 
 
-__all__ = ['Orders']
+class PriceWidget(Widget):
 
-register_skin('shop', get_abspath('ui'))
+    devise = u'€'
+    pre_tax_price = 0
 
-# Silent pyflakes
-PriceWidget, Shop, Order, Product, Taxes, get_orders
+    def get_template(self):
+        context = get_context()
+        template = '/ui/shop/price_widget.xml'
+        return context.root.get_resource(template)
+
+
+    @thingy_lazy_property
+    def taxes(self):
+        from taxes import TaxesEnumerate
+        kw = {'css': 'tax-widget',
+              'has_empty_option': False,
+              'datatype': TaxesEnumerate,
+              'value': None}
+        return SelectWidget('tax', **kw)

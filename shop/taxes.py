@@ -16,8 +16,9 @@
 
 # Import from itools
 from itools.core import merge_dicts
-from itools.datatypes import Decimal
+from itools.datatypes import Decimal, Enumerate
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.buttons import RemoveButton
@@ -25,15 +26,20 @@ from ikaaro.folder import Folder
 from ikaaro.resource_ import DBResource
 
 # Import from itws
-from itws.enumerates import DynamicEnumerate
 from itws.feed_views import FieldsTableFeed_View
 from itws.views import FieldsAdvance_NewInstance, FieldsAutomaticEditView
 
 
+class TaxesEnumerate(Enumerate):
 
-class TaxesEnumerate(DynamicEnumerate):
-
-    format = 'tax'
+    @classmethod
+    def get_options(cls):
+        context = get_context()
+        root = context.root
+        resources = [root.get_resource(brain.abspath)
+                      for brain in root.search(format='tax').get_documents()]
+        return [{'name': str(res.get_abspath()),
+                 'value': res.get_property('tax_value')} for res in resources]
 
 
 class Tax(DBResource):
