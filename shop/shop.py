@@ -46,7 +46,7 @@ class Shop(Folder):
     class_schema = merge_dicts(
         Folder.class_schema,
         devise=Devises(source='metadata', title=MSG(u'Shop devises'),
-                       mandatory=True))
+                       mandatory=True, default='978'))
     __fixed_handlers__ = Folder.__fixed_handlers__ + [
         'orders', 'payments', 'products', 'taxes']
 
