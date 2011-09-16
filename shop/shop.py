@@ -15,20 +15,28 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from itools
+from itools.core import merge_dicts
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.folder import Folder
 
 # Import from itws
+from devises import Devises
 from orders import Orders
 from taxes import Taxes
+from itws.views import FieldsAutomaticEditView
+
 
 class Shop(Folder):
 
     class_id = 'shop'
     class_title = MSG(u'Shop')
-    class_views = ['browse_content']
+    class_views = ['browse_content', 'edit']
+    class_schema = merge_dicts(
+        Folder.class_schema,
+        devise=Devises(source='metadata', title=MSG(u'Shop devises'),
+                       mandatory=True))
     __fixed_handlers__ = Folder.__fixed_handlers__ + ['orders', 'taxes']
 
     def init_resource(self, *args, **kw):
@@ -38,3 +46,4 @@ class Shop(Folder):
 
     # Views
     #view = Shop_View()
+    edit = FieldsAutomaticEditView(edit_fields=['devise'])
