@@ -22,11 +22,21 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget
+from ikaaro.utils import CMSTemplate
 
-# Import from itws
+# Importfrom itws
 from utils import join_pdfs
 from itws.feed_views import FieldsTableFeed_View
 from itws.payments import format_price
+
+
+class OrderState_Template(CMSTemplate):
+
+    template = '/ui/shop/order_state.xml'
+
+    title = None
+    link = None
+    color = None
 
 
 class ExportFormats(Enumerate):
@@ -72,6 +82,8 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
     batch_msg2 = MSG(u"There are {n} orders")
     table_actions = []
 
+    styles = ['/ui/shop/style.css']
+
     search_on_current_folder = False
     search_on_current_folder_recursive = True
 
@@ -84,6 +96,12 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
         if column in ('total_price', 'total_paid'):
             value = item_resource.get_property(column)
             return format_price(value)
+        elif column == 'name':
+            return OrderState_Template(title=brain.name,
+                link=context.get_link(item_resource), color='#BF0000')
+        elif column == 'workflow_state':
+            return OrderState_Template(title=item_resource.get_statename(),
+                link=context.get_link(item_resource), color='#BF0000')
         elif column == 'bill':
             bill = item_resource.get_resource('bill', soft=True)
             if bill is None:

@@ -1,0 +1,15 @@
+.counter{
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  width: 35px;
+  padding: 0 5px;
+  color: #FFF;
+  text-align: center;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.counter a{
+  color: #FFF !important;
+  text-decoration: none;
+}
