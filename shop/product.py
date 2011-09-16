@@ -16,12 +16,16 @@
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.database import PhraseQuery
 from itools.datatypes import Boolean, String
 from itools.gettext import MSG
 from itools.web import get_context
 
 # Import from ikaaro
+from ikaaro.buttons import RemoveButton, RenameButton, CopyButton, PasteButton
+from ikaaro.buttons import PublishButton, RetireButton
 from ikaaro.resource_ import DBResource
+from ikaaro.workflow import WorkflowAware
 
 # Import from itws
 from itws.enumerates import DynamicEnumerate
@@ -52,9 +56,21 @@ class Products_View(FieldsTableFeed_View):
     access = 'is_admin'
     title = MSG(u'List buyable products')
 
-    search_fields = []
-    table_actions = []
-    table_fields = ['reference', 'title']
+    search_fields = ['reference', 'title']
+    table_actions = [CopyButton, PasteButton, RenameButton,
+             RemoveButton, PublishButton, RetireButton]
+    table_columns = [('checkbox', None),
+                     ('reference', MSG(u'Reference')),
+                     ('title', MSG(u'Title')),
+                     ('price', MSG(u'Price (With taxes)')),
+                     ('workflow_state', MSG(u'State'))]
+
+    search_on_current_folder = False
+    search_on_current_folder_recursive = True
+
+    def get_table_columns(self, resource, context):
+        return self.table_columns
+
 
     @property
     def search_cls(self):
@@ -63,19 +79,36 @@ class Products_View(FieldsTableFeed_View):
 
 
     def get_items(self, resource, context, *args):
-        return context.root.search(is_buyable=True)
+        args = list(args)
+        args.append(PhraseQuery('is_buyable', True))
+        proxy = super(Products_View, self)
+        return proxy.get_items(resource, context, *args)
+
+
+    def get_item_value(self, resource, context, item, column):
+        item_brain, item_resource = item
+        if column == 'reference':
+            return item_resource.get_property('reference')
+        elif column == 'title':
+            return item_resource.get_title(), context.get_link(item_resource)
+        elif column == 'price':
+            return item_resource.get_price()
+        proxy = super(Products_View, self)
+        return proxy.get_item_value(resource, context, item, column)
 
 
 
-class Product(DBResource):
+class Product(DBResource, WorkflowAware):
 
     class_schema = merge_dicts(DBResource.class_schema,
+                    WorkflowAware.class_schema,
                     reference=String(source='metadata'),
                     is_buyable=Boolean(source='metadata',
                                    indexed=True, stored=True))
 
     def get_catalog_values(self):
         values = super(Product, self).get_catalog_values()
+        values['reference'] = self.get_property('reference')
         values['is_buyable'] = True
         return values
 
