@@ -245,7 +245,7 @@ class Order(WorkflowAware, Folder):
     def generate_bill(self, context):
         """Creates bill as a pdf."""
         # Get template
-        document = self.get_resource('/ui/orders/bill.xml')
+        document = self.get_resource('/ui/shop/bill.xml')
         # Build namespace
         orders = get_orders(self)
         namespace = self.get_namespace(context)
