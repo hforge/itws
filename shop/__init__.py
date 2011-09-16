@@ -21,16 +21,17 @@ from itools.core import get_abspath
 from ikaaro.skins import register_skin
 
 # Import from orders
-from modules import OrderModule
+from orders import Orders
 from order import Order
 from product import Product
+from shop import Shop
 from utils import get_orders
 from taxes import Taxes
 
 
-__all__ = ['OrderModule']
+__all__ = ['Orders']
 
 register_skin('orders', get_abspath('ui'))
 
 # Silent pyflakes
-Order, Product, Taxes, get_orders
+Shop, Order, Product, Taxes, get_orders

@@ -34,10 +34,9 @@ from itws.views import FieldsAutomaticEditView
 from order import Order
 from modules_views import OrderModule_ViewOrders, OrderModule_ExportOrders
 from modules_views import OrderModule_ViewProducts
-from taxes import Taxes
 
 
-class OrderModule(Folder):
+class Orders(Folder):
 
     class_id = 'orders'
     class_title = MSG(u'Orders')
@@ -53,11 +52,6 @@ class OrderModule(Folder):
     is_content = False
 
     order_class = Order
-
-    def init_resource(self, *args, **kw):
-        Folder.init_resource(self, *args, **kw)
-        self.make_resource('taxes', Taxes)
-
 
     def get_document_types(self):
         return [self.order_class]
