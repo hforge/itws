@@ -25,6 +25,7 @@ from modules import OrderModule
 from order import Order
 from product import Product
 from utils import get_orders
+from taxes import Taxes
 
 
 __all__ = ['OrderModule']
@@ -32,4 +33,4 @@ __all__ = ['OrderModule']
 register_skin('orders', get_abspath('ui'))
 
 # Silent pyflakes
-Order, Product, get_orders
+Order, Product, Taxes, get_orders
