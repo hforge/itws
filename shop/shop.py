@@ -17,6 +17,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.gettext import MSG
+from itools.web import STLView
 
 # Import from ikaaro
 from ikaaro.folder import Folder
@@ -30,11 +31,18 @@ from itws.payments import PaymentModule
 from itws.views import FieldsAutomaticEditView
 
 
+class Shop_View(STLView):
+
+    access = 'is_allowed_to_view'
+    title = MSG(u'View')
+    template = '/ui/shop/view.xml'
+
+
 class Shop(Folder):
 
     class_id = 'shop'
     class_title = MSG(u'Shop')
-    class_views = ['browse_content', 'edit']
+    class_views = ['view', 'edit']
     class_schema = merge_dicts(
         Folder.class_schema,
         devise=Devises(source='metadata', title=MSG(u'Shop devises'),
@@ -50,5 +58,5 @@ class Shop(Folder):
         self.make_resource('taxes', Taxes)
 
     # Views
-    #view = Shop_View()
+    view = Shop_View()
     edit = FieldsAutomaticEditView(edit_fields=['devise'])

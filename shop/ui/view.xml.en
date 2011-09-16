@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<stl:block xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
+
+
+  <h1>Your shop</h1>
+
+  <table cellpadding="5" cellspacing="0">
+    <tr>
+      <td>
+        <a href="./products/">
+          <img src="/ui/shop/images/products.png"/>
+        </a>
+      </td>
+      <td>
+        <a href="./products/">Products</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="./orders/">
+          <img src="/ui/shop/images/orders.png"/>
+        </a>
+      </td>
+      <td>
+        <a href="./orders/">Orders</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="./payments/">
+          <img src="/ui/shop/images/payments.png"/>
+        </a>
+      </td>
+      <td>
+        <a href="./payments/">Payments</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="./;edit">
+          <img src="/ui/icons/48x48/preferences.png"/>
+        </a>
+      </td>
+      <td>
+        <a href="./;edit">Configure shop</a>
+      </td>
+    </tr>
+  </table>
+
+</stl:block>

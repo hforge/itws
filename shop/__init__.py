@@ -31,7 +31,7 @@ from taxes import Taxes
 
 __all__ = ['Orders']
 
-register_skin('orders', get_abspath('ui'))
+register_skin('shop', get_abspath('ui'))
 
 # Silent pyflakes
 Shop, Order, Product, Taxes, get_orders
