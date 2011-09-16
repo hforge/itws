@@ -17,6 +17,7 @@
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import Boolean, String
+from itools.gettext import MSG
 from itools.web import get_context
 
 # Import from ikaaro
@@ -24,6 +25,7 @@ from ikaaro.resource_ import DBResource
 
 # Import from itws
 from itws.enumerates import DynamicEnumerate
+from itws.feed_views import FieldsTableFeed_View
 
 
 class Product_List(DynamicEnumerate):
@@ -45,6 +47,25 @@ class Product_List(DynamicEnumerate):
 
 
 
+class Products_View(FieldsTableFeed_View):
+
+    access = 'is_admin'
+    title = MSG(u'List buyable products')
+
+    search_fields = []
+    table_actions = []
+    table_fields = ['reference', 'title']
+
+    @property
+    def search_cls(self):
+        from product import Product
+        return Product
+
+
+    def get_items(self, resource, context, *args):
+        return context.root.search(is_buyable=True)
+
+
 
 class Product(DBResource):
 
@@ -61,3 +82,19 @@ class Product(DBResource):
 
     def get_price(self):
         raise NotImplementedError
+
+
+
+class Products(DBResource):
+
+    class_id = 'products'
+    class_title = MSG(u'Your shop products')
+    class_description = MSG(u'Buyable products on shop')
+    class_version = '20110916'
+    class_icon16 = 'icons/16x16/text.png'
+    class_views = ['view']
+
+    view = Products_View()
+
+    def get_document_types(self):
+        return []

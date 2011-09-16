@@ -24,7 +24,9 @@ from ikaaro.folder import Folder
 # Import from itws
 from devises import Devises
 from orders import Orders
+from product import Products
 from taxes import Taxes
+from itws.payments import PaymentModule
 from itws.views import FieldsAutomaticEditView
 
 
@@ -37,11 +39,14 @@ class Shop(Folder):
         Folder.class_schema,
         devise=Devises(source='metadata', title=MSG(u'Shop devises'),
                        mandatory=True))
-    __fixed_handlers__ = Folder.__fixed_handlers__ + ['orders', 'taxes']
+    __fixed_handlers__ = Folder.__fixed_handlers__ + [
+        'orders', 'payments', 'products', 'taxes']
 
     def init_resource(self, *args, **kw):
         Folder.init_resource(self, *args, **kw)
         self.make_resource('orders', Orders)
+        self.make_resource('payments', PaymentModule)
+        self.make_resource('products', Products)
         self.make_resource('taxes', Taxes)
 
     # Views

@@ -33,7 +33,6 @@ from itws.views import FieldsAutomaticEditView
 # Import from orders
 from order import Order
 from modules_views import OrderModule_ViewOrders, OrderModule_ExportOrders
-from modules_views import OrderModule_ViewProducts
 
 
 class Orders(Folder):
@@ -98,6 +97,5 @@ class Orders(Folder):
     ###################################
     view = OrderModule_ViewOrders()
     export = OrderModule_ExportOrders()
-    products = OrderModule_ViewProducts()
     configure = FieldsAutomaticEditView(title=MSG(u'Configure Order module'),
                     edit_fields=['logo', 'signature'])

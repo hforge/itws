@@ -105,23 +105,3 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
     def get_items(self, resource, context, *args):
         query = PhraseQuery('is_order', True)
         return FieldsTableFeed_View.get_items(self, resource, context, query)
-
-
-
-class OrderModule_ViewProducts(FieldsTableFeed_View):
-
-    access = 'is_admin'
-    title = MSG(u'List buyable products')
-
-    search_fields = []
-    table_actions = []
-    table_fields = ['reference', 'title']
-
-    @property
-    def search_cls(self):
-        from product import Product
-        return Product
-
-
-    def get_items(self, resource, context, *args):
-        return context.root.search(is_buyable=True)
