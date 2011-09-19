@@ -48,6 +48,16 @@
         <a href="./;edit">Configure shop</a>
       </td>
     </tr>
+    <tr>
+      <td>
+        <a href="./taxes/">
+          <img src="/ui/icons/48x48/preferences.png"/>
+        </a>
+      </td>
+      <td>
+        <a href="./taxes/">Configure taxes</a>
+      </td>
+    </tr>
   </table>
 
 </stl:block>
