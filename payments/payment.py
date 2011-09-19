@@ -17,19 +17,31 @@
 # Import from itools
 from itools.core import freeze, merge_dicts
 from itools.datatypes import Boolean, DateTime, Decimal, String, URI
+from itools.datatypes import Enumerate
 from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.folder_views import GoToSpecificDocument
+from ikaaro.registry import resources_registry
 from ikaaro.resource_ import DBResource
 
 # Import from payments
 from payment_views import Payment_Edit, Payment_End
 from utils import format_price
+from itws.enumerates import Users_Enumerate
+
+
+class Payments_Enumerate(Enumerate):
+
+    def get_options(cls):
+        return [{'name': x.class_id, 'value': x.class_title} for x
+            in resources_registry.values() if issubclass(x, Payment)]
+
 
 class Payment(DBResource):
 
     class_id = 'payment'
+    class_title = MSG(u'A payment')
     class_icon16 = 'icons/16x16/file.png'
     class_icon48 = 'icons/48x48/file.png'
     class_version = '20110725'
@@ -45,10 +57,11 @@ class Payment(DBResource):
             title=MSG(u'Dernière modification')),
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
-        customer_id=String(source='metadata', title=MSG(u'Customer id')),
+        customer_id=Users_Enumerate(source='metadata', title=MSG(u'Customer id')),
         is_paid=Boolean(source='metadata', title=MSG(u'Is paid ?'),
             indexed=True, stored=True),
         order_abspath=URI(source='metadata', title=MSG(u'Order')),
+        payment_class_id=Payments_Enumerate(indexed=True, title=MSG(u'Payment')),
         is_payment=Boolean(indexed=True)))
     class_views = ['edit', 'payment_form']
 
@@ -67,6 +80,8 @@ class Payment(DBResource):
     def get_catalog_values(self):
         values = super(Payment, self).get_catalog_values()
         values['is_payment'] = True
+        values['customer_id'] = self.get_property('customer_id')
+        values['payment_class_id'] = self.class_id
         return values
 
 
