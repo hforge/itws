@@ -49,7 +49,7 @@ from itws.tags import Tag, get_registered_tags_aware_classes
 
 """Known attributes of widgets, useful on Multilingual fields."""
 attr_keys = ('title', 'size', 'mandatory', 'mutiple', 'tip', 'endline', 'rows',
-             'cols', 'format', 'has_empty_option', 'inline')
+             'cols', 'css', 'format', 'has_empty_option', 'inline')
 
 ############################################################
 # NewInstance
