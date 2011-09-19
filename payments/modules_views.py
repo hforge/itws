@@ -80,7 +80,7 @@ class PaymentModule_ViewPayments(FieldsTableFeed_View):
     search_cls = Payment
     search_on_current_folder = False
     search_on_current_folder_recursive = True
-    search_fields = ['payment_class_id', 'customer_id']
+    search_fields = ['payment_class_id', 'is_paid', 'customer_id']
 
     table_fields = ['name', 'amount', 'devise', 'format',
         'customer_id', 'is_paid', 'order_abspath', 'mtime']
