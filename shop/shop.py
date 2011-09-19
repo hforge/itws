@@ -33,7 +33,7 @@ from itws.views import FieldsAutomaticEditView
 
 class Shop_View(STLView):
 
-    access = 'is_allowed_to_view'
+    access = 'is_admin'
     title = MSG(u'View')
     template = '/ui/shop/view.xml'
 
