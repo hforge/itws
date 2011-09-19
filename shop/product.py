@@ -102,7 +102,7 @@ class Product(DBResource, WorkflowAware):
 
     class_schema = merge_dicts(DBResource.class_schema,
                     WorkflowAware.class_schema,
-                    reference=String(source='metadata'),
+                    reference=String(source='metadata', indexed=True),
                     is_buyable=Boolean(source='metadata',
                                    indexed=True, stored=True))
 
