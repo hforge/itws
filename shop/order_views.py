@@ -35,7 +35,7 @@ from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from orders
 from product import Product_List
-from utils import get_orders
+from utils import get_orders, get_shop
 from workflows import OrderStateEnumerate
 
 
@@ -131,9 +131,11 @@ class Order_AddPayment(AutoForm):
 
     def action(self, resource, context, form):
         payments_module = get_payments(resource)
+        shop = get_shop(resource)
+        devise = shop.get_property('devise')
         payment = payments_module.make_payment(
                       resource, form['mode'], form['amount'],
-                      context.user, order=resource)
+                      context.user, devise, order=resource)
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)
 

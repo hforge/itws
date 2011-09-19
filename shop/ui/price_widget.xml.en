@@ -6,16 +6,10 @@
 
   <table id="${name}" class="widget-price" cellpadding="0" cellspacing="0">
     <tr>
-      <td style="vertical-align:top;" colspan="3">
-        Tax:<br/>
-          ${taxes}<br/>
-      </td>
-    </tr>
-    <tr>
       <td id="${name}zone-price" style="vertical-align:top;">
         Pre-tax price:<br/>
-          <input type="text" id="${name}pre-tax-price" name="pre-tax-price"
-            value="${pre_tax_price}"/><span class="devise">${devise}</span><br/>
+          <input type="text" id="${name}pre-tax-price" name="${name}"
+            value="${value}"/><span class="devise">${devise}</span><br/>
         Final pre-tax price:<br/>
            <span style="font-weight:bold" id="${name}final-pre-tax-price"></span><span class="devise">${devise}</span><br/>
         Tax value:<br/>
@@ -31,9 +25,8 @@
 
     <script>
       $(document).ready(function(){
-        $("#${name} .tax-widget").change(function(){
+        $(".tax-widget").change(function(){
           calculTTCPrice('${name}', '');
-          calculTTCPrice('${name}', 'reduce-');
         });
         $("#${name}pre-tax-price").keyup(function(){
           calculTTCPrice('${name}', '')
@@ -41,18 +34,11 @@
         $("#${name}retail-price").keyup(function(){
           calculHTPrice('${name}', '')
         });
-        $("#${name}reduce-pre-tax-price").keyup(function(){
-          calculTTCPrice('${name}', 'reduce-')
-        });
-        $("#${name}reduce-retail-price").keyup(function(){
-          calculHTPrice('${name}', 'reduce-')
-        });
         calculTTCPrice('${name}', '');
-        calculTTCPrice('${name}', 'reduce-');
       });
 
       function getTax(name){
-        return parseFloat($("#"+ name +" .tax-widget").find(':selected').text())/100;
+        return parseFloat($(".tax-widget").find(':selected').text())/100;
       }
       function setPrice(id, price){
         $(id).val((isNaN(price) == true) ? '' : (Math.round(price * 1000000) / 1000000));

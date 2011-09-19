@@ -16,10 +16,37 @@
 
 # Import from standard library
 from cStringIO import StringIO
+from decimal import Decimal as decimal
+
+# Import from itools
+from itools.web import get_context
+
+# Import from itws
+from devises import Devises
+
+
+def get_shop(resource):
+    return resource.get_site_root().get_resource('shop')
 
 
 def get_orders(resource):
-    return resource.get_site_root().get_resource('orders')
+    return get_shop(resource).get_resource('orders')
+
+
+def get_arrondi(price):
+    price = decimal('%.2f' % price)
+    if price._isinteger():
+        # We transform 2.00 into 2
+        price = decimal(int(price))
+    return price
+
+
+def format_price(price):
+    context = get_context()
+    shop = get_shop(context.resource)
+    devise = shop.get_property('devise')
+    symbol = Devises.symbols[devise]
+    return u'%s %s' % (price, symbol)
 
 
 def join_pdfs(list_pdf):

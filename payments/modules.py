@@ -71,7 +71,8 @@ class PaymentModule(Folder):
         return str(reference)
 
 
-    def make_payment(self, resource, mode, amount, customer, order=None):
+    def make_payment(self, resource, mode, amount, customer,
+                      devise, order=None):
         # Auto incremental name for payments
         name = self.make_reference()
         payment_way = get_payment_way(self, mode)
@@ -79,6 +80,7 @@ class PaymentModule(Folder):
         # Payment configuration
         kw = {'amount': amount,
               'customer_id': customer.name,
+              'devise': devise,
               'order_abspath': order_abspath}
         # Create order
         cls = payment_way.payment_class

@@ -22,7 +22,7 @@ from itools.gettext import MSG
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import AutoForm, TextWidget
+from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
 
 # Import from payments
 from buttons import NextButton
@@ -30,6 +30,7 @@ from enumerates import PaymentWays_Enumerate
 from payment import Payment
 from payment_way import PaymentWay
 from widgets import PaymentWays_Widget
+from itws.shop.devises import Devises
 from itws.feed_views import FieldsTableFeed_View
 
 
@@ -81,7 +82,7 @@ class PaymentModule_ViewPayments(FieldsTableFeed_View):
     search_on_current_folder_recursive = True
     search_fields = ['payment_class_id', 'customer_id']
 
-    table_fields = ['name', 'amount', 'format',
+    table_fields = ['name', 'amount', 'devise', 'format',
         'customer_id', 'is_paid', 'order_abspath', 'mtime']
 
     def get_items(self, resource, context, *args):
@@ -101,15 +102,17 @@ class PaymentModule_DoPayment(AutoForm):
 
     schema = freeze({
         'amount': Decimal,
-        'mode': PaymentWays_Enumerate(default='paybox')})
+        'mode': PaymentWays_Enumerate(default='paybox', mandatory=True),
+        'devise': Devises(mandatory=True)})
 
     widgets = freeze([
         TextWidget('amount', title=MSG(u"Amount")),
+        SelectWidget('devise', title=MSG(u"Devise"), has_empty_option=False),
         PaymentWays_Widget('mode', title=MSG(u"Payment Mode"))])
 
 
     def action(self, resource, context, form):
         payment = resource.make_payment(resource, form['mode'],
-            form['amount'], context.user)
+            form['amount'], context.user, form['devise'])
         goto = '%s/;payment_form' % context.get_link(payment)
         return context.come_back(self.return_message, goto=goto)

@@ -23,7 +23,12 @@ class Devises(Enumerate):
     """ ISO 4217 """
 
     options = [
-        {'name': '978', 'value': MSG(u'Euro'),
-            'code': u'EUR', u'symbol': '€'},
-        {'name': '840', 'value': MSG(u'Dollar'),
-            'code': u'USD', 'symbol': u'$'}]
+        {'name': '978', 'value': MSG(u'Euro')},
+        {'name': '840', 'value': MSG(u'Dollar')}]
+
+
+    symbols = {'978': u'€',
+               '840': u'$'}
+
+    code = {'978': u'EUR',
+            '840': u'USD'}

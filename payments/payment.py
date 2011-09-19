@@ -29,6 +29,7 @@ from ikaaro.resource_ import DBResource
 from payment_views import Payment_Edit, Payment_End
 from utils import format_price
 from itws.enumerates import Users_Enumerate
+from itws.shop.devises import Devises
 
 
 class Payments_Enumerate(Enumerate):
@@ -58,6 +59,7 @@ class Payment(DBResource):
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', title=MSG(u'Customer id')),
+        devise=Devises(source='metadata', title=MSG(u'Currency')),
         is_paid=Boolean(source='metadata', title=MSG(u'Is paid ?'),
             indexed=True, stored=True),
         order_abspath=URI(source='metadata', title=MSG(u'Order')),

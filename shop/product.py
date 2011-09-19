@@ -14,10 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from decimal import Decimal as decimal
+
 # Import from itools
 from itools.core import merge_dicts
 from itools.database import PhraseQuery
-from itools.datatypes import Boolean, String
+from itools.datatypes import Boolean, Decimal, String
 from itools.gettext import MSG
 from itools.web import get_context
 
@@ -28,8 +31,12 @@ from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
 # Import from itws
+from taxes import TaxesEnumerate
+from utils import get_arrondi, format_price
+from widgets import PriceWidget
 from itws.enumerates import DynamicEnumerate
 from itws.feed_views import FieldsTableFeed_View
+from itws.views import FieldsAutomaticEditView, FieldsAdvance_NewInstance
 
 
 class Product_List(DynamicEnumerate):
@@ -92,7 +99,7 @@ class Products_View(FieldsTableFeed_View):
         elif column == 'title':
             return item_resource.get_title(), context.get_link(item_resource)
         elif column == 'price':
-            return item_resource.get_price()
+            return item_resource.get_price_with_tax(with_devise=True)
         proxy = super(Products_View, self)
         return proxy.get_item_value(resource, context, item, column)
 
@@ -100,9 +107,14 @@ class Products_View(FieldsTableFeed_View):
 
 class Product(DBResource, WorkflowAware):
 
+    class_id = 'product'
     class_schema = merge_dicts(DBResource.class_schema,
                     WorkflowAware.class_schema,
                     reference=String(source='metadata', indexed=True),
+                    tax=TaxesEnumerate(source='metadata', title=MSG(u'Tax'),
+                          has_empty_option=False, css='tax-widget'),
+                    pre_tax_price=Decimal(source='metadata', title=MSG(u'Price'),
+                        widget=PriceWidget),
                     is_buyable=Boolean(source='metadata',
                                    indexed=True, stored=True))
 
@@ -112,10 +124,40 @@ class Product(DBResource, WorkflowAware):
         values['is_buyable'] = True
         return values
 
+    #########################
+    # API
+    #########################
 
-    def get_price(self):
-        raise NotImplementedError
+    def get_price_without_tax(self, with_devise=False):
+        price = get_arrondi(self.get_property('pre_tax_price'))
+        if with_devise is False:
+            return price
+        return format_price(price)
 
+
+    def get_price_with_tax(self, with_devise=False):
+        price = self.get_price_without_tax()
+        tax = self.get_tax_value()
+        price = get_arrondi(price * tax)
+        if with_devise is False:
+            return price
+        return format_price(price)
+
+
+    def get_tax_value(self):
+        tax = self.get_property('tax')
+        if tax is None:
+            return decimal(1)
+        tax = self.get_resource(tax)
+        tax_value = tax.get_property('tax_value')
+        return (tax_value/decimal(100) + 1)
+
+
+
+    # Views
+    _fields = ['title', 'reference', 'description', 'tax', 'pre_tax_price']
+    edit = FieldsAutomaticEditView(edit_fields=_fields)
+    new_instance = FieldsAdvance_NewInstance(fields=_fields, access='is_admin')
 
 
 class Products(DBResource):

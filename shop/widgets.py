@@ -19,13 +19,14 @@ from itools.core import thingy_lazy_property
 from itools.web import get_context
 
 # Import from ikaaro
-from ikaaro.autoform import Widget, SelectWidget
+from ikaaro.autoform import Widget
+
+# Import from itws
+from devises import Devises
+from utils import get_shop
 
 
 class PriceWidget(Widget):
-
-    devise = u'€'
-    pre_tax_price = 0
 
     def get_template(self):
         context = get_context()
@@ -34,10 +35,8 @@ class PriceWidget(Widget):
 
 
     @thingy_lazy_property
-    def taxes(self):
-        from taxes import TaxesEnumerate
-        kw = {'css': 'tax-widget',
-              'has_empty_option': False,
-              'datatype': TaxesEnumerate,
-              'value': None}
-        return SelectWidget('tax', **kw)
+    def devise(self):
+        here = get_context().resource
+        shop = get_shop(here)
+        devise = shop.get_property('devise')
+        return Devises.symbols[devise]
