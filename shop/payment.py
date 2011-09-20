@@ -100,7 +100,14 @@ class Payment(DBResource):
     def update_payment_state(self, context, paid):
         # Set payment as paid or not
         self.set_property('is_paid', paid)
-        if paid:
+        # Inform order that a new payment as been done
+        order_abspath = self.get_property('order_abspath')
+        if order_abspath:
+            order = self.get_resource(order_abspath)
+            order.update_payment_state(context)
+        else:
+            if paid is False:
+                return
             # Get customer email
             customer = context.root.get_user(self.get_property('customer_id'))
             customer_email = customer.get_property('email')
@@ -111,11 +118,6 @@ class Payment(DBResource):
                   payment_way=self.get_payment_way().get_title(),
                   amount=format_price(self.get_property('amount')))
             context.root.send_email(customer_email, subject, text=text)
-        # Inform order that a new payment as been done
-        order_abspath = self.get_property('order_abspath')
-        if order_abspath:
-            order = self.get_resource(order_abspath)
-            order.update_payment_state(context)
 
 
     def is_payment_validated(self):

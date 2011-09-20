@@ -51,25 +51,38 @@ from workflows import order_workflow
 
 
 #############################################
-# Mail to inform customer
+# Mails to inform customer
 #############################################
-mail_confirmation_title = MSG(u'Order confirmation')
+mail_confirmation_creation_title = MSG(u'Order confirmation')
 
-mail_confirmation_body = MSG(u"""Hi,
-Your order number {order_name} has been recorded.
+mail_confirmation_creation_body = MSG(u"""Hi,
+Your order number #{order_name} has been recorded.
 You can found details on our website:\n
   {order_uri}\n
 """)
 
-####################################
-# Mail to inform webmaster
-####################################
+mail_confirmation_payment_title = MSG(u'Payment validated on your order #{order_name}')
+mail_confirmation_payment_body = MSG(u"""Hi,
+Payment has been validated on your order #{order_name}
+You can found details here:\n
+  {order_uri}\n
+  """)
 
-mail_notification_title = MSG(u'New order in your shop')
+#############################################
+# Mails to inform webmaster
+##############################################
 
-mail_notification_body = MSG(u"""
-Hi,
+mail_notification_title = MSG(u'Notification: New order #{order_name} in your shop')
+
+mail_notification_body = MSG(u"""Hi,
 A new order has been done in your shop.
+You can found details here:\n
+  {order_uri}\n
+  """)
+
+mail_notification_payment_title = MSG(u'Notification: Payment validated on order #{order_name}')
+mail_notification_payment_body = MSG(u"""Hi,
+Payment has been validated on order #{order_name}
 You can found details here:\n
   {order_uri}\n
   """)
@@ -210,23 +223,44 @@ class Order(WorkflowAware, Folder):
         shop = get_shop(self)
         root = context.root
         site_root = context.site_root
-        # Order uri
-        uri = context.uri.resolve('/%s' % site_root.get_pathto(self))
         # Build email informations
+        uri = context.uri.resolve('/%s' % site_root.get_pathto(self))
         kw = {'order_name': self.name,
               'order_uri': uri}
         # Send confirmation to customer
         customer_id = self.get_property('customer_id')
         user = root.get_user(customer_id)
         to_addr = user.get_property('email')
-        subject = mail_confirmation_title.gettext()
-        body = mail_confirmation_body.gettext(**kw)
+        subject = mail_confirmation_creation_title.gettext(**kw)
+        body = mail_confirmation_creation_body.gettext(**kw)
         root.send_email(to_addr, subject, text=body)
         # Send confirmation to the shop
-        subject = mail_notification_title.gettext()
+        subject = mail_notification_title.gettext(**kw)
         body = mail_notification_body.gettext(**kw)
         for to_addr in shop.get_notification_mails():
             root.send_email(to_addr, subject, text=body)
+
+
+    def onenter_paid(self):
+        context = get_context()
+        root = context.root
+        shop = get_shop(self)
+        site_root = context.site_root
+        uri = context.uri.resolve('/%s' % site_root.get_pathto(self))
+        kw = {'order_name': self.name,
+              'order_uri': uri}
+        # Send confirmation to customer
+        customer_id = self.get_property('customer_id')
+        user = root.get_user(customer_id)
+        to_addr = user.get_property('email')
+        subject = mail_confirmation_payment_title.gettext(**kw)
+        body = mail_confirmation_payment_body.gettext(**kw)
+        root.send_email(to_addr, subject, text=body)
+        # We send email to inform shop administrator
+        subject = mail_notification_payment_title.gettext(**kw)
+        text = mail_notification_payment_body.gettext(**kw)
+        for to_addr in shop.get_notification_mails():
+            root.send_email(to_addr, subject, text=text)
 
 
     def update_payment_state(self, context):
@@ -245,6 +279,7 @@ class Order(WorkflowAware, Folder):
             self.generate_bill(context)
             self.set_workflow_state('paid')
             self.set_property('is_paid', True)
+            self.onenter_paid()
         elif total_paid > self.get_property('total_price'):
             self.set_workflow_state('to-much-paid')
 
