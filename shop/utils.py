@@ -18,6 +18,13 @@
 from cStringIO import StringIO
 from decimal import Decimal as decimal
 
+# Import pyPdf
+try:
+    from pyPdf import PdfFileWriter, PdfFileReader
+    can_join_pdf = True
+except ImportError:
+    can_join_pdf = False
+
 # Import from itools
 from itools.web import get_context
 
@@ -51,9 +58,7 @@ def format_price(price, symbol=None):
 
 
 def join_pdfs(list_pdf):
-    try:
-        from pyPdf import PdfFileWriter, PdfFileReader
-    except:
+    if can_join_pdf is False:
         return None
     n = len(list_pdf)
     if n == 0:

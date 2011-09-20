@@ -18,6 +18,7 @@
 from itools.datatypes import Enumerate
 from itools.database import PhraseQuery
 from itools.gettext import MSG
+from itools.web import ERROR
 from itools.xml import XMLParser
 
 # Import from ikaaro
@@ -27,7 +28,6 @@ from ikaaro.utils import CMSTemplate
 # Importfrom itws
 from utils import join_pdfs
 from itws.feed_views import FieldsTableFeed_View
-from itws.payments import format_price
 
 
 class OrderState_Template(CMSTemplate):
@@ -56,8 +56,6 @@ class OrderModule_ExportOrders(AutoForm):
                             has_empty_option=False)]
 
     def action(self, resource, context, form):
-        context.set_content_type('application/pdf')
-        context.set_content_disposition('attachment; filename="Orders.pdf"')
         list_pdf = []
         for order in resource.get_resources():
             pdf = resource.get_resource('./%s/bill' % order.name, soft=True)
@@ -67,6 +65,11 @@ class OrderModule_ExportOrders(AutoForm):
             list_pdf.append(path)
         # Join pdf
         pdf = join_pdfs(list_pdf)
+        if pdf is None:
+            context.message = ERROR(u"Error: Can't merge PDF")
+            return
+        context.set_content_type('application/pdf')
+        context.set_content_disposition('attachment; filename="Orders.pdf"')
         return pdf
 
 
