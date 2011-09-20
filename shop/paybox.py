@@ -275,8 +275,8 @@ class PayboxPayment_PaymentForm(BaseView):
         for key in ['PBX_SITE', 'PBX_IDENTIFIANT',
                     'PBX_RANG', 'PBX_DIFF', 'PBX_AUTOSEULE']:
             kw[key] = payment_way.get_property(key)
-        # XXX Euro par défaut
-        kw['PBX_DEVISE'] = '978'
+        # Devise
+        kw['PBX_DEVISE'] = resource.get_property('devise')
         # PBX_PORTEUR
         # XXX Allow to overide PBX_PORTEUR
         # (If someone call and give his card number ?)
