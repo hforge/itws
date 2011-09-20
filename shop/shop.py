@@ -16,10 +16,12 @@
 
 # Import from itools
 from itools.core import merge_dicts
+from itools.datatypes import Unicode
 from itools.gettext import MSG
 from itools.web import STLView
 
 # Import from ikaaro
+from ikaaro.autoform import MultilineWidget
 from ikaaro.folder import Folder
 
 # Import from itws
@@ -47,6 +49,8 @@ class Shop(Folder):
     class_views = ['view', 'edit']
     class_schema = merge_dicts(
         Folder.class_schema,
+        notification_mails=Unicode(source='metadata',
+            widget=MultilineWidget, title=MSG(u'Notification mails')),
         devise=Devises(source='metadata', title=MSG(u'Shop devises'),
                        mandatory=True, default='978'))
     __fixed_handlers__ = Folder.__fixed_handlers__ + [
@@ -59,6 +63,12 @@ class Shop(Folder):
         self.make_resource('products', Products)
         self.make_resource('taxes', Taxes)
 
+    ###############################################
+    # API
+    ###############################################
+    def get_notification_mails(self):
+        return self.get_property('notification_mails').split()
+
     # Views
     view = Shop_View()
-    edit = FieldsAutomaticEditView(edit_fields=['devise'])
+    edit = FieldsAutomaticEditView(edit_fields=['devise', 'notification_mails'])

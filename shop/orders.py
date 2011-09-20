@@ -26,6 +26,7 @@ from itools.datatypes import Integer, String, Unicode, URI
 from itools.gettext import MSG
 from itools.pdf import stl_pmltopdf
 from itools.xml import XMLParser
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.autoform import MultilineWidget
@@ -48,6 +49,19 @@ from order_views import OrderModule_ViewOrders, OrderModule_ExportOrders
 from utils import get_orders, get_shop, get_arrondi, format_price
 from workflows import order_workflow
 
+
+####################################
+# Mails
+####################################
+
+mail_notification_title = MSG(u'New order in your shop')
+
+mail_notification_body = MSG(u"""
+Hi,
+A new order has been done in your shop.
+You can found details here:\n
+  {order_uri}\n
+  """)
 
 ####################################
 # An order contain order products
@@ -116,6 +130,8 @@ class Order(WorkflowAware, Folder):
         shop = get_shop(self)
         devise = shop.get_property('devise')
         self.set_property('devise', devise)
+        # Workflow
+        self.onenter_open()
 
 
     def get_catalog_values(self):
@@ -176,6 +192,48 @@ class Order(WorkflowAware, Folder):
         return l
 
     ##################################################
+    # Workflow
+    ##################################################
+    def onenter_open(self):
+        context = get_context()
+        shop = get_shop(self)
+        root = context.root
+        site_root = context.site_root
+        # Order uri
+        uri = context.uri.resolve('/%s' % site_root.get_pathto(self))
+        # Build email informations
+        kw = {'order_name': self.name,
+              'order_uri': uri}
+        # Send confirmation to client XXX
+        # Send confirmation to the shop
+        subject = mail_notification_title.gettext()
+        body = mail_notification_body.gettext(**kw)
+        for to_addr in shop.get_notification_mails():
+            root.send_email(to_addr, subject, text=body)
+
+
+    def update_payment_state(self, context):
+        """Update order payment state."""
+        total_paid = decimal('0')
+        for brain in self.get_payments(as_results=False):
+            payment = context.root.get_resource(brain.abspath)
+            if payment.get_property('is_paid') is False:
+                continue
+            total_paid += payment.get_property('amount')
+        self.set_property('total_paid', total_paid)
+        if total_paid < self.get_property('total_price'):
+            self.set_workflow_state('partially-paid')
+            self.set_property('is_paid', False)
+        elif total_paid == self.get_property('total_price'):
+            self.generate_bill(context)
+            self.set_workflow_state('paid')
+            self.set_property('is_paid', True)
+        elif total_paid > self.get_property('total_price'):
+            self.set_workflow_state('to-much-paid')
+
+
+
+    ##################################################
     # API
     ##################################################
     def format_price(self, price):
@@ -208,26 +266,6 @@ class Order(WorkflowAware, Folder):
                 old_quantity = order_product.get_property('quantity')
                 order_product.set_property('quantity', old_quantity + quantity)
         self.set_property('total_price', total_price)
-
-
-    def update_payment_state(self, context):
-        """Update order payment state."""
-        total_paid = decimal('0')
-        for brain in self.get_payments(as_results=False):
-            payment = context.root.get_resource(brain.abspath)
-            if payment.get_property('is_paid') is False:
-                continue
-            total_paid += payment.get_property('amount')
-        self.set_property('total_paid', total_paid)
-        if total_paid < self.get_property('total_price'):
-            self.set_workflow_state('partially-paid')
-            self.set_property('is_paid', False)
-        elif total_paid == self.get_property('total_price'):
-            self.generate_bill(context)
-            self.set_workflow_state('paid')
-            self.set_property('is_paid', True)
-        elif total_paid > self.get_property('total_price'):
-            self.set_workflow_state('to-much-paid')
 
 
     def is_paid(self):
