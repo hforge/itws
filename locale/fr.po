@@ -181,7 +181,7 @@ msgstr ""
 #: ../shop/ui/price_widget.xml.en:17
 msgctxt "span"
 msgid "<g id='11'>${devise}</g><x id='12'/> Price with tax:"
-msgstr "<g id='11'>${devise}</g><x id='12'> Prix TTC:"
+msgstr "<g id='11'>${devise}</g><x id='12'/> Prix TTC:"
 
 #: ../ui/k2/template.xhtml.en:36
 msgctxt "link"
@@ -192,7 +192,7 @@ msgstr ""
 #: ../shop/ui/price_widget.xml.en:19
 msgctxt "span"
 msgid "<g id='15'>${devise}</g><x id='16'/> Final price:"
-msgstr "<g id='15'>${devise}</g><x id='16'> Prix final:"
+msgstr "<g id='15'>${devise}</g><x id='16'/> Prix final:"
 
 #: ../ui/neutral/template.xhtml.en:81
 msgctxt "link"
