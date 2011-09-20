@@ -50,8 +50,19 @@ from utils import get_orders, get_shop, get_arrondi, format_price
 from workflows import order_workflow
 
 
+#############################################
+# Mail to inform customer
+#############################################
+mail_confirmation_title = MSG(u'Order confirmation')
+
+mail_confirmation_body = MSG(u"""Hi,
+Your order number {order_name} has been recorded.
+You can found details on our website:\n
+  {order_uri}\n
+""")
+
 ####################################
-# Mails
+# Mail to inform webmaster
 ####################################
 
 mail_notification_title = MSG(u'New order in your shop')
@@ -204,7 +215,13 @@ class Order(WorkflowAware, Folder):
         # Build email informations
         kw = {'order_name': self.name,
               'order_uri': uri}
-        # Send confirmation to client XXX
+        # Send confirmation to customer
+        customer_id = self.get_property('customer_id')
+        user = root.get_user(customer_id)
+        to_addr = user.get_property('email')
+        subject = mail_confirmation_title.gettext()
+        body = mail_confirmation_body.gettext(**kw)
+        root.send_email(to_addr, subject, text=body)
         # Send confirmation to the shop
         subject = mail_notification_title.gettext()
         body = mail_notification_body.gettext(**kw)
