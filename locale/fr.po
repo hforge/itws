@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-09-20 14:09+CET\n"
+"POT-Creation-Date: 2011-09-20 16:09+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "$"
 msgstr ""
 
-#: ../shop/ui/bill.xml.en:39
+#: ../shop/ui/orders/bill.xml.en:39
 msgid "${customer/firstname} ${customer/lastname}"
 msgstr ""
 
@@ -47,11 +47,11 @@ msgctxt "paragraph"
 msgid "${n/description} <g id='8'> Read more... </g>"
 msgstr "${n/description} <g id='8'> Lire la suite... </g>"
 
-#: ../shop/ui/bill.xml.en:78
+#: ../shop/ui/orders/bill.xml.en:78
 msgid "${product/tax} %"
 msgstr ""
 
-#: ../shop/ui/order_view_products.xml.en:29
+#: ../shop/ui/orders/order_view_products.xml.en:29
 msgctxt "table cell"
 msgid "${product/tax} %"
 msgstr ""
@@ -59,11 +59,6 @@ msgstr ""
 #: ../ui/common/popup_browse_content.xml.en:45
 msgctxt "form"
 msgid "${sort_by} ${reverse} <g id='4'>Ok</g>"
-msgstr ""
-
-#: ../shop/ui/order_manage.xml.en:22
-msgctxt "form"
-msgid "${state} <g id='2'>OK</g>"
 msgstr ""
 
 #: ../ui/common/itws_autoform.xml.en:7
@@ -113,7 +108,7 @@ msgstr "(Utilisé à défaut d'une image de bannière)"
 msgid "+"
 msgstr "+"
 
-#: ../shop/ui/bill.xml.en:27
+#: ../shop/ui/orders/bill.xml.en:27
 msgid "/"
 msgstr ""
 
@@ -178,7 +173,7 @@ msgid ""
 msgstr ""
 "<g id='11'>${article/title}</g>  <g id='12'>${article/formated_pubDate}</g>"
 
-#: ../shop/ui/price_widget.xml.en:17
+#: ../shop/ui/products/price_widget.xml.en:17
 msgctxt "span"
 msgid "<g id='11'>${devise}</g><x id='12'/> Price with tax:"
 msgstr "<g id='11'>${devise}</g><x id='12'/> Prix TTC:"
@@ -189,7 +184,7 @@ msgid "<g id='12'>${user/title}</g>  <g id='13'>|</g>  <g id='14'>Log out</g>"
 msgstr ""
 "<g id='12'>${user/title}</g>  <g id='13'>|</g>  <g id='14'>Déconnexion</g>"
 
-#: ../shop/ui/price_widget.xml.en:19
+#: ../shop/ui/products/price_widget.xml.en:19
 msgctxt "span"
 msgid "<g id='15'>${devise}</g><x id='16'/> Final price:"
 msgstr "<g id='15'>${devise}</g><x id='16'/> Prix final:"
@@ -225,7 +220,7 @@ msgstr ""
 "<g id='20'>Itaapy</g> vous accompagne dans la réalisation de vos sites-web, "
 "site e-commerce et intranet évolutifs."
 
-#: ../shop/ui/price_widget.xml.en:12
+#: ../shop/ui/products/price_widget.xml.en:12
 msgctxt "span"
 msgid "<g id='3'>${devise}</g><x id='4'/> Final pre-tax price:"
 msgstr "<g id='3'>${devise}</g><x id='4'/> Prix final HT:"
@@ -268,7 +263,7 @@ msgctxt "paragraph"
 msgid "<g id='6'>${article/formated_pubDate}, </g>  <g id='7'>source:</g>"
 msgstr "<g id='6'>${article/formated_pubDate}, </g>  <g id='7'>source :</g>"
 
-#: ../shop/ui/price_widget.xml.en:14
+#: ../shop/ui/products/price_widget.xml.en:14
 msgctxt "span"
 msgid "<g id='7'>${devise}</g><x id='8'/> Tax value:"
 msgstr "<g id='7'>${devise}</g><x id='8'/> Montant TVA:"
@@ -459,7 +454,7 @@ msgstr "Titre de la bannière"
 msgid "Batch size"
 msgstr "Nombre d'éléments affichés"
 
-#: ../shop/orders.py:101 ../shop/orders.py:270 ../shop/ui/bill.xml.en:5
+#: ../shop/orders.py:139 ../shop/orders.py:358 ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr "Facture"
 
@@ -602,7 +597,7 @@ msgstr "Vue configuration"
 msgid "Configure"
 msgstr "Configurer"
 
-#: ../shop/orders.py:351
+#: ../shop/orders.py:439
 msgid "Configure Order module"
 msgstr "Configurer le module commandes"
 
@@ -684,11 +679,11 @@ msgstr "Créer une nouvelle boîte latérale"
 msgid "Creation Date"
 msgstr "Date de création"
 
-#: ../shop/orders.py:98
+#: ../shop/orders.py:136
 msgid "Creation date"
 msgstr "Date de création"
 
-#: ../shop/orders.py:96 ../shop/payment.py:62
+#: ../shop/orders.py:134 ../shop/payment.py:62
 msgid "Currency"
 msgstr "Devise"
 
@@ -700,16 +695,16 @@ msgstr "Devise inconnue"
 msgid "Custom data"
 msgstr ""
 
-#: ../shop/orders.py:100 ../shop/ui/bill.xml.en:37
+#: ../shop/orders.py:138 ../shop/ui/orders/bill.xml.en:37
 msgid "Customer"
 msgstr "Client"
 
-#: ../shop/ui/order_manage.xml.en:11
+#: ../shop/ui/orders/order_manage.xml.en:11
 msgctxt "table cell"
 msgid "Customer"
 msgstr "Client"
 
-#: ../shop/ui/bill.xml.en:38
+#: ../shop/ui/orders/bill.xml.en:38
 msgid "Customer #${customer/name}"
 msgstr "Client #${customer/name}"
 
@@ -734,7 +729,8 @@ msgstr "Désactiver"
 msgid "Dernière modification"
 msgstr "Voir les dernières modifications"
 
-#: ../bar/section.py:102 ../shop/payment_way.py:66 ../shop/ui/bill.xml.en:67
+#: ../bar/section.py:102 ../shop/payment_way.py:66
+#: ../shop/ui/orders/bill.xml.en:67
 msgid "Description"
 msgstr ""
 
@@ -807,7 +803,7 @@ msgstr "Ne pas ordonner (ne pas afficher)"
 msgid "Dollar"
 msgstr ""
 
-#: ../shop/ui/order_top.xml.en:15
+#: ../shop/ui/orders/order_top.xml.en:15
 msgctxt "link"
 msgid "Download your bill"
 msgstr "Télécharger votre facture"
@@ -1106,6 +1102,49 @@ msgctxt "div"
 msgid "Here you can create and translate them."
 msgstr "Ici vous pouvez les créer et les traduire."
 
+#: ../shop/orders.py:81
+msgid ""
+"Hi,\n"
+"A new order has been done in your shop.\n"
+"You can found details here:\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
+msgstr ""
+
+#: ../shop/orders.py:88
+msgid ""
+"Hi,\n"
+"Payment has been validated on order #{order_name}\n"
+"You can found details here:\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
+msgstr ""
+
+#: ../shop/orders.py:69
+msgid ""
+"Hi,\n"
+"Payment has been validated on your order #{order_name}\n"
+"You can found details here:\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
+msgstr ""
+
+#: ../shop/orders.py:62
+msgid ""
+"Hi,\n"
+"Your order number #{order_name} has been recorded.\n"
+"You can found details on our website:\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+msgstr ""
+
 #: ../shop/payment.py:73
 msgid ""
 "Hi, your payment has been validated.\n"
@@ -1205,7 +1244,7 @@ msgstr ""
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../shop/orders.py:297 ../shop/payments.py:44
+#: ../shop/orders.py:385 ../shop/payments.py:44
 msgid "Index"
 msgstr "Index"
 
@@ -1245,11 +1284,11 @@ msgstr "Transaction invalide"
 msgid "Invalid value."
 msgstr "Valeur non valide"
 
-#: ../shop/ui/bill.xml.en:49
+#: ../shop/ui/orders/bill.xml.en:49
 msgid "Invoice number ${reference}"
 msgstr "Numéro de facture ${reference}"
 
-#: ../shop/ui/bill.xml.en:17
+#: ../shop/ui/orders/bill.xml.en:17
 msgid "Invoice number:"
 msgstr "Numéro de facture :"
 
@@ -1257,7 +1296,7 @@ msgstr "Numéro de facture :"
 msgid "Is active"
 msgstr "Actif"
 
-#: ../shop/orders.py:102 ../shop/payment.py:63
+#: ../shop/orders.py:140 ../shop/payment.py:63
 msgid "Is paid ?"
 msgstr "Payé ?"
 
@@ -1375,12 +1414,12 @@ msgstr ""
 msgid "Manage TOC"
 msgstr "Gérer la table des matières"
 
-#: ../shop/ui/order_manage.xml.en:40
+#: ../shop/ui/orders/order_manage.xml.en:42
 msgctxt "link"
 msgid "Manage all orders"
 msgstr "Gérer toutes les commandes"
 
-#: ../shop/ui/order_manage.xml.en:38
+#: ../shop/ui/orders/order_manage.xml.en:40
 msgctxt "table cell"
 msgid "Manage all orders"
 msgstr "Gérer toutes les commandes"
@@ -1504,6 +1543,18 @@ msgstr ""
 msgid "Not the same card used for the first payment"
 msgstr ""
 
+#: ../shop/shop.py:53
+msgid "Notification mails"
+msgstr "E-mails de notification"
+
+#: ../shop/orders.py:75
+msgid "Notification: New order #{order_name} in your shop"
+msgstr ""
+
+#: ../shop/orders.py:83
+msgid "Notification: Payment validated on order #{order_name}"
+msgstr ""
+
 #: ../data/first_sidebar.xhtml.en:8
 msgctxt "body"
 msgid "Now you can add other boxes ;)"
@@ -1557,7 +1608,7 @@ msgstr ""
 msgid "Operation successful"
 msgstr "Opération effectuée avec succès"
 
-#: ../shop/orders.py:87 ../shop/payment.py:65
+#: ../shop/orders.py:125 ../shop/payment.py:65
 msgid "Order"
 msgstr "Commande"
 
@@ -1581,7 +1632,11 @@ msgstr "Ordonner les boîtes"
 msgid "Order central boxes"
 msgstr "Ordonner les boîtes centrales"
 
-#: ../shop/ui/bill.xml.en:54
+#: ../shop/orders.py:56
+msgid "Order confirmation"
+msgstr "Confirmation de commande"
+
+#: ../shop/ui/orders/bill.xml.en:54
 msgid "Order date:"
 msgstr "Date de la commande :"
 
@@ -1589,24 +1644,23 @@ msgstr "Date de la commande :"
 msgid "Order has been created"
 msgstr "Commande déjà créée"
 
-#: ../shop/orders.py:293
+#: ../shop/orders.py:381
 msgid "Order module"
 msgstr "Module commandes"
 
-#: ../shop/ui/order_manage.xml.en:7
+#: ../shop/ui/orders/order_manage.xml.en:7
 msgctxt "heading"
 msgid "Order number #${order/id}"
 msgstr "Commande numéro #${order/id}"
 
-#: ../shop/ui/order_top.xml.en:7
+#: ../shop/ui/orders/order_top.xml.en:7
 msgctxt "heading"
 msgid "Order n°${name}"
 msgstr "Commande n° ${name}"
 
-#: ../shop/orders.py:59
-#, fuzzy
+#: ../shop/orders.py:97
 msgid "Order product"
-msgstr "Module commandes"
+msgstr "Produit de commande"
 
 #: ../bar/section.py:67
 msgid "Order section"
@@ -1620,20 +1674,18 @@ msgstr "Ordonner les boîtes latérales"
 msgid "Order top"
 msgstr "Placer en haut"
 
-#: ../shop/orders.py:292 ../shop/order_views.py:300
+#: ../shop/orders.py:380 ../shop/order_views.py:300
 msgid "Orders"
 msgstr "Commandes"
 
 #: ../shop/ui/view.xml.en:28
-#, fuzzy
 msgctxt "link"
 msgid "Orders"
 msgstr "Commandes"
 
-#: ../shop/orders.py:65
-#, fuzzy
+#: ../shop/orders.py:103
 msgid "Original product"
-msgstr "Voir les produits"
+msgstr "Produit initial"
 
 #: ../ui/about/view.xml.en:58
 msgctxt "paragraph"
@@ -1682,15 +1734,15 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: ../shop/orders.py:299
+#: ../shop/orders.py:387
 msgid "PDF Logo"
 msgstr "Logo PDF"
 
-#: ../shop/orders.py:300
+#: ../shop/orders.py:388
 msgid "PDF Signature"
 msgstr "Signature PDF"
 
-#: ../shop/ui/bill.xml.en:27
+#: ../shop/ui/orders/bill.xml.en:27
 msgid "Page"
 msgstr ""
 
@@ -1710,7 +1762,7 @@ msgstr "Payé partiellement"
 msgid "Path"
 msgstr "Chemin"
 
-#: ../shop/payment.py:143 ../shop/paybox.py:244
+#: ../shop/payment.py:145 ../shop/paybox.py:244
 msgid "Pay"
 msgstr "Payer"
 
@@ -1743,9 +1795,8 @@ msgid "Paybox error"
 msgstr "Erreur Paybox"
 
 #: ../shop/payment.py:66
-#, fuzzy
 msgid "Payment"
-msgstr "Paiements"
+msgstr "Paiement"
 
 #: ../shop/payments_views.py:122
 msgid "Payment Mode"
@@ -1804,12 +1855,15 @@ msgstr "Paiement effectué avec succès"
 msgid "Payment validated"
 msgstr "Paiement validé"
 
+#: ../shop/orders.py:64
+msgid "Payment validated on your order #{order_name}"
+msgstr ""
+
 #: ../shop/payments_views.py:84 ../shop/order_views.py:86
 msgid "Payments"
 msgstr "Paiements"
 
 #: ../shop/ui/view.xml.en:38
-#, fuzzy
 msgctxt "link"
 msgid "Payments"
 msgstr "Paiements"
@@ -1830,16 +1884,14 @@ msgstr "Veuillez suivre la procédure de paiement ci-dessous."
 msgid "Powered by itws"
 msgstr "Propulsé par itws"
 
-#: ../shop/orders.py:69
-#, fuzzy
+#: ../shop/orders.py:107
 msgid "Pre tax Price"
-msgstr "Prix total"
+msgstr "Prix HT"
 
-#: ../shop/ui/price_widget.xml.en:10
-#, fuzzy
+#: ../shop/ui/products/price_widget.xml.en:10
 msgctxt "table cell"
 msgid "Pre-tax price:"
-msgstr "Prix total"
+msgstr "Prix HT:"
 
 #: ../bar/feed_box.py:79
 msgid "Preview"
@@ -1853,27 +1905,24 @@ msgstr "Prix"
 msgid "Price (With taxes)"
 msgstr ""
 
-#: ../shop/orders.py:66
-#, fuzzy
+#: ../shop/orders.py:104
 msgid "Product reference"
-msgstr "Référence"
+msgstr "Référence produit"
 
-#: ../shop/orders.py:67
-#, fuzzy
+#: ../shop/orders.py:105
 msgid "Product title"
-msgstr "Produits"
+msgstr "Nom du produit"
 
 #: ../shop/order_views.py:198
 msgid "Products"
 msgstr "Produits"
 
-#: ../shop/ui/order_view_products.xml.en:7
+#: ../shop/ui/orders/order_view_products.xml.en:7
 msgctxt "heading"
 msgid "Products"
 msgstr "Produits"
 
 #: ../shop/ui/view.xml.en:18
-#, fuzzy
 msgctxt "link"
 msgid "Products"
 msgstr "Produits"
@@ -1895,15 +1944,15 @@ msgctxt "title attribute"
 msgid "Python"
 msgstr "Python"
 
-#: ../shop/ui/bill.xml.en:71
+#: ../shop/ui/orders/bill.xml.en:71
 msgid "Qty"
 msgstr "Qté"
 
-#: ../shop/orders.py:68 ../shop/order_views.py:54
+#: ../shop/orders.py:106 ../shop/order_views.py:54
 msgid "Quantity"
 msgstr "Quantité"
 
-#: ../shop/ui/order_view_products.xml.en:16
+#: ../shop/ui/orders/order_view_products.xml.en:16
 msgctxt "table cell"
 msgid "Quantity"
 msgstr "Quantité"
@@ -1943,12 +1992,13 @@ msgstr "Enregistrement dupliqué, enregistrement initial remplacé"
 msgid "Recursively"
 msgstr "Récursivement"
 
-#: ../shop/product.py:72 ../shop/orders.py:91 ../shop/ui/bill.xml.en:66
-#: ../shop/order_views.py:97 ../shop/payment.py:56
+#: ../shop/product.py:72 ../shop/orders.py:129
+#: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:97
+#: ../shop/payment.py:56
 msgid "Reference"
 msgstr "Référence"
 
-#: ../shop/ui/order_view_products.xml.en:11
+#: ../shop/ui/orders/order_view_products.xml.en:11
 msgctxt "table cell"
 msgid "Reference"
 msgstr "Référence"
@@ -2077,11 +2127,11 @@ msgstr "Sélectionné"
 msgid "Server inaccessible (set by the server)"
 msgstr ""
 
-#: ../shop/shop.py:46
+#: ../shop/shop.py:48
 msgid "Shop"
 msgstr ""
 
-#: ../shop/shop.py:50
+#: ../shop/shop.py:54
 msgid "Shop devises"
 msgstr ""
 
@@ -2139,11 +2189,6 @@ msgstr "CSS spécifique"
 
 #: ../shop/product.py:75 ../news/news_views.py:175 ../tags/tags_views.py:234
 #: ../feed_views/browse_navigator.py:74
-msgid "State"
-msgstr "État"
-
-#: ../shop/ui/order_manage.xml.en:19
-msgctxt "table cell"
 msgid "State"
 msgstr "État"
 
@@ -2225,21 +2270,18 @@ msgstr "Nombre de tag a afficher (0 pour tous les afficher)"
 msgid "Target"
 msgstr "Cible"
 
-#: ../shop/product.py:116 ../shop/orders.py:70 ../shop/taxes.py:51
-#, fuzzy
+#: ../shop/product.py:116 ../shop/orders.py:108 ../shop/taxes.py:51
 msgid "Tax"
-msgstr "Tag"
+msgstr "TVA"
 
-#: ../shop/ui/order_view_products.xml.en:14
-#, fuzzy
+#: ../shop/ui/orders/order_view_products.xml.en:14
 msgctxt "table cell"
 msgid "Tax"
-msgstr "Tag"
+msgstr "TVA"
 
 #: ../shop/taxes.py:58
-#, fuzzy
 msgid "Tax value"
-msgstr "Valeur non valide"
+msgstr "Montant TVA"
 
 #: ../shop/paybox.py:203
 msgid "Temporary halt of the system"
@@ -2341,12 +2383,12 @@ msgctxt "body"
 msgid "This is your first box in your sidebar."
 msgstr "Ceci est votre première boîte dans votre barre latérale."
 
-#: ../shop/ui/order_top.xml.en:9
+#: ../shop/ui/orders/order_top.xml.en:9
 msgctxt "paragraph"
 msgid "This order has been payed"
 msgstr "Cette commande a été payée"
 
-#: ../shop/ui/order_top.xml.en:10
+#: ../shop/ui/orders/order_top.xml.en:10
 msgctxt "paragraph"
 msgid "This order hasn't been payed yet."
 msgstr "Cette commande n'a pas encore été payée."
@@ -2408,7 +2450,7 @@ msgstr ""
 msgid "Title"
 msgstr "Titre"
 
-#: ../shop/ui/order_view_products.xml.en:12
+#: ../shop/ui/orders/order_view_products.xml.en:12
 msgctxt "table cell"
 msgid "Title"
 msgstr "Titre"
@@ -2445,40 +2487,39 @@ msgstr "Trop de tentatives pour le code secret"
 msgid "Too many attempts at secret card"
 msgstr "Trop de tentatives pour la carte secrète"
 
-#: ../shop/ui/bill.xml.en:72
+#: ../shop/ui/orders/bill.xml.en:72
 msgid "Total"
 msgstr ""
 
-#: ../shop/ui/order_view_products.xml.en:17
+#: ../shop/ui/orders/order_view_products.xml.en:17
 msgctxt "table cell"
 msgid "Total Price"
 msgstr "Prix total"
 
-#: ../shop/ui/order_view_products.xml.en:35
-#, fuzzy
+#: ../shop/ui/orders/order_view_products.xml.en:35
 msgctxt "emphasis"
 msgid "Total amount"
-msgstr "Montant invalide"
+msgstr "Montant total"
 
-#: ../shop/orders.py:94
+#: ../shop/orders.py:132
 msgid "Total paid"
 msgstr "Total payé"
 
-#: ../shop/ui/order_manage.xml.en:34
+#: ../shop/ui/orders/order_manage.xml.en:36
 msgctxt "table cell"
 msgid "Total paid"
 msgstr "Total payé"
 
-#: ../shop/orders.py:92 ../shop/ui/bill.xml.en:96
+#: ../shop/orders.py:130 ../shop/ui/orders/bill.xml.en:96
 msgid "Total price"
 msgstr "Prix total"
 
-#: ../shop/ui/order_manage.xml.en:30
+#: ../shop/ui/orders/order_manage.xml.en:32
 msgctxt "table cell"
 msgid "Total price"
 msgstr "Prix total"
 
-#: ../shop/ui/bill.xml.en:59
+#: ../shop/ui/orders/bill.xml.en:59
 msgid "Total price ${total_price}"
 msgstr "Prix total ${total_price}"
 
@@ -2534,26 +2575,23 @@ msgstr "URL"
 msgid "USD"
 msgstr ""
 
-#: ../shop/ui/bill.xml.en:68
-#, fuzzy
+#: ../shop/ui/orders/bill.xml.en:68
 msgid "Unit Price"
 msgstr "Prix unitaire"
 
-#: ../shop/ui/order_view_products.xml.en:13
+#: ../shop/ui/orders/order_view_products.xml.en:13
 msgctxt "table cell"
 msgid "Unit Price"
 msgstr "Prix unitaire"
 
-#: ../shop/ui/order_view_products.xml.en:15
-#, fuzzy
+#: ../shop/ui/orders/order_view_products.xml.en:15
 msgctxt "table cell"
 msgid "Unit Price (with tax)"
-msgstr "Prix unitaire"
+msgstr "Prix unitaire (TTC)"
 
-#: ../shop/ui/bill.xml.en:70
-#, fuzzy
+#: ../shop/ui/orders/bill.xml.en:70
 msgid "Unit Price VAT inc."
-msgstr "Prix unitaire"
+msgstr "Prix unit. TTC"
 
 #: ../shop/paybox.py:76 ../shop/paybox.py:77
 msgid "Unknow error"
@@ -2567,7 +2605,7 @@ msgstr "Utiliser la section courante comme base pour l'arborescence"
 msgid "User Id"
 msgstr "Identifiant du compte"
 
-#: ../shop/ui/bill.xml.en:69
+#: ../shop/ui/orders/bill.xml.en:69
 msgid "VAT"
 msgstr ""
 
@@ -2582,7 +2620,7 @@ msgstr "Validé ?"
 #: ../ws_neutral_views.py:53 ../section_views/composite.py:28 ../views.py:108
 #: ../bar/section.py:101 ../bar/diaporama.py:159 ../about.py:33
 #: ../feed_views/browse_navigator.py:82 ../bar/bar_aware.py:147
-#: ../webpage_views.py:61 ../shop/shop.py:39 ../bar/tags.py:36
+#: ../webpage_views.py:61 ../shop/shop.py:41 ../bar/tags.py:36
 #: ../feed_views/base.py:67 ../turning_footer.py:50 ../bar/feed_box.py:90
 #: ../OPML/rssfeeds.py:84 ../shop/order_views.py:213 ../news/news_views.py:44
 #: ../news/news_views.py:95
@@ -3334,6 +3372,10 @@ msgstr ""
 
 #~ msgid "Slideshow allows to create and organize slides"
 #~ msgstr "Un diaporama permet de créer et organiser des vignettes"
+
+#~ msgctxt "table cell"
+#~ msgid "State"
+#~ msgstr "État"
 
 #~ msgid "Style"
 #~ msgstr "Style"
