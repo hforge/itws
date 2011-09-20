@@ -27,6 +27,7 @@ from itools.web import get_context
 # Import from ikaaro
 from ikaaro.buttons import RemoveButton, RenameButton, CopyButton, PasteButton
 from ikaaro.buttons import PublishButton, RetireButton
+from ikaaro.folder import Folder
 from ikaaro.resource_ import DBResource
 from ikaaro.workflow import WorkflowAware
 
@@ -105,10 +106,10 @@ class Products_View(FieldsTableFeed_View):
 
 
 
-class Product(DBResource, WorkflowAware):
+class Product(Folder, WorkflowAware):
 
     class_id = 'product'
-    class_schema = merge_dicts(DBResource.class_schema,
+    class_schema = merge_dicts(Folder.class_schema,
                     WorkflowAware.class_schema,
                     reference=String(source='metadata', indexed=True),
                     tax=TaxesEnumerate(source='metadata', title=MSG(u'Tax'),
