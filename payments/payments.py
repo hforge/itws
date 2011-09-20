@@ -27,8 +27,8 @@ from ikaaro.folder import Folder
 from ikaaro.utils import get_base_path_query
 
 # Import from payments
-from modules_views import PaymentModule_View, PaymentModule_DoPayment
-from modules_views import PaymentModule_ViewPayments
+from payments_views import PaymentModule_View, PaymentModule_DoPayment
+from payments_views import PaymentModule_ViewPayments
 from payment_way import payment_ways_registry
 from utils import get_payment_way
 

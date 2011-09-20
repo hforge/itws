@@ -27,9 +27,9 @@ from ikaaro.resource_ import DBResource
 
 # Import from payments
 from payment_views import Payment_Edit, Payment_End
-from utils import format_price
 from itws.enumerates import Users_Enumerate
 from itws.shop.devises import Devises
+from itws.shop.utils import format_price
 
 
 class Payments_Enumerate(Enumerate):

@@ -22,17 +22,3 @@ def get_payments(resource):
 def get_payment_way(resource, mode):
     payment_ways = get_payments(resource)
     return payment_ways.get_resource(mode)
-
-
-def format_price(price, unit=None):
-    if price is None:
-        return None
-    if price._isinteger():
-        price = str(int(price))
-    else:
-        price = '%.2f' % price
-        if price.endswith('.00'):
-            price = price.replace('.00', '')
-    if unit is not None:
-        price = u"{0} {1}".format(price, unit)
-    return price

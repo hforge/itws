@@ -23,8 +23,8 @@ from ikaaro.skins import register_skin
 # Register payment modules
 from buttons import NextButton
 from enumerates import PaymentWays_Enumerate
-from modules import PaymentModule
-from utils import get_payment_way, format_price, get_payments
+from payments import PaymentModule
+from utils import get_payment_way, get_payments
 from widgets import PaymentWays_Widget
 
 # Register payment ways

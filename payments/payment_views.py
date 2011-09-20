@@ -24,7 +24,6 @@ from ikaaro.autoform import ReadOnlyWidget
 from ikaaro.utils import make_stl_template
 
 # Import from payments
-from utils import format_price
 from itws.views import FieldsAutomaticEditView
 
 

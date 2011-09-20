@@ -14,22 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Import from itools
-from itools.datatypes import Enumerate
-from itools.gettext import MSG
-
 # Import from itws
 from itws.enumerates import DynamicEnumerate
 
-
-class Devises(Enumerate):
-    """ ISO 4217 """
-
-    options = [
-        {'name': '978', 'value': MSG(u'Euro'),
-            'code': u'EUR', u'symbol': '€'},
-        {'name': '840', 'value': MSG(u'Dollar'),
-            'code': u'USD', 'symbol': u'$'}]
 
 
 
