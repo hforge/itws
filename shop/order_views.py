@@ -168,15 +168,15 @@ class Order_AdminTop(STLForm):
         namespace = resource.get_namespace(context)
         namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
-        namespace['state'] = SelectWidget('state', has_empty_option=False,
-            datatype=OrderStateEnumerate, value=resource.get_statename()).render()
+        #namespace['state'] = SelectWidget('state', has_empty_option=False,
+        #    datatype=OrderStateEnumerate, value=resource.get_statename()).render()
         return namespace
 
 
-    action_change_order_state_schema = {'state': OrderStateEnumerate}
-    def action_change_order_state(self, resource, context, form):
-        resource.generate_bill(context)
-        resource.set_workflow_state(form['state'])
+    #action_change_order_state_schema = {'state': OrderStateEnumerate}
+    #def action_change_order_state(self, resource, context, form):
+    #    resource.generate_bill(context)
+    #    resource.set_workflow_state(form['state'])
 
 
 class Order_Top(STLView):

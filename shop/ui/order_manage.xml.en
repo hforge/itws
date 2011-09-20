@@ -15,6 +15,7 @@
         </a>
       </td>
     </tr>
+    <!--
     <tr>
       <th>State</th>
       <td>
@@ -26,6 +27,7 @@
         </form>
       </td>
     </tr>
+    -->
     <tr>
       <th>Total price</th>
       <td>${total_price}</td>
