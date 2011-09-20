@@ -50,6 +50,8 @@ class Tax(DBResource):
     class_id = 'tax'
     class_title =MSG(u'Tax')
     class_views = ['edit']
+    class_icon16 = 'icons/16x16/folder.png'
+    class_icon48 = 'icons/48x48/folder.png'
     class_version = '20110916'
     class_schema = merge_dicts(
         DBResource.class_schema,
