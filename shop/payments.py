@@ -30,7 +30,7 @@ from ikaaro.utils import get_base_path_query
 from payments_views import PaymentModule_View, PaymentModule_DoPayment
 from payments_views import PaymentModule_ViewPayments
 from payment_way import payment_ways_registry
-from utils import get_payment_way
+from utils import get_payment_way, get_shop
 
 
 class PaymentModule(Folder):
@@ -72,11 +72,15 @@ class PaymentModule(Folder):
 
 
     def make_payment(self, resource, mode, amount, customer,
-                      devise, order=None):
+                      devise=None, order=None):
         # Auto incremental name for payments
         name = self.make_reference()
         payment_way = get_payment_way(self, mode)
         order_abspath = str(order.get_abspath()) if order else None
+        # Devise
+        if devise is None:
+            shop = get_shop(resource)
+            devise = shop.get_property('devise')
         # Payment configuration
         kw = {'amount': amount,
               'customer_id': customer.name,
