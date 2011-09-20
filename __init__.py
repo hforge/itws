@@ -35,7 +35,6 @@ import news
 import feed_views
 import OPML
 import shop
-import payments
 import root
 import sitemap
 import skin
@@ -62,6 +61,6 @@ User.is_allowed_to_view = User.is_allowed_to_edit
 
 # Silent pyflakes
 skin, about, OPML, bar, sitemap, turning_footer, ws_neutral, webpage,
-shop, payments, root, widgets, theme, feed_views, news, monkey_patch
+shop, root, widgets, theme, feed_views, news, monkey_patch
 
 register_skin('itws-icons', get_abspath('ui/itws-icons'))

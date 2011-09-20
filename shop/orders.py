@@ -44,9 +44,9 @@ from itws.views import FieldsAutomaticEditView
 from devises import Devises
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
 from order_views import Order_NewInstance, Order_View
+from order_views import OrderModule_ViewOrders, OrderModule_ExportOrders
 from utils import get_orders, get_shop, get_arrondi, format_price
 from workflows import order_workflow
-from modules_views import OrderModule_ViewOrders, OrderModule_ExportOrders
 
 
 ####################################

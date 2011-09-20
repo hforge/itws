@@ -24,9 +24,11 @@ from ikaaro.skins import register_skin
 from buttons import NextButton
 from check import Check
 from orders import Orders, Order
+from order_views import Order_NewInstance
 from paybox import Paybox
 from payments import PaymentModule
-from product import Product
+from payments_views import PaymentWays_Enumerate
+from product import Product, Product_List
 from shop import Shop
 from utils import get_orders, get_payments, get_payment_way
 from taxes import Taxes

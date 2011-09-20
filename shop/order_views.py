@@ -36,10 +36,10 @@ from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from shop
 from devises import Devises
-from payments import PaymentWays_Enumerate
-from payments import PaymentWays_Widget, get_payments
+from payments_views import PaymentWays_Enumerate
 from product import Product_List
-from utils import join_pdfs, get_orders
+from utils import join_pdfs, get_orders, get_payments
+from widgets import PaymentWays_Widget
 from workflows import OrderStateEnumerate
 
 
