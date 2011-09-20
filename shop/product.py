@@ -159,6 +159,7 @@ class Product(DBResource, WorkflowAware):
     new_instance = FieldsAdvance_NewInstance(fields=_fields, access='is_admin')
 
 
+
 class Products(DBResource):
 
     class_id = 'products'
@@ -168,7 +169,10 @@ class Products(DBResource):
     class_icon16 = 'icons/16x16/text.png'
     class_views = ['view']
 
-    view = Products_View()
 
     def get_document_types(self):
         return []
+
+
+    # Views
+    view = Products_View()

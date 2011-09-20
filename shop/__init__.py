@@ -21,8 +21,7 @@ from itools.core import get_abspath
 from ikaaro.skins import register_skin
 
 # Import from orders
-from orders import Orders
-from order import Order
+from orders import Orders, Order
 from product import Product
 from shop import Shop
 from utils import get_orders
