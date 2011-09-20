@@ -223,13 +223,11 @@ class Order(WorkflowAware, Folder):
             self.set_workflow_state('partially-paid')
             self.set_property('is_paid', False)
         elif total_paid == self.get_property('total_price'):
+            self.generate_bill(context)
             self.set_workflow_state('paid')
             self.set_property('is_paid', True)
         elif total_paid > self.get_property('total_price'):
             self.set_workflow_state('to-much-paid')
-        # Generate bill
-        # XXX Does we have to generate bill now ?
-        self.generate_bill(context)
 
 
     def is_paid(self):
