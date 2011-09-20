@@ -160,7 +160,7 @@ class Order_AdminTop(STLForm):
     """Display order main information with state and products."""
     access = 'is_admin'
     title = MSG(u'Manage order')
-    template = '/ui/shop/order_manage.xml'
+    template = '/ui/shop/orders/order_manage.xml'
 
 
     def get_namespace(self, resource, context):
@@ -182,7 +182,7 @@ class Order_AdminTop(STLForm):
 class Order_Top(STLView):
 
     access = 'is_allowed_to_view'
-    template = '/ui/shop/order_top.xml'
+    template = '/ui/shop/orders/order_top.xml'
 
     def get_namespace(self, resource, context):
         bill = resource.get_resource('bill', soft=True)
@@ -196,7 +196,7 @@ class Order_ViewProducts(STLView):
 
     access = 'is_allowed_to_view'
     title = MSG(u'Products')
-    template = '/ui/shop/order_view_products.xml'
+    template = '/ui/shop/orders/order_view_products.xml'
 
     def get_namespace(self, resource, context):
         namespace = {}
@@ -252,7 +252,7 @@ class Order_NewInstance(FieldsAdvance_NewInstance):
 
 class OrderState_Template(CMSTemplate):
 
-    template = '/ui/shop/order_state.xml'
+    template = '/ui/shop/orders/order_state.xml'
 
     title = None
     link = None

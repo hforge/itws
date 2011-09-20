@@ -32,7 +32,7 @@ class PriceWidget(Widget):
 
     def get_template(self):
         context = get_context()
-        template = '/ui/shop/price_widget.xml'
+        template = '/ui/shop/products/price_widget.xml'
         return context.root.get_resource(template)
 
 
