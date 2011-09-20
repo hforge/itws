@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Import from standard library
+from decimal import Decimal as decimal
+
 # Import from itools
 from itools.core import merge_dicts
 from itools.datatypes import Decimal, Enumerate
@@ -72,6 +75,14 @@ class Taxes(Folder):
     class_id = 'taxes'
     class_title = MSG(u'Shop taxes')
     class_views = ['view']
+
+
+    def init_resource(self, *args, **kw):
+        Folder.init_resource(self, *args, **kw)
+        # Init a default tax
+        kw = {'title': {'en': u'French tax'},
+              'tax_value': decimal('19.6')}
+        self.make_resource('default', Tax, **kw)
 
 
     def get_document_types(self):
