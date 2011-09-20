@@ -41,7 +41,7 @@ def get_orders(resource):
 
 
 def get_payments(resource):
-    return resource.get_site_root().get_resource('payments')
+    return get_shop(resource).get_resource('payments')
 
 
 def get_payment_way(resource, mode):
