@@ -26,12 +26,23 @@ from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
 
 # Import from payments
 from buttons import NextButton
-from enumerates import PaymentWays_Enumerate
 from payment import Payment
 from payment_way import PaymentWay
 from widgets import PaymentWays_Widget
 from itws.shop.devises import Devises
+from itws.enumerates import DynamicEnumerate
 from itws.feed_views import FieldsTableFeed_View
+
+
+
+class PaymentWays_Enumerate(DynamicEnumerate):
+    path = 'payments/'
+    format = None
+
+
+    def is_valid(cls, name):
+        return True
+
 
 
 class PaymentModule_View(FieldsTableFeed_View):

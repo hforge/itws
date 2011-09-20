@@ -40,6 +40,15 @@ def get_orders(resource):
     return get_shop(resource).get_resource('orders')
 
 
+def get_payments(resource):
+    return resource.get_site_root().get_resource('payments')
+
+
+def get_payment_way(resource, mode):
+    payment_ways = get_payments(resource)
+    return payment_ways.get_resource(mode)
+
+
 def get_arrondi(price):
     price = decimal('%.2f' % price)
     if price._isinteger():

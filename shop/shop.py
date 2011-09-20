@@ -23,12 +23,14 @@ from itools.web import STLView
 from ikaaro.folder import Folder
 
 # Import from itws
+from itws.views import FieldsAutomaticEditView
+
+# Import from shop
 from devises import Devises
 from orders import Orders
+from payments import PaymentModule
 from product import Products
 from taxes import Taxes
-from itws.payments import PaymentModule
-from itws.views import FieldsAutomaticEditView
 
 
 class Shop_View(STLView):

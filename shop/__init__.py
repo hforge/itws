@@ -21,12 +21,16 @@ from itools.core import get_abspath
 from ikaaro.skins import register_skin
 
 # Import from orders
+from buttons import NextButton
+from check import Check
 from orders import Orders, Order
+from paybox import Paybox
+from payments import PaymentModule
 from product import Product
 from shop import Shop
-from utils import get_orders
+from utils import get_orders, get_payments, get_payment_way
 from taxes import Taxes
-from widgets import PriceWidget
+from widgets import PaymentWays_Widget, PriceWidget
 
 
 __all__ = ['Orders']

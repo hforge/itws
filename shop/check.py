@@ -69,7 +69,7 @@ class Check(PaymentWay):
     # Views
     class_views = ['configure']
 
-    logo = '/ui/payments/paybox/images/logo.png'
+    logo = '/ui/shop/payments/paybox/images/logo.png'
     payment_class = CheckPayment
 
 

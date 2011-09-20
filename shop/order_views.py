@@ -31,13 +31,13 @@ from ikaaro.utils import CMSTemplate
 from ikaaro.views import CompositeForm, CompositeView
 
 # Import from itws
-from itws.payments import PaymentWays_Enumerate
-from itws.payments import PaymentWays_Widget, get_payments
 from itws.views import FieldsAdvance_NewInstance
 from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
-# Import from orders
+# Import from shop
 from devises import Devises
+from payments import PaymentWays_Enumerate
+from payments import PaymentWays_Widget, get_payments
 from product import Product_List
 from utils import join_pdfs, get_orders
 from workflows import OrderStateEnumerate
