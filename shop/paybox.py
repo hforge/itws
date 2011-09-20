@@ -260,7 +260,7 @@ class PayboxPayment_PaymentForm(BaseView):
         kw['PBX_TYPEPAIEMENT'] = 'CARTE'
         kw['PBX_WAIT'] = '0'
         kw['PBX_RUF1'] = 'POST'
-        kw['PBX_RETOUR'] = "transaction:T\;autorisation:A\;amount:M\;advanced_state:E\;payment:P\;carte:C\;sign:K"
+        kw['PBX_RETOUR'] = "transaction:T;autorisation:A;amount:M;advanced_state:E;payment:P;carte:C;sign:K"
         # PBX Retour uri
         base_uri = context.uri.resolve(context.get_link(resource))
         for option in PBXState.get_options():
