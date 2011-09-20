@@ -137,7 +137,7 @@ class Product(DBResource, WorkflowAware):
 
     def get_price_with_tax(self, with_devise=False):
         price = self.get_price_without_tax()
-        tax = self.get_tax_value()
+        tax = self.get_tax_value() / decimal(100) + 1
         price = get_arrondi(price * tax)
         if with_devise is False:
             return price
@@ -149,8 +149,7 @@ class Product(DBResource, WorkflowAware):
         if tax is None:
             return decimal(1)
         tax = self.get_resource(tax)
-        tax_value = tax.get_property('tax_value')
-        return (tax_value/decimal(100) + 1)
+        return tax.get_property('tax_value')
 
 
 

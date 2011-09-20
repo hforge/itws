@@ -21,7 +21,6 @@ from decimal import Decimal as decimal
 
 # Import from itools
 from itools.core import freeze, merge_dicts
-from itools.csv import Table as BaseTable
 from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Boolean, DateTime, Decimal
 from itools.datatypes import Integer, String, Unicode, URI
@@ -30,10 +29,9 @@ from itools.pdf import stl_pmltopdf
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import PathSelectorWidget, TextWidget
 from ikaaro.file import PDF
 from ikaaro.folder import Folder
-from ikaaro.table import Table
+from ikaaro.resource_ import DBResource
 from ikaaro.utils import get_base_path_query
 from ikaaro.workflow import WorkflowAware
 
@@ -42,48 +40,32 @@ from itws.enumerates import Users_Enumerate
 from itws.payments import format_price
 
 # Import from payments
+from devises import Devises
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
 from order_views import Order_NewInstance, Order_View
-from utils import get_orders
+from utils import get_orders, get_shop, get_arrondi
 from workflows import order_workflow
 
 
 ####################################
-# An order contain lines
+# An order contain order products
 ####################################
 
-class Base_Order_Lines(BaseTable):
+class Order_Product(DBResource):
 
-    record_properties = {
-      'abspath': URI,
-      'reference': String,
-      'title': Unicode,
-      'quantity': Integer,
-      'price': Decimal(mandatory=True),
-      }
+    class_id = 'order-product'
+    class_title = MSG(u'Order product')
+    class_version = '20110919'
+    class_icon16 = 'icons/16x16/folder.png'
+    class_icon48 = 'icons/16x16/folder.png'
 
-
-class Order_Lines(Table):
-    """Table with order lines.
-       An order line must define:
-       - abspath (of product)
-       - reference (of product)
-       - title (of product)
-       - quantity
-       - price (by unit)
-    """
-    class_id = 'orders-products'
-    class_title = MSG(u'Products')
-    class_handler = Base_Order_Lines
-
-    class_views = ['view']
-
-    form = [
-        PathSelectorWidget('abspath', title=MSG(u'Abspath')),
-        TextWidget('reference', title=MSG(u'Reference')),
-        TextWidget('title', title=MSG(u'Title')),
-        TextWidget('quantity', title=MSG(u'Quantity')),
-        TextWidget('price', title=MSG(u'Price'))]
+    class_schema = merge_dicts(DBResource.class_schema,
+          abspath=URI(source='metadata', title=MSG(u'Original product')),
+          reference=String(source='metadata', title=MSG(u'Product reference')),
+          title=Unicode(source='metadata', title=MSG(u'Product title')),
+          quantity=Integer(source='metadata', title=MSG(u'Quantity')),
+          pre_tax_price=Decimal(source='metadata', title=MSG(u'Pre tax Price')),
+          tax=Decimal(source='metadata', title=MSG(u'Tax')))
 
 
 ####################################
@@ -92,7 +74,7 @@ class Order_Lines(Table):
 
 class Order(WorkflowAware, Folder):
     """ Order on which we define a workflow.
-        Folder with a table with order lines.
+        Order contains 1 to n Order_Product
         Basic properties:
           - total_price
           - ctime
@@ -109,6 +91,7 @@ class Order(WorkflowAware, Folder):
             indexed=True, stored=True, default=decimal('0')),
         total_paid=Decimal(source='metadata', title=MSG(u'Total paid'),
             default=decimal('0')),
+        devise=Devises(source='metadata', title=MSG(u'Currency'), default='978'),
         ctime=DateTime(source='metadata',
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,
@@ -125,9 +108,12 @@ class Order(WorkflowAware, Folder):
 
     def init_resource(self, *args, **kw):
         Folder.init_resource(self, *args, **kw)
-        self.make_resource('lines', Order_Lines)
         # XXX ctime (Should be done in ikaaro)
         self.set_property('ctime', datetime.now())
+        # Currency
+        shop = get_shop(self)
+        devise = shop.get_property('devise')
+        self.set_property('devise', devise)
 
 
     def get_catalog_values(self):
@@ -141,33 +127,45 @@ class Order(WorkflowAware, Folder):
     def get_namespace(self, context):
         # Build namespace
         creation_date = self.get_property('ctime')
-        namespace = {
-                'reference': self.name,
-                'creation_date': context.format_date(creation_date)}
-        for key in ['total_price', 'total_paid']:
-            namespace[key] = format_price(self.get_property(key))
-        # Customer
+        return {
+            'reference': self.name,
+            'customer': self.get_customer_namespace(context),
+            'creation_date': context.format_date(creation_date),
+            'total_price': self.format_price(self.get_property('total_price')),
+            'total_paid': self.format_price(self.get_property('total_paid'))}
+
+
+    def get_customer_namespace(self, context):
         customer_id = self.get_property('customer_id')
         user = context.root.get_user(customer_id)
-        namespace['customer'] = {'link': context.get_link(user),
-                                 'title': user.get_title()}
-        return namespace
+        return {'name': user.name,
+                'link': context.get_link(user),
+                'title': user.get_title(),
+                'firstname': user.get_property('firstname'),
+                'lastname': user.get_property('lastname'),
+                'email': user.get_property('email')}
 
 
     def get_products_namespace(self, context):
+        query = AndQuery(
+            get_base_path_query(self.get_canonical_path()),
+            PhraseQuery('format', 'order-product'))
         l = []
-        products = self.get_resource('lines')
-        get_value = products.handler.get_record_value
-        for record in products.handler.get_records():
-            kw = {'id': record.id}
+        for brain in context.root.search(query).get_documents():
+            resource = context.root.get_resource(brain.abspath)
             # Get base product namespace
-            kw['reference'] = get_value(record, 'reference')
-            kw['title'] = get_value(record, 'title')
-            kw['price'] = get_value(record, 'price')
-            kw['quantity'] = get_value(record, 'quantity')
-            kw['total_price'] = format_price(kw['price'] * kw['quantity'])
+            kw = {}
+            for key in ['reference', 'title', 'tax', 'quantity']:
+                kw[key] = resource.get_property(key)
+            kw['pre_tax_price'] = resource.get_property('pre_tax_price')
+            tax = kw['tax'] / decimal(100) + 1
+            kw['price_with_tax'] = get_arrondi(kw['pre_tax_price'] * tax)
+            total_price = kw['price_with_tax'] * kw['quantity']
+            kw['pre_tax_price'] = self.format_price(kw['pre_tax_price'])
+            kw['total_price'] = self.format_price(total_price)
+            kw['price_with_tax'] = self.format_price(kw['price_with_tax'])
             # Get product link (if exist)
-            abspath = get_value(record, 'abspath')
+            abspath = resource.get_property('abspath')
             product = context.root.get_resource(abspath, soft=True)
             if product:
                 kw['link'] = context.get_link(product)
@@ -178,6 +176,11 @@ class Order(WorkflowAware, Folder):
     ##################################################
     # API
     ##################################################
+    def format_price(self, price):
+        devise = self.get_property('devise')
+        symbol = Devises.symbols[devise]
+        return format_price(price, symbol)
+
 
     def get_total_price(self):
         return self.get_property('total_price')
@@ -186,16 +189,22 @@ class Order(WorkflowAware, Folder):
     def add_lines(self, resources):
         """Add given order lines."""
         total_price = self.get_total_price()
-        handler = self.get_resource('lines').handler
         for quantity, resource in resources:
-            price = resource.get_price()
-            total_price += price
-            handler.add_record(
-              {'abspath': str(resource.get_abspath()),
-               'reference': resource.get_property('reference'),
-               'title': resource.get_title(),
-               'quantity': quantity,
-               'price': price})
+            price = resource.get_price_with_tax()
+            total_price += price * quantity
+            reference = resource.get_property('reference')
+            order_product = self.get_resource(reference, soft=True)
+            if order_product is None:
+                kw = {'abspath': str(resource.get_abspath()),
+                      'reference': reference,
+                      'title': resource.get_title(),
+                      'quantity': quantity,
+                      'tax': resource.get_tax_value(),
+                      'pre_tax_price': resource.get_price_without_tax()}
+                self.make_resource(reference, Order_Product, **kw)
+            else:
+                old_quantity = order_product.get_property('quantity')
+                order_product.set_property('quantity', old_quantity + quantity)
         self.set_property('total_price', total_price)
 
 
@@ -236,12 +245,6 @@ class Order(WorkflowAware, Folder):
         return results.get_documents()
 
 
-    def get_customer_email(self, context):
-        customer_id = self.get_property('customer_id')
-        user = context.root.get_user(customer_id)
-        return user.get_property('email')
-
-
     def generate_bill(self, context):
         """Creates bill as a pdf."""
         # Get template
@@ -255,12 +258,16 @@ class Order(WorkflowAware, Folder):
         namespace['pdf_signature'] = XMLParser(signature.replace('\n', '<br/>'))
         # Products
         namespace['products'] = self.get_products_namespace(context)
+        # Customer
+        namespace['customer'] = self.get_customer_namespace(context)
         # Build pdf
-        pdf = stl_pmltopdf(document, namespace=namespace)
+        try:
+            pdf = stl_pmltopdf(document, namespace=namespace)
+        except Exception:
+            return None
         metadata =  {'title': {'en': u'Bill'},
                      'filename': 'bill.pdf'}
         self.del_resource('bill', soft=True)
-        context.message = MSG(u'Bill has been generated')
         return self.make_resource('bill', PDF, body=pdf, **metadata)
 
     ##################################################

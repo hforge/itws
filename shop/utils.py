@@ -41,11 +41,12 @@ def get_arrondi(price):
     return price
 
 
-def format_price(price):
-    context = get_context()
-    shop = get_shop(context.resource)
-    devise = shop.get_property('devise')
-    symbol = Devises.symbols[devise]
+def format_price(price, symbol=None):
+    if symbol is None:
+        context = get_context()
+        shop = get_shop(context.resource)
+        devise = shop.get_property('devise')
+        symbol = Devises.symbols[devise]
     return u'%s %s' % (price, symbol)
 
 

@@ -95,7 +95,7 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
         brain, item_resource = item
         if column in ('total_price', 'total_paid'):
             value = item_resource.get_property(column)
-            return format_price(value)
+            return item_resource.format_price(value)
         elif column == 'name':
             return OrderState_Template(title=brain.name,
                 link=context.get_link(item_resource), color='#BF0000')

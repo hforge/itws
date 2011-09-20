@@ -28,14 +28,15 @@ from ikaaro.file import PDF
 from ikaaro.views import CompositeForm, CompositeView
 
 # Import from itws
-from itws.payments import PaymentWays_Enumerate, format_price
+from itws.payments import PaymentWays_Enumerate
 from itws.payments import PaymentWays_Widget, get_payments
 from itws.views import FieldsAdvance_NewInstance
 from itws.feed_views import TableFeed_View, FieldsTableFeed_View
 
 # Import from orders
+from devises import Devises
 from product import Product_List
-from utils import get_orders, get_shop
+from utils import get_orders
 from workflows import OrderStateEnumerate
 
 
@@ -87,12 +88,18 @@ class Order_ViewPayments(TableFeed_View):
     batch_msg1 = MSG(u"There is 1 payment.")
     batch_msg2 = MSG(u"There are {n} payments.")
 
+    admin_view = False
     table_columns = freeze([
         ('reference', MSG(u'Reference')),
         ('payment_way', MSG(u'Payment Way')),
         ('amount', MSG(u'Amount')),
-        ('advanced_state', MSG(u'Advanced state')),
         ('is_payment_validated', MSG(u'Validated ?'))])
+
+    def get_table_columns(self, resource, context):
+        if self.admin_view is False:
+            return self.table_columns
+        return self.table_columns + [
+            ('advanced_state', MSG(u'Advanced state'))]
 
 
     def get_items(self, resource, context):
@@ -102,11 +109,16 @@ class Order_ViewPayments(TableFeed_View):
     def get_item_value(self, resource, context, item, column):
         brain, item_resource = item
         if column == 'reference':
+            if self.admin_view is False:
+                return brain.name
             return (brain.name, brain.name)
         elif column == 'payment_way':
             return item_resource.get_payment_way().get_title()
         elif column == 'amount':
-            return format_price(item_resource.get_property('amount'))
+            devise = item_resource.get_property('devise')
+            symbol = Devises.symbols[devise]
+            amount = item_resource.get_property('amount')
+            return u'%s %s' % (amount, symbol)
         elif column == 'advanced_state':
             return item_resource.get_advanced_state()
         elif column  == 'is_payment_validated':
@@ -131,8 +143,7 @@ class Order_AddPayment(AutoForm):
 
     def action(self, resource, context, form):
         payments_module = get_payments(resource)
-        shop = get_shop(resource)
-        devise = shop.get_property('devise')
+        devise = resource.get_property('devise')
         payment = payments_module.make_payment(
                       resource, form['mode'], form['amount'],
                       context.user, devise, order=resource)
@@ -150,12 +161,9 @@ class Order_AdminTop(STLForm):
 
     def get_namespace(self, resource, context):
         orders = get_orders(resource)
-        total_price = resource.get_property('total_price')
         namespace = resource.get_namespace(context)
         namespace['orders_link'] = context.get_link(orders)
         namespace['order'] = {'id': resource.name}
-        namespace['total_price'] = format_price(total_price)
-        namespace['products'] = resource.get_products_namespace(context)
         namespace['state'] = SelectWidget('state', has_empty_option=False,
             datatype=OrderStateEnumerate, value=resource.get_statename()).render()
         return namespace
@@ -163,6 +171,7 @@ class Order_AdminTop(STLForm):
 
     action_change_order_state_schema = {'state': OrderStateEnumerate}
     def action_change_order_state(self, resource, context, form):
+        resource.generate_bill(context)
         resource.set_workflow_state(form['state'])
 
 
@@ -189,7 +198,7 @@ class Order_ViewProducts(STLView):
         namespace = {}
         namespace['products'] = resource.get_products_namespace(context)
         total = resource.get_property('total_price')
-        namespace['total_price'] = format_price(total)
+        namespace['total_price'] = resource.format_price(total)
         return namespace
 
 
@@ -200,7 +209,8 @@ class Order_View(CompositeView):
     title = MSG(u'View')
 
     subviews = [Order_Top(),
-                Order_ViewProducts()]
+                Order_ViewProducts(),
+                Order_ViewPayments(admin_view=False)]
 
 
 
@@ -213,7 +223,7 @@ class Order_Manage(CompositeForm):
 
     subviews = [Order_AdminTop(),
                 Order_ViewProducts(),
-                Order_ViewPayments(),
+                Order_ViewPayments(admin_view=True),
                 Order_ViewBills()]
 
 

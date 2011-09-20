@@ -30,6 +30,18 @@
 
   <pml:body>
 
+    <pml:table id="addresses">
+      <pml:tr>
+        <pml:td>
+          <pml:p>
+            <pml:b>Customer</pml:b><pml:br/>
+            Customer #${customer/name}<pml:br/>
+            ${customer/firstname} ${customer/lastname}<pml:br/>
+            ${customer/email}<pml:br/>
+          </pml:p>
+        </pml:td>
+      </pml:tr>
+    </pml:table>
 
     <pml:table id="table">
       <pml:tr>
@@ -52,28 +64,21 @@
     <pml:table id="table">
       <pml:tr>
         <pml:th>Reference</pml:th>
-        <pml:th width="7cm">Description</pml:th>
+        <pml:th width="5cm">Description</pml:th>
+        <pml:th width="2cm">Unit Price</pml:th>
+        <pml:th width="2cm">VAT</pml:th>
+        <pml:th width="2cm">Unit Price VAT inc.</pml:th>
         <pml:th width="2cm">Qty</pml:th>
-        <pml:th width="3cm">Unit price</pml:th>
-        <pml:th width="3cm">Total</pml:th>
-        <!--
-        <pml:th width="2cm">Pre-Tax Total</pml:th>
-
-        <pml:th>VAT</pml:th>
-        -->
+        <pml:th width="2cm">Total</pml:th>
       </pml:tr>
       <pml:tr stl:repeat="product products">
         <pml:td>${product/reference}</pml:td>
         <pml:td>${product/title}</pml:td>
+        <pml:td>${product/pre_tax_price}</pml:td>
+        <pml:td>${product/tax} %</pml:td>
+        <pml:td>${product/price_with_tax}</pml:td>
         <pml:td>${product/quantity}</pml:td>
-        <pml:td>${product/price}</pml:td>
         <pml:td>${product/total_price}</pml:td>
-        <!--
-        <pml:td>-</pml:td>
-        <pml:td>-</pml:td>
-        <pml:td>-</pml:td>
-        <pml:td>-</pml:td>
-        -->
       </pml:tr>
     </pml:table>
 
@@ -81,7 +86,7 @@
       <br/>
     </p>
 
-    <pml:table id="price">
+    <pml:table id="table">
       <pml:tr>
         <pml:th width="5cm"/>
         <pml:th width="5cm"/>
