@@ -58,10 +58,14 @@ class Shop(Folder):
 
     def init_resource(self, *args, **kw):
         Folder.init_resource(self, *args, **kw)
-        self.make_resource('orders', Orders)
-        self.make_resource('payments', PaymentModule)
-        self.make_resource('products', Products)
-        self.make_resource('taxes', Taxes)
+        self.make_resource('orders', Orders,
+            title={'en': u'Orders'})
+        self.make_resource('payments', PaymentModule,
+            title={'en': u'Payments'})
+        self.make_resource('products', Products,
+            title={'en': u'Products'})
+        self.make_resource('taxes', Taxes,
+            title={'en': u'Taxes'})
 
     ###############################################
     # API
