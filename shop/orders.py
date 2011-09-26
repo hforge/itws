@@ -61,7 +61,8 @@ You can found details on our website:\n
   {order_uri}\n
 """)
 
-mail_confirmation_payment_title = MSG(u'Payment validated on your order #{order_name}')
+mail_confirmation_payment_title = MSG(u'Payment validated on your order '
+                                      u'#{order_name}')
 mail_confirmation_payment_body = MSG(u"""Hi,
 Payment has been validated on your order #{order_name}
 You can found details here:\n
@@ -72,7 +73,8 @@ You can found details here:\n
 # Mails to inform webmaster
 ##############################################
 
-mail_notification_title = MSG(u'Notification: New order #{order_name} in your shop')
+mail_notification_title = MSG(u'Notification: New order #{order_name} in your '
+                              u'shop')
 
 mail_notification_body = MSG(u"""Hi,
 A new order has been done in your shop.
@@ -80,7 +82,8 @@ You can found details here:\n
   {order_uri}\n
   """)
 
-mail_notification_payment_title = MSG(u'Notification: Payment validated on order #{order_name}')
+mail_notification_payment_title = MSG(u'Notification: Payment validated on '
+                                      u'order #{order_name}')
 mail_notification_payment_body = MSG(u"""Hi,
 Payment has been validated on order #{order_name}
 You can found details here:\n
@@ -104,7 +107,8 @@ class Order_Product(DBResource):
           reference=String(source='metadata', title=MSG(u'Product reference')),
           title=Unicode(source='metadata', title=MSG(u'Product title')),
           quantity=Integer(source='metadata', title=MSG(u'Quantity')),
-          pre_tax_price=Decimal(source='metadata', title=MSG(u'Pre tax Price')),
+          pre_tax_price=Decimal(source='metadata',
+              title=MSG(u'Pre tax Price')),
           tax=Decimal(source='metadata', title=MSG(u'Tax')))
 
 
@@ -131,7 +135,8 @@ class Order(WorkflowAware, Folder):
             indexed=True, stored=True, default=decimal('0')),
         total_paid=Decimal(source='metadata', title=MSG(u'Total paid'),
             default=decimal('0')),
-        devise=Devises(source='metadata', title=MSG(u'Currency'), default='978'),
+        devise=Devises(source='metadata', title=MSG(u'Currency'),
+            default='978'),
         ctime=DateTime(source='metadata',
             title=MSG(u'Creation date'), indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', indexed=True,

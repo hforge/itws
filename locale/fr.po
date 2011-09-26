@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-09-20 16:09+CET\n"
+"POT-Creation-Date: 2011-09-26 12:09+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -454,7 +454,7 @@ msgstr "Titre de la bannière"
 msgid "Batch size"
 msgstr "Nombre d'éléments affichés"
 
-#: ../shop/orders.py:139 ../shop/orders.py:358 ../shop/ui/orders/bill.xml.en:5
+#: ../shop/orders.py:144 ../shop/orders.py:363 ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr "Facture"
 
@@ -597,7 +597,7 @@ msgstr "Vue configuration"
 msgid "Configure"
 msgstr "Configurer"
 
-#: ../shop/orders.py:439
+#: ../shop/orders.py:444
 msgid "Configure Order module"
 msgstr "Configurer le module commandes"
 
@@ -679,11 +679,11 @@ msgstr "Créer une nouvelle boîte latérale"
 msgid "Creation Date"
 msgstr "Date de création"
 
-#: ../shop/orders.py:136
+#: ../shop/orders.py:141
 msgid "Creation date"
 msgstr "Date de création"
 
-#: ../shop/orders.py:134 ../shop/payment.py:62
+#: ../shop/orders.py:138 ../shop/payment.py:62
 msgid "Currency"
 msgstr "Devise"
 
@@ -695,7 +695,7 @@ msgstr "Devise inconnue"
 msgid "Custom data"
 msgstr ""
 
-#: ../shop/orders.py:138 ../shop/ui/orders/bill.xml.en:37
+#: ../shop/orders.py:143 ../shop/ui/orders/bill.xml.en:37
 msgid "Customer"
 msgstr "Client"
 
@@ -723,11 +723,6 @@ msgstr "Date de rédaction"
 #: ../OPML/rssfeeds.py:77
 msgid "Deactivate"
 msgstr "Désactiver"
-
-#: ../shop/payment.py:58
-#, fuzzy
-msgid "Dernière modification"
-msgstr "Voir les dernières modifications"
 
 #: ../bar/section.py:102 ../shop/payment_way.py:66
 #: ../shop/ui/orders/bill.xml.en:67
@@ -1102,7 +1097,7 @@ msgctxt "div"
 msgid "Here you can create and translate them."
 msgstr "Ici vous pouvez les créer et les traduire."
 
-#: ../shop/orders.py:81
+#: ../shop/orders.py:83
 msgid ""
 "Hi,\n"
 "A new order has been done in your shop.\n"
@@ -1112,8 +1107,15 @@ msgid ""
 "\n"
 "  "
 msgstr ""
+"Bonjour,\n"
+"Une nouvelle commande a été réalisée sur votre site.\n"
+"Vous pouvez la retrouver ici :\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
 
-#: ../shop/orders.py:88
+#: ../shop/orders.py:91
 msgid ""
 "Hi,\n"
 "Payment has been validated on order #{order_name}\n"
@@ -1123,8 +1125,15 @@ msgid ""
 "\n"
 "  "
 msgstr ""
+"Bonjour,\n"
+"Un règlement a été validé pour la commande #{order_name}\n"
+"Vous pouvez la retrouver ici :\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
 
-#: ../shop/orders.py:69
+#: ../shop/orders.py:70
 msgid ""
 "Hi,\n"
 "Payment has been validated on your order #{order_name}\n"
@@ -1134,6 +1143,13 @@ msgid ""
 "\n"
 "  "
 msgstr ""
+"Bonjour,\n"
+"Un règlement a été validé pour votre commande #{order_name}\n"
+"Vous pouvez la retrouver ici :\n"
+"\n"
+"  {order_uri}\n"
+"\n"
+"  "
 
 #: ../shop/orders.py:62
 msgid ""
@@ -1144,6 +1160,12 @@ msgid ""
 "  {order_uri}\n"
 "\n"
 msgstr ""
+"Bonjour,\n"
+"Votre commande n° #{order_name} a été enregistrée.\n"
+"Vous pouvez la retrouver ici :\n"
+"\n"
+"  {order_uri}\n"
+"\n"
 
 #: ../shop/payment.py:73
 msgid ""
@@ -1186,7 +1208,7 @@ msgstr "Comment ajouter une boîte dans la barre latérale ?"
 
 #: ../widgets/base.py:188
 msgid "I agree with the terms and conditions of use."
-msgstr ""
+msgstr "J'ai lu et j'accepte les conditions d'utilisation."
 
 #: ../news/newsletter_model.py:57
 msgid "ITWS Newsletter"
@@ -1244,7 +1266,7 @@ msgstr ""
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../shop/orders.py:385 ../shop/payments.py:44
+#: ../shop/orders.py:390 ../shop/payments.py:44
 msgid "Index"
 msgstr "Index"
 
@@ -1296,7 +1318,7 @@ msgstr "Numéro de facture :"
 msgid "Is active"
 msgstr "Actif"
 
-#: ../shop/orders.py:140 ../shop/payment.py:63
+#: ../shop/orders.py:145 ../shop/payment.py:63
 msgid "Is paid ?"
 msgstr "Payé ?"
 
@@ -1344,6 +1366,10 @@ msgstr "Dernière modification"
 #: ../rss.py:228
 msgid "Last News"
 msgstr "Dernière News"
+
+#: ../shop/payment.py:58
+msgid "Last modified"
+msgstr "Dernière modification"
 
 #: ../datatypes.py:114
 msgid "Last to first"
@@ -1547,11 +1573,11 @@ msgstr ""
 msgid "Notification mails"
 msgstr "E-mails de notification"
 
-#: ../shop/orders.py:75
+#: ../shop/orders.py:76
 msgid "Notification: New order #{order_name} in your shop"
 msgstr ""
 
-#: ../shop/orders.py:83
+#: ../shop/orders.py:85
 msgid "Notification: Payment validated on order #{order_name}"
 msgstr ""
 
@@ -1608,7 +1634,7 @@ msgstr ""
 msgid "Operation successful"
 msgstr "Opération effectuée avec succès"
 
-#: ../shop/orders.py:125 ../shop/payment.py:65
+#: ../shop/orders.py:129 ../shop/payment.py:65
 msgid "Order"
 msgstr "Commande"
 
@@ -1644,7 +1670,7 @@ msgstr "Date de la commande :"
 msgid "Order has been created"
 msgstr "Commande déjà créée"
 
-#: ../shop/orders.py:381
+#: ../shop/orders.py:386
 msgid "Order module"
 msgstr "Module commandes"
 
@@ -1658,7 +1684,7 @@ msgctxt "heading"
 msgid "Order n°${name}"
 msgstr "Commande n° ${name}"
 
-#: ../shop/orders.py:97
+#: ../shop/orders.py:100
 msgid "Order product"
 msgstr "Produit de commande"
 
@@ -1674,7 +1700,7 @@ msgstr "Ordonner les boîtes latérales"
 msgid "Order top"
 msgstr "Placer en haut"
 
-#: ../shop/orders.py:380 ../shop/order_views.py:300
+#: ../shop/orders.py:385 ../shop/order_views.py:300
 msgid "Orders"
 msgstr "Commandes"
 
@@ -1683,7 +1709,7 @@ msgctxt "link"
 msgid "Orders"
 msgstr "Commandes"
 
-#: ../shop/orders.py:103
+#: ../shop/orders.py:106
 msgid "Original product"
 msgstr "Produit initial"
 
@@ -1734,11 +1760,11 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: ../shop/orders.py:387
+#: ../shop/orders.py:392
 msgid "PDF Logo"
 msgstr "Logo PDF"
 
-#: ../shop/orders.py:388
+#: ../shop/orders.py:393
 msgid "PDF Signature"
 msgstr "Signature PDF"
 
@@ -1884,14 +1910,14 @@ msgstr "Veuillez suivre la procédure de paiement ci-dessous."
 msgid "Powered by itws"
 msgstr "Propulsé par itws"
 
-#: ../shop/orders.py:107
+#: ../shop/orders.py:111
 msgid "Pre tax Price"
 msgstr "Prix HT"
 
 #: ../shop/ui/products/price_widget.xml.en:10
 msgctxt "table cell"
 msgid "Pre-tax price:"
-msgstr "Prix HT:"
+msgstr "Prix HT :"
 
 #: ../bar/feed_box.py:79
 msgid "Preview"
@@ -1903,13 +1929,13 @@ msgstr "Prix"
 
 #: ../shop/product.py:74
 msgid "Price (With taxes)"
-msgstr ""
+msgstr "Prix (taxe comprise)"
 
-#: ../shop/orders.py:104
+#: ../shop/orders.py:107
 msgid "Product reference"
 msgstr "Référence produit"
 
-#: ../shop/orders.py:105
+#: ../shop/orders.py:108
 msgid "Product title"
 msgstr "Nom du produit"
 
@@ -1948,7 +1974,7 @@ msgstr "Python"
 msgid "Qty"
 msgstr "Qté"
 
-#: ../shop/orders.py:106 ../shop/order_views.py:54
+#: ../shop/orders.py:109 ../shop/order_views.py:54
 msgid "Quantity"
 msgstr "Quantité"
 
@@ -1992,7 +2018,7 @@ msgstr "Enregistrement dupliqué, enregistrement initial remplacé"
 msgid "Recursively"
 msgstr "Récursivement"
 
-#: ../shop/product.py:72 ../shop/orders.py:129
+#: ../shop/product.py:72 ../shop/orders.py:133
 #: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:97
 #: ../shop/payment.py:56
 msgid "Reference"
@@ -2270,7 +2296,7 @@ msgstr "Nombre de tag a afficher (0 pour tous les afficher)"
 msgid "Target"
 msgstr "Cible"
 
-#: ../shop/product.py:116 ../shop/orders.py:108 ../shop/taxes.py:51
+#: ../shop/product.py:116 ../shop/orders.py:112 ../shop/taxes.py:51
 msgid "Tax"
 msgstr "TVA"
 
@@ -2501,7 +2527,7 @@ msgctxt "emphasis"
 msgid "Total amount"
 msgstr "Montant total"
 
-#: ../shop/orders.py:132
+#: ../shop/orders.py:136
 msgid "Total paid"
 msgstr "Total payé"
 
@@ -2510,7 +2536,7 @@ msgctxt "table cell"
 msgid "Total paid"
 msgstr "Total payé"
 
-#: ../shop/orders.py:130 ../shop/ui/orders/bill.xml.en:96
+#: ../shop/orders.py:134 ../shop/ui/orders/bill.xml.en:96
 msgid "Total price"
 msgstr "Prix total"
 
@@ -2695,7 +2721,7 @@ msgstr ""
 
 #: ../shop/product.py:168
 msgid "Your shop products"
-msgstr ""
+msgstr "Vos produits"
 
 #: ../ui/common/location.xml.en:23
 msgctxt "div"
@@ -3052,6 +3078,10 @@ msgstr ""
 
 #~ msgid "Date of writing must be set to make the news visible"
 #~ msgstr "La date de rédaction doit être saisie pour rendre la news visible"
+
+#, fuzzy
+#~ msgid "Dernière modification"
+#~ msgstr "Voir les dernières modifications"
 
 #~ msgid "Description (Alternative text)"
 #~ msgstr "Description (Texte alternatif)"

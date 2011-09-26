@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-09-20 16:09+CET\n"
+"POT-Creation-Date: 2011-09-26 12:09+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,8 +248,8 @@ msgstr ""
 msgid "Batch size"
 msgstr ""
 
-#: ../shop/orders.py:139
-#: ../shop/orders.py:358
+#: ../shop/orders.py:144
+#: ../shop/orders.py:363
 #: ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr ""
@@ -392,7 +392,7 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: ../shop/orders.py:439
+#: ../shop/orders.py:444
 msgid "Configure Order module"
 msgstr ""
 
@@ -465,11 +465,11 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: ../shop/orders.py:136
+#: ../shop/orders.py:141
 msgid "Creation date"
 msgstr ""
 
-#: ../shop/orders.py:134
+#: ../shop/orders.py:138
 #: ../shop/payment.py:62
 msgid "Currency"
 msgstr ""
@@ -482,7 +482,7 @@ msgstr ""
 msgid "Custom data"
 msgstr ""
 
-#: ../shop/orders.py:138
+#: ../shop/orders.py:143
 #: ../shop/ui/orders/bill.xml.en:37
 msgid "Customer"
 msgstr ""
@@ -505,10 +505,6 @@ msgstr ""
 
 #: ../OPML/rssfeeds.py:77
 msgid "Deactivate"
-msgstr ""
-
-#: ../shop/payment.py:58
-msgid "Dernière modification"
 msgstr ""
 
 #: ../bar/section.py:102
@@ -838,15 +834,15 @@ msgstr ""
 msgid "HTML Content"
 msgstr ""
 
-#: ../shop/orders.py:81
+#: ../shop/orders.py:83
 msgid "Hi,\nA new order has been done in your shop.\nYou can found details here:\n\n  {order_uri}\n\n  "
 msgstr ""
 
-#: ../shop/orders.py:88
+#: ../shop/orders.py:91
 msgid "Hi,\nPayment has been validated on order #{order_name}\nYou can found details here:\n\n  {order_uri}\n\n  "
 msgstr ""
 
-#: ../shop/orders.py:69
+#: ../shop/orders.py:70
 msgid "Hi,\nPayment has been validated on your order #{order_name}\nYou can found details here:\n\n  {order_uri}\n\n  "
 msgstr ""
 
@@ -931,7 +927,7 @@ msgstr ""
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../shop/orders.py:385
+#: ../shop/orders.py:390
 #: ../shop/payments.py:44
 msgid "Index"
 msgstr ""
@@ -984,7 +980,7 @@ msgstr ""
 msgid "Is active"
 msgstr ""
 
-#: ../shop/orders.py:140
+#: ../shop/orders.py:145
 #: ../shop/payment.py:63
 msgid "Is paid ?"
 msgstr ""
@@ -1023,6 +1019,10 @@ msgstr ""
 
 #: ../rss.py:228
 msgid "Last News"
+msgstr ""
+
+#: ../shop/payment.py:58
+msgid "Last modified"
 msgstr ""
 
 #: ../datatypes.py:114
@@ -1174,11 +1174,11 @@ msgstr ""
 msgid "Notification mails"
 msgstr ""
 
-#: ../shop/orders.py:75
+#: ../shop/orders.py:76
 msgid "Notification: New order #{order_name} in your shop"
 msgstr ""
 
-#: ../shop/orders.py:83
+#: ../shop/orders.py:85
 msgid "Notification: Payment validated on order #{order_name}"
 msgstr ""
 
@@ -1230,7 +1230,7 @@ msgstr ""
 msgid "Operation successful"
 msgstr ""
 
-#: ../shop/orders.py:125
+#: ../shop/orders.py:129
 #: ../shop/payment.py:65
 msgid "Order"
 msgstr ""
@@ -1269,11 +1269,11 @@ msgstr ""
 msgid "Order has been created"
 msgstr ""
 
-#: ../shop/orders.py:381
+#: ../shop/orders.py:386
 msgid "Order module"
 msgstr ""
 
-#: ../shop/orders.py:97
+#: ../shop/orders.py:100
 msgid "Order product"
 msgstr ""
 
@@ -1290,12 +1290,12 @@ msgstr ""
 msgid "Order top"
 msgstr ""
 
-#: ../shop/orders.py:380
+#: ../shop/orders.py:385
 #: ../shop/order_views.py:300
 msgid "Orders"
 msgstr ""
 
-#: ../shop/orders.py:103
+#: ../shop/orders.py:106
 msgid "Original product"
 msgstr ""
 
@@ -1335,11 +1335,11 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: ../shop/orders.py:387
+#: ../shop/orders.py:392
 msgid "PDF Logo"
 msgstr ""
 
-#: ../shop/orders.py:388
+#: ../shop/orders.py:393
 msgid "PDF Signature"
 msgstr ""
 
@@ -1479,7 +1479,7 @@ msgstr ""
 msgid "Powered by itws"
 msgstr ""
 
-#: ../shop/orders.py:107
+#: ../shop/orders.py:111
 msgid "Pre tax Price"
 msgstr ""
 
@@ -1495,11 +1495,11 @@ msgstr ""
 msgid "Price (With taxes)"
 msgstr ""
 
-#: ../shop/orders.py:104
+#: ../shop/orders.py:107
 msgid "Product reference"
 msgstr ""
 
-#: ../shop/orders.py:105
+#: ../shop/orders.py:108
 msgid "Product title"
 msgstr ""
 
@@ -1523,7 +1523,7 @@ msgstr ""
 msgid "Qty"
 msgstr ""
 
-#: ../shop/orders.py:106
+#: ../shop/orders.py:109
 #: ../shop/order_views.py:54
 msgid "Quantity"
 msgstr ""
@@ -1562,7 +1562,7 @@ msgid "Recursively"
 msgstr ""
 
 #: ../shop/product.py:72
-#: ../shop/orders.py:129
+#: ../shop/orders.py:133
 #: ../shop/ui/orders/bill.xml.en:66
 #: ../shop/order_views.py:97
 #: ../shop/payment.py:56
@@ -1808,7 +1808,7 @@ msgid "Target"
 msgstr ""
 
 #: ../shop/product.py:116
-#: ../shop/orders.py:108
+#: ../shop/orders.py:112
 #: ../shop/taxes.py:51
 msgid "Tax"
 msgstr ""
@@ -1969,11 +1969,11 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: ../shop/orders.py:132
+#: ../shop/orders.py:136
 msgid "Total paid"
 msgstr ""
 
-#: ../shop/orders.py:130
+#: ../shop/orders.py:134
 #: ../shop/ui/orders/bill.xml.en:96
 msgid "Total price"
 msgstr ""

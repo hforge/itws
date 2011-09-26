@@ -55,7 +55,7 @@ class Payment(DBResource):
         payment_schema,
         name=String(stored=True, indexed=True, title=MSG(u'Reference')),
         mtime=DateTime(source='metadata', indexed=True, stored=True,
-            title=MSG(u'Dernière modification')),
+            title=MSG(u'Last modified')),
         amount=Decimal(source='metadata', title=MSG(u'Amount'),
             indexed=True, stored=True),
         customer_id=Users_Enumerate(source='metadata', title=MSG(u'Customer id')),
