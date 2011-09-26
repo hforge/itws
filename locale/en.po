@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-09-26 12:09+CET\n"
+"POT-Creation-Date: 2011-09-26 13:09+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -478,6 +478,10 @@ msgstr ""
 
 #: ../shop/product.py:169
 msgid "Buyable products on shop"
+msgstr ""
+
+#: ../shop/product.py:121
+msgid "Buyable?"
 msgstr ""
 
 #: ../shop/paybox.py:98
@@ -1647,7 +1651,7 @@ msgstr ""
 msgid "Order top"
 msgstr ""
 
-#: ../shop/orders.py:385 ../shop/order_views.py:300
+#: ../shop/orders.py:385 ../shop/shop.py:62 ../shop/order_views.py:300
 msgid "Orders"
 msgstr ""
 
@@ -1829,7 +1833,7 @@ msgstr ""
 msgid "Payment validated on your order #{order_name}"
 msgstr ""
 
-#: ../shop/payments_views.py:84 ../shop/order_views.py:86
+#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:86
 msgid "Payments"
 msgstr ""
 
@@ -1867,7 +1871,7 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: ../shop/product.py:118
+#: ../shop/product.py:119
 msgid "Price"
 msgstr ""
 
@@ -1883,7 +1887,7 @@ msgstr ""
 msgid "Product title"
 msgstr ""
 
-#: ../shop/order_views.py:198
+#: ../shop/shop.py:66 ../shop/order_views.py:198
 msgid "Products"
 msgstr ""
 
@@ -1960,7 +1964,7 @@ msgstr ""
 msgid "Recursively"
 msgstr ""
 
-#: ../shop/product.py:72 ../shop/orders.py:133
+#: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:133
 #: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:97
 #: ../shop/payment.py:56
 msgid "Reference"
@@ -2094,7 +2098,7 @@ msgid "Shop"
 msgstr ""
 
 #: ../shop/shop.py:54
-msgid "Shop devises"
+msgid "Shop currencies"
 msgstr ""
 
 #: ../shop/taxes.py:78
@@ -2229,7 +2233,7 @@ msgstr ""
 msgid "Target"
 msgstr ""
 
-#: ../shop/product.py:116 ../shop/orders.py:112 ../shop/taxes.py:51
+#: ../shop/product.py:117 ../shop/orders.py:112 ../shop/taxes.py:51
 msgid "Tax"
 msgstr ""
 
@@ -2240,6 +2244,10 @@ msgstr ""
 
 #: ../shop/taxes.py:58
 msgid "Tax value"
+msgstr ""
+
+#: ../shop/shop.py:68
+msgid "Taxes"
 msgstr ""
 
 #: ../shop/paybox.py:203

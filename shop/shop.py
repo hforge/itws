@@ -51,7 +51,7 @@ class Shop(Folder):
         Folder.class_schema,
         notification_mails=Unicode(source='metadata',
             widget=MultilineWidget, title=MSG(u'Notification mails')),
-        devise=Devises(source='metadata', title=MSG(u'Shop devises'),
+        devise=Devises(source='metadata', title=MSG(u'Shop currencies'),
                        mandatory=True, default='978'))
     __fixed_handlers__ = Folder.__fixed_handlers__ + [
         'orders', 'payments', 'products', 'taxes']

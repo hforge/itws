@@ -111,14 +111,15 @@ class Product(Folder, WorkflowAware):
 
     class_id = 'product'
     class_schema = merge_dicts(Folder.class_schema,
-                    WorkflowAware.class_schema,
-                    reference=String(source='metadata', indexed=True),
-                    tax=TaxesEnumerate(source='metadata', title=MSG(u'Tax'),
-                          has_empty_option=False, css='tax-widget'),
-                    pre_tax_price=Decimal(source='metadata', title=MSG(u'Price'),
-                        widget=PriceWidget),
-                    is_buyable=Boolean(source='metadata',
-                                   indexed=True, stored=True))
+        WorkflowAware.class_schema,
+        reference=String(source='metadata', indexed=True,
+            title=MSG(u'Reference')),
+        tax=TaxesEnumerate(source='metadata', title=MSG(u'Tax'),
+            has_empty_option=False, css='tax-widget'),
+        pre_tax_price=Decimal(source='metadata', title=MSG(u'Price'),
+            widget=PriceWidget),
+        is_buyable=Boolean(source='metadata', title=MSG(u'Buyable?'),
+            indexed=True, stored=True))
 
     def get_catalog_values(self):
         values = super(Product, self).get_catalog_values()
@@ -152,7 +153,6 @@ class Product(Folder, WorkflowAware):
             return decimal(1)
         tax = self.get_resource(tax)
         return tax.get_property('tax_value')
-
 
 
     # Views

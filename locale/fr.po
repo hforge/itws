@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-09-26 12:09+CET\n"
+"POT-Creation-Date: 2011-09-26 13:09+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -490,6 +490,10 @@ msgstr "Parcourir"
 #: ../shop/product.py:169
 msgid "Buyable products on shop"
 msgstr "Liste des produits en vente"
+
+#: ../shop/product.py:121
+msgid "Buyable?"
+msgstr "En vente ?"
 
 #: ../shop/paybox.py:98
 msgid "CB"
@@ -1700,7 +1704,7 @@ msgstr "Ordonner les boîtes latérales"
 msgid "Order top"
 msgstr "Placer en haut"
 
-#: ../shop/orders.py:385 ../shop/order_views.py:300
+#: ../shop/orders.py:385 ../shop/shop.py:62 ../shop/order_views.py:300
 msgid "Orders"
 msgstr "Commandes"
 
@@ -1885,7 +1889,7 @@ msgstr "Paiement validé"
 msgid "Payment validated on your order #{order_name}"
 msgstr ""
 
-#: ../shop/payments_views.py:84 ../shop/order_views.py:86
+#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:86
 msgid "Payments"
 msgstr "Paiements"
 
@@ -1923,7 +1927,7 @@ msgstr "Prix HT :"
 msgid "Preview"
 msgstr "Aperçu"
 
-#: ../shop/product.py:118
+#: ../shop/product.py:119
 msgid "Price"
 msgstr "Prix"
 
@@ -1939,7 +1943,7 @@ msgstr "Référence produit"
 msgid "Product title"
 msgstr "Nom du produit"
 
-#: ../shop/order_views.py:198
+#: ../shop/shop.py:66 ../shop/order_views.py:198
 msgid "Products"
 msgstr "Produits"
 
@@ -2018,7 +2022,7 @@ msgstr "Enregistrement dupliqué, enregistrement initial remplacé"
 msgid "Recursively"
 msgstr "Récursivement"
 
-#: ../shop/product.py:72 ../shop/orders.py:133
+#: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:133
 #: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:97
 #: ../shop/payment.py:56
 msgid "Reference"
@@ -2155,15 +2159,15 @@ msgstr ""
 
 #: ../shop/shop.py:48
 msgid "Shop"
-msgstr ""
+msgstr "Boutique"
 
 #: ../shop/shop.py:54
-msgid "Shop devises"
-msgstr ""
+msgid "Shop currencies"
+msgstr "Devises"
 
 #: ../shop/taxes.py:78
 msgid "Shop taxes"
-msgstr ""
+msgstr "Taxes"
 
 #: ../bar/map_box.py:127
 msgid "Show a location on Google Maps or OpenStreetMap"
@@ -2296,7 +2300,7 @@ msgstr "Nombre de tag a afficher (0 pour tous les afficher)"
 msgid "Target"
 msgstr "Cible"
 
-#: ../shop/product.py:116 ../shop/orders.py:112 ../shop/taxes.py:51
+#: ../shop/product.py:117 ../shop/orders.py:112 ../shop/taxes.py:51
 msgid "Tax"
 msgstr "TVA"
 
@@ -2308,6 +2312,10 @@ msgstr "TVA"
 #: ../shop/taxes.py:58
 msgid "Tax value"
 msgstr "Montant TVA"
+
+#: ../shop/shop.py:68
+msgid "Taxes"
+msgstr ""
 
 #: ../shop/paybox.py:203
 msgid "Temporary halt of the system"
@@ -2717,7 +2725,7 @@ msgstr ""
 #: ../shop/ui/view.xml.en:8
 msgctxt "heading"
 msgid "Your shop"
-msgstr ""
+msgstr "Votre boutique"
 
 #: ../shop/product.py:168
 msgid "Your shop products"
@@ -3149,9 +3157,6 @@ msgstr ""
 
 #~ msgid "Edit the section"
 #~ msgstr "Éditer la section"
-
-#~ msgid "Enabled?"
-#~ msgstr "Activé ?"
 
 #~ msgctxt "button"
 #~ msgid "External Editor..."
