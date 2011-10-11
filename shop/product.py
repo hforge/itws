@@ -47,8 +47,8 @@ class Product_List(DynamicEnumerate):
         context = get_context()
         root = context.root
         resources = [root.get_resource(brain.abspath)
-                      for brain in root.search(is_buyable=True,
-                          workflow_state='public').get_documents()]
+                     for brain in root.search(is_buyable=True,
+                      workflow_state='public').get_documents(sort_by='name')]
         return [{'name': str(res.get_abspath()),
                  'value': res.get_title()}
                    for res in resources]
