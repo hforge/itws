@@ -42,7 +42,7 @@
         <tr>
           <td class="recherche">
             <form action="/;site_search" method="get">
-              <input name="search_text" type="text" value="${text}" size="15"/>
+              <input name="text" type="text" value="${text}" size="15"/>
               <button class="button-search" type="submit">
                 <span>Search</span>
               </button>

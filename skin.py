@@ -243,7 +243,7 @@ class Skin(BaseSkin):
         namespace['banner'] = banner_ns
 
         # Site search
-        text = context.get_form_value('search_text', type=Unicode)
+        text = context.get_form_value('text', type=Unicode)
         namespace['text'] = text.strip()
 
         # Specific class based on the current resource format
