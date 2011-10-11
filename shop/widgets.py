@@ -54,7 +54,8 @@ class PaymentWays_Widget(Widget):
           <td valign="top">
             <input type="radio" name="${name}"
               id="paymentway-${payment_way/name}"
-              value="${payment_way/name}"/>
+              value="${payment_way/name}"
+              checked="${payment_way/selected}"/>
           </td>
           <td valign="top">
             ${payment_way/value}<br/><br/>
@@ -80,5 +81,9 @@ class PaymentWays_Widget(Widget):
                 'name': payment_way.name,
                 'value': payment_way.get_title(),
                 'description': description,
+                'selected': False,
                 'logo':  payment_way.get_logo(context)})
+        # Select the only possible choice if only one way enabled
+        if len(namespace) == 1:
+            namespace[0]['selected'] = True
         return namespace
