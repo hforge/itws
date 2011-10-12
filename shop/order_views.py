@@ -75,7 +75,7 @@ class Order_ViewBills(FieldsTableFeed_View):
     batch_msg1 = MSG(u"There is 1 bill.")
     batch_msg2 = MSG(u"There are {n} bills.")
 
-    table_fields = ['name', 'title']
+    table_fields = ['title', 'mtime']
 
     search_class_id = 'application/pdf'
     search_cls = PDF
