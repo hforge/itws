@@ -189,7 +189,7 @@ class Order_Top(STLView):
     template = '/ui/shop/orders/order_top.xml'
 
     def get_namespace(self, resource, context):
-        bill = resource.get_resource('bill', soft=True)
+        bill = resource.get_bill()
         return {'name': resource.name,
                 'bill': context.get_link(bill) if bill else None,
                 'is_paid': resource.get_property('is_paid')}
@@ -330,7 +330,7 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
             return OrderState_Template(title=item_resource.get_statename(),
                 link=context.get_link(item_resource), color='#BF0000')
         elif column == 'bill':
-            bill = item_resource.get_resource('bill', soft=True)
+            bill = item_resource.get_bill()
             if bill is None:
                 return None
             return XMLParser("""

@@ -24,6 +24,7 @@ from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Boolean, DateTime, Decimal
 from itools.datatypes import Integer, String, Unicode, URI
 from itools.gettext import MSG
+from itools.handlers import checkid
 from itools.pdf import stl_pmltopdf
 from itools.xml import XMLParser
 from itools.web import get_context
@@ -124,6 +125,7 @@ class Order(WorkflowAware, Folder):
           - ctime
           - customer_id
           - is_order
+        Any PDF put in this folder will be considered as a bill.
     """
     class_id = 'order'
     class_title = MSG(u'Order')
@@ -365,10 +367,19 @@ class Order(WorkflowAware, Folder):
             pdf = stl_pmltopdf(document, namespace=namespace)
         except Exception:
             return None
-        metadata =  {'title': {'en': u'Bill'},
-                     'filename': 'bill.pdf'}
-        self.del_resource('bill', soft=True)
-        return self.make_resource('bill', PDF, body=pdf, **metadata)
+        title = MSG(u'Bill').gettext()
+        name = checkid(title)
+        metadata = {'title': {'en': title}, 'filename': '%s.pdf' % name}
+        self.del_resource(name, soft=True)
+        return self.make_resource(name, PDF, body=pdf, **metadata)
+
+
+    def get_bill(self):
+        bill = None
+        bills = list(self.search_resources(cls=PDF))
+        if bills:
+            bill = bills[0]
+        return bill
 
     ##################################################
     # Views
