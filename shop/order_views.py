@@ -71,6 +71,7 @@ class Order_ViewBills(FieldsTableFeed_View):
     show_resource_title = False
     query_suffix = 'order-bill'
 
+    batch_template = None
     batch_msg1 = MSG(u"There is 1 bill.")
     batch_msg2 = MSG(u"There are {n} bills.")
 
@@ -90,6 +91,7 @@ class Order_ViewPayments(TableFeed_View):
     query_suffix = 'payments'
     table_actions = []
 
+    batch_template = None
     batch_msg1 = MSG(u"There is 1 payment.")
     batch_msg2 = MSG(u"There are {n} payments.")
 
