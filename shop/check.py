@@ -65,13 +65,11 @@ class Check(PaymentWay):
     class_id = 'check'
     class_title = MSG(u'Check')
     class_description = MSG(u'Payment by check')
+    class_logo = None
+
+    payment_class = CheckPayment
 
     # Views
     class_views = ['configure']
-
-    logo = '/ui/shop/payments/paybox/images/logo.png'
-    payment_class = CheckPayment
-
-
 
 register_payment_way(Check)

@@ -390,12 +390,12 @@ class Paybox(PaymentWay):
     class_id = 'paybox'
     class_title = MSG(u'Paybox')
     class_description = MSG(u'Secured payment paybox')
+    class_logo = '/ui/shop/images/secu_en_fondclair.png'
+
+    payment_class = PayboxPayment
 
     # Views
     class_views = ['configure']
-
-    logo = '/ui/shop/payments/paybox/images/logo.png'
-    payment_class = PayboxPayment
 
     # Schema
     base_schema = freeze({
