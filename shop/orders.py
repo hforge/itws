@@ -215,7 +215,12 @@ class Order(WorkflowAware, Folder):
             abspath = resource.get_property('abspath')
             product = context.root.get_resource(abspath, soft=True)
             if product:
-                kw['link'] = context.get_link(product)
+                # Add link only if edit allowed
+                link = None
+                ac = resource.get_access_control()
+                if ac.is_allowed_to_edit(context.user, product):
+                    link = context.get_link(product)
+                kw['link'] = link
             # Add product to list of products
             l.append(kw)
         return l
