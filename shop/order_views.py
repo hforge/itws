@@ -33,6 +33,7 @@ from ikaaro.views import CompositeForm, CompositeView
 # Import from itws
 from itws.views import FieldsAdvance_NewInstance
 from itws.feed_views import TableFeed_View, FieldsTableFeed_View
+from itws.utils import bool_to_img
 
 # Import from shop
 from devises import Devises
@@ -126,7 +127,10 @@ class Order_ViewPayments(TableFeed_View):
         elif column == 'advanced_state':
             return item_resource.get_advanced_state()
         elif column  == 'is_payment_validated':
-            return item_resource.is_payment_validated()
+            value = item_resource.is_payment_validated()
+            if value:
+                return bool_to_img(value)
+            return u'Régler', '%s/;payment_form' % brain.name
         raise NotImplementedError
 
 

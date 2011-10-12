@@ -27,6 +27,7 @@ from itools.datatypes import Date, DateTime, PathDataType
 from itools.gettext import MSG
 from itools.stl import stl
 from itools.web import get_context, INFO, FormError
+from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import XHTMLBody
@@ -47,6 +48,14 @@ def get_path_and_view(path):
         path = path[:-1]
 
     return path, view
+
+
+def bool_to_img(value):
+    if value is True:
+        img = '/ui/itws-icons/16x16/yes.png'
+    else:
+        img = '/ui/itws-icons/16x16/no.png'
+    return XMLParser('<img src="%s"/>' % img)
 
 
 ############################################################
