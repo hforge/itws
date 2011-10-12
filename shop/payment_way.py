@@ -91,6 +91,15 @@ class PaymentWay(Folder):
         # Autofill resource
         kw['title'] = {'en': self.class_title.gettext()}
         kw['description'] = {'en': self.class_description.gettext()}
+        # Logo
+        logo = self.class_logo
+        if logo is not None:
+            from ikaaro.file import Image
+            filename = logo.rsplit('/', 1)[-1]
+            handler = self.get_resource(logo)
+            self.make_resource('logo_en', Image, body=handler.to_str(),
+                filename=filename, state='public')
+            kw['logo'] = {'en': 'logo_en'}
         super(PaymentWay, self).init_resource(**kw)
 
 
