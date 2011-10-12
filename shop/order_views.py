@@ -82,7 +82,7 @@ class Order_ViewBills(FieldsTableFeed_View):
 
 class Order_ViewPayments(TableFeed_View):
 
-    access = 'is_admin'
+    access = 'is_allowed_to_view'
     title = MSG(u'Payments')
 
     show_resource_title = False
