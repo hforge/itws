@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-09-26 13:09+CET\n"
+"POT-Creation-Date: 2011-10-13 14:10+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,7 +83,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../shop/utils.py:66 ../shop/order_views.py:125
+#: ../shop/utils.py:66 ../shop/order_views.py:128
 msgid "%s %s"
 msgstr ""
 
@@ -326,11 +326,11 @@ msgstr ""
 msgid "Add a box"
 msgstr ""
 
-#: ../shop/order_views.py:50
+#: ../shop/order_views.py:51
 msgid "Add a line"
 msgstr ""
 
-#: ../shop/order_views.py:137
+#: ../shop/order_views.py:143
 msgid "Add a payment"
 msgstr ""
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Advanced State"
 msgstr ""
 
-#: ../shop/order_views.py:106
+#: ../shop/order_views.py:109
 msgid "Advanced state"
 msgstr ""
 
@@ -394,8 +394,8 @@ msgid "All feeds"
 msgstr ""
 
 #: ../shop/payment.py:59 ../shop/payment_views.py:45
-#: ../shop/payments_views.py:120 ../shop/order_views.py:99
-#: ../shop/order_views.py:144
+#: ../shop/payments_views.py:120 ../shop/order_views.py:102
+#: ../shop/order_views.py:150
 msgid "Amount"
 msgstr ""
 
@@ -444,11 +444,11 @@ msgstr ""
 msgid "Batch size"
 msgstr ""
 
-#: ../shop/orders.py:144 ../shop/orders.py:363 ../shop/ui/orders/bill.xml.en:5
+#: ../shop/orders.py:146 ../shop/orders.py:370 ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr ""
 
-#: ../shop/order_views.py:67
+#: ../shop/order_views.py:68
 msgid "Bills"
 msgstr ""
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: ../shop/orders.py:444
+#: ../shop/orders.py:460
 msgid "Configure Order module"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr ""
 msgid "Create a new central box"
 msgstr ""
 
-#: ../shop/order_views.py:237
+#: ../shop/order_views.py:243
 msgid "Create a new order"
 msgstr ""
 
@@ -672,11 +672,11 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: ../shop/orders.py:141
+#: ../shop/orders.py:143
 msgid "Creation date"
 msgstr ""
 
-#: ../shop/orders.py:138 ../shop/payment.py:62
+#: ../shop/orders.py:140 ../shop/payment.py:62
 msgid "Currency"
 msgstr ""
 
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Custom data"
 msgstr ""
 
-#: ../shop/orders.py:143 ../shop/ui/orders/bill.xml.en:37
+#: ../shop/orders.py:145 ../shop/ui/orders/bill.xml.en:37
 msgid "Customer"
 msgstr ""
 
@@ -822,7 +822,7 @@ msgstr ""
 msgid "Edit address"
 msgstr ""
 
-#: ../utils.py:104
+#: ../utils.py:113
 msgid "Edit box '{title}'"
 msgstr ""
 
@@ -915,7 +915,7 @@ msgstr ""
 msgid "Error of coherence"
 msgstr ""
 
-#: ../shop/order_views.py:289
+#: ../shop/order_views.py:295
 msgid "Error: Can't merge PDF"
 msgstr ""
 
@@ -939,7 +939,7 @@ msgstr ""
 msgid "Expiry date of the card passed"
 msgstr ""
 
-#: ../shop/order_views.py:272
+#: ../shop/order_views.py:278
 msgid "Export Orders"
 msgstr ""
 
@@ -1023,11 +1023,11 @@ msgstr ""
 msgid "Force thumbnail size"
 msgstr ""
 
-#: ../utils.py:248
+#: ../utils.py:257
 msgid "Form"
 msgstr ""
 
-#: ../feed_views/collection.py:69 ../shop/order_views.py:275
+#: ../feed_views/collection.py:69 ../shop/order_views.py:281
 #: ../feed_views/browse_navigator.py:59
 msgid "Format"
 msgstr ""
@@ -1087,7 +1087,7 @@ msgctxt "div"
 msgid "Here you can create and translate them."
 msgstr ""
 
-#: ../shop/orders.py:83
+#: ../shop/orders.py:84
 msgid ""
 "Hi,\n"
 "A new order has been done in your shop.\n"
@@ -1098,7 +1098,7 @@ msgid ""
 "  "
 msgstr ""
 
-#: ../shop/orders.py:91
+#: ../shop/orders.py:92
 msgid ""
 "Hi,\n"
 "Payment has been validated on order #{order_name}\n"
@@ -1109,7 +1109,7 @@ msgid ""
 "  "
 msgstr ""
 
-#: ../shop/orders.py:70
+#: ../shop/orders.py:71
 msgid ""
 "Hi,\n"
 "Payment has been validated on your order #{order_name}\n"
@@ -1120,7 +1120,7 @@ msgid ""
 "  "
 msgstr ""
 
-#: ../shop/orders.py:62
+#: ../shop/orders.py:63
 msgid ""
 "Hi,\n"
 "Your order number #{order_name} has been recorded.\n"
@@ -1220,7 +1220,7 @@ msgstr ""
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../shop/orders.py:390 ../shop/payments.py:44
+#: ../shop/orders.py:406 ../shop/payments.py:44
 msgid "Index"
 msgstr ""
 
@@ -1232,11 +1232,7 @@ msgstr ""
 msgid "Internal server error"
 msgstr ""
 
-#: ../shop/paybox.py:158
-msgid "Invalid amoint"
-msgstr ""
-
-#: ../shop/check.py:36
+#: ../shop/check.py:36 ../shop/paybox.py:158
 msgid "Invalid amount"
 msgstr ""
 
@@ -1256,7 +1252,7 @@ msgstr ""
 msgid "Invalid transaction"
 msgstr ""
 
-#: ../utils.py:276
+#: ../utils.py:285
 msgid "Invalid value."
 msgstr ""
 
@@ -1272,7 +1268,7 @@ msgstr ""
 msgid "Is active"
 msgstr ""
 
-#: ../shop/orders.py:145 ../shop/payment.py:63
+#: ../shop/orders.py:147 ../shop/payment.py:63
 msgid "Is paid ?"
 msgstr ""
 
@@ -1334,7 +1330,7 @@ msgctxt "title attribute"
 msgid "Libsoup"
 msgstr ""
 
-#: ../shop/order_views.py:53
+#: ../shop/order_views.py:54
 msgid "Line"
 msgstr ""
 
@@ -1408,7 +1404,7 @@ msgstr ""
 msgid "Manage home page content"
 msgstr ""
 
-#: ../shop/order_views.py:162 ../shop/order_views.py:226
+#: ../shop/order_views.py:168 ../shop/order_views.py:232
 msgid "Manage order"
 msgstr ""
 
@@ -1497,7 +1493,7 @@ msgid ""
 "be tagged"
 msgstr ""
 
-#: ../utils.py:204
+#: ../utils.py:213
 msgid "No"
 msgstr ""
 
@@ -1524,11 +1520,11 @@ msgstr ""
 msgid "Notification mails"
 msgstr ""
 
-#: ../shop/orders.py:76
+#: ../shop/orders.py:77
 msgid "Notification: New order #{order_name} in your shop"
 msgstr ""
 
-#: ../shop/orders.py:85
+#: ../shop/orders.py:86
 msgid "Notification: Payment validated on order #{order_name}"
 msgstr ""
 
@@ -1585,7 +1581,7 @@ msgstr ""
 msgid "Operation successful"
 msgstr ""
 
-#: ../shop/orders.py:129 ../shop/payment.py:65
+#: ../shop/orders.py:131 ../shop/payment.py:65
 msgid "Order"
 msgstr ""
 
@@ -1609,7 +1605,7 @@ msgstr ""
 msgid "Order central boxes"
 msgstr ""
 
-#: ../shop/orders.py:56
+#: ../shop/orders.py:57
 msgid "Order confirmation"
 msgstr ""
 
@@ -1617,11 +1613,11 @@ msgstr ""
 msgid "Order date:"
 msgstr ""
 
-#: ../shop/order_views.py:249
+#: ../shop/order_views.py:255
 msgid "Order has been created"
 msgstr ""
 
-#: ../shop/orders.py:386
+#: ../shop/orders.py:402
 msgid "Order module"
 msgstr ""
 
@@ -1635,7 +1631,7 @@ msgctxt "heading"
 msgid "Order n°${name}"
 msgstr ""
 
-#: ../shop/orders.py:100
+#: ../shop/orders.py:101
 msgid "Order product"
 msgstr ""
 
@@ -1651,7 +1647,7 @@ msgstr ""
 msgid "Order top"
 msgstr ""
 
-#: ../shop/orders.py:385 ../shop/shop.py:62 ../shop/order_views.py:300
+#: ../shop/orders.py:401 ../shop/shop.py:62 ../shop/order_views.py:306
 msgid "Orders"
 msgstr ""
 
@@ -1660,7 +1656,7 @@ msgctxt "link"
 msgid "Orders"
 msgstr ""
 
-#: ../shop/orders.py:106
+#: ../shop/orders.py:107
 msgid "Original product"
 msgstr ""
 
@@ -1704,15 +1700,15 @@ msgstr ""
 msgid "PBX_TOTAL value is invalid"
 msgstr ""
 
-#: ../shop/order_views.py:266
+#: ../shop/order_views.py:272
 msgid "PDF"
 msgstr ""
 
-#: ../shop/orders.py:392
+#: ../shop/orders.py:408
 msgid "PDF Logo"
 msgstr ""
 
-#: ../shop/orders.py:393
+#: ../shop/orders.py:409
 msgid "PDF Signature"
 msgstr ""
 
@@ -1780,7 +1776,7 @@ msgstr ""
 msgid "Payment Module"
 msgstr ""
 
-#: ../shop/order_views.py:98 ../shop/order_views.py:145
+#: ../shop/order_views.py:101 ../shop/order_views.py:151
 msgid "Payment Way"
 msgstr ""
 
@@ -1829,11 +1825,11 @@ msgstr ""
 msgid "Payment validated"
 msgstr ""
 
-#: ../shop/orders.py:64
+#: ../shop/orders.py:65
 msgid "Payment validated on your order #{order_name}"
 msgstr ""
 
-#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:86
+#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:88
 msgid "Payments"
 msgstr ""
 
@@ -1850,7 +1846,7 @@ msgstr ""
 msgid "Please choose a payment mode"
 msgstr ""
 
-#: ../shop/order_views.py:138
+#: ../shop/order_views.py:144
 msgid "Please follow the payment procedure below."
 msgstr ""
 
@@ -1858,7 +1854,7 @@ msgstr ""
 msgid "Powered by itws"
 msgstr ""
 
-#: ../shop/orders.py:111
+#: ../shop/orders.py:112
 msgid "Pre tax Price"
 msgstr ""
 
@@ -1879,15 +1875,15 @@ msgstr ""
 msgid "Price (With taxes)"
 msgstr ""
 
-#: ../shop/orders.py:107
+#: ../shop/orders.py:108
 msgid "Product reference"
 msgstr ""
 
-#: ../shop/orders.py:108
+#: ../shop/orders.py:109
 msgid "Product title"
 msgstr ""
 
-#: ../shop/shop.py:66 ../shop/order_views.py:198
+#: ../shop/shop.py:66 ../shop/order_views.py:204
 msgid "Products"
 msgstr ""
 
@@ -1922,7 +1918,7 @@ msgstr ""
 msgid "Qty"
 msgstr ""
 
-#: ../shop/orders.py:109 ../shop/order_views.py:54
+#: ../shop/orders.py:110 ../shop/order_views.py:55
 msgid "Quantity"
 msgstr ""
 
@@ -1964,8 +1960,8 @@ msgstr ""
 msgid "Recursively"
 msgstr ""
 
-#: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:133
-#: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:97
+#: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:135
+#: ../shop/ui/orders/bill.xml.en:66 ../shop/order_views.py:100
 #: ../shop/payment.py:56
 msgid "Reference"
 msgstr ""
@@ -2018,6 +2014,10 @@ msgstr ""
 
 #: ../control_panel.py:123
 msgid "Robots.txt"
+msgstr ""
+
+#: ../shop/order_views.py:135
+msgid "Régler"
 msgstr ""
 
 #: ../shop/paybox.py:106
@@ -2233,7 +2233,7 @@ msgstr ""
 msgid "Target"
 msgstr ""
 
-#: ../shop/product.py:117 ../shop/orders.py:112 ../shop/taxes.py:51
+#: ../shop/product.py:117 ../shop/orders.py:113 ../shop/taxes.py:51
 msgid "Tax"
 msgstr ""
 
@@ -2276,11 +2276,11 @@ msgctxt "div"
 msgid "There are errors in this RSS:"
 msgstr ""
 
-#: ../shop/order_views.py:74
+#: ../shop/order_views.py:76
 msgid "There are {n} bills."
 msgstr ""
 
-#: ../shop/order_views.py:305
+#: ../shop/order_views.py:311
 msgid "There are {n} orders"
 msgstr ""
 
@@ -2292,15 +2292,15 @@ msgstr ""
 msgid "There are {n} payments mode."
 msgstr ""
 
-#: ../shop/order_views.py:93
+#: ../shop/order_views.py:96
 msgid "There are {n} payments."
 msgstr ""
 
-#: ../shop/order_views.py:73
+#: ../shop/order_views.py:75
 msgid "There is 1 bill."
 msgstr ""
 
-#: ../shop/order_views.py:304
+#: ../shop/order_views.py:310
 msgid "There is 1 order"
 msgstr ""
 
@@ -2312,7 +2312,7 @@ msgstr ""
 msgid "There is 1 payment mode."
 msgstr ""
 
-#: ../shop/order_views.py:92
+#: ../shop/order_views.py:95
 msgid "There is 1 payment."
 msgstr ""
 
@@ -2359,7 +2359,7 @@ msgctxt "paragraph"
 msgid "This order hasn't been payed yet."
 msgstr ""
 
-#: ../shop/order_views.py:59
+#: ../shop/order_views.py:60
 msgid "This product has been added to your order"
 msgstr ""
 
@@ -2376,7 +2376,7 @@ msgid ""
 "This tag cloud will display only the tags from selected types of content"
 msgstr ""
 
-#: ../utils.py:186
+#: ../utils.py:195
 msgid ""
 "This {title} uses pending/private resources please go to <a href=\"{path}/;"
 "backlinks\">backlinks interface</a>."
@@ -2460,7 +2460,7 @@ msgctxt "emphasis"
 msgid "Total amount"
 msgstr ""
 
-#: ../shop/orders.py:136
+#: ../shop/orders.py:138
 msgid "Total paid"
 msgstr ""
 
@@ -2469,7 +2469,7 @@ msgctxt "table cell"
 msgid "Total paid"
 msgstr ""
 
-#: ../shop/orders.py:134 ../shop/ui/orders/bill.xml.en:96
+#: ../shop/orders.py:136 ../shop/ui/orders/bill.xml.en:96
 msgid "Total price"
 msgstr ""
 
@@ -2522,7 +2522,7 @@ msgstr ""
 msgid "Type of content to display"
 msgstr ""
 
-#: ../utils.py:348
+#: ../utils.py:357
 msgid "UPDATE CACHE"
 msgstr ""
 
@@ -2572,7 +2572,7 @@ msgstr ""
 msgid "VISA"
 msgstr ""
 
-#: ../shop/order_views.py:100
+#: ../shop/order_views.py:103
 msgid "Validated ?"
 msgstr ""
 
@@ -2581,7 +2581,7 @@ msgstr ""
 #: ../feed_views/browse_navigator.py:82 ../bar/bar_aware.py:147
 #: ../webpage_views.py:61 ../shop/shop.py:41 ../bar/tags.py:36
 #: ../feed_views/base.py:67 ../turning_footer.py:50 ../bar/feed_box.py:90
-#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:213 ../news/news_views.py:44
+#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:219 ../news/news_views.py:44
 #: ../news/news_views.py:95
 msgid "View"
 msgstr ""
@@ -2612,11 +2612,11 @@ msgctxt "title attribute"
 msgid "Xapian"
 msgstr ""
 
-#: ../utils.py:204
+#: ../utils.py:213
 msgid "Yes"
 msgstr ""
 
-#: ../utils.py:118
+#: ../utils.py:127
 msgid ""
 "You are linking to {n} unpublished resources, some users may not be able to "
 "see them.<br/>See <a href=\"{path}/;backlinks\">backlinks interface</a>."

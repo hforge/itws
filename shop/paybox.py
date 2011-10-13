@@ -155,7 +155,7 @@ class PayboxStatus(Enumerate):
         {'name': '00108',
          'value': MSG(u"Approve after holder identification")},
         {'name': '00112', 'value': MSG(u"Invalid transaction")},
-        {'name': '00113', 'value': MSG(u"Invalid amoint")},
+        {'name': '00113', 'value': MSG(u"Invalid amount")},
         {'name': '00114', 'value': MSG(u"Invalid holder number")},
         {'name': '00115', 'value': MSG(u"Card issuer unknown")},
         {'name': '00117', 'value': MSG(u"Client cancellation")},
