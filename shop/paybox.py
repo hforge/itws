@@ -240,7 +240,7 @@ class PayboxStatus(Enumerate):
 
 class PayboxPayment_PaymentForm(BaseView):
 
-    access = 'is_authenticated'
+    access = 'is_allowed_to_view'
     title = MSG(u'Pay')
 
     def GET(self, resource, context):

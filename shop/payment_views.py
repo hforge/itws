@@ -98,7 +98,7 @@ class Payment_Edit(FieldsAutomaticEditView):
 
 class Payment_End(STLView):
 
-    access = 'is_authenticated'
+    access = 'is_allowed_to_view'
     template = '/ui/shop/payments/payment_end.xml'
 
     def get_namespace(self, resource, context):
