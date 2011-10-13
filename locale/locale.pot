@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-13 14:10+CET\n"
+"POT-Creation-Date: 2011-10-13 16:10+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,7 +200,7 @@ msgid "All feeds"
 msgstr ""
 
 #: ../shop/payment.py:59
-#: ../shop/payment_views.py:45
+#: ../shop/payment_views.py:46
 #: ../shop/payments_views.py:120
 #: ../shop/order_views.py:102
 #: ../shop/order_views.py:150
@@ -2336,6 +2336,11 @@ msgctxt "legend"
 msgid "How to add a box in the sidebar ?"
 msgstr ""
 
+#: ../shop/ui/payments/payment_introduction.xml.en:8
+msgctxt "legend"
+msgid "Informations about payment #${name}"
+msgstr ""
+
 #: ../ui/common/Tags_tagcloud.xml.en:12
 msgctxt "li"
 msgid "You can <g id='1'>add a new Tag</g>."
@@ -2496,9 +2501,19 @@ msgctxt "paragraph"
 msgid "Discover <g id='21'>iScrib</g>, a tool to create your data collection applications in just a clic using your specification on a simple spreadsheet !"
 msgstr ""
 
+#: ../shop/ui/payments/payment_introduction.xml.en:14
+msgctxt "paragraph"
+msgid "Order:"
+msgstr ""
+
 #: ../ui/about/view.xml.en:58
 msgctxt "paragraph"
 msgid "Our technical expertise brings you the opportunity of a leadership by innovation and helps improve productivity by thigh integration with your existing information system."
+msgstr ""
+
+#: ../shop/ui/payments/payment_introduction.xml.en:10
+msgctxt "paragraph"
+msgid "Payment way:"
 msgstr ""
 
 #: ../shop/ui/orders/order_top.xml.en:9

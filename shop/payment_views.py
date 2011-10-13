@@ -33,6 +33,7 @@ class Payment_Edit(FieldsAutomaticEditView):
     title = MSG(u'Edit')
 
     base_edit_fields = ['amount', 'is_paid']
+    introduction_template = '/ui/shop/payments/payment_introduction.xml'
 
     @property
     def edit_fields(self):
@@ -53,23 +54,6 @@ class Payment_Edit(FieldsAutomaticEditView):
         return namespace
 
 
-    introduction = make_stl_template("""
-        <fieldset>
-          <legend>Informations about payment #${name}</legend>
-          <p stl:if="payment_way">
-            Payment way:
-            <a href="${payment_way/link}">
-              ${payment_way/title}
-            </a>
-          </p>
-          <p stl:if="order">
-            Order:
-            <a href="${order/link}">
-             ${order/title}
-            </a>
-          </p>
-        </fieldset>""")
-
     def get_introduction(self, resource, context):
         # Get payement way
         payment_way = resource.get_payment_way()
@@ -84,7 +68,8 @@ class Payment_Edit(FieldsAutomaticEditView):
         # Build namespace
         namespace = {'name': resource.name,
                      'order': order, 'payment_way': payment_way}
-        return stl(events=self.introduction, namespace=namespace)
+        template = resource.get_resource(self.introduction_template)
+        return stl(template, namespace=namespace)
 
 
     def action(self, resource, context, form):

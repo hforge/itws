@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-10-13 14:10+CET\n"
+"POT-Creation-Date: 2011-10-13 16:10+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -403,7 +403,7 @@ msgstr "État avancé"
 msgid "All feeds"
 msgstr "Tous"
 
-#: ../shop/payment.py:59 ../shop/payment_views.py:45
+#: ../shop/payment.py:59 ../shop/payment_views.py:46
 #: ../shop/payments_views.py:120 ../shop/order_views.py:102
 #: ../shop/order_views.py:150
 msgid "Amount"
@@ -1274,6 +1274,11 @@ msgstr ""
 msgid "Index"
 msgstr "Index"
 
+#: ../shop/ui/payments/payment_introduction.xml.en:8
+msgctxt "legend"
+msgid "Informations about payment #${name}"
+msgstr "Informations sur le paiement #${name}"
+
 #: ../shop/paybox.py:183
 msgid "Insufficient funds or over credit limit"
 msgstr "Fonds Insuffisants ou dépassant la limite autorisée"
@@ -1700,6 +1705,11 @@ msgstr "Ordonner les boîtes latérales"
 msgid "Order top"
 msgstr "Placer en haut"
 
+#: ../shop/ui/payments/payment_introduction.xml.en:14
+msgctxt "paragraph"
+msgid "Order:"
+msgstr "Commande :"
+
 #: ../shop/orders.py:401 ../shop/shop.py:62 ../shop/order_views.py:306
 msgid "Orders"
 msgstr "Commandes"
@@ -1884,6 +1894,11 @@ msgstr "Paiement validé"
 #: ../shop/orders.py:65
 msgid "Payment validated on your order #{order_name}"
 msgstr ""
+
+#: ../shop/ui/payments/payment_introduction.xml.en:10
+msgctxt "paragraph"
+msgid "Payment way:"
+msgstr "Moyen de paiement :"
 
 #: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:88
 msgid "Payments"
