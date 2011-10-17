@@ -1338,6 +1338,10 @@ msgstr ""
 msgid "Last News"
 msgstr ""
 
+#: ../feed_views/futur.py:87
+msgid "Last change"
+msgstr ""
+
 #: ../shop/payment.py:58
 msgid "Last modified"
 msgstr ""

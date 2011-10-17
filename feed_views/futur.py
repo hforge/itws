@@ -16,6 +16,7 @@
 
 # Import from itools
 from itools.datatypes import Unicode
+from itools.gettext import MSG
 
 # Import from ikaaro
 from ikaaro.autoform import get_default_widget
@@ -82,6 +83,8 @@ class FieldsTableFeed_View(BaseFieldsFeed_View, TableFeed_View):
             else:
                 datatype = schema[name]
                 title = getattr(datatype, 'title', name)
+                if name == 'mtime' and title == name:
+                    title = MSG(u'Last change')
                 columns.append((name, title))
         return columns
 
