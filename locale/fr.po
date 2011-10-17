@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-10-17 12:10+CET\n"
+"POT-Creation-Date: 2011-10-17 13:10+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -84,7 +84,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../shop/utils.py:66 ../shop/order_views.py:129
+#: ../shop/utils.py:66 ../shop/order_views.py:137
 msgid "%s %s"
 msgstr ""
 
@@ -344,7 +344,7 @@ msgstr "Ajouter une boîte"
 msgid "Add a line"
 msgstr "Ajouter une ligne"
 
-#: ../shop/order_views.py:144
+#: ../shop/order_views.py:152
 msgid "Add a payment"
 msgstr "Ajouter un paiement"
 
@@ -399,7 +399,7 @@ msgstr "Avancé"
 msgid "Advanced State"
 msgstr "État avancé"
 
-#: ../shop/order_views.py:110
+#: ../shop/order_views.py:118
 msgid "Advanced state"
 msgstr "État avancé"
 
@@ -408,8 +408,8 @@ msgid "All feeds"
 msgstr "Tous"
 
 #: ../shop/payment.py:59 ../shop/payment_views.py:46
-#: ../shop/payments_views.py:120 ../shop/order_views.py:103
-#: ../shop/order_views.py:151
+#: ../shop/payments_views.py:120 ../shop/order_views.py:111
+#: ../shop/order_views.py:159
 msgid "Amount"
 msgstr "Montant"
 
@@ -458,11 +458,11 @@ msgstr "Titre de la bannière"
 msgid "Batch size"
 msgstr "Nombre d'éléments affichés"
 
-#: ../shop/orders.py:146 ../shop/orders.py:375 ../shop/ui/orders/bill.xml.en:5
+#: ../shop/orders.py:146 ../shop/orders.py:395 ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr "Facture"
 
-#: ../shop/order_views.py:228
+#: ../shop/order_views.py:236
 msgid "Bill generated again."
 msgstr "Facture générée à nouveau."
 
@@ -609,7 +609,7 @@ msgstr "Vue configuration"
 msgid "Configure"
 msgstr "Configurer"
 
-#: ../shop/orders.py:468
+#: ../shop/orders.py:488
 msgid "Configure Order module"
 msgstr "Configurer le module commandes"
 
@@ -675,7 +675,7 @@ msgstr "Créer un nouveau site web ITWS"
 msgid "Create a new central box"
 msgstr "Créer une nouvelle boîte centrale"
 
-#: ../shop/order_views.py:259
+#: ../shop/order_views.py:267
 msgid "Create a new order"
 msgstr "Créer une nouvelle commande"
 
@@ -933,7 +933,7 @@ msgstr ""
 msgid "Error of coherence"
 msgstr ""
 
-#: ../shop/order_views.py:311
+#: ../shop/order_views.py:319
 msgid "Error: Can't merge PDF"
 msgstr "Erreur: Impossible de fusionner les PDF"
 
@@ -957,7 +957,7 @@ msgstr "Date d'expiration incorrecte"
 msgid "Expiry date of the card passed"
 msgstr "Date d'expiration de la carte dépassée"
 
-#: ../shop/order_views.py:294
+#: ../shop/order_views.py:302
 msgid "Export Orders"
 msgstr "Exporter les commandes"
 
@@ -1045,7 +1045,7 @@ msgstr "Forcer la taille de l'aperçu"
 msgid "Form"
 msgstr "Formulaire"
 
-#: ../feed_views/collection.py:69 ../shop/order_views.py:297
+#: ../feed_views/collection.py:69 ../shop/order_views.py:305
 #: ../feed_views/browse_navigator.py:59
 msgid "Format"
 msgstr "Format"
@@ -1079,9 +1079,9 @@ msgstr "Galerie"
 msgid "Gallery view"
 msgstr "Vue galerie"
 
-#: ../shop/order_views.py:221
+#: ../shop/order_views.py:229
 msgid "Generate bill again (overwrite previous one)"
-msgstr ""
+msgstr "Générer à nouveau la facture (en écrasant l'ancienne)"
 
 #: ../ui/news/newsletter.xml.en:69
 msgctxt "span"
@@ -1274,7 +1274,7 @@ msgstr "Lien de l'image"
 msgid "Image Path"
 msgstr "Chemin de l'image"
 
-#: ../shop/order_views.py:227
+#: ../shop/order_views.py:235
 msgid "Impossible action."
 msgstr ""
 
@@ -1286,7 +1286,7 @@ msgstr ""
 msgid "Incident in the initiating domain"
 msgstr ""
 
-#: ../shop/orders.py:411 ../shop/payments.py:44
+#: ../shop/orders.py:431 ../shop/payments.py:44
 msgid "Index"
 msgstr "Index"
 
@@ -1475,7 +1475,7 @@ msgstr "Gérer toutes les commandes"
 msgid "Manage home page content"
 msgstr "Gérer le contenu de la page d'accueil"
 
-#: ../shop/order_views.py:169 ../shop/order_views.py:248
+#: ../shop/order_views.py:177 ../shop/order_views.py:256
 msgid "Manage order"
 msgstr "Gérer la commande"
 
@@ -1683,11 +1683,11 @@ msgstr "Ordonner les boîtes centrales"
 msgid "Order confirmation"
 msgstr "Confirmation de commande"
 
-#: ../shop/order_views.py:271
+#: ../shop/order_views.py:279
 msgid "Order has been created"
 msgstr "Commande déjà créée"
 
-#: ../shop/orders.py:408
+#: ../shop/orders.py:428
 msgid "Order module"
 msgstr "Module commandes"
 
@@ -1722,7 +1722,7 @@ msgctxt "paragraph"
 msgid "Order:"
 msgstr "Commande :"
 
-#: ../shop/orders.py:407 ../shop/shop.py:62 ../shop/order_views.py:322
+#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:330
 msgid "Orders"
 msgstr "Commandes"
 
@@ -1778,19 +1778,19 @@ msgstr ""
 msgid "PBX_TOTAL value is invalid"
 msgstr ""
 
-#: ../shop/order_views.py:288
+#: ../shop/order_views.py:296
 msgid "PDF"
 msgstr ""
 
-#: ../shop/orders.py:416
+#: ../shop/orders.py:436
 msgid "PDF Company information"
 msgstr ""
 
-#: ../shop/orders.py:414
+#: ../shop/orders.py:434
 msgid "PDF Logo"
 msgstr "Logo PDF"
 
-#: ../shop/orders.py:417
+#: ../shop/orders.py:437
 msgid "PDF Signature"
 msgstr "Signature PDF"
 
@@ -1858,7 +1858,7 @@ msgstr "Moyen de paiement"
 msgid "Payment Module"
 msgstr "Module paiement"
 
-#: ../shop/order_views.py:102 ../shop/order_views.py:152
+#: ../shop/order_views.py:110 ../shop/order_views.py:160
 msgid "Payment Way"
 msgstr "Moyen de paiement"
 
@@ -1916,7 +1916,7 @@ msgctxt "paragraph"
 msgid "Payment way:"
 msgstr "Moyen de paiement :"
 
-#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:89
+#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:97
 msgid "Payments"
 msgstr "Paiements"
 
@@ -1933,7 +1933,7 @@ msgstr "Paiements en mode réel"
 msgid "Please choose a payment mode"
 msgstr "Veuillez choisir un moyen de paiement"
 
-#: ../shop/order_views.py:145
+#: ../shop/order_views.py:153
 msgid "Please follow the payment procedure below."
 msgstr "Veuillez suivre la procédure de paiement ci-dessous."
 
@@ -1954,7 +1954,7 @@ msgstr "Prix HT :"
 msgid "Preview"
 msgstr "Aperçu"
 
-#: ../shop/product.py:119
+#: ../shop/product.py:119 ../shop/ui/orders/bill.xml.en:81
 msgid "Price"
 msgstr "Prix"
 
@@ -1970,7 +1970,7 @@ msgstr "Référence produit"
 msgid "Product title"
 msgstr "Nom du produit"
 
-#: ../shop/shop.py:66 ../shop/order_views.py:205
+#: ../shop/shop.py:66 ../shop/order_views.py:213
 msgid "Products"
 msgstr "Produits"
 
@@ -2054,7 +2054,7 @@ msgid "Ref."
 msgstr "Réf."
 
 #: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:135
-#: ../shop/ui/orders/bill.xml.en:55 ../shop/order_views.py:101
+#: ../shop/ui/orders/bill.xml.en:55 ../shop/order_views.py:109
 #: ../shop/payment.py:56
 msgid "Reference"
 msgstr "Référence"
@@ -2109,7 +2109,7 @@ msgstr "Fichier d'exclusion des robots"
 msgid "Robots.txt"
 msgstr ""
 
-#: ../shop/order_views.py:136
+#: ../shop/order_views.py:144
 msgid "Régler"
 msgstr ""
 
@@ -2382,7 +2382,7 @@ msgstr "Des erreurs ont été détectées dans ce RSS:"
 msgid "There are {n} bills."
 msgstr "{n} factures."
 
-#: ../shop/order_views.py:327
+#: ../shop/order_views.py:335
 msgid "There are {n} orders"
 msgstr "{n} commandes."
 
@@ -2394,7 +2394,7 @@ msgstr "{n} paiements."
 msgid "There are {n} payments mode."
 msgstr "{n} modes de paiement."
 
-#: ../shop/order_views.py:97
+#: ../shop/order_views.py:105
 msgid "There are {n} payments."
 msgstr "{n} paiements."
 
@@ -2402,7 +2402,7 @@ msgstr "{n} paiements."
 msgid "There is 1 bill."
 msgstr "1 facture."
 
-#: ../shop/order_views.py:326
+#: ../shop/order_views.py:334
 msgid "There is 1 order"
 msgstr "1 commande."
 
@@ -2414,7 +2414,7 @@ msgstr "1 paiement."
 msgid "There is 1 payment mode."
 msgstr "1 mode de paiement."
 
-#: ../shop/order_views.py:96
+#: ../shop/order_views.py:104
 msgid "There is 1 payment."
 msgstr "1 paiement."
 
@@ -2556,7 +2556,7 @@ msgstr "Trop de tentatives pour le code secret"
 msgid "Too many attempts at secret card"
 msgstr "Trop de tentatives pour la carte secrète"
 
-#: ../shop/ui/orders/bill.xml.en:61
+#: ../shop/ui/orders/bill.xml.en:61 ../shop/ui/orders/bill.xml.en:87
 msgid "Total"
 msgstr ""
 
@@ -2564,6 +2564,10 @@ msgstr ""
 msgctxt "table cell"
 msgid "Total Price"
 msgstr "Prix total"
+
+#: ../shop/ui/orders/bill.xml.en:83
+msgid "Total VAT inc."
+msgstr "Prix TTC"
 
 #: ../shop/ui/orders/order_view_products.xml.en:35
 msgctxt "emphasis"
@@ -2579,7 +2583,7 @@ msgctxt "table cell"
 msgid "Total paid"
 msgstr "Total payé"
 
-#: ../shop/orders.py:136 ../shop/ui/orders/bill.xml.en:85
+#: ../shop/orders.py:136
 msgid "Total price"
 msgstr "Prix total"
 
@@ -2670,7 +2674,7 @@ msgstr "Utiliser la section courante comme base pour l'arborescence"
 msgid "User Id"
 msgstr "Identifiant du compte"
 
-#: ../shop/ui/orders/bill.xml.en:58
+#: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:82
 msgid "VAT"
 msgstr "TVA"
 
@@ -2678,7 +2682,7 @@ msgstr "TVA"
 msgid "VISA"
 msgstr ""
 
-#: ../shop/order_views.py:104
+#: ../shop/order_views.py:112
 msgid "Validated ?"
 msgstr "Validé ?"
 
@@ -2687,7 +2691,7 @@ msgstr "Validé ?"
 #: ../feed_views/browse_navigator.py:82 ../bar/bar_aware.py:147
 #: ../webpage_views.py:61 ../shop/shop.py:41 ../bar/tags.py:36
 #: ../feed_views/base.py:67 ../turning_footer.py:50 ../bar/feed_box.py:90
-#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:235 ../news/news_views.py:44
+#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:243 ../news/news_views.py:44
 #: ../news/news_views.py:95
 msgid "View"
 msgstr "Voir"

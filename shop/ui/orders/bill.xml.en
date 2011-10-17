@@ -78,11 +78,19 @@
     <pml:table id="table">
       <pml:tr>
         <pml:th width="5cm"/>
-        <pml:th width="5cm"/>
+        <pml:th width="5cm">Price</pml:th>
+        <pml:th width="5cm">VAT</pml:th>
+        <pml:th width="5cm">Total VAT inc.</pml:th>
       </pml:tr>
       <pml:tr>
         <pml:td class="align-right">
-          <pml:b>Total price</pml:b>
+          <pml:b>Total</pml:b>
+        </pml:td>
+        <pml:td>
+          <pml:b>${total_pre_vat}</pml:b>
+        </pml:td>
+        <pml:td>
+          <pml:b>${total_vat}</pml:b>
         </pml:td>
         <pml:td>
           <pml:b>${total_price}</pml:b>

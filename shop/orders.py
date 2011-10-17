@@ -297,7 +297,6 @@ class Order(WorkflowAware, Folder):
             self.set_workflow_state('to-much-paid')
 
 
-
     ##################################################
     # API
     ##################################################
@@ -348,6 +347,21 @@ class Order(WorkflowAware, Folder):
         return results.get_documents()
 
 
+    def get_vat_details(self, context):
+        vat = 0
+        pre_vat = 0
+        query = AndQuery(
+            get_base_path_query(self.get_canonical_path()),
+            PhraseQuery('format', 'order-product'))
+        for brain in context.root.search(query).get_documents():
+            resource = context.root.get_resource(brain.abspath)
+            tax = resource.get_property('tax') / decimal(100)
+            pre_tax_price = resource.get_property('pre_tax_price')
+            pre_vat += pre_tax_price
+            vat += tax * pre_tax_price
+        return pre_vat, vat
+
+
     def generate_bill(self, context):
         """Creates bill as a pdf."""
         # Get template
@@ -367,6 +381,12 @@ class Order(WorkflowAware, Folder):
         namespace['pdf_company'] = XMLParser(company.replace('\n', '<br/>'))
         # Customer
         namespace['customer'] = self.get_customer_namespace(context)
+        # VAT
+        total_pre_vat, total_vat = self.get_vat_details(context)
+        total_pre_vat = self.format_price(get_arrondi(total_pre_vat))
+        total_vat = self.format_price(get_arrondi(total_vat))
+        namespace['total_pre_vat'] = total_pre_vat
+        namespace['total_vat'] = total_vat
         # Build pdf
         try:
             pdf = stl_pmltopdf(document, namespace=namespace)
