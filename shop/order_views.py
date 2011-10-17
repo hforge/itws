@@ -81,6 +81,14 @@ class Order_ViewBills(FieldsTableFeed_View):
     search_class_id = 'application/pdf'
     search_cls = PDF
 
+    def get_item_value(self, resource, context, item, column):
+        if column == 'title':
+            brain, item_resource = item
+            title = item_resource.get_property('title')
+            link = context.get_link(item_resource)
+            return title, '%s/;download' % link
+        proxy = super(Order_ViewBills, self)
+        return proxy.get_item_value(resource, context, item, column)
 
 
 class Order_ViewPayments(TableFeed_View):
