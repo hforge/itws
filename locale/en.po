@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-17 13:10+CET\n"
+"POT-Creation-Date: 2011-10-17 14:10+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1902,7 +1902,7 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: ../shop/product.py:119 ../shop/ui/orders/bill.xml.en:81
+#: ../shop/product.py:119
 msgid "Price"
 msgstr ""
 
@@ -2217,6 +2217,10 @@ msgstr ""
 msgid "Subsections and Webpages TOC"
 msgstr ""
 
+#: ../shop/ui/orders/bill.xml.en:80
+msgid "Subtotal (without VAT)"
+msgstr ""
+
 #: ../shop/paybox.py:178 ../shop/paybox.py:191
 msgid "Suspicion of fraud"
 msgstr ""
@@ -2485,7 +2489,7 @@ msgstr ""
 msgid "Too many attempts at secret card"
 msgstr ""
 
-#: ../shop/ui/orders/bill.xml.en:61 ../shop/ui/orders/bill.xml.en:87
+#: ../shop/ui/orders/bill.xml.en:61
 msgid "Total"
 msgstr ""
 
@@ -2494,7 +2498,7 @@ msgctxt "table cell"
 msgid "Total Price"
 msgstr ""
 
-#: ../shop/ui/orders/bill.xml.en:83
+#: ../shop/ui/orders/bill.xml.en:88
 msgid "Total VAT inc."
 msgstr ""
 
@@ -2603,7 +2607,7 @@ msgstr ""
 msgid "User Id"
 msgstr ""
 
-#: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:82
+#: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:84
 msgid "VAT"
 msgstr ""
 

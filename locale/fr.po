@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-10-17 13:10+CET\n"
+"POT-Creation-Date: 2011-10-17 14:10+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -1958,7 +1958,7 @@ msgstr "Prix HT :"
 msgid "Preview"
 msgstr "Aperçu"
 
-#: ../shop/product.py:119 ../shop/ui/orders/bill.xml.en:81
+#: ../shop/product.py:119
 msgid "Price"
 msgstr "Prix"
 
@@ -2281,6 +2281,10 @@ msgstr ""
 msgid "Subsections and Webpages TOC"
 msgstr "Table des matières des sous-sections et pages web"
 
+#: ../shop/ui/orders/bill.xml.en:80
+msgid "Subtotal (without VAT)"
+msgstr "Total HT"
+
 #: ../shop/paybox.py:178 ../shop/paybox.py:191
 msgid "Suspicion of fraud"
 msgstr "Suspicion de fraude"
@@ -2560,7 +2564,7 @@ msgstr "Trop de tentatives pour le code secret"
 msgid "Too many attempts at secret card"
 msgstr "Trop de tentatives pour la carte secrète"
 
-#: ../shop/ui/orders/bill.xml.en:61 ../shop/ui/orders/bill.xml.en:87
+#: ../shop/ui/orders/bill.xml.en:61
 msgid "Total"
 msgstr ""
 
@@ -2569,7 +2573,7 @@ msgctxt "table cell"
 msgid "Total Price"
 msgstr "Prix total"
 
-#: ../shop/ui/orders/bill.xml.en:83
+#: ../shop/ui/orders/bill.xml.en:88
 msgid "Total VAT inc."
 msgstr "Prix TTC"
 
@@ -2678,7 +2682,7 @@ msgstr "Utiliser la section courante comme base pour l'arborescence"
 msgid "User Id"
 msgstr "Identifiant du compte"
 
-#: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:82
+#: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:84
 msgid "VAT"
 msgstr "TVA"
 

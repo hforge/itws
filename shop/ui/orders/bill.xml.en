@@ -75,26 +75,18 @@
       <br/>
     </p>
 
-    <pml:table id="table">
+    <pml:table width="8cm" id="subtotal-table">
       <pml:tr>
-        <pml:th width="5cm"/>
-        <pml:th width="5cm">Price</pml:th>
-        <pml:th width="5cm">VAT</pml:th>
-        <pml:th width="5cm">Total VAT inc.</pml:th>
+        <pml:th width="6cm">Subtotal (without VAT)</pml:th>
+        <pml:td width="3cm">${total_pre_vat}</pml:td>
       </pml:tr>
       <pml:tr>
-        <pml:td class="align-right">
-          <pml:b>Total</pml:b>
-        </pml:td>
-        <pml:td>
-          <pml:b>${total_pre_vat}</pml:b>
-        </pml:td>
-        <pml:td>
-          <pml:b>${total_vat}</pml:b>
-        </pml:td>
-        <pml:td>
-          <pml:b>${total_price}</pml:b>
-        </pml:td>
+        <pml:td>VAT</pml:td>
+        <pml:td>${total_vat}</pml:td>
+      </pml:tr>
+      <pml:tr>
+        <pml:th>Total VAT inc.</pml:th>
+        <pml:td>${total_price}</pml:td>
       </pml:tr>
     </pml:table>
 

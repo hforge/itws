@@ -19,6 +19,22 @@ body{
   padding: 4px;
 }
 
+#subtotal-table {
+  margin-top: 20px;
+  border: 0.3px solid black;
+}
+#subtotal-table th{
+  background-color: #F0F0F0;
+}
+#subtotal-table th{
+  text-align: right;
+  padding: 4px;
+}
+#subtotal-table td{
+  text-align: right;
+  padding: 4px;
+}
+
 #articles{
   margin-top: 20px;
 }
