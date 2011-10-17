@@ -34,8 +34,13 @@
       <pml:tr>
         <pml:td>
           <pml:p>
+            ${pdf_company}<pml:br/>
+          </pml:p>
+        </pml:td>
+        <pml:td>
+          <pml:p id="customer">
             <pml:b>Customer</pml:b><pml:br/>
-            Customer #${customer/name}<pml:br/>
+            Ref. #${customer/name}<pml:br/>
             ${customer/firstname} ${customer/lastname}<pml:br/>
             ${customer/email}<pml:br/>
           </pml:p>

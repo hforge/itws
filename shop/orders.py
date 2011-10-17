@@ -360,6 +360,10 @@ class Order(WorkflowAware, Folder):
         namespace['pdf_signature'] = XMLParser(signature.replace('\n', '<br/>'))
         # Products
         namespace['products'] = self.get_products_namespace(context)
+        # Company
+        company = orders.get_property('company')
+        company = company.encode('utf-8')
+        namespace['pdf_company'] = XMLParser(company.replace('\n', '<br/>'))
         # Customer
         namespace['customer'] = self.get_customer_namespace(context)
         # Build pdf
@@ -402,12 +406,14 @@ class Orders(Folder):
     class_description = MSG(u'Order module')
     class_views = ['view', 'products', 'configure', 'export']
     class_schema = merge_dicts(Folder.class_schema,
-        incremental_reference=Integer(source='metadata',
-            title=MSG(u'Index'), default=0),
+        incremental_reference=Integer(source='metadata', title=MSG(u'Index'),
+            default=0),
         # Configuration
         logo=ImagePathDataType(source='metadata', title=MSG(u'PDF Logo')),
+        company=Unicode(source='metadata',
+            title=MSG(u'PDF Company information'), widget=MultilineWidget),
         signature=Unicode(source='metadata', title=MSG(u'PDF Signature'),
-                          widget=MultilineWidget))
+            widget=MultilineWidget))
     is_content = False
 
     order_class = Order
@@ -458,4 +464,4 @@ class Orders(Folder):
     view = OrderModule_ViewOrders()
     export = OrderModule_ExportOrders()
     configure = FieldsAutomaticEditView(title=MSG(u'Configure Order module'),
-                    edit_fields=['logo', 'signature'])
+                    edit_fields=['logo', 'company', 'signature'])
