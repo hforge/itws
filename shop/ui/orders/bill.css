@@ -57,10 +57,16 @@ p.footer {
   padding: 0;
 }
 
-#header td{
+#header td b {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
+}
+#header td{
+  font-size: 12px;
 }
 
 #addresses{
+}
+#customer{
+  padding-left: 50px;
 }

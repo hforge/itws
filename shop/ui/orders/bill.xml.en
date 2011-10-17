@@ -14,7 +14,9 @@
           <pml:img src="${logo}" stl:if="logo" style="float:left"/>
         </pml:td>
         <pml:td>
-        Invoice number: ${reference}
+          <pml:b>INVOICE</pml:b><br/>
+          Invoice date: ${creation_date}<br/>
+          Invoice num: ${reference}
         </pml:td>
       </pml:tr>
     </pml:table>
@@ -44,24 +46,6 @@
             ${customer/firstname} ${customer/lastname}<pml:br/>
             ${customer/email}<pml:br/>
           </pml:p>
-        </pml:td>
-      </pml:tr>
-    </pml:table>
-
-    <pml:table id="table">
-      <pml:tr>
-        <pml:th>
-          Invoice number ${reference}
-        </pml:th>
-      </pml:tr>
-      <pml:tr>
-        <pml:td>
-          Order date: ${creation_date}
-        </pml:td>
-      </pml:tr>
-      <pml:tr>
-        <pml:td>
-          Total price ${total_price}
         </pml:td>
       </pml:tr>
     </pml:table>
@@ -98,10 +82,10 @@
       </pml:tr>
       <pml:tr>
         <pml:td class="align-right">
-          Total price
+          <pml:b>Total price</pml:b>
         </pml:td>
         <pml:td>
-          ${total_price}
+          <pml:b>${total_price}</pml:b>
         </pml:td>
       </pml:tr>
     </pml:table>
