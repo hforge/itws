@@ -45,7 +45,7 @@ from itws.views import FieldsAutomaticEditView
 # Import from orders
 from devises import Devises
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
-from order_views import Order_NewInstance, Order_View
+from order_views import Order_NewInstance, Order_RegenerateBill, Order_View
 from order_views import OrderModule_ViewOrders, OrderModule_ExportOrders
 from utils import get_orders, get_shop, get_arrondi, format_price
 from workflows import order_workflow
@@ -148,7 +148,8 @@ class Order(WorkflowAware, Folder):
             indexed=True, stored=True),
         is_order=Boolean(indexed=True, stored=True)))
 
-    class_views = ['manage', 'add_line', 'add_payment', 'view']
+    class_views = ['manage', 'add_line', 'add_payment', 'view',
+        'regenerate_bill']
 
     workflow = order_workflow
 
@@ -393,6 +394,7 @@ class Order(WorkflowAware, Folder):
     add_line = Order_AddLine()
     add_payment = Order_AddPayment()
     new_instance = Order_NewInstance()
+    regenerate_bill = Order_RegenerateBill()
 
 
 ####################################

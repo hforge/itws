@@ -26,6 +26,7 @@ from itools.xml import XMLParser
 
 # Import from ikaaro
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
+from ikaaro.buttons import Button
 from ikaaro.file import PDF
 from ikaaro.utils import CMSTemplate
 from ikaaro.views import CompositeForm, CompositeView
@@ -210,6 +211,21 @@ class Order_ViewProducts(STLView):
         total = resource.get_property('total_price')
         namespace['total_price'] = resource.format_price(total)
         return namespace
+
+
+
+class Order_RegenerateBill(AutoForm):
+
+    access = 'is_admin'
+    actions = [Button(access=True, css='button-ok',
+        title=MSG(u'Generate bill again (overwrite previous one)'))]
+
+    def action(self, resource, context, form):
+        bill = resource.generate_bill(context)
+        goto = './;manage'
+        if bill is None:
+            return context.come_back(MSG(u'Impossible action.'), goto=goto)
+        return context.come_back(MSG(u'Bill generated again.'), goto=goto)
 
 
 
