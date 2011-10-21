@@ -353,7 +353,9 @@ class OrderModule_ViewOrders(FieldsTableFeed_View):
             return OrderState_Template(title=brain.name,
                 link=context.get_link(item_resource), color='#BF0000')
         elif column == 'workflow_state':
-            return OrderState_Template(title=item_resource.get_statename(),
+            value = item_resource.get_statename()
+            title = OrderStateEnumerate.get_value(value)
+            return OrderState_Template(title=title,
                 link=context.get_link(item_resource), color='#BF0000')
         elif column == 'bill':
             bill = item_resource.get_bill()
