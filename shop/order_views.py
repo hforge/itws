@@ -18,7 +18,7 @@
 
 # Import from itools
 from itools.core import freeze
-from itools.database import PhraseQuery
+from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Decimal, Enumerate, Integer
 from itools.gettext import MSG
 from itools.web import INFO, ERROR, STLForm, STLView
@@ -28,7 +28,7 @@ from itools.xml import XMLParser
 from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
 from ikaaro.buttons import Button
 from ikaaro.file import PDF
-from ikaaro.utils import CMSTemplate
+from ikaaro.utils import CMSTemplate, get_base_path_query
 from ikaaro.views import CompositeForm, CompositeView
 
 # Import from itws
@@ -307,8 +307,12 @@ class OrderModule_ExportOrders(AutoForm):
 
     def action(self, resource, context, form):
         list_pdf = []
-        for order in resource.get_resources():
-            pdf = resource.get_resource('./%s/bill' % order.name, soft=True)
+        site_root = resource.get_site_root()
+        orders = context.root.search(AndQuery(PhraseQuery('is_order', True),
+            get_base_path_query(site_root.get_canonical_path())))
+        for brain in orders.get_documents(sort_by='ctime'):
+            order = resource.get_resource(brain.abspath)
+            pdf = order.get_bill()
             if pdf is None:
                 continue
             path = context.database.fs.get_absolute_path(pdf.handler.key)
