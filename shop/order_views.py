@@ -296,10 +296,10 @@ class ExportFormats(Enumerate):
                {'name': 'pdf', 'value': MSG(u'PDF')}]
 
 
-class OrderModule_ExportOrders(AutoForm):
+class OrderModule_ExportBills(AutoForm):
 
     access = 'is_admin'
-    title = MSG(u'Export Orders')
+    title = MSG(u'Export bills')
 
     schema = {'format': ExportFormats()}
     widgets = [SelectWidget('format', title=MSG(u'Format'),

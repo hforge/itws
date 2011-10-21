@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-17 14:10+CET\n"
+"POT-Creation-Date: 2011-10-21 10:10+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -919,7 +919,7 @@ msgstr ""
 msgid "Error of coherence"
 msgstr ""
 
-#: ../shop/order_views.py:319
+#: ../shop/order_views.py:323
 msgid "Error: Can't merge PDF"
 msgstr ""
 
@@ -944,7 +944,7 @@ msgid "Expiry date of the card passed"
 msgstr ""
 
 #: ../shop/order_views.py:302
-msgid "Export Orders"
+msgid "Export bills"
 msgstr ""
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:16
@@ -1673,7 +1673,7 @@ msgctxt "paragraph"
 msgid "Order:"
 msgstr ""
 
-#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:330
+#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:334
 msgid "Orders"
 msgstr ""
 
@@ -2323,7 +2323,7 @@ msgstr ""
 msgid "There are {n} bills."
 msgstr ""
 
-#: ../shop/order_views.py:335
+#: ../shop/order_views.py:339
 msgid "There are {n} orders"
 msgstr ""
 
@@ -2343,7 +2343,7 @@ msgstr ""
 msgid "There is 1 bill."
 msgstr ""
 
-#: ../shop/order_views.py:334
+#: ../shop/order_views.py:338
 msgid "There is 1 order"
 msgstr ""
 

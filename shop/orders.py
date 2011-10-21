@@ -46,7 +46,7 @@ from itws.views import FieldsAutomaticEditView
 from devises import Devises
 from order_views import Order_Manage, Order_AddPayment, Order_AddLine
 from order_views import Order_NewInstance, Order_RegenerateBill, Order_View
-from order_views import OrderModule_ViewOrders, OrderModule_ExportOrders
+from order_views import OrderModule_ViewOrders, OrderModule_ExportBills
 from utils import get_orders, get_shop, get_arrondi, format_price
 from workflows import order_workflow
 
@@ -484,6 +484,6 @@ class Orders(Folder):
     # Views
     ###################################
     view = OrderModule_ViewOrders()
-    export = OrderModule_ExportOrders()
+    export = OrderModule_ExportBills()
     configure = FieldsAutomaticEditView(title=MSG(u'Configure Order module'),
                     edit_fields=['logo', 'company', 'signature'])

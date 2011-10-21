@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
-"POT-Creation-Date: 2011-10-17 14:10+CET\n"
+"POT-Creation-Date: 2011-10-21 10:10+CET\n"
 "PO-Revision-Date: 2010-06-21 17:54+0200\n"
 "Last-Translator: Henry Obein <henry@itaapy.com>\n"
 "Language-Team: French\n"
@@ -933,7 +933,7 @@ msgstr ""
 msgid "Error of coherence"
 msgstr ""
 
-#: ../shop/order_views.py:319
+#: ../shop/order_views.py:323
 msgid "Error: Can't merge PDF"
 msgstr "Erreur: Impossible de fusionner les PDF"
 
@@ -958,8 +958,8 @@ msgid "Expiry date of the card passed"
 msgstr "Date d'expiration de la carte dépassée"
 
 #: ../shop/order_views.py:302
-msgid "Export Orders"
-msgstr "Exporter les commandes"
+msgid "Export bills"
+msgstr "Exporter les factures"
 
 #: ../ui/rssfeeds/RssFeeds_view.xml.en:16
 msgctxt "link"
@@ -1726,7 +1726,7 @@ msgctxt "paragraph"
 msgid "Order:"
 msgstr "Commande :"
 
-#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:330
+#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:334
 msgid "Orders"
 msgstr "Commandes"
 
@@ -2390,7 +2390,7 @@ msgstr "Des erreurs ont été détectées dans ce RSS:"
 msgid "There are {n} bills."
 msgstr "{n} factures."
 
-#: ../shop/order_views.py:335
+#: ../shop/order_views.py:339
 msgid "There are {n} orders"
 msgstr "{n} commandes."
 
@@ -2410,7 +2410,7 @@ msgstr "{n} paiements."
 msgid "There is 1 bill."
 msgstr "1 facture."
 
-#: ../shop/order_views.py:334
+#: ../shop/order_views.py:338
 msgid "There is 1 order"
 msgstr "1 commande."
 
