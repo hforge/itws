@@ -273,7 +273,7 @@ class Order_NewInstance(FieldsAdvance_NewInstance):
 
 
     def action(self, resource, context, form):
-        orders_module = resource
+        orders_module = get_orders(resource)
         order = orders_module.make_order(resource, context.user, lines=[])
         goto = context.get_link(order)
         message = MSG(u'Order has been created')
