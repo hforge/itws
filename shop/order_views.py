@@ -18,6 +18,7 @@
 
 # Import from itools
 from itools.core import freeze
+from itools.csv import CSVFile
 from itools.database import AndQuery, PhraseQuery
 from itools.datatypes import Decimal, Enumerate, Integer
 from itools.gettext import MSG
@@ -40,7 +41,7 @@ from itws.utils import bool_to_img
 from devises import Devises
 from payments_views import PaymentWays_Enumerate
 from product import Product_List
-from utils import join_pdfs, get_orders, get_payments
+from utils import join_pdfs, get_arrondi, get_orders, get_payments
 from widgets import PaymentWays_Widget
 from workflows import OrderStateEnumerate
 
@@ -291,21 +292,20 @@ class OrderState_Template(CMSTemplate):
 
 class ExportFormats(Enumerate):
 
-    # TODO We have to be able to export in CSV format
-    options = [#{'name': 'csv', 'value': MSG(u'CSV')},
+    options = [{'name': 'csv', 'value': MSG(u'CSV')},
                {'name': 'pdf', 'value': MSG(u'PDF')}]
 
 
-class OrderModule_ExportBills(AutoForm):
+class OrderModule_Export(AutoForm):
 
     access = 'is_admin'
-    title = MSG(u'Export bills')
+    title = MSG(u'Export')
 
-    schema = {'format': ExportFormats()}
+    schema = {'format': ExportFormats(mandatory=True)}
     widgets = [SelectWidget('format', title=MSG(u'Format'),
                             has_empty_option=False)]
 
-    def action(self, resource, context, form):
+    def export_pdf(self, resource, context, form):
         list_pdf = []
         site_root = resource.get_site_root()
         orders = context.root.search(AndQuery(PhraseQuery('is_order', True),
@@ -325,6 +325,68 @@ class OrderModule_ExportBills(AutoForm):
         context.set_content_type('application/pdf')
         context.set_content_disposition('attachment; filename="Orders.pdf"')
         return pdf
+
+
+    def get_csv_value(self, resource, context, item, column):
+        brain, item_resource = item
+        if column == 'name':
+            return brain.name
+        elif column == 'customer_id':
+            return item_resource.get_property('customer_id')
+        elif column == 'workflow_state':
+            value = item_resource.get_statename()
+            title = OrderStateEnumerate.get_value(value)
+            return title.gettext()
+        elif column in ('total_price', 'total_paid'):
+            value = item_resource.get_property(column)
+            return value
+        elif column in ('total_pre_vat', 'total_vat'):
+            total_pre_vat, total_vat = item_resource.get_vat_details(context)
+            return get_arrondi(eval(column))
+        elif column in ('ctime',):
+            value = brain.ctime
+            return context.format_datetime(value)
+        return ''
+
+
+    def export_csv(self, resource, context, form):
+        columns = ['name', 'customer_id', 'workflow_state', 'total_pre_vat',
+                   'total_vat', 'total_price', 'total_paid', 'ctime']
+        header = [MSG(u'Order ref.'), MSG(u'Customer ref.'), MSG(u'State'),
+                  MSG(u'Total VAT not inc.'), MSG(u'VAT'),
+                  MSG(u'Total VAT inc.'), MSG(u'Total paid'), MSG(u'Date')]
+        header = [x.gettext().encode('utf-8') for x in header]
+        csv = CSVFile()
+        csv.add_row(header)
+        lines = []
+        site_root = resource.get_site_root()
+        orders = context.root.search(AndQuery(PhraseQuery('is_order', True),
+            get_base_path_query(site_root.get_canonical_path())))
+        for brain in orders.get_documents(sort_by='ctime'):
+            item_resource = resource.get_resource(brain.abspath)
+            item = brain, item_resource
+            row = []
+            for c in columns:
+                value = self.get_csv_value(resource, context, item, c)
+                if isinstance(value, unicode):
+                    value = value.encode('utf-8')
+                else:
+                    value = str(value)
+                row.append(value)
+            csv.add_row(row)
+        separator = ','
+        context.set_content_type('text/comma-separated-values')
+        context.set_content_disposition('attachment; filename="Orders.csv"')
+        return csv.to_str(separator=separator)
+
+
+    def action(self, resource, context, form):
+        export_format  = form['format']
+        if export_format == 'pdf':
+            return self.export_pdf(resource, context, form)
+        elif export_format == 'csv':
+            return self.export_csv(resource, context, form)
+        context.message = ERROR(u'Invalid format')
 
 
 
