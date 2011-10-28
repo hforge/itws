@@ -1933,7 +1933,7 @@ msgstr "Paiement validé"
 
 #: ../shop/orders.py:65
 msgid "Payment validated on your order #{order_name}"
-msgstr ""
+msgstr "Paiement validé sur votre commande #{order_name}"
 
 #: ../shop/ui/payments/payment_introduction.xml.en:10
 msgctxt "paragraph"
