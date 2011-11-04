@@ -112,7 +112,7 @@ class Product(Folder, WorkflowAware):
     class_id = 'product'
     class_schema = merge_dicts(Folder.class_schema,
         WorkflowAware.class_schema,
-        reference=String(source='metadata', indexed=True,
+        reference=String(source='metadata', indexed=True, stored=True,
             title=MSG(u'Reference')),
         tax=TaxesEnumerate(source='metadata', title=MSG(u'Tax'),
             has_empty_option=False, css='tax-widget'),
