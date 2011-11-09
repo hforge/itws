@@ -15,18 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import from standard library
+from datetime import datetime, time
 
 # Import from itools
 from itools.core import freeze
 from itools.csv import CSVFile
-from itools.database import AndQuery, PhraseQuery
-from itools.datatypes import Decimal, Enumerate, Integer
+from itools.database import AndQuery, PhraseQuery, RangeQuery
+from itools.datatypes import Date, Decimal, Enumerate, Integer
 from itools.gettext import MSG
 from itools.web import INFO, ERROR, STLForm, STLView
 from itools.xml import XMLParser
 
 # Import from ikaaro
-from ikaaro.autoform import AutoForm, SelectWidget, TextWidget
+from ikaaro.autoform import AutoForm, DateWidget, SelectWidget, TextWidget
 from ikaaro.buttons import Button
 from ikaaro.file import PDF
 from ikaaro.utils import CMSTemplate, get_base_path_query
@@ -226,6 +227,7 @@ class Order_ViewProducts(STLView):
 class Order_RegenerateBill(AutoForm):
 
     access = 'is_admin'
+    title = MSG(u'Bill')
     actions = [Button(access=True, css='button-ok',
         title=MSG(u'Generate bill again (overwrite previous one)'))]
 
@@ -301,15 +303,19 @@ class OrderModule_Export(AutoForm):
     access = 'is_admin'
     title = MSG(u'Export')
 
-    schema = {'format': ExportFormats(mandatory=True)}
-    widgets = [SelectWidget('format', title=MSG(u'Format'),
-                            has_empty_option=False)]
+    schema = {'format': ExportFormats(mandatory=True),
+              'since': Date(mandatory=True)}
+    widgets = [
+        SelectWidget('format', title=MSG(u'Format'), has_empty_option=False),
+        DateWidget('since', title=MSG(u'Since'))]
 
     def export_pdf(self, resource, context, form):
         list_pdf = []
         site_root = resource.get_site_root()
+        since = datetime.combine(form['since'], time(0,0))
         orders = context.root.search(AndQuery(PhraseQuery('is_order', True),
-            get_base_path_query(site_root.get_canonical_path())))
+            get_base_path_query(site_root.get_canonical_path()),
+            RangeQuery('ctime', since, None)))
         for brain in orders.get_documents(sort_by='ctime'):
             order = resource.get_resource(brain.abspath)
             pdf = order.get_bill()
@@ -360,8 +366,10 @@ class OrderModule_Export(AutoForm):
         csv.add_row(header)
         lines = []
         site_root = resource.get_site_root()
+        since = datetime.combine(form['since'], time(0,0))
         orders = context.root.search(AndQuery(PhraseQuery('is_order', True),
-            get_base_path_query(site_root.get_canonical_path())))
+            get_base_path_query(site_root.get_canonical_path()),
+            RangeQuery('ctime', since, None)))
         for brain in orders.get_documents(sort_by='ctime'):
             item_resource = resource.get_resource(brain.abspath)
             item = brain, item_resource
