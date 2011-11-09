@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-25 15:10+CET\n"
+"POT-Creation-Date: 2011-11-09 17:11+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../shop/utils.py:66 ../shop/order_views.py:138
+#: ../shop/utils.py:66 ../shop/order_views.py:139
 msgid "%s %s"
 msgstr ""
 
@@ -330,11 +330,11 @@ msgstr ""
 msgid "Add a box"
 msgstr ""
 
-#: ../shop/order_views.py:53
+#: ../shop/order_views.py:54
 msgid "Add a line"
 msgstr ""
 
-#: ../shop/order_views.py:153
+#: ../shop/order_views.py:154
 msgid "Add a payment"
 msgstr ""
 
@@ -389,7 +389,7 @@ msgstr ""
 msgid "Advanced State"
 msgstr ""
 
-#: ../shop/order_views.py:119
+#: ../shop/order_views.py:120
 msgid "Advanced state"
 msgstr ""
 
@@ -398,8 +398,8 @@ msgid "All feeds"
 msgstr ""
 
 #: ../shop/payment.py:59 ../shop/payment_views.py:46
-#: ../shop/payments_views.py:120 ../shop/order_views.py:112
-#: ../shop/order_views.py:160
+#: ../shop/payments_views.py:120 ../shop/order_views.py:113
+#: ../shop/order_views.py:161
 msgid "Amount"
 msgstr ""
 
@@ -448,15 +448,16 @@ msgstr ""
 msgid "Batch size"
 msgstr ""
 
-#: ../shop/orders.py:146 ../shop/orders.py:395 ../shop/ui/orders/bill.xml.en:5
+#: ../shop/orders.py:146 ../shop/orders.py:395 ../shop/order_views.py:230
+#: ../shop/ui/orders/bill.xml.en:5
 msgid "Bill"
 msgstr ""
 
-#: ../shop/order_views.py:237
+#: ../shop/order_views.py:239
 msgid "Bill generated again."
 msgstr ""
 
-#: ../shop/order_views.py:70
+#: ../shop/order_views.py:71
 msgid "Bills"
 msgstr ""
 
@@ -508,7 +509,7 @@ msgstr ""
 msgid "COFINOGA"
 msgstr ""
 
-#: ../shop/order_views.py:295
+#: ../shop/order_views.py:297
 msgid "CSV"
 msgstr ""
 
@@ -668,7 +669,7 @@ msgstr ""
 msgid "Create a new central box"
 msgstr ""
 
-#: ../shop/order_views.py:268
+#: ../shop/order_views.py:270
 msgid "Create a new order"
 msgstr ""
 
@@ -713,7 +714,7 @@ msgstr ""
 msgid "Customer id"
 msgstr ""
 
-#: ../shop/order_views.py:355
+#: ../shop/order_views.py:361
 msgid "Customer ref."
 msgstr ""
 
@@ -721,7 +722,7 @@ msgstr ""
 msgid "DINERS"
 msgstr ""
 
-#: ../shop/order_views.py:357
+#: ../shop/order_views.py:363
 msgid "Date"
 msgstr ""
 
@@ -931,7 +932,7 @@ msgstr ""
 msgid "Error of coherence"
 msgstr ""
 
-#: ../shop/order_views.py:323
+#: ../shop/order_views.py:329
 msgid "Error: Can't merge PDF"
 msgstr ""
 
@@ -955,7 +956,7 @@ msgstr ""
 msgid "Expiry date of the card passed"
 msgstr ""
 
-#: ../shop/order_views.py:302
+#: ../shop/order_views.py:304
 msgid "Export"
 msgstr ""
 
@@ -1043,7 +1044,7 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: ../feed_views/collection.py:69 ../shop/order_views.py:305
+#: ../feed_views/collection.py:69 ../shop/order_views.py:309
 #: ../feed_views/browse_navigator.py:59
 msgid "Format"
 msgstr ""
@@ -1077,7 +1078,7 @@ msgstr ""
 msgid "Gallery view"
 msgstr ""
 
-#: ../shop/order_views.py:230
+#: ../shop/order_views.py:232
 msgid "Generate bill again (overwrite previous one)"
 msgstr ""
 
@@ -1236,7 +1237,7 @@ msgstr ""
 msgid "Image Path"
 msgstr ""
 
-#: ../shop/order_views.py:236
+#: ../shop/order_views.py:238
 msgid "Impossible action."
 msgstr ""
 
@@ -1269,7 +1270,7 @@ msgstr ""
 msgid "Invalid amount"
 msgstr ""
 
-#: ../shop/order_views.py:389
+#: ../shop/order_views.py:397
 msgid "Invalid format"
 msgstr ""
 
@@ -1371,7 +1372,7 @@ msgctxt "title attribute"
 msgid "Libsoup"
 msgstr ""
 
-#: ../shop/order_views.py:56
+#: ../shop/order_views.py:57
 msgid "Line"
 msgstr ""
 
@@ -1445,7 +1446,7 @@ msgstr ""
 msgid "Manage home page content"
 msgstr ""
 
-#: ../shop/order_views.py:178 ../shop/order_views.py:257
+#: ../shop/order_views.py:179 ../shop/order_views.py:259
 msgid "Manage order"
 msgstr ""
 
@@ -1650,7 +1651,7 @@ msgstr ""
 msgid "Order confirmation"
 msgstr ""
 
-#: ../shop/order_views.py:280
+#: ../shop/order_views.py:282
 msgid "Order has been created"
 msgstr ""
 
@@ -1672,7 +1673,7 @@ msgstr ""
 msgid "Order product"
 msgstr ""
 
-#: ../shop/order_views.py:355
+#: ../shop/order_views.py:361
 msgid "Order ref."
 msgstr ""
 
@@ -1693,7 +1694,7 @@ msgctxt "paragraph"
 msgid "Order:"
 msgstr ""
 
-#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:396
+#: ../shop/orders.py:427 ../shop/shop.py:62 ../shop/order_views.py:404
 msgid "Orders"
 msgstr ""
 
@@ -1746,7 +1747,7 @@ msgstr ""
 msgid "PBX_TOTAL value is invalid"
 msgstr ""
 
-#: ../shop/order_views.py:296
+#: ../shop/order_views.py:298
 msgid "PDF"
 msgstr ""
 
@@ -1826,7 +1827,7 @@ msgstr ""
 msgid "Payment Module"
 msgstr ""
 
-#: ../shop/order_views.py:111 ../shop/order_views.py:161
+#: ../shop/order_views.py:112 ../shop/order_views.py:162
 msgid "Payment Way"
 msgstr ""
 
@@ -1884,7 +1885,7 @@ msgctxt "paragraph"
 msgid "Payment way:"
 msgstr ""
 
-#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:98
+#: ../shop/payments_views.py:84 ../shop/shop.py:64 ../shop/order_views.py:99
 msgid "Payments"
 msgstr ""
 
@@ -1901,7 +1902,7 @@ msgstr ""
 msgid "Please choose a payment mode"
 msgstr ""
 
-#: ../shop/order_views.py:154
+#: ../shop/order_views.py:155
 msgid "Please follow the payment procedure below."
 msgstr ""
 
@@ -1938,7 +1939,7 @@ msgstr ""
 msgid "Product title"
 msgstr ""
 
-#: ../shop/shop.py:66 ../shop/order_views.py:214
+#: ../shop/shop.py:66 ../shop/order_views.py:215
 msgid "Products"
 msgstr ""
 
@@ -1973,7 +1974,7 @@ msgstr ""
 msgid "Qty"
 msgstr ""
 
-#: ../shop/orders.py:110 ../shop/order_views.py:57
+#: ../shop/orders.py:110 ../shop/order_views.py:58
 msgid "Quantity"
 msgstr ""
 
@@ -2020,7 +2021,7 @@ msgid "Ref."
 msgstr ""
 
 #: ../shop/product.py:72 ../shop/product.py:116 ../shop/orders.py:135
-#: ../shop/ui/orders/bill.xml.en:55 ../shop/order_views.py:110
+#: ../shop/ui/orders/bill.xml.en:55 ../shop/order_views.py:111
 #: ../shop/payment.py:56
 msgid "Reference"
 msgstr ""
@@ -2075,7 +2076,7 @@ msgstr ""
 msgid "Robots.txt"
 msgstr ""
 
-#: ../shop/order_views.py:145
+#: ../shop/order_views.py:146
 msgid "Régler"
 msgstr ""
 
@@ -2188,6 +2189,10 @@ msgstr ""
 msgid "Sidebar boxes repository"
 msgstr ""
 
+#: ../shop/order_views.py:310
+msgid "Since"
+msgstr ""
+
 #: ../sitemap/sitemap.py:126
 msgid "Sitemap"
 msgstr ""
@@ -2213,7 +2218,7 @@ msgid "Specific CSS"
 msgstr ""
 
 #: ../shop/product.py:75 ../news/news_views.py:175 ../tags/tags_views.py:234
-#: ../shop/order_views.py:355 ../feed_views/browse_navigator.py:74
+#: ../shop/order_views.py:361 ../feed_views/browse_navigator.py:74
 msgid "State"
 msgstr ""
 
@@ -2339,11 +2344,11 @@ msgctxt "div"
 msgid "There are errors in this RSS:"
 msgstr ""
 
-#: ../shop/order_views.py:78
+#: ../shop/order_views.py:79
 msgid "There are {n} bills."
 msgstr ""
 
-#: ../shop/order_views.py:401
+#: ../shop/order_views.py:409
 msgid "There are {n} orders"
 msgstr ""
 
@@ -2355,15 +2360,15 @@ msgstr ""
 msgid "There are {n} payments mode."
 msgstr ""
 
-#: ../shop/order_views.py:106
+#: ../shop/order_views.py:107
 msgid "There are {n} payments."
 msgstr ""
 
-#: ../shop/order_views.py:77
+#: ../shop/order_views.py:78
 msgid "There is 1 bill."
 msgstr ""
 
-#: ../shop/order_views.py:400
+#: ../shop/order_views.py:408
 msgid "There is 1 order"
 msgstr ""
 
@@ -2375,7 +2380,7 @@ msgstr ""
 msgid "There is 1 payment mode."
 msgstr ""
 
-#: ../shop/order_views.py:105
+#: ../shop/order_views.py:106
 msgid "There is 1 payment."
 msgstr ""
 
@@ -2422,7 +2427,7 @@ msgctxt "paragraph"
 msgid "This order hasn't been payed yet."
 msgstr ""
 
-#: ../shop/order_views.py:62
+#: ../shop/order_views.py:63
 msgid "This product has been added to your order"
 msgstr ""
 
@@ -2518,11 +2523,11 @@ msgctxt "table cell"
 msgid "Total Price"
 msgstr ""
 
-#: ../shop/ui/orders/bill.xml.en:88 ../shop/order_views.py:357
+#: ../shop/ui/orders/bill.xml.en:88 ../shop/order_views.py:363
 msgid "Total VAT inc."
 msgstr ""
 
-#: ../shop/order_views.py:356
+#: ../shop/order_views.py:362
 msgid "Total VAT not inc."
 msgstr ""
 
@@ -2531,7 +2536,7 @@ msgctxt "emphasis"
 msgid "Total amount"
 msgstr ""
 
-#: ../shop/orders.py:138 ../shop/order_views.py:357
+#: ../shop/orders.py:138 ../shop/order_views.py:363
 msgid "Total paid"
 msgstr ""
 
@@ -2632,7 +2637,7 @@ msgid "User Id"
 msgstr ""
 
 #: ../shop/ui/orders/bill.xml.en:58 ../shop/ui/orders/bill.xml.en:84
-#: ../shop/order_views.py:356
+#: ../shop/order_views.py:362
 msgid "VAT"
 msgstr ""
 
@@ -2640,7 +2645,7 @@ msgstr ""
 msgid "VISA"
 msgstr ""
 
-#: ../shop/order_views.py:113
+#: ../shop/order_views.py:114
 msgid "Validated ?"
 msgstr ""
 
@@ -2649,7 +2654,7 @@ msgstr ""
 #: ../feed_views/browse_navigator.py:82 ../bar/bar_aware.py:147
 #: ../webpage_views.py:61 ../shop/shop.py:41 ../bar/tags.py:36
 #: ../feed_views/base.py:67 ../turning_footer.py:50 ../bar/feed_box.py:90
-#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:244 ../news/news_views.py:44
+#: ../OPML/rssfeeds.py:84 ../shop/order_views.py:246 ../news/news_views.py:44
 #: ../news/news_views.py:95
 msgid "View"
 msgstr ""
