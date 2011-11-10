@@ -48,7 +48,8 @@ class TaxesEnumerate(Enumerate):
 class Tax(DBResource):
 
     class_id = 'tax'
-    class_title =MSG(u'Tax')
+    class_title = MSG(u'Tax')
+    class_description = MSG(u'Tax')
     class_views = ['edit']
     class_icon16 = 'icons/16x16/folder.png'
     class_icon48 = 'icons/48x48/folder.png'
