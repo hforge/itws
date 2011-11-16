@@ -139,7 +139,7 @@ class Product(Folder, WorkflowAware):
 
 
     def get_price_with_tax(self, with_devise=False):
-        price = self.get_price_without_tax()
+        price = self.get_property('pre_tax_price')
         tax = self.get_tax_value() / decimal(100) + 1
         price = get_arrondi(price * tax)
         if with_devise is False:
