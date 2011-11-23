@@ -25,6 +25,7 @@ from itools.datatypes import Boolean, DateTime, Decimal
 from itools.datatypes import Integer, String, Unicode, URI
 from itools.gettext import MSG
 from itools.handlers import checkid
+from itools.log import log_warning
 from itools.pdf import stl_pmltopdf
 from itools.xml import XMLParser
 from itools.web import get_context
@@ -197,12 +198,16 @@ class Order(WorkflowAware, Folder):
 
 
     def get_products_namespace(self, context):
+        root = context.root
         query = AndQuery(
             get_base_path_query(self.get_canonical_path()),
             PhraseQuery('format', 'order-product'))
         l = []
-        for brain in context.root.search(query).get_documents():
-            resource = context.root.get_resource(brain.abspath)
+        for brain in root.search(query).get_documents():
+            resource = root.get_resource(brain.abspath, soft=True)
+            if resource is None:
+                log_warning('ORDER-PRODUCT not found : %s' % brain.abspath)
+                continue
             # Get base product namespace
             kw = {}
             for key in ['reference', 'title', 'tax', 'quantity']:
@@ -216,7 +221,7 @@ class Order(WorkflowAware, Folder):
             kw['price_with_tax'] = self.format_price(kw['price_with_tax'])
             # Get product link (if exist)
             abspath = resource.get_property('abspath')
-            product = context.root.get_resource(abspath, soft=True)
+            product = root.get_resource(abspath, soft=True)
             if product:
                 # Add link only if edit allowed
                 link = None
