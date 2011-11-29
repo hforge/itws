@@ -325,7 +325,7 @@ class PayboxPayment_Callback(BaseForm):
         'autorisation': String,
         'amount': Decimal,
         'advanced_state': PayboxStatus})
-    authorized_ip = freeze(['195.101.99.76', '194.2.122.158'])
+    authorized_ip = freeze(['195.101.99.76', '194.2.122.158', '195.25.7.166'])
 
 
     def POST(self, resource, context):
