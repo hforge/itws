@@ -132,10 +132,13 @@ class SiteMapView(BaseView):
         if nb_items <= max_urls or id_sitemap:
             # id_sitemap is None if id is not specified in the query
             start = 0 if id_sitemap is None else (id_sitemap - 1) * max_urls
-            base_uri = str(context.uri.resolve('/'))
+            base_uri = str(context.uri.resolve('/'))[:-1]
             for brain in items.get_documents(sort_by='abspath',
                                              start=start, size=max_urls):
-                uri = '/'.join(brain.abspath.split('/')[2:])
+                s = brain.abspath.split('/')[2:]
+                uri = '/%s' % '/'.join(s)
+                if len(uri) == 1:
+                    uri = ''
                 urls.append(
                     {'loc': base_uri + uri,
                      'lastmod': brain.mtime.strftime('%Y-%m-%d')})
@@ -156,13 +159,8 @@ class SiteMapView(BaseView):
         # Return xml
         context.set_content_type('text/xml')
         # Generate xml
-        from time import time
         template = resource.get_resource(self.template)
-        t0 = time()
-        data = stl(template, namespace, mode='xml')
-        t1 = time()
-        print '--->', t1-t0
-        return data
+        return stl(template, namespace, mode='xml')
 
 
 
