@@ -19,6 +19,7 @@ import traceback
 
 # Import from itools
 from itools.gettext import MSG
+from itools.web import get_context
 
 # Import from ikaaro
 from ikaaro.config import get_config
@@ -44,3 +45,23 @@ class Root(BaseRoot):
             self.send_email(email, subject, text=text)
         proxy = super(Root, self)
         return proxy.internal_server_error(context)
+
+
+    ########################################################################
+    # Email
+    def send_email(self, to_addr, subject, from_addr=None, text=None,
+                   html=None, encoding='utf-8', subject_with_host=True,
+                   return_receipt=False, attachment=None):
+        context = get_context()
+        site_root = context.site_root
+        # DO NOT SEND EMAIL FROM FROM_ADDR USER
+        # TODO Keep from_addr as Reply-to
+        if site_root.get_property('emails_from_addr'):
+            user_name = site_root.get_property('emails_from_addr')
+            user = self.get_resource('/users/%s' % user_name)
+            from_addr = user.get_title(), user.get_property('email')
+        else:
+            from_addr = context.server.smtp_from
+
+        return super(Root, self).send_email(to_addr, subject, from_addr, text,
+            html, encoding, subject_with_host, return_receipt, attachment)
