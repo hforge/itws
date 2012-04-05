@@ -127,7 +127,7 @@ class Section(ManageViewAware, SideBarAware, ContentBarAware,
     class_icon16 = 'common/icons/16x16/section.png'
     class_icon48 = 'common/icons/48x48/section.png'
     class_views = ['view', 'edit', 'manage_content', 'add_content',
-                   'new_resource', 'order_items', 'backlinks', 'commit_log']
+                   'new_resource', 'order_items', 'backlinks']
     __fixed_handlers__ = (Folder.__fixed_handlers__
                           + SideBarAware.__fixed_handlers__
                           + ContentBarAware.__fixed_handlers__
