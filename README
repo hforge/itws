@@ -121,4 +121,5 @@ Here details about ITWS versions::
   - ITWS 1.0 -> Use ikaaro/itools 0.61 (First version of ITWS)
   - ITWS 1.1 -> Use ikaaro/itools 0.61 (Same that ITWS 1.0 but with advance navigation)
   - ITWS 1.2 -> Use ikaaro/itools 0.62
+  - ITWS 1.3 -> Use ikaaro/itools 0.62 (Same that v 1.2 but with the shop)
   - ITWS Master -> Devel branch
