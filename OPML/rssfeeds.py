@@ -436,7 +436,7 @@ class RssFeeds(CSV):
         namespace = {}
         namespace['title'] = self.get_property('title')
         namespace['mtime'] = HTTPDate.encode(self.get_mtime())
-        revisions = self.get_revisions(context)
+        revisions = self.get_revisions()
         name = email = None
         if revisions:
             root = context.root
