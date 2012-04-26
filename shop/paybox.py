@@ -18,11 +18,10 @@
 from decimal import Decimal as decimal
 from os.path import join, dirname
 import re
-from subprocess import check_output, CalledProcessError
 import sys
 
 # Import from itools
-from itools.core import freeze, merge_dicts
+from itools.core import freeze, get_pipe, merge_dicts
 from itools.datatypes import Boolean, String, Decimal, Enumerate, Email
 from itools.datatypes.primitive import enumerate_get_value, enumerate_is_valid
 from itools.gettext import MSG
@@ -292,12 +291,12 @@ class PayboxPayment_PaymentForm(BaseView):
         log_debug("Calling Paybox: {0!r}".format(cmd))
         # Call the CGI
         try:
-            result = check_output(cmd)
+            result = get_pipe(cmd)
             # Check if all is ok
             html = re.match ('.*?<HEAD>(.*?)</HTML>', result, re.DOTALL)
             if html is None:
-                raise CalledProcessError
-        except CalledProcessError, e:
+                raise ValueError
+        except Exception, e:
             # Try do get error number
             num_error = re.match ('.*?NUMERR=(.*?)"', e.output, re.DOTALL)
             if num_error:
