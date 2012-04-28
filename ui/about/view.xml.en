@@ -5,66 +5,17 @@
            xmlns:stl="http://www.hforge.org/xml-namespaces/stl">
 
   <div class="content">
-    <p>This site is powered by
-      <a href="http://www.itaapy.com/nos-solutions/itws-gestion-de-contenu-open-source"
-         title="itws">itws</a>, an open source content management solution developped by
-       <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>, Free software
+    <p>This site is powered by itws, an open source content management solution developped by
+       <a href="http://www.agicia.com" title="Agicia">Agicia</a>, Free software
        solutions provider in Paris.
     </p>
 
     <p>
-      <a href="http://www.itaapy.com" title="Itaapy">
-        <img src="/ui/about/images/logo_itaapy.png" />
+      <a href="http://www.agicia.com" title="Agicia">
+        <img src="/ui/about/images/logo_agicia.png" />
       </a>
     </p>
 
-    <p>
-      <a href="http://www.itaapy.com/nos-solutions/itws-gestion-de-contenu-open-source"
-         title="itws">Itws</a> is based on
-      <a href="http://www.itaapy.com/technologies/ikaaro-ged-open-source-et-plus"
-        title="iKaaro">iKaaro</a>, a
-      <a href="http://www.itaapy.com/technologies/python"
-        title="Python">Python</a> CMS, built upon
-      <a href="http://www.itaapy.com/technologies/itools-boite-a-outils-des-programmes-documentaires"
-        title="itools">itools</a> providing the object database and standards formats manipulation,
-      <a href="http://www.itaapy.com/technologies/git-gestion-de-version"
-         title="GIT">Git</a> for versionning
-      <a href="http://www.itaapy.com/technologies/xapian-indexation-et-recherche-haute-performances"
-         title="Xapian">Xapian</a> for indexing and
-      <a href="http://live.gnome.org/LibSoup" title="Libsoup">Libsoup</a> as HTTP server.
-    </p>
-
-    <p>
-      <a href="http://www.itaapy.com/technologies/ikaaro-ged-open-source-et-plus"
-        title="iKaaro" style="padding-right: 5px;">
-        <img src="/ui/about/images/logo_ikaaro.png" />
-      </a>
-      <a href="http://www.itaapy.com/technologies/python"
-        title="Python" style="padding-right: 5px;">
-        <img src="/ui/about/images/logo_python.png" />
-      </a>
-      <a href="http://www.itaapy.com/technologies/git-gestion-de-version"
-         title="GIT" style="padding-right: 5px;">
-         <img src="/ui/about/images/logo_git.png" />
-      </a>
-      <a href="http://www.itaapy.com/technologies/xapian-indexation-et-recherche-haute-performances"
-         title="Xapian">
-         <img src="/ui/about/images/logo_xapian.png" />
-      </a>
-    </p>
-
-    <p>
-      <a href="http://www.itaapy.com" title="Itaapy">Itaapy</a>
-      helps you with setting up your web site , e-commerce or intranet. Our
-      technical expertise brings you the opportunity of a leadership by
-      innovation and helps improve productivity by thigh integration with your
-      existing information system.
-      Discover
-      <a href="http://www.itaapy.com/nos-solutions/iscrib-dematerialisation-de-formulaires"
-         title="iScrib">iScrib</a>, a tool to create your data collection
-       applications  in just a clic using your specification on a simple
-       spreadsheet !
-    </p>
-</div>
+  </div>
 
 </stl:block>
