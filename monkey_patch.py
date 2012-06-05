@@ -57,9 +57,7 @@ DBResource_CommitLog.display_sidebar = False
 DBResource_Changes.display_sidebar = False
 Menu_View.display_sidebar = False
 # itws views
-NeutralWS.about.display_sidebar = False
-NeutralWS.credits.display_sidebar = False
-NeutralWS.license.display_sidebar = False
+NeutralWS.powered_by.display_sidebar = False
 # Hide sidebar on some resources
 Tracker.display_sidebar = False
 Tracker.issue_class.display_sidebar = False
